@@ -156,7 +156,7 @@ class Security extends System {
         if($component && $page_tpl) {       
 
             // If 'Referring Page' matches the specified page (returns true/false as needed)
-            return preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'absolute', 'auto'), '/').'/U', $referer);
+            return preg_match('/^'.preg_quote($this->app->system->router->build_url_from_variables($component, $page_tpl, 'absolute', 'auto'), '/').'/U', $referer);
 
         // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
         } else {        

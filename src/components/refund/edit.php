@@ -32,7 +32,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     }
 
     // Build the page
-    $refund_details = $this->app->components->refund->$this->app->components->refund->get_refund_details(\CMSApplication::$VAR['refund_id']);
+    $refund_details = $this->app->components->refund->get_refund_details(\CMSApplication::$VAR['refund_id']);
     $this->app->smarty->assign('refund_statuses', $this->app->components->refund->get_refund_statuses());
     $this->app->smarty->assign('refund_types', $this->app->components->refund->get_refund_types());        
     $this->app->smarty->assign('refund_details', $refund_details);

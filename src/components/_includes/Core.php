@@ -28,8 +28,8 @@ class Core extends Components {
 
         $sql = "SELECT welcome_msg FROM ".PRFX."company_record";
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
         } else { 
 
             return $rs->fields['welcome_msg'];

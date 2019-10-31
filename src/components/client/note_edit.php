@@ -17,7 +17,7 @@ if(!isset(\CMSApplication::$VAR['client_note_id']) || !\CMSApplication::$VAR['cl
 // If record submitted for updating
 if(isset(\CMSApplication::$VAR['submit'])) {
                
-    $this->app->components->client->update_client(\CMSApplication::$VAR['client_note_id'], \CMSApplication::$VAR['note']);
+    $this->app->components->client->update_client_note(\CMSApplication::$VAR['client_note_id'], \CMSApplication::$VAR['note']);
     $this->app->system->general->force_page('client', 'details&client_id='.$this->app->components->client->get_client_note_details(\CMSApplication::$VAR['client_note_id'], 'client_id'));   
     
 } else {    

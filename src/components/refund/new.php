@@ -70,7 +70,7 @@ if (isset(\CMSApplication::$VAR['submit'])) {
     } else {
         $refund_details['vat_tax_code'] = $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']);
     }
-    $refund_details['unit_tax_rate'] = ($invoice_details['tax_system'] == 'sales_tax_cash') ? $invoice_details['sales_tax_rate'] : $this->app->company->get_vat_rate($refund_details['vat_tax_code']); 
+    $refund_details['unit_tax_rate'] = ($invoice_details['tax_system'] == 'sales_tax_cash') ? $invoice_details['sales_tax_rate'] : $this->app->components->company->get_vat_rate($refund_details['vat_tax_code']); 
     $refund_details['unit_tax'] = $invoice_details['unit_tax'];
     $refund_details['unit_gross'] = $invoice_details['unit_gross'];  
     $refund_details['note'] = '';

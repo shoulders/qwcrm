@@ -39,7 +39,7 @@ $this->app->smarty->assign('invoice_stats',            $this->app->components->r
 $this->app->smarty->assign('voucher_statuses',        $this->app->components->voucher->get_voucher_statuses()                                                                                                        );
 $this->app->smarty->assign('vouchers_purchased',      $this->app->components->voucher->display_vouchers('voucher_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, null, null, \CMSApplication::$VAR['client_id'])              );
 $this->app->smarty->assign('vouchers_claimed',        $this->app->components->voucher->display_vouchers('voucher_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'redeemed', null, null, null, null, \CMSApplication::$VAR['client_id'])        );
-$this->app->smarty->assign('voucher_stats',           $this->app->components->report->$this->app->components->report->get_vouchers_stats('all', null, null, QW_TAX_SYSTEM, null, \CMSApplication::$VAR['client_id'])  );
+$this->app->smarty->assign('voucher_stats',           $this->app->components->report->get_vouchers_stats('all', null, null, QW_TAX_SYSTEM, null, \CMSApplication::$VAR['client_id'])  );
 
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->get_payment_types()                                                                                 );
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->get_payment_methods()                                                                               );

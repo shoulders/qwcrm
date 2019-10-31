@@ -21,7 +21,7 @@ $this->app->smarty->assign('payment_statuses',         $this->app->components->p
 $this->app->smarty->assign('display_payments',         $this->app->components->payment->display_payments('payment_id', 'DESC', false, null, null, null, null, 'refund', null, null, null, null, null, \CMSApplication::$VAR['refund_id']));
 
 // Build the page
-$refund_details = $this->app->components->refund->$this->app->components->refund->get_refund_details(\CMSApplication::$VAR['refund_id']);
+$refund_details = $this->app->components->refund->get_refund_details(\CMSApplication::$VAR['refund_id']);
 $this->app->smarty->assign('refund_statuses', $this->app->components->refund->get_refund_statuses()  );
 $this->app->smarty->assign('refund_types', $this->app->components->refund->get_refund_types());
 $this->app->smarty->assign('refund_details', $refund_details);

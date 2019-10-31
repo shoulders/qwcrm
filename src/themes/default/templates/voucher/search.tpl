@@ -33,8 +33,8 @@
                                                                     <b>{t}Search{/t}</b>
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
-                                                                        <option value="voucher_id"{if $search_category == 'voucher_id'} selected{/if}>{t}Voucher ID{/t}</option>
-                                                                        <option value="voucher_code"{if $search_category == 'voucher_code'} selected{/if}>{t}Voucher Code{/t}</option>                                                                        
+                                                                        <option value="voucher_code"{if $search_category == 'voucher_code'} selected{/if}>{t}Voucher Code{/t}</option> 
+                                                                        <option value="voucher_id"{if $search_category == 'voucher_id'} selected{/if}>{t}Voucher ID{/t}</option>                                                                                                                                               
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Client{/t}</option>                                                                        
                                                                         <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>

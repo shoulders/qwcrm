@@ -54,7 +54,7 @@ class Email extends System {
 
         // Clear any onscreen notifications - this allows for mutiple errors to be displayed (if allowed)
         if (!$silent) {
-            $this->app->components->general->ajax_clear_onscreen_notifications();
+            $this->app->system->general->ajax_clear_onscreen_notifications();
         }
 
         // Check for a recipient email address
@@ -68,7 +68,7 @@ class Email extends System {
             if (!$silent) {
                 $message = $record.'<br>'._gettext("There is no email address to send to.");
                 $this->app->system->variables->systemMessagesWrite('danger', $message);
-                $this->app->components->general->ajax_output_system_messages_onscreen();
+                $this->app->system->general->ajax_output_system_messages_onscreen();
             }
 
             return false;
@@ -86,7 +86,7 @@ class Email extends System {
             if (!$silent) {
                 $message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
                 $this->app->system->variables->systemMessagesWrite('danger', $message);
-                $this->app->components->general->ajax_output_system_messages_onscreen();
+                $this->app->system->general->ajax_output_system_messages_onscreen();
             }
 
             return false;
@@ -178,7 +178,7 @@ class Email extends System {
                 $message = $record.'<br>'.$RfcCompliance_exception->getMessage();
                 //$this->app->system->variables->systemMessagesWrite('danger', $message);
                 $this->app->system->variables->systemMessagesWrite('danger', $message);
-                $this->app->components->general->ajax_output_system_messages_onscreen();
+                $this->app->system->general->ajax_output_system_messages_onscreen();
 
             }
 
@@ -245,7 +245,7 @@ class Email extends System {
                 if (!$silent) {
                     $message = $record;
                     $this->app->system->variables->systemMessagesWrite('danger', $message);
-                    $this->app->components->general->ajax_output_system_messages_onscreen();
+                    $this->app->system->general->ajax_output_system_messages_onscreen();
                 }
 
             } else {
@@ -261,7 +261,7 @@ class Email extends System {
                 if (!$silent) {
                     $message = $record;
                     $this->app->system->variables->systemMessagesWrite('success', $message);
-                    $this->app->components->general->ajax_output_system_messages_onscreen();
+                    $this->app->system->general->ajax_output_system_messages_onscreen();
                 }
 
                 // Update last active record (will not error if no invoice_id sent )
@@ -292,7 +292,7 @@ class Email extends System {
                 $message = $record.'<br>'.$matches[0];
                 //$this->app->system->variables->systemMessagesWrite('danger', $message);            
                 $this->app->system->variables->systemMessagesWrite('danger', $message);
-                $this->app->components->general->ajax_output_system_messages_onscreen();
+                $this->app->system->general->ajax_output_system_messages_onscreen();
             }
 
         }

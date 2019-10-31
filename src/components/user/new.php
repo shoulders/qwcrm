@@ -44,11 +44,11 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         } else {    
             
             // Insert user record (and return the new ID)
-            \CMSApplication::$VAR['user_id'] = $this->app->components->user->insert_user(\CMSApplication::$VAR['qform']);
+            $user_id = $this->app->components->user->insert_user(\CMSApplication::$VAR['qform']);
             
             // Redirect to the new user's details page
             $this->app->system->variables->systemMessagesWrite('success', _gettext("New user has been created."));
-            $this->app->system->general->force_page('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
+            $this->app->system->general->force_page('user', 'details&user_id='.$user_id);
             
         }
 

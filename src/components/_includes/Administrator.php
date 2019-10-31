@@ -41,7 +41,7 @@ class Administrator extends Components {
     public function insert_qwcrm_config_setting($key, $value) {
 
         // Add the setting into the Registry
-        $this->app->system->config->set($key, $value);
+        $this->app->config->set($key, $value);
 
         // Get a fresh copy of the current settings as an array        
         $qwcrm_config = $this->get_qwcrm_config_settings();  
@@ -82,7 +82,7 @@ class Administrator extends Components {
             } 
 
             // Use the config settings in the live Registry 
-            if($registry_object = $this->app->system->config->toObject()) {
+            if($registry_object = $this->app->config->toObject()) {
                 return get_object_vars($registry_object);
             }
 
@@ -101,8 +101,8 @@ class Administrator extends Components {
 
         $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
 
-        if(!$rs = $this->db->execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
+        if(!$rs = $this->app->db->execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
         }
 
         return $rs->GetArray(); 
@@ -118,7 +118,7 @@ class Administrator extends Components {
     public function update_qwcrm_config_setting($key, $value) {
 
         // Update a setting into the Registry
-        $this->app->system->config->set($key, $value);
+        $this->app->config->set($key, $value);
 
         // Get a fresh copy of the current settings as an array        
         $qwcrm_config = $this->get_qwcrm_config_settings();
@@ -165,19 +165,19 @@ class Administrator extends Components {
             $page_permission['Administrator'] = '1';
 
             $sql = "UPDATE `".PRFX."user_acl_page` SET
-                    `Administrator` =". $this->db->qstr( $page_permission['Administrator']    ).",
-                    `Manager`       =". $this->db->qstr( $page_permission['Manager']          ).",
-                    `Supervisor`    =". $this->db->qstr( $page_permission['Supervisor']       ).",
-                    `Technician`    =". $this->db->qstr( $page_permission['Technician']       ).",
-                    `Clerical`      =". $this->db->qstr( $page_permission['Clerical']         ).",
-                    `Counter`       =". $this->db->qstr( $page_permission['Counter']          ).",
-                    `Client`        =". $this->db->qstr( $page_permission['Client']           ).",
-                    `Guest`         =". $this->db->qstr( $page_permission['Guest']            ).",
-                    `Public`        =". $this->db->qstr( $page_permission['Public']           )."
-                    WHERE `page`    =". $this->db->qstr( $page_name                           ).";";
+                    `Administrator` =". $this->app->db->qstr( $page_permission['Administrator']    ).",
+                    `Manager`       =". $this->app->db->qstr( $page_permission['Manager']          ).",
+                    `Supervisor`    =". $this->app->db->qstr( $page_permission['Supervisor']       ).",
+                    `Technician`    =". $this->app->db->qstr( $page_permission['Technician']       ).",
+                    `Clerical`      =". $this->app->db->qstr( $page_permission['Clerical']         ).",
+                    `Counter`       =". $this->app->db->qstr( $page_permission['Counter']          ).",
+                    `Client`        =". $this->app->db->qstr( $page_permission['Client']           ).",
+                    `Guest`         =". $this->app->db->qstr( $page_permission['Guest']            ).",
+                    `Public`        =". $this->app->db->qstr( $page_permission['Public']           )."
+                    WHERE `page`    =". $this->app->db->qstr( $page_name                           ).";";
 
-            if(!$rs = $this->db->execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
+            if(!$rs = $this->app->db->execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
             }                 
 
         }
@@ -212,19 +212,19 @@ class Administrator extends Components {
         foreach($mandatory_permissions as $page_name => $page_permission) {
 
             $sql = "UPDATE `".PRFX."user_acl_page` SET
-                    `Administrator` =". $this->db->qstr( $page_permission['Administrator']  ).",
-                    `Manager`       =". $this->db->qstr( $page_permission['Manager']        ).",
-                    `Supervisor`    =". $this->db->qstr( $page_permission['Supervisor']     ).",
-                    `Technician`    =". $this->db->qstr( $page_permission['Technician']     ).",
-                    `Clerical`      =". $this->db->qstr( $page_permission['Clerical']       ).",
-                    `Counter`       =". $this->db->qstr( $page_permission['Counter']        ).",
-                    `Client`        =". $this->db->qstr( $page_permission['Client']         ).",
-                    `Guest`         =". $this->db->qstr( $page_permission['Guest']          ).",
-                    `Public`        =". $this->db->qstr( $page_permission['Public']         )."
-                    WHERE `page`    =". $this->db->qstr( $page_name                         ).";";
+                    `Administrator` =". $this->app->db->qstr( $page_permission['Administrator']  ).",
+                    `Manager`       =". $this->app->db->qstr( $page_permission['Manager']        ).",
+                    `Supervisor`    =". $this->app->db->qstr( $page_permission['Supervisor']     ).",
+                    `Technician`    =". $this->app->db->qstr( $page_permission['Technician']     ).",
+                    `Clerical`      =". $this->app->db->qstr( $page_permission['Clerical']       ).",
+                    `Counter`       =". $this->app->db->qstr( $page_permission['Counter']        ).",
+                    `Client`        =". $this->app->db->qstr( $page_permission['Client']         ).",
+                    `Guest`         =". $this->app->db->qstr( $page_permission['Guest']          ).",
+                    `Public`        =". $this->app->db->qstr( $page_permission['Public']         )."
+                    WHERE `page`    =". $this->app->db->qstr( $page_name                         ).";";
 
-             if(!$rs = $this->db->execute($sql)) {
-                 $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
+             if(!$rs = $this->app->db->execute($sql)) {
+                 $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
             }               
 
         }
@@ -276,7 +276,7 @@ class Administrator extends Components {
     public function delete_qwcrm_config_setting($key) {
 
         // Remove the setting from the Registry
-        $this->app->system->config->remove($key);
+        $this->app->config->remove($key);
 
         // Get a fresh copy of the current settings as an array        
         $qwcrm_config = $this->get_qwcrm_config_settings();
@@ -352,7 +352,7 @@ class Administrator extends Components {
         // If no response return with error message
         if(!$curl_response || $curl_error) {         
             $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
-            $this->smarty->assign('update_response', 'no_response');
+            $this->app->smarty->assign('update_response', 'no_response');
             return;        
         }
 
@@ -362,7 +362,7 @@ class Administrator extends Components {
         // Verify there is a real response and flag error if not
         if(!$update_response['name']) {
             $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
-            $this->smarty->assign('update_response', 'no_response');
+            $this->app->smarty->assign('update_response', 'no_response');
             return;       
         }
 
@@ -371,17 +371,17 @@ class Administrator extends Components {
         if (version_compare(QWCRM_VERSION, $update_response['version'], '<')) {
 
             // An Update is available        
-            $this->smarty->assign('version_compare', '1');
+            $this->app->smarty->assign('version_compare', '1');
 
         } else {
 
             // No Updates available      
-            $this->smarty->assign('version_compare', '0');
+            $this->app->smarty->assign('version_compare', '0');
 
         }
 
         // Assign Variables    
-        $this->smarty->assign('update_response', $update_response);
+        $this->app->smarty->assign('update_response', $update_response);
 
         // Log activity        
         $this->app->system->general->write_record_to_activity_log(_gettext("QWcrm checked for updates."));
@@ -460,7 +460,7 @@ class Administrator extends Components {
         $current_config = $this->get_qwcrm_config_settings();
 
         // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error becasue the variable is not present yet
-        if(isset($new_config['google_server'])) { $new_config['google_server'] = $this->app->system->general->$this->app->components->general->process_inputted_url($new_config['google_server']); }
+        if(isset($new_config['google_server'])) { $new_config['google_server'] = $this->app->system->general->process_inputted_url($new_config['google_server']); }
 
         // Purge the database session table if we are changing to the database handler.
         if(!defined('QWCRM_SETUP')) {
@@ -470,8 +470,8 @@ class Administrator extends Components {
             {
                 $sql = "TRUNCATE ".PRFX."session";                    
 
-                if(!$rs = $this->db->Execute($sql)) {
-                    $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+                if(!$rs = $this->app->db->Execute($sql)) {
+                    $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
 
                 }
 
@@ -517,7 +517,7 @@ class Administrator extends Components {
 
         $user_details = $this->app->user->$this->app->components->user->get_user_details($this->app->user->login_user_id);
 
-        $this->app->system->email->send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$this->app->system->config->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
+        $this->app->system->email->send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$this->app->config->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
 
         // Log activity        
         $this->app->system->general->write_record_to_activity_log(_gettext("Test email initiated."));
@@ -533,8 +533,8 @@ class Administrator extends Components {
         // Remove current permissions
         $sql = "TRUNCATE ".PRFX."user_acl_page";
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
         } else {
 
@@ -653,8 +653,8 @@ class Administrator extends Components {
                     ('workorder:search', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                     ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
-            if(!$rs = $this->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
             }
 

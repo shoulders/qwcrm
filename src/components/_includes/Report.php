@@ -93,20 +93,20 @@ class Report extends Components {
 
         // Filter by Create Date
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND ".PRFX."client_records.opened_on >= ".$this->db->qstr($start_date)." AND ".PRFX."client_records.opened_on <= ".$this->db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."client_records.opened_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."client_records.opened_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
         }
 
         // Restrict by Status
         if($status) {        
-            $whereTheseRecords .= " AND ".PRFX."client_records.active= ".$this->db->qstr($status);            
+            $whereTheseRecords .= " AND ".PRFX."client_records.active= ".$this->app->db->qstr($status);            
         }
 
         $sql = "SELECT COUNT(*) AS count
                 FROM ".PRFX."client_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count the number of clients."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of clients."));
         } else {
 
            return $rs->fields['count']; 
@@ -178,20 +178,20 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         $sql = "SELECT COUNT(*) AS count
                 FROM ".PRFX."workorder_records
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count Work Orders for the defined status."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Work Orders for the defined status."));
 
         } else {      
 
@@ -211,11 +211,11 @@ class Report extends Components {
 
         if($start_date && $end_date && $date_type) {
             if($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$this->db->qstr($start_date)." AND ".PRFX."workorder_records.opened_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."workorder_records.opened_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif($date_type == 'closed_on') {       
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$this->db->qstr($start_date)." AND ".PRFX."workorder_records.closed_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."workorder_records.closed_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif($date_type == 'last_active') {       
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active >= ".$this->db->qstr($start_date)." AND ".PRFX."workorder_records.last_active <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active >= ".$this->app->db->qstr($start_date)." AND ".PRFX."workorder_records.last_active <= ".$this->app->db->qstr($end_date.' 23:59:59');
             }
         }
 
@@ -239,7 +239,7 @@ class Report extends Components {
             } elseif($status == 'closed') {            
                 $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on != '0000-00-00 00:00:00'"; 
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->db->qstr($status);            
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->app->db->qstr($status);            
             }
         }
 
@@ -260,15 +260,15 @@ class Report extends Components {
 
         // Filter by workorder_id
         if($workorder_id) {
-            $whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->db->qstr($workorder_id);
+            $whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->app->db->qstr($workorder_id);
         }    
 
         $sql = "SELECT COUNT(*) AS count
                 FROM ".PRFX."schedule_records
                 ".$whereTheseRecords;   
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
 
         } else {      
 
@@ -413,7 +413,7 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Restrict by Status
@@ -421,12 +421,12 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Execute the SQL
@@ -434,8 +434,8 @@ class Report extends Components {
                 FROM ".PRFX."invoice_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count the number of Invoices."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of Invoices."));
         } else {
 
            return $rs->fields['count']; 
@@ -458,7 +458,7 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Restrict by Status
@@ -466,12 +466,12 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Execute the SQL
@@ -479,8 +479,8 @@ class Report extends Components {
                 FROM ".PRFX."invoice_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not sum the invoice values."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not sum the invoice values."));
         } else {
 
            return $rs->fields['sum']; 
@@ -499,15 +499,15 @@ class Report extends Components {
 
         if($start_date && $end_date && $date_type) {
             if ($date_type == 'date') {       
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$this->db->qstr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$this->app->db->qstr($end_date);
             } elseif ($date_type == 'due_date') {       
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$this->db->qstr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qstr($end_date);
             } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$this->db->qstr($start_date)." AND ".PRFX."invoice_records.opened_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."invoice_records.opened_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {       
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$this->db->qstr($start_date)." AND ".PRFX."invoice_records.closed_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."invoice_records.closed_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {       
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$this->db->qstr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$this->app->db->qstr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$this->app->db->qstr($end_date.' 23:59:59');
             }
         }
 
@@ -533,7 +533,7 @@ class Report extends Components {
             } elseif($status == 'discounted') {            
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";                    
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->db->qstr($status);            
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qstr($status);            
             }
         }
 
@@ -557,12 +557,12 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."invoice_labour.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."invoice_labour.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }
 
         // Restrict by Status
@@ -570,12 +570,12 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         $sql = "SELECT COUNT(*) AS count
@@ -583,8 +583,8 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_labour.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected labour items."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected labour items."));
         } else {
 
             return $rs->fields['count']; 
@@ -610,12 +610,12 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."invoice_labour.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."invoice_labour.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }    
 
         // Restrict by Status
@@ -623,17 +623,17 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.invoice_id=".$this->db->qstr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_labour.invoice_id=".$this->app->db->qstr($invoice_id);
         }
 
         $sql = "SELECT SUM($value_name) AS sum
@@ -641,8 +641,8 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_labour.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
         } else {
 
             return $rs->fields['sum'];
@@ -667,12 +667,12 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."invoice_parts.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."invoice_parts.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }    
 
         // Restrict by Status
@@ -680,17 +680,17 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.invoice_id=".$this->db->qstr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_parts.invoice_id=".$this->app->db->qstr($invoice_id);
         }
 
         $sql = "SELECT COUNT(*) AS count
@@ -698,8 +698,8 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_parts.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected parts items."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected parts items."));
         } else {
 
             return $rs->fields['count']; 
@@ -725,12 +725,12 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."invoice_parts.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."invoice_parts.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }    
 
         // Restrict by Status
@@ -738,12 +738,12 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         $sql = "SELECT SUM($value_name) AS sum
@@ -751,8 +751,8 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_parts.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
         } else {
 
             return $rs->fields['sum'];
@@ -851,17 +851,17 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }
 
         // Filter by Item Type
         if($type) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.type=".$this->db->qstr($type);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.type=".$this->app->db->qstr($type);
         }
 
         // Restrict by Status
@@ -869,17 +869,17 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Claimed status
         if($client_id && $status != 'claimed') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->db->qstr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->app->db->qstr($invoice_id);
         }
 
         // Execute the SQL
@@ -888,8 +888,8 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count Vouchers."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Vouchers."));
 
         } else {      
 
@@ -913,17 +913,17 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }
 
         // Filter by Item Type
         if($type) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.type=".$this->db->qstr($type);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.type=".$this->app->db->qstr($type);
         }
 
         // Restrict by Status
@@ -931,17 +931,17 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.voucher_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.voucher_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id && $status != 'claimed') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->db->qstr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->app->db->qstr($invoice_id);
         }
 
         $sql = "SELECT SUM(".PRFX."voucher_records.$value_name) AS sum
@@ -949,8 +949,8 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Vouchers."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Vouchers."));
         } else {
 
             return $rs->fields['sum'];
@@ -977,9 +977,9 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on != '0000-00-00 00:00:00'";
             } elseif($status == 'claimed' && $client_id) {
                 $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id = ".$this->db->qstr($client_id);
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id = ".$this->app->db->qstr($client_id);
             } else {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.status = ".$this->db->qstr($status);                       
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.status = ".$this->app->db->qstr($status);                       
             }
 
         }
@@ -999,17 +999,17 @@ class Report extends Components {
         if($start_date && $end_date) {
 
             if($date_type == 'date') {       
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$this->db->qstr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$this->app->db->qstr($end_date);
             } elseif ($date_type == 'due_date') {       
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$this->db->qstr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qstr($end_date);
             } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$this->db->qstr($start_date)." AND ".PRFX."voucher_records.opened_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."voucher_records.opened_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type== 'expiry') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$this->db->qstr($start_date)." AND ".PRFX."voucher_records.expiry_date <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."voucher_records.expiry_date <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'redeemed_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$this->db->qstr($start_date)." AND ".PRFX."voucher_records.redeemed_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."voucher_records.redeemed_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$this->db->qstr($start_date)." AND ".PRFX."voucher_records.closed_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."voucher_records.closed_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             }
 
         }
@@ -1082,17 +1082,17 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }
 
         // Filter by Item Type
         if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$this->db->qstr($item_type);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$this->app->db->qstr($item_type);
         }
 
         // Restrict by Status
@@ -1100,12 +1100,12 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Execute the SQL
@@ -1113,8 +1113,8 @@ class Report extends Components {
                 FROM ".PRFX."refund_records
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
 
         } else {      
 
@@ -1138,17 +1138,17 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }
 
         // Filter by Item Type
         if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$this->db->qstr($item_type);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$this->app->db->qstr($item_type);
         }
 
         // Restrict by Status
@@ -1156,20 +1156,20 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         $sql = "SELECT SUM(".PRFX."refund_records.$value_name) AS sum
                 FROM ".PRFX."refund_records
                 ".$whereTheseRecords;
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Refunds."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Refunds."));
         } else {
 
             return $rs->fields['sum'];
@@ -1188,13 +1188,13 @@ class Report extends Components {
 
         if($start_date && $end_date && $date_type) {
             if ($date_type == 'date') {       
-                $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$this->db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$this->db->qstr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$this->app->db->qstr($end_date);
             } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."refund_records.opened_on >= ".$this->db->qstr($start_date)." AND ".PRFX."refund_records.opened_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."refund_records.opened_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."refund_records.opened_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {       
-                $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on >= ".$this->db->qstr($start_date)." AND ".PRFX."refund_records.closed_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."refund_records.closed_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {       
-                $whereTheseRecords .= " AND ".PRFX."refund_records.last_active >= ".$this->db->qstr($start_date)." AND ".PRFX."refund_records.last_active <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."refund_records.last_active >= ".$this->app->db->qstr($start_date)." AND ".PRFX."refund_records.last_active <= ".$this->app->db->qstr($end_date.' 23:59:59');
             }
         }
 
@@ -1218,7 +1218,7 @@ class Report extends Components {
             } elseif($status == 'closed') {            
                 $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on != '0000-00-00 00:00:00'"; 
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->db->qstr($status);            
+                $whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qstr($status);            
             }
         }
 
@@ -1283,17 +1283,17 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }    
 
         // Filter by Item Type
         if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$this->db->qstr($item_type);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$this->app->db->qstr($item_type);
         }
 
         // Restrict by Status
@@ -1301,12 +1301,12 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by invoice_id
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.invoice_id=".$this->db->qstr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.invoice_id=".$this->app->db->qstr($invoice_id);
         }
 
         // Execute the SQL
@@ -1314,8 +1314,8 @@ class Report extends Components {
                 FROM ".PRFX."expense_records
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count Expenses."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Expenses."));
 
         } else {      
 
@@ -1339,17 +1339,17 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }      
 
         // Filter by Item Type
         if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$this->db->qstr($item_type);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$this->app->db->qstr($item_type);
         }
 
         // Restrict by Status
@@ -1357,15 +1357,15 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         $sql = "SELECT SUM(".PRFX."expense_records.$value_name) AS sum
                 FROM ".PRFX."expense_records
                 ".$whereTheseRecords; 
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
         } else {
 
             return $rs->fields['sum'];
@@ -1385,13 +1385,13 @@ class Report extends Components {
         if($start_date && $end_date && $date_type) {
 
             if ($date_type == 'date') {       
-                $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$this->db->qstr($start_date)." AND ".PRFX."expense_records.date <= ".$this->db->qstr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."expense_records.date <= ".$this->app->db->qstr($end_date);
             } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$this->db->qstr($start_date)." AND ".PRFX."expense_records.opened_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."expense_records.opened_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {       
-                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$this->db->qstr($start_date)." AND ".PRFX."expense_records.closed_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."expense_records.closed_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {       
-                $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$this->db->qstr($start_date)." AND ".PRFX."expense_records.last_active <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$this->app->db->qstr($start_date)." AND ".PRFX."expense_records.last_active <= ".$this->app->db->qstr($end_date.' 23:59:59');
             }
         }
 
@@ -1415,7 +1415,7 @@ class Report extends Components {
             } elseif($status == 'closed') {            
                 $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on != '0000-00-00 00:00:00'"; 
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->db->qstr($status);            
+                $whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->app->db->qstr($status);            
             }
         }
 
@@ -1487,17 +1487,17 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }
 
         // Filter by Item Type
         if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$this->db->qstr($item_type);
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$this->app->db->qstr($item_type);
         }
 
         // Restrict by Status
@@ -1505,7 +1505,7 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Execute the SQL
@@ -1513,8 +1513,8 @@ class Report extends Components {
                 FROM ".PRFX."otherincome_records
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count other incomes."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count other incomes."));
 
         } else {      
 
@@ -1538,17 +1538,17 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.vat_tax_code=".$this->db->qstr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.vat_tax_code=".$this->app->db->qstr($vat_tax_code);
         }
 
         // Filter by Item Type
         if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$this->db->qstr($item_type);
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$this->app->db->qstr($item_type);
         }
 
         // Restrict by Status
@@ -1556,15 +1556,15 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         $sql = "SELECT SUM(".PRFX."otherincome_records.$value_name) AS sum
                 FROM ".PRFX."otherincome_records
                 ".$whereTheseRecords; 
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected other incomes."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected other incomes."));
         } else {
 
             return $rs->fields['sum'];
@@ -1583,13 +1583,13 @@ class Report extends Components {
 
         if($start_date && $end_date && $date_type) {
             if ($date_type == 'date') {       
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$this->db->qstr($start_date)." AND ".PRFX."otherincome_records.date <= ".$this->db->qstr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."otherincome_records.date <= ".$this->app->db->qstr($end_date);
             } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$this->db->qstr($start_date)." AND ".PRFX."otherincome_records.opened_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."otherincome_records.opened_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {       
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$this->db->qstr($start_date)." AND ".PRFX."otherincome_records.closed_on <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$this->app->db->qstr($start_date)." AND ".PRFX."otherincome_records.closed_on <= ".$this->app->db->qstr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {       
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$this->db->qstr($start_date)." AND ".PRFX."otherincome_records.last_active <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$this->app->db->qstr($start_date)." AND ".PRFX."otherincome_records.last_active <= ".$this->app->db->qstr($end_date.' 23:59:59');
             }
         }
 
@@ -1613,7 +1613,7 @@ class Report extends Components {
             } elseif($status == 'closed') {            
                 $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on != '0000-00-00 00:00:00'"; 
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->db->qstr($status);            
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qstr($status);            
             }
         }
 
@@ -1695,12 +1695,12 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Restrict by Status
         if($status) {   
-            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->db->qstr($status);  
+            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qstr($status);  
         }
 
         // Restrict by Type
@@ -1708,37 +1708,37 @@ class Report extends Components {
 
         // Filter by Method
         if($method) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$this->db->qstr($method);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$this->app->db->qstr($method);
         }
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->db->qstr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qstr($invoice_id);
         }
 
         // Filter by Refund
         if($refund_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->db->qstr($refund_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->app->db->qstr($refund_id);
         }
 
         // Filter by Expense
         if($expense_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->db->qstr($expense_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qstr($expense_id);
         }
 
         // Filter by Otherincome
         if($otherincome_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->db->qstr($otherincome_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qstr($otherincome_id);
         }
 
         // Execute the SQL
@@ -1746,8 +1746,8 @@ class Report extends Components {
                 FROM ".PRFX."payment_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count the number of payments."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of payments."));
         } else {
 
            return $rs->fields['count']; 
@@ -1770,12 +1770,12 @@ class Report extends Components {
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Restrict by Status
         if($status) {   
-            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->db->qstr($status);  
+            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qstr($status);  
         }
 
         // Restrict by Type
@@ -1783,37 +1783,37 @@ class Report extends Components {
 
         // Filter by Method
         if($method) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$this->db->qstr($method);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$this->app->db->qstr($method);
         }
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->db->qstr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qstr($invoice_id);
         }
 
         // Filter by Refund
         if($refund_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->db->qstr($refund_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->app->db->qstr($refund_id);
         }
 
         // Filter by Expense
         if($expense_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->db->qstr($expense_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qstr($expense_id);
         }
 
         // Filter by Otherincome
         if($otherincome_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->db->qstr($otherincome_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qstr($otherincome_id);
         }
 
         // Execute the SQL
@@ -1821,8 +1821,8 @@ class Report extends Components {
                 FROM ".PRFX."payment_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not sum the payment values."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not sum the payment values."));
         } else {
 
            return $rs->fields['sum']; 
@@ -1841,9 +1841,9 @@ class Report extends Components {
 
         if($start_date && $end_date && $date_type) {
             if ($date_type == 'date') {       
-                $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$this->db->qstr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$this->app->db->qstr($end_date);
             } elseif ($date_type == 'last_active') {       
-                $whereTheseRecords .= " AND ".PRFX."payment_records.last_active >= ".$this->db->qstr($start_date)." AND ".PRFX."payment_records.last_active <= ".$this->db->qstr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."payment_records.last_active >= ".$this->app->db->qstr($start_date)." AND ".PRFX."payment_records.last_active <= ".$this->app->db->qstr($end_date.' 23:59:59');
             }
         }
 
@@ -1872,7 +1872,7 @@ class Report extends Components {
 
             // Return records for the given type
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->db->qstr($type);            
+                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qstr($type);            
             }
 
         }
@@ -1908,17 +1908,17 @@ class Report extends Components {
 
         // Filter by Date
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$this->db->qstr($end_date);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->app->db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$this->app->db->qstr($end_date);
         }
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.tax_system=".$this->db->qstr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.tax_system=".$this->app->db->qstr($tax_system);
         }
 
         // Restrict by Status
         if($status) {   
-            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->db->qstr($status);  
+            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qstr($status);  
         }
 
         // Restrict by Type
@@ -1926,37 +1926,37 @@ class Report extends Components {
 
         // Filter by Method
         if($method) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$this->db->qstr($method);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$this->app->db->qstr($method);
         }
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->db->qstr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qstr($employee_id);
         }
 
         // Filter by Client
         if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qstr($client_id);
         }
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->db->qstr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qstr($invoice_id);
         }
 
         // Filter by Refund
         if($refund_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->db->qstr($refund_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->app->db->qstr($refund_id);
         }
 
         // Filter by Expense
         if($expense_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->db->qstr($expense_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qstr($expense_id);
         }
 
         // Filter by Otherincome
         if($otherincome_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->db->qstr($otherincome_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qstr($otherincome_id);
         }
 
         // Execute the SQL
@@ -1964,9 +1964,9 @@ class Report extends Components {
                 FROM ".PRFX."payment_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
 
         } else {
 
@@ -2075,7 +2075,7 @@ class Report extends Components {
 
         // Get the correct record details to process
         if($record_type == 'invoice') {$record_details = $this->app->components->invoice->get_invoice_details($payment_details['invoice_id']);}
-        if($record_type == 'refund') {$record_details = $this->app->components->refund->$this->app->components->refund->get_refund_details($payment_details['refund_id']);}
+        if($record_type == 'refund') {$record_details = $this->app->components->refund->get_refund_details($payment_details['refund_id']);}
         if($record_type == 'expense') {$record_details = $this->app->components->expense->get_expense_details($payment_details['expense_id']);}
         if($record_type == 'otherincome') {$record_details = $this->app->components->otherincome->get_otherincome_details($payment_details['otherincome_id']);}    
 
@@ -2110,8 +2110,8 @@ class Report extends Components {
         $sql = "SELECT COUNT(*) AS count
                 FROM ".PRFX."supplier_records";                           
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not count the number of suppliers."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of suppliers."));
         } else {
 
            return $rs->fields['count']; 

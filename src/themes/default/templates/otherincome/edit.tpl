@@ -177,6 +177,7 @@
                                                         </tr>                                                        
                                                         <tr>
                                                             <td colspan="2">
+                                                                <input type="hidden" name="qform[otherincome_id]" value="{$otherincome_details.otherincome_id}">
                                                                 <button type="submit" name="submit" value="update">{t}Update{/t}</button>
                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=otherincome&page_tpl=details&otherincome_id={$otherincome_id}';">{t}Cancel{/t}</button>
                                                             </td>                                                            

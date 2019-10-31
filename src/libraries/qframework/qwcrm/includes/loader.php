@@ -74,13 +74,10 @@ require(VENDOR_DIR.'autoload.php');
 require QFRAMEWORK_DIR . 'qwcrm/CMSApplication.php';  
 
 // Load the 'Section' wrapper classes (files only)
-\CMSApplication::classFilesLoad('section', QFRAMEWORK_DIR.'qwcrm/Sections/'); 
+\CMSApplication::classFilesLoad(QFRAMEWORK_DIR.'qwcrm/Sections/', 'section'); 
 
 // Load the qframework 'system' classes (files only)
-\CMSApplication::classFilesLoad('system', QFRAMEWORK_DIR.'qwcrm/System/');
+\CMSApplication::classFilesLoad(QFRAMEWORK_DIR.'qwcrm/System/', 'system');
 
 // Load the qframework 'components' classes (files only)
-\CMSApplication::classFilesLoad('components', CINCLUDES_DIR);
-
-// Main QWcrm Framework class
-require QFRAMEWORK_DIR . 'qwcrm/CMSApplication.php';  
+\CMSApplication::classFilesLoad(CINCLUDES_DIR, 'components');

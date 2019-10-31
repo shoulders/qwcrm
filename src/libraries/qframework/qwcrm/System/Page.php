@@ -122,7 +122,7 @@ class Page extends System {
         }    
 
         // Fetch the Debug Block
-        if(!defined('QWCRM_SETUP') && $config->get('qwcrm_debug')){
+        if(!defined('QWCRM_SETUP') && $this->app->config->get('qwcrm_debug')){
             require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');
             $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl'); /////////////////// This TPL needs sorting  
             $pagePayload .= "\r\n</body>\r\n</html>";
@@ -154,7 +154,7 @@ class Page extends System {
         }
 
         // Convert to SEF (if enabled and NOT running setup)
-        if (!defined('QWCRM_SETUP') && $config->get('sef')) { 
+        if (!defined('QWCRM_SETUP') && $this->app->config->get('sef')) { 
             $this->page_links_to_sef($pagePayload);        
         }    
 

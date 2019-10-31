@@ -23,67 +23,7 @@ class General extends System {
 
     /* Get Functions */
 
-    ##########################
-    #  Get Company details   #
-    ##########################
 
-    /*
-     * This combined function allows you to pull any of the company information individually
-     * or return them all as an array
-     * supply the required field name for a single item or all for all items as an array.
-     */
-
-    function get_company_details($item = null) {
-
-        // This is a fallback to make diagnosing critical database failure - This is the first function loaded for $date_format
-        if (!$db->isConnected()) {
-            die('
-                    <div style="color: red;">'.
-                    _gettext("Something went wrong with your QWcrm database connection and it is not connected.").'<br><br>'.
-                    _gettext("Check to see if your Prefix is correct, if not, you might have a").' <strong>configuration.php</strong> '._gettext("file that should not be present or is corrupt.").'<br><br>'.
-                    _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong><br><br>'.
-                    '<strong>'._gettext("Database Error Message").':</strong> '.$db->ErrorMsg().
-                    '</div>'
-                );
-        }
-
-        $sql = "SELECT * FROM ".PRFX."company_record";
-
-        if(!$rs = $db->execute($sql)) {          
-
-            // Part of the fallback
-            if($item == 'date_format') {            
-
-                // This is first database Query that will fail if there are issues with the database connection          
-                die('
-                        <div style="color: red;">'.
-                        _gettext("Something went wrong executing an SQL query.").'<br><br>'.
-                        _gettext("Check to see if your Prefix is correct, if not, you might have a").' <strong>configuration.php</strong> '._gettext("file that should not be present or is corrupt.").'<br><br>'.
-                        _gettext("Error occured at").' <strong>function '.__FUNCTION__.'()</strong> '._gettext("when trying to get the variable").' <strong>date_format</strong>'.'<br><br>'.
-                        '<strong>'._gettext("Database Error Message").':</strong> '.$db->ErrorMsg().
-                        '</div>'
-                   );
-
-                }        
-
-            // Any other lookup error
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
-
-        } else {
-
-            if($item === null) {
-
-                return $rs->GetRowAssoc();            
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
-
-    }
 
     /* Update Functions */
 
@@ -103,7 +43,7 @@ class General extends System {
     function force_page($component, $page_tpl = null, $variables = null, $method = 'auto', $url_sef = 'auto', $url_protocol = 'auto') {
 
         // Preserve the Message Store (if there are any messages) for the next page load
-        if($forcePageSystemMessageStore = systemMessagesReturnStore(false, 'array')) {
+        if($forcePageSystemMessageStore = $this->app->system->variables->systemMessagesReturnStore(false, 'array')) {
             $this->app->system->variables->postEmulationWrite('forcePageSystemMessageStore', $forcePageSystemMessageStore);
         }
 
@@ -224,7 +164,7 @@ class General extends System {
                 if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
 
                 // Perform redirect
-                perform_redirect($protocol_domain_segment.$url);
+                $this->perform_redirect($protocol_domain_segment.$url);
 
             // Page Name and Variables (QWcrm Style Redirect)     
             } else {
@@ -272,7 +212,7 @@ class General extends System {
 
                 // Log errors to log if enabled
                 if($this->app->config->get('qwcrm_error_log')) {    
-                    $this->app->components->general->write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
+                    $this->app->system->general->write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
                 }
 
                 // Output the message and stop processing
@@ -299,7 +239,7 @@ class General extends System {
     ############################################
 
     // Example to use
-    // new - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
+    // new - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
 
     function force_error_page($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
 
@@ -572,7 +512,7 @@ class General extends System {
             \CMSApplication::$VAR['theme']     = 'menu_off';        
 
             /* This allows the use of the database ASAP in the setup process
-            if (defined('PRFX') && \Factory::getDbo()->isConnected() && $this->app->components->general->get_qwcrm_database_version_number()) {
+            if (defined('PRFX') && \Factory::getDbo()->isConnected() && $this->app->system->general->get_qwcrm_database_version_number()) {
                 define('QWCRM_SETUP', 'database_allowed'); 
             } else {
                 define('QWCRM_SETUP', 'install'); 
@@ -597,7 +537,7 @@ class General extends System {
             }               
 
             // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
-            $this->app->components->general->compare_qwcrm_filesystem_and_database(CMSApplication::$VAR);    
+            $this->app->system->general->compare_qwcrm_filesystem_and_database(CMSApplication::$VAR);    
 
         // Fallback option for those situations I have not thought about
         } else {
@@ -622,7 +562,7 @@ class General extends System {
     function compare_qwcrm_filesystem_and_database() {
 
         // Get the QWcrm database version number (assumes database connection is good)
-        $qwcrm_database_version = $this->app->components->general->get_qwcrm_database_version_number();
+        $qwcrm_database_version = $this->app->system->general->get_qwcrm_database_version_number();
 
         // File System and Database versions match(not needed handles in opening 'if' statement, left for reference)
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {
@@ -685,7 +625,7 @@ class General extends System {
 
         $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
 
-        if(!$rs = $this->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
 
            return false;
 
@@ -739,10 +679,10 @@ class General extends System {
     function get_mysql_version() {
 
         // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
-        //$db->ServerInfo();
+        //$this->app->db->ServerInfo();
 
         // Extract and return the MySQL version - print_r() this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
-        preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $this->db->_connectionID->server_info, $matches);
+        preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $this->app->db->_connectionID->server_info, $matches);
         return $matches[1];    
 
     }
@@ -913,7 +853,7 @@ class General extends System {
 
     function write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
 
-        // it is not - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
+        // it is not - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
 
         // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
         if(!$this->app->user->login_username) {
@@ -947,8 +887,8 @@ class General extends System {
 
         $sql = "SELECT * FROM ".PRFX."company_date_formats";
 
-        if(!$rs = $db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
         } else {
 
             return $rs->GetArray();
@@ -1282,7 +1222,7 @@ class General extends System {
 
     function ajax_output_system_messages_onscreen() {
 
-        echo "<script>processSystemMessages('".escape_for_javascript(systemMessagesReturnStore())."');</script>";
+        echo "<script>processSystemMessages('".escape_for_javascript($this->app->system->variables->systemMessagesReturnStore())."');</script>";
 
     }
 

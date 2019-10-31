@@ -25,5 +25,5 @@ $this->app->smarty->assign('workorder_details',    $workorder_details           
 $this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->display_schedules('schedule_id', 'DESC', false, null, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
 $this->app->smarty->assign('workorder_notes',      $this->app->components->workorder->display_workorder_notes(\CMSApplication::$VAR['workorder_id'])                                            ); 
 $this->app->smarty->assign('workorder_history',    $this->app->components->workorder->display_workorder_history(\CMSApplication::$VAR['workorder_id'])                                          );
-$this->app->smarty->assign('selected_date',        $this->app->components->general->timestamp_to_calendar_format( time() )                                                   );
+$this->app->smarty->assign('selected_date',        $this->app->system->general->timestamp_to_calendar_format( time() )                                                   );
 $this->app->smarty->assign('GoogleMapString',      $this->app->components->client->build_googlemap_directions_string($workorder_details['client_id'], $user->login_user_id) );

@@ -30,11 +30,67 @@ class Company extends Components {
 
     /** Get Functions **/
 
-    ##########################################
-    #      get company details               #
-    ##########################################
+    ##########################
+    #  Get Company details   #
+    ##########################
 
-    // This is in the main general.php file
+    /*
+     * This combined function allows you to pull any of the company information individually
+     * or return them all as an array
+     * supply the required field name for a single item or all for all items as an array.
+     */
+
+    public function get_company_details($item = null) {
+
+        // This is a fallback to make diagnosing critical database failure - This is the first function loaded for $date_format
+        if (!$this->app->db->isConnected()) {
+            die('
+                    <div style="color: red;">'.
+                    _gettext("Something went wrong with your QWcrm database connection and it is not connected.").'<br><br>'.
+                    _gettext("Check to see if your Prefix is correct, if not, you might have a").' <strong>configuration.php</strong> '._gettext("file that should not be present or is corrupt.").'<br><br>'.
+                    _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong><br><br>'.
+                    '<strong>'._gettext("Database Error Message").':</strong> '.$this->app->db->ErrorMsg().
+                    '</div>'
+                );
+        }
+
+        $sql = "SELECT * FROM ".PRFX."company_record";
+
+        if(!$rs = $this->app->db->execute($sql)) {          
+
+            // Part of the fallback
+            if($item == 'date_format') {            
+
+                // This is first database Query that will fail if there are issues with the database connection          
+                die('
+                        <div style="color: red;">'.
+                        _gettext("Something went wrong executing an SQL query.").'<br><br>'.
+                        _gettext("Check to see if your Prefix is correct, if not, you might have a").' <strong>configuration.php</strong> '._gettext("file that should not be present or is corrupt.").'<br><br>'.
+                        _gettext("Error occured at").' <strong>function '.__FUNCTION__.'()</strong> '._gettext("when trying to get the variable").' <strong>date_format</strong>'.'<br><br>'.
+                        '<strong>'._gettext("Database Error Message").':</strong> '.$this->app->db->ErrorMsg().
+                        '</div>'
+                   );
+
+                }        
+
+            // Any other lookup error
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+
+        } else {
+
+            if($item === null) {
+
+                return $rs->GetRowAssoc();            
+
+            } else {
+
+                return $rs->fields[$item];   
+
+            } 
+
+        }
+
+    }
 
     #####################################
     #    Get company tax systems        #
@@ -44,8 +100,8 @@ class Company extends Components {
 
         $sql = "SELECT * FROM ".PRFX."company_tax_systems";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
         } else {
 
             return $rs->GetArray();
@@ -61,10 +117,10 @@ class Company extends Components {
     public function get_vat_rate($vat_tax_code) {
 
         $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
-                WHERE tax_key = ".$this->db->qstr($vat_tax_code);
+                WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
         } else {
 
             return $rs->fields['rate'];
@@ -86,21 +142,21 @@ class Company extends Components {
 
         // Restrict by hidden status
         if(!is_null($hidden_status)) {
-            $sql .= "\nAND hidden = ".$this->db->qstr($hidden_status);
+            $sql .= "\nAND hidden = ".$this->app->db->qstr($hidden_status);
         }
 
         // Restrict by editable status
         if(!is_null($editable_status)) {
-            $sql .= "\nAND editable = ".$this->db->qstr($editable_status);
+            $sql .= "\nAND editable = ".$this->app->db->qstr($editable_status);
         }
 
         // Restrict by tax code type
         if(!is_null($system_tax_code)) {
-            $sql .= "\nAND standard = ".$this->db->qstr($system_tax_code);
+            $sql .= "\nAND standard = ".$this->app->db->qstr($system_tax_code);
         }
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
         } else {
 
             return $rs->GetArray();
@@ -117,10 +173,10 @@ class Company extends Components {
 
         $sql = "SELECT enabled
                 FROM ".PRFX."company_vat_tax_codes
-                WHERE tax_key = ".$this->db->qstr($vat_tax_code);
+                WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
         } else {       
 
             return $rs->fields['enabled'];
@@ -154,7 +210,7 @@ class Company extends Components {
 
         // Convert Date to time stamp
         if($date) { 
-            $date_timestamp = $this->app->components->general->date_to_timestamp($date, $date_format);
+            $date_timestamp = $this->app->system->general->date_to_timestamp($date, $date_format);
         }
 
         // Smarty Time Format
@@ -220,8 +276,8 @@ class Company extends Components {
         $this->update_vat_rates($qform['vat_tax_codes']);
 
         // Prevent undefined variable errors
-        $qform['delete_logo'] = isset($qform['delete_logo']) ? $qform['delete_logo'] : null;    
-
+        $qform['delete_logo'] = isset($qform['delete_logo']) ? $qform['delete_logo'] : null;   
+        
         // Delete logo if selected and no new logo is presented
         if($qform['delete_logo'] && !$_FILES['logo']['name']) {
             $this->delete_logo();        
@@ -234,49 +290,49 @@ class Company extends Components {
         }
 
         $sql .= "UPDATE ".PRFX."company_record SET
-                company_name            =". $this->db->qstr( $qform['company_name']                     ).",";
+                company_name            =". $this->app->db->qstr( $qform['company_name']                     ).",";
 
         if($qform['delete_logo']) {
             $sql .="logo                =''                                                     ,";
         }
 
         if(!empty($_FILES['logo']['name'])) {
-            $sql .="logo                =". $this->db->qstr( $new_logo_filepath                       ).",";
+            $sql .="logo                =". $this->app->db->qstr( $new_logo_filepath                       ).",";
         }
 
-        $sql .="address                 =". $this->db->qstr( $qform['address']                          ).",
-                city                    =". $this->db->qstr( $qform['city']                             ).",
-                state                   =". $this->db->qstr( $qform['state']                            ).",
-                zip                     =". $this->db->qstr( $qform['zip']                              ).",
-                country                 =". $this->db->qstr( $qform['country']                          ).",
-                primary_phone           =". $this->db->qstr( $qform['primary_phone']                    ).",
-                mobile_phone            =". $this->db->qstr( $qform['mobile_phone']                     ).",
-                fax                     =". $this->db->qstr( $qform['fax']                              ).",
-                email                   =". $this->db->qstr( $qform['email']                            ).",    
-                website                 =". $this->db->qstr( $this->app->components->general->process_inputted_url($qform['website'])    ).",
-                company_number          =". $this->db->qstr( $qform['company_number']                   ).",                                        
-                tax_system              =". $this->db->qstr( $qform['tax_system']                       ).",
-                sales_tax_rate          =". $this->db->qstr( $qform['sales_tax_rate']                   ).",
-                vat_number              =". $this->db->qstr( $qform['vat_number']                       ).",
-                vat_flat_rate           =". $this->db->qstr( $qform['vat_flat_rate']                    ).",   
-                year_start              =". $this->db->qstr( $this->app->system->general->date_to_mysql_date($qform['year_start'])   ).",
-                year_end                =". $this->db->qstr( $this->app->system->general->date_to_mysql_date($qform['year_end'])     ).",
-                welcome_msg             =". $this->db->qstr( $qform['welcome_msg']                      ).",
-                currency_symbol         =". $this->db->qstr( htmlentities($qform['currency_symbol'])    ).",
-                currency_code           =". $this->db->qstr( $qform['currency_code']                    ).",
-                date_format             =". $this->db->qstr( $qform['date_format']                      ).",            
-                email_signature         =". $this->db->qstr( $qform['email_signature']                  ).",
-                email_signature_active  =". $this->db->qstr( $qform['email_signature_active']           ).",
-                email_msg_invoice       =". $this->db->qstr( $qform['email_msg_invoice']                ).",
-                email_msg_workorder     =". $this->db->qstr( $qform['email_msg_workorder']              );                          
+        $sql .="address                 =". $this->app->db->qstr( $qform['address']                          ).",
+                city                    =". $this->app->db->qstr( $qform['city']                             ).",
+                state                   =". $this->app->db->qstr( $qform['state']                            ).",
+                zip                     =". $this->app->db->qstr( $qform['zip']                              ).",
+                country                 =". $this->app->db->qstr( $qform['country']                          ).",
+                primary_phone           =". $this->app->db->qstr( $qform['primary_phone']                    ).",
+                mobile_phone            =". $this->app->db->qstr( $qform['mobile_phone']                     ).",
+                fax                     =". $this->app->db->qstr( $qform['fax']                              ).",
+                email                   =". $this->app->db->qstr( $qform['email']                            ).",    
+                website                 =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])    ).",
+                company_number          =". $this->app->db->qstr( $qform['company_number']                   ).",                                        
+                tax_system              =". $this->app->db->qstr( $qform['tax_system']                       ).",
+                sales_tax_rate          =". $this->app->db->qstr( $qform['sales_tax_rate']                   ).",
+                vat_number              =". $this->app->db->qstr( $qform['vat_number']                       ).",
+                vat_flat_rate           =". $this->app->db->qstr( $qform['vat_flat_rate']                    ).",   
+                year_start              =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['year_start'])   ).",
+                year_end                =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['year_end'])     ).",
+                welcome_msg             =". $this->app->db->qstr( $qform['welcome_msg']                      ).",
+                currency_symbol         =". $this->app->db->qstr( htmlentities($qform['currency_symbol'])    ).",
+                currency_code           =". $this->app->db->qstr( $qform['currency_code']                    ).",
+                date_format             =". $this->app->db->qstr( $qform['date_format']                      ).",            
+                email_signature         =". $this->app->db->qstr( $qform['email_signature']                  ).",
+                email_signature_active  =". $this->app->db->qstr( $qform['email_signature_active']           ).",
+                email_msg_invoice       =". $this->app->db->qstr( $qform['email_msg_invoice']                ).",
+                email_msg_workorder     =". $this->app->db->qstr( $qform['email_msg_workorder']              );                          
 
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         } else {       
 
             // Refresh company logo
-            //$this->smarty->assign('company_logo', QW_MEDIA_DIR . $this->get_company_details('logo'));
+            //$this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->get_company_details('logo'));
 
             // Assign success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
@@ -297,13 +353,13 @@ class Company extends Components {
     public function update_company_hours($openingTime, $closingTime) {
 
         $sql = "UPDATE ".PRFX."company_record SET
-                opening_hour    =". $this->db->qstr( $openingTime['Time_Hour']     ).",
-                opening_minute  =". $this->db->qstr( $openingTime['Time_Minute']   ).",
-                closing_hour    =". $this->db->qstr( $closingTime['Time_Hour']     ).",
-                closing_minute  =". $this->db->qstr( $closingTime['Time_Minute']   );
+                opening_hour    =". $this->app->db->qstr( $openingTime['Time_Hour']     ).",
+                opening_minute  =". $this->app->db->qstr( $openingTime['Time_Minute']   ).",
+                closing_hour    =". $this->app->db->qstr( $closingTime['Time_Hour']     ).",
+                closing_minute  =". $this->app->db->qstr( $closingTime['Time_Minute']   );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
         } else {
 
             // Assign success message
@@ -329,17 +385,17 @@ class Company extends Components {
         // Cycle through the submitted VAT rates and update the database
         foreach ($vat_rates as $tax_key => $rate) {
             $sql =  "UPDATE ".PRFX."company_vat_tax_codes SET
-                    rate = ".$this->db->qstr($rate)."
-                    WHERE tax_key = ".$this->db->qstr($tax_key);
+                    rate = ".$this->app->db->qstr($rate)."
+                    WHERE tax_key = ".$this->app->db->qstr($tax_key);
 
-            if(!$rs = $this->db->Execute($sql)) {
+            if(!$rs = $this->app->db->Execute($sql)) {
                 $error_flag = true;            
             }        
         }
 
         if($error_flag) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
             //return false;      
 
         } else {
@@ -413,6 +469,7 @@ class Company extends Components {
 
     public function upload_logo() {
 
+        $chicken = $_FILES;
         // Logo - Only process if there is an image uploaded
         if($_FILES['logo']['size'] > 0) {
 
@@ -459,7 +516,7 @@ class Company extends Components {
                 echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
                  */   
 
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
 
             }
 

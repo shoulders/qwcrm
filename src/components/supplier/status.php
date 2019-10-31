@@ -16,7 +16,7 @@ if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['suppl
 
 // Update Supplier Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    $this->app->components->general->update_supplier_status(\CMSApplication::$VAR['supplier_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->system->general->update_supplier_status(\CMSApplication::$VAR['supplier_id'], \CMSApplication::$VAR['assign_status']);    
     $this->app->system->general->force_page('supplier', 'status&supplier_id='.\CMSApplication::$VAR['supplier_id']);
 }
 

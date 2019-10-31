@@ -184,7 +184,6 @@
                                                                     </tr>                                                                                                                                       
                                                                     <tr>
                                                                         <td colspan="2">
-                                                                            <input type="hidden" name="qform[expense_id]" value="{$expense_details.expense_id}">
                                                                             <button type="submit" name="submit" value="submit" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit{/t}</button>
                                                                             <button type="submit" name="submit" value="submitandnew" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit and New{/t}</button>
                                                                             <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>

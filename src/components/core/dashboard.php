@@ -23,7 +23,7 @@ if($this->app->user->login_is_employee) {
     $this->app->smarty->assign('employee_workorders_management',        $this->app->components->workorder->display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'management', $this->app->user->login_user_id)        );
 
     // Misc
-    $this->app->smarty->assign('welcome_msg', display_welcome_msg());
+    $this->app->smarty->assign('welcome_msg', $this->app->components->core->display_welcome_msg());
     $this->app->smarty->assign('employee_workorder_stats', $this->app->components->report->get_workorders_stats('current', null, null, $this->app->user->login_user_id));
     $this->app->smarty->assign('workorder_statuses', $this->app->components->workorder->get_workorder_statuses());
 

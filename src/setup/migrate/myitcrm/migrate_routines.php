@@ -311,7 +311,7 @@ class MigrateMyitcrm extends Setup {
         } else {       
 
             // Assign success message
-            $this->smarty->assign('msg_success', _gettext("Company details updated."));
+            $this->app->smarty->assign('msg_success', _gettext("Company details updated."));
 
             // Log activity
             $qsetup = new Setup($VAR);
@@ -750,7 +750,7 @@ class MigrateMyitcrm extends Setup {
         if(self::$setup_error_flag) {
 
             // Setup error flag uses in smarty templates
-            $this->smarty->assign('setup_error_flag', true);
+            $this->app->smarty->assign('setup_error_flag', true);
 
             // Log message
             $record = _gettext("The database migration process failed, check the logs.");
@@ -782,7 +782,7 @@ class MigrateMyitcrm extends Setup {
             /* Migration Failed */
 
             // Set setup_error_flag used in smarty templates
-            $this->smarty->assign('setup_error_flag', true);        
+            $this->app->smarty->assign('setup_error_flag', true);        
 
             return false;
 
@@ -1340,7 +1340,7 @@ class MigrateMyitcrm extends Setup {
 
             if($result_count >= 1) {
 
-                $this->smarty->assign('msg_danger', _gettext("The Username")." `".$username."` "._gettext("already exists! Please use a different one."));
+                $this->app->smarty->assign('msg_danger', _gettext("The Username")." `".$username."` "._gettext("already exists! Please use a different one."));
 
                 return true;
 
@@ -1377,7 +1377,7 @@ class MigrateMyitcrm extends Setup {
 
             if($result_count >= 1) {
 
-                $this->smarty->assign('msg_danger', _gettext("The email address has already been used. Please use a different one."));
+                $this->app->smarty->assign('msg_danger', _gettext("The email address has already been used. Please use a different one."));
 
                 return true;
 

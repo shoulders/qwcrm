@@ -21,4 +21,4 @@ if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 
 }
     
 // Build the page with the permissions from the database 
-$this->app->smarty->assign('acl', get_acl_permissions());
+$this->app->smarty->assign('acl', $this->app->components->administrator->get_acl_permissions());

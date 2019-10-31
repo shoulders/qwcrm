@@ -530,7 +530,7 @@ class User //extends \JObject
         */
         
         $db = \Factory::getDbo();        
-            $sql = "UPDATE ".PRFX."user_records SET last_active = ".mysql_datetime()." WHERE user_id = " . $db->qstr($this->id);
+            $sql = "UPDATE ".PRFX."user_records SET last_active = ".\Factory::getApplication()->system->general->mysql_datetime()." WHERE user_id = " . $db->qstr($this->id);
             $db->Execute($sql);
     
         return;
@@ -928,7 +928,7 @@ class User //extends \JObject
                 // Reset to guest user
                 $this->guest = 1;
 
-                //$this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
+                //$this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
 
                 return false;
 

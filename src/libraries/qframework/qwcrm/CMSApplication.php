@@ -28,10 +28,11 @@ class CMSApplication {
     public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )    
     public static $classes      = null;     // Store for classess that need instanciating (needs to be Static so loader.php can load)
     
-    // Context Variables
+    // Context Variables    
     public $config              = null;     // Local Config object    
-    public $smarty              = null;     // Smarty Template System  
-    protected $db               = null;     // Database instance
+    public $smarty              = null;     // Smarty Template System
+    public $db                  = null;     // Database instance
+    //public $VAR                 = null      // Global Variable store (by reference)
     public $system              = null;     // Hold all of the core framework
     public $components          = null;     // Holds all of the loaded components        
     public $modules             = null;     // Holds all of the loaded modules (not currently used)
@@ -43,12 +44,17 @@ class CMSApplication {
            
         // Instanciate the QWcrm classes
         self::classFilesExecuteStored('system');
+        self::classFilesExecuteStored('components');
         //self::classFilesExecuteStored('modules');
         //self::classFilesExecuteStored('plugins');
 
         // Load App Globals
         $this->config = \Factory::getConfig();
         $this->smarty = \Factory::getSmarty();
+        if(!defined('QWCRM_SETUP')){
+            $this->db = \Factory::getDbo();
+            $this->user = \Factory::getUser();
+        }
         
         // Enable Error Reporting Immediately
         $this->system->qerror->configure_php_error_reporting();                                     // Configure PHP error reporting (need to make static and first)----------- (has no dependencies so coulf go earlier)
@@ -63,9 +69,6 @@ class CMSApplication {
 
         if(!defined('QWCRM_SETUP'))
         {
-            // Load App Globals
-            $this->db = \Factory::getDbo();    
-            
             // Load/Start/Create the session
             $this->loadSession();                
 
@@ -78,10 +81,6 @@ class CMSApplication {
             self::$VAR = array_merge(self::$VAR, $this->system->variables->postEmulationReturnStore());
         }
 
-        // Instanciate the QWcrm classes
-        self::classFilesExecuteStored('components');
-        //self::classFilesExecuteStored('modules');
-        //self::classFilesExecuteStored('plugins');
         
         
     }
@@ -346,9 +345,7 @@ class CMSApplication {
      */
     public function removeExpiredSessions()
     {
-       $db = \Factory::getDbo();
-
-        // Get the current Time
+       // Get the current Time
        $time = time();
 
        // Remove expired sessions from the database.
@@ -357,7 +354,7 @@ class CMSApplication {
            // The modulus '% 2' introduces a little entropy, making the flushing less accurate
            // by firing the query less than half the time.
            $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - \Factory::$session->getExpire());            
-           $db->Execute($sql);
+           $this->db->Execute($sql);
        }  
     }  
     
@@ -440,17 +437,16 @@ class CMSApplication {
      * 
      * Method to discover and load class files classes of a given type in a given path to a specific variable
      *
-     * This allows me to autload the files withoug instanciating thr classes
-     * 
-     * @param   string   $classGroup   Class Group being looked up
-     * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
+     * This allows me to autload the files without instanciating the classes
      *
+     * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
+     * @param   string   $classGroup   Class Group being looked up
      *
      * @return  void
      *
      * @since   3.1.2
      */
-    static public function classFilesLoad($classGroup, $parentPath)
+    static public function classFilesLoad($parentPath, $classGroup = null)
     {
                 
         try
@@ -479,9 +475,14 @@ class CMSApplication {
                     // Checks if the class is instantiable (needed becasue of 'Factory' is in main class load folder)
                     $checkClass = new ReflectionClass($className);
                     if(!$checkClass->isInstantiable()) { continue; }
-                                                           
-                    // Store the Class names for instaciating later
-                    self::$classes[$classGroup][] = $className;                                      
+                                     
+                    // If no store is defined, skip adding the class reference to the Class Group Store/registry (useful for loading payment method and type classes)
+                    if($classGroup) {
+                        
+                        // Store the Class names for instaciating later
+                        self::$classes[$classGroup][] = $className;
+                    
+                    }
   
                 }
             }
@@ -510,6 +511,13 @@ class CMSApplication {
      */
     private function classFilesExecuteStored($onlyThisGroup = null)
     {        
+        
+        // Check if the store is empty
+        if(empty(self::$classes)){ return; }
+        
+        // Check if the specified store is empty
+        if($onlyThisGroup && empty(self::$classes[$onlyThisGroup])){ return; }
+                
         // cycle through the different class groups
         foreach (self::$classes as $classGroup => $classNames)
         {

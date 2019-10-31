@@ -22,7 +22,8 @@ class Variables extends System {
 
         // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
         if(!defined('QWCRM_SETUP')) {
-            $company_details = $this->app->system->general->get_company_details();
+            
+            $company_details = $this->app->components->company->get_company_details();
             define('DATE_FORMAT',   $company_details['date_format']);
             define('QW_TAX_SYSTEM', $company_details['tax_system'] );
         }
@@ -45,6 +46,9 @@ class Variables extends System {
         $this->app->smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
 
         // This assigns framework globals to smarty and also prevents undefined variable errors (mainly for the menu)
+        
+        // use ?: or an array and foreach
+        
         isset(\CMSApplication::$VAR['user_id'])          ? $this->app->smarty->assign('user_id', \CMSApplication::$VAR['user_id'])               : $this->app->smarty->assign('user_id', null);
         isset(\CMSApplication::$VAR['employee_id'])      ? $this->app->smarty->assign('employee_id', \CMSApplication::$VAR['employee_id'])       : $this->app->smarty->assign('employee_id', null);
         isset(\CMSApplication::$VAR['client_id'])        ? $this->app->smarty->assign('client_id', \CMSApplication::$VAR['client_id'])           : $this->app->smarty->assign('client_id', null);

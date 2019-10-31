@@ -19,7 +19,7 @@ if(isset(\CMSApplication::$VAR['send_test_mail'])) {
 // Clear Smarty Compile
 if(isset(\CMSApplication::$VAR['clear_smarty_compile'])) {    
     if($this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
-        $this->app->components->general->clear_smarty_compile();        
+        $this->app->system->general->clear_smarty_compile();        
     }    
     die();
 }
@@ -27,7 +27,7 @@ if(isset(\CMSApplication::$VAR['clear_smarty_compile'])) {
 // Clear Smarty Cache button
 if(isset(\CMSApplication::$VAR['clear_smarty_cache'])) {
     if($this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
-        $this->app->components->general->clear_smarty_cache();
+        $this->app->system->general->clear_smarty_cache();
     }
     die();
 }
@@ -41,17 +41,17 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         $url_sef = \CMSApplication::$VAR['qform']['sef'] ? 'sef' : 'nonsef';
         
         // Load maintenance page if enabled
-        if(!$this->system->config->get('maintenance') && \CMSApplication::$VAR['qform']['maintenance']) {
+        if(!$this->app->config->get('maintenance') && \CMSApplication::$VAR['qform']['maintenance']) {
             $this->app->components->user->logout_all_users();
             $this->app->system->general->force_page('index.php', null, null, 'get', $url_sef);
         }        
         
         // Reload Page (nonSSL to SSL)
-        elseif (!$this->system->config->get('force_ssl') && \CMSApplication::$VAR['qform']['force_ssl']) {
+        elseif (!$this->app->config->get('force_ssl') && \CMSApplication::$VAR['qform']['force_ssl']) {
             $this->app->system->general->force_page('administrator', 'config', 'msg_success='._gettext("Config settings updated successfully."), 'auto', $url_sef, 'https');
             
         // Reload page with forced logout (SSL to nonSSL)
-        } elseif($this->system->config->get('force_ssl') && !\CMSApplication::$VAR['qform']['force_ssl']) {
+        } elseif($this->app->config->get('force_ssl') && !\CMSApplication::$VAR['qform']['force_ssl']) {
             $this->app->components->user->logout_all_users();
             $this->app->system->general->force_page('user', 'login', null, 'get', $url_sef, 'http');
         
@@ -75,4 +75,4 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 }
 
 // Build the page
-$this->app->smarty->assign('available_languages', load_languages() );
+$this->app->smarty->assign('available_languages', $this->app->system->general->load_languages() );

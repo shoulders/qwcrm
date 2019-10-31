@@ -34,8 +34,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     \CMSApplication::$VAR['qform']['EndTime'] = \CMSApplication::$VAR['EndTime'];
     
     // Add missing Time variables in DATETIME format
-    \CMSApplication::$VAR['qform']['start_time'] = $this->app->components->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['start_date'], \CMSApplication::$VAR['StartTime']['Time_Hour'], \CMSApplication::$VAR['StartTime']['Time_Minute'], '0', '24');
-    \CMSApplication::$VAR['qform']['end_time']   = $this->app->components->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['end_date'], \CMSApplication::$VAR['EndTime']['Time_Hour'], \CMSApplication::$VAR['EndTime']['Time_Minute'], '0', '24');
+    \CMSApplication::$VAR['qform']['start_time'] = $this->app->system->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['start_date'], \CMSApplication::$VAR['StartTime']['Time_Hour'], \CMSApplication::$VAR['StartTime']['Time_Minute'], '0', '24');
+    \CMSApplication::$VAR['qform']['end_time']   = $this->app->system->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['end_date'], \CMSApplication::$VAR['EndTime']['Time_Hour'], \CMSApplication::$VAR['EndTime']['Time_Minute'], '0', '24');
     
     /* This manually builds a 'Time' string
     \CMSApplication::$VAR['qform']['start_time'] = \CMSApplication::$VAR['StartTime']['Time_Hour'].":".\CMSApplication::$VAR['StartTime']['Time_Minute'];
@@ -49,9 +49,9 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     } else {       
             
         // Break up the date into segments in the correct format
-        $start_year            = date('Y', $this->app->components->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
-        $start_month           = date('m', $this->app->components->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
-        $start_day             = date('d', $this->app->components->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
+        $start_year            = date('Y', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
+        $start_month           = date('m', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
+        $start_day             = date('d', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
     
         // Load the schedule day with the newly submitted schedule item
         $this->app->system->general->force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id'].'&msg_success='._gettext("Schedule Successfully Created"));
@@ -69,9 +69,9 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $schedule_details['client_id']      = \CMSApplication::$VAR['client_id'];
     $schedule_details['employee_id']    = \CMSApplication::$VAR['employee_id'];
     $schedule_details['workorder_id']   = \CMSApplication::$VAR['workorder_id'];
-    $schedule_details['start_date']     = $this->app->components->general->convert_year_month_day_to_date(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']);
+    $schedule_details['start_date']     = $this->app->system->general->convert_year_month_day_to_date(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']);
     $schedule_details['start_time']     = \CMSApplication::$VAR['start_time'];
-    $schedule_details['end_date']       = $this->app->components->general->convert_year_month_day_to_date(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']);
+    $schedule_details['end_date']       = $this->app->system->general->convert_year_month_day_to_date(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']);
     $schedule_details['end_time']       = \CMSApplication::$VAR['start_time'];
     $schedule_details['note']           = null;    
     $this->app->smarty->assign('schedule_details', $schedule_details);

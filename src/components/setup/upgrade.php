@@ -46,7 +46,7 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
         $final_version = str_replace('_', '.', end($final_version));
         
         // Load the 'To' and 'From' version numbers
-        $this->app->smarty->assign('qwcrm_config', array('from' => $this->app->components->general->get_qwcrm_database_version_number(), 'to' => $final_version));        
+        $this->app->smarty->assign('qwcrm_config', array('from' => $this->app->system->general->get_qwcrm_database_version_number(), 'to' => $final_version));        
         
         // If multiple steps - Advertise the fact here
         if(Setup::$split_database_upgrade) {

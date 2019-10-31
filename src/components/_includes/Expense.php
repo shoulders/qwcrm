@@ -44,15 +44,15 @@ class Expense extends Components {
         $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";
 
         // Restrict results by search category and search term
-        if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');}     
+        if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');}     
 
         /* Filter the Records */  
 
         // Restrict by Item Type
-        if($item_type) { $whereTheseRecords .= " AND ".PRFX."expense_records.item_type= ".$this->db->qstr($item_type);}
+        if($item_type) { $whereTheseRecords .= " AND ".PRFX."expense_records.item_type= ".$this->app->db->qstr($item_type);}
 
         // Restrict by status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->db->qstr($status);} 
+        if($status) {$whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->app->db->qstr($status);} 
 
         /* The SQL code */
 
@@ -71,29 +71,29 @@ class Expense extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the matching expense records."));
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching expense records."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $this->smarty->assign('total_results', $total_results);
+                $this->app->smarty->assign('total_results', $total_results);
             }        
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $this->smarty->assign('total_pages', $total_pages);
+            $this->app->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $this->smarty->assign('page_no', $page_no);
+            $this->app->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $this->smarty->assign('previous_page_no', $previous_page_no);          
+            $this->app->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $this->smarty->assign('next_page_no', $next_page_no);
+            $this->app->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -104,15 +104,15 @@ class Expense extends Components {
         } else {
 
             // This make the drop down menu look correct
-            $this->smarty->assign('total_pages', 1);
+            $this->app->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $this->db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching expense records."));
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching expense records."));
 
         } else {
 
@@ -141,23 +141,23 @@ class Expense extends Components {
     public function insert_expense($qform) {
 
         $sql = "INSERT INTO ".PRFX."expense_records SET
-                employee_id     =". $this->db->qstr( $this->app->user->login_user_id ).",
-                payee           =". $this->db->qstr( $qform['payee']                   ).",
-                date            =". $this->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
-                tax_system      =". $this->db->qstr( QW_TAX_SYSTEM                   ).",              
-                item_type       =". $this->db->qstr( $qform['item_type']               ).",
-                unit_net        =". $this->db->qstr( $qform['unit_net']                ).",
-                vat_tax_code    =". $this->db->qstr( $qform['vat_tax_code']            ).",
-                unit_tax_rate   =". $this->db->qstr( $qform['unit_tax_rate']           ).",
-                unit_tax        =". $this->db->qstr( $qform['unit_tax']                ).",
-                unit_gross      =". $this->db->qstr( $qform['unit_gross'  ]            ).",
-                status          =". $this->db->qstr( 'unpaid'                        ).",            
-                opened_on       =". $this->db->qstr( $this->app->system->general->mysql_datetime()                ).",              
-                items           =". $this->db->qstr( $qform['items']                   ).",
-                note            =". $this->db->qstr( $qform['note']                    );            
+                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id ).",
+                payee           =". $this->app->db->qstr( $qform['payee']                   ).",
+                date            =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
+                tax_system      =". $this->app->db->qstr( QW_TAX_SYSTEM                   ).",              
+                item_type       =". $this->app->db->qstr( $qform['item_type']               ).",
+                unit_net        =". $this->app->db->qstr( $qform['unit_net']                ).",
+                vat_tax_code    =". $this->app->db->qstr( $qform['vat_tax_code']            ).",
+                unit_tax_rate   =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
+                unit_tax        =". $this->app->db->qstr( $qform['unit_tax']                ).",
+                unit_gross      =". $this->app->db->qstr( $qform['unit_gross'  ]            ).",
+                status          =". $this->app->db->qstr( 'unpaid'                        ).",            
+                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                ).",              
+                items           =". $this->app->db->qstr( $qform['items']                   ).",
+                note            =". $this->app->db->qstr( $qform['note']                    );            
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
         } else {
 
             /* This code is not used because I removed 'invoice_id'
@@ -165,10 +165,10 @@ class Expense extends Components {
             $invoice_details = $this->app->components->invoice->get_invoice_details($qform['invoice_id']);
 
             // Create a Workorder History Note
-            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$this->db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$this->app->db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Expense Record").' '.$this->db->Insert_ID().' '._gettext("created.");
+            $record = _gettext("Expense Record").' '.$this->app->db->Insert_ID().' '._gettext("created.");
             $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $qform['invoice_id']);
 
             // Update last active record
@@ -176,7 +176,7 @@ class Expense extends Components {
             $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
             $this->app->components->invoice->update_invoice_last_active($qform['invoice_id']);*/
 
-            return $this->db->Insert_ID();
+            return $this->app->db->Insert_ID();
 
         }
 
@@ -190,10 +190,10 @@ class Expense extends Components {
 
     public function get_expense_details($expense_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."expense_records WHERE expense_id=".$this->db->qstr($expense_id);
+        $sql = "SELECT * FROM ".PRFX."expense_records WHERE expense_id=".$this->app->db->qstr($expense_id);
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the expense details."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the expense details."));
         } else {
 
             if($item === null){
@@ -223,8 +223,8 @@ class Expense extends Components {
             $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
         }
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Expense statuses."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Expense statuses."));
         } else {
 
             return $rs->GetArray();     
@@ -239,10 +239,10 @@ class Expense extends Components {
 
     public function get_expense_status_display_name($status_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."expense_statuses WHERE status_key=".$this->db->qstr($status_key);
+        $sql = "SELECT display_name FROM ".PRFX."expense_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the expense status display name."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the expense status display name."));
         } else {
 
             return $rs->fields['display_name'];
@@ -259,8 +259,8 @@ class Expense extends Components {
 
         $sql = "SELECT * FROM ".PRFX."expense_types";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get expense types."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get expense types."));
         } else {
 
             return $rs->GetArray();
@@ -278,22 +278,22 @@ class Expense extends Components {
     public function update_expense($qform) {
 
         $sql = "UPDATE ".PRFX."expense_records SET
-                employee_id         =". $this->db->qstr( $this->app->user->login_user_id ).",
-                payee               =". $this->db->qstr( $qform['payee']                    ).",            
-                date                =". $this->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date']) ).",            
-                item_type           =". $this->db->qstr( $qform['item_type']                ).",
-                unit_net            =". $this->db->qstr( $qform['unit_net']                 ).",
-                vat_tax_code        =". $this->db->qstr( $qform['vat_tax_code']             ).",
-                unit_tax_rate       =". $this->db->qstr( $qform['unit_tax_rate']            ).",
-                unit_tax            =". $this->db->qstr( $qform['unit_tax']                 ).",
-                unit_gross          =". $this->db->qstr( $qform['unit_gross']               ).",
-                last_active         =". $this->db->qstr( $this->app->system->general->mysql_datetime()                 ).",
-                items               =". $this->db->qstr( $qform['items']                    ).",
-                note                =". $this->db->qstr( $qform['note']                     )."
-                WHERE expense_id    =". $this->db->qstr( $qform['expense_id']               );                        
+                employee_id         =". $this->app->db->qstr( $this->app->user->login_user_id ).",
+                payee               =". $this->app->db->qstr( $qform['payee']                    ).",            
+                date                =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date']) ).",            
+                item_type           =". $this->app->db->qstr( $qform['item_type']                ).",
+                unit_net            =". $this->app->db->qstr( $qform['unit_net']                 ).",
+                vat_tax_code        =". $this->app->db->qstr( $qform['vat_tax_code']             ).",
+                unit_tax_rate       =". $this->app->db->qstr( $qform['unit_tax_rate']            ).",
+                unit_tax            =". $this->app->db->qstr( $qform['unit_tax']                 ).",
+                unit_gross          =". $this->app->db->qstr( $qform['unit_gross']               ).",
+                last_active         =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                 ).",
+                items               =". $this->app->db->qstr( $qform['items']                    ).",
+                note                =". $this->app->db->qstr( $qform['note']                     )."
+                WHERE expense_id    =". $this->app->db->qstr( $qform['expense_id']               );                        
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
         } else {
 
             /* This code is not used because I removed 'invoice_id'
@@ -340,13 +340,13 @@ class Expense extends Components {
         $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."expense_records SET
-                status             =". $this->db->qstr( $new_status   ).",
-                closed_on          =". $this->db->qstr( $closed_on    ).",
-                last_active        =". $this->db->qstr( $datetime     )."
-                WHERE expense_id   =". $this->db->qstr( $expense_id   );
+                status             =". $this->app->db->qstr( $new_status   ).",
+                closed_on          =". $this->app->db->qstr( $closed_on    ).",
+                last_active        =". $this->app->db->qstr( $datetime     )."
+                WHERE expense_id   =". $this->app->db->qstr( $expense_id   );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update an Expense Status."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Expense Status."));
 
         } else {        
 
@@ -455,10 +455,10 @@ class Expense extends Components {
                 last_active         = '0000-00-00 00:00:00',
                 items               = '',
                 note                = ''
-                WHERE expense_id    =". $this->db->qstr($expense_id);
+                WHERE expense_id    =". $this->app->db->qstr($expense_id);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
         } else {
 
             /* Create a Workorder History Note  
@@ -493,8 +493,8 @@ class Expense extends Components {
 
         $sql = "SELECT * FROM ".PRFX."expense_records ORDER BY expense_id DESC LIMIT 1";
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last expense record ID."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last expense record ID."));
         } else {
 
             return $rs->fields['expense_id'];
@@ -515,11 +515,11 @@ class Expense extends Components {
         $balance                    = $unit_gross - $payments_sub_total;
 
         $sql = "UPDATE ".PRFX."expense_records SET
-                balance             =". $this->db->qstr( $balance    )."
-                WHERE expense_id    =". $this->db->qstr( $expense_id );
+                balance             =". $this->app->db->qstr( $balance    )."
+                WHERE expense_id    =". $this->app->db->qstr( $expense_id );
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the expense totals."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the expense totals."));
         } else {
 
             /* Update Status - only change if there is a change in status */        

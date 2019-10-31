@@ -22,8 +22,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     \CMSApplication::$VAR['qform']['EndTime'] = \CMSApplication::$VAR['EndTime'];
     
     // Add missing Time variables in DATETIME format
-    \CMSApplication::$VAR['qform']['start_time'] = $this->app->components->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['start_date'], \CMSApplication::$VAR['StartTime']['Time_Hour'], \CMSApplication::$VAR['StartTime']['Time_Minute'], '0', '24');
-    \CMSApplication::$VAR['qform']['end_time']   = $this->app->components->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['end_date'], \CMSApplication::$VAR['EndTime']['Time_Hour'], \CMSApplication::$VAR['EndTime']['Time_Minute'], '0', '24');
+    \CMSApplication::$VAR['qform']['start_time'] = $this->app->system->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['start_date'], \CMSApplication::$VAR['StartTime']['Time_Hour'], \CMSApplication::$VAR['StartTime']['Time_Minute'], '0', '24');
+    \CMSApplication::$VAR['qform']['end_time']   = $this->app->system->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['end_date'], \CMSApplication::$VAR['EndTime']['Time_Hour'], \CMSApplication::$VAR['EndTime']['Time_Minute'], '0', '24');
     
     /* This manually builds a 'Time' string
     \CMSApplication::$VAR['qform']['start_time'] = \CMSApplication::$VAR['StartTime']['Time_Hour'].":".\CMSApplication::$VAR['StartTime']['Time_Minute'];
@@ -40,9 +40,9 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     } else {       
         
         /* Load the schedule day with the updated schedule item        
-        \CMSApplication::$start_year            = date('Y', $this->app->components->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
-        \CMSApplication::$start_month           = date('m', $this->app->components->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
-        \CMSApplication::$start_day             = date('d', $this->app->components->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );         
+        \CMSApplication::$start_year            = date('Y', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
+        \CMSApplication::$start_month           = date('m', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
+        \CMSApplication::$start_day             = date('d', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );         
         $this->app->system->general->force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id'].'&msg_success='._gettext("Schedule Successfully Updated."));
         */
         

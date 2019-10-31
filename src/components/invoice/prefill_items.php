@@ -37,7 +37,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Upload CSV file of invoice labour rates items
     if(\CMSApplication::$VAR['submit'] == 'csv_upload') {
-        $this->app->components->invoice->upload_invoice_prefill_items_csv(\CMSApplication::$VAR['qform']);
+        $this->app->components->invoice->upload_invoice_prefill_items_csv(\CMSApplication::$VAR['empty_prefill_items_table']);
     }
     
 }

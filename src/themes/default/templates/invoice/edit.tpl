@@ -75,7 +75,7 @@
 
 
         // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
-        var combo = dhtmlXComboFromSelect('labour_items['+iteration+'][description]');
+        var combo = dhtmlXComboFromSelect('qform[labour_items]['+iteration+'][description]');
 
         // Description Cell - Set Combobox settings
         combo.setSize(400);    
@@ -144,7 +144,7 @@
 
 
         // Amount Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-        var combo = dhtmlXComboFromSelect('labour_items['+iteration+'][unit_net]');         
+        var combo = dhtmlXComboFromSelect('qform[labour_items]['+iteration+'][unit_net]');         
 
         // Amount Cell - Set Combobox settings
         combo.setSize(90);  // This sets the width of the combo box and drop down options width  
@@ -291,7 +291,7 @@
 
 
         // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
-        var combo = dhtmlXComboFromSelect('parts_items['+iteration+'][description]');
+        var combo = dhtmlXComboFromSelect('qform[parts_items]['+iteration+'][description]');
 
         // Description Cell - Set Combobox settings
         combo.setSize(400);    
@@ -359,7 +359,7 @@
         buildRow.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + buildRow.innerHTML + '</div>';
         
         // Unit Net Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-        var combo = dhtmlXComboFromSelect('parts_items['+iteration+'][unit_net]');         
+        var combo = dhtmlXComboFromSelect('qform[parts_items]['+iteration+'][unit_net]');         
 
         // Unit Net Cell - Set Combobox settings
         combo.setSize(90);  // This sets the width of the combo box and drop down options width  

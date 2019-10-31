@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 \CMSApplication::$VAR['qform']['delete_logo'] = isset(\CMSApplication::$VAR['qform']['delete_logo']) ? \CMSApplication::$VAR['qform']['delete_logo'] : null;
 
 // Update Company details
-if(isset(\CMSApplication::$VAR['qform']['submit'])) {
+if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Submit data to the database
     $this->app->components->company->update_company_details(\CMSApplication::$VAR['qform']);    

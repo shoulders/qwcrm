@@ -37,7 +37,7 @@ $this->app->smarty->assign('voucher_sub_totals',            $this->app->componen
 
 /* Refund Details - This is not used and should be deleted when i am sure I will not use it. I might use something like this to include the refund block
 if($this->app->components->invoice->get_invoice_details(\CMSApplication::$VAR['invoice_id'], 'status') == 'refunded') {
-    $this->app->smarty->assign('refund_details', $this->app->components->refund->$this->app->components->refund->get_refund_details($invoice_details['refund_id']));    
+    $this->app->smarty->assign('refund_details', $this->app->components->refund->get_refund_details($invoice_details['refund_id']));    
 } else {
     $this->app->smarty->assign('refund_details', null);
 }*/

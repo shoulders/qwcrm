@@ -46,13 +46,13 @@ class Schedule extends Components {
         $whereTheseRecords = "WHERE ".PRFX."schedule_records.schedule_id\n";
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
 
         // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}     
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}     
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');} 
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
 
         /* Filter the Records */
 
@@ -72,20 +72,20 @@ class Schedule extends Components {
             // Return schedules for the given status
             } else {
 
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.status= ".$this->db->qstr($status);
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.status= ".$this->app->db->qstr($status);
 
             }
 
         }        
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.user_id=".$this->db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.user_id=".$this->app->db->qstr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.client_id=".$this->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.client_id=".$this->app->db->qstr($client_id);}
 
         // Restrict by Work Order
-        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->db->qstr($workorder_id);}    
+        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->app->db->qstr($workorder_id);}    
 
         /* The SQL code */
 
@@ -113,29 +113,29 @@ class Schedule extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $this->smarty->assign('total_results', $total_results);
+                $this->app->smarty->assign('total_results', $total_results);
             }        
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $this->smarty->assign('total_pages', $total_pages);
+            $this->app->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $this->smarty->assign('page_no', $page_no);
+            $this->app->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $this->smarty->assign('previous_page_no', $previous_page_no);          
+            $this->app->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $this->smarty->assign('next_page_no', $next_page_no);
+            $this->app->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -146,14 +146,14 @@ class Schedule extends Components {
         } else {
 
             // This make the drop down menu look correct
-            $this->smarty->assign('total_pages', 1);
+            $this->app->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
         } else {
 
             $records = $rs->GetArray();
@@ -185,22 +185,22 @@ class Schedule extends Components {
 
         // Insert schedule item into the database
         $sql = "INSERT INTO ".PRFX."schedule_records SET
-                employee_id     =". $this->db->qstr( $qform['employee_id']      ).",
-                client_id       =". $this->db->qstr( $qform['client_id']        ).",   
-                workorder_id    =". $this->db->qstr( $qform['workorder_id']     ).",
-                start_time      =". $this->db->qstr( $qform['start_time']       ).",
-                end_time        =". $this->db->qstr( $qform['end_time']         ).",            
-                note            =". $this->db->qstr( $qform['note']             );            
+                employee_id     =". $this->app->db->qstr( $qform['employee_id']      ).",
+                client_id       =". $this->app->db->qstr( $qform['client_id']        ).",   
+                workorder_id    =". $this->app->db->qstr( $qform['workorder_id']     ).",
+                start_time      =". $this->app->db->qstr( $qform['start_time']       ).",
+                end_time        =". $this->app->db->qstr( $qform['end_time']         ).",            
+                note            =". $this->app->db->qstr( $qform['note']             );            
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
         } else {
 
             // Get work order details
             $workorder_details = $this->app->components->workorder->get_workorder_details($qform['workorder_id']);
 
             // Get the new Schedule ID
-            $schedule_id = $this->db->Insert_ID();
+            $schedule_id = $this->app->db->Insert_ID();
 
             // Assign the work order to the scheduled employee (if not already)
             if($qform['employee_id'] != $workorder_details['employee_id']) {
@@ -237,10 +237,10 @@ class Schedule extends Components {
 
     public function get_schedule_details($schedule_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$this->db->qstr($schedule_id);
+        $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$this->app->db->qstr($schedule_id);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
         } else { 
 
             if($item === null){
@@ -270,13 +270,13 @@ class Schedule extends Components {
         // Look in the database for a scheduled events for the current schedule day (within business hours)
         $sql = "SELECT schedule_id
                 FROM ".PRFX."schedule_records       
-                WHERE start_time >= ".$this->db->qstr($company_day_start)." AND start_time <= ".$this->db->qstr($company_day_end)."
-                AND employee_id =".$this->db->qstr($employee_id)."
+                WHERE start_time >= ".$this->app->db->qstr($company_day_start)." AND start_time <= ".$this->app->db->qstr($company_day_end)."
+                AND employee_id =".$this->app->db->qstr($employee_id)."
                 ORDER BY start_time
                 ASC";
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
         } else {
 
             return $rs->GetArray();  
@@ -297,17 +297,17 @@ class Schedule extends Components {
         if(!$this->validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }        
 
         $sql = "UPDATE ".PRFX."schedule_records SET
-            schedule_id         =". $this->db->qstr( $qform['schedule_id']      ).",
-            employee_id         =". $this->db->qstr( $qform['employee_id']      ).",
-            client_id           =". $this->db->qstr( $qform['client_id']        ).",
-            workorder_id        =". $this->db->qstr( $qform['workorder_id']     ).",   
-            start_time          =". $this->db->qstr( $qform['start_time']       ).",
-            end_time            =". $this->db->qstr( $qform['end_time']         ).",                
-            note                =". $this->db->qstr( $qform['note']             )."
-            WHERE schedule_id   =". $this->db->qstr( $qform['schedule_id']      );
+            schedule_id         =". $this->app->db->qstr( $qform['schedule_id']      ).",
+            employee_id         =". $this->app->db->qstr( $qform['employee_id']      ).",
+            client_id           =". $this->app->db->qstr( $qform['client_id']        ).",
+            workorder_id        =". $this->app->db->qstr( $qform['workorder_id']     ).",   
+            start_time          =". $this->app->db->qstr( $qform['start_time']       ).",
+            end_time            =". $this->app->db->qstr( $qform['end_time']         ).",                
+            note                =". $this->app->db->qstr( $qform['note']             )."
+            WHERE schedule_id   =". $this->app->db->qstr( $qform['schedule_id']      );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
         } else {       
 
             // Insert Work Order History Note
@@ -340,10 +340,10 @@ class Schedule extends Components {
         // Get schedule details before deleting
         $schedule_details = $this->get_schedule_details($schedule_id);
 
-        $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->db->qstr($schedule_id);
+        $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->app->db->qstr($schedule_id);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
 
         } else {
 
@@ -720,14 +720,14 @@ class Schedule extends Components {
             LEFT JOIN ".PRFX."workorder_records ON ".PRFX."schedule_records.workorder_id = ".PRFX."workorder_records.workorder_id
             LEFT JOIN ".PRFX."client_records ON ".PRFX."schedule_records.client_id = ".PRFX."client_records.client_id
 
-            WHERE ".PRFX."schedule_records.start_time >= ".$this->db->qstr($company_day_start)."
-            AND ".PRFX."schedule_records.start_time <= ".$this->db->qstr($company_day_end)."
-            AND ".PRFX."schedule_records.employee_id =".$this->db->qstr($employee_id)."
+            WHERE ".PRFX."schedule_records.start_time >= ".$this->app->db->qstr($company_day_start)."
+            AND ".PRFX."schedule_records.start_time <= ".$this->app->db->qstr($company_day_end)."
+            AND ".PRFX."schedule_records.employee_id =".$this->app->db->qstr($employee_id)."
             ORDER BY ".PRFX."schedule_records.start_time
             ASC";
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
         }
 
         // Add any scheduled events found into the $scheduleObject for any employee
@@ -900,7 +900,7 @@ class Schedule extends Components {
     public function validate_schedule_times($start_time, $end_time, $employee_id, $schedule_id = null) {    
 
         // convert the submitted $start_date to the correct format
-        //$start_date = $this->app->components->general->date_to_timestamp($start_date);
+        //$start_date = $this->app->system->general->date_to_timestamp($start_date);
         //$start_date = timestamp_to_date($start_date, '%Y-%m-%d');
 
         // Get the start and end time of the calendar schedule to be displayed, Office hours only
@@ -932,14 +932,14 @@ class Schedule extends Components {
         $sql = "SELECT
                 schedule_id, start_time, end_time
                 FROM ".PRFX."schedule_records
-                WHERE start_time >= ".$this->db->qstr($company_day_start)."
-                AND end_time <=".$this->db->qstr($company_day_end)."
-                AND employee_id =".$this->db->qstr($employee_id)."
+                WHERE start_time >= ".$this->app->db->qstr($company_day_start)."
+                AND end_time <=".$this->app->db->qstr($company_day_end)."
+                AND employee_id =".$this->app->db->qstr($employee_id)."
                 ORDER BY start_time
                 ASC";
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
         }   
 
         // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.

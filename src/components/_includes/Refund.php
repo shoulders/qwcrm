@@ -44,24 +44,24 @@ class Refund extends Components {
         $havingTheseRecords = '';
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
 
         // Restrict results by search category (employee) and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');} 
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
 
         /* Filter the Records */  
 
         // Restrict by Type
-        if($item_type) { $whereTheseRecords .= " AND ".PRFX."refund_records.item_type= ".$this->db->qstr($item_type);}
+        if($item_type) { $whereTheseRecords .= " AND ".PRFX."refund_records.item_type= ".$this->app->db->qstr($item_type);}
 
         // Restrict by Status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->db->qstr($status);}
+        if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qstr($status);}
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$this->db->qstr($employee_id);}        
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$this->app->db->qstr($employee_id);}        
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$this->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$this->app->db->qstr($client_id);}
 
         /* The SQL code */
 
@@ -88,29 +88,29 @@ class Refund extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the matching refund records."));
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching refund records."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $this->smarty->assign('total_results', $total_results);
+                $this->app->smarty->assign('total_results', $total_results);
             }        
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $this->smarty->assign('total_pages', $total_pages);
+            $this->app->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $this->smarty->assign('page_no', $page_no);
+            $this->app->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $this->smarty->assign('previous_page_no', $previous_page_no);          
+            $this->app->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $this->smarty->assign('next_page_no', $next_page_no);
+            $this->app->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -121,14 +121,14 @@ class Refund extends Components {
         } else {
 
             // This make the drop down menu look correct
-            $this->smarty->assign('total_pages', 1);
+            $this->app->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching refund records."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching refund records."));
         } else {
 
             $records = $rs->GetArray();   // do i need to add the check empty
@@ -156,28 +156,28 @@ class Refund extends Components {
     public function insert_refund($qform) {
 
         $sql = "INSERT INTO ".PRFX."refund_records SET
-                employee_id      =". $this->db->qstr( $this->app->user->login_user_id ).",
-                client_id        =". $this->db->qstr( $qform['client_id']               ).",
-                workorder_id     =". $this->db->qstr( $qform['workorder_id']            ).",
-                invoice_id       =". $this->db->qstr( $qform['invoice_id']              ).",                        
-                date             =". $this->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
-                tax_system       =". $this->db->qstr( $qform['tax_system']              ).",
-                item_type        =". $this->db->qstr( $qform['item_type']               ).",             
-                unit_net         =". $this->db->qstr( $qform['unit_net']                ).", 
-                vat_tax_code     =". $this->db->qstr( $qform['vat_tax_code']            ).", 
-                unit_tax_rate    =". $this->db->qstr( $qform['unit_tax_rate']           ).",
-                unit_tax         =". $this->db->qstr( $qform['unit_tax']                ).",
-                unit_gross       =". $this->db->qstr( $qform['unit_gross']              ).",
-                balance          =". $this->db->qstr( $qform['unit_gross']              ).",
-                status           =". $this->db->qstr( 'unpaid'                        ).",   
-                opened_on        =". $this->db->qstr( $this->app->system->general->mysql_datetime()                ).",                        
-                note             =". $this->db->qstr( $qform['note']                    );
+                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
+                client_id        =". $this->app->db->qstr( $qform['client_id']               ).",
+                workorder_id     =". $this->app->db->qstr( $qform['workorder_id']            ).",
+                invoice_id       =". $this->app->db->qstr( $qform['invoice_id']              ).",                        
+                date             =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
+                tax_system       =". $this->app->db->qstr( $qform['tax_system']              ).",
+                item_type        =". $this->app->db->qstr( $qform['item_type']               ).",             
+                unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).", 
+                vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).", 
+                unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
+                unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
+                unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
+                balance          =". $this->app->db->qstr( $qform['unit_gross']              ).",
+                status           =". $this->app->db->qstr( 'unpaid'                        ).",   
+                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                ).",                        
+                note             =". $this->app->db->qstr( $qform['note']                    );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
         } else {
 
-            $refund_id = $this->db->Insert_ID();
+            $refund_id = $this->app->db->Insert_ID();
 
             // Create a Workorder History Note
             $this->app->components->workorder->insert_workorder_history_note($qform['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
@@ -205,10 +205,10 @@ class Refund extends Components {
 
     public function get_refund_details($refund_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$this->db->qstr($refund_id);
+        $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$this->app->db->qstr($refund_id);
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the refund details."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the refund details."));
         } else {
 
             if($item === null){
@@ -238,8 +238,8 @@ class Refund extends Components {
             $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
         }
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Refund statuses."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Refund statuses."));
         } else {
 
             return $rs->GetArray();     
@@ -254,10 +254,10 @@ class Refund extends Components {
 
     public function get_refund_status_display_name($status_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."refund_statuses WHERE status_key=".$this->db->qstr($status_key);
+        $sql = "SELECT display_name FROM ".PRFX."refund_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the refund status display name."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the refund status display name."));
         } else {
 
             return $rs->fields['display_name'];
@@ -274,8 +274,8 @@ class Refund extends Components {
 
         $sql = "SELECT * FROM ".PRFX."refund_types";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get refund types."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get refund types."));
         } else {
 
             return $rs->GetArray();
@@ -293,14 +293,14 @@ class Refund extends Components {
     public function update_refund($qform) {
 
         $sql = "UPDATE ".PRFX."refund_records SET
-                employee_id      =". $this->db->qstr( $this->app->user->login_user_id ).",
-                date             =". $this->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])   ).",            
-                last_active      =". $this->db->qstr( $this->app->system->general->mysql_datetime()                   ).",
-                note             =". $this->db->qstr( $qform['note']                       )."
-                WHERE refund_id  =". $this->db->qstr( $qform['refund_id']                  );                        
+                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
+                date             =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])   ).",            
+                last_active      =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                   ).",
+                note             =". $this->app->db->qstr( $qform['note']                       )."
+                WHERE refund_id  =". $this->app->db->qstr( $qform['refund_id']                  );                        
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
         } else {
 
             $refund_details = $this->get_refund_details($qform['refund_id']);
@@ -348,13 +348,13 @@ class Refund extends Components {
         $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."refund_records SET
-                status             =". $this->db->qstr( $new_status   ).",
-                closed_on          =". $this->db->qstr( $closed_on    ).",
-                last_active        =". $this->db->qstr( $datetime     )." 
-                WHERE refund_id    =". $this->db->qstr( $refund_id    );
+                status             =". $this->app->db->qstr( $new_status   ).",
+                closed_on          =". $this->app->db->qstr( $closed_on    ).",
+                last_active        =". $this->app->db->qstr( $datetime     )." 
+                WHERE refund_id    =". $this->app->db->qstr( $refund_id    );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update an refund Status."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an refund Status."));
 
         } else {    
 
@@ -441,7 +441,7 @@ class Refund extends Components {
     public function delete_refund($refund_id) {
 
         // Make sure the invoice can be deleted (does not harm to check again here, other check is on status button)
-        if(!$this->$this->check_refund_can_be_deleted($refund_id)) {        
+        if(!$this->check_refund_can_be_deleted($refund_id)) {        
             return false;
         }
 
@@ -479,10 +479,10 @@ class Refund extends Components {
                 opened_on           = '0000-00-00 00:00:00',
                 closed_on           = '0000-00-00 00:00:00',
                 note                = ''
-                WHERE refund_id    =". $this->db->qstr($refund_details['refund_id']);
+                WHERE refund_id    =". $this->app->db->qstr($refund_details['refund_id']);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
         } else {
 
             // Get related workorder_id
@@ -516,8 +516,8 @@ class Refund extends Components {
 
         $sql = "SELECT * FROM ".PRFX."refund_records ORDER BY refund_id DESC LIMIT 1";
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
         } else {
 
             return $rs->fields['refund_id'];
@@ -539,11 +539,11 @@ class Refund extends Components {
         $balance                    = $unit_gross - $payments_sub_total;
 
         $sql = "UPDATE ".PRFX."refund_records SET
-                balance             =". $this->db->qstr( $balance   )."
-                WHERE refund_id     =". $this->db->qstr( $refund_id );
+                balance             =". $this->app->db->qstr( $balance   )."
+                WHERE refund_id     =". $this->app->db->qstr( $refund_id );
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the refund totals."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the refund totals."));
         } else {
 
             /* Update Status - only change if there is a change in status */        

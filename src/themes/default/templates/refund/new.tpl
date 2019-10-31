@@ -139,8 +139,8 @@
                                                                     </tbody>
                                                                         <tr>
                                                                             <td colspan="2">
-                                                                                <input type="hidden" name="workorder_id" value="{$refund_details.workorder_id}">
-                                                                                <input type="hidden" name="tax_system" value="{$refund_details.tax_system}">
+                                                                                <input type="hidden" name="qform[workorder_id]" value="{$refund_details.workorder_id}">
+                                                                                <input type="hidden" name="qform[tax_system]" value="{$refund_details.tax_system}">
                                                                                 <button type="submit" name="submit" value="submit" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit{/t}</button> 
                                                                                 <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>
                                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=refund&page_tpl=search';">{t}Cancel{/t}</button>

@@ -101,7 +101,7 @@ if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['token
         if($this->app->components->user->validate_reset_token(\CMSApplication::$VAR['token'])) {
 
             // Authorise the actual password change, return the secret code and assign reset code into Smarty
-            $this->app->smarty->assign('reset_code', $this->app->component->user->authorise_password_reset(\CMSApplication::$VAR['token']));
+            $this->app->smarty->assign('reset_code', $this->app->components->user->authorise_password_reset(\CMSApplication::$VAR['token']));
 
             // Load the 'Enter Password' form
             $stage = 'enter_password';

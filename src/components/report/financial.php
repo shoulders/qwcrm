@@ -33,7 +33,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->smarty->assign('invoice_stats', $invoice_stats );       
         
     // Vouchers
-    $voucher_stats = $this->app->components->report->$this->app->components->report->get_vouchers_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);
+    $voucher_stats = $this->app->components->report->get_vouchers_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);
     $this->app->smarty->assign('voucher_stats', $voucher_stats);
        
     // Payments

@@ -44,21 +44,21 @@ class Client extends Components {
         $whereTheseRecords = " WHERE ".PRFX."client_records.client_id\n";    
 
         // Search category (display_name) and search term
-        if($search_category == 'display_name') { $havingTheseRecords .= " HAVING display_name LIKE ".$this->db->qstr('%'.$search_term.'%'); }
+        if($search_category == 'display_name') { $havingTheseRecords .= " HAVING display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%'); }
 
         // Search category (full_name) and search term
-        elseif($search_category == 'full_name') { $havingTheseRecords .= " HAVING full_name LIKE ".$this->db->qstr('%'.$search_term.'%'); }
+        elseif($search_category == 'full_name') { $havingTheseRecords .= " HAVING full_name LIKE ".$this->app->db->qstr('%'.$search_term.'%'); }
 
         // Search category with search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."client_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');}     
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."client_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');}     
 
         /* Filter the Records */     
 
         // Restrict by Type
-        if($type) {$whereTheseRecords .= " AND ".PRFX."client_records.type= ".$this->db->qstr($type);}    
+        if($type) {$whereTheseRecords .= " AND ".PRFX."client_records.type= ".$this->app->db->qstr($type);}    
 
         // Restrict by Status (is null because using boolean/integer)
-        if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."client_records.active=".$this->db->qstr($status);}
+        if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."client_records.active=".$this->app->db->qstr($status);}
 
         /* The SQL code */    
 
@@ -83,29 +83,29 @@ class Client extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);        
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching client records."));
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching client records."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $this->smarty->assign('total_results', $total_results);
+                $this->app->smarty->assign('total_results', $total_results);
             }  
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $this->smarty->assign('total_pages', $total_pages);
+            $this->app->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $this->smarty->assign('page_no', $page_no);
+            $this->app->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $this->smarty->assign('previous_page_no', $previous_page_no);          
+            $this->app->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $this->smarty->assign('next_page_no', $next_page_no);
+            $this->app->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -117,14 +117,14 @@ class Client extends Components {
         } else {
 
             // This make the drop down menu look correct
-            $this->smarty->assign('total_pages', 1);
+            $this->app->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching client records."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching client records."));
 
         } else {        
 
@@ -153,35 +153,35 @@ class Client extends Components {
     public function insert_client($qform) {
 
         $sql = "INSERT INTO ".PRFX."client_records SET
-                opened_on       =". $this->db->qstr( $this->app->system->general->mysql_datetime()         ).",
-                company_name    =". $this->db->qstr( $qform['company_name']     ).",
-                first_name      =". $this->db->qstr( $qform['first_name']       ).",
-                last_name       =". $this->db->qstr( $qform['last_name']        ).",
-                website         =". $this->db->qstr( $this->app->components->general->process_inputted_url($qform['website'])).",
-                email           =". $this->db->qstr( $qform['email']            ).",     
-                credit_terms    =". $this->db->qstr( $qform['credit_terms']     ).",
-                unit_discount_rate   =". $this->db->qstr( $qform['unit_discount_rate']    ).",
-                type            =". $this->db->qstr( $qform['type']             ).",
-                active          =". $this->db->qstr( $qform['active']           ).",
-                primary_phone   =". $this->db->qstr( $qform['primary_phone']    ).",    
-                mobile_phone    =". $this->db->qstr( $qform['mobile_phone']     ).",
-                fax             =". $this->db->qstr( $qform['fax']              ).",
-                address         =". $this->db->qstr( $qform['address']          ).",
-                city            =". $this->db->qstr( $qform['city']             ).", 
-                state           =". $this->db->qstr( $qform['state']            ).", 
-                zip             =". $this->db->qstr( $qform['zip']              ).",
-                country         =". $this->db->qstr( $qform['country']          ).",
-                note            =". $this->db->qstr( $qform['note']             );          
+                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()         ).",
+                company_name    =". $this->app->db->qstr( $qform['company_name']     ).",
+                first_name      =". $this->app->db->qstr( $qform['first_name']       ).",
+                last_name       =". $this->app->db->qstr( $qform['last_name']        ).",
+                website         =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])).",
+                email           =". $this->app->db->qstr( $qform['email']            ).",     
+                credit_terms    =". $this->app->db->qstr( $qform['credit_terms']     ).",
+                unit_discount_rate   =". $this->app->db->qstr( $qform['unit_discount_rate']    ).",
+                type            =". $this->app->db->qstr( $qform['type']             ).",
+                active          =". $this->app->db->qstr( $qform['active']           ).",
+                primary_phone   =". $this->app->db->qstr( $qform['primary_phone']    ).",    
+                mobile_phone    =". $this->app->db->qstr( $qform['mobile_phone']     ).",
+                fax             =". $this->app->db->qstr( $qform['fax']              ).",
+                address         =". $this->app->db->qstr( $qform['address']          ).",
+                city            =". $this->app->db->qstr( $qform['city']             ).", 
+                state           =". $this->app->db->qstr( $qform['state']            ).", 
+                zip             =". $this->app->db->qstr( $qform['zip']              ).",
+                country         =". $this->app->db->qstr( $qform['country']          ).",
+                note            =". $this->app->db->qstr( $qform['note']             );          
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));
         } else {
 
-            $client_id = $this->db->Insert_ID();
+            $client_id = $this->app->db->Insert_ID();
 
             // Log activity
             $record = _gettext("New client").', '.$this->get_client_details($client_id, 'display_name').', '._gettext("has been created.");
-            $this->app->system->general->write_record_to_activity_log($record, null, $this->db->Insert_ID());  
+            $this->app->system->general->write_record_to_activity_log($record, null, $this->app->db->Insert_ID());  
 
             return $client_id;
 
@@ -196,13 +196,13 @@ class Client extends Components {
     public function insert_client_note($client_id, $note) {
 
         $sql = "INSERT INTO ".PRFX."client_notes SET            
-                employee_id =". $this->db->qstr( $this->app->user->login_user_id   ).",
-                client_id   =". $this->db->qstr( $client_id                           ).",
-                date        =". $this->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
-                note        =". $this->db->qstr( $note                                );
+                employee_id =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
+                client_id   =". $this->app->db->qstr( $client_id                           ).",
+                date        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                note        =". $this->app->db->qstr( $note                                );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the client note into the database."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the client note into the database."));
 
         } else {
 
@@ -232,10 +232,10 @@ class Client extends Components {
             return;        
         }
 
-        $sql = "SELECT * FROM ".PRFX."client_records WHERE client_id=".$this->db->qstr($client_id);
+        $sql = "SELECT * FROM ".PRFX."client_records WHERE client_id=".$this->app->db->qstr($client_id);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the client's details."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the client's details."));
         } else { 
 
             if($item === null) {
@@ -277,10 +277,10 @@ class Client extends Components {
 
     public function get_client_note_details($client_note_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."client_notes WHERE client_note_id=".$this->db->qstr($client_note_id);    
+        $sql = "SELECT * FROM ".PRFX."client_notes WHERE client_note_id=".$this->app->db->qstr($client_note_id);    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the client note."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the client note."));
         } else { 
 
             if($item === null){
@@ -312,10 +312,10 @@ class Client extends Components {
 
                 FROM ".PRFX."client_notes
                 LEFT JOIN ".PRFX."user_records ON ".PRFX."client_notes.employee_id = ".PRFX."user_records.user_id
-                WHERE ".PRFX."client_notes.client_id=".$this->db->qstr($client_id);
+                WHERE ".PRFX."client_notes.client_id=".$this->app->db->qstr($client_id);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the client's notes."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the client's notes."));
         } else {
 
             return $rs->GetArray(); 
@@ -332,8 +332,8 @@ class Client extends Components {
 
         $sql = "SELECT * FROM ".PRFX."client_types";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get client types."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get client types."));
         } else {
 
             return $rs->GetArray();
@@ -351,28 +351,28 @@ class Client extends Components {
     public function update_client($qform) {
 
         $sql = "UPDATE ".PRFX."client_records SET
-                company_name    =". $this->db->qstr( $qform['company_name']     ).",
-                first_name      =". $this->db->qstr( $qform['first_name']       ).",
-                last_name       =". $this->db->qstr( $qform['last_name']        ).",
-                website         =". $this->db->qstr( $this->app->components->general->process_inputted_url($qform['website'])).",
-                email           =". $this->db->qstr( $qform['email']            ).",     
-                credit_terms    =". $this->db->qstr( $qform['credit_terms']     ).",               
-                unit_discount_rate   =". $this->db->qstr( $qform['unit_discount_rate']    ).",
-                type            =". $this->db->qstr( $qform['type']             ).", 
-                active          =". $this->db->qstr( $qform['active']           ).", 
-                primary_phone   =". $this->db->qstr( $qform['primary_phone']    ).",    
-                mobile_phone    =". $this->db->qstr( $qform['mobile_phone']     ).",
-                fax             =". $this->db->qstr( $qform['fax']              ).",
-                address         =". $this->db->qstr( $qform['address']          ).",
-                city            =". $this->db->qstr( $qform['city']             ).", 
-                state           =". $this->db->qstr( $qform['state']            ).", 
-                zip             =". $this->db->qstr( $qform['zip']              ).",
-                country         =". $this->db->qstr( $qform['country']          ).",
-                note            =". $this->db->qstr( $qform['note']             )."
-                WHERE client_id  =". $this->db->qstr( $qform['client_id']       );
+                company_name    =". $this->app->db->qstr( $qform['company_name']     ).",
+                first_name      =". $this->app->db->qstr( $qform['first_name']       ).",
+                last_name       =". $this->app->db->qstr( $qform['last_name']        ).",
+                website         =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])).",
+                email           =". $this->app->db->qstr( $qform['email']            ).",     
+                credit_terms    =". $this->app->db->qstr( $qform['credit_terms']     ).",               
+                unit_discount_rate   =". $this->app->db->qstr( $qform['unit_discount_rate']    ).",
+                type            =". $this->app->db->qstr( $qform['type']             ).", 
+                active          =". $this->app->db->qstr( $qform['active']           ).", 
+                primary_phone   =". $this->app->db->qstr( $qform['primary_phone']    ).",    
+                mobile_phone    =". $this->app->db->qstr( $qform['mobile_phone']     ).",
+                fax             =". $this->app->db->qstr( $qform['fax']              ).",
+                address         =". $this->app->db->qstr( $qform['address']          ).",
+                city            =". $this->app->db->qstr( $qform['city']             ).", 
+                state           =". $this->app->db->qstr( $qform['state']            ).", 
+                zip             =". $this->app->db->qstr( $qform['zip']              ).",
+                country         =". $this->app->db->qstr( $qform['country']          ).",
+                note            =". $this->app->db->qstr( $qform['note']             )."
+                WHERE client_id  =". $this->app->db->qstr( $qform['client_id']       );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the Client's details."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Client's details."));
         } else {
 
             // Log activity        
@@ -395,12 +395,12 @@ class Client extends Components {
     public function update_client_note($client_note_id, $note) {
 
         $sql = "UPDATE ".PRFX."client_notes SET
-                employee_id             =". $this->db->qstr( $this->app->user->login_user_id   ).",            
-                note                    =". $this->db->qstr( $note                                )."
-                WHERE client_note_id    =". $this->db->qstr( $client_note_id                      );
+                employee_id             =". $this->app->db->qstr( $this->app->user->login_user_id   ).",            
+                note                    =". $this->app->db->qstr( $note                                )."
+                WHERE client_note_id    =". $this->app->db->qstr( $client_note_id                      );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the client note."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the client note."));
 
         } else {
 
@@ -428,11 +428,11 @@ class Client extends Components {
         if(!$client_id) { return; }    
 
         $sql = "UPDATE ".PRFX."client_records SET
-                last_active=".$this->db->qstr( $this->app->system->general->mysql_datetime() )."
-                WHERE client_id=".$this->db->qstr($client_id);
+                last_active=".$this->app->db->qstr( $this->app->system->general->mysql_datetime() )."
+                WHERE client_id=".$this->app->db->qstr($client_id);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a Client's last active time."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Client's last active time."));
         }
 
     }
@@ -458,15 +458,15 @@ class Client extends Components {
         $client_details = $this->get_client_details($client_id);
 
         // Delete any Client user accounts
-        $sql = "DELETE FROM ".PRFX."user_records WHERE client_id=".$this->db->qstr($client_id);    
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the client's users from the database."));
+        $sql = "DELETE FROM ".PRFX."user_records WHERE client_id=".$this->app->db->qstr($client_id);    
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the client's users from the database."));
         }
 
         // Delete Client
-        $sql = "DELETE FROM ".PRFX."client_records WHERE client_id=".$this->db->qstr($client_id);    
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the client from the database."));
+        $sql = "DELETE FROM ".PRFX."client_records WHERE client_id=".$this->app->db->qstr($client_id);    
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the client from the database."));
         }
 
         // Write the record to the activity log                    
@@ -487,10 +487,10 @@ class Client extends Components {
         $client_id = $this->get_client_note_details($client_note_id, 'client_id');
         $employee_id = $this->get_client_note_details($client_note_id, 'employee_id');
 
-        $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$this->db->qstr($client_note_id);
+        $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$this->app->db->qstr($client_note_id);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the client note."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the client note."));
 
         } else {        
 
@@ -515,10 +515,10 @@ class Client extends Components {
 
     public function check_client_display_name_exists($display_name) {
 
-        $sql = "SELECT COUNT(*) AS count FROM ".PRFX."client_records WHERE display_name=".$this->db->qstr($display_name);
+        $sql = "SELECT COUNT(*) AS count FROM ".PRFX."client_records WHERE display_name=".$this->app->db->qstr($display_name);
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));
         } else {
             $row = $rs->FetchRow();
         }
@@ -584,9 +584,9 @@ class Client extends Components {
         $state_flag = true;
 
         // Check if client has any workorders
-        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$this->db->qstr($client_id);    
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the client's Workorders in the database."));
+        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$this->app->db->qstr($client_id);    
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the client's Workorders in the database."));
         }  
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has work orders.');
@@ -594,9 +594,9 @@ class Client extends Components {
         }
 
         // Check if client has any invoices
-        $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE client_id=".$this->db->qstr($client_id);    
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the client's Invoices in the database."));
+        $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE client_id=".$this->app->db->qstr($client_id);    
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the client's Invoices in the database."));
         }    
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has invoices.');
@@ -604,9 +604,9 @@ class Client extends Components {
         }    
 
         // Check if client has any Vouchers
-        $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE client_id=".$this->db->qstr($client_id);
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the client's Vouchers in the database."));
+        $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE client_id=".$this->app->db->qstr($client_id);
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the client's Vouchers in the database."));
         }  
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has Vouchers.');
@@ -614,9 +614,9 @@ class Client extends Components {
         }
 
         // Check if client has any client notes
-        $sql = "SELECT count(*) as count FROM ".PRFX."client_notes WHERE client_id=".$this->db->qstr($client_id);
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the client's Notes in the database."));
+        $sql = "SELECT count(*) as count FROM ".PRFX."client_notes WHERE client_id=".$this->app->db->qstr($client_id);
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the client's Notes in the database."));
         }    
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has client notes.');

@@ -57,7 +57,7 @@ unset($options);
 
 // If logout is set, then log the user off
 if (\CMSApplication::$VAR['action'] == 'logout') {    
-    $this->app->component->user->logout();
+    $this->app->components->user->logout();
 }
 
 // Build the page

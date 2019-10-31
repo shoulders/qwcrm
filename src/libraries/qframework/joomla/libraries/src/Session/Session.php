@@ -1105,7 +1105,7 @@ class Session implements \IteratorAggregate
                 
                 $sql = "INSERT INTO ".PRFX."session SET  
                         session_id      =". $db->qstr( $this->getId()                   ).",
-                        clientid        =". (int) \Factory::getClientId()              .", 
+                        clientid        =". (int) \CMSApplication::getClientId()        .", 
                         guest           =". (int) $user->guest                          .",
                         time            =". (int) $this->get('session.timer.start')     .",
                         userid          =". (int) $user->id                             .",

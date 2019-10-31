@@ -128,7 +128,7 @@
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Logo{/t}:</b></td>
                                                                                     <td>
-                                                                                        <input name="qform[logo]" type="file" accept=".png, .jpg, .jpeg, .gif">
+                                                                                        <input name="logo" type="file" accept=".png, .jpg, .jpeg, .gif">
                                                                                         {if $company_details.logo}
                                                                                             <img src="{$company_logo}" height="50px" alt="{t}Company Logo{/t}">
                                                                                         {else}
@@ -244,7 +244,7 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Tax System{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                         <td>
-                                                                            <select class="olotd5" id="tax_system" name="qform[tax_system">               
+                                                                            <select class="olotd5" id="tax_system" name="qform[tax_system]">               
                                                                                 {section name=s loop=$tax_systems}
                                                                                     <option value="{$tax_systems[s].type_key}"{if $company_details.tax_system == $tax_systems[s].type_key} selected{/if}>{t}{$tax_systems[s].display_name}{/t}</option>
                                                                                 {/section}
