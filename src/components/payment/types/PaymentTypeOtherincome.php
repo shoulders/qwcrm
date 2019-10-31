@@ -8,26 +8,26 @@
 
 defined('_QWEXEC') or die;
 
-class PType {
+class PaymentTypeOtherincome {
     
-    private $VAR = null;
-    private $smarty = null;
+    private $app = null;
+    private $VAR = null;    
     private $otherincome_details = null;
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
-        $this->VAR = &$VAR;
-        $this->smarty = \Factory::getSmarty(); 
+        // Set class variables
+        $this->app = \Factory::getApplication();
+        $this->VAR = &\CMSApplication::$VAR;        
         $this->otherincome_details = $this->app->components->otherincome->get_otherincome_details($this->VAR['qpayment']['otherincome_id']);
         
         // Set intial record balance
-        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->otherincome_details['balance'];}
-        if(class_exists('UpdatePayment')) {UpdatePayment::$record_balance = $this->otherincome_details['balance'];}
+        Payment::$record_balance = $this->otherincome_details['balance'];
         
         // Assign Type specific template variables  
-        $this->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('receive', 'enabled'));
-        $this->smarty->assign('otherincome_details', $this->otherincome_details);
-        $this->smarty->assign('otherincome_statuses', $this->app->components->otherincome->get_otherincome_statuses());
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('receive', 'enabled'));
+        $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
+        $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->get_otherincome_statuses());
         
     }
     
@@ -39,18 +39,18 @@ class PType {
         $this->VAR['qpayment']['workorder_id'] = '';
         
         // Validate payment_amount (New Payments)
-        if(class_exists('NewPayment')) {
-            NewPayment::$record_balance = $this->otherincome_details['balance'];
-            if(!$this->app->components->payment->validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
-                NewPayment::$payment_valid = false;
+        if(Payment::$action === 'new') {
+            Payment::$record_balance = $this->otherincome_details['balance'];
+            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
+                Payment::$payment_valid = false;
             }
         }
         
         // Validate payment_amount (Payment Update)
-        if(class_exists('UpdatePayment')) {
-            UpdatePayment::$record_balance = ($this->otherincome_details['balance'] + UpdatePayment::$payment_details['amount']);
-            if(!$this->app->components->payment->validate_payment_amount(UpdatePayment::$record_balance, UpdatePayment::$payment_details['amount'])) {
-                UpdatePayment::$payment_valid = false;
+        if(Payment::$action === 'update') {
+            Payment::$record_balance = ($this->otherincome_details['balance'] + Payment::$payment_details['amount']);
+            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, Payment::$payment_details['amount'])) {
+                Payment::$payment_valid = false;
             }
         }
         
@@ -66,8 +66,8 @@ class PType {
         
         // Refresh the record data        
         $this->otherincome_details = $this->app->components->otherincome->get_otherincome_details($this->VAR['qpayment']['otherincome_id']);
-        $this->smarty->assign('otherincome_details', $this->otherincome_details);
-        NewPayment::$record_balance = $this->otherincome_details['balance'];
+        $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
+        Payment::$record_balance = $this->otherincome_details['balance'];
         
         return;
         
@@ -91,31 +91,31 @@ class PType {
         
         // Submit
         if($this->otherincome_details['balance'] > 0) {
-            NewPayment::$buttons['submit']['allowed'] = true;
-            NewPayment::$buttons['submit']['url'] = null;
-            NewPayment::$buttons['submit']['title'] = _gettext("Submit Payment");
+            Payment::$buttons['submit']['allowed'] = true;
+            Payment::$buttons['submit']['url'] = null;
+            Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }        
         
         // Cancel
         if(!$this->otherincome_details['balance'] == 0) {
             if($this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'details')) {
-                NewPayment::$buttons['cancel']['allowed'] = true;
-                NewPayment::$buttons['cancel']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'];
-                NewPayment::$buttons['cancel']['title'] = _gettext("Cancel");
+                Payment::$buttons['cancel']['allowed'] = true;
+                Payment::$buttons['cancel']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'];
+                Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }            
         }
         
         // Return To Record
         if($this->app->system->security->check_page_accessed_via_qwcrm('payment', 'new')) {
-            NewPayment::$buttons['returnToRecord']['allowed'] = true;
-            NewPayment::$buttons['returnToRecord']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'];
-            NewPayment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
+            Payment::$buttons['returnToRecord']['allowed'] = true;
+            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'];
+            Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
         
         // Add New Record
-        NewPayment::$buttons['addNewRecord']['allowed'] = true;
-        NewPayment::$buttons['addNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new'; 
-        NewPayment::$buttons['addNewRecord']['title'] = _gettext("Add New Other Income Record");
+        Payment::$buttons['addNewRecord']['allowed'] = true;
+        Payment::$buttons['addNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new'; 
+        Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Other Income Record");
         
     }  
     
@@ -182,17 +182,16 @@ class PType {
     // Check Payment is allowed
     public function check_payment_allowed() {
         
+        $state_flag = true;
+        
         // Is on a different tax system
         if($this->otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The other income cannot receive a payment because it is on a different tax system."));
-            //return false;            
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The other income cannot receive a payment because it is on a different tax system."));
             $this->app->system->general->force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
-            
+            //$state_flag = false;
         }
 
-        // All checks passed
-        return true;
+        return $state_flag;
        
     }
     

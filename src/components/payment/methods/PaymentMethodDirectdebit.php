@@ -8,21 +8,22 @@
 
 defined('_QWEXEC') or die;
 
-class PMethod {
+class PaymentMethodDirectdebit {
     
-    private $VAR = null;
-    private $smarty = null;
+    private $app = null;
+    private $VAR = null;    
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
-        $this->VAR = &$VAR;
-        $this->smarty = \Factory::getSmarty();
-        
+        // Set class variables
+        $this->app = \Factory::getApplication();
+        $this->VAR = &\CMSApplication::$VAR;
+                
     }
     
     // Pre-Processing
     public function pre_process() {
-        
+
             return true;
             
     }
@@ -31,7 +32,7 @@ class PMethod {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json();  
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json(null, null, null, null, $this->VAR['qpayment']['direct_debit_reference']);   
         
         // Insert the payment with the calculated information
         if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
@@ -48,16 +49,16 @@ class PMethod {
         // Set success/failure message
         if(!NewPayment::$payment_processed) {
         
-            $this->smarty->assign('msg_danger', _gettext("Cash payment was not successful."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Direct Debit payment was not successful."));
         
         } else {            
             
-            $this->smarty->assign('msg_success', _gettext("Cash payment added successfully."));
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Direct Debit payment added successfully."));
 
         }
         
         return;
        
-    }
+    }  
 
 }

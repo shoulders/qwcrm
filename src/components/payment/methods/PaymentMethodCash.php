@@ -8,21 +8,22 @@
 
 defined('_QWEXEC') or die;
 
-class PMethod extends NewPayment {
+class PaymentMethodCash {
     
+    private $app = null;
     private $VAR = null;
-    private $smarty = null;
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
-        $this->VAR = &$VAR;
-        $this->smarty = \Factory::getSmarty();
+        // Set class variables
+        $this->app = \Factory::getApplication();
+        $this->VAR = &\CMSApplication::$VAR;
         
     }
     
     // Pre-Processing
     public function pre_process() {
-
+        
             return true;
             
     }
@@ -31,11 +32,11 @@ class PMethod extends NewPayment {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json(null, null, null, $this->VAR['qpayment']['cheque_number']);
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json();  
         
         // Insert the payment with the calculated information
         if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
-            NewPayment::$payment_processed = true;            
+            Payment::$payment_processed = true;            
         }
         
         return;
@@ -46,18 +47,18 @@ class PMethod extends NewPayment {
     public function post_process() { 
         
         // Set success/failure message
-        if(!NewPayment::$payment_processed) {
+        if(!Payment::$payment_processed) {
         
-            $this->smarty->assign('msg_danger', _gettext("Cheque payment was not successful."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cash payment was not successful."));
         
         } else {            
             
-            $this->smarty->assign('msg_success', _gettext("Cheque payment added successfully."));
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Cash payment added successfully."));
 
         }
         
         return;
        
-    }  
+    }
 
 }

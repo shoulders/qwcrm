@@ -8,15 +8,16 @@
 
 defined('_QWEXEC') or die;
 
-class PMethod extends NewPayment {
+class PaymentMethodPaypal {
     
+    private $app = null;
     private $VAR = null;
-    private $smarty = null;
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
-        $this->VAR = &$VAR;
-        $this->smarty = \Factory::getSmarty();
+        // Set class variables
+        $this->app = \Factory::getApplication();
+        $this->VAR = &\CMSApplication::$VAR;
         
     }
     
@@ -31,7 +32,7 @@ class PMethod extends NewPayment {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json(null, $this->VAR['qpayment']['card_type_key'], $this->VAR['qpayment']['name_on_card']);  
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json(null, null, null, null, null, $this->VAR['qpayment']['paypal_payment_id']);  
         
         // Insert the payment with the calculated information
         if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
@@ -48,16 +49,16 @@ class PMethod extends NewPayment {
         // Set success/failure message
         if(!NewPayment::$payment_processed) {
         
-            $this->smarty->assign('msg_danger', _gettext("Card payment was not successful."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("PayPal payment was not successful."));
         
         } else {            
             
-            $this->smarty->assign('msg_success', _gettext("Card payment added successfully."));
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("PayPal payment added successfully."));
 
         }
         
         return;
        
-    } 
+    }
 
 }

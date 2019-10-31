@@ -14,7 +14,8 @@
             <td class="olohead"><b>{t}Net{/t}</b></td>
             <td class="olohead"><b>{t}VAT{/t}</b></td>
         {/if}      
-        <td class="olohead"><b>{t}Gross{/t}</b></td>         
+        <td class="olohead"><b>{t}Gross{/t}</b></td>   
+        <td class="olohead"><b>{t}Paid{/t}</b></td> 
         <td class="olohead"><b>{t}Balance{/t}</b></td>
         <td class="olohead"><b>{t}Status{/t}</b></td>
     </tr>
@@ -26,6 +27,7 @@
             <td class="olotd4">{$currency_sym}{$otherincome_details.unit_tax|string_format:"%.2f"}</td>
         {/if}
         <td class="olotd4">{$currency_sym}{$otherincome_details.unit_gross|string_format:"%.2f"}</td> 
+        <td class="olotd4">{$currency_sym}{$otherincome_details.unit_gross - $otherincome_details.balance|string_format:"%.2f"}</td> 
         <td class="olotd4"><font color="#cc0000"><b>{$currency_sym}{$otherincome_details.balance|string_format:"%.2f"}</b></font></td>  
         <td class="olotd4">
             {section name=s loop=$otherincome_statuses}

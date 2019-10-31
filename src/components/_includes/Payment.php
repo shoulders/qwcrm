@@ -21,6 +21,16 @@
 defined('_QWEXEC') or die;
 
 class Payment extends Components {
+    
+    // Used for Payment Types and Methods
+    public static $action = '';
+    public static $buttons = array();
+    public static $payment_details = array();
+    public static $payment_valid = true;
+    public static $payment_processed = false;
+    public static $record_balance = null;
+    //public static $paymentType = null;      // not currently used here
+    //public static $paymentMtehod = null;    // not currently used here
 
     /** Mandatory Code **/
 
@@ -44,13 +54,13 @@ class Payment extends Components {
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
 
        // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}     
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}     
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');} 
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
 
         /* Filter the Records */
 
@@ -67,34 +77,34 @@ class Payment extends Components {
 
             // Return records for the given type
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->db->qstr($type);            
+                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qstr($type);            
             }
 
         }
 
         // Restrict by method
-        if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->db->qstr($method);}
+        if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qstr($method);}
 
         // Restrict by status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->db->qstr($status);}   
+        if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qstr($status);}   
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->app->db->qstr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qstr($client_id);}
 
         // Restrict by Invoice
-        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->db->qstr($invoice_id);}    
+        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qstr($invoice_id);}    
 
         // Restrict by Refund
-        if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->db->qstr($refund_id);} 
+        if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->app->db->qstr($refund_id);} 
 
         // Restrict by Expense
-        if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->db->qstr($expense_id);} 
+        if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qstr($expense_id);} 
 
         // Restrict by Otherincome
-        if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->db->qstr($otherincome_id);}             
+        if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qstr($otherincome_id);}             
 
         /* The SQL code */
 
@@ -121,29 +131,29 @@ class Payment extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the matching payments."));
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching payments."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $this->smarty->assign('total_results', $total_results);
+                $this->app->smarty->assign('total_results', $total_results);
             }        
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $this->smarty->assign('total_pages', $total_pages);
+            $this->app->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $this->smarty->assign('page_no', $page_no);
+            $this->app->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $this->smarty->assign('previous_page_no', $previous_page_no);          
+            $this->app->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $this->smarty->assign('next_page_no', $next_page_no);
+            $this->app->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -154,14 +164,14 @@ class Payment extends Components {
         } else {
 
             // This make the drop down menu look correct
-            $this->smarty->assign('total_pages', 1);
+            $this->app->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
         } else {
 
             $records = $rs->GetArray();   // do i need to add the check empty
@@ -189,31 +199,31 @@ class Payment extends Components {
     public function insert_payment($qpayment) {
 
         $sql = "INSERT INTO ".PRFX."payment_records SET            
-                employee_id     = ".$this->db->qstr( $this->app->user->login_user_id       ).",
-                client_id       = ".$this->db->qstr( $qpayment['client_id']                   ).",
-                workorder_id    = ".$this->db->qstr( $qpayment['workorder_id']                ).",
-                invoice_id      = ".$this->db->qstr( $qpayment['invoice_id']                  ).",
-                voucher_id      = ".$this->db->qstr( $qpayment['voucher_id']                  ).",               
-                refund_id       = ".$this->db->qstr( $qpayment['refund_id']                   ).", 
-                expense_id      = ".$this->db->qstr( $qpayment['expense_id']                  ).", 
-                otherincome_id  = ".$this->db->qstr( $qpayment['otherincome_id']              ).",
-                date            = ".$this->db->qstr( $this->app->system->general->date_to_mysql_date($qpayment['date'])    ).",
-                tax_system      = ".$this->db->qstr( QW_TAX_SYSTEM                            ).",   
-                type            = ".$this->db->qstr( $qpayment['type']                        ).",
-                method          = ".$this->db->qstr( $qpayment['method']                      ).",
+                employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id       ).",
+                client_id       = ".$this->app->db->qstr( $qpayment['client_id']                   ).",
+                workorder_id    = ".$this->app->db->qstr( $qpayment['workorder_id']                ).",
+                invoice_id      = ".$this->app->db->qstr( $qpayment['invoice_id']                  ).",
+                voucher_id      = ".$this->app->db->qstr( $qpayment['voucher_id']                  ).",               
+                refund_id       = ".$this->app->db->qstr( $qpayment['refund_id']                   ).", 
+                expense_id      = ".$this->app->db->qstr( $qpayment['expense_id']                  ).", 
+                otherincome_id  = ".$this->app->db->qstr( $qpayment['otherincome_id']              ).",
+                date            = ".$this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qpayment['date'])    ).",
+                tax_system      = ".$this->app->db->qstr( QW_TAX_SYSTEM                            ).",   
+                type            = ".$this->app->db->qstr( $qpayment['type']                        ).",
+                method          = ".$this->app->db->qstr( $qpayment['method']                      ).",
                 status          = 'valid',
-                amount          = ".$this->db->qstr( $qpayment['amount']                      ).",
-                last_active     =". $this->db->qstr( $this->app->system->general->mysql_datetime()                         ).",
-                additional_info = ".$this->db->qstr( $qpayment['additional_info']             ).",
-                note            = ".$this->db->qstr( $qpayment['note']                        );
+                amount          = ".$this->app->db->qstr( $qpayment['amount']                      ).",
+                last_active     =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                         ).",
+                additional_info = ".$this->app->db->qstr( $qpayment['additional_info']             ).",
+                note            = ".$this->app->db->qstr( $qpayment['note']                        );
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
 
         } else {
 
             // Get Payment Record ID
-            $payment_id = $this->db->Insert_ID();
+            $payment_id = $this->app->db->Insert_ID();
 
             // Create a Workorder History Note       
             $this->app->components->workorder->insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
@@ -242,10 +252,10 @@ class Payment extends Components {
 
     public function get_payment_details($payment_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$this->db->qstr($payment_id);
+        $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$this->app->db->qstr($payment_id);
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
         } else {
 
             if($item === null){
@@ -270,8 +280,8 @@ class Payment extends Components {
 
         $sql = "SELECT * FROM ".PRFX."payment_options";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment options."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment options."));
         } else {
 
             if($item === null){
@@ -311,8 +321,8 @@ class Payment extends Components {
             $sql .= "\nAND enabled = '1'";        
         }
 
-        if(!$rs = $this->db->execute($sql)) {        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment method types."));
+        if(!$rs = $this->app->db->execute($sql)) {        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment method types."));
         } else {
 
             return $rs->GetArray();            
@@ -329,8 +339,8 @@ class Payment extends Components {
 
         $sql = "SELECT * FROM ".PRFX."payment_types";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment types."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment types."));
         } else {
 
             //return $rs->GetRowAssoc();
@@ -348,8 +358,8 @@ class Payment extends Components {
 
         $sql = "SELECT * FROM ".PRFX."payment_statuses";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment statuses."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment statuses."));
         } else {
 
             //return $rs->GetRowAssoc();
@@ -371,8 +381,8 @@ class Payment extends Components {
                 FROM ".PRFX."payment_card_types
                 WHERE active='1'";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the active cards."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the active cards."));
         } else {
 
             $records = $rs->GetArray();
@@ -397,10 +407,10 @@ class Payment extends Components {
 
     public function get_card_display_name_from_key($type_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$this->db->qstr($type_key);
+        $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$this->app->db->qstr($type_key);
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
         } else {
 
             return $rs->fields['display_name'];
@@ -418,8 +428,8 @@ class Payment extends Components {
         $sql = "SELECT status_key, display_name
                 FROM ".PRFX."payment_statuses";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -439,7 +449,7 @@ class Payment extends Components {
     }
 
     #####################################
-    #  Get Card names as an array       #  // not currently used
+    #  Get Card names as an array       #  // Used in smarty modifier - libraries/vendor/smarty/smarty/libs/plugins/modifier.adinfodisplay.php
     #####################################
 
     public function get_payment_card_names() {
@@ -447,8 +457,8 @@ class Payment extends Components {
         $sql = "SELECT type_key, display_name
                 FROM ".PRFX."payment_card_types";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -468,16 +478,16 @@ class Payment extends Components {
     }
 
     ##########################################
-    #    Get Payment additional info names   # // not currently used
-    ##########################################
+    #    Get Payment additional info names   #  // Used in smarty modifier - libraries/vendor/smarty/smarty/libs/plugins/modifier.adinfodisplay.php
+    ##########################################  
 
     public function get_payment_additional_info_names() {
 
         $sql = "SELECT type_key, display_name
                 FROM ".PRFX."payment_additional_info_types";
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment additional info names."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment additional info names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -505,15 +515,15 @@ class Payment extends Components {
     public function update_payment($qpayment) {    
 
         $sql = "UPDATE ".PRFX."payment_records SET        
-                employee_id     = ".$this->db->qstr( $this->app->user->login_user_id    ).",
-                date            = ".$this->db->qstr( $this->app->system->general->date_to_mysql_date($qpayment['date']) ).",
-                amount          = ".$this->db->qstr( $qpayment['amount']                   ).",
-                last_active     =". $this->db->qstr( $this->app->system->general->mysql_datetime()                      ).",
-                note            = ".$this->db->qstr( $qpayment['note']                     )."
-                WHERE payment_id =". $this->db->qstr( $qpayment['payment_id']              );
+                employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id    ).",
+                date            = ".$this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qpayment['date']) ).",
+                amount          = ".$this->app->db->qstr( $qpayment['amount']                   ).",
+                last_active     =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                      ).",
+                note            = ".$this->app->db->qstr( $qpayment['note']                     )."
+                WHERE payment_id =". $this->app->db->qstr( $qpayment['payment_id']              );
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
 
         } else {
 
@@ -542,18 +552,18 @@ class Payment extends Components {
     public function update_payment_options($qform) {
 
         $sql = "UPDATE ".PRFX."payment_options SET            
-                bank_account_name           =". $this->db->qstr( $qform['bank_account_name']            ).",
-                bank_name                   =". $this->db->qstr( $qform['bank_name']                    ).",
-                bank_account_number         =". $this->db->qstr( $qform['bank_account_number']          ).",
-                bank_sort_code              =". $this->db->qstr( $qform['bank_sort_code']               ).",
-                bank_iban                   =". $this->db->qstr( $qform['bank_iban']                    ).",
-                paypal_email                =". $this->db->qstr( $qform['paypal_email']                 ).",        
-                invoice_bank_transfer_msg   =". $this->db->qstr( $qform['invoice_bank_transfer_msg']    ).",
-                invoice_cheque_msg          =". $this->db->qstr( $qform['invoice_cheque_msg']           ).",
-                invoice_footer_msg          =". $this->db->qstr( $qform['invoice_footer_msg']           );            
+                bank_account_name           =". $this->app->db->qstr( $qform['bank_account_name']            ).",
+                bank_name                   =". $this->app->db->qstr( $qform['bank_name']                    ).",
+                bank_account_number         =". $this->app->db->qstr( $qform['bank_account_number']          ).",
+                bank_sort_code              =". $this->app->db->qstr( $qform['bank_sort_code']               ).",
+                bank_iban                   =". $this->app->db->qstr( $qform['bank_iban']                    ).",
+                paypal_email                =". $this->app->db->qstr( $qform['paypal_email']                 ).",        
+                invoice_bank_transfer_msg   =". $this->app->db->qstr( $qform['invoice_bank_transfer_msg']    ).",
+                invoice_cheque_msg          =". $this->app->db->qstr( $qform['invoice_cheque_msg']           ).",
+                invoice_footer_msg          =". $this->app->db->qstr( $qform['invoice_footer_msg']           );            
 
-        if(!$rs = $this->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
         } else {
 
             // Log activity 
@@ -581,13 +591,13 @@ class Payment extends Components {
 
             $sql = "UPDATE ".PRFX."payment_methods
                     SET
-                    send                    = ". $this->db->qstr($payment_method['send']).",
-                    receive                 = ". $this->db->qstr($payment_method['receive']).",
-                    enabled                 = ". $this->db->qstr($payment_method['enabled'])."   
-                    WHERE method_key = ". $this->db->qstr($payment_method['method_key']); 
+                    send                    = ". $this->app->db->qstr($payment_method['send']).",
+                    receive                 = ". $this->app->db->qstr($payment_method['receive']).",
+                    enabled                 = ". $this->app->db->qstr($payment_method['enabled'])."   
+                    WHERE method_key = ". $this->app->db->qstr($payment_method['method_key']); 
 
-            if(!$rs = $this->db->execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
+            if(!$rs = $this->app->db->execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
             }
 
         }
@@ -615,12 +625,12 @@ class Payment extends Components {
         }    
 
         $sql = "UPDATE ".PRFX."payment_records SET
-                status               =". $this->db->qstr( $new_status      ).",
-                last_active          =". $this->db->qstr( $this->app->system->general->mysql_datetime() )."
-                WHERE payment_id     =". $this->db->qstr( $payment_id      );
+                status               =". $this->app->db->qstr( $new_status      ).",
+                last_active          =". $this->app->db->qstr( $this->app->system->general->mysql_datetime() )."
+                WHERE payment_id     =". $this->app->db->qstr( $payment_id      );
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
 
         } else {        
 
@@ -709,10 +719,10 @@ class Payment extends Components {
                 additional_info = '',
                 last_active         = '0000-00-00 00:00:00',
                 note            = ''
-                WHERE payment_id =". $this->db->qstr( $payment_id );    
+                WHERE payment_id =". $this->app->db->qstr( $payment_id );    
 
-        if(!$rs = $this->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
         } else {
 
             // Create a Workorder History Note       
@@ -801,10 +811,10 @@ class Payment extends Components {
 
         $sql = "SELECT *
                 FROM ".PRFX."payment_methods
-                WHERE method_key=".$this->db->qstr($method);
+                WHERE method_key=".$this->app->db->qstr($method);
 
-        if(!$rs = $this->db->execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
+        if(!$rs = $this->app->db->execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
 
         } else {
 
@@ -1012,4 +1022,31 @@ class Payment extends Components {
         return $state_flag; 
 
     }
+    
+    // Build the buttons array for payment buttons (currently only used for new payments)
+    function prepare_buttons_holder() {
+        
+        Payment::$buttons = array(
+            'submit' => array('allowed' => false, 'url' => null, 'title' => null),
+            'cancel' => array('allowed' => false, 'url' => null, 'title' => null),
+            'returnToRecord' => array('allowed' => false, 'url' => null, 'title' => null),
+            'addNewRecord' => array('allowed' => false, 'url' => null, 'title' => null)
+        );
+        
+    }
+    
+    // Build qpayment array - Set the various payment type IDs in to qpayment
+    function build_qpayment_array() {
+        
+        \CMSApplication::$VAR['qpayment']['payment_id'] = Payment::$payment_details['payment_id'];
+        \CMSApplication::$VAR['qpayment']['type'] = Payment::$payment_details['type'];
+        \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];
+        \CMSApplication::$VAR['qpayment']['voucher_id'] = Payment::$payment_details['voucher_id'];
+        \CMSApplication::$VAR['qpayment']['refund_id'] = Payment::$payment_details['refund_id'];
+        \CMSApplication::$VAR['qpayment']['expense_id'] = Payment::$payment_details['expense_id'];
+        \CMSApplication::$VAR['qpayment']['otherincome_id'] = Payment::$payment_details['otherincome_id'];
+        
+    }
+    
+    
 }

@@ -24,6 +24,6 @@ if(isset(\CMSApplication::$VAR['change_status'])){
 $this->app->smarty->assign('allowed_to_change_status',        $this->app->components->payment->check_payment_status_can_be_changed(\CMSApplication::$VAR['payment_id'])      );
 $this->app->smarty->assign('payment_status',                  $this->app->components->payment->get_payment_details(\CMSApplication::$VAR['payment_id'], 'status')             );
 $this->app->smarty->assign('payment_statuses',                $this->app->components->payment->get_payment_statuses() );
-$this->app->smarty->assign('allowed_to_cancel',               $this->app->components->payment->$this->app->components->payment->check_payment_can_be_cancelled(\CMSApplication::$VAR['payment_id'])   );
-$this->app->smarty->assign('allowed_to_delete',               $this->app->components->payment->check_payment_can_be_cancelled(\CMSApplication::$VAR['payment_id'])              );
+$this->app->smarty->assign('allowed_to_cancel',               $this->app->components->payment->check_payment_can_be_cancelled(\CMSApplication::$VAR['payment_id'])   );
+$this->app->smarty->assign('allowed_to_delete',               $this->app->components->payment->check_payment_can_be_deleted(\CMSApplication::$VAR['payment_id'])              );
 $this->app->smarty->assign('payment_selectable_statuses',     $this->app->components->payment->get_payment_statuses(true) );

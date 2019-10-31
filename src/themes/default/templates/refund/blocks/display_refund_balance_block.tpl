@@ -16,7 +16,8 @@
             <td class="olohead"><b>{t}Net{/t}</b></td>
             <td class="olohead"><b>{if '/^vat_/'|preg_match:$refund_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
         {/if} 
-        <td class="olohead"><b>{t}Gross{/t}</b></td>       
+        <td class="olohead"><b>{t}Gross{/t}</b></td>  
+        <td class="olohead"><b>{t}Paid{/t}</b></td> 
         <td class="olohead"><b>{t}Balance{/t}</b></td>
         <td class="olohead"><b>{t}Status{/t}</b></td>
     </tr>
@@ -30,6 +31,7 @@
             <td class="olotd4">{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>
         {/if}
         <td class="olotd4">{$currency_sym}{$refund_details.unit_gross|string_format:"%.2f"}</td> 
+        <td class="olotd4">{$currency_sym}{$refund_details.unit_gross - $refund_details.balance|string_format:"%.2f"}</td> 
         <td class="olotd4"><font color="#cc0000"><b>{$currency_sym}{$refund_details.balance|string_format:"%.2f"}</b></font></td>  
         <td class="olotd4">
             {section name=s loop=$refund_statuses}

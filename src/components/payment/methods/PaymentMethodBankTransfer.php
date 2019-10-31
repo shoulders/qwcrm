@@ -8,15 +8,17 @@
 
 defined('_QWEXEC') or die;
 
-class PMethod extends NewPayment {
+class PaymentMethodBanktransfer {
     
+    private $app = null;
     private $VAR = null;
     private $smarty = null;
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
-        $this->VAR = &$VAR;
-        $this->smarty = \Factory::getSmarty();
+        // Set class variables
+        $this->app = \Factory::getApplication();
+        $this->VAR = &\CMSApplication::$VAR;        
         
     }
     
@@ -31,7 +33,7 @@ class PMethod extends NewPayment {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json();  
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json($this->VAR['qpayment']['bank_transfer_reference']);     
         
         // Insert the payment with the calculated information
         if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
@@ -48,16 +50,16 @@ class PMethod extends NewPayment {
         // Set success/failure message
         if(!NewPayment::$payment_processed) {
         
-            $this->smarty->assign('msg_danger', _gettext("Other payment was not successful."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Bank Transfer payment was not successful."));
         
         } else {            
             
-            $this->smarty->assign('msg_success', _gettext("Other payment added successfully."));
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Bank Transfer payment added successfully."));
 
         }
         
         return;
        
-    } 
+    }  
 
 }

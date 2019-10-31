@@ -8,27 +8,27 @@
 
 defined('_QWEXEC') or die;
 
-class PType {
+class PaymentTypeInvoice {
     
-    private $VAR = null;
-    private $smarty = null;
+    private $app = null;
+    private $VAR = null;    
     private $invoice_details = null;
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
-        $this->VAR = &$VAR;
-        $this->smarty = \Factory::getSmarty();
+        // Set class variables
+        $this->app = \Factory::getApplication();
+        $this->VAR = &\CMSApplication::$VAR;        
         $this->invoice_details = $this->app->components->invoice->get_invoice_details($this->VAR['qpayment']['invoice_id']);
         
         // Set intial record balance
-        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->invoice_details['balance'];}
-        if(class_exists('UpdatePayment')) {UpdatePayment::$record_balance = $this->invoice_details['balance'];}
+        Payment::$record_balance = $this->invoice_details['balance'];
                        
         // Assign Type specific template variables        
-        $this->smarty->assign('client_details', $this->app->components->client->get_client_details($this->invoice_details['client_id']));
-        $this->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('receive', 'enabled'));
-        $this->smarty->assign('invoice_details', $this->invoice_details);
-        $this->smarty->assign('invoice_statuses', $this->app->components->invoice->get_invoice_statuses());        
+        $this->app->smarty->assign('client_details', $this->app->components->client->get_client_details($this->invoice_details['client_id']));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('receive', 'enabled'));
+        $this->app->smarty->assign('invoice_details', $this->invoice_details);
+        $this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->get_invoice_statuses());        
         
     }
         
@@ -40,18 +40,18 @@ class PType {
         $this->VAR['qpayment']['workorder_id'] = $this->invoice_details['workorder_id'];
         
         // Validate payment_amount (New Payments)
-        if(class_exists('NewPayment')) {
-            NewPayment::$record_balance = $this->invoice_details['balance'];
-            if(!$this->app->components->payment->validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
-                NewPayment::$payment_valid = false;
+        if(Payment::$action === 'new') {
+            //Payment::$record_balance = $this->invoice_details['balance'];  // this is not needed
+            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
+                Payment::$payment_valid = false;
             }
         }
         
         // Validate payment_amount (Payment Update)
-        if(class_exists('UpdatePayment')) {
-            UpdatePayment::$record_balance = ($this->invoice_details['balance'] + UpdatePayment::$payment_details['amount']);
-            if(!$this->app->components->payment->validate_payment_amount(UpdatePayment::$record_balance, UpdatePayment::$payment_details['amount'])) {
-                UpdatePayment::$payment_valid = false;
+        if(Payment::$action === 'update') {
+            Payment::$record_balance = ($this->invoice_details['balance'] + Payment::$payment_details['amount']);
+            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, Payment::$payment_details['amount'])) {
+                Payment::$payment_valid = false;
             }
         }
         
@@ -67,8 +67,8 @@ class PType {
         
         // Refresh the record data        
         $this->invoice_details = $this->app->components->invoice->get_invoice_details($this->VAR['qpayment']['invoice_id']);
-        $this->smarty->assign('invoice_details', $this->invoice_details);
-        NewPayment::$record_balance = $this->invoice_details['balance'];
+        $this->app->smarty->assign('invoice_details', $this->invoice_details);
+        Payment::$record_balance = $this->invoice_details['balance'];
         
         return;
        
@@ -92,38 +92,38 @@ class PType {
         
         // Submit
         if($this->invoice_details['balance'] > 0) {
-            NewPayment::$buttons['submit']['allowed'] = true;
-            NewPayment::$buttons['submit']['url'] = null;
-            NewPayment::$buttons['submit']['title'] = _gettext("Submit Payment");
+            Payment::$buttons['submit']['allowed'] = true;
+            Payment::$buttons['submit']['url'] = null;
+            Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }        
         
         // Cancel
         if(!$this->invoice_details['balance'] == 0) {
             
             if($this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'edit')) {
-                NewPayment::$buttons['cancel']['allowed'] = true;
-                NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];
-                NewPayment::$buttons['cancel']['title'] = _gettext("Cancel");
+                Payment::$buttons['cancel']['allowed'] = true;
+                Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+                Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
             if($this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'details')) {
-                NewPayment::$buttons['cancel']['allowed'] = true;
-                NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
-                NewPayment::$buttons['cancel']['title'] = _gettext("Cancel");
+                Payment::$buttons['cancel']['allowed'] = true;
+                Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+                Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
             
         }
         
         // Return To Record
         if($this->app->system->security->check_page_accessed_via_qwcrm('payment', 'new')) {
-            NewPayment::$buttons['returnToRecord']['allowed'] = true;
-            NewPayment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
-            NewPayment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
+            Payment::$buttons['returnToRecord']['allowed'] = true;
+            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+            Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
         
         // Add New Record
-        NewPayment::$buttons['addNewRecord']['allowed'] = false;
-        NewPayment::$buttons['addNewRecord']['url'] = null; 
-        NewPayment::$buttons['addNewRecord']['title'] = null;
+        Payment::$buttons['addNewRecord']['allowed'] = false;
+        Payment::$buttons['addNewRecord']['url'] = null; 
+        Payment::$buttons['addNewRecord']['title'] = null;
         
     }    
     
@@ -190,17 +190,17 @@ class PType {
     // Check Payment is allowed
     public function check_payment_allowed() {
         
+        $state_flag = true;
+        
         // Is on a different tax system
         if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));
-            //return false;            
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));            
             $this->app->system->general->force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+            //$state_flag = true;
             
         }
 
-        // All checks passed
-        return true;
+        return $state_flag;
        
     }
 

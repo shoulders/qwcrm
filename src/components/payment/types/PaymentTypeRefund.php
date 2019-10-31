@@ -8,28 +8,28 @@
 
 defined('_QWEXEC') or die;
 
-class PType {
+class PaymentTypeRefund {
     
-    private $VAR = null;
-    private $smarty = null;
+    private $app = null;
+    private $VAR = null;    
     private $refund_details = null;
     
-    public function __construct(&$VAR) {
-        
-        $this->VAR = &$VAR;
-        $this->smarty = \Factory::getSmarty();    
-        $this->refund_details = $this->app->components->refund->$this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);
+    public function __construct() {
+                
+        // Set class variables
+        $this->app = \Factory::getApplication();
+        $this->VAR = &\CMSApplication::$VAR;          
+        $this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);
         
         // Set intial record balance
-        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->refund_details['balance'];}
-        if(class_exists('UpdatePayment')) {UpdatePayment::$record_balance = $this->refund_details['balance'];}
+        Payment::$record_balance = $this->refund_details['balance'];
         
         // Assign Type specific template variables
-        $this->smarty->assign('client_details', $this->app->components->client->get_client_details($this->refund_details['client_id']));
-        $this->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('send', 'enabled'));
-        $this->smarty->assign('refund_details', $this->refund_details);
-        $this->smarty->assign('refund_statuses', $this->app->components->refund->get_refund_statuses());
-        $this->smarty->assign('name_on_card', $this->app->components->company->get_company_details('company_name'));
+        $this->app->smarty->assign('client_details', $this->app->components->client->get_client_details($this->refund_details['client_id']));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('send', 'enabled'));
+        $this->app->smarty->assign('refund_details', $this->refund_details);
+        $this->app->smarty->assign('refund_statuses', $this->app->components->refund->get_refund_statuses());
+        $this->app->smarty->assign('name_on_card', $this->app->components->company->get_company_details('company_name'));
         
     }
     
@@ -41,18 +41,18 @@ class PType {
         $this->VAR['qpayment']['workorder_id'] = $this->refund_details['workorder_id'];
         
         // Validate payment_amount (New Payments)
-        if(class_exists('NewPayment')) {
-            NewPayment::$record_balance = $this->refund_details['balance'];
-            if(!$this->app->components->payment->validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
-                NewPayment::$payment_valid = false;
+        if(Payment::$action === 'new') {
+            Payment::$record_balance = $this->refund_details['balance'];
+            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
+                Payment::$payment_valid = false;
             }
         }
         
         // Validate payment_amount (Payment Update)
-        if(class_exists('UpdatePayment')) {
-            UpdatePayment::$record_balance = ($this->refund_details['balance'] + UpdatePayment::$payment_details['amount']);
-            if(!$this->app->components->payment->validate_payment_amount(UpdatePayment::$record_balance, UpdatePayment::$payment_details['amount'])) {
-                UpdatePayment::$payment_valid = false;
+        if(Payment::$action === 'update') {
+            Payment::$record_balance = ($this->refund_details['balance'] + Payment::$payment_details['amount']);
+            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, Payment::$payment_details['amount'])) {
+                Payment::$payment_valid = false;
             }
         }
         
@@ -67,9 +67,9 @@ class PType {
         $this->app->components->refund->recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
         
         // Refresh the record data        
-        $this->refund_details = $this->app->components->refund->$this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);
-        $this->smarty->assign('refund_details', $this->refund_details);
-        NewPayment::$record_balance = $this->refund_details['balance'];
+        $this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);
+        $this->app->smarty->assign('refund_details', $this->refund_details);
+        Payment::$record_balance = $this->refund_details['balance'];
         
         return;
         
@@ -93,31 +93,31 @@ class PType {
         
         // Submit
         if($this->refund_details['balance'] > 0) {
-            NewPayment::$buttons['submit']['allowed'] = true;
-            NewPayment::$buttons['submit']['url'] = null;
-            NewPayment::$buttons['submit']['title'] = _gettext("Submit Payment");
+            Payment::$buttons['submit']['allowed'] = true;
+            Payment::$buttons['submit']['url'] = null;
+            Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }        
         
         // Cancel
         if(!$this->refund_details['balance'] == 0) {            
             if($this->app->system->security->check_page_accessed_via_qwcrm('refund', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('refund', 'details')) {
-                NewPayment::$buttons['cancel']['allowed'] = true;
-                NewPayment::$buttons['cancel']['url'] = 'index.php?component=refund&page_tpl=details&refund_id='.$this->VAR['qpayment']['refund_id'];
-                NewPayment::$buttons['cancel']['title'] = _gettext("Cancel");
+                Payment::$buttons['cancel']['allowed'] = true;
+                Payment::$buttons['cancel']['url'] = 'index.php?component=refund&page_tpl=details&refund_id='.$this->VAR['qpayment']['refund_id'];
+                Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }            
         }
         
         // Return To Record
         if($this->app->system->security->check_page_accessed_via_qwcrm('payment', 'new')) {
-            NewPayment::$buttons['returnToRecord']['allowed'] = true;
-            NewPayment::$buttons['returnToRecord']['url'] = 'index.php?component=refund&page_tpl=details&refund_id='.$this->VAR['qpayment']['refund_id'];
-            NewPayment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
+            Payment::$buttons['returnToRecord']['allowed'] = true;
+            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=refund&page_tpl=details&refund_id='.$this->VAR['qpayment']['refund_id'];
+            Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
         
         // Add New Record
-        NewPayment::$buttons['addNewRecord']['allowed'] = false;
-        NewPayment::$buttons['addNewRecord']['url'] = null;        
-        NewPayment::$buttons['addNewRecord']['title'] = null;
+        Payment::$buttons['addNewRecord']['allowed'] = false;
+        Payment::$buttons['addNewRecord']['url'] = null;        
+        Payment::$buttons['addNewRecord']['title'] = null;
         
     } 
     
@@ -131,7 +131,7 @@ class PType {
         $this->app->components->refund->recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
         
         // Refresh the record data        
-        //$this->refund_details = $this->app->components->refund->$this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        
+        //$this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
@@ -151,7 +151,7 @@ class PType {
         $this->app->components->refund->recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
         
         // Refresh the record data        
-        //$this->refund_details = $this->app->components->refund->$this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        
+        //$this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
@@ -171,7 +171,7 @@ class PType {
         $this->app->components->refund->recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
         
         // Refresh the record data        
-        //$this->refund_details = $this->app->components->refund->$this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        
+        //$this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
@@ -184,17 +184,16 @@ class PType {
     // Check Payment is allowed
     public function check_payment_allowed() {
         
+        $state_flag = true;
+        
         // Is on a different tax system
         if($this->refund_details['tax_system'] != QW_TAX_SYSTEM) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The refund cannot receive a payment because it is on a different tax system."));
-            //return false;            
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The refund cannot receive a payment because it is on a different tax system."));
             $this->app->system->general->force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
-            
+            //$state_flag = false;
         }
 
-        // All checks passed
-        return true;
+        return $state_flag;
        
     }
 
