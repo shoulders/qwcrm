@@ -53,7 +53,6 @@ class CMSApplication {
         $this->smarty = \Factory::getSmarty();
         if(!defined('QWCRM_SETUP')){
             $this->db = \Factory::getDbo();
-            $this->user = \Factory::getUser();
         }
         
         // Enable Error Reporting Immediately
@@ -77,11 +76,12 @@ class CMSApplication {
             $PlgSystemRemember->onAfterInitialise();
             unset($PlgSystemRemember);        
 
+            // Get the Global user object here
+            $this->user = \Factory::getUser();
+            
             // Merge the `Post Emulation Store`, `(stored in the session) to $VAR  ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)        
             self::$VAR = array_merge(self::$VAR, $this->system->variables->postEmulationReturnStore());
         }
-
-        
         
     }
     
