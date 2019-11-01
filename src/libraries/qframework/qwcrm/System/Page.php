@@ -107,7 +107,7 @@ class Page extends System {
 
         }  
 
-        // Fetch the specified Page Tempalte
+        // Fetch the specified Page Template
         $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
 
         // Fetch Footer Legacy Template code Block (closes content table)

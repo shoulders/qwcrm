@@ -9,25 +9,27 @@
 defined('_QWEXEC') or die;
 
 $this->app->smarty->assign('IPaddress',                $this->app->system->security->get_visitor_ip_address()            );  // IP address of the Visitor
-$this->app->smarty->assign('pageLoadTime',             microtime(1) - \CMSApplication::$VAR['system']['startTime'][$startTime]          );  // Time to load the page to the nearest microsecond
+$this->app->smarty->assign('pageLoadTime',             microtime(1) - \CMSApplication::$VAR['system']['startTime']          );  // Time to load the page to the nearest microsecond
 $this->app->smarty->assign('pageDisplayController',    $page_controller                    );  // the location of the real php file that loads the page
 $this->app->smarty->assign('loadedComponent',          \CMSApplication::$VAR['component']                   );  // Loaded component
 $this->app->smarty->assign('loadedPageTpl',            \CMSApplication::$VAR['page_tpl']                    );  // Loaded page
-$this->app->smarty->assign('startMem',                 \CMSApplication::$VAR['system']['startMem'][$startMem] / 1048576                 );  // PHP Memory used when starting QWcrm (in MB)
+$this->app->smarty->assign('startMem',                 \CMSApplication::$VAR['system']['startMem'] / 1048576                 );  // PHP Memory used when starting QWcrm (in MB)
 $this->app->smarty->assign('currentMem',               memory_get_usage() / 1048576        );  // PHP Memory used at the time this php is called (in MB)
 $this->app->smarty->assign('peakMem',                  memory_get_peak_usage() / 1048576   );  // Peak PHP Memory used during the page load (in MB)
 
-\CMSApplication::$BuildPage .= $this->app->smarty->fetch('core/blocks/theme_debug_block.tpl');
+//\CMSApplication::$VAR['debug']['infoOutput'] - just incase I need a propername
+
+$pagePayload .= $this->app->smarty->fetch('core/blocks/theme_debug_block.tpl');
 
 // Smarty Debugging - Done this way because $this->app->smarty_debugging is not supported when using fetch()
 if($this->app->config->get('qwcrm_smarty_debugging')) {
-    \CMSApplication::$BuildPage .= $this->app->smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl');
+    $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl');
 }
 
 // Advanced Debug - Only use in offline sites and for developement only
 if($this->app->config->get('qwcrm_advanced_debug')) {
 
-    \CMSApplication::$BuildPage .= "\r\n\r\n<div><h2><strong>"._gettext("QWcrm Advanced Debug Section")."</strong></h2></div>\r\n";
+    $pagePayload .= "\r\n\r\n<div><h2><strong>"._gettext("QWcrm Advanced Debug Section")."</strong></h2></div>\r\n";
  
     /* 
      * All defined PHP Variables
@@ -35,31 +37,31 @@ if($this->app->config->get('qwcrm_advanced_debug')) {
      * Pick your poison - http://web-profile.net/php/dev/var_dump-print_r-var_export/
      *       
      */    
-    \CMSApplication::$BuildPage .= "<div><h3><strong>"._gettext("All Defined PHP Variables").":</strong></h3></div>\r\n";     
-    \CMSApplication::$BuildPage .= '<pre>'.htmlspecialchars(print_r(get_defined_vars(), true)).'</pre>';        
+    $pagePayload.= "<div><h3><strong>"._gettext("All Defined PHP Variables").":</strong></h3></div>\r\n";     
+    $pagePayload .= '<pre>'.htmlspecialchars(print_r(get_defined_vars(), true)).'</pre>';        
     
     /* 
      * All defined PHP Constants
      */    
-    \CMSApplication::$BuildPage .= "<div><h3><strong>"._gettext("All Defined PHP Constants").":</strong></h3></div>\r\n";
-    \CMSApplication::$BuildPage .= '<pre>'.htmlspecialchars(print_r(get_defined_constants(), true)).'</pre>';
+    $pagePayload .= "<div><h3><strong>"._gettext("All Defined PHP Constants").":</strong></h3></div>\r\n";
+    $pagePayload .= '<pre>'.htmlspecialchars(print_r(get_defined_constants(), true)).'</pre>';
 
     /* 
      * All defined PHP functions
      */    
-    \CMSApplication::$BuildPage .= "<div><h3><strong>"._gettext("All Defined PHP Functions").":</strong></h3></div>\r\n";
-    \CMSApplication::$BuildPage .= '<pre>'.print_r(get_defined_functions(), true).'</pre>';    
+    $pagePayload .= "<div><h3><strong>"._gettext("All Defined PHP Functions").":</strong></h3></div>\r\n";
+    $pagePayload .= '<pre>'.print_r(get_defined_functions(), true).'</pre>';    
 
     /* 
      * All declared PHP Classes
      */    
-    \CMSApplication::$BuildPage .= "<div><h3><strong>"._gettext("All Declared PHP Classes").":</strong></h3></div>\r\n";
-    \CMSApplication::$BuildPage .= '<pre>'.print_r(get_declared_classes(), true).'</pre>'; 
+    $pagePayload .= "<div><h3><strong>"._gettext("All Declared PHP Classes").":</strong></h3></div>\r\n";
+    $pagePayload .= '<pre>'.print_r(get_declared_classes(), true).'</pre>'; 
     
     /* 
      * All Server Enviromental Variables
      */        
-    \CMSApplication::$BuildPage .= "<div><h3><strong>"._gettext("All Server Enviromental Variables").":</strong></h3></div>\r\n";
-    \CMSApplication::$BuildPage .= '<pre>'.htmlspecialchars(print_r($_SERVER, true)).'</pre>';     
+    $pagePayload .= "<div><h3><strong>"._gettext("All Server Enviromental Variables").":</strong></h3></div>\r\n";
+    $pagePayload .= '<pre>'.htmlspecialchars(print_r($_SERVER, true)).'</pre>';     
     
 }
