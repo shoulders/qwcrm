@@ -347,7 +347,7 @@ class Router extends System {
             if ($this->check_link_is_sef($url)) {
 
                 // Get 'component' and 'page_tpl' variables from SEF URL           
-                $routingVariables = parse_sef_url($url, 'basic', 'get_var');
+                $routingVariables = $this->parse_sef_url($url, 'basic', 'get_var');
 
             // non-sef url
             } else {

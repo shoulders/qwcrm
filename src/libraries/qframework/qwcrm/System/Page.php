@@ -50,8 +50,6 @@ class Page extends System {
         // Local store for page content
         $pagePayload = '';             
         
-        if(!defined('QWCRM_SETUP')) { $user = $this->app->user; }
-
         // Set the correct theme specification, either manually supplied or from the system
         $component = isset($component) ? $component : ( isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null);
         $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\CMSApplication::$VAR['page_tpl']) ? \CMSApplication::$VAR['page_tpl'] : null);
@@ -63,7 +61,7 @@ class Page extends System {
         // Fetch the specified Page Controller
         require($page_controller);
 
-        // If an alternative page has been loaded by the page controller, return this content
+        // If the page controller has loader another page with load_page(), return the content and stop further processing (i.e. WO autoscope)
         if($pagePayload) {        
             return $pagePayload;        
         }
@@ -96,7 +94,7 @@ class Page extends System {
         }
 
         // Fetch Header Legacy Template Code and Menu Block - Clients, Guests and Public users will not see the menu
-        if((!isset($themeVar) || $themeVar != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {       
+        if((!isset($themeVar) || $themeVar != 'off') && isset($this->app->user->login_token) && $this->app->user->login_usergroup_id != 7 && $this->app->user->login_usergroup_id != 8 && $this->app->user->login_usergroup_id != 9) {       
             $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
 
             // is the menu disabled
@@ -111,7 +109,7 @@ class Page extends System {
         $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
 
         // Fetch Footer Legacy Template code Block (closes content table)
-        if((!isset($themeVar) || $themeVar != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {
+        if((!isset($themeVar) || $themeVar != 'off') && isset($this->app->user->login_token) && $this->app->user->login_usergroup_id != 7 && $this->app->user->login_usergroup_id != 8 && $this->app->user->login_usergroup_id != 9) {
             $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
         }
 

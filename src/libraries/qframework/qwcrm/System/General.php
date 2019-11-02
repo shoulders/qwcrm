@@ -247,37 +247,34 @@ class General extends System {
         $routing_variables = $this->app->system->router->get_routing_variables_from_url($_SERVER['REQUEST_URI']);
 
         // Prepare Variables
-        $VAR['error_component']     = $this->prepare_error_data('error_component', $routing_variables['component']);
-        $VAR['error_page_tpl']      = $this->prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
-        $VAR['error_type']          = $error_type;
-        $VAR['error_location']      = $this->prepare_error_data('error_location', $error_location);
-        $VAR['error_php_function']  = $this->prepare_error_data('error_php_function', $error_php_function);
-        $VAR['error_database']      = $error_database ;
-        $VAR['error_sql_query']     = $this->prepare_error_data('error_sql_query', $error_sql_query);
-        $VAR['error_msg']           = $error_msg;
+        \CMSApplication::$VAR['error_component']     = $this->prepare_error_data('error_component', $routing_variables['component']);
+        \CMSApplication::$VAR['error_page_tpl']      = $this->prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
+        \CMSApplication::$VAR['error_type']          = $error_type;
+        \CMSApplication::$VAR['error_location']      = $this->prepare_error_data('error_location', $error_location);
+        \CMSApplication::$VAR['error_php_function']  = $this->prepare_error_data('error_php_function', $error_php_function);
+        \CMSApplication::$VAR['error_database']      = $error_database ;
+        \CMSApplication::$VAR['error_sql_query']     = $this->prepare_error_data('error_sql_query', $error_sql_query);
+        \CMSApplication::$VAR['error_msg']           = $error_msg;
 
-        $VAR['error_enable_override'] = 'override'; // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
+        \CMSApplication::$VAR['error_enable_override'] = 'override'; // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
 
-        // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
+        // raw_output mode is very basic, error logging still works, bootloops are prevented, page building and compression are skipped
         if($this->app->config->get('error_page_raw_output')) {
-
-            // Create and empty page object
-            \CMSApplication::$BuildPage = '';
-
-            // Allow error page to display RAW Output
-            $output_raw_error_page = true;
 
             // Error page main content and processing logic
             require(COMPONENTS_DIR.'core/error.php');
 
-            // Output the error page and finish
-            die(\CMSApplication::$BuildPage);
+            // Output the error page
+            die($pagePayload);
+            
+            // Load Error Page (in raw html mode) and output
+            //die($this->app->system->page->load_page('get_payload', 'core', 'error', 'raw_html'));
 
         // This will show errors within the template as normal - but occassionaly can cause boot loops during development
         } else {  
 
-            // Load Error Page
-            $this->force_page('core', 'error', $VAR);   // No referer unless loaded from clicked link
+            // Load Error Page (normally) and output
+            die($this->app->system->page->load_page('get_payload', 'core', 'error'));
 
         }
 

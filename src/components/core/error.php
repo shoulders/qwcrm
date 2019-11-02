@@ -41,9 +41,9 @@ if($this->app->config->get('qwcrm_error_log')) {
 }
     
 // View RAW error output if allowed and set
-if($this->app->user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
+if($this->app->user->login_usergroup_id <= 6 && $this->app->config->get('error_page_raw_output')) {
 
-    \CMSApplication::$BuildPage = '
+    $pagePayload = '
         <div>    
             <strong>'._gettext("Error Page").': </strong>'.\CMSApplication::$VAR['error_component'].':'.\CMSApplication::$VAR['error_page_tpl'].'<br />
             <strong>'._gettext("Error Type").': </strong>'.\CMSApplication::$VAR['error_type'].'<br /><br />
@@ -71,14 +71,12 @@ if($this->app->user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
     $this->app->smarty->assign('error_sql_query',      \CMSApplication::$VAR['error_sql_query']        );
     $this->app->smarty->assign('error_msg',            \CMSApplication::$VAR['error_msg']              );
 
-    \CMSApplication::$BuildPage .= $this->app->smarty->fetch('core/error.tpl');
-
 // No permission to see errors
 } else {
 
-    \CMSApplication::$BuildPage .= _gettext("An error has occured but you are not allowed to see it.").'<br>';
-    \CMSApplication::$BuildPage .= _gettext("Timestamp").': '.time().'<br>';
-    \CMSApplication::$BuildPage .= _gettext("Give this information to an admin and they can have a look at it for you.");
+    $pagePayload = _gettext("An error has occured but you are not allowed to see it.").'<br>';
+    $pagePayload .= _gettext("Timestamp").': '.time().'<br>';
+    $pagePayload .= _gettext("Give this information to an admin and they can have a look at it for you.");
 
 }
 
