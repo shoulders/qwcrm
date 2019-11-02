@@ -79,7 +79,7 @@ class PaymentTypeExpense {
         /* If the balance has been cleared, redirect to the record details page
         if($this->expense_details['balance'] == 0) {
             $this->app->system->variables->systemMessagesWrite('success', _gettext("The balance has been cleared."));
-            $this->app->system->general->force_page('expense', 'details&expense_id='.$this->VAR['expense_id']);
+            $this->app->system->page->force_page('expense', 'details&expense_id='.$this->VAR['expense_id']);
         }*/
         
         return;
@@ -133,7 +133,7 @@ class PaymentTypeExpense {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->general->force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
+        $this->app->system->page->force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
                 
         return;        
         
@@ -153,7 +153,7 @@ class PaymentTypeExpense {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->general->force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
+        $this->app->system->page->force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
                 
         return;        
         
@@ -173,7 +173,7 @@ class PaymentTypeExpense {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->general->force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
+        $this->app->system->page->force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
                 
         return;        
         
@@ -187,7 +187,7 @@ class PaymentTypeExpense {
         // Is on a different tax system
         if($this->expense_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot receive a payment because it is on a different tax system."));
-            $this->app->system->general->force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
+            $this->app->system->page->force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
             //$state_flag = false;
             
         }

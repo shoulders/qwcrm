@@ -418,7 +418,7 @@ class Email extends System {
 
         // Write log entry
         if(!$fp = fopen(EMAIL_ERROR_LOG, 'a')) {        
-            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Error Log to save the record."));
+            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Error Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -444,7 +444,7 @@ class Email extends System {
 
         // Write log entry  
         if(!$fp = fopen(EMAIL_TRANSPORT_LOG, 'a')) {        
-            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Transport Log to save the record."));
+            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Transport Log to save the record."));
         }
 
         fwrite($fp, $log_entry);

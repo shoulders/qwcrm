@@ -23,7 +23,7 @@ class Security extends System {
 
         // Force SSL/HTTPS if enabled - add base path stuff here
         if($force_ssl_config >= 1 && !isset($_SERVER['HTTPS'])) {   
-            $this->app->system->general->force_page($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
+            $this->app->system->page->force_page($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
         }
 
     }

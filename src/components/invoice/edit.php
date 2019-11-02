@@ -15,13 +15,13 @@ defined('_QWEXEC') or die;
 // Check if we have an invoice_id
 if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
-    $this->app->system->general->force_page('invoice', 'search');
+    $this->app->system->page->force_page('invoice', 'search');
 }
 
 // Check if invoice can be edited
 if(!$this->app->components->invoice->check_invoice_can_be_edited(\CMSApplication::$VAR['invoice_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this invoice because its status does not allow it."));
-    $this->app->system->general->force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+    $this->app->system->page->force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 }
 
 ##################################

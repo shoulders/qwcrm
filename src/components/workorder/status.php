@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    $this->app->system->general->force_page('workorder', 'search');
+    $this->app->system->page->force_page('workorder', 'search');
 }
 
 // Get the Id of the employee assigned to the workorder
@@ -20,13 +20,13 @@ $assigned_employee_id = $this->app->components->workorder->get_workorder_details
 // Update Work Order Status
 if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->components->workorder->update_workorder_status(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['assign_status']);    
-    $this->app->system->general->force_page('workorder', 'status&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+    $this->app->system->page->force_page('workorder', 'status&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 }
 
 // Assign Work Order to another employee
 if(isset(\CMSApplication::$VAR['change_employee'])) {
     $this->app->components->workorder->assign_workorder_to_employee(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['target_employee_id']);    
-    $this->app->system->general->force_page('workorder', 'status&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+    $this->app->system->page->force_page('workorder', 'status&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 }
 
 // Build the page with the current status from the database

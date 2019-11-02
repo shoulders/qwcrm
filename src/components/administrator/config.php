@@ -43,21 +43,21 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         // Load maintenance page if enabled
         if(!$this->app->config->get('maintenance') && \CMSApplication::$VAR['qform']['maintenance']) {
             $this->app->components->user->logout_all_users();
-            $this->app->system->general->force_page('index.php', null, null, 'get', $url_sef);
+            $this->app->system->page->force_page('index.php', null, null, 'get', $url_sef);
         }        
         
         // Reload Page (nonSSL to SSL)
         elseif (!$this->app->config->get('force_ssl') && \CMSApplication::$VAR['qform']['force_ssl']) {
-            $this->app->system->general->force_page('administrator', 'config', 'msg_success='._gettext("Config settings updated successfully."), 'auto', $url_sef, 'https');
+            $this->app->system->page->force_page('administrator', 'config', 'msg_success='._gettext("Config settings updated successfully."), 'auto', $url_sef, 'https');
             
         // Reload page with forced logout (SSL to nonSSL)
         } elseif($this->app->config->get('force_ssl') && !\CMSApplication::$VAR['qform']['force_ssl']) {
             $this->app->components->user->logout_all_users();
-            $this->app->system->general->force_page('user', 'login', null, 'get', $url_sef, 'http');
+            $this->app->system->page->force_page('user', 'login', null, 'get', $url_sef, 'http');
         
         // Reload Page (No change in SSL state or maintenance mode)
         } else {
-            $this->app->system->general->force_page('administrator', 'config', 'msg_success='._gettext("Config settings updated successfully."), 'auto', $url_sef);             
+            $this->app->system->page->force_page('administrator', 'config', 'msg_success='._gettext("Config settings updated successfully."), 'auto', $url_sef);             
         }        
         
     } else {

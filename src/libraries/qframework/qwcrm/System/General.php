@@ -31,250 +31,7 @@ class General extends System {
 
     /* Other Functions */
 
-    #####################################
-    #   force_page - Page Redirector    #  // Can send variables as a GET string or POST variables
-    #####################################
-
-    /*
-     * If no $page_tpl and $variables are supplied then this function 
-     * will force a URL redirect exactly how it was supplied 
-     */
-
-    function force_page($component, $page_tpl = null, $variables = null, $method = 'auto', $url_sef = 'auto', $url_protocol = 'auto') {
-
-        // Preserve the Message Store (if there are any messages) for the next page load
-        if($forcePageSystemMessageStore = $this->app->system->variables->systemMessagesReturnStore(false, 'array')) {
-            $this->app->system->variables->postEmulationWrite('forcePageSystemMessageStore', $forcePageSystemMessageStore);
-        }
-
-        /* Process Options */
-
-        // Set method to be used
-        if($method == null || $method == 'auto') { $method = 'post'; }    
-
-        // Set URL SEF type to be used
-        if ($url_sef == 'sef') { $makeSEF = true; }
-        elseif ($url_sef == 'nonsef') { $makeSEF = false; }
-        elseif(class_exists('\CMSApplication')) { $makeSEF = $this->app->config->get('sef'); }
-        else { $makeSEF = false; }
-
-        // Configure and set URL protocol and domain segment (allows for https to http, http to https using QWcrm style force_page() links)
-        if ($url_protocol == 'https') { $protocol_domain_segment = 'https://'.QWCRM_DOMAIN; }
-        elseif ($url_protocol == 'http') { $protocol_domain_segment = 'http://'.QWCRM_DOMAIN; }
-        //else { $protocol_domain_segment = null; }                         // This makes relative links
-        else { $protocol_domain_segment = QWCRM_PROTOCOL.QWCRM_DOMAIN; }    // This makes absolute links using define settings
-
-        /* Standard URL Redirect */
-
-        if($component != 'index.php' && $page_tpl == null) {       
-
-            // Build the URL and perform the redirect
-            $this->perform_redirect($protocol_domain_segment.$component);        
-
-        }
-
-        /* GET - Send Variables via $_GET / Return URL*/
-
-        if($method == 'get' || $method == 'url') {
-
-            // If variables exist 
-            if($variables) {
-
-                // If variables are in an array convert into an encoded string
-                if($variables && is_array($variables)) {
-
-                    // Remove routing variables here to prevent 'Double Bubble' (might not be needed)
-                    unset($variables['component']);
-                    unset($variables['page_tpl']); 
-
-                    $variables = http_build_query($variables);            
-                }
-
-            }
-
-            // If home, dashboard or maintenance do not show module:page
-            if($component == 'index.php') { 
-
-                // If there are variables, prepare them as a query string
-                if($variables) { $variables = '?'.$variables; }
-
-                // Build URL with/without variables
-                $url = QWCRM_BASE_PATH.'index.php'.$variables;
-
-                // Convert to SEF if enabled            
-                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
-
-                // Perform redirect
-                if($method == 'get') {
-                    $this->perform_redirect($protocol_domain_segment.$url);
-                } else {
-                    return $url;
-                }
-
-            // Page Name and Variables (QWcrm Style Redirect)  
-            } else {
-
-                // If there are variables, prepare them as additional GET variables
-                if($variables) { $variables = '&'.$variables; }
-
-                // Build URL with/without variables
-                $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl.$variables;
-
-                // Convert to SEF if enabled            
-                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
-
-                // Perform redirect
-                if($method == 'get') {
-                    $this->perform_redirect($protocol_domain_segment.$url);            
-                } else {
-                    return $url;
-                }
-            }
-
-        }
-
-        /* POST - Send Varibles via POST Emulation (was $_SESSION but now using Joomla session store)*/    
-
-        if($method == 'post') {
-
-            // If there are variables, prepare them
-            if($variables) {
-
-                // If variables are in an encoded string convert to an array
-                if(is_string($variables)) {
-                    parse_str($variables, $variable_array);
-                } else {
-                    $variable_array = $variables;
-                }
-
-                // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
-                foreach($variable_array as $key => $value) {                    
-                    $this->app->system->variables->postEmulationWrite($key, $value);
-                }               
-
-            }
-
-            // If home, dashboard or maintenance do not show module:page
-            if($component == 'index.php') { 
-
-                // Build URL
-                $url = QWCRM_BASE_PATH.'index.php';
-
-                // Convert to SEF if enabled            
-                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
-
-                // Perform redirect
-                $this->perform_redirect($protocol_domain_segment.$url);
-
-            // Page Name and Variables (QWcrm Style Redirect)     
-            } else {
-
-                // Build URL
-                $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl;
-
-                // Convert to SEF if enabled            
-                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url);}
-
-                // Perform redirect
-                $this->perform_redirect($protocol_domain_segment.$url);
-
-            }
-
-        }
-
-    }
-
-    ############################################
-    #     Perform a Browser Redirect           #
-    ############################################
-
-    function perform_redirect($url, $type = 'header') {
-
-        // Redirect using Headers (cant always use this method in QWcrm)
-        if($type == 'header') {
-
-            // From http://php.net/manual/en/function.headers-sent.php
-            // Note that $filename and $linenum are passed in for later use.
-            // Do not assign them values beforehand.
-            if (!headers_sent($filename, $linenum)) {
-
-                header('Location: ' . $url);
-                exit;
-
-            // If headers already sent, log and output this error
-            } else {
-
-                // Build the error message
-                $error_msg = '<p>'._gettext("Headers already sent in").' '.$filename.' '._gettext("on line").' '.$linenum.'.</p>';
-
-                // Get routing variables
-                $routing_variables = $this->app->system->router->get_routing_variables_from_url($_SERVER['REQUEST_URI']);
-
-                // Log errors to log if enabled
-                if($this->app->config->get('qwcrm_error_log')) {    
-                    $this->app->system->general->write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
-                }
-
-                // Output the message and stop processing
-                die($error_msg);            
-
-            }
-
-        }
-
-        // Redirect using Javascript
-        if($type == 'javascript') {         
-            echo('
-                    <script>
-                        window.location = "'.$url.'"
-                    </script>
-                ');
-            exit;
-        }
-
-    }
-
-    ############################################
-    #           force_error_page               #
-    ############################################
-
-    function force_error_page($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
-
-        // Get routing variables
-        $routing_variables = $this->app->system->router->get_routing_variables_from_url($_SERVER['REQUEST_URI']);
-
-        // Prepare Variables
-        \CMSApplication::$VAR['error_component']     = $this->prepare_error_data('error_component', $routing_variables['component']);
-        \CMSApplication::$VAR['error_page_tpl']      = $this->prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
-        \CMSApplication::$VAR['error_type']          = $error_type;
-        \CMSApplication::$VAR['error_location']      = $this->prepare_error_data('error_location', $error_location);
-        \CMSApplication::$VAR['error_php_function']  = $this->prepare_error_data('error_php_function', $error_php_function);
-        \CMSApplication::$VAR['error_database']      = $error_database ;
-        \CMSApplication::$VAR['error_sql_query']     = $this->prepare_error_data('error_sql_query', $error_sql_query);
-        \CMSApplication::$VAR['error_msg']           = $error_msg;
-
-        \CMSApplication::$VAR['error_enable_override'] = 'override'; // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
-
-        // raw_output mode is very basic, error logging still works, bootloops are prevented, page building and compression are skipped
-        if($this->app->config->get('error_page_raw_output')) {
-
-            // Error page main content and processing logic
-            require(COMPONENTS_DIR.'core/error.php');
-
-            // Output the error page
-            die($pagePayload);
-            
-        // This will show errors within the template as normal - but occassionaly can cause boot loops during development
-        } else {  
-
-            // Load Error Page (normally) and output
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("An error has occured while accessing the database."));
-            die($this->app->system->page->load_page('get_payload', 'core', 'error'));
-
-        }
-
-    }
-
+   
     ############################################
     #  Error Handling - Data preperation       #
     ############################################
@@ -792,7 +549,7 @@ class General extends System {
 
         // Write log entry   
         if(!$fp = fopen(ACCESS_LOG, 'a')) {        
-            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
+            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -829,7 +586,7 @@ class General extends System {
 
         // Write log entry  
         if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
-            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
+            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -845,7 +602,7 @@ class General extends System {
 
     function write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
 
-        // it is not - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
+        // it is not - $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
 
         // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
         if(!$this->app->user->login_username) {
@@ -859,7 +616,7 @@ class General extends System {
 
         // Write log entry  
         if(!$fp = fopen(ERROR_LOG, 'a')) {        
-            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__.'()', '', '', _gettext("Could not open the Error Log to save the record."));
+            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__.'()', '', '', _gettext("Could not open the Error Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -880,7 +637,7 @@ class General extends System {
         $sql = "SELECT * FROM ".PRFX."company_date_formats";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
         } else {
 
             return $rs->GetArray();

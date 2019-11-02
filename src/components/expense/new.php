@@ -18,17 +18,17 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
 
          // Load the new expense page
-         $this->app->system->general->force_page('expense', 'new', 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id );
+         $this->app->system->page->force_page('expense', 'new', 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id );
 
     } elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for expense
-         $this->app->system->general->force_page('payment', 'new&type=expense&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
+         $this->app->system->page->force_page('payment', 'new&type=expense&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
          
     } else {
 
         // load expense details page
-        $this->app->system->general->force_page('expense', 'details&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
+        $this->app->system->page->force_page('expense', 'details&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
 
      }        
 

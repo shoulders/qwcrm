@@ -74,7 +74,7 @@ class Company extends Components {
                 }        
 
             // Any other lookup error
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
 
         } else {
 
@@ -101,7 +101,7 @@ class Company extends Components {
         $sql = "SELECT * FROM ".PRFX."company_tax_systems";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
         } else {
 
             return $rs->GetArray();
@@ -120,7 +120,7 @@ class Company extends Components {
                 WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
         } else {
 
             return $rs->fields['rate'];
@@ -156,7 +156,7 @@ class Company extends Components {
         }
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
         } else {
 
             return $rs->GetArray();
@@ -176,7 +176,7 @@ class Company extends Components {
                 WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
         } else {       
 
             return $rs->fields['enabled'];
@@ -328,7 +328,7 @@ class Company extends Components {
 
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         } else {       
 
             // Refresh company logo
@@ -359,7 +359,7 @@ class Company extends Components {
                 closing_minute  =". $this->app->db->qstr( $closingTime['Time_Minute']   );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
         } else {
 
             // Assign success message
@@ -395,7 +395,7 @@ class Company extends Components {
 
         if($error_flag) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
             //return false;      
 
         } else {
@@ -516,7 +516,7 @@ class Company extends Components {
                 echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
                  */   
 
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
 
             }
 

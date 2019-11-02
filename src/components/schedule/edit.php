@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a schedule_id
 if(!isset(\CMSApplication::$VAR['schedule_id']) || !\CMSApplication::$VAR['schedule_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Schedule ID supplied."));
-    $this->app->system->general->force_page('schedule', 'search');
+    $this->app->system->page->force_page('schedule', 'search');
 }
 
 // If new schedule item submitted
@@ -43,11 +43,11 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         \CMSApplication::$start_year            = date('Y', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
         \CMSApplication::$start_month           = date('m', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
         \CMSApplication::$start_day             = date('d', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );         
-        $this->app->system->general->force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id'].'&msg_success='._gettext("Schedule Successfully Updated."));
+        $this->app->system->page->force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id'].'&msg_success='._gettext("Schedule Successfully Updated."));
         */
         
         // Load the updated schedule details page
-        $this->app->system->general->force_page('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id'], 'msg_success='.gettext("Schedule Successfully Updated."));
+        $this->app->system->page->force_page('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id'], 'msg_success='.gettext("Schedule Successfully Updated."));
         
     }
 

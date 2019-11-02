@@ -106,7 +106,7 @@ class Report extends Components {
                 ".$whereTheseRecords;                
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of clients."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of clients."));
         } else {
 
            return $rs->fields['count']; 
@@ -191,7 +191,7 @@ class Report extends Components {
                 ".$whereTheseRecords;    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Work Orders for the defined status."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Work Orders for the defined status."));
 
         } else {      
 
@@ -268,7 +268,7 @@ class Report extends Components {
                 ".$whereTheseRecords;   
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
 
         } else {      
 
@@ -435,7 +435,7 @@ class Report extends Components {
                 ".$whereTheseRecords;                
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of Invoices."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of Invoices."));
         } else {
 
            return $rs->fields['count']; 
@@ -480,7 +480,7 @@ class Report extends Components {
                 ".$whereTheseRecords;                
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not sum the invoice values."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not sum the invoice values."));
         } else {
 
            return $rs->fields['sum']; 
@@ -584,7 +584,7 @@ class Report extends Components {
                 ".$whereTheseRecords;    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected labour items."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected labour items."));
         } else {
 
             return $rs->fields['count']; 
@@ -642,7 +642,7 @@ class Report extends Components {
                 ".$whereTheseRecords;
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
         } else {
 
             return $rs->fields['sum'];
@@ -699,7 +699,7 @@ class Report extends Components {
                 ".$whereTheseRecords;    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected parts items."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected parts items."));
         } else {
 
             return $rs->fields['count']; 
@@ -752,7 +752,7 @@ class Report extends Components {
                 ".$whereTheseRecords;
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
         } else {
 
             return $rs->fields['sum'];
@@ -889,7 +889,7 @@ class Report extends Components {
                 ".$whereTheseRecords;    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Vouchers."));
 
         } else {      
 
@@ -950,7 +950,7 @@ class Report extends Components {
                 ".$whereTheseRecords;
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Vouchers."));
         } else {
 
             return $rs->fields['sum'];
@@ -1114,7 +1114,7 @@ class Report extends Components {
                 ".$whereTheseRecords;    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
 
         } else {      
 
@@ -1169,7 +1169,7 @@ class Report extends Components {
                 ".$whereTheseRecords;
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Refunds."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Refunds."));
         } else {
 
             return $rs->fields['sum'];
@@ -1315,7 +1315,7 @@ class Report extends Components {
                 ".$whereTheseRecords;    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Expenses."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Expenses."));
 
         } else {      
 
@@ -1365,7 +1365,7 @@ class Report extends Components {
                 ".$whereTheseRecords; 
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
         } else {
 
             return $rs->fields['sum'];
@@ -1514,7 +1514,7 @@ class Report extends Components {
                 ".$whereTheseRecords;    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count other incomes."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count other incomes."));
 
         } else {      
 
@@ -1564,7 +1564,7 @@ class Report extends Components {
                 ".$whereTheseRecords; 
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected other incomes."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected other incomes."));
         } else {
 
             return $rs->fields['sum'];
@@ -1747,7 +1747,7 @@ class Report extends Components {
                 ".$whereTheseRecords;                
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of payments."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of payments."));
         } else {
 
            return $rs->fields['count']; 
@@ -1822,7 +1822,7 @@ class Report extends Components {
                 ".$whereTheseRecords;                
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not sum the payment values."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not sum the payment values."));
         } else {
 
            return $rs->fields['sum']; 
@@ -1966,7 +1966,7 @@ class Report extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
 
         } else {
 
@@ -2111,7 +2111,7 @@ class Report extends Components {
                 FROM ".PRFX."supplier_records";                           
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of suppliers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of suppliers."));
         } else {
 
            return $rs->fields['count']; 

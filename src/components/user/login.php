@@ -33,7 +33,7 @@ if(\CMSApplication::$VAR['action'] === 'login') {
         // Log the user in
         if($this->app->components->user->login(\CMSApplication::$VAR, $credentials, $options)) {
 
-            $this->app->system->general->force_page('index.php');
+            $this->app->system->page->force_page('index.php');
 
         } else {
             // do nothing reload login page

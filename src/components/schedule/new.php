@@ -14,13 +14,13 @@ defined('_QWEXEC') or die;
 // Check if we have an employee_id
 if(!isset(\CMSApplication::$VAR['employee_id']) || !\CMSApplication::$VAR['employee_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Employee ID supplied."));
-    $this->app->system->general->force_page('user', 'search');
+    $this->app->system->page->force_page('user', 'search');
 }
 
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    $this->app->system->general->force_page('workorder', 'search');
+    $this->app->system->page->force_page('workorder', 'search');
 }
 
 // Get client_id
@@ -54,10 +54,10 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         $start_day             = date('d', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
     
         // Load the schedule day with the newly submitted schedule item
-        $this->app->system->general->force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id'].'&msg_success='._gettext("Schedule Successfully Created"));
+        $this->app->system->page->force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id'].'&msg_success='._gettext("Schedule Successfully Created"));
         
         // Load the updated schedule details page
-        //$this->app->system->general->force_page('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id'], 'msg_success='.gettext("Schedule Successfully Updated."));
+        //$this->app->system->page->force_page('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id'], 'msg_success='.gettext("Schedule Successfully Updated."));
         
     }
 

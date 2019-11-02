@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have a payment_id
 if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
-    $this->app->system->general->force_page('payment', 'search');
+    $this->app->system->page->force_page('payment', 'search');
 }
 
 // Update Payment Status
 if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->components->payment->update_payment_status(\CMSApplication::$VAR['payment_id'], \CMSApplication::$VAR['assign_status']);    
-    $this->app->system->general->force_page('payment', 'status&payment_id='.\CMSApplication::$VAR['payment_id']);
+    $this->app->system->page->force_page('payment', 'status&payment_id='.\CMSApplication::$VAR['payment_id']);
 }
 
 // Build the page with the current status from the database

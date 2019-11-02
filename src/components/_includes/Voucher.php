@@ -126,7 +126,7 @@ class Voucher extends Components {
 
             // Figure out the total number of records in the database for the given search        
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Voucher records."));
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Voucher records."));
             } else {        
                 $total_results = $rs->RecordCount();            
                 $this->app->smarty->assign('total_results', $total_results);
@@ -166,7 +166,7 @@ class Voucher extends Components {
         /* Return the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Voucher records."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Voucher records."));
 
         } else {        
 
@@ -229,7 +229,7 @@ class Voucher extends Components {
                 note                =". $this->app->db->qstr( $note                                        );
 
         if(!$this->app->db->execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the Voucher into the database."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the Voucher into the database."));
 
         } else {
 
@@ -264,7 +264,7 @@ class Voucher extends Components {
         $sql = "SELECT * FROM ".PRFX."voucher_records WHERE voucher_id=".$this->app->db->qstr($voucher_id);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the Voucher details."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the Voucher details."));
         } else {
 
             if($item === null){
@@ -290,7 +290,7 @@ class Voucher extends Components {
         $sql = "SELECT * FROM ".PRFX."voucher_records WHERE voucher_code=".$this->app->db->qstr($voucher_code);
 
         if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the Voucher ID by the Voucher code."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the Voucher ID by the Voucher code."));
         }
 
         if($rs->fields['voucher_id'] != '') {
@@ -315,7 +315,7 @@ class Voucher extends Components {
         }
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Voucher statuses."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Voucher statuses."));
         } else {
 
             return $rs->GetArray();     
@@ -333,7 +333,7 @@ class Voucher extends Components {
         $sql = "SELECT display_name FROM ".PRFX."voucher_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the voucher status display name."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the voucher status display name."));
         } else {
 
             return $rs->fields['display_name'];
@@ -351,7 +351,7 @@ class Voucher extends Components {
         $sql = "SELECT * FROM ".PRFX."voucher_types";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Voucher types."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Voucher types."));
         } else {
 
             return $rs->GetArray();     
@@ -374,7 +374,7 @@ class Voucher extends Components {
                 WHERE invoice_id=". $this->app->db->qstr($invoice_id);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice vouchers totals."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice vouchers totals."));
         } else {
 
             return $rs->GetRowAssoc(); 
@@ -433,7 +433,7 @@ class Voucher extends Components {
                 WHERE voucher_id =". $this->app->db->qstr($voucher_id);
 
         if(!$this->app->db->execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher record in the database."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher record in the database."));
 
         } else {
 
@@ -504,7 +504,7 @@ class Voucher extends Components {
                 WHERE voucher_id   =". $this->app->db->qstr( $voucher_id   ); 
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Voucher Status."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Voucher Status."));
 
         } else {    
 
@@ -549,7 +549,7 @@ class Voucher extends Components {
                 WHERE voucher_id    =". $this->app->db->qstr( $voucher_id                              );
 
         if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher as redeemed."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher as redeemed."));
         } else {       
 
             // Change the voucher status to refunded (I do this here to maintain consistency)
@@ -579,7 +579,7 @@ class Voucher extends Components {
                 WHERE voucher_id     =".$this->app->db->qstr($voucher_id);
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Invoice ID on the voucher."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Invoice ID on the voucher."));
         }
 
     }
@@ -597,7 +597,7 @@ class Voucher extends Components {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
-            $this->app->system->general->force_page('invoice', 'details&invoice_id='.$this->get_voucher_details($voucher_id, 'invoice_id'));
+            $this->app->system->page->force_page('invoice', 'details&invoice_id='.$this->get_voucher_details($voucher_id, 'invoice_id'));
 
         }
 
@@ -637,7 +637,7 @@ class Voucher extends Components {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
-            $this->app->system->general->force_page('invoice', 'details&invoice_id='.$this->get_voucher_details($voucher_id, 'invoice_id'));
+            $this->app->system->page->force_page('invoice', 'details&invoice_id='.$this->get_voucher_details($voucher_id, 'invoice_id'));
 
         }*/
 
@@ -678,7 +678,7 @@ class Voucher extends Components {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
-            $this->app->system->general->force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
+            $this->app->system->page->force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
 
         } else {
 
@@ -712,7 +712,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -744,7 +744,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -776,7 +776,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -810,7 +810,7 @@ class Voucher extends Components {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
-            $this->app->system->general->force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
+            $this->app->system->page->force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
 
         } else {
 
@@ -846,7 +846,7 @@ class Voucher extends Components {
 
             if(!$this->app->db->execute($sql)) {
 
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the Voucher."));
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the Voucher."));
 
             } else {
 
@@ -882,7 +882,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -933,7 +933,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -1173,7 +1173,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -1279,7 +1279,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -1388,7 +1388,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -1501,7 +1501,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -1554,7 +1554,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 
@@ -1640,7 +1640,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
 
         } else {
 

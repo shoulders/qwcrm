@@ -17,11 +17,11 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm('refund', 'statu
 // Check if we have a refund_id
 if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
-    $this->app->system->general->force_page('refund', 'search');
+    $this->app->system->page->force_page('refund', 'search');
 } 
 
 // Delete the refund function call
 $this->app->components->refund->delete_refund(\CMSApplication::$VAR['refund_id']);
 
 // Load the refund search page
-$this->app->system->general->force_page('refund', 'search', 'msg_success='._gettext("Refund deleted successfully."));
+$this->app->system->page->force_page('refund', 'search', 'msg_success='._gettext("Refund deleted successfully."));

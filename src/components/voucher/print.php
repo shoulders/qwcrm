@@ -15,13 +15,13 @@ $barcode = $bc_generator->getBarcode($this->app->components->voucher->get_vouche
 // Check if we have an voucher_id
 if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['voucher_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
-    $this->app->system->general->force_page('voucher', 'search');
+    $this->app->system->page->force_page('voucher', 'search');
 }
 
 // Check there is a print content and print type set
 if(!isset(\CMSApplication::$VAR['print_content'], \CMSApplication::$VAR['print_type']) || !\CMSApplication::$VAR['print_content'] || !\CMSApplication::$VAR['print_type']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Some or all of the Printing Options are not set."));
-    $this->app->system->general->force_page('voucher', 'search');
+    $this->app->system->page->force_page('voucher', 'search');
 }
 
 // Get Voucher details

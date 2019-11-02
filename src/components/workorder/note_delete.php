@@ -17,7 +17,7 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm()) {
 // Check if we have a workorder_note_id
 if(!isset(\CMSApplication::$VAR['workorder_note_id']) || !\CMSApplication::$VAR['workorder_note_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Work Order Note ID supplied."));
-    $this->app->system->general->force_page('workorder', 'search');
+    $this->app->system->page->force_page('workorder', 'search');
 }
 
 // Get the workorder_id before we delete the record
@@ -27,4 +27,4 @@ $workorder_id = $this->app->components->workorder->get_workorder_note_details(\C
 $this->app->components->workorder->delete_workorder_note(\CMSApplication::$VAR['workorder_note_id']);
 
 // Reload the workorder details page
-$this->app->system->general->force_page('workorder', 'details&workorder_id='.$workorder_id, 'msg_success='._gettext("The note has been deleted."));
+$this->app->system->page->force_page('workorder', 'details&workorder_id='.$workorder_id, 'msg_success='._gettext("The note has been deleted."));

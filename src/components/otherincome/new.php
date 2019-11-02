@@ -18,17 +18,17 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
 
         // Load New Refund page
-        $this->app->system->general->force_page('otherincome', 'new', 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id); 
+        $this->app->system->page->force_page('otherincome', 'new', 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id); 
 
     } elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for otherincome
-         $this->app->system->general->force_page('payment', 'new&type=otherincome&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
+         $this->app->system->page->force_page('payment', 'new&type=otherincome&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
          
     } else {
 
         // Load Refund Details page
-        $this->app->system->general->force_page('otherincome', 'details&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
+        $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
 
     }
          

@@ -24,7 +24,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    $this->app->system->general->force_page('voucher', 'search', \CMSApplication::$VAR, 'get');
+    $this->app->system->page->force_page('voucher', 'search', \CMSApplication::$VAR, 'get');
     
 }
 

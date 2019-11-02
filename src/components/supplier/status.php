@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have a supplier_id
 if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
-    $this->app->system->general->force_page('supplier', 'search');
+    $this->app->system->page->force_page('supplier', 'search');
 }
 
 // Update Supplier Status
 if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->system->general->update_supplier_status(\CMSApplication::$VAR['supplier_id'], \CMSApplication::$VAR['assign_status']);    
-    $this->app->system->general->force_page('supplier', 'status&supplier_id='.\CMSApplication::$VAR['supplier_id']);
+    $this->app->system->page->force_page('supplier', 'status&supplier_id='.\CMSApplication::$VAR['supplier_id']);
 }
 
 // Build the page with the current status from the database

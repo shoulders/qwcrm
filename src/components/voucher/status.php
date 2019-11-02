@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have a voucher_id
 if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['voucher_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
-    $this->app->system->general->force_page('voucher', 'search');
+    $this->app->system->page->force_page('voucher', 'search');
 }
 
 // Update Voucher Status
 if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->components->voucher->update_voucher_status(\CMSApplication::$VAR['voucher_id'], \CMSApplication::$VAR['assign_status']);    
-    $this->app->system->general->force_page('voucher', 'status&voucher_id='.\CMSApplication::$VAR['voucher_id']);
+    $this->app->system->page->force_page('voucher', 'status&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 }
 
 // Build the page with the current status from the database

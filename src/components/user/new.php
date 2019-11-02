@@ -20,7 +20,7 @@ if(isset(\CMSApplication::$VAR['client_id']) && \CMSApplication::$VAR['client_id
         
     } else {
         
-        $this->app->system->general->force_page('client', 'details', 'client_id='.\CMSApplication::$VAR['client_id'].'&msg_danger='._gettext("The client already has a login."));
+        $this->app->system->page->force_page('client', 'details', 'client_id='.\CMSApplication::$VAR['client_id'].'&msg_danger='._gettext("The client already has a login."));
         
     }    
     
@@ -48,7 +48,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
             
             // Redirect to the new user's details page
             $this->app->system->variables->systemMessagesWrite('success', _gettext("New user has been created."));
-            $this->app->system->general->force_page('user', 'details&user_id='.$user_id);
+            $this->app->system->page->force_page('user', 'details&user_id='.$user_id);
             
         }
 

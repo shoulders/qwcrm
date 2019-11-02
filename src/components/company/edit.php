@@ -19,7 +19,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Reload Company options and display a success message
     $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
-    $this->app->system->general->force_page('company', 'edit');
+    $this->app->system->page->force_page('company', 'edit');
     
 }
 

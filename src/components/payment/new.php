@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Make sure a payment type is set
 if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'invoice' || \CMSApplication::$VAR['type'] == 'refund' || \CMSApplication::$VAR['type'] == 'expense' || \CMSApplication::$VAR['type'] == 'otherincome')) {
-    $this->app->system->general->force_page('payment', 'search', 'msg_danger='._gettext("No Payment Type supplied."));  
+    $this->app->system->page->force_page('payment', 'search', 'msg_danger='._gettext("No Payment Type supplied."));  
 }
 
 // Prevent undefined variable errors (with and without submit)
@@ -32,28 +32,28 @@ if($this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'edit'
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['qpayment']['type'] == 'invoice' && (!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id'])) {
-        $this->app->system->general->force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));    
+        $this->app->system->page->force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));    
     }    
     
 } elseif($this->app->system->security->check_page_accessed_via_qwcrm('refund', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('refund', 'details')) {   
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['qpayment']['type'] == 'refund' && (!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id'])) {
-        $this->app->system->general->force_page('refund', 'search', 'msg_danger='._gettext("No Refund ID supplied."));    
+        $this->app->system->page->force_page('refund', 'search', 'msg_danger='._gettext("No Refund ID supplied."));    
     }    
     
 } elseif($this->app->system->security->check_page_accessed_via_qwcrm('expense', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('expense', 'details')) {
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['qpayment']['type'] == 'expense' && (!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id'])) {
-        $this->app->system->general->force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));    
+        $this->app->system->page->force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));    
     }
  
 } elseif($this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'details')) {
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['qpayment']['type'] == 'otherincome' && (!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id'])) {
-        $this->app->system->general->force_page('otherincome', 'search', 'msg_danger='._gettext("No Otherincome ID supplied."));    
+        $this->app->system->page->force_page('otherincome', 'search', 'msg_danger='._gettext("No Otherincome ID supplied."));    
     }
      
 } elseif(!$this->app->system->security->check_page_accessed_via_qwcrm('payment', 'new')) {

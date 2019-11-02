@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    $this->app->system->general->force_page('workorder', 'search');
+    $this->app->system->page->force_page('workorder', 'search');
 }
 
 $workorder_details = $this->app->components->workorder->get_workorder_details(\CMSApplication::$VAR['workorder_id']);

@@ -16,19 +16,19 @@ defined('_QWEXEC') or die;
 // Check if we have a employee_id and output is set to day
 if(isset(\CMSApplication::$VAR['ics_type']) && \CMSApplication::$VAR['ics_type'] == 'day' && !\CMSApplication::$VAR['employee_id']) {    
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Employee ID missing."));
-    $this->app->system->general->force_page('schedule', 'search');
+    $this->app->system->page->force_page('schedule', 'search');
 }
 
 // Check if we have a schedule_id if output is not set to day
 if(isset(\CMSApplication::$VAR['ics_type']) && \CMSApplication::$VAR['ics_type'] != 'day' && !\CMSApplication::$VAR['schedule_id']) {    
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule ID is missing."));
-    $this->app->system->general->force_page('schedule', 'search');
+    $this->app->system->page->force_page('schedule', 'search');
 }
 
 // Check if we have all of the date information required
 if(!isset(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']) || !\CMSApplication::$VAR['start_year'] || !\CMSApplication::$VAR['start_month'] || !\CMSApplication::$VAR['start_day']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Some date information is missing."));
-    $this->app->system->general->force_page('schedule', 'search');
+    $this->app->system->page->force_page('schedule', 'search');
 }
 
 // Add routines here to decide what is returned ie multi schedule, single schedule or a live calendar

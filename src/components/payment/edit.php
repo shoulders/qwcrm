@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have an payment_id
 if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
-    $this->app->system->general->force_page('payment', 'search');
+    $this->app->system->page->force_page('payment', 'search');
 }   
 
 // Check if payment can be edited
 if(!$this->app->components->payment->check_payment_can_be_edited(\CMSApplication::$VAR['payment_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this payment because its status does not allow it."));
-    $this->app->system->general->force_page('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
+    $this->app->system->page->force_page('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
 }
            
 // Load the Type and Method classes (files only, no store)

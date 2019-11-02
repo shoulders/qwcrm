@@ -11,19 +11,19 @@ defined('_QWEXEC') or die;
 // Check if we have an voucher_id
 if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['voucher_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
-    $this->app->system->general->force_page('voucher', 'search');
+    $this->app->system->page->force_page('voucher', 'search');
 }
 
 // Check if voucher payment method is enabled
 if(!$this->app->components->payment->check_payment_method_is_active('voucher')) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher payment method is not enabled. Goto Payment Options and enable Vouchers there."));
-    $this->app->system->general->force_page('index.php', 'null');
+    $this->app->system->page->force_page('index.php', 'null');
 }
 
 // Check if voucher can be edited
 if(!$this->app->components->voucher->check_voucher_can_be_edited(\CMSApplication::$VAR['voucher_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this Voucher because its status does not allow it."));
-    $this->app->system->general->force_page('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
+    $this->app->system->page->force_page('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 }
 
 // if information submitted
@@ -33,7 +33,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->components->voucher->update_voucher(\CMSApplication::$VAR['qform']['voucher_id'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['note']);
 
     // Load the new Voucher's Details page
-    $this->app->system->general->force_page('voucher', 'details&voucher_id='.\CMSApplication::$VAR['qform']['voucher_id']);    
+    $this->app->system->page->force_page('voucher', 'details&voucher_id='.\CMSApplication::$VAR['qform']['voucher_id']);    
 
 } else {
     

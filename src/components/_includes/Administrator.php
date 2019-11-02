@@ -102,7 +102,7 @@ class Administrator extends Components {
         $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
 
         if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
         }
 
         return $rs->GetArray(); 
@@ -177,7 +177,7 @@ class Administrator extends Components {
                     WHERE `page`    =". $this->app->db->qstr( $page_name                           ).";";
 
             if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
             }                 
 
         }
@@ -224,7 +224,7 @@ class Administrator extends Components {
                     WHERE `page`    =". $this->app->db->qstr( $page_name                         ).";";
 
              if(!$rs = $this->app->db->execute($sql)) {
-                 $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
+                 $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
             }               
 
         }
@@ -471,7 +471,7 @@ class Administrator extends Components {
                 $sql = "TRUNCATE ".PRFX."session";                    
 
                 if(!$rs = $this->app->db->Execute($sql)) {
-                    $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+                    $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
 
                 }
 
@@ -534,7 +534,7 @@ class Administrator extends Components {
         $sql = "TRUNCATE ".PRFX."user_acl_page";
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
         } else {
 
@@ -654,7 +654,7 @@ class Administrator extends Components {
                     ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
             }
 

@@ -17,7 +17,7 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm()) {
 // Check if we have an invoice labour_id
 if(!isset(\CMSApplication::$VAR['labour_id']) || !\CMSApplication::$VAR['labour_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Invoice Labour ID supplied."));
-    $this->app->system->general->force_page('invoice', 'search');
+    $this->app->system->page->force_page('invoice', 'search');
 }
 
 // Get invoice ID before deletion
@@ -27,4 +27,4 @@ if(!isset(\CMSApplication::$VAR['labour_id']) || !\CMSApplication::$VAR['labour_
 $this->app->components->invoice->delete_invoice_labour_item(\CMSApplication::$VAR['labour_id']);
 
 // Load the edit invoice page
-$this->app->system->general->force_page('invoice' , 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+$this->app->system->page->force_page('invoice' , 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);

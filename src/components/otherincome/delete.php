@@ -17,11 +17,11 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm('otherincome', '
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
-    $this->app->system->general->force_page('otherincome', 'search');
+    $this->app->system->page->force_page('otherincome', 'search');
 } 
 
 // Delete the otherincome function call
 $this->app->components->otherincome->delete_otherincome(\CMSApplication::$VAR['otherincome_id']);
 
 // Load the otherincome search page
-$this->app->system->general->force_page('otherincome', 'search', 'msg_success='._gettext("Otherincome deleted successfully."));
+$this->app->system->page->force_page('otherincome', 'search', 'msg_success='._gettext("Otherincome deleted successfully."));

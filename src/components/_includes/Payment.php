@@ -132,7 +132,7 @@ class Payment extends Components {
 
             // Figure out the total number of records in the database for the given search        
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching payments."));
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching payments."));
             } else {        
                 $total_results = $rs->RecordCount();            
                 $this->app->smarty->assign('total_results', $total_results);
@@ -171,7 +171,7 @@ class Payment extends Components {
         /* Return the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
         } else {
 
             $records = $rs->GetArray();   // do i need to add the check empty
@@ -218,7 +218,7 @@ class Payment extends Components {
                 note            = ".$this->app->db->qstr( $qpayment['note']                        );
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
 
         } else {
 
@@ -255,7 +255,7 @@ class Payment extends Components {
         $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$this->app->db->qstr($payment_id);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
         } else {
 
             if($item === null){
@@ -281,7 +281,7 @@ class Payment extends Components {
         $sql = "SELECT * FROM ".PRFX."payment_options";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment options."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment options."));
         } else {
 
             if($item === null){
@@ -322,7 +322,7 @@ class Payment extends Components {
         }
 
         if(!$rs = $this->app->db->execute($sql)) {        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment method types."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment method types."));
         } else {
 
             return $rs->GetArray();            
@@ -340,7 +340,7 @@ class Payment extends Components {
         $sql = "SELECT * FROM ".PRFX."payment_types";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment types."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment types."));
         } else {
 
             //return $rs->GetRowAssoc();
@@ -359,7 +359,7 @@ class Payment extends Components {
         $sql = "SELECT * FROM ".PRFX."payment_statuses";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment statuses."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment statuses."));
         } else {
 
             //return $rs->GetRowAssoc();
@@ -382,7 +382,7 @@ class Payment extends Components {
                 WHERE active='1'";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the active cards."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the active cards."));
         } else {
 
             $records = $rs->GetArray();
@@ -410,7 +410,7 @@ class Payment extends Components {
         $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$this->app->db->qstr($type_key);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
         } else {
 
             return $rs->fields['display_name'];
@@ -429,7 +429,7 @@ class Payment extends Components {
                 FROM ".PRFX."payment_statuses";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -458,7 +458,7 @@ class Payment extends Components {
                 FROM ".PRFX."payment_card_types";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -487,7 +487,7 @@ class Payment extends Components {
                 FROM ".PRFX."payment_additional_info_types";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment additional info names."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get payment additional info names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -523,7 +523,7 @@ class Payment extends Components {
                 WHERE payment_id =". $this->app->db->qstr( $qpayment['payment_id']              );
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
 
         } else {
 
@@ -563,7 +563,7 @@ class Payment extends Components {
                 invoice_footer_msg          =". $this->app->db->qstr( $qform['invoice_footer_msg']           );            
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
         } else {
 
             // Log activity 
@@ -597,7 +597,7 @@ class Payment extends Components {
                     WHERE method_key = ". $this->app->db->qstr($payment_method['method_key']); 
 
             if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
             }
 
         }
@@ -630,7 +630,7 @@ class Payment extends Components {
                 WHERE payment_id     =". $this->app->db->qstr( $payment_id      );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
 
         } else {        
 
@@ -722,7 +722,7 @@ class Payment extends Components {
                 WHERE payment_id =". $this->app->db->qstr( $payment_id );    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
         } else {
 
             // Create a Workorder History Note       
@@ -814,7 +814,7 @@ class Payment extends Components {
                 WHERE method_key=".$this->app->db->qstr($method);
 
         if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
 
         } else {
 

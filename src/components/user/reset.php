@@ -57,7 +57,7 @@ if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['email
 
             // Load the enter_token page
             $stage = 'enter_token';
-            //$this->app->system->general->force_page('user', 'reset', 'layout=confirm', 'get'); // Using $this->app->system->general->force_page() keeps the URLs the same (from stege 1 and direct from email)
+            //$this->app->system->page->force_page('user', 'reset', 'layout=confirm', 'get'); // Using $this->app->system->page->force_page() keeps the URLs the same (from stege 1 and direct from email)
 
         }
 
@@ -149,7 +149,7 @@ if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['reset
 
         // Redirect to login page with success or failed message
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Password reset successfully."));
-        $this->app->system->general->force_page('user', 'login');
+        $this->app->system->page->force_page('user', 'login');
 
     }    
 

@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have an user_id
 if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No User ID supplied."));
-    $this->app->system->general->force_page('user', 'search');
+    $this->app->system->page->force_page('user', 'search');
 }
 
 // If user data has been submitted, Update the record
@@ -33,7 +33,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Redirect to the new users's details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("User details updated."));
-        $this->app->system->general->force_page('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
+        $this->app->system->page->force_page('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
             
     }
 

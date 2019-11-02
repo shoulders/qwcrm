@@ -17,21 +17,21 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm('workorder', 'st
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    $this->app->system->general->force_page('workorder', 'search');
+    $this->app->system->page->force_page('workorder', 'search');
 }
 
 // Delete the Workorder
 if(!$this->app->components->workorder->delete_workorder(\CMSApplication::$VAR['workorder_id'])) {
     
     // load the staus page
-    $this->app->system->general->force_page('workorder', 'status', 'workorder_id='.\CMSApplication::$VAR['workorder_id']);
+    $this->app->system->page->force_page('workorder', 'status', 'workorder_id='.\CMSApplication::$VAR['workorder_id']);
     
 } else {
     
     
     // load the workorder search page
     $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been deleted."));
-    $this->app->system->general->force_page('workorder', 'search');
+    $this->app->system->page->force_page('workorder', 'search');
     
 }
     

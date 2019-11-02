@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have an invoice_id
 if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
-    $this->app->system->general->force_page('invoice', 'search');
+    $this->app->system->page->force_page('invoice', 'search');
 }
 
 // Check there is a print content and print type set
 if(!isset(\CMSApplication::$VAR['print_content'], \CMSApplication::$VAR['print_type']) || !\CMSApplication::$VAR['print_content'] || !\CMSApplication::$VAR['print_type']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Some or all of the Printing Options are not set."));
-    $this->app->system->general->force_page('invoice', 'search');
+    $this->app->system->page->force_page('invoice', 'search');
 }
 
 // Get Record Details

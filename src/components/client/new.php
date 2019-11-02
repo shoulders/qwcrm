@@ -14,7 +14,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     \CMSApplication::$VAR['client_id'] = $this->app->components->client->insert_client(\CMSApplication::$VAR['qform']);
     
     // Load the new Client's Details page
-    $this->app->system->general->force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
+    $this->app->system->page->force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
     
 } else {
     
