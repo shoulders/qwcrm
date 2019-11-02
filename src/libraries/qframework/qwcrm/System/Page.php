@@ -46,37 +46,32 @@ class Page extends System {
     ############################
 
     public function get_page_content($page_controller, $mode = null, $component = null, $page_tpl = null, $themeVar = null) {    
-
-        // Local store for page content
-        $pagePayload = '';             
+        
+        $pagePayload = '';      // Local store for page content
+        $rawHtml = false;       // Is payload raw HTML, this is setby the controller if required (i.e. autosuggest)
         
         // Set the correct theme specification, either manually supplied or from the system
         $component = isset($component) ? $component : ( isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null);
         $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\CMSApplication::$VAR['page_tpl']) ? \CMSApplication::$VAR['page_tpl'] : null);
-        $themeVar = isset($themeVar) ? $themeVar : ( isset(\CMSApplication::$VAR['theme']) ? \CMSApplication::$VAR['theme'] : null);          
+        $themeVar = isset($themeVar) ? $themeVar : ( isset(\CMSApplication::$VAR['themeVar']) ? \CMSApplication::$VAR['themeVar'] : null);                       
 
-        // This is currently not used, and is only so i know where the pagec controller section is
+        // This is currently not used, and is only so i know where the page controller section is
         page_controller:
 
         // Fetch the specified Page Controller
-        require($page_controller);
+        require($page_controller);         
+        
+        // If theme is set to Print mode or there is already content in $pagePayload , Skip adding Header, Footer and Debug sections to the page
+        if (isset($themeVar) && ($themeVar === 'print') || $rawHtml) {        
 
-        // If the page controller has loader another page with load_page(), return the content and stop further processing (i.e. WO autoscope)
-        if($pagePayload) {        
-            return $pagePayload;        
-        }
-
-        // If theme is set to Print mode, Skip Header, Footer or raw_html - System will output without headers, footers and debug
-        if (isset($themeVar) && ($themeVar === 'print' || $themeVar === 'raw_html')) {        
-
-            // This allows autosuggest to work
-            if ($themeVar !== 'raw_html') {
+            // If theme print and no content, grab the content
+            if (!$rawHtml) {
                 $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
             }
 
-            goto page_build_end;
+            goto page_parse_payload;
         }
-
+        
         // This is currently not used, and is only so i know where the payload build start is
         page_build:
 
@@ -128,7 +123,7 @@ class Page extends System {
             $pagePayload .= "\r\n</body>\r\n</html>";
         }
 
-        page_build_end:
+        page_parse_payload:
 
         // Modules code goes here
         // ......................

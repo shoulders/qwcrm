@@ -224,7 +224,7 @@ class Setup extends Components {
         unset($VAR['page']);
         unset($VAR['submit']);
         unset($VAR['stage']);
-        unset($VAR['theme']);    
+        unset($VAR['themeVar']);    
         unset($VAR['component']);
         unset($VAR['page_tpl']);
         unset($VAR['msg_success']);

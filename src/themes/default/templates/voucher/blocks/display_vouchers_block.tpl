@@ -77,7 +77,7 @@
                 {if $display_vouchers[g].status != 'deleted'}
                     <a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers[g].voucher_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                     <a href="index.php?component=voucher&page_tpl=edit&voucher_id={$display_vouchers[g].voucher_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                    <a href="index.php?component=voucher&page_tpl=print&voucher_id={$display_vouchers[g].voucher_id}&print_content=voucher&print_type=print_html&theme=print" target="_blank"> 
+                    <a href="index.php?component=voucher&page_tpl=print&voucher_id={$display_vouchers[g].voucher_id}&print_content=voucher&print_type=print_html&themeVar=print" target="_blank"> 
                         <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Voucher{/t}');" onMouseOut="hideddrivetip();">
                     </a>
                 {/if}

@@ -20,5 +20,5 @@ $this->app->smarty->assign('global_invoice_historic_stats', $this->app->componen
 $this->app->smarty->assign('global_client_historic_stats', $this->app->components->report->get_clients_stats('historic'));
 
 // Employee Workorder Stats (Logged in user)
-$this->app->smarty->assign('employee_workorder_current_stats', $this->app->components->report->get_workorders_stats('current', null, null, $user->login_user_id));
-$this->app->smarty->assign('employee_workorder_historic_stats', $this->app->components->report->get_workorders_stats('historic', null, null, $user->login_user_id));
+$this->app->smarty->assign('employee_workorder_current_stats', $this->app->components->report->get_workorders_stats('current', null, null, $this->app->user->login_user_id));
+$this->app->smarty->assign('employee_workorder_historic_stats', $this->app->components->report->get_workorders_stats('historic', null, null, $this->app->user->login_user_id));

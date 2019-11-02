@@ -487,12 +487,12 @@ class WorkOrder extends Components {
     #  Get Workorder Scope Suggestions      #
     #########################################
 
-    public function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
+    public function get_workorder_scope_suggestions($scope_string, $minimum_characters = 4) {
 
         $pagePayload = '';
 
         // if the string is not long enough so dont bother with a DB lookup
-        if(strlen($scope_string) < $return_count) { return; }
+        if(strlen($scope_string) < $minimum_characters) { return; }
 
         // These SQL statements were derived from https://stackoverflow.com/questions/19462919/mysql-select-distinct-should-be-case-sensitive
 
@@ -517,7 +517,7 @@ class WorkOrder extends Components {
                 DISTINCT (CAST(scope AS CHAR CHARACTER SET utf8) COLLATE utf8_bin) AS autoscope
                 FROM ".PRFX."workorder_records
                 WHERE scope
-                LIKE ".$this->app->db->qstr($scope_string.'%')."
+                LIKE ".$this->app->db->qstr('%'.$scope_string.'%')."
                 LIMIT 10";    
 
 

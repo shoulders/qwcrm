@@ -119,7 +119,7 @@ if(!defined('QWCRM_SETUP')) {
 ################################################
 
 // Send optional Headers if 'print' mode is not set (print does: email, pdf and onscreen)
-if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') { 
+if(!isset($VAR['themeVar']) || $VAR['themeVar'] !== 'print') { 
 
     // Compress page payload and send compression headers
     if (\Factory::getConfig()->get('gzip')) {

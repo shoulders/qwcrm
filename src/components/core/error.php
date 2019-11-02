@@ -44,6 +44,7 @@ if($this->app->config->get('qwcrm_error_log')) {
 if($this->app->user->login_usergroup_id <= 6 && $this->app->config->get('error_page_raw_output')) {
 
     $pagePayload = '
+        <div>'._gettext("An error has occured while accessing the database.").'<br /><br /></div>
         <div>    
             <strong>'._gettext("Error Page").': </strong>'.\CMSApplication::$VAR['error_component'].':'.\CMSApplication::$VAR['error_page_tpl'].'<br />
             <strong>'._gettext("Error Type").': </strong>'.\CMSApplication::$VAR['error_type'].'<br /><br />

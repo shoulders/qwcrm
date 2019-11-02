@@ -7,7 +7,7 @@
 *}
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
-<script>{include file="`$theme_js_dir_finc`modules/workorder.js"}</script>
+<script>{include file="`$theme_js_dir_finc`components/workorder.js"}</script>
 
 <table width="100%"> 
     <tr>

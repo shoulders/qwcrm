@@ -12,10 +12,13 @@ defined('_QWEXEC') or die;
 // Is there a posted query string and is the string length greater than 0
 if(isset(\CMSApplication::$VAR['posted_scope_string']) && strlen(\CMSApplication::$VAR['posted_scope_string']) > 0) {
 
-    // BuildPage will only hold the html for this scope table
+    // BuildPage will only hold the html for this scope table    
     $pagePayload  .= $this->app->components->workorder->get_workorder_scope_suggestions(\CMSApplication::$VAR['posted_scope_string']);
 
 }
+
+// This page should be treated as RAW HTML
+$rawHtml = true;
 
 // Skip page logging
 if(!defined('SKIP_LOGGING')) {

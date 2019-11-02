@@ -819,7 +819,7 @@ class Schedule extends Components {
                     $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
                     if(!$this->app->components->workorder->get_workorder_details($scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
                         $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ";
-                        $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("Export")."</a></b> - ";
+                        $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&themeVar=print\">"._gettext("Export")."</a></b> - ";
                         $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
                     }
 

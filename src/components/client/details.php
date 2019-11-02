@@ -22,7 +22,7 @@ $this->app->smarty->assign('client_types',             $this->app->components->c
 $this->app->smarty->assign('client_details',           $this->app->components->client->get_client_details(\CMSApplication::$VAR['client_id'])                                                                                 );
 $this->app->smarty->assign('client_notes',             $this->app->components->client->get_client_notes(\CMSApplication::$VAR['client_id'])                                                                                );
 
-$this->app->smarty->assign('GoogleMapString',          $this->app->components->client->build_googlemap_directions_string(\CMSApplication::$VAR['client_id'], $user->login_user_id)                                                     );
+$this->app->smarty->assign('GoogleMapString',          $this->app->components->client->build_googlemap_directions_string(\CMSApplication::$VAR['client_id'], $this->app->user->login_user_id)                                                     );
 
 $this->app->smarty->assign('workorder_statuses',       $this->app->components->workorder->get_workorder_statuses()                                                                                             );
 $this->app->smarty->assign('workorders_open',          $this->app->components->workorder->display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'open', null, \CMSApplication::$VAR['client_id'])          );

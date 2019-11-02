@@ -25,7 +25,7 @@ if(isset(\CMSApplication::$VAR['submit'])){
 
     // If workorder is to be assigned to an employee
     if(\CMSApplication::$VAR['assign_to_employee'] === '1') {       
-        $this->app->components->workorder->assign_workorder_to_employee(\CMSApplication::$VAR['workorder_id'], $user->login_user_id);  
+        $this->app->components->workorder->assign_workorder_to_employee(\CMSApplication::$VAR['workorder_id'], $this->app->user->login_user_id);  
     }
     
     // load the workorder details page

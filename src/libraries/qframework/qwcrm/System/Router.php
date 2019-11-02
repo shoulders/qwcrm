@@ -39,7 +39,7 @@ class Router extends System {
             // Set to the maintenance page    
             $component   = 'core';
             $page_tpl    = 'maintenance';        
-            $themVAR     = 'off';   
+            $themeVar     = 'off';   
 
             goto page_controller_acl_check;
 
@@ -51,7 +51,7 @@ class Router extends System {
             // Set the error page    
             $component   = 'core';
             $page_tpl    = '404';        
-            $themVAR     = 'off'; 
+            $themeVar     = 'off'; 
 
             goto page_controller_acl_check;
 
@@ -76,7 +76,7 @@ class Router extends System {
             // Set to the 404 error page       
             $component   = 'core';
             $page_tpl    = '404';            
-            $themVAR     = 'off';
+            $themeVar     = 'off';
 
             goto page_controller_acl_check;
 
@@ -113,7 +113,7 @@ class Router extends System {
             // Set to the 403 error page 
             $component   = 'core';
             $page_tpl    = '403';        
-            $themVAR     = 'off';
+            $themeVar     = 'off';
 
         }
 
@@ -123,7 +123,7 @@ class Router extends System {
         if($mode != 'get_payload') {
             if(isset($component)) {\CMSApplication::$VAR['component'] = $component;}
             if(isset($page_tpl)) {\CMSApplication::$VAR['page_tpl'] = $page_tpl;}
-            if(isset($themVAR)) {\CMSApplication::$VAR['theme'] = $themVAR;}
+            if(isset($themeVar)) {\CMSApplication::$VAR['themeVar'] = $themeVar;}
         }
 
         // Return the page display controller for the requested page

@@ -238,9 +238,6 @@ class General extends System {
     #           force_error_page               #
     ############################################
 
-    // Example to use
-    // new - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
-
     function force_error_page($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
 
         // Get routing variables
@@ -267,13 +264,11 @@ class General extends System {
             // Output the error page
             die($pagePayload);
             
-            // Load Error Page (in raw html mode) and output
-            //die($this->app->system->page->load_page('get_payload', 'core', 'error', 'raw_html'));
-
         // This will show errors within the template as normal - but occassionaly can cause boot loops during development
         } else {  
 
             // Load Error Page (normally) and output
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("An error has occured while accessing the database."));
             die($this->app->system->page->load_page('get_payload', 'core', 'error'));
 
         }
@@ -454,7 +449,7 @@ class General extends System {
 
             CMSApplication::$VAR['component'] = 'setup';
             CMSApplication::$VAR['page_tpl']  = 'install';
-            CMSApplication::$VAR['theme']     = 'menu_off';        
+            CMSApplication::$VAR['themeVar']     = 'menu_off';        
             define('QWCRM_SETUP', 'install');  
 
             return;        
@@ -465,7 +460,7 @@ class General extends System {
 
             CMSApplication::$VAR['component'] = 'setup';
             CMSApplication::$VAR['page_tpl']  = 'migrate';
-            CMSApplication::$VAR['theme']     = 'menu_off';
+            CMSApplication::$VAR['themeVar']     = 'menu_off';
             define('QWCRM_SETUP', 'install'); 
 
             return;        
@@ -476,7 +471,7 @@ class General extends System {
 
             CMSApplication::$VAR['component'] = 'setup';
             CMSApplication::$VAR['page_tpl']  = 'upgrade';
-            CMSApplication::$VAR['theme']     = 'menu_off';        
+            CMSApplication::$VAR['themeVar']     = 'menu_off';        
             define('QWCRM_SETUP', 'install');
 
             return;
@@ -506,7 +501,7 @@ class General extends System {
             // Move Direct page access control to the pages controller (i.e. I might allow direct access to setup:choice)        
             \CMSApplication::$VAR['component'] = 'setup';
             \CMSApplication::$VAR['page_tpl']  = 'choice';
-            \CMSApplication::$VAR['theme']     = 'menu_off';        
+            \CMSApplication::$VAR['themeVar']     = 'menu_off';        
 
             /* This allows the use of the database ASAP in the setup process
             if (defined('PRFX') && \Factory::getDbo()->isConnected() && $this->app->system->general->get_qwcrm_database_version_number()) {
@@ -578,7 +573,7 @@ class General extends System {
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
             CMSApplication::$VAR['component']     = 'setup';
             CMSApplication::$VAR['page_tpl']      = 'upgrade';
-            CMSApplication::$VAR['theme']         = 'menu_off';
+            CMSApplication::$VAR['themeVar']         = 'menu_off';
             define('QWCRM_SETUP', 'install'); 
             return;
         }*/
@@ -587,7 +582,7 @@ class General extends System {
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
             CMSApplication::$VAR['component']     = 'setup';
             CMSApplication::$VAR['page_tpl']      = 'choice';
-            CMSApplication::$VAR['theme']         = 'menu_off';
+            CMSApplication::$VAR['themeVar']         = 'menu_off';
             CMSApplication::$VAR['setup_type']    = 'upgrade';
             define('QWCRM_SETUP', 'install'); 
             return;
