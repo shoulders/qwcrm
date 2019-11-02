@@ -58,7 +58,7 @@
 
                                 <!--  --> 
                                 <td class="olotd4" align="center" width="33%">
-                                    <p>&nbsp;</p> 
+                                    <p>{t}A voucher can currently only be cancelled when you cancel the parent invoice.{/t}</p> 
                                 </td>
 
                                 <!-- Delete Voucher -->                        

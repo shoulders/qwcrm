@@ -617,7 +617,7 @@ class Refund extends Components {
         }
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_refunding($refund_details ['invoice_id'])) {
+        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refunding($refund_details ['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
             $state_flag = false;
         }
@@ -662,7 +662,7 @@ class Refund extends Components {
         }
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_refund_cancellation($refund_details['invoice_id'])) {
+        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refund_cancellation($refund_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
             $state_flag = false;
         }
@@ -713,7 +713,7 @@ class Refund extends Components {
         }
 
         // Does the invoice status allow it to have its refund deleted (including vouchers)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_refund_deletion($refund_details['invoice_id'])) {
+        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refund_deletion($refund_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
             $state_flag = false;
         } 
@@ -776,7 +776,7 @@ class Refund extends Components {
         }
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_refunding($refund_details['invoice_id'])) {
+        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refunding($refund_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
             $state_flag = false;
         }
