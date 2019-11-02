@@ -145,7 +145,7 @@ if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['reset
         $this->app->components->user->reset_user_password($user_id, \CMSApplication::$VAR['password']);
 
         // Logout the user out silently (if logged in)
-        $this->app->user->logout(true);
+        $this->app->components->user->logout(true);
 
         // Redirect to login page with success or failed message
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Password reset successfully."));

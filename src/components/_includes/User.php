@@ -790,9 +790,9 @@ class User extends Components {
         }
     }
 
-    ####################################
-    #  Login authentication public function   # // could add silent to logout?
-    ####################################
+    ###########################
+    #  Login authentication   #
+    ###########################
 
     public function logout($silent = null)        
     {   
