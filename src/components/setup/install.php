@@ -38,7 +38,13 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
         if($this->app->components->setup->verify_database_connection_details(\CMSApplication::$VAR['qwcrm_config']['db_host'], \CMSApplication::$VAR['qwcrm_config']['db_user'], \CMSApplication::$VAR['qwcrm_config']['db_pass'], \CMSApplication::$VAR['qwcrm_config']['db_name'])) {
             
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Database connection successful."));
+            
+            // Create Configuration File
             $this->app->components->setup->create_config_file_from_default(SETUP_DIR.'install/install_configuration.php');
+            
+            // Load the configuration file into the registry            
+            $this->app->components->administrator->refresh_qwcrm_config();
+            
             $this->app->components->administrator->update_qwcrm_config_settings_file(\CMSApplication::$VAR['qwcrm_config']);           
             $this->app->components->setup->write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             \CMSApplication::$VAR['stage'] = 'config_settings';
