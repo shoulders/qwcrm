@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
+## [3.1.2] 2019-11-03
+### Changed
+- Upgraded all code to OOP Coding Paradigm
+- Messages are now rendered from a messages store allowing for multiple messages to be displayed
+- Minimum PHP version is now 7.2.0
+
+### Fixed
+- Many Bugs
+
 ## [3.1.1] 2019-07-25
 ### Added
 - Language files can now be dropped in to the /language/ folder which are automatically detected and can then be used
