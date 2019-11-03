@@ -20,10 +20,10 @@
 
 defined('_QWEXEC') or die;
 
-// Only allow the use of these public functions when the /setup/ folder exists.
+/* Only allow the use of these public functions when the /setup/ folder exists.
 if (!is_dir(SETUP_DIR)) {      
     die(_gettext("You cannot use these public functions without the setup folder."));        
-}
+}*/
 
 class Setup extends Components {
 
@@ -33,7 +33,11 @@ class Setup extends Components {
     
     public function __construct() {
         
-        parent::__constructor;
+        parent::__construct();
+        
+        // Create a User object without starting the Session
+        // This prevents undefined errors in get_page_content()
+        $this->app->user = new Joomla\CMS\User\User;
         
         // Prevent undefined variable errors && Get 'stage' from the submit button
         \CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
@@ -45,6 +49,29 @@ class Setup extends Components {
         ini_set('max_execution_time', 300);
         
     }
+    
+    ############################
+    #      Start Setup         #
+    ############################
+    
+    public function start_setup() {
+        
+        // Create a User object without starting the Session
+        // This prevents undefined errors in get_page_content()
+        $this->app->user = new Joomla\CMS\User\User;
+        
+        // Prevent undefined variable errors && Get 'stage' from the submit button
+        \CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
+        $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
+        $this->app->smarty->assign('setup_error_flag', self::$setup_error_flag);
+        $this->app->smarty->assign('executed_sql_results', self::$executed_sql_results);
+        
+        // Set Max Execution time to 5 Minutes
+        ini_set('max_execution_time', 300);
+        
+    }    
+    
+      
     
     /** Common (not database) **/
     
@@ -946,15 +973,19 @@ class Setup extends Components {
     ####################################################################
 
     public function verify_database_connection_details($db_host, $db_user, $db_pass, $db_name) {
-
+        
         // This allows me to re-use config-registry to test the database connection
-        $this->app->config->set('db_host', $this->db_host);
-        $this->app->config->set('db_user', $this->db_user);
-        $this->app->config->set('db_pass', $this->db_pass);
-        $this->app->config->set('db_name', $this->db_name);
+        $this->app->config->set('db_host', $db_host);
+        $this->app->config->set('db_user', $db_user);
+        $this->app->config->set('db_pass', $db_pass);
+        $this->app->config->set('db_name', $db_name);
 
         // Set an error trap
         $this->app->config->set('test_db_connection', 'test');
+        
+        // Restart the database
+        \Factory::$database = null;
+        $this->app->db = \Factory::getDbo();
 
         // This public function will generate the error messages upstream as needed
         if($this->app->config->get('test_db_connection') == 'passed') {

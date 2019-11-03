@@ -14,13 +14,13 @@ class Upgrade3_1_2 extends Setup {
     private $upgrade_step = null;
     private $setup_time = null;
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
         // Call parent's constructor
-        parent::__construct($VAR);
+        parent::__construct();
         
         // Some operations need to have a unified point in time
-        $this->smarty = time();
+        $this->setup_time = time();
         
         // Get the upgrade step name
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces

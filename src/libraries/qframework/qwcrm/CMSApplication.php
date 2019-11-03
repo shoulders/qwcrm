@@ -42,71 +42,44 @@ class CMSApplication {
     
     public function execute() {
            
-        // Instanciate the QWcrm classes
-        self::classFilesExecuteStored('system');
-        self::classFilesExecuteStored('components');
-        //self::classFilesExecuteStored('modules');
-        //self::classFilesExecuteStored('plugins');
-
-        // Load App Globals
-        $this->config = \Factory::getConfig();
-        $this->smarty = \Factory::getSmarty();
-        if(!defined('QWCRM_SETUP')){
-            $this->db = \Factory::getDbo();
-        }
+        // Build and configure the Framework/Application
+        self::$VAR = array_merge($_POST, $_GET, self::$VAR);                                // Merge Primary Arrays  - Merge the $_GET, $_POST and emulated $_POST ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
+        self::classFilesExecuteStored('system');                                            // Instanciate the QWcrm Framework System Classes  
+        $this->config = \Factory::getConfig();                                              // Load Global Config Object
+        $this->system->general->load_language();                                            // Load Language
+        $this->db = \Factory::getDbo();                                                     // This is needed to make sure the setup loadsds the database
+        $this->system->qerror->configure_php_error_reporting();                             // Configure PHP error reporting (Enable Error Reporting Immediately) (need to make static and first)----------- (has no dependencies so coulf go earlier)
+        $this->system->qerror->load_whoops($this->config->get('error_handler_whoops'));     // Whoops Error Handler - Here so it can load ASAP       
+        $this->smarty = \Factory::getSmarty();                                              // Load Global Smarty Object
+        $this->system->security->force_ssl($this->config->get('force_ssl'));                // Redirect to SSL (if enabled) 
+        $this->system->general->verify_qwcrm_install_state();                               // Verify Installation state (install/migrate/upgrade/complete) - This enables the DB if it checks the QWcrm database version (upgrade and migrate)
+        self::classFilesExecuteStored('components');                                        // Instanciate the QWcrm Framework Component Classes
+        $this->system->variables->load_system_variables();                                  // Load the system variables
         
-        // Enable Error Reporting Immediately
-        $this->system->qerror->configure_php_error_reporting();                                     // Configure PHP error reporting (need to make static and first)----------- (has no dependencies so coulf go earlier)
-        $this->system->qerror->load_whoops($this->config->get('error_handler_whoops'));             // Whoops Error Handler - Here so it can load ASAP (has to be after vendor) 
-
-        // Framework Configurations        
-        $this->system->security->force_ssl($this->config->get('force_ssl'));                        // Redirect to SSL (if enabled)
-        $this->system->general->load_language();                                                    // Load Language  (Currently in include - make language?)
-        $this->merge_primary_arrays();                                                              // Merge Primary Arrays        
-        $this->system->general->verify_qwcrm_install_state();                                       // Verify Installation state (install/migrate/upgrade/complete)
-        $this->system->variables->load_system_variables();                                          // Load the system variables
-
-        if(!defined('QWCRM_SETUP'))
-        {
+        //self::classFilesExecuteStored('modules');
+        //self::classFilesExecuteStored('plugins'); 
+        
+        // If there is a live/configured database connection, load the session
+        if(!defined('QWCRM_SETUP')) // || (defined('PRFX') && $this->db)
+        {            
             // Load/Start/Create the session
-            $this->loadSession();                
-
+            $this->loadSession(); 
+        
             // Try to automatically login - i.e. using the 'Remember me' feature, a silent login is instigated if a 'Remember me' cookie is found
             $PlgSystemRemember = new PlgSystemRemember;  // This allows silent login using 'Remember me' cookie after checking it exists - need to make sure it does not re-logon if already logged on
             $PlgSystemRemember->onAfterInitialise();
             unset($PlgSystemRemember);        
 
-            // Get the Global user object here
-            $this->user = \Factory::getUser();
-            
             // Merge the `Post Emulation Store`, `(stored in the session) to $VAR  ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)        
             self::$VAR = array_merge(self::$VAR, $this->system->variables->postEmulationReturnStore());
-        }
+            
+            // Get the Global user object here
+            $this->user = \Factory::getUser();
+        }       
         
     }
-    
+
     /**
-     * Load all of the includes, settings and variables for QWcrm
-     *
-     *   
-    public function loadQwcrm()
-    {                
-        load_defines();                                                     // Load System Constants
-        $this->system->force_ssl(self::getConfig()->get('force_ssl'));      // Redirect to SSL (if enabled)
-        configure_php_error_reporting();                                    // Configure PHP error reporting
-        require(VENDOR_DIR.'autoload.php');                                 // Load dependencies via composer
-        load_whoops(self::getConfig()->get('error_handler_whoops'));        // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)        
-        load_language();                                                    // Load Language  (now in include)
-        self::merge_primary_arrays();                                       // Merge Primary Arrays        
-        verify_qwcrm_install_state();                                       // Verify Installation state (install/migrate/upgrade/complete)
-        load_system_variables();                                            // Load the system variables
-
-        return;
-    }*/
-    
-           
-
-        /**
      * Allows the application to load a custom or default session.
      *
      * The logic and options for creating this object are adequately generic for default cases
@@ -358,16 +331,6 @@ class CMSApplication {
        }  
     }  
     
-    /** 
-     * Merge the $_GET, $_POST and emulated $_POST ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
-     */
-    private function merge_primary_arrays()
-    {
-       self::$VAR = array_merge($_POST, $_GET, self::$VAR); 
-    } 
-    
-
-
     /**
      * based on discover() joomla/libraries/loader.php
      * 
@@ -470,9 +433,9 @@ class CMSApplication {
                     $className = preg_replace('#\.php$#', '', $fileName);
                     
                     // If not in setup, skip 'Setup' class
-                    if(!defined('QWCRM_SETUP') && $className === 'Setup' ) { continue; }
+                    //if(!defined('QWCRM_SETUP') && $className === 'Setup' ) { continue; }
                     
-                    // Checks if the class is instantiable (needed becasue of 'Factory' is in main class load folder)
+                    // Checks if the class is instantiable (needed because 'Factory' is in main class load folder)
                     $checkClass = new ReflectionClass($className);
                     if(!$checkClass->isInstantiable()) { continue; }
                                      
@@ -532,9 +495,12 @@ class CMSApplication {
             // cycle through each of the classes in this group
             foreach($classNames as $className)
             {
+                // If not in setup, skip 'Setup' class
+                if(!defined('QWCRM_SETUP') && $className === 'Setup' ) { continue; }
+                
                 // Get the lowercase version of the class name
                 $lowerClassName = strtolower($className);
-
+                
                 // Load the class in to the relevant variable (in this class)
                 $this->$classGroup->$lowerClassName = new $className();  
             }

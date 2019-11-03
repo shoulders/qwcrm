@@ -16,13 +16,13 @@ class Upgrade3_1_0 extends Setup {
     private $default_vat_tax_code = null;
     private $setup_time = null;
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
         // Call parent's constructor
-        parent::__construct($VAR);
+        parent::__construct();
         
         // Some operations need to have a unified point in time
-        $this->smarty = time();
+        $this->setup_time = time();
         
         // Get the upgrade step name
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces
@@ -30,8 +30,8 @@ class Upgrade3_1_0 extends Setup {
         // Perform the upgrade
         $this->pre_database();
         $this->process_database();
-        $this->post_database();
-                        
+        $this->post_database();        
+        
     }    
     
     // scripts executed before SQL script (if required)
@@ -50,8 +50,8 @@ class Upgrade3_1_0 extends Setup {
     public function post_database() {
         
         // Config File
-        insert_qwcrm_config_setting('sef', '0');
-        insert_qwcrm_config_setting('error_handler_whoops', '1');
+        $this->app->components->administrator->insert_qwcrm_config_setting('sef', '0');
+        $this->app->components->administrator->insert_qwcrm_config_setting('error_handler_whoops', '1');
         $this->app->components->administrator->update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
         
         // Tag all previous payments as type 'invoice'
@@ -132,8 +132,8 @@ class Upgrade3_1_0 extends Setup {
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax_cash');
         
         // Set the Company Tax system and VAT tax code now the Company Record has been updated
-        $this->company_tax_system = get_company_details('tax_system');
-        $this->default_vat_tax_code = get_default_vat_tax_code($this->company_tax_system); // This is an educated guess
+        $this->company_tax_system = $this->app->components->company->get_company_details('tax_system');
+        $this->default_vat_tax_code = $this->app->components->company->get_default_vat_tax_code($this->company_tax_system); // This is an educated guess
                 
         // Update Invoice Items        
         $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $this->company_tax_system);
@@ -149,7 +149,7 @@ class Upgrade3_1_0 extends Setup {
         $this->voucher_correct_records();
         $this->update_column_values(PRFX.'voucher_records', 'type', '*', 'MPV');
         $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
-        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code('MPV', $this->company_tax_system)); 
+        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', $this->app->components->voucher->get_voucher_vat_tax_code('MPV', $this->company_tax_system)); 
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax_cash' type
         $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax_cash', '!');
@@ -186,13 +186,13 @@ class Upgrade3_1_0 extends Setup {
         $this->copy_columnA_to_columnB('otherincome_records', 'date', 'opened_on');
         $this->copy_columnA_to_columnB('otherincome_records', 'date', 'closed_on');
         $this->copy_columnA_to_columnB('otherincome_records', 'date', 'last_active');
-        $this->update_column_values(PRFX.'supplier_records', 'opened_on', '*', mysql_datetime($this->setup_time));
+        $this->update_column_values(PRFX.'supplier_records', 'opened_on', '*', $this->app->system->general->mysql_datetime($this->setup_time));
         
         // correct users with 00:00:00 registered dates
-        $this->update_column_values(PRFX.'user_records', 'register_date', '0000-00-00 00:00:00', mysql_datetime($this->setup_time));
+        $this->update_column_values(PRFX.'user_records', 'register_date', '0000-00-00 00:00:00', $this->app->system->general->mysql_datetime($this->setup_time));
         
         // Correct logo filepath
-        $this->update_record_value(PRFX.'company_record', 'logo', str_replace('media/', '', get_company_details('logo')));
+        $this->update_record_value(PRFX.'company_record', 'logo', str_replace('media/', '', $this->app->components->company->get_company_details('logo')));
         
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
@@ -211,7 +211,6 @@ class Upgrade3_1_0 extends Setup {
     
      public function column_timestamp_to_mysql_date($table, $column_timestamp, $column_primary_key) {
         
-        $db = \Factory::getDbo();
         $mysql_date = null;
         $temp_prfx = 'temp_';
         $local_error_flag = false;
@@ -224,7 +223,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Create a temp column for the new DATE values
         $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATE NOT NULL AFTER `".$column_timestamp."`";        
-        if(!$rs = $db->execute($sql)) { 
+        if(!$rs = $this->app->db->execute($sql)) { 
                         
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -239,7 +238,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);            
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);            
            
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -248,7 +247,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Loop through all of the timestamps, calculate the correct Date and enter it into the temporary timestamp column
         $sql = "SELECT * FROM ".$table;
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
                         
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -263,7 +262,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -279,7 +278,7 @@ class Upgrade3_1_0 extends Setup {
 
                 // Update the temporary column record
                 $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_date."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
-                if(!$temp_rs = $db->execute($sql)) { 
+                if(!$temp_rs = $this->app->db->execute($sql)) { 
                                         
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -294,7 +293,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;                    
@@ -308,7 +307,7 @@ class Upgrade3_1_0 extends Setup {
                 
             // Remove the orginal timestamp column
             $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
-            if(!$rs = $db->execute($sql)) { 
+            if(!$rs = $this->app->db->execute($sql)) { 
                                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -323,7 +322,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -332,7 +331,7 @@ class Upgrade3_1_0 extends Setup {
 
             // Rename temporary column (temp_xxx) to the original column name
             $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATE NOT NULL ".$column_comment;
-            if(!$rs = $db->execute($sql)) { 
+            if(!$rs = $this->app->db->execute($sql)) { 
                                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -347,7 +346,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -369,7 +368,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -383,7 +382,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -397,7 +396,6 @@ class Upgrade3_1_0 extends Setup {
     
     public function column_timestamp_to_mysql_datetime($table, $column_timestamp, $column_primary_key) {
         
-        $db = \Factory::getDbo();
         $mysql_datetime = null;
         $temp_prfx = 'temp_';
         $local_error_flag = false;
@@ -410,7 +408,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Create a new temp column for the new DATETIME values
         $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATETIME NOT NULL AFTER `".$column_timestamp."`";        
-        if(!$rs = $db->execute($sql)) { 
+        if(!$rs = $this->app->db->execute($sql)) { 
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -425,7 +423,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
            
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -434,7 +432,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Loop through all of the timestamps, calculate the correct Datetime and enter them into the temporary column
         $sql = "SELECT * FROM ".$table;
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -449,7 +447,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -460,11 +458,11 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
 
                 // Convert the timestamp into the correct MySQL DATETIME
-                $mysql_datetime = timestamp_mysql_datetime($rs->fields[$column_timestamp]);
+                $mysql_datetime = $this->app->system->general->timestamp_mysql_datetime($rs->fields[$column_timestamp]);
 
                 // Update the temporary column record
                 $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_datetime."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
-                if(!$temp_rs = $db->execute($sql)) {
+                if(!$temp_rs = $this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -476,7 +474,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -490,7 +488,7 @@ class Upgrade3_1_0 extends Setup {
                 
             // Remove the orginal timestamp column
             $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
-            if(!$rs = $db->execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -502,7 +500,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                 
                 // The process has failed so stop any further proccesing
                 goto process_end;   
@@ -511,7 +509,7 @@ class Upgrade3_1_0 extends Setup {
 
             // Rename temporary column (temp_xxx) to the original column name
             $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATETIME NOT NULL ".$column_comment;
-            if(!$rs = $db->execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -526,7 +524,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -548,7 +546,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -562,7 +560,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -583,7 +581,7 @@ class Upgrade3_1_0 extends Setup {
         
         // If the timestamp already is a proper date in the format xxxx/xx/xx 00:00 then timestamp is correct 'as is' (there is no offset)
         if(preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} 00:00:00$/', date('Y-m-d H:i:s', $timestamp))) {              
-            return $this->app->components->administrator->timestamp_mysql_date($timestamp);           
+            return $this->app->system->general->timestamp_mysql_date($timestamp);           
         }
         
         // Calculate backward difference
@@ -614,7 +612,7 @@ class Upgrade3_1_0 extends Setup {
         $corrected_timestamp = $timestamp + $offset;
      
         // Return the correct date in MySQL DATE format
-        return $this->app->components->administrator->timestamp_mysql_date($corrected_timestamp);        
+        return $this->app->system->general->timestamp_mysql_date($corrected_timestamp);        
         
     } 
     
@@ -625,13 +623,11 @@ class Upgrade3_1_0 extends Setup {
 
     function voucher_correct_records() {
         
-        $db = \Factory::getDbo();        
-        
         $local_error_flag = false;                     
         
         // Loop through all of the Voucher records
         $sql = "SELECT * FROM ".PRFX."voucher_records";
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -646,7 +642,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -695,17 +691,17 @@ class Upgrade3_1_0 extends Setup {
                 
                 $sql = "UPDATE `".PRFX."voucher_records` SET
                         `invoice_id` = '0', 
-                        `redeemed_client_id` = ".$db->qstr($redeemed_client_id).",                        
-                        `status` = ".$db->qstr($status).",
-                        `opened_on` = ".$db->qstr($opened_on).",
-                        `closed_on` = ".$db->qstr($closed_on).",
-                        `last_active` = ".$db->qstr($last_active).",
+                        `redeemed_client_id` = ".$this->app->db->qstr($redeemed_client_id).",                        
+                        `status` = ".$this->app->db->qstr($status).",
+                        `opened_on` = ".$this->app->db->qstr($opened_on).",
+                        `closed_on` = ".$this->app->db->qstr($closed_on).",
+                        `last_active` = ".$this->app->db->qstr($last_active).",
                         `blocked` = ".$blocked."
                         WHERE `voucher_id` = ".$rs->fields['voucher_id'];
                 
                 
                 // Run the SQL
-                if(!$temp_rs = $db->execute($sql)) {
+                if(!$temp_rs = $this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -720,7 +716,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -747,7 +743,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -761,7 +757,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -775,15 +771,13 @@ class Upgrade3_1_0 extends Setup {
 
     function invoice_correct_labour_totals() {
         
-        $db = \Factory::getDbo();        
-        
         $local_error_flag = false;                     
         
         // Loop through all of the labour records
         $sql = "SELECT *
                 FROM ".PRFX."invoice_labour";                
 
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -798,7 +792,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -809,7 +803,7 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
                 
                 // Get the invoice details or use manual options here (compensates for records with missing invoices)
-                if(!$invoice_details = get_invoice_details($rs->fields['invoice_id'])) {
+                if(!$invoice_details = $this->app->components->invoice->get_invoice_details($rs->fields['invoice_id'])) {
                     $invoice_details['tax_system'] = 'no_tax';
                 } 
                 
@@ -817,23 +811,23 @@ class Upgrade3_1_0 extends Setup {
                 $sales_tax_exempt = 0;
 
                 // Set the correct VAT code
-                $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']); 
+                $vat_tax_code = $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']); 
 
                 // Calculate the correct tax rate based on tax system (and exemption status)
                 if($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
                 elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = get_vat_rate($vat_tax_code); }
                 else { $unit_tax_rate = 0.00; }
 
-                $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
+                $item_totals = $this->app->components->invoice->calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
 
                 $sql = "UPDATE `".PRFX."invoice_labour` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
-                    `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
-                    `description`       = ".$db->qstr($rs->fields['description']).",
+                    `tax_system`        = ".$this->app->db->qstr($invoice_details['tax_system']).",
+                    `description`       = ".$this->app->db->qstr($rs->fields['description']).",
                     `unit_qty`          = ".$rs->fields['unit_qty'].",
                     `unit_net`          = ".$rs->fields['unit_net'].",
                     `sales_tax_exempt`  = ".$sales_tax_exempt.",
-                    `vat_tax_code`      = ".$db->qstr($vat_tax_code).",                        
+                    `vat_tax_code`      = ".$this->app->db->qstr($vat_tax_code).",                        
                     `unit_tax_rate`     = ".$unit_tax_rate.",                       
                     `unit_tax`          = ".$item_totals['unit_tax'].",
                     `unit_gross`        = ".$item_totals['unit_gross'].",                        
@@ -843,7 +837,7 @@ class Upgrade3_1_0 extends Setup {
                     WHERE `invoice_labour_id`  = ".$rs->fields['invoice_labour_id'];                
 
                 // Run the SQL
-                if(!$temp_rs = $db->execute($sql)) {
+                if(!$temp_rs = $this->app->db->execute($sql)) {
 
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -858,7 +852,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
 
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -885,7 +879,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -899,7 +893,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -913,15 +907,13 @@ class Upgrade3_1_0 extends Setup {
 
     function invoice_correct_parts_totals() {
         
-        $db = \Factory::getDbo();        
-        
         $local_error_flag = false;                     
         
         // Loop through all of the labour records
         $sql = "SELECT *
                 FROM ".PRFX."invoice_parts";                
 
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -936,7 +928,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -947,7 +939,7 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
                                 
                 // Get the invoice details or use manual options here (compensates for records with missing invoices)
-                if(!$invoice_details = get_invoice_details($rs->fields['invoice_id'])) {
+                if(!$invoice_details = $this->app->components->invoice->get_invoice_details($rs->fields['invoice_id'])) {
                     $invoice_details['tax_system'] = 'no_tax';
                 }                
                 
@@ -955,23 +947,23 @@ class Upgrade3_1_0 extends Setup {
                 $sales_tax_exempt = 0;
 
                 // Set the correct VAT code
-                $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']); 
+                $vat_tax_code = $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']); 
 
                 // Calculate the correct tax rate based on tax system (and exemption status)
                 if($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
-                elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = get_vat_rate($vat_tax_code); }
+                elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = $this->app->components->company->get_vat_rate($vat_tax_code); }
                 else { $unit_tax_rate = 0.00; }
 
-                $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
+                $item_totals = $this->app->components->invoice->calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
 
                 $sql = "UPDATE `".PRFX."invoice_parts` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
-                    `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
-                    `description`       = ".$db->qstr($rs->fields['description']).",
+                    `tax_system`        = ".$this->app->db->qstr($invoice_details['tax_system']).",
+                    `description`       = ".$this->app->db->qstr($rs->fields['description']).",
                     `unit_qty`          = ".$rs->fields['unit_qty'].",
                     `unit_net`          = ".$rs->fields['unit_net'].",
                     `sales_tax_exempt`  = ".$sales_tax_exempt.",
-                    `vat_tax_code`      = ".$db->qstr($vat_tax_code).",                        
+                    `vat_tax_code`      = ".$this->app->db->qstr($vat_tax_code).",                        
                     `unit_tax_rate`     = ".$unit_tax_rate.",                       
                     `unit_tax`          = ".$item_totals['unit_tax'].",
                     `unit_gross`        = ".$item_totals['unit_gross'].",                        
@@ -981,7 +973,7 @@ class Upgrade3_1_0 extends Setup {
                     WHERE `invoice_parts_id` = ".$rs->fields['invoice_parts_id'];               
                 
                 // Run the SQL
-                if(!$temp_rs = $db->execute($sql)) {
+                if(!$temp_rs = $this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -996,7 +988,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -1023,7 +1015,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1037,7 +1029,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -1051,13 +1043,11 @@ class Upgrade3_1_0 extends Setup {
 
     function payments_parse_import_additional_info() {
         
-        $db = \Factory::getDbo();        
-        
         $local_error_flag = false;                     
         
         // Loop through all of the payment records
         $sql = "SELECT * FROM ".PRFX."payment_records";
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -1072,7 +1062,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -1129,7 +1119,7 @@ class Upgrade3_1_0 extends Setup {
                 // Voucher / Giftcert
                 if(preg_match('/Gift Certificate Code: (.*),/U', $rs->fields['note'], $matches)) {
                     $voucher_code =  $matches[1];
-                    $voucher_id = get_voucher_id_by_voucher_code($voucher_code);                    
+                    $voucher_id = $this->app->components->voucher->get_voucher_id_by_voucher_code($voucher_code);                    
                 }                          
                                 
                 // Build 'additional_info' array
@@ -1143,12 +1133,12 @@ class Upgrade3_1_0 extends Setup {
                 
                 // Build SQL                
                 $sql = "UPDATE `".PRFX."payment_records` SET
-                        `voucher_id` = ".$db->qstr($voucher_id).",                        
-                        `additional_info` = ". $db->qstr(json_encode($additional_info))."
+                        `voucher_id` = ".$this->app->db->qstr($voucher_id).",                        
+                        `additional_info` = ". $this->app->db->qstr(json_encode($additional_info))."
                         WHERE `payment_id` = ".$rs->fields['payment_id'];                
                 
                 // Run the SQL
-                if(!$temp_rs = $db->execute($sql)) {
+                if(!$temp_rs = $this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -1163,7 +1153,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -1190,7 +1180,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1204,7 +1194,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -1218,15 +1208,13 @@ class Upgrade3_1_0 extends Setup {
 
     function payments_create_expense_records_payments() {
         
-        $db = \Factory::getDbo();        
-        
         $local_error_flag = false;                     
         
         // Loop through all of the labour records
         $sql = "SELECT *
                 FROM ".PRFX."expense_records";                
 
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -1241,7 +1229,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -1252,26 +1240,26 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
                 
                 $sql = "INSERT INTO ".PRFX."payment_records SET            
-                    employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
+                    employee_id     = ".$this->app->db->qstr($rs->fields['employee_id']                   ).",
                     client_id       = '',
                     workorder_id    = '',
                     invoice_id      = '',
                     voucher_id      = '',
                     refund_id       = '',
-                    expense_id      = ".$db->qstr($rs->fields['expense_id']                    ).",
+                    expense_id      = ".$this->app->db->qstr($rs->fields['expense_id']                    ).",
                     otherincome_id  = '',
-                    date            = ".$db->qstr($rs->fields['date']                          ).",
-                    tax_system      = ".$db->qstr($rs->fields['tax_system']                    ).",
+                    date            = ".$this->app->db->qstr($rs->fields['date']                          ).",
+                    tax_system      = ".$this->app->db->qstr($rs->fields['tax_system']                    ).",
                     type            = 'expense',
-                    method          = ".$db->qstr($rs->fields['payment_method']                ).",
+                    method          = ".$this->app->db->qstr($rs->fields['payment_method']                ).",
                     status          = 'valid',
-                    amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
-                    last_active     = ".$db->qstr($rs->fields['date']                          ).",
-                    additional_info = ".$db->qstr(build_additional_info_json()                 ).",
-                    note            = ".$db->qstr('<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>');               
+                    amount          = ".$this->app->db->qstr($rs->fields['unit_gross']                    ).",
+                    last_active     = ".$this->app->db->qstr($rs->fields['date']                          ).",
+                    additional_info = ".$this->app->db->qstr($this->app->components->payment->build_additional_info_json()                 ).",
+                    note            = ".$this->app->db->qstr('<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
-                if(!$temp_rs = $db->execute($sql)) {
+                if(!$temp_rs = $this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -1286,7 +1274,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -1305,7 +1293,7 @@ class Upgrade3_1_0 extends Setup {
             $sql = "ALTER TABLE `".PRFX."expense_records` DROP `payment_method`;";
             
             // Run the SQL
-            if(!$temp_rs = $db->execute($sql)) {
+            if(!$temp_rs = $this->app->db->execute($sql)) {
 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -1320,7 +1308,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -1342,7 +1330,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1356,7 +1344,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -1370,15 +1358,13 @@ class Upgrade3_1_0 extends Setup {
 
     function payments_create_otherincome_records_payments() {
         
-        $db = \Factory::getDbo();        
-        
         $local_error_flag = false;                     
         
         // Loop through all of the labour records
         $sql = "SELECT *
                 FROM ".PRFX."otherincome_records";                
 
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->app->db->Execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -1393,7 +1379,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -1404,26 +1390,26 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
                 
                 $sql = "INSERT INTO ".PRFX."payment_records SET            
-                    employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
+                    employee_id     = ".$this->app->db->qstr($rs->fields['employee_id']                   ).",
                     client_id       = '',
                     workorder_id    = '',
                     invoice_id      = '',
                     voucher_id      = '',
                     refund_id       = '',
                     expense_id      = '',
-                    otherincome_id  = ".$db->qstr($rs->fields['otherincome_id']                ).",
-                    date            = ".$db->qstr($rs->fields['date']                          ).",
-                    tax_system      = ".$db->qstr($rs->fields['tax_system']                    ).",
+                    otherincome_id  = ".$this->app->db->qstr($rs->fields['otherincome_id']                ).",
+                    date            = ".$this->app->db->qstr($rs->fields['date']                          ).",
+                    tax_system      = ".$this->app->db->qstr($rs->fields['tax_system']                    ).",
                     type            = 'otherincome',
-                    method          = ".$db->qstr($rs->fields['payment_method']                ).",
+                    method          = ".$this->app->db->qstr($rs->fields['payment_method']                ).",
                     status          = 'valid',
-                    amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
-                    last_active     = ".$db->qstr($rs->fields['date']                          ).",
-                    additional_info = ".$db->qstr(build_additional_info_json()                 ).",
-                    note            = ".$db->qstr('<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>');               
+                    amount          = ".$this->app->db->qstr($rs->fields['unit_gross']                    ).",
+                    last_active     = ".$this->app->db->qstr($rs->fields['date']                          ).",
+                    additional_info = ".$this->app->db->qstr($this->app->components->payment->build_additional_info_json()                 ).",
+                    note            = ".$this->app->db->qstr('<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
-                if(!$temp_rs = $db->execute($sql)) {
+                if(!$temp_rs = $this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -1438,7 +1424,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -1457,7 +1443,7 @@ class Upgrade3_1_0 extends Setup {
             $sql = "ALTER TABLE `".PRFX."otherincome_records` DROP `payment_method`;";
             
             // Run the SQL
-            if(!$temp_rs = $db->execute($sql)) {
+            if(!$temp_rs = $this->app->db->execute($sql)) {
 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -1472,7 +1458,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -1494,7 +1480,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1508,7 +1494,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             

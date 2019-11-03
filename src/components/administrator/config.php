@@ -70,7 +70,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {
 
     // No data submitted so just load the current config settings
-    $this->app->smarty->assign('qwcrm_config', $this->app->components->administrator->get_qwcrm_config_settings() );
+    $this->app->smarty->assign('qwcrm_config', $this->app->components->administrator->get_qwcrm_config_as_array() );
 
 }
 

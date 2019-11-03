@@ -57,7 +57,7 @@ class Security extends System {
         // Allows page access during a setup process but block direct access
         if($access_rule == 'setup') {
 
-            if(defined('QWCRM_SETUP') && !confirm_direct_access($component, $page_tpl)) {
+            if(defined('QWCRM_SETUP') && !$this->confirm_direct_access($component, $page_tpl)) {
                 return true;            
             } else {
                 return false;        

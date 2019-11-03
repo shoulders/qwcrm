@@ -311,8 +311,7 @@ abstract class Factory {
     protected static function createDbo()
     {        
         
-        $config = self::getConfig();
-        $smarty = self::getSmarty();
+        $config = self::getConfig();        
         
         $db = ADONewConnection('mysqli');
         
@@ -361,7 +360,7 @@ abstract class Factory {
                     //var_dump($e);
                     //adodb_backtrace($e->gettrace());
                     $config->set('test_db_connection', 'failed');
-                    self::getApplication()->components->variables->systemMessagesWrite('danger', prepare_error_data('error_database_connection', $e->msg));
+                    self::getApplication()->system->variables->systemMessagesWrite('danger', self::getApplication()->system->general->prepare_error_data('error_database_connection', $e->msg));
                 }
 
                 return false;
@@ -377,7 +376,7 @@ abstract class Factory {
                 if(!$db->isConnected()) {
                     
                     // Database connection failed
-                    self::getApplication()->components->variables->systemMessagesWrite('danger', prepare_error_data('error_database_connection', $db->ErrorMsg()));
+                    self::getApplication()->system->variables->systemMessagesWrite('danger', self::getApplication()->system->general->prepare_error_data('error_database_connection', $db->ErrorMsg()));
                     $config->set('test_db_connection', 'failed');
                     return;
                     
@@ -391,7 +390,7 @@ abstract class Factory {
                 
             }
             
-            // Database connection failed (rigged to allow installtion)
+            // Database connection failed (rigged to allow installation)
             if(!$db->isConnected()) {           
                 
                 // Valid installation, Database Connection has failed

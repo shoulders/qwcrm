@@ -242,8 +242,7 @@ INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `descri
 
 CREATE TABLE `#__expense_records` (
   `expense_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,  
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  

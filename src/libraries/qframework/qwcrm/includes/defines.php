@@ -19,7 +19,7 @@ defined('_QWEXEC') or die;
     define('QWCRM_MINIMUM_MYSQL',       '5.0.0'                                             );
     
     // This allows the use of the database ASAP in the setup process - This is the where the config is first created from configuration.php
-    if($QConfig->db_prefix) {
+    if(isset($QConfig->db_prefix)) {
         define('PRFX',                  $QConfig->db_prefix                                 );
     }
 
@@ -45,7 +45,7 @@ defined('_QWEXEC') or die;
     define('QW_MEDIA_DIR',              QWCRM_BASE_PATH.MEDIA_DIR                           );
 
     // Theme Folders
-    if($QConfig->theme_name) {
+    if(isset($QConfig->theme_name)) {
         define('THEME_NAME',            $QConfig->theme_name            );   
     } else {
         define('THEME_NAME',            'default'                                           );      

@@ -38,11 +38,6 @@ class General extends System {
 
     function prepare_error_data($type, $data = null) {
 
-        // Allows errors from install/migrate to be processed
-        if(!defined('QWCRM_SETUP')) {
-            $user = $this->app->user;
-        }
-
         /* Error Page (by referring page) - only needed when using referrer - not currently used 
         if($type === 'error_page' && isset()) {
          */
@@ -54,7 +49,7 @@ class General extends System {
           /*  // compensate for home and login pages
             if($page_string[1] == '') {     
                 // Must be Login or Home
-                if(isset($user->login_token)) {
+                if(isset($this->app->login_token)) {
                     $error_page = 'home';
                 } else {
                     $error_page = 'login';
@@ -73,7 +68,7 @@ class General extends System {
             if($data == '') {
 
                 // Must be Login or Home
-                if(isset($user->login_token)) {
+                if(isset($this->app->login_token)) {
                     $data = 'core';
                 } else {
                     $data = 'core';
@@ -92,7 +87,7 @@ class General extends System {
             if($data == '') {
 
                 // Must be Login or Home
-                if(isset($user->login_token)) {
+                if(isset($this->app->user->login_token)) {
                     $data = 'dashboard';
                 } else {
                     $data = 'home';
@@ -134,10 +129,15 @@ class General extends System {
         // Database Error
         if($type === 'error_database') {
 
-            // remove newlines from the database string
+            /* remove newlines from the database string (javascript version)
             if($data != '') {
                 $data = str_replace("\r", '', $data);
                 $data = str_replace("\n", '', $data);            
+            }*/
+            // remove newlines from the database string (new message system)
+            if($data != '') {
+                //$data = str_replace("\r", '<br>', $data);
+                //$data = str_replace("\n", '<br>', $data);                
             }
             return $data;
 
@@ -169,11 +169,17 @@ class General extends System {
         // Database Connection Error
         if($type === 'error_database_connection') {
 
-            // remove newlines from the database string
+            /* remove newlines from the database string (javascript version)
             if($data != '') {
                 $data = str_replace("\r", '', $data);
                 $data = str_replace("\n", '', $data);
                 $data = str_replace("'", "\\'", $data); 
+            }*/
+            // remove newlines from the database string (new message system)
+            if($data != '') {
+                //$data = str_replace("\r", '<br>', $data);
+                //$data = str_replace("\n", '<br>', $data);
+                //$data = str_replace("'", "\\'", $data); 
             }
             return $data;
 
@@ -187,8 +193,9 @@ class General extends System {
 
     function verify_qwcrm_install_state() {
 
-        // Temporary Development Override - Keep
-        return;
+        // Temporary Development Override (stop the need to delete the /setup/ folder)- Keep
+        //$this->app->db = \Factory::getDbo();
+        //return;
 
         /* Is a QWcrm installation or MyITCRM migration in progress */
 
@@ -198,43 +205,43 @@ class General extends System {
         }
 
         // Prevent undefined variable errors
-        CMSApplication::$VAR['component'] = isset(CMSApplication::$VAR['component']) ? CMSApplication::$VAR['component'] : null;
-        CMSApplication::$VAR['page_tpl']  = isset(CMSApplication::$VAR['page_tpl'])  ? CMSApplication::$VAR['page_tpl']  : null;
+        \CMSApplication::$VAR['component'] = isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null;
+        \CMSApplication::$VAR['page_tpl']  = isset(\CMSApplication::$VAR['page_tpl'])  ? \CMSApplication::$VAR['page_tpl']  : null;
 
         // Installation is in progress
-        if ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
+        if ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
 
-            CMSApplication::$VAR['component'] = 'setup';
-            CMSApplication::$VAR['page_tpl']  = 'install';
-            CMSApplication::$VAR['themeVar']     = 'menu_off';        
+            \CMSApplication::$VAR['component'] = 'setup';
+            \CMSApplication::$VAR['page_tpl']  = 'install';
+            \CMSApplication::$VAR['themeVar']  = 'menu_off';        
             define('QWCRM_SETUP', 'install');  
 
             return;        
 
 
         // Migration is in progress (but if migration is passing to upgrade, ignore)
-        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
+        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
 
-            CMSApplication::$VAR['component'] = 'setup';
-            CMSApplication::$VAR['page_tpl']  = 'migrate';
-            CMSApplication::$VAR['themeVar']     = 'menu_off';
-            define('QWCRM_SETUP', 'install'); 
+            \CMSApplication::$VAR['component'] = 'setup';
+            \CMSApplication::$VAR['page_tpl']  = 'migrate';
+            \CMSApplication::$VAR['themeVar']  = 'menu_off';
+            define('QWCRM_SETUP', 'migrate'); 
 
             return;        
 
 
         // Upgrade is in progress
-        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
+        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
 
-            CMSApplication::$VAR['component'] = 'setup';
-            CMSApplication::$VAR['page_tpl']  = 'upgrade';
-            CMSApplication::$VAR['themeVar']     = 'menu_off';        
-            define('QWCRM_SETUP', 'install');
+            \CMSApplication::$VAR['component'] = 'setup';
+            \CMSApplication::$VAR['page_tpl']  = 'upgrade';
+            \CMSApplication::$VAR['themeVar']  = 'menu_off';        
+            define('QWCRM_SETUP', 'upgrade');
 
             return;
 
         /* Redirect to choice page (optional)
-        elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !$this->app->system->security->check_page_accessed_via_qwcrm() && !isset(CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {        
+        elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !$this->app->system->security->check_page_accessed_via_qwcrm() && !isset(\CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {        
 
             force_page('setup', 'choice');
 
@@ -244,7 +251,7 @@ class General extends System {
         } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !$this->app->system->security->check_page_accessed_via_qwcrm()) {
 
             // Prevent direct access to this page
-            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
+            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
                 header('HTTP/1.1 403 Forbidden');
                 die(_gettext("No Direct Access Allowed."));
             }
@@ -258,7 +265,7 @@ class General extends System {
             // Move Direct page access control to the pages controller (i.e. I might allow direct access to setup:choice)        
             \CMSApplication::$VAR['component'] = 'setup';
             \CMSApplication::$VAR['page_tpl']  = 'choice';
-            \CMSApplication::$VAR['themeVar']     = 'menu_off';        
+            \CMSApplication::$VAR['themeVar']  = 'menu_off';        
 
             /* This allows the use of the database ASAP in the setup process
             if (defined('PRFX') && \Factory::getDbo()->isConnected() && $this->app->system->general->get_qwcrm_database_version_number()) {
@@ -274,7 +281,7 @@ class General extends System {
         } elseif (is_file('configuration.php') && is_dir(SETUP_DIR)) {
 
             // Prevent direct access to this page
-            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
+            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
                 header('HTTP/1.1 403 Forbidden');
                 die(_gettext("No Direct Access Allowed."));
             }        
@@ -286,7 +293,7 @@ class General extends System {
             }               
 
             // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
-            $this->app->system->general->compare_qwcrm_filesystem_and_database(CMSApplication::$VAR);    
+            $this->app->system->general->compare_qwcrm_filesystem_and_database(\CMSApplication::$VAR);    
 
         // Fallback option for those situations I have not thought about
         } else {
@@ -294,7 +301,8 @@ class General extends System {
             die('
                     <div style="color: red;">'.
                     _gettext("Something went wrong with your installation of QWcrm.").'<br>'.
-                    _gettext("You might have a configuration.php file that should not be present or is corrupt.").
+                    _gettext("You might have a configuration.php file that should not be present or is corrupt.").'<br>'.
+                    _gettext("Check your setup folder is present.").
                     '</div>'
                 ); 
 
@@ -309,7 +317,7 @@ class General extends System {
     #########################################################
 
     function compare_qwcrm_filesystem_and_database() {
-
+        
         // Get the QWcrm database version number (assumes database connection is good)
         $qwcrm_database_version = $this->app->system->general->get_qwcrm_database_version_number();
 
@@ -328,19 +336,19 @@ class General extends System {
 
         /* If the file system is newer than the database - run upgrade (this loads setup:upgrade directly)
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-            CMSApplication::$VAR['component']     = 'setup';
-            CMSApplication::$VAR['page_tpl']      = 'upgrade';
-            CMSApplication::$VAR['themeVar']         = 'menu_off';
+            \CMSApplication::$VAR['component']     = 'setup';
+            \CMSApplication::$VAR['page_tpl']      = 'upgrade';
+            \CMSApplication::$VAR['themeVar']      = 'menu_off';
             define('QWCRM_SETUP', 'install'); 
             return;
         }*/
 
         // If the file system is newer than the database - run upgrade (this loads setup:choice but flags it as an upgrade directly)
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-            CMSApplication::$VAR['component']     = 'setup';
-            CMSApplication::$VAR['page_tpl']      = 'choice';
-            CMSApplication::$VAR['themeVar']         = 'menu_off';
-            CMSApplication::$VAR['setup_type']    = 'upgrade';
+            \CMSApplication::$VAR['component']     = 'setup';
+            \CMSApplication::$VAR['page_tpl']      = 'choice';
+            \CMSApplication::$VAR['themeVar']      = 'menu_off';
+            \CMSApplication::$VAR['setup_type']    = 'upgrade';
             define('QWCRM_SETUP', 'install'); 
             return;
         }
@@ -369,8 +377,6 @@ class General extends System {
     ################################################
 
     function get_qwcrm_database_version_number() {
-
-        //$db = \Factory::getDbo();
 
         $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
 

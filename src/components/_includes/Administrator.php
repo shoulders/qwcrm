@@ -44,7 +44,7 @@ class Administrator extends Components {
         $this->app->config->set($key, $value);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = $this->get_qwcrm_config_settings();  
+        $qwcrm_config = $this->get_qwcrm_config_as_array();  
 
         // Add the key/value pair into the array
         //$qwcrm_config[$key] = $value;
@@ -68,28 +68,55 @@ class Administrator extends Components {
     #  Load Config settings from file or use the registry if present  #
     ###################################################################
 
-    public function get_qwcrm_config_settings() {
+    public function get_qwcrm_config_as_array() {
 
-        // Verify the configuration.php file exists
-        if(is_file('configuration.php')) {
+        // Use the config settings in the live Registry 
+        return get_object_vars($this->app->config->toObject());
+            
+        // Return Settings Array Directly from the QConfig
+        //if(!class_exists('QConfig')) { return get_object_vars(new \QConfig); }
+                
+    }  
 
-            // if QConfig class does not exist, get the config settings directly from configuration.php and build a new Config Registry (This is needed for setup)
-            if(!class_exists('QConfig')) {
-                require_once('configuration.php');
-                \Factory::$config = null;
-                \Factory::getConfig();
-                //return get_object_vars(new \QConfig);
-            } 
 
-            // Use the config settings in the live Registry 
-            if($registry_object = $this->app->config->toObject()) {
-                return get_object_vars($registry_object);
-            }
+    ##############################################
+    #   Reload configuration registry from file  #
+    ##############################################
+    
+    function refresh_qwcrm_config() {        
+            
+        // wipe the live registry - i dont think this is needed
+        //$this->app->system->config = null;        
 
-        }
+        // Must call the static directly because of context
+        \Factory::$config = null;
 
-        // If config does not exist (i.e. install)
-        return array();
+        // Re-populate the Config Registry
+        $this->app->config = \Factory::getConfig();
+        
+        // Log activity
+        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file.")); 
+        
+        return;
+                
+    }  
+    
+    ######################################################
+    #   Refresh Live Config Registry with config file    #  // not currently used
+    ######################################################
+
+    public function refresh_qwcrm_live_config_from_file() {
+
+        // wipe the live registry
+        $this->app->system->config = null;
+
+        // Re-populate the Live registry
+        \Factory::getConfig();
+
+        // Log activity
+        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file."));    
+
+        return;
 
     }
 
@@ -121,7 +148,7 @@ class Administrator extends Components {
         $this->app->config->set($key, $value);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = $this->get_qwcrm_config_settings();
+        $qwcrm_config = $this->get_qwcrm_config_as_array();
 
         // Add the key/value pair into the object
         //$qwcrm_config[$key] = $value;
@@ -240,11 +267,11 @@ class Administrator extends Components {
 
     public function update_qwcrm_config_settings_file($new_config) {
 
-        // Perform miscellaneous operations based on configuration settings/changes.
+        // Perform miscellaneous operations based on configuration settings/changes. (not currently need for setup
         $new_config = $this->process_submitted_config_data($new_config);
 
         // Get a fresh copy of the current settings as an array        
-        $current_config = $this->get_qwcrm_config_settings();
+        $current_config = $this->get_qwcrm_config_as_array();
 
         // Merge the new_config and the current_config. We do this to preserve values that were not in the submitted form but are in the config.    
         $merged_config = array_merge($current_config, $new_config);
@@ -279,7 +306,7 @@ class Administrator extends Components {
         $this->app->config->remove($key);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = $this->get_qwcrm_config_settings();
+        $qwcrm_config = $this->get_qwcrm_config_as_array();
 
         // Remove the key from the array
         //unset($qwcrm_config[$key]);
@@ -457,7 +484,7 @@ class Administrator extends Components {
     public function process_submitted_config_data($new_config) {    
 
         // Get a fresh copy of the current settings as an array        
-        $current_config = $this->get_qwcrm_config_settings();
+        $current_config = $this->get_qwcrm_config_as_array();
 
         // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error becasue the variable is not present yet
         if(isset($new_config['google_server'])) { $new_config['google_server'] = $this->app->system->general->process_inputted_url($new_config['google_server']); }
@@ -667,23 +694,6 @@ class Administrator extends Components {
 
     }
 
-    ######################################################
-    #   Refresh Live Config Registry with config file    #  // not currently used
-    ######################################################
 
-    public function refresh_qwcrm_live_config_from_file() {
-
-        // wipe the live registry
-        $this->app->system->config = null;
-
-        // Re-populate the Live registry
-        \Factory::getConfig();
-
-        // Log activity
-        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file."));    
-
-        return;
-
-    }
 
 }
