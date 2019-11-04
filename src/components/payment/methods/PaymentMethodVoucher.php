@@ -21,7 +21,7 @@ class PaymentMethodVoucher {
         
         // Check the Voucher exists, get the voucher_id and set amount
         if(!$this->VAR['qpayment']['voucher_id'] = $this->app->components->voucher->get_voucher_id_by_voucher_code($this->VAR['qpayment']['voucher_code'])) {
-            NewPayment::$payment_valid = false;
+            Payment::$payment_valid = false;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no Voucher with that code."));                   
         } else {                        
             $this->VAR['qpayment']['amount'] = $this->app->components->voucher->get_voucher_details($this->VAR['qpayment']['voucher_id'], 'unit_net');
@@ -34,7 +34,7 @@ class PaymentMethodVoucher {
         
         // Make sure the Voucher is valid and then pass the amount to the next process
         if(!$this->app->components->voucher->check_voucher_can_be_redeemed($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'])) {
-            NewPayment::$payment_valid = false;
+            Payment::$payment_valid = false;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This Voucher is not valid or cannot be redeemed."));
             return false;                
         }
@@ -53,7 +53,7 @@ class PaymentMethodVoucher {
         $payment_id = $this->app->components->payment->insert_payment($this->VAR['qpayment']);
         if($payment_id) {
             
-            NewPayment::$payment_processed = true;
+            Payment::$payment_processed = true;
             
             // Change the status of the Voucher to prevent further use
             $this->app->components->voucher->update_voucher_status($this->VAR['qpayment']['voucher_id'], 'redeemed', true);
@@ -71,7 +71,7 @@ class PaymentMethodVoucher {
     public function post_process() { 
         
         // Set success/failure message
-        if(!NewPayment::$payment_processed) {
+        if(!Payment::$payment_processed) {
         
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher was not applied successfully."));
         

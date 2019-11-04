@@ -37,7 +37,7 @@ class PaymentMethodBanktransfer {
         
         // Insert the payment with the calculated information
         if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
-            NewPayment::$payment_processed = true;            
+            Payment::$payment_processed = true;            
         }
         
         return;
@@ -48,7 +48,7 @@ class PaymentMethodBanktransfer {
     public function post_process() { 
         
         // Set success/failure message
-        if(!NewPayment::$payment_processed) {
+        if(!Payment::$payment_processed) {
         
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Bank Transfer payment was not successful."));
         
