@@ -31,7 +31,7 @@ class Company extends Components {
     /** Get Functions **/
 
     ##########################
-    #  Get Company details   #
+    #  Get Company details   #  // The extra trap code is probably not needed here but shou be moved to where it should be now
     ##########################
 
     /*

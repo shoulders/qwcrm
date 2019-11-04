@@ -193,7 +193,7 @@ class Email extends System {
 
         // Add the email signature if enabled (if not a reset email)
         if($this->app->components->company->get_company_details('email_signature_active') && !$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset') && !$this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
-            $body .= add_email_signature($email);
+            $body .= $this->add_email_signature($email);
         } 
 
         // Parse message body and convert links to SEF (if enabled)
@@ -254,7 +254,7 @@ class Email extends System {
 
                 // Log activity
                 $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
-                if($workorder_id) {insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
+                if($workorder_id) {$this->app->components->workorder->insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
                 $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);            
 
                 // Output the system message to the browser (if allowed)
@@ -267,8 +267,8 @@ class Email extends System {
                 // Update last active record (will not error if no invoice_id sent )
                 $this->app->components->user->update_user_last_active($employee_id);
                 if($client_id) {$this->app->components->client->update_client_last_active($client_id);}  
-                if($workorder_id) {update_workorder_last_active($workorder_id);}
-                if($invoice_id) {update_invoice_last_active($invoice_id);}
+                if($workorder_id) {$this->app->components->workorder->update_workorder_last_active($workorder_id);}
+                if($invoice_id) {$this->app->components->invoice->update_invoice_last_active($invoice_id);}
 
             }
 
@@ -347,7 +347,7 @@ class Email extends System {
 
         // If swiftmailer is going to be used to add image via CID
         if($swift_emailer) {         
-            $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath($logo_file)).'" alt="'.$company_details['display_name'].'" width="100">'; 
+            $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath($logo_file)).'" alt="'.$company_details['company_name'].'" width="100">'; 
 
         // Load the logo as a standard base64 string image
         } else {        
@@ -364,11 +364,11 @@ class Email extends System {
         $company_website = preg_replace("(^https?://)", "", $company_website);
         $company_website = '<a href="'.$company_details['website'].'">'.$company_website.'</a>';        
 
-        // Swap placeholders
+        // Swap placeholders -- Change to by referens??
         $email_signature  = $this->replace_placeholder($email_signature, '{company_logo}', $logo_string);
         $email_signature  = $this->replace_placeholder($email_signature, '{company_name}', $company_details['company_name']);
         $email_signature  = $this->replace_placeholder($email_signature, '{company_address}', $company_address);
-        $email_signature  = $this->replace_placeholder($email_signature, '{company_telephone}', $company_details['telephone']);
+        $email_signature  = $this->replace_placeholder($email_signature, '{company_telephone}', $company_details['primary_phone']);
         $email_signature  = $this->replace_placeholder($email_signature, '{company_website}', $company_website);
 
         // Return the processed signature
@@ -377,7 +377,7 @@ class Email extends System {
     }
 
     ###########################################
-    #  Replace placeholders with new content  #
+    #  Replace placeholders with new content  #  // change $content to by reference?
     ###########################################
 
     function replace_placeholder($content, $placeholder, $replacement) {

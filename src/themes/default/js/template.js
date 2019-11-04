@@ -276,10 +276,8 @@ function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG, toggleSu
 function processSystemMessages(newMessages) {    
       
     var system_messages = document.getElementById('system_messages');
-    system_messages.style.display === '';
-    //system_messages.style.display === 'inline';
-    system_messages.innerHTML += newMessages;
-    
+    system_messages.style.display = 'block';
+    system_messages.innerHTML += newMessages;    
     
 }
 
@@ -287,7 +285,7 @@ function processSystemMessages(newMessages) {
 function clearSystemMessages() {
     
     var system_messages = document.getElementById('system_messages');
-    system_messages.style.display === 'none';
+    system_messages.style.display = 'none';
     system_messages.innerHTML = '';
     
 }
