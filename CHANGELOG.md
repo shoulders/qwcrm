@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
-## [3.1.2] 2019-11-03
+## [3.1.2] 2019-11-04
 ### Changed
 - Upgraded all code to OOP Coding Paradigm
 - Messages are now rendered from a messages store allowing for multiple messages to be displayed
