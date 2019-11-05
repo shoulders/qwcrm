@@ -118,7 +118,7 @@ class Email extends System {
             // Standard sendmail
             $transport = new Swift_SendmailTransport($this->app->config->get('email_sendmail_path').' -bs');
 
-            // Exim - The Swift_SendmailTransport also supports the use of Exim (same ninary wrapper as sendmail)
+            // Exim - The Swift_SendmailTransport also supports the use of Exim (same binary wrapper as sendmail)
             //$transport = new Swift_SendmailTransport('/usr/sbin/exim -bs');
 
         // Use PHP Mail

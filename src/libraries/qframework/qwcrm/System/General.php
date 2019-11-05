@@ -194,8 +194,8 @@ class General extends System {
     function verify_qwcrm_install_state() {
 
         // Temporary Development Override (stop the need to delete the /setup/ folder)- Keep
-        //$this->app->db = \Factory::getDbo();
-        //return;
+        //$this->app->db = \Factory::getDbo(); - This DB call might not be needed
+        return;
 
         /* Is a QWcrm installation or MyITCRM migration in progress */
 
@@ -1083,7 +1083,8 @@ class General extends System {
         //$this->app->smarty->clearAllCache(3600);
 
         // Output the system message to the browser   
-        $this->ajax_output_system_messages_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("The Smarty cache has been emptied successfully."));
+        $this->ajax_output_system_messages_onscreen();
 
         // Log activity        
         $this->app->system->general->write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
@@ -1105,8 +1106,9 @@ class General extends System {
         // clear entire compile directory
         $this->app->smarty->clearCompiledTemplate();
 
-        // Output the system message to the browser   
-        $this->ajax_output_system_messages_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
+        // Output the system message to the browser
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("The Smarty compile directory has been emptied successfully."));
+        $this->ajax_output_system_messages_onscreen();
 
         // Log activity        
         $this->app->system->general->write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    

@@ -85,7 +85,7 @@ class Administrator extends Components {
     
     function refresh_qwcrm_config() {        
             
-        // wipe the live registry - i dont think this is needed
+        // wipe the live registry - i dont think this is needed (context ?)
         //$this->app->system->config = null;        
 
         // Must call the static directly because of context
@@ -99,26 +99,7 @@ class Administrator extends Components {
         
         return;
                 
-    }  
-    
-    ######################################################
-    #   Refresh Live Config Registry with config file    #  // not currently used
-    ######################################################
-
-    public function refresh_qwcrm_live_config_from_file() {
-
-        // wipe the live registry
-        $this->app->system->config = null;
-
-        // Re-populate the Live registry
-        \Factory::getConfig();
-
-        // Log activity
-        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file."));    
-
-        return;
-
-    }
+    }     
 
     #################################
     #   Get ACL Permissions         #
