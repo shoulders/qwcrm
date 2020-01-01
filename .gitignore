@@ -1,3 +1,4 @@
+/localonly/
 /nbproject/
 /src/cache/smarty/cache/
 /src/cache/smarty/compile/
@@ -8,7 +9,6 @@
 /src/configuration.php
 /src/-configuration.php
 /.php_cs.cache
-/tmp/
 /src/.htaccess
 /src/off.htaccess
 /src/themail.log
