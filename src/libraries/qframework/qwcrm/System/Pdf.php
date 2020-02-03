@@ -9,63 +9,90 @@
 defined('_QWEXEC') or die;
 
 class Pdf extends System {
+    
+    /*
+     * Local holder for the mPDF object
+     */
+    private $mpdf;
 
-    // Define mPDF Config
-    //define('_MPDF_TEMP_PATH', '../../common/tempfiles');         // Folders for temporary files
-    //define('_MPDF_RRFONTDATAPATH', '../../common/tempfiles');    // if you wish to use a different folder for temporary files you should define this constant
 
-    // Load Dependency Manually (Not needed because it is loaded by Composer)
-    //require_once(LIBRARIES_DIR.'mpdf/vendor/autoload.php');
-
-    // Output a PDF in the browser
-    function mpdf_output_in_browser($pdf_filename, $pdf_template) {
-
-        // Add .pdf extension
-        $pdf_filename .= '.pdf';
-
+    /*
+     * This is wrapper function whilst Pdf class is not autoloaded, when it is this should go in the contructore
+     */
+    private function getMpdf($pdf_template) {
+               
+        // mPDF Defines
+        //define('_MPDF_TEMP_PATH', '../../common/tempfiles');         // Folders for temporary files
+        //define('_MPDF_RRFONTDATAPATH', '../../common/tempfiles');    // if you wish to use a different folder for temporary files you should define this constant
+        
+        // Set mPDF configuration
+        // https://mpdf.github.io/configuration/configuration-v7-x.html + All variables can be changed at runtime if not set in this array, see this link
+        // Defaults are here: https://github.com/mpdf/mpdf/blob/development/src/Config/ConfigVariables.php + https://mpdf.github.io/reference/mpdf-functions/construct.html
+        // $constructor from D:\websites\htdocs\projects\qwcrm\src\libraries\vendor\mpdf\mpdf\src\Mpdf.php
+        $constructor = [
+			'mode' => '',
+			'format' => 'A4',
+			'default_font_size' => 0,
+			'default_font' => '',
+			'margin_left' => 15,
+			'margin_right' => 15,
+			'margin_top' => 16,
+			'margin_bottom' => 16,
+			'margin_header' => 9,
+			'margin_footer' => 9,
+			'orientation' => 'P',
+		];
+        
+        $mpdfConfig = [
+			//'mode' => '',
+			//'format' => 'A4',
+			//'default_font_size' => 0,
+			//'default_font' => '',
+			//'margin_left' => 0,
+			//'margin_right' => 0,
+			//'margin_top' => 0,
+			//'margin_bottom' => 0,
+			//'margin_header' => 9,
+			//'margin_footer' => 9,
+			//'orientation' => 'P',
+		];
+                
         // Initialize mPDF    
-        $mpdf = new \Mpdf\Mpdf();
-        //$mpdf = new mPDF('c');  // c = only use core fonts - https://mpdf.github.io/fonts-languages/fonts-in-mpdf-6-x.html (old code, but 'c' might still be valid)
-
+        $this->mpdf = new \Mpdf\Mpdf($mpdfConfig);
+                
         // Not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
-        //$mpdf->SetTitle('My Title');
-
-        // Debugging
-        //$mpdf->showImageErrors = true;
-        //$mpdf->debug = true;
+        //$this->mpdf->SetTitle('My Title');
 
         // mPDF now supports setting curlAllowUnsafeSslRequests (prevents red crosses where images should be, when using https with old ROOT CA Store)
-        //$mpdf->curlAllowUnsafeSslRequests = true;
-
+        $this->mpdf->curlAllowUnsafeSslRequests = true;
+        
         // Build the PDF
-        $mpdf->WriteHTML($pdf_template);
+        $this->mpdf->WriteHTML($pdf_template);        
+        
+    }
+    
+    // Output a PDF in the browser
+    public function mpdf_output_in_browser($pdf_filename, $pdf_template) {
+        
+        // Intialise mPDF
+        $this->getMpdf($pdf_template);
 
         // Output the PDF to the browser
-        $mpdf->Output($pdf_filename, 'I');
+        $this->mpdf->Output($pdf_filename.'.pdf', 'I');
 
         // I think this exit prevents issues
-        exit;
+        exit();
 
     }
 
     // Return a PDF in a variable
-    function mpdf_output_as_variable($pdf_filename, $pdf_template) {
-
-        // Add .pdf extension
-        $pdf_filename .= '.pdf';    
-
-        // Initialize mPDF
-        $mpdf = new \Mpdf\Mpdf();
-        //$mpdf = new mPDF('c');  // c = only use core fonts - https://mpdf.github.io/fonts-languages/fonts-in-mpdf-6-x.html (old code, but 'c' might still be valid)
-
-        // not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
-        //$mpdf->SetTitle('My Title');
-
-        // Output the PDF
-        $mpdf->WriteHTML($pdf_template);
+    public function mpdf_output_as_variable($pdf_filename, $pdf_template) {
+        
+        // Intialise mPDF
+        $this->getMpdf($pdf_template);
 
         // Return the PDF as a string
-        return $mpdf->Output($pdf_filename, 'S');
+        return $this->mpdf->Output($pdf_filename.'.pdf', 'S');
 
     }
     
