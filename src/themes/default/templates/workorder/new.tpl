@@ -69,10 +69,10 @@
                                                     </table>                                                                                                                  
                                                     <br>
 
-                                                    <!-- comment -->
+                                                    <!-- Comment -->
                                                     <table class="olotable" width="100%" border="0">
                                                         <tr>
-                                                            <td class="olohead">&nbsp;{t}comment{/t}</td>
+                                                            <td class="olohead">&nbsp;{t}Comment{/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="comment"></textarea></td>

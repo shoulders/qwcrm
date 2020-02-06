@@ -458,11 +458,9 @@ class CMSApplication {
     }
     
     /**
-     * based on discover() joomla/libraries/loader.php
-     * 
      * Method to discover and load class files classes of a given type in a given path to a specific variable
      *
-     * This allows me to autload the files withoug instanciating thr classes
+     * This allows me to autoload the files without instanciating the classes
      * 
      * @param   string   $classGroup   Class Group being looked up
      * @param   string   $parentPath   Full path to the parent folder for the classes to discover.

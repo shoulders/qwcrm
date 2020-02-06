@@ -5,7 +5,6 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-
 --
 -- Upgrade Expense Types Table
 --
