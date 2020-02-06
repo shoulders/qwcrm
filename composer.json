@@ -1,4 +1,7 @@
 {
+    "config": {
+        "vendor-dir": "src/libraries/vendor"
+    },
     "require": {
         "phpmyadmin/motranslator": "^3.3",
         "smarty/smarty": "^3.1",
