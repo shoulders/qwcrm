@@ -85,10 +85,10 @@ class Administrator extends Components {
     
     function refresh_qwcrm_config() {        
             
-        // wipe the live registry - i dont think this is needed (context ?)
+        // Wipe the live registry - i dont think this works (because of context ?)
         //$this->app->system->config = null;        
 
-        // Must call the static directly because of context
+        // Wipe the live registry - Must call the static directly because of context
         \Factory::$config = null;
 
         // Re-populate the Config Registry
