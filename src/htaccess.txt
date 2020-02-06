@@ -7,11 +7,13 @@
 
 ## Password Protect All Sub Folders and Files
 
+#AuthType Basic
 #AuthName "Please enter the Bat Code"
 #AuthUserFile "/home/{username}/public_html/.htpasswd"
-#AuthType Basic
-## require valid-user
-#require user qwrcm
+#<RequireAny>
+#  Require user qwrcm
+#  Require local # This allows mPDF to get images from behind the htaccess
+#</RequireAny>
 #ErrorDocument 401 "Authorisation Required"
 
 #RewriteEngine On

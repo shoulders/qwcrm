@@ -27,7 +27,8 @@ class Pdf extends System {
         
         // Set mPDF configuration
         // https://mpdf.github.io/configuration/configuration-v7-x.html + All variables can be changed at runtime if not set in this array, see this link
-        // Defaults are here: https://github.com/mpdf/mpdf/blob/development/src/Config/ConfigVariables.php + https://mpdf.github.io/reference/mpdf-functions/construct.html
+        // Constructor Defaults are here: https://github.com/mpdf/mpdf/blob/development/src/Config/ConfigVariables.php + https://mpdf.github.io/reference/mpdf-functions/construct.html
+        // Full defaults D:\websites\htdocs\projects\qwcrm\src\libraries\vendor\mpdf\mpdf\src\Config\ConfigVariables.php
         // $constructor from D:\websites\htdocs\projects\qwcrm\src\libraries\vendor\mpdf\mpdf\src\Mpdf.php
         $constructor = [
 			'mode' => '',
