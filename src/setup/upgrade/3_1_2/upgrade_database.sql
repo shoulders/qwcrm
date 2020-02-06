@@ -75,7 +75,7 @@ ALTER TABLE `#__session` CHANGE `clientid` `clientid` TINYINT(3) UNSIGNED NULL D
 UPDATE `#__payment_methods` SET `send_protected` = '0' WHERE `#__payment_methods`.`id` = 6;
 
 -- Fix missing employee_id on closed Workorders
-UPDATE #__workorder_records SET employee_id = closed_by WHERE employee_id = '' AND closed_by != '';
+UPDATE `#__workorder_records` SET `employee_id` = closed_by WHERE `employee_id` = '' AND `closed_by` != '';
 
--- Remove expense_records.invoice_id column becasue it is not used
+-- Remove expense_records.invoice_id column because it is not used
 ALTER TABLE `#__expense_records` DROP `invoice_id`;

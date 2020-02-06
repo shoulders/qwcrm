@@ -834,10 +834,10 @@ class Setup extends Components {
                 
                 /* Build a Query Name from the SQL query  */
                 
-                // Generic- Gives short and neat Rule Names
+                // Generic - Gives short and neat Rule Names
                 if(preg_match('/^(DROP|RENAME|CREATE|INSERT|ALTER|UPDATE|DELETE)/U', $sql)) {
                     //$query_name = rtrim($sql, ';');  //'Unrecognised SQL Command' 'Unnamed SQL Query'
-                    $query_name = preg_match('/^.*`'.PRFX.'.*`/U', $sql, $matches) ? $matches[0] : _gettext("Unrecognised SQL Command");                    
+                    $query_name = preg_match('/^.*`'.PRFX.'.*`/U', $sql, $matches) ? $matches[0] : _gettext("Unusual SQL Command");                    
                     goto eof_query_name_building;
                 }
                 
