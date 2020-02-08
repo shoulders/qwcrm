@@ -212,7 +212,7 @@
                     <td colspan="3"><h2>{t}Claimed{/t}</h2></td>
                 </tr>
                 <tr>
-                    <td colspan="2">{t}The client has used these Vouchers against their own invoices. They have not bought them.{/t}</td>
+                    <td colspan="2">{t}These are Vouchers other clients have redeemed against this clients invoices. This client has not sold these.{/t}</td>
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
