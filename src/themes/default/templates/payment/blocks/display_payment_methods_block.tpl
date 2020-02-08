@@ -422,7 +422,7 @@
                     {if $buttons.submit.allowed}<button type="submit" name="submit" value="submit">{$buttons.submit.title}</button>{/if}
                     {if $buttons.cancel.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.cancel.url}';">{$buttons.cancel.title}</button>{/if}
                     {if $buttons.returnToRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.returnToRecord.url}';">{$buttons.returnToRecord.title}</button>{/if}
-                    {if $buttons.addNewRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.addNewRecord.url}';">{$buttons.addNewRecord.title}</button>{/if}                                       
+                    {if $buttons.addNewRecord.allowed}<button type="button" class="olotd4" style="float: right;" onclick="window.location.href='{$buttons.addNewRecord.url}';">{$buttons.addNewRecord.title}</button>{/if}                                       
                 </div>                
             </td>
         </tr>
