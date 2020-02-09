@@ -18,9 +18,9 @@ class QConfig {
     public $email_fromname = 'From QWcrm';
     public $email_replyto = '';
     public $email_replytoname = 'Reply to QWcrm';
-    public $email_sendmail_path = '';
-    public $email_smtp_host = '';
-    public $email_smtp_port = '';
+    public $email_sendmail_path = '/usr/sbin/sendmail';
+    public $email_smtp_host = 'localhost';
+    public $email_smtp_port = '25';
     public $email_smtp_security = '';
     public $email_smtp_auth = '0';
     public $email_smtp_username = '';

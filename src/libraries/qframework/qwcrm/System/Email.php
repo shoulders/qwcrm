@@ -50,7 +50,7 @@ class Email extends System {
     #   Basic email wrapper function      #  // Silent option is need for password reset
     #######################################
 
-    function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null, $silent = false) {
+    function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachments = array(), $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null, $silent = false) {
 
         // Clear any onscreen notifications - this allows for mutiple errors to be displayed (if allowed)
         if (!$silent) {
@@ -206,14 +206,25 @@ class Email extends System {
         //$email->addPart('My amazing body in plain text', 'text/plain');    
 
         // Add Optional attachment
-        if($attachment) {
+        if(!empty($attachments)) {
+            
+            foreach($attachments as $attachment)
+            {
+                // Create the attachment asset (standard method)
+                //$attachment = new Swift_Attachment($attachment['data'], $attachment['filename'], $attachment['contentType']);
+                
+                // You can alternatively use method chaining to build the attachment (chained method)
+                $attachment = (new Swift_Attachment())
+                  ->setFilename($attachment['filename'])
+                  ->setContentType($attachment['contentType'])
+                  ->setBody($attachment['data']);
 
-            // Create the attachment with your data
-            $attachment = new Swift_Attachment($attachment['data'], $attachment['filename'], $attachment['filetype']);
-
-            // Attach it to the message
-            $email->attach($attachment);
-
+                // Attach the asset to the message
+                $email->attach($attachment);
+                
+                // Reduce memory usage
+                unset($attachment);
+            }
         }
 
         /* Send the message - and catch transport errors (delivery errors depend on the transport method)*/

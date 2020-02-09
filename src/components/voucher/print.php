@@ -72,10 +72,12 @@ if(\CMSApplication::$VAR['print_content'] == 'voucher') {
         // return the PDF in a variable
         $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_filename, $pdf_template);
         
-        // Build the PDF        
+        // Build the PDF Attachment
+        $attachments = array();
         $attachment['data'] = $pdf_as_string;
         $attachment['filename'] = $pdf_filename;
-        $attachment['filetype'] = 'application/pdf';
+        $attachment['contentType'] = 'application/pdf';
+        $attachments[] = $attachment;
         
         // Build the message body        
         $body = $this->app->system->email->get_email_message_body('email_msg_voucher', $client_details);  // This message does not currently exist
@@ -85,7 +87,7 @@ if(\CMSApplication::$VAR['print_content'] == 'voucher') {
         $this->app->system->general->write_record_to_activity_log($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_details['invoice_id']);
         
         // Email the PDF
-        $this->app->system->email->send_email($client_details['email'], _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'], $body, $client_details['display_name'], $attachment);
+        $this->app->system->email->send_email($client_details['email'], _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'], $body, $client_details['display_name'], $attachments);
         
         // End all other processing
         die();
