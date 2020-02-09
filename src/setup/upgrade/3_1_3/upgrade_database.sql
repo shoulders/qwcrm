@@ -21,6 +21,6 @@ UPDATE `#__expense_records`
 SET `status` = 'paid', `closed_on` = `last_active`
 WHERE `status` = 'partially_paid' AND `balance` = 0 AND `unit_gross` > 0;
 
-UPDATE `#__other_records`
+UPDATE `#__otherincome_records`
 SET `status` = 'paid', `closed_on` = `last_active`
 WHERE `status` = 'partially_paid' AND `balance` = 0 AND `unit_gross` > 0;

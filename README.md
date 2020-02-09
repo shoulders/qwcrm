@@ -68,11 +68,17 @@ These are quick install instructions. I will improve them as I can.
 - Enter the details as needed.
 - Done
 
-That is all that is needed to install on a webhost. Xampp needs a few more settings see the second to last post https://github.com/shoulders/qwcrm/issues/756
+**NB:**
+
+- Renaming the file **htaccess.txt** to **.htaccess** will allow you to use:
+  - SEF (Search Engine Friendly) Links. QWcrm will not run correctly with SEF enabled and no **.htaccess** file.
+  - You can now uncomment all of the caching rules in the **.htaccess** file to speed things up.
+  - If you are using this on a public facing webserver you must put a **htaccess password** on to prevent attackers compromising QWcrm. I do **NOT** currently recommend you do this unless you know the risks.
+- Rename **robots.txt.dist** to **robots.txt**. this is only really needed when using QWcrm on a public facing webserver.
 
 **Xampp**
 
-Xampp needs a few more settings to allow the use of QWcrm.
+A default Xampp install needs a few more settings to allow the use of QWcrm.
 
 *In php.ini*
 - Uncomment **;extension=php_intl.dll** to enable the function locale_accept_from_http()
@@ -92,8 +98,8 @@ The are just some quick instructions for now (Clean Install)
 - Move all of you QWcrm installation files into that folder.
 - Upload/Extract the new QWcrm installation package in to your QWcrm folder (This is not `old-qwcrm`).
 - Copy the config.php from the old QWcrm files to your QWcrm folder.
-- Copy the .htacces from the old QWcrm files to your QWcrm folder.
-- Compare the .htaccess and htaccess.txt to see if you need to make any changes to your .htaccess file. Once compared delete the htaccess.txt file.
+- Copy the .htaccess from the old QWcrm files to your QWcrm folder.
+- Compare the **.htaccess** and **htaccess.txt** to see if you need to make any changes to your **.htaccess** file. Once compared delete the **htaccess.txt** file.
 - Copy your logo file from media folder in the old QWcrm files to your media folder in your QWcrm folder.
 - Rename robots.txt.dist to robots.txt
 - Goto https://localhost/ or whatever the location of your QWcrm install is.
