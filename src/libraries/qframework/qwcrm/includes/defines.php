@@ -15,7 +15,7 @@ defined('_QWEXEC') or die;
     //define('SEP',                       '/'                             );
 
     // Information and Configuration
-    define('QWCRM_VERSION' ,            '3.1.2'                                             );
+    define('QWCRM_VERSION' ,            '3.1.3'                                             );
     define('QWCRM_MINIMUM_MYSQL',       '5.0.0'                                             );
     
     // This allows the use of the database ASAP in the setup process - This is the where the config is first created from configuration.php
