@@ -1,15 +1,31 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
+## [3.1.3] 2020-02-09
+### Added
+- emails can now send mulitple attachments
+- Basic install and upgrade instructions to the README.md
+- initial work on a new invoice tempalte that supports a windowed DL envelope
+
+### Changed
+- Voucher message in the Client Details Account Tab
+
+### Fixed
+- Images in PDF will work even when behind a .htaccess password
+- Yahoo Users can now open emailed PDF files from QWcrm
+- Correct various records that were fully paid had a status of `partially Paid`
+- small reporting error in the 3.1.2 upgrade SQL
+- Smarty Compile button will now display a response message
+
 ## [3.1.2] 2019-11-04
 ### Changed
-- Upgraded all code to OOP Coding Paradigm
+- Upgraded all code ready for full OOP Coding Paradigm
 - Messages are now rendered from a messages store allowing for multiple messages to be displayed
 - Minimum PHP version is now 7.2.0
 
