@@ -1548,8 +1548,6 @@ ALTER TABLE `#__user_acl_page`
 ALTER TABLE `#__user_keys`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `series` (`series`),
-  ADD UNIQUE KEY `series_2` (`series`),
-  ADD UNIQUE KEY `series_3` (`series`),
   ADD KEY `user_id` (`user_id`);
 
 --

@@ -24,3 +24,10 @@ WHERE `status` = 'partially_paid' AND `balance` = 0 AND `unit_gross` > 0;
 UPDATE `#__otherincome_records`
 SET `status` = 'paid', `closed_on` = `last_active`
 WHERE `status` = 'partially_paid' AND `balance` = 0 AND `unit_gross` > 0;
+
+--
+--  Remove some erroneous indexes in #__user_keys
+--
+
+ALTER TABLE `#__user_keys` DROP INDEX `series_2`;
+ALTER TABLE `#__user_keys` DROP INDEX `series_3`;
