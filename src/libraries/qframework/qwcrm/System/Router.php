@@ -108,7 +108,7 @@ class Router extends System {
 
             // Log activity
             $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$component.':'.$page_tpl.')';
-            $this->app->system->general->write_record_to_activity_log($record, \CMSApplication::$VAR['employee_id'], \CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']); 
+            $this->app->system->general->write_record_to_activity_log($record); 
 
             // Set to the 403 error page 
             $component   = 'core';
