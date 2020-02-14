@@ -189,7 +189,13 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         // date format is not set in the javascript date picker because i am manipulating stages not pages
                 
         $this->app->smarty->assign('company_details', $this->app->components->company->get_company_details());
-        $this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->app->components->company->get_company_details('logo') );
+        // Only build the link if there is a logo set.
+        if($this->app->components->company->get_company_details('logo'))
+        {
+            $this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->app->components->company->get_company_details('logo') );
+        } else {
+            $this->app->smarty->assign('company_logo', '');
+        }
         $this->app->smarty->assign('date_format', $this->app->components->company->get_company_details('date_format'));
         $this->app->smarty->assign('date_formats', $this->app->system->general->get_date_formats());
         $this->app->smarty->assign('tax_systems', $this->app->components->company->get_tax_systems());

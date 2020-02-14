@@ -66,14 +66,14 @@ $this->app->smarty->assign('employee_display_name',            $this->app->compo
 $this->app->smarty->assign('invoice_statuses',                 $this->app->components->invoice->get_invoice_statuses()                                     );
 
 // Invoice Print Routine
-if(\CMSApplication::$VAR['print_content'] == 'invoice') {
-    
+if(\CMSApplication::$VAR['print_content'] == 'invoice')
+{    
     // Build the PDF filename
     $pdf_filename = _gettext("Invoice").'-'.\CMSApplication::$VAR['invoice_id'];
     
     // Print HTML Invoice
-    if (\CMSApplication::$VAR['print_type'] == 'print_html') {
-        
+    if (\CMSApplication::$VAR['print_type'] == 'print_html')
+    {        
         // Log activity
         $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as html.");
         $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
@@ -84,8 +84,8 @@ if(\CMSApplication::$VAR['print_content'] == 'invoice') {
     }
     
     // Print PDF Invoice
-    if (\CMSApplication::$VAR['print_type'] == 'print_pdf') {
-        
+    if (\CMSApplication::$VAR['print_type'] == 'print_pdf')
+    {        
         // Get Print Invoice as HTML into a variable
         $pdf_template = $this->app->smarty->fetch('invoice/printing/print_invoice.tpl');
         
@@ -97,49 +97,49 @@ if(\CMSApplication::$VAR['print_content'] == 'invoice') {
         $this->app->system->pdf->mpdf_output_in_browser($pdf_filename, $pdf_template);
         
         // End all other processing
-        die();
-        
+        die();        
     }        
         
     // Email PDF Invoice
-    if(\CMSApplication::$VAR['print_type'] == 'email_pdf') {  
-                
+    if(\CMSApplication::$VAR['print_type'] == 'email_pdf')
+    {                
         // Get Print Invoice as HTML into a variable
         $pdf_template = $this->app->smarty->fetch('invoice/printing/print_invoice.tpl');
         
-        // Return the PDF in a variable
+        // Get the PDF in a variable
         $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_filename, $pdf_template);
-        
-        // Build the PDF Attachment
-        $attachments = array();
-        $attachment['data'] = $pdf_as_string;
-        $attachment['filename'] = $pdf_filename;
-        $attachment['contentType'] = 'application/pdf';
-        $attachments[] = $attachment;
-        
-        // Build the message body        
-        $body = $this->app->system->email->get_email_message_body('email_msg_invoice', $client_details);
-        
-        // Log activity
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");
-        $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
-        
-        // Email the PDF        
-        $this->app->system->email->send_email($client_details['email'], _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'], $body, $client_details['display_name'], $attachments, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], \CMSApplication::$VAR['invoice_id']);
                 
+        // Build and Send email
+        if($pdf_as_string)
+        {        
+            // Build the PDF Attachment
+            $attachments = array();
+            $attachment['data'] = $pdf_as_string;
+            $attachment['filename'] = $pdf_filename;
+            $attachment['contentType'] = 'application/pdf';
+            $attachments[] = $attachment;
+
+            // Build the message body        
+            $body = $this->app->system->email->get_email_message_body('email_msg_invoice', $client_details);
+
+            // Log activity
+            $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");
+            $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+
+            // Email the PDF        
+            $this->app->system->email->send_email($client_details['email'], _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'], $body, $client_details['display_name'], $attachments, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], \CMSApplication::$VAR['invoice_id']);           
+        }        
         // End all other processing
-        die();
-        
-    }
-    
+        die();        
+    }    
 }
 
 // Client Envelope Print Routine
-if(\CMSApplication::$VAR['print_content'] == 'client_envelope') {
-    
+if(\CMSApplication::$VAR['print_content'] == 'client_envelope')
+{    
     // Print HTML Client Envelope
-    if (\CMSApplication::$VAR['print_type'] == 'print_html') {
-        
+    if (\CMSApplication::$VAR['print_type'] == 'print_html')
+    {        
         // Log activity
         $record = _gettext("Address Envelope").' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
         $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
@@ -147,6 +147,5 @@ if(\CMSApplication::$VAR['print_content'] == 'client_envelope') {
         // Assign the correct version of this page
         $this->app->smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
         
-    }
-    
+    }    
 }

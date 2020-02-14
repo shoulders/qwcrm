@@ -69,7 +69,7 @@
             <td valign="top" align="center" width="300">
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <td width="100%" align="center"><img src="{$company_logo}" alt="" style="max-height: 150px; max-width: 250px;"></td>                        
+                        <td width="100%" align="center">{if $company_logo}<img src="{$company_logo}" alt="" style="max-height: 75px; max-width: 150px;">{/if}</td>                        
                     </tr>
                     <tr><td style="text-align:center"><b>{$company_details.company_name}</b></td></tr>
                 </table>

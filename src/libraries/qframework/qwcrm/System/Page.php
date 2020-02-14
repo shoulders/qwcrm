@@ -19,7 +19,7 @@ class Page extends System {
         // Get the page as a variable, dont set routing
         if($mode == 'get_payload') { 
 
-            // Get and set the page controller
+            // Get the page controller
             $pageController = $this->app->system->router->page_controller($mode, $component, $page_tpl, $themeVar);
 
             // Return the page as a variable
@@ -48,7 +48,7 @@ class Page extends System {
     public function get_page_content($page_controller, $mode = null, $component = null, $page_tpl = null, $themeVar = null) {    
         
         $pagePayload = '';      // Local store for page content
-        $rawHtml = false;       // Is payload raw HTML, this is setby the controller if required (i.e. autosuggest)
+        $rawHtml = false;       // Is the payload Raw HTML? This can be altered by the specified page controller (included file), if required (i.e. autosuggest)
         
         // Set the correct theme specification, either manually supplied or from the system
         $component = isset($component) ? $component : ( isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null);
@@ -61,10 +61,10 @@ class Page extends System {
         // Fetch the specified Page Controller
         require($page_controller);         
         
-        // If theme is set to Print mode or there is already content in $pagePayload , Skip adding Header, Footer and Debug sections to the page
-        if (isset($themeVar) && ($themeVar === 'print') || $rawHtml) {        
+        // If themeVar is set to Print mode or Raw HTML is enables, Skip adding Header, Footer and Debug sections to the page        
+        if ((isset($themeVar) && $themeVar === 'print') || $rawHtml) {        
 
-            // If theme print and no content, grab the content
+            // If Raw HTMl dont load a non-existent template
             if (!$rawHtml) {
                 $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
             }
@@ -375,7 +375,13 @@ class Page extends System {
 
     public function browserSupportedCompressionEncodings() {
 
-        return array_map('trim', (array) explode(',', $_SERVER['HTTP_ACCEPT_ENCODING']));
+        // the isset() is needed for mPDF (might not be needed)
+        if(isset($_SERVER['HTTP_ACCEPT_ENCODING']))
+        {
+            return array_map('trim', (array) explode(',', $_SERVER['HTTP_ACCEPT_ENCODING']));
+        } else {
+            return array();   
+        }
 
     }
  
@@ -624,15 +630,5 @@ class Page extends System {
         }
 
     }    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
 }

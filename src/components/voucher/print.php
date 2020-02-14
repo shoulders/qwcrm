@@ -35,24 +35,25 @@ $this->app->smarty->assign('voucher_details', $voucher_details           );
 $this->app->smarty->assign('barcode',          $barcode                    );
 
 // Voucher Print Routine
-if(\CMSApplication::$VAR['print_content'] == 'voucher') {    
-    
+if(\CMSApplication::$VAR['print_content'] == 'voucher')
+{    
     // Build the PDF filename
     $pdf_filename = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'];
     
     // Print HTML
-    if (\CMSApplication::$VAR['print_type'] == 'print_html') {
-        
+    if (\CMSApplication::$VAR['print_type'] == 'print_html')
+    {        
         // Log activity
         $record = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been printed as html.");
         $this->app->system->general->write_record_to_activity_log($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_details['invoice_id']);
         
         // Assign the correct version of this page
-        $this->app->smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
+        $this->app->smarty->assign('print_content', \CMSApplication::$VAR['print_content']);    
+    }
     
     // Print PDF
-    } elseif (\CMSApplication::$VAR['print_type'] == 'print_pdf') {        
-        
+    if (\CMSApplication::$VAR['print_type'] == 'print_pdf')
+    {        
         // Get Print Invoice as HTML into a variable
         $pdf_template = $this->app->smarty->fetch('voucher/printing/print_voucher.tpl');
         
@@ -61,36 +62,41 @@ if(\CMSApplication::$VAR['print_content'] == 'voucher') {
         $this->app->system->general->write_record_to_activity_log($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_details['invoice_id']);
         
         // Output PDF in brower
-        $this->app->system->pdf->mpdf_output_in_browser($pdf_filename, $pdf_template);
-        
+        $this->app->system->pdf->mpdf_output_in_browser($pdf_filename, $pdf_template);    
+    }
+    
     // Email PDF
-    } elseif (\CMSApplication::$VAR['print_type'] == 'email_pdf') {
-        
+    if (\CMSApplication::$VAR['print_type'] == 'email_pdf')
+    {
         // Get Print Invoice as HTML into a variable
         $pdf_template = $this->app->smarty->fetch('voucher/printing/print_voucher.tpl');
-        
-        // return the PDF in a variable
+
+        // Get the PDF in a variable
         $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_filename, $pdf_template);
-        
-        // Build the PDF Attachment
-        $attachments = array();
-        $attachment['data'] = $pdf_as_string;
-        $attachment['filename'] = $pdf_filename;
-        $attachment['contentType'] = 'application/pdf';
-        $attachments[] = $attachment;
-        
-        // Build the message body        
-        $body = $this->app->system->email->get_email_message_body('email_msg_voucher', $client_details);  // This message does not currently exist
-        
-        // Log activity
-        $record = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been emailed as a PDF.");
-        $this->app->system->general->write_record_to_activity_log($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_details['invoice_id']);
-        
-        // Email the PDF
-        $this->app->system->email->send_email($client_details['email'], _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'], $body, $client_details['display_name'], $attachments);
-        
-        // End all other processing
-        die();
+
+        // Build and Send email
+        if($pdf_as_string)
+        {
+            // Build the PDF Attachment
+            $attachments = array();
+            $attachment['data'] = $pdf_as_string;
+            $attachment['filename'] = $pdf_filename;
+            $attachment['contentType'] = 'application/pdf';
+            $attachments[] = $attachment;
+
+            // Build the message body        
+            $body = $this->app->system->email->get_email_message_body('email_msg_voucher', $client_details);  // This message does not currently exist
+
+            // Log activity
+            $record = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been emailed as a PDF.");
+            $this->app->system->general->write_record_to_activity_log($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_details['invoice_id']);
+
+            // Email the PDF
+            $this->app->system->email->send_email($client_details['email'], _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'], $body, $client_details['display_name'], $attachments);
+
+            // End all other processing
+            die();
+        }
         
     }
 }

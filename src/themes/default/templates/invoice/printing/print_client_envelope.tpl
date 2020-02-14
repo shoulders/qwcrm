@@ -35,7 +35,7 @@
             <td width="250px">
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <td align="center"><img src="{$company_logo}" alt="" style="max-height: 150px; max-width: 150px;"></td>                        
+                        <td align="center">{if $company_logo}<img src="{$company_logo}" alt="" style="max-height: 75px; max-width: 150px;">{/if}</td>                        
                     </tr>
                     <tr><td style="text-align:center">{$company_details.company_name}</td></tr>
                 </table>

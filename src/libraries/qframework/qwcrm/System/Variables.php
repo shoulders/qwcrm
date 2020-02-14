@@ -66,6 +66,13 @@ class Variables extends System {
         if(!defined('QWCRM_SETUP')) {
             $this->app->smarty->assign('currency_sym',  $company_details['currency_symbol']     );
             $this->app->smarty->assign('company_logo',  QW_MEDIA_DIR . $company_details['logo'] );
+            // Only build the link if there is a logo set.
+            if($this->app->components->company->get_company_details('logo'))
+            {
+                $this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->app->components->company->get_company_details('logo') );
+            } else {
+                $this->app->smarty->assign('company_logo', '');
+            }
             $this->app->smarty->assign('qw_tax_system', QW_TAX_SYSTEM                           ); 
             $this->app->smarty->assign('date_format',   DATE_FORMAT                             );
         }

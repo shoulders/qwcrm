@@ -147,7 +147,7 @@
                         <td><b>{t}comment{/t}:</b></td>
                     </tr>
                     <tr>
-                        <td><div style="min-height: 250px;">{$workorder_details.comment}</div></td>
+                        <td><div style="height: 250px; overflow: hidden;">{$workorder_details.comment}</div></td>
                     </tr>
                 </table>
 
@@ -163,7 +163,7 @@
                         {/if}
                     </tr>
                     <tr>
-                        <td><div style="min-height: 150px;">{$workorder_details.resolution}</div></td>                 
+                        <td><div style="height: 150px; overflow: hidden;">{$workorder_details.resolution}</div></td>                 
                     </tr>                     
                 </table>
 

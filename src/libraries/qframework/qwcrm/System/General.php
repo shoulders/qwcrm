@@ -1157,8 +1157,8 @@ class General extends System {
         // Autodetect Language - I18N support information here
         if(function_exists('locale_accept_from_http') && ($this->app->config->get('autodetect_language') == '1' || $this->app->config->get('autodetect_language') == null)) {
 
-            // Use the locale language if detected or default language or british english (format = en_GB)
-            if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            // Use the locale language if detected or default language or british english (format = en_GB) - // the isset() is needed for mPDF (might not be needed)
+            if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || !$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
                 // Set default language as the chosen language or fallback to british english
                 if(!$language = $this->app->config->get('default_language')) {

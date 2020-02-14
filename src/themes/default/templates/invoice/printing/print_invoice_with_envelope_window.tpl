@@ -36,7 +36,7 @@
 
             <!-- Logo -->
             <div id="logo" style="float: left; width: 150px;">
-                <img src="{$company_logo}" alt="" style="max-height: 75px; max-width: 150px;">
+                {if $company_logo}<img src="{$company_logo}" alt="" style="max-height: 75px; max-width: 150px;">{/if}
             </div>
             
             <!-- Company Name -->
