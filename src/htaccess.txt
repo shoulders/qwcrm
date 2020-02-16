@@ -16,9 +16,6 @@
 #</RequireAny>
 #ErrorDocument 401 "Authorisation Required"
 
-#RewriteEngine On
-#RewriteRule \.htpasswd$ - [F,L]
-
 ##
 # READ THIS COMPLETELY IF YOU CHOOSE TO USE THIS FILE!
 #
@@ -38,7 +35,6 @@ Options +FollowSymlinks
 Options -Indexes
 
 ## Mod_rewrite in use.
-
 RewriteEngine On
 
 ## Begin - Rewrite rules to block out some common exploits.
@@ -69,6 +65,9 @@ RewriteRule .* index.php [F]
 ##
 
 # RewriteBase /
+
+# Protect the password file from direct access
+RewriteRule \.htpasswd$ - [F,L]
 
 ## Begin - QWcrm! core SEF Section.
 #
