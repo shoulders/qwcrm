@@ -20,7 +20,7 @@ To get more details visit https://quantumwarp.com/
 
 ### Fixed
 - Images in PDF will work even when behind a .htaccess password
-- Yahoo Users can now open emailed PDF files from QWcrm
+- Yahoo/Outlook/Gmail users can now open emailed PDF files from QWcrm
 - Correct various records that were fully paid had a status of `partially Paid`
 - small reporting error in the 3.1.2 upgrade SQL
 - Smarty Compile button will now display a response message
