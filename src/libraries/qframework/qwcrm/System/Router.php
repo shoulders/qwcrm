@@ -210,8 +210,15 @@ class Router extends System {
         $parsed_url = parse_url($sef_url);
 
         // Remove base path from path
-        $parsed_url['path'] = str_replace(QWCRM_BASE_PATH, '', $parsed_url['path']);
-
+        if(QWCRM_BASE_PATH === '/')
+        {
+            // QWcrm is in the root
+            $parsed_url['path'] = ltrim($parsed_url['path'], '/');
+        } else {
+            // QWcrm is in a sub-folder
+            $parsed_url['path'] = str_replace(QWCRM_BASE_PATH, '', $parsed_url['path']);
+        }
+		
         // Get URL segments from path
         $url_segments = array_filter(explode('/', $parsed_url['path']));
 

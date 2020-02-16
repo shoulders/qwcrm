@@ -24,6 +24,7 @@ To get more details visit https://quantumwarp.com/
 - Correct various records that were fully paid had a status of `partially Paid`
 - small reporting error in the 3.1.2 upgrade SQL
 - Smarty Compile button will now display a response message
+- can now use SEF when QWcrm is in the root
 
 ## [3.1.2] 2019-11-04
 ### Changed
