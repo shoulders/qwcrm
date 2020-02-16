@@ -34,6 +34,7 @@ defined('_QWEXEC') or die;
     define('MODULES_DIR',               'modules/'                                          );    
     define('PLUGINS_DIR',               'plugins/'                                          );
     define('SETUP_DIR',                 'setup/'                                            );
+    define('TMP_DIR',                   'tmp/'                                              );
 
     define('VENDOR_DIR',                LIBRARIES_DIR.'vendor/'                             );
 

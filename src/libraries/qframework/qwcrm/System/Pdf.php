@@ -14,6 +14,11 @@ class Pdf extends System {
      * Local holder for the mPDF object
      */
     private $mpdf;
+    
+    /*
+     * Processing Success flag;
+     */
+    private $success = true;
 
     /*
      * This is wrapper function whilst Pdf class is not autoloaded, when it is this should go in the contructore
@@ -46,38 +51,46 @@ class Pdf extends System {
 		];*/
         
         $mpdfConfig = [
-            'debug' => true,
+            
+            //'debug' => true,              // When enabled - this causes images to not load and throw exceptsion - https://github.com/mpdf/mpdf/issues/904   
+            'tempDir' => TMP_DIR . 'mpdf'   // Folders for temporary files
 		];
-                
-        // Initialize mPDF    
-        $this->mpdf = new \Mpdf\Mpdf($mpdfConfig);
-                
-        // Not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
-        //$this->mpdf->SetTitle('My Title');
-
-        // mPDF now supports setting curlAllowUnsafeSslRequests (prevents red crosses where images should be, when using https with old ROOT CA Store)
-        $this->mpdf->curlAllowUnsafeSslRequests = true;
         
         // Build the PDF       
         try
-        {            
+        {          
+            // Initialize mPDF    
+            $this->mpdf = new \Mpdf\Mpdf($mpdfConfig);
+                
+            // Not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
+            //$this->mpdf->SetTitle('My Title');
+
+            // mPDF now supports setting curlAllowUnsafeSslRequests (prevents red crosses where images should be, when using https with old ROOT CA Store)
+            $this->mpdf->curlAllowUnsafeSslRequests = true;
+            
+            // Set to true for optional error reporting for problems with Images.
+            //$this->mpdf->showImageErrors = true;
+        
+            //$this->mpdf->setBasePath(QWCRM_FULL_URL);
+            
+            // Build the HTML payload
             $this->mpdf->WriteHTML($pdf_template);
         }        
-        // Note: safer fully qualified exception name used for catch
+        
         catch (\Mpdf\MpdfException $e)
-        {   
-            
+        {               
             // Process the exception, log, print etc.
             $message = $e->getMessage();
             
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The PDF has failed to build successfully."));
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is most likely an issue with the printing template."). ' <strong>`'.\CMSApplication::$VAR['component'].':'.\CMSApplication::$VAR['page_tpl'].'`</strong>');                
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The PDF template has failed to build successfully."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is most likely an issue with the printing template."). ' <strong>`'.\CMSApplication::$VAR['component'].':'.\CMSApplication::$VAR['page_tpl'].':'.\CMSApplication::$VAR['print_content'].'`</strong>');
             $this->app->system->variables->systemMessagesWrite('danger', $message);
-                            
-            return false;
+            
+            // Set process to failed
+            $this->success = false;
         }
         
-        return true;
+        return;
         
     }
     
@@ -85,43 +98,89 @@ class Pdf extends System {
     public function mpdf_output_in_browser($pdf_filename, $pdf_template) {
         
         // Intialise mPDF
-        if($this->getMpdf($pdf_template))
-        {
-            // Output the PDF to the browser
-            $this->mpdf->Output($pdf_filename.'.pdf', 'I');     
+        $this->getMpdf($pdf_template);
             
+        // If PDF Intialisation is successful
+        if($this->success)
+        {
+            try
+            {
+                // Output the PDF to the browser
+                $this->mpdf->Output($pdf_filename.'.pdf', 'I');
+            }
+            
+            catch (\Mpdf\MpdfException $e)
+            {               
+                // Process the exception, log, print etc.
+                
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The PDF has failed to generated successfully."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is most likely an issue with the printing template."). ' <strong>`'.\CMSApplication::$VAR['component'].':'.\CMSApplication::$VAR['page_tpl'].':'.\CMSApplication::$VAR['print_content'].'`</strong>');
+                $this->app->system->variables->systemMessagesWrite('danger', $e->getMessage());
+                
+                // Set process to failed
+                $this->success = false;
+
+            }
+        }
+        
+        // Output based on success
+        if($this->success)
+        {
             // I think this exit prevents issues
             die();
-        
+
         } else {         
             // Load 404 page with the error/system messages            
             die($this->app->system->page->load_page('get_payload', 'core', '404', ''));
             //$this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
         }
-
+        
     }
 
     // Return a PDF in a variable
     public function mpdf_output_as_variable($pdf_filename, $pdf_template) {
         
         // Intialise mPDF
-        if($this->getMpdf($pdf_template))
+        $this->getMpdf($pdf_template);
+        
+        // If PDF Intialisation is successful
+        if($this->success)
+        {            
+            try
+            {
+                // Return the PDF as a string
+                $pdfVariable = $this->mpdf->Output($pdf_filename.'.pdf', 'S');
+            }
+            
+            catch (\Mpdf\MpdfException $e)
+            {               
+                // Process the exception, log, print etc.
+
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The PDF has failed to generate successfully."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is most likely an issue with the printing template."). ' <strong>`'.\CMSApplication::$VAR['component'].':'.\CMSApplication::$VAR['page_tpl'].':'.\CMSApplication::$VAR['print_content'].'`</strong>');
+                $this->app->system->variables->systemMessagesWrite('danger', $e->getMessage());
+                
+                // Set process to failed
+                $this->success = false;
+
+            }
+
+        }        
+                    
+        // Output based on success
+        if($this->success)
         {
-            // Return the PDF as a string
-            return $this->mpdf->Output($pdf_filename.'.pdf', 'S');  
-            
-        } else {
-            
+            return $pdfVariable;
+
+        } else {               
             // Clear any onscreen notifications        
             $this->app->system->general->ajax_clear_onscreen_notifications();
-        
+
             // Load error page with the messages via ajax // Output the system message to the browser (if allowed)
             $this->app->system->general->ajax_output_system_messages_onscreen();
             return false;
         }
-
-        
-
+            
     }
     
 }

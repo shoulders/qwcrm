@@ -215,9 +215,9 @@ class Email extends System {
                 
                 // You can alternatively use method chaining to build the attachment (chained method)
                 $attachment = (new Swift_Attachment())
-                  ->setFilename($attachment['filename'])
-                  ->setContentType($attachment['contentType'])
-                  ->setBody($attachment['data']);
+                    ->setFilename($attachment['filename'])
+                    ->setContentType($attachment['contentType'])
+                    ->setBody($attachment['data']);
 
                 // Attach the asset to the message
                 $email->attach($attachment);
@@ -252,12 +252,9 @@ class Email extends System {
                 $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
                 $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
-                // Output the system message to the browser (if allowed)
-                if (!$silent) {
-                    $message = $record;
-                    $this->app->system->variables->systemMessagesWrite('danger', $message);
-                    $this->app->system->general->ajax_output_system_messages_onscreen();
-                }
+                // Build System message
+                $message = $record;
+                $this->app->system->variables->systemMessagesWrite('danger', $message);                
 
             } else {
 
@@ -268,12 +265,9 @@ class Email extends System {
                 if($workorder_id) {$this->app->components->workorder->insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
                 $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);            
 
-                // Output the system message to the browser (if allowed)
-                if (!$silent) {
-                    $message = $record;
-                    $this->app->system->variables->systemMessagesWrite('success', $message);
-                    $this->app->system->general->ajax_output_system_messages_onscreen();
-                }
+                // Build System message 
+                $message = $record;
+                $this->app->system->variables->systemMessagesWrite('success', $message);                
 
                 // Update last active record (will not error if no invoice_id sent )
                 $this->app->components->user->update_user_last_active($employee_id);
@@ -285,31 +279,28 @@ class Email extends System {
 
         }
 
-        // This will present any transport errors
-        catch(Swift_TransportException $Transport_exception) {
-
-            // this one is faulty when no transport available
-
-            //var_dump($Transport_exception);
-
+        // This will present any transport errors - this one is faulty when no transport available
+        catch(Swift_TransportException $Transport_exception)
+        {
             // Log activity 
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
             $this->write_record_to_email_error_log($Transport_exception->getMessage());
             $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
-            // Output the system message to the browser (if allowed)
-            if (!$silent) {
-                preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);  // output the first line of the error message only
-                $message = $record.'<br>'.$matches[0];
-                //$this->app->system->variables->systemMessagesWrite('danger', $message);            
-                $this->app->system->variables->systemMessagesWrite('danger', $message);
-                $this->app->system->general->ajax_output_system_messages_onscreen();
-            }
-
+            // Build System message         
+            preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);  // output the first line of the error message only
+            $message = $record.'<br>'.$matches[0];                          
+            $this->app->system->variables->systemMessagesWrite('danger', $message);
         }
 
         // Write the Email Transport Record to the log
         $this->write_record_to_email_transport_log($logger->dump());
+        
+        // Output the system message to the browser (if allowed)
+        if (!$silent)
+        {            
+            $this->app->system->general->ajax_output_system_messages_onscreen();
+        }
 
         return;
 
