@@ -401,6 +401,12 @@ class Page extends System {
         if($forcePageSystemMessageStore = $this->app->system->variables->systemMessagesReturnStore(false, 'array')) {
             $this->app->system->variables->postEmulationWrite('forcePageSystemMessageStore', $forcePageSystemMessageStore);
         }
+        
+        // Wipe the system variables (workaround because I need to hive of the Query variables)
+        if(isset($variables['system']))
+        {
+            unset($variables['system']);
+        }
 
         /* Process Options */
 
