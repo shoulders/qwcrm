@@ -34,8 +34,8 @@
                                                                 <td align="left" valign="top"><b>{t}Refund Search{/t}</b>
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
-                                                                        <option value="refund_id"{if $search_category == 'refund_id'} selected{/if}>{t}Refund ID{/t}</option>                                                                        
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Name{/t}</option>
+                                                                        <option value="refund_id"{if $search_category == 'refund_id'} selected{/if}>{t}Refund ID{/t}</option>                                                                        
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>                                                                        
                                                                         <option value="item_type"{if $search_category == 'item_type'} selected{/if}>{t}Item Type{/t}</option>                                                                        
                                                                         {if !'/^vat_/'|preg_match:$qw_tax_system}
