@@ -212,7 +212,7 @@ class Email extends System {
             {
                 // Create the attachment asset (standard method)
                 //$attachment = new Swift_Attachment($attachment['data'], $attachment['filename'], $attachment['contentType']);
-                
+
                 // You can alternatively use method chaining to build the attachment (chained method)
                 $attachment = (new Swift_Attachment())
                     ->setFilename($attachment['filename'])

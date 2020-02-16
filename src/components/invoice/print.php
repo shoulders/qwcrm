@@ -69,7 +69,7 @@ $this->app->smarty->assign('invoice_statuses',                 $this->app->compo
 if(\CMSApplication::$VAR['print_content'] == 'invoice')
 {    
     // Build the PDF filename
-    $pdf_filename = _gettext("Invoice").'-'.\CMSApplication::$VAR['invoice_id'];
+    $pdf_filename = _gettext("Invoice").'-'.\CMSApplication::$VAR['invoice_id'].'.pdf';
     
     // Print HTML Invoice
     if (\CMSApplication::$VAR['print_type'] == 'print_html')
@@ -107,7 +107,7 @@ if(\CMSApplication::$VAR['print_content'] == 'invoice')
         $pdf_template = $this->app->smarty->fetch('invoice/printing/print_invoice.tpl');
         
         // Get the PDF in a variable
-        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_filename, $pdf_template);
+        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_template);
                 
         // Build and Send email
         if($pdf_as_string)

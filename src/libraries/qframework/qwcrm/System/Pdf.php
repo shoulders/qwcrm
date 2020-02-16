@@ -138,7 +138,7 @@ class Pdf extends System {
     }
 
     // Return a PDF in a variable
-    public function mpdf_output_as_variable($pdf_filename, $pdf_template) {
+    public function mpdf_output_as_variable($pdf_template) {
         
         // Intialise mPDF
         $this->getMpdf($pdf_template);
@@ -149,7 +149,7 @@ class Pdf extends System {
             try
             {
                 // Return the PDF as a string
-                $pdfVariable = $this->mpdf->Output($pdf_filename.'.pdf', 'S');
+                $pdfVariable = $this->mpdf->Output('FilenameIsIgnored', 'S');
             }
             
             catch (\Mpdf\MpdfException $e)

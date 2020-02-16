@@ -38,7 +38,7 @@ $this->app->smarty->assign('barcode',          $barcode                    );
 if(\CMSApplication::$VAR['print_content'] == 'voucher')
 {    
     // Build the PDF filename
-    $pdf_filename = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'];
+    $pdf_filename = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].'.pdf';
     
     // Print HTML
     if (\CMSApplication::$VAR['print_type'] == 'print_html')
@@ -72,7 +72,7 @@ if(\CMSApplication::$VAR['print_content'] == 'voucher')
         $pdf_template = $this->app->smarty->fetch('voucher/printing/print_voucher.tpl');
 
         // Get the PDF in a variable
-        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_filename, $pdf_template);
+        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_template);
 
         // Build and Send email
         if($pdf_as_string)

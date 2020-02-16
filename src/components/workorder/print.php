@@ -38,7 +38,7 @@ $this->app->smarty->assign('workorder_schedules',  $this->app->components->sched
 if(\CMSApplication::$VAR['print_content'] == 'technician_workorder_slip')
 {    
     // Build the PDF filename
-    $pdf_filename = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'];
+    $pdf_filename = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].'.pdf';
     
     // Print HTML
     if (\CMSApplication::$VAR['print_type'] == 'print_html')
@@ -71,7 +71,7 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_workorder_slip')
         $pdf_template = $this->app->smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
         
         // Get the PDF in a variable
-        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_filename, $pdf_template);
+        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_template);
         
         // Build and Send email
         if($pdf_as_string)
@@ -106,7 +106,7 @@ if(\CMSApplication::$VAR['print_content'] == 'client_workorder_slip')
 {
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'];    
+    $pdf_filename = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].'.pdf';  
     
     // Print HTML
     if (\CMSApplication::$VAR['print_type'] == 'print_html')
@@ -141,7 +141,7 @@ if(\CMSApplication::$VAR['print_content'] == 'client_workorder_slip')
         $pdf_template = $this->app->smarty->fetch('workorder/printing/print_client_workorder_slip.tpl');
 
         // Get the PDF in a variable
-        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_filename, $pdf_template);
+        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_template);
 
         // Build and Send email
         if($pdf_as_string)
@@ -174,7 +174,7 @@ if(\CMSApplication::$VAR['print_content'] == 'client_workorder_slip')
 if(\CMSApplication::$VAR['print_content'] == 'technician_job_sheet')
 {    
     // Build the PDF filename
-    $pdf_filename = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'];        
+    $pdf_filename = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].'.pdf';    
     
     // Print HTML
     if (\CMSApplication::$VAR['print_type'] == 'print_html')
@@ -208,7 +208,7 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_job_sheet')
         $pdf_template = $this->app->smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
 
         // Get the PDF in a variable
-        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_filename, $pdf_template);
+        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_template);
 
         
         // Build and Send email
