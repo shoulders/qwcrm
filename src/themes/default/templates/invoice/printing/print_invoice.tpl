@@ -41,7 +41,7 @@
             
             <!-- Company Name -->
             <div id="company-name" style="float: left; width: 325px;">
-                <b>{$company_details.company_name}</b>
+                <span style="font-size: 18px; font-weight: bold;"> <b>{$company_details.company_name}</b></span>
             </div>
             
             <!-- Invoice Details -->

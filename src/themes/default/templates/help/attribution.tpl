@@ -24,7 +24,7 @@
         <li>ADOdb | v5.20.12 | ADOdb is dual licensed under BSD and LGPL | http://adodb.org/dokuwiki/doku.php | PHP Database Abstraction layer allowing use of different databases whilest using the same SQL code and other database related things.</li>            
         <li>whoops | 2.2.0 | MIT | https://github.com/filp/whoops | whoops is an error handler framework for PHP.
         <li>reCAPTCHA PHP library | v1.1.3 | BSD-3-Clause | https://github.com/google/recaptcha | Client library for reCAPTCHA, a free service that protects websites from spam and abuse.</li>
-        <li>mPDF | v7.0.3 | GPLv2 | https://github.com/mpdf/mpdf/ | A PHP class to generate PDF files from HTML with Unicode/UTF-8 and CJK support</li>
+        <li>mPDF | v7.1.9 | GPLv2 | https://github.com/mpdf/mpdf/ | A PHP class to generate PDF files from HTML with Unicode/UTF-8 and CJK support</li>
         <li>random_compat | v2.0.12 | MIT | https://github.com/paragonie/random_compat | PHP 5.x polyfill for random_bytes() and random_int() from PHP 7</li>        
         <li>motranslator | v3.3 | GPL-2.0 (or later) | https://github.com/phpmyadmin/motranslator | Translation API for PHP using Gettext MO files</li>
         <li>PHP Barcode Generator | v0.2.1 | LGPL-3.0 | https://github.com/picqer/php-barcode-generator | An easy to use, non-bloated, barcode generator in PHP. Creates SVG, PNG, JPG and HTML images from the most used 1D barcode standards.</li>

@@ -7,14 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
-## [3.1.3] 2020-02-09
+## [3.1.3] 2020-02-16
 ### Added
-- emails can now send mulitple attachments
+- emails can now send multiple attachments
 - Basic install and upgrade instructions to the README.md
 - initial work on a new invoice tempalte that supports a windowed DL envelope
 
 ### Changed
 - Voucher message in the Client Details Account Tab
+- Upgraded mPDF to v7.1.9
+- Change QW logo to black version
 
 ### Fixed
 - Images in PDF will work even when behind a .htaccess password

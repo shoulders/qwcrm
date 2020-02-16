@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.1.3\n"
-"POT-Creation-Date: 2020-02-09 12:06+0000\n"
-"PO-Revision-Date: 2020-02-09 12:06+0000\n"
+"POT-Creation-Date: 2020-02-16 16:50+0000\n"
+"PO-Revision-Date: 2020-02-16 16:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -1791,8 +1791,8 @@ msgstr ""
 #: themes/default/templates/client/new.tpl:62
 #: themes/default/templates/invoice/details.tpl:376
 #: themes/default/templates/invoice/edit.tpl:920
-#: themes/default/templates/invoice/printing/print_invoice.tpl:377
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:400
+#: themes/default/templates/invoice/printing/print_invoice.tpl:400
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:377
 #: themes/default/templates/report/financial.tpl:328
 msgid "Discount"
 msgstr ""
@@ -1904,22 +1904,22 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:837
 #: themes/default/templates/invoice/edit.tpl:890
 #: themes/default/templates/invoice/edit.tpl:933
-#: themes/default/templates/invoice/printing/print_invoice.tpl:151
-#: themes/default/templates/invoice/printing/print_invoice.tpl:152
-#: themes/default/templates/invoice/printing/print_invoice.tpl:189
-#: themes/default/templates/invoice/printing/print_invoice.tpl:216
-#: themes/default/templates/invoice/printing/print_invoice.tpl:217
-#: themes/default/templates/invoice/printing/print_invoice.tpl:254
-#: themes/default/templates/invoice/printing/print_invoice.tpl:284
-#: themes/default/templates/invoice/printing/print_invoice.tpl:390
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:175
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:176
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:213
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:239
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:240
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:277
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:307
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:413
+#: themes/default/templates/invoice/printing/print_invoice.tpl:175
+#: themes/default/templates/invoice/printing/print_invoice.tpl:176
+#: themes/default/templates/invoice/printing/print_invoice.tpl:213
+#: themes/default/templates/invoice/printing/print_invoice.tpl:239
+#: themes/default/templates/invoice/printing/print_invoice.tpl:240
+#: themes/default/templates/invoice/printing/print_invoice.tpl:277
+#: themes/default/templates/invoice/printing/print_invoice.tpl:307
+#: themes/default/templates/invoice/printing/print_invoice.tpl:413
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:151
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:152
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:189
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:216
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:217
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:254
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:284
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:390
 #: themes/default/templates/otherincome/blocks/display_otherincome_balance_block.tpl:15
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:17
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:18
@@ -1973,22 +1973,22 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:837
 #: themes/default/templates/invoice/edit.tpl:890
 #: themes/default/templates/invoice/edit.tpl:933
-#: themes/default/templates/invoice/printing/print_invoice.tpl:151
-#: themes/default/templates/invoice/printing/print_invoice.tpl:152
-#: themes/default/templates/invoice/printing/print_invoice.tpl:189
-#: themes/default/templates/invoice/printing/print_invoice.tpl:216
-#: themes/default/templates/invoice/printing/print_invoice.tpl:217
-#: themes/default/templates/invoice/printing/print_invoice.tpl:254
-#: themes/default/templates/invoice/printing/print_invoice.tpl:284
-#: themes/default/templates/invoice/printing/print_invoice.tpl:390
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:175
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:176
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:213
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:239
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:240
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:277
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:307
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:413
+#: themes/default/templates/invoice/printing/print_invoice.tpl:175
+#: themes/default/templates/invoice/printing/print_invoice.tpl:176
+#: themes/default/templates/invoice/printing/print_invoice.tpl:213
+#: themes/default/templates/invoice/printing/print_invoice.tpl:239
+#: themes/default/templates/invoice/printing/print_invoice.tpl:240
+#: themes/default/templates/invoice/printing/print_invoice.tpl:277
+#: themes/default/templates/invoice/printing/print_invoice.tpl:307
+#: themes/default/templates/invoice/printing/print_invoice.tpl:413
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:151
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:152
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:189
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:216
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:217
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:254
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:284
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:390
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:17
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:18
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:19
@@ -2087,8 +2087,8 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:15
 #: themes/default/templates/invoice/details.tpl:39
 #: themes/default/templates/invoice/edit.tpl:482
-#: themes/default/templates/invoice/printing/print_invoice.tpl:94
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:63
+#: themes/default/templates/invoice/printing/print_invoice.tpl:63
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:94
 #: themes/default/templates/invoice/search.tpl:40
 #: themes/default/templates/payment/blocks/display_payments_block.tpl:12
 #: themes/default/templates/payment/details.tpl:37
@@ -2129,8 +2129,8 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:13
 #: themes/default/templates/invoice/details.tpl:40
 #: themes/default/templates/invoice/edit.tpl:483
-#: themes/default/templates/invoice/printing/print_invoice.tpl:91
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:60
+#: themes/default/templates/invoice/printing/print_invoice.tpl:60
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:91
 #: themes/default/templates/otherincome/blocks/display_otherincome_balance_block.tpl:12
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:13
 #: themes/default/templates/otherincome/details.tpl:48
@@ -2236,7 +2236,7 @@ msgstr ""
 #: themes/default/templates/client/search.tpl:37
 #: themes/default/templates/company/edit.tpl:125
 #: themes/default/templates/payment/options.tpl:35
-#: themes/default/templates/refund/search.tpl:38
+#: themes/default/templates/refund/search.tpl:37
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:12
 #: themes/default/templates/supplier/details.tpl:37
 #: themes/default/templates/supplier/search.tpl:35
@@ -2251,8 +2251,8 @@ msgstr ""
 #: themes/default/templates/client/new.tpl:50
 #: themes/default/templates/company/edit.tpl:182
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:221
-#: themes/default/templates/invoice/printing/print_invoice.tpl:54
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:111
+#: themes/default/templates/invoice/printing/print_invoice.tpl:111
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:54
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:178
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:136
 #: themes/default/templates/supplier/details.tpl:59
@@ -2270,8 +2270,8 @@ msgstr ""
 #: themes/default/templates/client/new.tpl:54
 #: themes/default/templates/client/search.tpl:41
 #: themes/default/templates/company/edit.tpl:178
-#: themes/default/templates/invoice/printing/print_invoice.tpl:58
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:115
+#: themes/default/templates/invoice/printing/print_invoice.tpl:115
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:58
 #: themes/default/templates/payment/options.tpl:97
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:87
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:174
@@ -2297,8 +2297,8 @@ msgstr ""
 #: themes/default/templates/client/blocks/display_client_details_block.tpl:44
 #: themes/default/templates/client/edit.tpl:55
 #: themes/default/templates/client/new.tpl:58
-#: themes/default/templates/invoice/printing/print_invoice.tpl:410
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:433
+#: themes/default/templates/invoice/printing/print_invoice.tpl:433
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:410
 msgid "Credit Terms"
 msgstr ""
 
@@ -2326,8 +2326,8 @@ msgstr ""
 #: themes/default/templates/client/new.tpl:120
 #: themes/default/templates/client/new.tpl:127
 #: themes/default/templates/company/edit.tpl:146
-#: themes/default/templates/invoice/printing/print_invoice.tpl:40
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:97
+#: themes/default/templates/invoice/printing/print_invoice.tpl:97
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:40
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:192
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:142
 #: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:197
@@ -2362,8 +2362,8 @@ msgstr ""
 #: themes/default/templates/client/new.tpl:99
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:37
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:38
-#: themes/default/templates/invoice/printing/print_invoice.tpl:50
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:107
+#: themes/default/templates/invoice/printing/print_invoice.tpl:107
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:50
 #: themes/default/templates/supplier/details.tpl:39
 #: themes/default/templates/supplier/edit.tpl:75
 #: themes/default/templates/supplier/new.tpl:76
@@ -2677,8 +2677,8 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:88
 #: themes/default/templates/invoice/details.tpl:380
 #: themes/default/templates/invoice/edit.tpl:924
-#: themes/default/templates/invoice/printing/print_invoice.tpl:381
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:404
+#: themes/default/templates/invoice/printing/print_invoice.tpl:404
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:381
 #: themes/default/templates/report/financial.tpl:102
 #: themes/default/templates/report/financial.tpl:221
 #: themes/default/templates/report/financial.tpl:321
@@ -3113,8 +3113,8 @@ msgid "Primary Phone"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:186
-#: themes/default/templates/invoice/printing/print_invoice.tpl:62
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:119
+#: themes/default/templates/invoice/printing/print_invoice.tpl:119
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:62
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:182
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:140
 msgid "Company Number"
@@ -3162,8 +3162,8 @@ msgid "Sales Tax Rate"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:259
-#: themes/default/templates/invoice/printing/print_invoice.tpl:416
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:439
+#: themes/default/templates/invoice/printing/print_invoice.tpl:439
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:416
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:201
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:159
 msgid "VAT Number"
@@ -3456,8 +3456,8 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:18
 #: themes/default/templates/invoice/details.tpl:42
 #: themes/default/templates/invoice/edit.tpl:485
-#: themes/default/templates/invoice/printing/print_invoice.tpl:87
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:56
+#: themes/default/templates/invoice/printing/print_invoice.tpl:56
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:87
 #: themes/default/templates/invoice/status.tpl:13
 #: themes/default/templates/invoice/status.tpl:24
 #: themes/default/templates/otherincome/blocks/display_otherincome_balance_block.tpl:20
@@ -3765,18 +3765,18 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:929
 #: themes/default/templates/invoice/prefill_items.tpl:33
 #: themes/default/templates/invoice/prefill_items.tpl:76
-#: themes/default/templates/invoice/printing/print_invoice.tpl:149
-#: themes/default/templates/invoice/printing/print_invoice.tpl:188
-#: themes/default/templates/invoice/printing/print_invoice.tpl:214
-#: themes/default/templates/invoice/printing/print_invoice.tpl:253
-#: themes/default/templates/invoice/printing/print_invoice.tpl:283
-#: themes/default/templates/invoice/printing/print_invoice.tpl:386
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:173
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:212
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:237
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:276
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:306
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:409
+#: themes/default/templates/invoice/printing/print_invoice.tpl:173
+#: themes/default/templates/invoice/printing/print_invoice.tpl:212
+#: themes/default/templates/invoice/printing/print_invoice.tpl:237
+#: themes/default/templates/invoice/printing/print_invoice.tpl:276
+#: themes/default/templates/invoice/printing/print_invoice.tpl:306
+#: themes/default/templates/invoice/printing/print_invoice.tpl:409
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:149
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:188
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:214
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:253
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:283
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:386
 #: themes/default/templates/otherincome/blocks/display_otherincome_balance_block.tpl:14
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:16
 #: themes/default/templates/otherincome/details.tpl:40
@@ -3831,20 +3831,20 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:938
 #: themes/default/templates/invoice/prefill_items.tpl:35
 #: themes/default/templates/invoice/prefill_items.tpl:78
-#: themes/default/templates/invoice/printing/print_invoice.tpl:154
-#: themes/default/templates/invoice/printing/print_invoice.tpl:191
-#: themes/default/templates/invoice/printing/print_invoice.tpl:219
-#: themes/default/templates/invoice/printing/print_invoice.tpl:256
-#: themes/default/templates/invoice/printing/print_invoice.tpl:268
-#: themes/default/templates/invoice/printing/print_invoice.tpl:286
-#: themes/default/templates/invoice/printing/print_invoice.tpl:395
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:178
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:215
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:242
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:279
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:291
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:309
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:418
+#: themes/default/templates/invoice/printing/print_invoice.tpl:178
+#: themes/default/templates/invoice/printing/print_invoice.tpl:215
+#: themes/default/templates/invoice/printing/print_invoice.tpl:242
+#: themes/default/templates/invoice/printing/print_invoice.tpl:279
+#: themes/default/templates/invoice/printing/print_invoice.tpl:291
+#: themes/default/templates/invoice/printing/print_invoice.tpl:309
+#: themes/default/templates/invoice/printing/print_invoice.tpl:418
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:154
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:191
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:219
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:256
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:268
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:286
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:395
 #: themes/default/templates/invoice/search.tpl:41
 #: themes/default/templates/otherincome/blocks/display_otherincome_balance_block.tpl:17
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:20
@@ -3914,10 +3914,10 @@ msgstr ""
 #: themes/default/templates/invoice/details.tpl:282
 #: themes/default/templates/invoice/edit.tpl:676
 #: themes/default/templates/invoice/edit.tpl:788
-#: themes/default/templates/invoice/printing/print_invoice.tpl:151
-#: themes/default/templates/invoice/printing/print_invoice.tpl:216
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:175
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:239
+#: themes/default/templates/invoice/printing/print_invoice.tpl:175
+#: themes/default/templates/invoice/printing/print_invoice.tpl:239
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:151
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:216
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:17
 #: themes/default/templates/otherincome/details.tpl:66
 #: themes/default/templates/otherincome/edit.tpl:151
@@ -4000,10 +4000,10 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:749
 #: themes/default/templates/invoice/edit.tpl:787
 #: themes/default/templates/invoice/edit.tpl:861
-#: themes/default/templates/invoice/printing/print_invoice.tpl:150
-#: themes/default/templates/invoice/printing/print_invoice.tpl:215
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:174
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:238
+#: themes/default/templates/invoice/printing/print_invoice.tpl:174
+#: themes/default/templates/invoice/printing/print_invoice.tpl:238
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:150
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:215
 #: themes/default/templates/otherincome/details.tpl:51
 #: themes/default/templates/otherincome/edit.tpl:138
 #: themes/default/templates/otherincome/new.tpl:143
@@ -4202,8 +4202,8 @@ msgid ""
 msgstr ""
 
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:8
-#: themes/default/templates/invoice/printing/print_invoice.tpl:125
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:149
+#: themes/default/templates/invoice/printing/print_invoice.tpl:149
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:125
 #: themes/default/templates/invoice/status.tpl:13
 #: themes/default/templates/voucher/new.tpl:38
 #: components/_includes/Invoice.php:258 components/_includes/Invoice.php:262
@@ -4215,8 +4215,8 @@ msgstr ""
 #: components/_includes/Invoice.php:1106 components/_includes/Invoice.php:1109
 #: components/_includes/Invoice.php:1544 components/_includes/Invoice.php:1547
 #: components/invoice/print.php:72 components/invoice/print.php:78
-#: components/invoice/print.php:93 components/invoice/print.php:124
-#: components/invoice/print.php:128 components/refund/new.php:54
+#: components/invoice/print.php:93 components/invoice/print.php:126
+#: components/invoice/print.php:130 components/refund/new.php:54
 #: language/_gettext_only/system_variables.php:136
 #: language/_gettext_only/system_variables.php:147
 msgid "Invoice"
@@ -4273,10 +4273,10 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:912
 #: themes/default/templates/invoice/prefill_items.tpl:48
 #: themes/default/templates/invoice/prefill_items.tpl:87
-#: themes/default/templates/invoice/printing/print_invoice.tpl:186
-#: themes/default/templates/invoice/printing/print_invoice.tpl:369
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:210
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:392
+#: themes/default/templates/invoice/printing/print_invoice.tpl:210
+#: themes/default/templates/invoice/printing/print_invoice.tpl:392
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:186
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:369
 #: themes/default/templates/invoice/search.tpl:43
 #: themes/default/templates/report/financial.tpl:219
 #: themes/default/templates/report/financial.tpl:313
@@ -4292,10 +4292,10 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:916
 #: themes/default/templates/invoice/prefill_items.tpl:49
 #: themes/default/templates/invoice/prefill_items.tpl:88
-#: themes/default/templates/invoice/printing/print_invoice.tpl:251
-#: themes/default/templates/invoice/printing/print_invoice.tpl:373
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:274
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:396
+#: themes/default/templates/invoice/printing/print_invoice.tpl:274
+#: themes/default/templates/invoice/printing/print_invoice.tpl:396
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:251
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:373
 #: themes/default/templates/invoice/search.tpl:44
 #: themes/default/templates/report/financial.tpl:220
 #: themes/default/templates/report/financial.tpl:317
@@ -4324,8 +4324,8 @@ msgstr ""
 #: themes/default/templates/invoice/details.tpl:37
 #: themes/default/templates/invoice/edit.tpl:459
 #: themes/default/templates/invoice/edit.tpl:480
-#: themes/default/templates/invoice/printing/print_invoice.tpl:86
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:55
+#: themes/default/templates/invoice/printing/print_invoice.tpl:55
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:86
 #: themes/default/templates/invoice/search.tpl:37
 #: themes/default/templates/payment/details.tpl:53
 #: themes/default/templates/payment/edit.tpl:61
@@ -4355,12 +4355,12 @@ msgstr ""
 
 #: themes/default/templates/invoice/details.tpl:38
 #: themes/default/templates/invoice/edit.tpl:481
-#: themes/default/templates/invoice/printing/print_invoice.tpl:93
-#: themes/default/templates/invoice/printing/print_invoice.tpl:111
-#: themes/default/templates/invoice/printing/print_invoice.tpl:112
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:62
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:136
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:137
+#: themes/default/templates/invoice/printing/print_invoice.tpl:62
+#: themes/default/templates/invoice/printing/print_invoice.tpl:136
+#: themes/default/templates/invoice/printing/print_invoice.tpl:137
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:93
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:111
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:112
 #: themes/default/templates/workorder/details.tpl:44
 #: components/_includes/Schedule.php:809 components/_includes/Schedule.php:818
 #: components/_includes/Workorder.php:274
@@ -4372,15 +4372,15 @@ msgstr ""
 #: components/_includes/Workorder.php:913
 #: components/_includes/Workorder.php:1003
 #: components/_includes/Workorder.php:1139
-#: components/_includes/Workorder.php:1142 components/workorder/print.php:90
-#: components/workorder/print.php:149 components/workorder/print.php:208
+#: components/_includes/Workorder.php:1142 components/workorder/print.php:94
+#: components/workorder/print.php:164 components/workorder/print.php:232
 msgid "Work Order"
 msgstr ""
 
 #: themes/default/templates/invoice/details.tpl:41
 #: themes/default/templates/invoice/edit.tpl:484
-#: themes/default/templates/invoice/printing/print_invoice.tpl:92
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:61
+#: themes/default/templates/invoice/printing/print_invoice.tpl:61
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:92
 msgid "Due Date"
 msgstr ""
 
@@ -4392,8 +4392,8 @@ msgstr ""
 #: themes/default/templates/invoice/details.tpl:82
 #: themes/default/templates/invoice/edit.tpl:496
 #: themes/default/templates/invoice/edit.tpl:544
-#: themes/default/templates/invoice/printing/print_invoice.tpl:93
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:62
+#: themes/default/templates/invoice/printing/print_invoice.tpl:62
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:93
 #: themes/default/templates/payment/details.tpl:44
 #: themes/default/templates/refund/details.tpl:67
 #: themes/default/templates/refund/edit.tpl:63
@@ -4411,7 +4411,7 @@ msgstr ""
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:11
 #: themes/default/templates/refund/details.tpl:31
 #: themes/default/templates/refund/edit.tpl:40
-#: themes/default/templates/refund/search.tpl:37
+#: themes/default/templates/refund/search.tpl:38
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:29
 #: themes/default/templates/voucher/details.tpl:69
 msgid "Refund ID"
@@ -4483,12 +4483,12 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:853
 #: themes/default/templates/invoice/prefill_items.tpl:30
 #: themes/default/templates/invoice/prefill_items.tpl:73
-#: themes/default/templates/invoice/printing/print_invoice.tpl:111
-#: themes/default/templates/invoice/printing/print_invoice.tpl:141
-#: themes/default/templates/invoice/printing/print_invoice.tpl:206
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:136
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:165
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:229
+#: themes/default/templates/invoice/printing/print_invoice.tpl:136
+#: themes/default/templates/invoice/printing/print_invoice.tpl:165
+#: themes/default/templates/invoice/printing/print_invoice.tpl:229
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:111
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:141
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:206
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:17
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:39
 #: themes/default/templates/supplier/details.tpl:118
@@ -4518,10 +4518,10 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:742
 #: themes/default/templates/invoice/edit.tpl:779
 #: themes/default/templates/invoice/edit.tpl:854
-#: themes/default/templates/invoice/printing/print_invoice.tpl:142
-#: themes/default/templates/invoice/printing/print_invoice.tpl:207
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:166
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:230
+#: themes/default/templates/invoice/printing/print_invoice.tpl:166
+#: themes/default/templates/invoice/printing/print_invoice.tpl:230
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:142
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:207
 msgid "Unit Qty"
 msgstr ""
 
@@ -4531,10 +4531,10 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:744
 #: themes/default/templates/invoice/edit.tpl:781
 #: themes/default/templates/invoice/edit.tpl:856
-#: themes/default/templates/invoice/printing/print_invoice.tpl:144
-#: themes/default/templates/invoice/printing/print_invoice.tpl:209
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:168
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:232
+#: themes/default/templates/invoice/printing/print_invoice.tpl:168
+#: themes/default/templates/invoice/printing/print_invoice.tpl:232
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:144
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:209
 msgid "Unit Net"
 msgstr ""
 
@@ -4544,10 +4544,10 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:746
 #: themes/default/templates/invoice/edit.tpl:783
 #: themes/default/templates/invoice/edit.tpl:858
-#: themes/default/templates/invoice/printing/print_invoice.tpl:146
-#: themes/default/templates/invoice/printing/print_invoice.tpl:211
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:170
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:234
+#: themes/default/templates/invoice/printing/print_invoice.tpl:170
+#: themes/default/templates/invoice/printing/print_invoice.tpl:234
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:146
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:211
 msgid "Unit Gross"
 msgstr ""
 
@@ -4559,14 +4559,14 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:693
 #: themes/default/templates/invoice/edit.tpl:803
 #: themes/default/templates/invoice/edit.tpl:805
-#: themes/default/templates/invoice/printing/print_invoice.tpl:164
-#: themes/default/templates/invoice/printing/print_invoice.tpl:166
-#: themes/default/templates/invoice/printing/print_invoice.tpl:229
-#: themes/default/templates/invoice/printing/print_invoice.tpl:231
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:188
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:190
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:252
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:254
+#: themes/default/templates/invoice/printing/print_invoice.tpl:188
+#: themes/default/templates/invoice/printing/print_invoice.tpl:190
+#: themes/default/templates/invoice/printing/print_invoice.tpl:252
+#: themes/default/templates/invoice/printing/print_invoice.tpl:254
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:164
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:166
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:229
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:231
 #: language/_gettext_only/system_variables.php:32
 msgid "Exempt"
 msgstr ""
@@ -4577,12 +4577,12 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:722
 #: themes/default/templates/invoice/edit.tpl:834
 #: themes/default/templates/invoice/edit.tpl:887
-#: themes/default/templates/invoice/printing/print_invoice.tpl:186
-#: themes/default/templates/invoice/printing/print_invoice.tpl:251
-#: themes/default/templates/invoice/printing/print_invoice.tpl:281
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:210
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:274
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:304
+#: themes/default/templates/invoice/printing/print_invoice.tpl:210
+#: themes/default/templates/invoice/printing/print_invoice.tpl:274
+#: themes/default/templates/invoice/printing/print_invoice.tpl:304
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:186
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:251
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:281
 #: themes/default/templates/report/financial.tpl:222
 #: themes/default/templates/report/financial.tpl:557
 msgid "Totals"
@@ -4590,10 +4590,10 @@ msgstr ""
 
 #: themes/default/templates/invoice/details.tpl:346
 #: themes/default/templates/invoice/edit.tpl:887
-#: themes/default/templates/invoice/printing/print_invoice.tpl:266
-#: themes/default/templates/invoice/printing/print_invoice.tpl:281
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:289
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:304
+#: themes/default/templates/invoice/printing/print_invoice.tpl:289
+#: themes/default/templates/invoice/printing/print_invoice.tpl:304
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:266
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:281
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:299
 #: themes/default/templates/voucher/details.tpl:13
 #: themes/default/templates/voucher/details.tpl:23
@@ -4607,8 +4607,8 @@ msgstr ""
 #: components/_includes/Voucher.php:689 components/_includes/Voucher.php:812
 #: components/_includes/Voucher.php:857 components/voucher/new.php:36
 #: components/voucher/print.php:41 components/voucher/print.php:47
-#: components/voucher/print.php:60 components/voucher/print.php:86
-#: components/voucher/print.php:90
+#: components/voucher/print.php:61 components/voucher/print.php:91
+#: components/voucher/print.php:95
 #: language/_gettext_only/system_variables.php:73
 #: language/_gettext_only/system_variables.php:128
 msgid "Voucher"
@@ -4800,27 +4800,27 @@ msgstr ""
 "Processing, Simple to use"
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:14
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:14
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:14
 #: language/_gettext_only/pages.php:277
 msgid "INVOICE_PRINT_INVOICE_PAGE_TITLE"
 msgstr "QWCRM - Invoice"
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:17
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:17
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:17
 #: language/_gettext_only/pages.php:278
 msgid "INVOICE_PRINT_INVOICE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:20
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:20
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:20
 #: language/_gettext_only/pages.php:279
 msgid "INVOICE_PRINT_INVOICE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:112
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:137
+#: themes/default/templates/invoice/printing/print_invoice.tpl:137
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:112
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:136
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:157
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:158
@@ -4828,83 +4828,83 @@ msgstr ""
 msgid "Resolution"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:136
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:160
+#: themes/default/templates/invoice/printing/print_invoice.tpl:160
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:136
 msgid "Labour Items"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:201
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:224
+#: themes/default/templates/invoice/printing/print_invoice.tpl:224
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:201
 msgid "Parts Items"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:266
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:289
+#: themes/default/templates/invoice/printing/print_invoice.tpl:289
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:266
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:16
 #: themes/default/templates/voucher/details.tpl:81
 msgid "Code"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:267
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:290
+#: themes/default/templates/invoice/printing/print_invoice.tpl:290
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:267
 msgid "Expiry Date"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:304
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:327
+#: themes/default/templates/invoice/printing/print_invoice.tpl:327
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:304
 msgid "Payment Instructions"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:313
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:336
+#: themes/default/templates/invoice/printing/print_invoice.tpl:336
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:313
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:87
 #: themes/default/templates/payment/options.tpl:105
 #: language/_gettext_only/system_variables.php:121
 msgid "Bank Transfer"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:318
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:341
+#: themes/default/templates/invoice/printing/print_invoice.tpl:341
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:318
 #: themes/default/templates/payment/options.tpl:72
 msgid "Bank Account Name"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:319
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:342
+#: themes/default/templates/invoice/printing/print_invoice.tpl:342
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:319
 #: themes/default/templates/payment/options.tpl:76
 msgid "Bank Name"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:320
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:343
+#: themes/default/templates/invoice/printing/print_invoice.tpl:343
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:320
 msgid "Account Number"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:321
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:344
+#: themes/default/templates/invoice/printing/print_invoice.tpl:344
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:321
 msgid "Sort Code"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:322
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:345
+#: themes/default/templates/invoice/printing/print_invoice.tpl:345
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:322
 msgid "IBAN"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:336
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:359
+#: themes/default/templates/invoice/printing/print_invoice.tpl:359
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:336
 msgid "Cheques"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:348
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:371
+#: themes/default/templates/invoice/printing/print_invoice.tpl:371
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:348
 #: themes/default/templates/payment/options.tpl:94
 #: themes/default/templates/payment/options.tpl:97
 #: language/_gettext_only/system_variables.php:127
 msgid "PayPal"
 msgstr ""
 
-#: themes/default/templates/invoice/printing/print_invoice.tpl:358
-#: themes/default/templates/invoice/printing/print_invoice_with_envelope_window.tpl:381
+#: themes/default/templates/invoice/printing/print_invoice.tpl:381
+#: themes/default/templates/invoice/printing/print_invoice_orig.tpl:358
 msgid "Please call us to discuss payment options."
 msgstr ""
 
@@ -7579,8 +7579,8 @@ msgstr ""
 "Processing, Simple to use"
 
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:36
-#: components/workorder/print.php:161 components/workorder/print.php:167
-#: components/workorder/print.php:180 components/workorder/print.php:204
+#: components/workorder/print.php:177 components/workorder/print.php:183
+#: components/workorder/print.php:197 components/workorder/print.php:228
 msgid "Technician Job Sheet"
 msgstr ""
 
@@ -10767,19 +10767,19 @@ msgstr ""
 
 #: components/invoice/print.php:78 components/invoice/print.php:144
 #: components/voucher/print.php:47 components/workorder/print.php:47
-#: components/workorder/print.php:108 components/workorder/print.php:167
+#: components/workorder/print.php:115 components/workorder/print.php:183
 msgid "has been printed as html."
 msgstr ""
 
-#: components/invoice/print.php:93 components/voucher/print.php:60
-#: components/workorder/print.php:60 components/workorder/print.php:121
-#: components/workorder/print.php:180
+#: components/invoice/print.php:93 components/voucher/print.php:61
+#: components/workorder/print.php:60 components/workorder/print.php:130
+#: components/workorder/print.php:197
 msgid "has been printed as a PDF."
 msgstr ""
 
-#: components/invoice/print.php:124 components/voucher/print.php:86
-#: components/workorder/print.php:86 components/workorder/print.php:145
-#: components/workorder/print.php:204
+#: components/invoice/print.php:126 components/voucher/print.php:91
+#: components/workorder/print.php:90 components/workorder/print.php:160
+#: components/workorder/print.php:228
 msgid "has been emailed as a PDF."
 msgstr ""
 
@@ -11178,23 +11178,23 @@ msgstr ""
 msgid "Company options inserted."
 msgstr ""
 
-#: components/setup/install.php:212
+#: components/setup/install.php:218
 msgid "Starting Work Order number has been set to"
 msgstr ""
 
-#: components/setup/install.php:217
+#: components/setup/install.php:223
 msgid "Starting Invoice number has been set to"
 msgstr ""
 
-#: components/setup/install.php:237 components/setup/migrate.php:330
+#: components/setup/install.php:243 components/setup/migrate.php:330
 msgid "The administrator account has been created."
 msgstr ""
 
-#: components/setup/install.php:238 components/setup/install.php:239
+#: components/setup/install.php:244 components/setup/install.php:245
 msgid "The QWcrm installation process has completed successfully."
 msgstr ""
 
-#: components/setup/install.php:295
+#: components/setup/install.php:301
 msgid "QWcrm installation has finished."
 msgstr ""
 
@@ -11440,12 +11440,12 @@ msgid "The note has been inserted."
 msgstr ""
 
 #: components/workorder/print.php:41 components/workorder/print.php:47
-#: components/workorder/print.php:60 components/workorder/print.php:86
+#: components/workorder/print.php:60 components/workorder/print.php:90
 msgid "Technician Workorder Slip"
 msgstr ""
 
-#: components/workorder/print.php:102 components/workorder/print.php:108
-#: components/workorder/print.php:121 components/workorder/print.php:145
+#: components/workorder/print.php:109 components/workorder/print.php:115
+#: components/workorder/print.php:130 components/workorder/print.php:160
 msgid "Client Workorder Slip"
 msgstr ""
 
