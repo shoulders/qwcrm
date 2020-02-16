@@ -333,7 +333,7 @@
                                 {if $payment_methods[s].method_key == 'bank_transfer' && $payment_methods[s].enabled}
                                     <tr>
                                         <td>
-                                            <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Bank Transfer{/t}</b><br>
+                                            <b>{t}Bank Transfer{/t}</b>: <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"><br>
                                         </td>
                                     </tr>
                                     <tr>
@@ -356,7 +356,7 @@
                                 {if $payment_methods[s].method_key == 'cheque' && $payment_methods[s].enabled}
                                     <tr>
                                         <td>                                    
-                                            <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
+                                            <b>{t}Cheques{/t}</b>: <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"><br>                                
                                         </td>                                
                                     </tr>
                                     <tr>
@@ -368,7 +368,7 @@
                                 {if $payment_methods[s].method_key == 'paypal' && $payment_methods[s].enabled}
                                     <tr>
                                         <td>
-                                            <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>
+                                            <b>{t}PayPal{/t}</b>: <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"><br>
                                         </td>
                                     </tr>
                                 {/if}
