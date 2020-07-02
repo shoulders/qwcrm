@@ -7,20 +7,18 @@
  */
 
 #################################################
-#   PHP Configuration                           #
+#   PHP Enviroment Configuration                #
 #################################################
+
+// Save the start time and memory usage.
+$startTime = microtime(1);
+$startMem = memory_get_usage();
 
 // Define and check QWcrm Minimum PHP version
 define('QWCRM_MINIMUM_PHP', '7.2.0');
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run. Your current version is '.PHP_VERSION);
 }
-
-/* Define and check QWcrm Maximum PHP version
-define('QWCRM_MAXIMUM_PHP', 'x.x.x');
-if (version_compare(PHP_VERSION, QWCRM_MAXIMUM_PHP, '>=')) {
-    die('QWcrm requires a PHP version lower than '.QWCRM_MAXIMUM_PHP.' to run. Your current version is '.PHP_VERSION);
-}*/
 
 // Disable magic quotes
 ini_set('magic_quotes_runtime', 0);
@@ -30,7 +28,7 @@ define('_QWEXEC', 1);
 define('_JEXEC', 1);
 define('JPATH_PLATFORM', 1);
 
-// Get Root Folder and Physical path info (moved from index.php)    
+// Get Root Folder and Physical path info (moved from index.php)
 define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);                         // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\ || /home/myuser/public_html/develop/qwcrm/
 define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');   // QWcrm Protocol - http:// || https://    
 define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);                                      // QWcrm Domain - quantumwarp.com    
@@ -38,21 +36,13 @@ define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));  
 define('QWCRM_PART_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.'/');                          // QWcrm Part URL  - http(s)://quantumwarp.com/
 define('QWCRM_FULL_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.QWCRM_BASE_PATH);              // QWcrm Full URL  - http(s)://quantumwarp.com/develop/qwcrm/
 
-###################################################
-# Debugging Information Start Variable Acqusition #
-###################################################
-
-// Save the start time and memory usage.
-$startTime = microtime(1);
-$startMem = memory_get_usage();
-
 ################################################
 #         Load QWCRM                           #
 ################################################
 
 // Load the framework (session/user/database/template engine/system includes)
 define('QFRAMEWORK_DIR', 'libraries/qframework/'); 
-require(QFRAMEWORK_DIR.'qwcrm/includes/loader.php');
+require(QFRAMEWORK_DIR.'includes/loader.php');
 //\CMSApplication::loadQwcrm();
 
 ###################################################
@@ -69,7 +59,7 @@ require(QFRAMEWORK_DIR.'qwcrm/includes/loader.php');
 
 /*if(!defined('QWCRM_SETUP')) {
     
-    // Start the QFramework 
+    // Start the QFramework
     $app = new \Factory;
        
 }*/

@@ -31,8 +31,7 @@ class CMSApplication {
     // Context Variables    
     public $config              = null;     // Local Config object    
     public $smarty              = null;     // Smarty Template System
-    public $db                  = null;     // Database instance
-    //public $VAR                 = null      // Global Variable store (by reference)
+    public $db                  = null;     // Database instance    
     public $system              = null;     // Hold all of the core framework
     public $components          = null;     // Holds all of the loaded components        
     public $modules             = null;     // Holds all of the loaded modules (not currently used)
@@ -44,7 +43,7 @@ class CMSApplication {
            
         // Build and configure the Framework/Application
         self::$VAR = array_merge($_POST, $_GET, self::$VAR);                                // Merge Primary Arrays  - Merge the $_GET, $_POST and emulated $_POST ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
-        self::classFilesExecuteStored('system');                                            // Instanciate the QWcrm Framework System Classes  
+        self::classFilesExecuteStored('system');                                            // Instanciate the QWcrm Framework System Classes into $this->system
         $this->config = \Factory::getConfig();                                              // Load Global Config Object
         $this->system->general->load_language();                                            // Load Language
         $this->db = \Factory::getDbo();                                                     // This is needed to make sure the setup loadsds the database
@@ -53,11 +52,10 @@ class CMSApplication {
         $this->smarty = \Factory::getSmarty();                                              // Load Global Smarty Object
         $this->system->security->force_ssl($this->config->get('force_ssl'));                // Redirect to SSL (if enabled) 
         $this->system->general->verify_qwcrm_install_state();                               // Verify Installation state (install/migrate/upgrade/complete) - This enables the DB if it checks the QWcrm database version (upgrade and migrate)
-        self::classFilesExecuteStored('components');                                        // Instanciate the QWcrm Framework Component Classes
+        self::classFilesExecuteStored('components');                                        // Instanciate the QWcrm Component Classes into $this->components
         $this->system->variables->load_system_variables();                                  // Load the system variables
-        
-        //self::classFilesExecuteStored('modules');
-        //self::classFilesExecuteStored('plugins'); 
+        self::classFilesExecuteStored('modules');                                           // Instanciate the QWcrm Module Classes into $this->modules - Not currently used
+        self::classFilesExecuteStored('plugins');                                           // Instanciate the QWcrm Plugin Classes into $this->plugins - Not currently used        
         
         // If there is a live/configured database connection, load the session
         if(!defined('QWCRM_SETUP')) // || (defined('PRFX') && $this->db)
@@ -332,9 +330,9 @@ class CMSApplication {
     }  
     
     /**
-     * based on discover() joomla/libraries/loader.php
+     * based on discover() joomla/libraries/loader.php   - not currently used
      * 
-     * Method to discover and instanciate classes of a given type in a given path to a specific variable   - not currently used
+     * Method to discover and instanciate classes of a given type in a given path to a specific variable
      *
      * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
      * @param   variable &$classHolder Target variable for all of the classes found in the given path
@@ -343,7 +341,7 @@ class CMSApplication {
      * @return  void
      *
      * @since   3.1.2
-     */
+     *
     static public function classFilesLoadExecute($parentPath)
     {
         $classHolder = new stdClass();
@@ -353,7 +351,7 @@ class CMSApplication {
             
             $iterator = new DirectoryIterator($parentPath);
 
-            /** @type  $file  DirectoryIterator */
+            /** @type  $file  DirectoryIterator * /
             foreach ($iterator as $file)
             {
                 $fileName = $file->getFilename();
@@ -371,7 +369,7 @@ class CMSApplication {
                     // If not in setup, skip 'Setup' class
                     if(!defined('QWCRM_SETUP') && $className === 'Setup' ) { continue; }
                     
-                    // Checks if the class is instantiable (needed becasue of 'Factory' is in main class load folder)
+                    // Checks if the class is instantiable (needed because of 'Factory' is in main class load folder)
                     $checkClass = new ReflectionClass($className);
                     if(!$checkClass->isInstantiable()) { continue; }
                     
@@ -391,7 +389,7 @@ class CMSApplication {
         
         return $classHolder;
         
-    }
+    }*/
 
 
 
@@ -400,7 +398,8 @@ class CMSApplication {
      * 
      * Method to discover and load class files classes of a given type in a given path to a specific variable
      *
-     * This allows me to autload the files without instanciating the classes
+     * This allows me to autoload the files without instantiating the classes
+     * Only instantiatable classes will be loaded in the $classes variable
      *
      * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
      * @param   string   $classGroup   Class Group being looked up
@@ -460,7 +459,8 @@ class CMSApplication {
     /**
      * Method to discover and load class files classes of a given type in a given path to a specific variable
      *
-     * This allows me to autoload the files without instanciating the classes
+     * This instanciating the classes into their corresponding group variable (components/modules/plugins/system/etc....), this class holds the variable
+     * $onlyThisGroup is currently optional but so far I always declare a group
      * 
      * @param   string   $classGroup   Class Group being looked up
      * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
@@ -471,19 +471,19 @@ class CMSApplication {
      * @since   3.1.2
      */
     private function classFilesExecuteStored($onlyThisGroup = null)
-    {        
+    {
         
         // Check if the store is empty
         if(empty(self::$classes)){ return; }
         
-        // Check if the specified store is empty
+        // Check if the specified store is empty, exit if empty
         if($onlyThisGroup && empty(self::$classes[$onlyThisGroup])){ return; }
                 
         // cycle through the different class groups
         foreach (self::$classes as $classGroup => $classNames)
         {
             // If a specific group is set, skip unless it matches the correct group
-            if($onlyThisGroup !== $classGroup) { continue; }
+            if($onlyThisGroup && $onlyThisGroup !== $classGroup) { continue; }
             
             // Create standard object for the group so it can accepts these sub-objects
             if(is_null($this->$classGroup)) {

@@ -13,7 +13,7 @@ defined('_QWEXEC') or die;
 if(file_exists('configuration.php')){require_once('configuration.php');}
 
 // Defines
-require QFRAMEWORK_DIR . 'qwcrm/includes/defines.php';             // Load System Constants
+require QFRAMEWORK_DIR . 'includes/defines.php';             // Load System Constants
 
 /*require QFRAMEWORK_DIR . 'qwcrm/Error.php';                      // Configure PHP error reporting
 require QFRAMEWORK_DIR . 'qwcrm/General.php';                      // Load General Library
@@ -25,6 +25,8 @@ require QFRAMEWORK_DIR . 'qwcrm/Router.php';                       // Route the 
 require QFRAMEWORK_DIR . 'qwcrm/Page.php';                         // Page related functions
 require QFRAMEWORK_DIR . 'qwcrm/Sections/System.php';              // System Classes wrapping class
 require QFRAMEWORK_DIR . 'qwcrm/CMSApplication.php';               // Main Framework class*/
+
+// Joomla 3.x files dont all use proper autoloading conventions for their files and classes, these can all be autoloaded when i use Joomla 4.x framework
 
 // Misc (Joomla)
 require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/registry/src/Registry.php';            // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
@@ -68,16 +70,16 @@ require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserWrapper.php';           
 require QFRAMEWORK_DIR . 'joomla/plugins/user/joomla/joomla.php';                               // Basic User Objects interactions (login/logout) - class PlgUserJoomla extends JPlugin
 
 // Load dependencies via composer
-require(VENDOR_DIR.'autoload.php');   
+require(VENDOR_DIR.'autoload.php');
 
 // Main QWcrm Framework class
-require QFRAMEWORK_DIR . 'qwcrm/CMSApplication.php';  
+require QFRAMEWORK_DIR . 'CMSApplication.php';                                            
 
-// Load the 'Section' wrapper classes (files only)
-\CMSApplication::classFilesLoad(QFRAMEWORK_DIR.'qwcrm/Sections/', 'section'); 
+// Load the qframework class files
+\CMSApplication::classFilesLoad(QFRAMEWORK_DIR.'Sections/', 'sections');
+\CMSApplication::classFilesLoad(QFRAMEWORK_DIR.'System/', 'system');
 
-// Load the qframework 'system' classes (files only)
-\CMSApplication::classFilesLoad(QFRAMEWORK_DIR.'qwcrm/System/', 'system');
-
-// Load the qframework 'components' classes (files only)
-\CMSApplication::classFilesLoad(CINCLUDES_DIR, 'components');
+// Load the application classe files
+\CMSApplication::classFilesLoad(COMPONENTS_DIR.'_includes', 'components');
+\CMSApplication::classFilesLoad(MODULES_DIR, 'modules');
+\CMSApplication::classFilesLoad(PLUGINS_DIR, 'plugins');

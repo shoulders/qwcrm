@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-abstract class Factory {
+abstract class Factory extends System {
     
     // Static
     public static $application  = null;     // Application Object
