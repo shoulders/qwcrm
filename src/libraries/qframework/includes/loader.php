@@ -72,6 +72,9 @@ require QFRAMEWORK_DIR . 'joomla/plugins/user/joomla/joomla.php';               
 // Load dependencies via composer
 require(VENDOR_DIR.'autoload.php');
 
+// Main QWcrm Factory class
+require QFRAMEWORK_DIR . 'Factory.php';   
+
 // Main QWcrm Framework class
 require QFRAMEWORK_DIR . 'CMSApplication.php';                                            
 

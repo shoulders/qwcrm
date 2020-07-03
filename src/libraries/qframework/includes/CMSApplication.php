@@ -26,16 +26,16 @@ class CMSApplication {
     public static $messages     = array();  // Global System Message Store    
     public static $clientId     = 0;        // The Client identifier. (0 = site, 1 = administrator) should this bee from the user???
     public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )    
-    public static $classes      = null;     // Store for classess that need instanciating (needs to be Static so loader.php can load)
+    public static $classes      = null;     // Store for classes that can be instanciated (needs to be Static so loader.php can load)
     
     // Context Variables    
-    public $config              = null;     // Local Config object    
+    public $config              = null;     // Config object    
     public $smarty              = null;     // Smarty Template System
     public $db                  = null;     // Database instance    
-    public $system              = null;     // Hold all of the core framework
-    public $components          = null;     // Holds all of the loaded components        
-    public $modules             = null;     // Holds all of the loaded modules (not currently used)
-    public $plugins             = null;     // Holds all of the loaded plugins (not currently used)
+    public $system              = null;     // Hold all of the core framework classes
+    public $components          = null;     // Holds all of the loaded component classes        
+    public $modules             = null;     // Holds all of the loaded module classes(not currently used)
+    public $plugins             = null;     // Holds all of the loaded plugin classes (not currently used)
  
 /****************** Load QWcrm enviroment, files, variables and dependencies ******************/
     

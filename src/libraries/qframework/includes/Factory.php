@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-abstract class Factory extends System {
+abstract class Factory {
     
     // Static
     public static $application  = null;     // Application Object
@@ -43,7 +43,7 @@ abstract class Factory extends System {
         return self::$application;
     }
     
-        /**
+    /**
      * Returns a reference to the global CMSApplication object, only creating it if it doesn't already exist.
      *
      * This method must be invoked as: $web = CMSApplication::getInstance();
