@@ -73,10 +73,10 @@ require QFRAMEWORK_DIR . 'joomla/plugins/user/joomla/joomla.php';               
 require(VENDOR_DIR.'autoload.php');
 
 // Main QWcrm Factory class
-require QFRAMEWORK_DIR . 'Factory.php';   
+require(QFRAMEWORK_DIR.'includes/Factory.php');
 
 // Main QWcrm Framework class
-require QFRAMEWORK_DIR . 'CMSApplication.php';                                            
+require QFRAMEWORK_DIR . 'includes/CMSApplication.php';                                            
 
 // Load the qframework class files
 \CMSApplication::classFilesLoad(QFRAMEWORK_DIR.'Sections/', 'sections');
