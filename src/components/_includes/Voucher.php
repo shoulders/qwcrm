@@ -1267,7 +1267,7 @@ class Voucher extends Components {
     #   Check to see if the voucher status allows refund to be cancelled    #
     #########################################################################
 
-    private function checkSingleVoucherRefundCancel($voucher_id) {
+    private function checkSingleVoucherStatusAllowsRefundCancel($voucher_id) {
 
         $state_flag = true;
 
@@ -1300,7 +1300,7 @@ class Voucher extends Components {
     #   Check to see if the voucher status allows refund to be deleted      #
     #########################################################################
 
-    private function checkSingleVoucherRefundDelete($voucher_id) {
+    private function checkSingleVoucherStatusAllowsRefundDelete($voucher_id) {
 
         $state_flag = true;
 
@@ -1623,7 +1623,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
             while(!$rs->EOF) {            
 
                 // Check the Voucher to see if it can be cancelled
-                if(!$this->checkSingleVoucherRefundCancel($rs->fields['voucher_id'])) {  
+                if(!$this->checkSingleVoucherStatusAllowsRefundCancel($rs->fields['voucher_id'])) {  
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']); 
                     $state_flag = false;
                 }
@@ -1660,7 +1660,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
             while(!$rs->EOF) {            
 
                 // Check the Voucher to see if it can be refunded
-                if(!$this->checkSingleVoucherRefundDelete($rs->fields['voucher_id'])) {  
+                if(!$this->checkSingleVoucherStatusAllowsRefundDelete($rs->fields['voucher_id'])) {  
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
                     $state_flag = false;
                 }
