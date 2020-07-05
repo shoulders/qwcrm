@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    $this->app->system->page->force_page('workorder', 'search');
+    $this->app->system->page->forcePage('workorder', 'search');
 }
 
 $workorder_details = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id']);
@@ -25,5 +25,5 @@ $this->app->smarty->assign('workorder_details',    $workorder_details           
 $this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->getRecords('schedule_id', 'DESC', false, null, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
 $this->app->smarty->assign('workorder_notes',      $this->app->components->workorder->getNotes(\CMSApplication::$VAR['workorder_id'])                                            ); 
 $this->app->smarty->assign('workorder_history',    $this->app->components->workorder->getHistory(\CMSApplication::$VAR['workorder_id'])                                          );
-$this->app->smarty->assign('selected_date',        $this->app->system->general->timestamp_to_calendar_format( time() )                                                   );
+$this->app->smarty->assign('selected_date',        $this->app->system->general->timestampToCalendarFormat( time() )                                                   );
 $this->app->smarty->assign('GoogleMapString',      $this->app->components->client->buildGooglemapDirectionsURL($workorder_details['client_id'], $this->app->user->login_user_id) );

@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!$this->app->system->security->check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm('setup', 'choice', 'setup')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }

@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!$this->app->system->security->check_page_accessed_via_qwcrm('refund', 'status')) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm('refund', 'status')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -17,11 +17,11 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm('refund', 'statu
 // Check if we have a refund_id
 if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
-    $this->app->system->page->force_page('refund', 'search');
+    $this->app->system->page->forcePage('refund', 'search');
 } 
 
 // Delete the refund function call
 $this->app->components->refund->deleteRecord(\CMSApplication::$VAR['refund_id']);
 
 // Load the refund search page
-$this->app->system->page->force_page('refund', 'search', 'msg_success='._gettext("Refund deleted successfully."));
+$this->app->system->page->forcePage('refund', 'search', 'msg_success='._gettext("Refund deleted successfully."));

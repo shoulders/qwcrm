@@ -25,7 +25,7 @@ class MigrateMyitcrm extends Setup {
     #    Insert new user                #
     #####################################
 
-    public function insert_user($VAR) {
+    public function insertUser($VAR) {
 
         $sql = "INSERT INTO ".PRFX."user SET
                 customer_id         =". $this->app->db->qstr( $VAR['customer_id']                          ).", 
@@ -55,14 +55,14 @@ class MigrateMyitcrm extends Setup {
                 notes               =". $this->app->db->qstr( $VAR['notes']                                );                 
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
         } else {
 
             // Get user_id
             $user_id = $this->app->db->Insert_ID();
 
             // Log activity
-            $record = _gettext("Administrator Account").' '.$user_id.' ('.$this->get_user_details($user_id, 'username').') '._gettext("for").' '.$this->get_user_details($user_id, 'display_name').' '._gettext("created").'.';
+            $record = _gettext("Administrator Account").' '.$user_id.' ('.$this->getUserDetails($user_id, 'username').') '._gettext("for").' '.$this->getUserDetails($user_id, 'display_name').' '._gettext("created").'.';
             $this->writeRecordToSetupLog('migrate', $record);
 
             return $user_id;
@@ -83,7 +83,7 @@ class MigrateMyitcrm extends Setup {
      * supply the required field name for a single item or all for all items as an array.
      */
 
-    public function get_company_details($item = null) {
+    public function getCompanyDetails($item = null) {
 
         $sql = "SELECT * FROM ".PRFX."company";
 
@@ -100,7 +100,7 @@ class MigrateMyitcrm extends Setup {
                );        
 
             // Any other lookup error
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
 
         } else {
 
@@ -122,12 +122,12 @@ class MigrateMyitcrm extends Setup {
     #  Get MyITCRM company details   #
     ##################################
 
-    public function get_company_details_myitcrm($item = null) {
+    public function getCompanyDetailsMyitcrm($item = null) {
 
         $sql = "SELECT * FROM ".$this->app->config->get('myitcrm_prefix')."TABLE_COMPANY";
 
         if(!$rs = $this->app->db->execute($sql)) {        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get MyITCRM company details."));        
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get MyITCRM company details."));        
         } else {
 
             if($item === null) {
@@ -148,10 +148,10 @@ class MigrateMyitcrm extends Setup {
     #  Merge QWcrm and MyITCRM company details   #
     ##############################################
 
-    public function get_company_details_merged() {
+    public function getCompanyDetailsMerged() {
 
-        $qwcrm_company_details              = $this->get_company_details();
-        $myitcrm_company_details            = $this->get_company_details_myitcrm();
+        $qwcrm_company_details              = $this->getCompanyDetails();
+        $myitcrm_company_details            = $this->getCompanyDetailsMyitcrm();
 
         $merged['display_name']             = $myitcrm_company_details['COMPANY_NAME'];
         $merged['logo']                     = 'logo.png';
@@ -190,7 +190,7 @@ class MigrateMyitcrm extends Setup {
     #     Get User Details              # 
     #####################################
 
-    public function get_user_details($user_id = null, $item = null) {
+    public function getUserDetails($user_id = null, $item = null) {
 
         // This allows for workorder:status to work
         if(!$user_id){
@@ -200,7 +200,7 @@ class MigrateMyitcrm extends Setup {
         $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$this->app->db->qstr($user_id);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
         } else {
 
             if($item === null) {
@@ -231,7 +231,7 @@ class MigrateMyitcrm extends Setup {
     #  Update Company details   #
     #############################
 
-    public function update_company_details($VAR) {
+    public function updateCompanyDetails($VAR) {
 
         $sql = null;
         
@@ -240,13 +240,13 @@ class MigrateMyitcrm extends Setup {
 
         // Delete logo if selected and no new logo is presented
         if($VAR['delete_logo'] && !$_FILES['logo']['name']) {
-            $this->delete_logo();        
+            $this->deleteLogo();        
         }
 
         // A new logo is supplied, delete old and upload new
         if($_FILES['logo']['name']) {
-            $this->delete_logo();
-            $new_logo_filepath = $this->upload_logo();
+            $this->deleteLogo();
+            $new_logo_filepath = $this->uploadLogo();
         }
     
         $sql .= "UPDATE ".PRFX."company SET
@@ -273,13 +273,13 @@ class MigrateMyitcrm extends Setup {
                 mobile_phone            =". $this->app->db->qstr( $VAR['mobile_phone']                     ).",
                 fax                     =". $this->app->db->qstr( $VAR['fax']                              ).",
                 email                   =". $this->app->db->qstr( $VAR['email']                            ).",    
-                website                 =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($VAR['website'])    ).",
+                website                 =". $this->app->db->qstr( $this->app->system->general->processInputtedUrl($VAR['website'])    ).",
                 company_number          =". $this->app->db->qstr( $VAR['company_number']                   ).",                                        
                 tax_type                =". $this->app->db->qstr( $VAR['tax_type']                         ).",
                 tax_rate                =". $this->app->db->qstr( $VAR['tax_rate']                         ).",
                 vat_number              =". $this->app->db->qstr( $VAR['vat_number']                       ).",
-                year_start              =". $this->app->db->qstr( $this->app->system->general->date_to_timestamp($VAR['year_start'])    ).",
-                year_end                =". $this->app->db->qstr( $this->app->system->general->date_to_timestamp($VAR['year_end'])      ).",
+                year_start              =". $this->app->db->qstr( $this->app->system->general->dateToTimestamp($VAR['year_start'])    ).",
+                year_end                =". $this->app->db->qstr( $this->app->system->general->dateToTimestamp($VAR['year_end'])      ).",
                 welcome_msg             =". $this->app->db->qstr( $VAR['welcome_msg']                      ).",
                 currency_symbol         =". $this->app->db->qstr( htmlentities($VAR['currency_symbol'])    ).",
                 currency_code           =". $this->app->db->qstr( $VAR['currency_code']                    ).",
@@ -290,7 +290,7 @@ class MigrateMyitcrm extends Setup {
                 email_msg_workorder     =". $this->app->db->qstr( $VAR['email_msg_workorder']              );                          
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         } else {       
 
             // Assign success message
@@ -315,7 +315,7 @@ class MigrateMyitcrm extends Setup {
     #   Migrate myitcrm database               #
     ############################################
 
-    public function migrate_myitcrm_database($qwcrm_prefix, $myitcrm_prefix) {
+    public function migrateMyitcrmDatabase($qwcrm_prefix, $myitcrm_prefix) {
 
         /* Customer */
 
@@ -472,7 +472,7 @@ class MigrateMyitcrm extends Setup {
         $this->migrateTable($qwcrm_prefix.'invoice', $myitcrm_prefix.'TABLE_INVOICE', $column_mappings);
 
         // Change tax_type to selected Company Tax Type for all migrated invoices - This is an assumption
-        $this->updateColumnValues($qwcrm_prefix.'invoice', 'tax_type', '', $this->get_company_details('tax_type'));
+        $this->updateColumnValues($qwcrm_prefix.'invoice', 'tax_type', '', $this->getCompanyDetails('tax_type'));
 
         // change close dates from zero to ''
         $this->updateColumnValues($qwcrm_prefix.'invoice', 'close_date', '0', '');
@@ -665,7 +665,7 @@ class MigrateMyitcrm extends Setup {
         $this->updateColumnValues($qwcrm_prefix.'user', 'require_reset', '*', '1');
 
         // Reset all user passwords (passwords will all be random and unknown)
-        $this->reset_all_user_passwords();
+        $this->resetAllUserPasswords();
 
         /* Workorder */
 
@@ -712,19 +712,19 @@ class MigrateMyitcrm extends Setup {
         /* Corrections */
 
         // Workorder
-        $this->database_correction_workorder($qwcrm_prefix, $myitcrm_prefix);
+        $this->databaseCorrectionWorkorder($qwcrm_prefix, $myitcrm_prefix);
 
         // Invoice
-        $this->database_correction_invoice($qwcrm_prefix);
+        $this->databaseCorrectionInvoice($qwcrm_prefix);
 
         // Giftcert
-        $this->database_correction_giftcert($qwcrm_prefix);
+        $this->databaseCorrectionGiftcert($qwcrm_prefix);
 
         // Schedule
-        $this->database_correction_schedule($qwcrm_prefix, $myitcrm_prefix);
+        $this->databaseCorrectionSchedule($qwcrm_prefix, $myitcrm_prefix);
 
         // User
-        $this->database_correction_user($qwcrm_prefix);
+        $this->databaseCorrectionUser($qwcrm_prefix);
 
         /* Final stuff */
 
@@ -784,7 +784,7 @@ class MigrateMyitcrm extends Setup {
     #   Correct migrated workorder data        #
     ############################################
 
-    public function database_correction_workorder($qwcrm_prefix, $myitcrm_prefix) {
+    public function databaseCorrectionWorkorder($qwcrm_prefix, $myitcrm_prefix) {
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -826,7 +826,7 @@ class MigrateMyitcrm extends Setup {
         /* Processs the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Work Orders."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Work Orders."));
 
         } else {
 
@@ -907,7 +907,7 @@ class MigrateMyitcrm extends Setup {
     #   Correct migrated invoice data          #
     ############################################
 
-    public function database_correction_invoice($qwcrm_prefix) {
+    public function databaseCorrectionInvoice($qwcrm_prefix) {
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -926,7 +926,7 @@ class MigrateMyitcrm extends Setup {
         /* Processs the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoices."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoices."));
 
         } else {
 
@@ -999,7 +999,7 @@ class MigrateMyitcrm extends Setup {
     #   Correct migrated giftcert data         #
     ############################################
 
-    public function database_correction_giftcert($qwcrm_prefix) {
+    public function databaseCorrectionGiftcert($qwcrm_prefix) {
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -1018,7 +1018,7 @@ class MigrateMyitcrm extends Setup {
         /* Processs the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
 
         } else {
 
@@ -1064,7 +1064,7 @@ class MigrateMyitcrm extends Setup {
     #   Correct migrated schedule data         #
     ############################################
 
-    public function database_correction_schedule($qwcrm_prefix, $myitcrm_prefix) {
+    public function databaseCorrectionSchedule($qwcrm_prefix, $myitcrm_prefix) {
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -1093,7 +1093,7 @@ class MigrateMyitcrm extends Setup {
         /* Processs the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Schedules."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Schedules."));
 
         } else {
 
@@ -1133,7 +1133,7 @@ class MigrateMyitcrm extends Setup {
     #   Correct migrated user data             #
     ############################################
 
-    public function database_correction_user($qwcrm_prefix) {
+    public function databaseCorrectionUser($qwcrm_prefix) {
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -1152,7 +1152,7 @@ class MigrateMyitcrm extends Setup {
         /* Processs the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Users."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Users."));
 
         } else {
 
@@ -1195,7 +1195,7 @@ class MigrateMyitcrm extends Setup {
     #   check myitcrm database is accessible and is 2.9.3   #
     #########################################################
 
-    public function check_myitcrm_database_connection($myitcrm_prefix) {
+    public function checkMyitcrmDatabaseConnection($myitcrm_prefix) {
 
         $sql = "SELECT VERSION_ID FROM ".$myitcrm_prefix."VERSION WHERE VERSION_ID = '293'";
 
@@ -1226,12 +1226,12 @@ class MigrateMyitcrm extends Setup {
     #    Reset all user's passwords     #   // database structure is different in 3.0.1
     #####################################
 
-    public function reset_all_user_passwords() { 
+    public function resetAllUserPasswords() { 
 
         $sql = "SELECT user_id FROM ".PRFX."user";
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
 
         } else {
 
@@ -1239,7 +1239,7 @@ class MigrateMyitcrm extends Setup {
             while(!$rs->EOF) { 
 
                 // Reset User's password
-                $this->reset_user_password($rs->fields['user_id']);
+                $this->resetUserPassword($rs->fields['user_id']);
 
                 // Advance the INSERT loop to the next record            
                 $rs->MoveNext();            
@@ -1259,7 +1259,7 @@ class MigrateMyitcrm extends Setup {
     #    Reset a user's password        #    
     #####################################
 
-    public function reset_user_password($user_id, $password = null) { 
+    public function resetUserPassword($user_id, $password = null) { 
 
         // if no password supplied generate a random one
         if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
@@ -1272,7 +1272,7 @@ class MigrateMyitcrm extends Setup {
                 WHERE user_id   =". $this->app->db->qstr( $user_id                             );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
 
         } else {
 
@@ -1289,7 +1289,7 @@ class MigrateMyitcrm extends Setup {
     #    Check if username already exists           #
     #################################################
 
-    public function check_user_username_exists($username, $current_username = null) {
+    public function checkUserUsernameExists($username, $current_username = null) {
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_username != null && $username === $current_username) {return false;}
@@ -1297,7 +1297,7 @@ class MigrateMyitcrm extends Setup {
         $sql = "SELECT username FROM ".PRFX."user WHERE username =". $this->app->db->qstr($username);
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
         } else {
 
             $result_count = $rs->RecordCount();
@@ -1322,7 +1322,7 @@ class MigrateMyitcrm extends Setup {
     #  Check if an email address has already been used   #
     ######################################################
 
-    public function check_user_email_exists($email, $current_email = null) {
+    public function checkUserEmailExists($email, $current_email = null) {
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_email != null && $email === $current_email) {return false;}
@@ -1331,7 +1331,7 @@ class MigrateMyitcrm extends Setup {
 
         if(!$rs = $this->app->db->Execute($sql)) {
 
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
 
         } else {
 
@@ -1357,13 +1357,13 @@ class MigrateMyitcrm extends Setup {
     #  Delete Company Logo   #
     ##########################
 
-    public function delete_logo() {
+    public function deleteLogo() {
 
         // Only delete a logo if there is one set
-        if($this->get_company_details('logo')) {
+        if($this->getCompanyDetails('logo')) {
 
             // Build the full logo file path
-            $logo_file = parse_url(MEDIA_DIR . $this->get_company_details('logo'), PHP_URL_PATH);
+            $logo_file = parse_url(MEDIA_DIR . $this->getCompanyDetails('logo'), PHP_URL_PATH);
 
             // Perform the deletion
             unlink($logo_file);
@@ -1376,7 +1376,7 @@ class MigrateMyitcrm extends Setup {
     #  Upload Company Logo   #
     ##########################
 
-    public function upload_logo() {
+    public function uploadLogo() {
 
         // Logo - Only process if there is an image uploaded
         if($_FILES['logo']['size'] > 0) {
@@ -1424,7 +1424,7 @@ class MigrateMyitcrm extends Setup {
                 echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
                  */   
 
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), '', _gettext("Failed to update logo because the submitted file was invalid."));
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), '', _gettext("Failed to update logo because the submitted file was invalid."));
 
             }
 

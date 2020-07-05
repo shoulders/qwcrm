@@ -16,7 +16,7 @@ class Router extends System {
     #  Build path to relevant Page Controller  # // $mode = set_route/get_route
     ############################################
 
-    function page_controller($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
+    function pageController($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
         
         // Set routing variables locally for analysis, either manually supplied or from the system
         $component = isset($component) ? $component : ( isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null);
@@ -46,7 +46,7 @@ class Router extends System {
         }    
 
         // Check if URL is valid
-        if(!$this->check_link_is_valid($_SERVER['REQUEST_URI'])) {
+        if(!$this->checkLinkIsValid($_SERVER['REQUEST_URI'])) {
 
             // Set the error page    
             $component   = 'core';
@@ -59,10 +59,10 @@ class Router extends System {
 
         // If SEF routing is enabled parse the link and set the controller (not if returning the content only)
         // This allows the use of Non-SEF URLS in the SEF enviroment
-        if ($this->app->config->get('sef') && $this->check_link_is_sef($_SERVER['REQUEST_URI']) && $mode != 'get_payload') {
+        if ($this->app->config->get('sef') && $this->checkLinkIsSef($_SERVER['REQUEST_URI']) && $mode != 'get_payload') {
 
             // Set 'component' and 'page_tpl' variables in \CMSApplication::$VAR for correct routing when using SEF
-            $this->parse_sef_url($_SERVER['REQUEST_URI'], 'basic', 'set_var');
+            $this->parseSefUrl($_SERVER['REQUEST_URI'], 'basic', 'set_var');
             
             // Re-Grab the routing components
             $component = \CMSApplication::$VAR['component'];
@@ -71,7 +71,7 @@ class Router extends System {
         }
         
         // Check to see if the page exists otherwise send to the 404 page
-        if (isset($component, $page_tpl) && !$this->check_page_exists($component, $page_tpl)) {
+        if (isset($component, $page_tpl) && !$this->checkPageExists($component, $page_tpl)) {
 
             // Set to the 404 error page       
             $component   = 'core';
@@ -104,11 +104,11 @@ class Router extends System {
         page_controller_acl_check:    
 
         // Check the requested page with the current usergroup against the ACL for authorisation, if it fails set page 403
-        if(!$this->check_page_acl($component, $page_tpl)) {
+        if(!$this->checkPageAcl($component, $page_tpl)) {
 
             // Log activity
             $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$component.':'.$page_tpl.')';
-            $this->app->system->general->write_record_to_activity_log($record); 
+            $this->app->system->general->writeRecordToActivityLog($record); 
 
             // Set to the 403 error page 
             $component   = 'core';
@@ -135,7 +135,7 @@ class Router extends System {
     #  Build SEF URL from Non-SEF URL   #  // index.php?compnent=workorder&page_tpl=search, outputs /develop/qwcrm/workorder/search
     #####################################
 
-    function build_sef_url($non_sef_url, $url_length = 'relative') {
+    function buildSefUrl($non_sef_url, $url_length = 'relative') {
 
         $sef_url_path = '';
         $sef_url_query = '';
@@ -200,7 +200,7 @@ class Router extends System {
     #  Convert a SEF url into a standard URL and (optionally) inject routing varibles into $VAR or return routing variables #  makes nonsef from sef
     #########################################################################################################################
 
-    function parse_sef_url($sef_url, $url_length = 'basic', $mode = null) {    
+    function parseSefUrl($sef_url, $url_length = 'basic', $mode = null) {    
 
         $nonsef_url_path_variables = '';
         $nonsef_url_query = '';
@@ -301,7 +301,7 @@ class Router extends System {
     #  Build URL from component and page_tpl          #
     ###################################################
 
-    function build_url_from_variables($component, $page_tpl, $url_length = 'basic', $url_sef = 'auto') {
+    function buildUrlFromVariables($component, $page_tpl, $url_length = 'basic', $url_sef = 'auto') {
 
         // Set URL Type to return
         if(defined('QWCRM_SETUP')) { $sef = false; }
@@ -315,7 +315,7 @@ class Router extends System {
 
         // Build either SEF or nonSEF URL
         if ($sef) {
-            $url = $this->build_sef_url($slug, $url_length);
+            $url = $this->buildSefUrl($slug, $url_length);
         } else {
 
             // Full URL (https://quantumwarp.com/develop/qwcrm/index.php?component=user&page_tpl=login)
@@ -341,20 +341,20 @@ class Router extends System {
     #  Validate links and prep SEF environment  #
     #############################################
 
-    function get_routing_variables_from_url($url) {
+    function getRoutingVariablesFromUrl($url) {
 
         // Check if URL is valid
-        if(!$this->check_link_is_valid($_SERVER['REQUEST_URI'])) {
+        if(!$this->checkLinkIsValid($_SERVER['REQUEST_URI'])) {
 
             return false;
 
         } else {    
 
             // Running parse_sef_url only when the link is a SEF allows the use of Non-SEF URLS aswell
-            if ($this->check_link_is_sef($url)) {
+            if ($this->checkLinkIsSef($url)) {
 
                 // Get 'component' and 'page_tpl' variables from SEF URL           
-                $routingVariables = $this->parse_sef_url($url, 'basic', 'get_var');
+                $routingVariables = $this->parseSefUrl($url, 'basic', 'get_var');
 
             // non-sef url
             } else {
@@ -397,7 +397,7 @@ class Router extends System {
     #  Verify User's authorisation for a specific page / operation  #
     #################################################################
 
-    function check_page_acl($component, $page_tpl, $user = null) {
+    function checkPageAcl($component, $page_tpl, $user = null) {
 
         // Get the current user unless a user (object) has been passed
         if($user == null) { $user = $this->app->user; }
@@ -416,7 +416,7 @@ class Router extends System {
                 WHERE usergroup_id =".$this->app->db->qstr($user->login_usergroup_id);
 
         if(!$rs = $this->app->db->execute($sql)) {        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
         } else {
             $usergroup_display_name = $rs->fields['display_name'];
         } 
@@ -429,7 +429,7 @@ class Router extends System {
         $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$this->app->db->qstr($page_name);
 
         if(!$rs = $this->app->db->execute($sql)) {        
-            $this->app->system->page->force_error_page('authentication', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
+            $this->app->system->page->forceErrorPage('authentication', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
         } else {
 
             $acl = $rs->fields['acl'];
@@ -454,7 +454,7 @@ class Router extends System {
     #  Check page exists  #
     #######################
 
-    function check_page_exists($component = null, $page_tpl = null) {
+    function checkPageExists($component = null, $page_tpl = null) {
 
         // If a valid page has not been submitted
         if($component == null || $page_tpl == null) { return false; }
@@ -466,7 +466,7 @@ class Router extends System {
         $sql = "SELECT page FROM ".PRFX."user_acl_page WHERE page = ".$this->app->db->qstr($component.':'.$page_tpl);
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
         } else {
 
             if($rs->RecordCount() == 1) {
@@ -487,7 +487,7 @@ class Router extends System {
     #  Check to see if the link is valid  #
     #######################################
 
-    function check_link_is_valid($url) {    
+    function checkLinkIsValid($url) {    
 
         // Get URL path
         $url = parse_url($url, PHP_URL_PATH);
@@ -512,7 +512,7 @@ class Router extends System {
     #  Check to see if the link is SEF  #
     #####################################
 
-    function check_link_is_sef($url) {
+    function checkLinkIsSef($url) {
 
         // Get URL path
         $url = parse_url($url, PHP_URL_PATH);

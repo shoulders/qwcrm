@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a schedule_id
 if(!isset(\CMSApplication::$VAR['schedule_id']) || !\CMSApplication::$VAR['schedule_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Schedule ID supplied."));
-    $this->app->system->page->force_page('schedule', 'search');
+    $this->app->system->page->forcePage('schedule', 'search');
 }
 
 // If new schedule item submitted
@@ -22,8 +22,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     \CMSApplication::$VAR['qform']['EndTime'] = \CMSApplication::$VAR['EndTime'];
     
     // Add missing Time variables in DATETIME format
-    \CMSApplication::$VAR['qform']['start_time'] = $this->app->system->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['start_date'], \CMSApplication::$VAR['StartTime']['Time_Hour'], \CMSApplication::$VAR['StartTime']['Time_Minute'], '0', '24');
-    \CMSApplication::$VAR['qform']['end_time']   = $this->app->system->general->smartytime_to_otherformat('datetime', \CMSApplication::$VAR['qform']['end_date'], \CMSApplication::$VAR['EndTime']['Time_Hour'], \CMSApplication::$VAR['EndTime']['Time_Minute'], '0', '24');
+    \CMSApplication::$VAR['qform']['start_time'] = $this->app->system->general->smartytimeToOtherformat('datetime', \CMSApplication::$VAR['qform']['start_date'], \CMSApplication::$VAR['StartTime']['Time_Hour'], \CMSApplication::$VAR['StartTime']['Time_Minute'], '0', '24');
+    \CMSApplication::$VAR['qform']['end_time']   = $this->app->system->general->smartytimeToOtherformat('datetime', \CMSApplication::$VAR['qform']['end_date'], \CMSApplication::$VAR['EndTime']['Time_Hour'], \CMSApplication::$VAR['EndTime']['Time_Minute'], '0', '24');
     
     /* This manually builds a 'Time' string
     \CMSApplication::$VAR['qform']['start_time'] = \CMSApplication::$VAR['StartTime']['Time_Hour'].":".\CMSApplication::$VAR['StartTime']['Time_Minute'];
@@ -47,7 +47,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         */
         
         // Load the updated schedule details page
-        $this->app->system->page->force_page('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id'], 'msg_success='.gettext("Schedule Successfully Updated."));
+        $this->app->system->page->forcePage('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id'], 'msg_success='.gettext("Schedule Successfully Updated."));
         
     }
 

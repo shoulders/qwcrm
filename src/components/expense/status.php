@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have a expense_id
 if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
-    $this->app->system->page->force_page('expense', 'search');
+    $this->app->system->page->forcePage('expense', 'search');
 }
 
 // Update Expense Status
 if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->components->expense->updateStatus(\CMSApplication::$VAR['expense_id'], \CMSApplication::$VAR['assign_status']);    
-    $this->app->system->page->force_page('expense', 'status&expense_id='.\CMSApplication::$VAR['expense_id']);
+    $this->app->system->page->forcePage('expense', 'status&expense_id='.\CMSApplication::$VAR['expense_id']);
 }
 
 // Build the page with the current status from the database

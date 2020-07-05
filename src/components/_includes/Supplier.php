@@ -35,7 +35,7 @@ class Supplier extends Components {
                 company_name   =". $this->app->db->qstr( $qform['company_name']  ).",
                 first_name     =". $this->app->db->qstr( $qform['first_name']    ).",
                 last_name      =". $this->app->db->qstr( $qform['last_name']     ).",
-                website        =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])).",
+                website        =". $this->app->db->qstr( $this->app->system->general->processInputtedUrl($qform['website'])).",
                 email          =". $this->app->db->qstr( $qform['email']         ).",
                 type           =". $this->app->db->qstr( $qform['type']          ).",
                 primary_phone  =". $this->app->db->qstr( $qform['primary_phone'] ).",
@@ -47,17 +47,17 @@ class Supplier extends Components {
                 zip            =". $this->app->db->qstr( $qform['zip']           ).",
                 country        =". $this->app->db->qstr( $qform['country']       ).",
                 status         =". $this->app->db->qstr( 'valid'               ).",
-                opened_on      =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()      ).", 
+                opened_on      =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()      ).", 
                 description    =". $this->app->db->qstr( $qform['description']   ).", 
                 note           =". $this->app->db->qstr( $qform['note']          );            
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
         } else {
 
             // Log activity        
             $record = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
             return $this->app->db->Insert_ID();
 
@@ -124,7 +124,7 @@ class Supplier extends Components {
 
             // Figure out the total number of records in the database for the given search        
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching supplier records."));
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching supplier records."));
             } else {        
                 $total_results = $rs->RecordCount();            
                 $this->app->smarty->assign('total_results', $total_results);
@@ -163,7 +163,7 @@ class Supplier extends Components {
         /* Return the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching supplier records."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching supplier records."));
         } else {
 
             $records = $rs->GetArray();
@@ -191,7 +191,7 @@ class Supplier extends Components {
         $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qstr($supplier_id);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the supplier details."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the supplier details."));
         } else {
 
             if($item === null){
@@ -240,7 +240,7 @@ class Supplier extends Components {
         }
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Supplier statuses."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Supplier statuses."));
         } else {
 
             return $rs->GetArray();     
@@ -258,7 +258,7 @@ class Supplier extends Components {
         $sql = "SELECT display_name FROM ".PRFX."supplier_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the supplier status display name."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the supplier status display name."));
         } else {
 
             return $rs->fields['display_name'];
@@ -276,7 +276,7 @@ class Supplier extends Components {
         $sql = "SELECT * FROM ".PRFX."supplier_types";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get supplier types."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get supplier types."));
         } else {
 
             return $rs->GetArray();
@@ -294,7 +294,7 @@ class Supplier extends Components {
         $sql = "SELECT * FROM ".PRFX."supplier_records ORDER BY supplier_id DESC LIMIT 1";
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
         } else {
 
             return $rs->fields['supplier_id'];
@@ -317,7 +317,7 @@ class Supplier extends Components {
                 company_name   =". $this->app->db->qstr( $qform['company_name']  ).",
                 first_name     =". $this->app->db->qstr( $qform['first_name']    ).",
                 last_name      =". $this->app->db->qstr( $qform['last_name']     ).",
-                website        =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])).",
+                website        =". $this->app->db->qstr( $this->app->system->general->processInputtedUrl($qform['website'])).",
                 email          =". $this->app->db->qstr( $qform['email']         ).",
                 type           =". $this->app->db->qstr( $qform['type']          ).",
                 primary_phone  =". $this->app->db->qstr( $qform['primary_phone'] ).",
@@ -328,18 +328,18 @@ class Supplier extends Components {
                 state          =". $this->app->db->qstr( $qform['state']         ).",
                 zip            =". $this->app->db->qstr( $qform['zip']           ).",
                 country        =". $this->app->db->qstr( $qform['country']       ).",
-                last_active    =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()      ).",
+                last_active    =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()      ).",
                 description    =". $this->app->db->qstr( $qform['description']   ).", 
                 note           =". $this->app->db->qstr( $qform['note']          )."
                 WHERE supplier_id = ". $this->app->db->qstr( $qform['supplier_id'] );                        
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
         } else {
 
             // Log activity      
             $record = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("updated.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
             return true;
 
@@ -363,7 +363,7 @@ class Supplier extends Components {
         }    
 
         // Unify Dates and Times
-        $datetime = $this->app->system->general->mysql_datetime();
+        $datetime = $this->app->system->general->mysqlDatetime();
 
         // Set the appropriate closed_on date
         $closed_on = ($new_status == 'closed') ? $datetime : '0000-00-00 00:00:00';
@@ -375,7 +375,7 @@ class Supplier extends Components {
                 WHERE supplier_id  =". $this->app->db->qstr( $supplier_id  );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an supplier Status."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an supplier Status."));
 
         } else {    
 
@@ -387,7 +387,7 @@ class Supplier extends Components {
 
             // Log activity        
             $record = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
             return true;
 
@@ -416,7 +416,7 @@ class Supplier extends Components {
 
         // Log activity        
         $record = _gettext("Supplier").' '.$supplier.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         return true;
 
@@ -440,12 +440,12 @@ class Supplier extends Components {
         $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qstr($supplier_id);
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
         } else {
 
             // Log activity     
             $record = _gettext("Supplier Record").' '.$supplier_id.' ('.$display_name.') '._gettext("deleted.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
             return true;
 

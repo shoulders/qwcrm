@@ -14,26 +14,26 @@ class Page extends System {
     #  Load the page           #  // $mode = 'get_payload': return a variable pouplated with a rendered page, $mode = 'set_controller': load page normally
     ############################
 
-    public function load_page($mode, $component = null, $page_tpl = null, $themeVar = null) {
+    public function loadPage($mode, $component = null, $page_tpl = null, $themeVar = null) {
 
         // Get the page as a variable, dont set routing
         if($mode == 'get_payload') { 
 
             // Get the page controller
-            $pageController = $this->app->system->router->page_controller($mode, $component, $page_tpl, $themeVar);
+            $pageController = $this->app->system->router->pageController($mode, $component, $page_tpl, $themeVar);
 
             // Return the page as a variable
-            return $this->get_page_content($pageController, $mode, $component, $page_tpl, $themeVar);
+            return $this->getPageContent($pageController, $mode, $component, $page_tpl, $themeVar);
         }
 
         // Normal Behaviour, set the routing, get the page, load the page into the browser
         if($mode == 'set_controller') { 
 
             // Get and set the page controller
-            \CMSApplication::$VAR['page_controller'] = $this->app->system->router->page_controller();
+            \CMSApplication::$VAR['page_controller'] = $this->app->system->router->pageController();
 
             // Build the page
-            \CMSApplication::$BuildPage = $this->get_page_content(\CMSApplication::$VAR['page_controller'], $mode);
+            \CMSApplication::$BuildPage = $this->getPageContent(\CMSApplication::$VAR['page_controller'], $mode);
 
             return;
 
@@ -45,7 +45,7 @@ class Page extends System {
     #  Build the page content  #    // All variables should be passed by \CMSApplication::$VAR because it is its own scope
     ############################
 
-    public function get_page_content($page_controller, $mode = null, $component = null, $page_tpl = null, $themeVar = null) {    
+    public function getPageContent($page_controller, $mode = null, $component = null, $page_tpl = null, $themeVar = null) {    
         
         $pagePayload = '';      // Local store for page content
         $rawHtml = false;       // Is the payload Raw HTML? This can be altered by the specified page controller (included file), if required (i.e. autosuggest)
@@ -76,7 +76,7 @@ class Page extends System {
         page_build:
 
         // Set Page Header and Meta Data
-        $this->set_page_header_and_meta_data($component, $page_tpl);
+        $this->setPageHeaderAndMetaData($component, $page_tpl);
 
         // Fetch Header Block
         if(!isset($themeVar) || $themeVar != 'off') {     
@@ -134,8 +134,8 @@ class Page extends System {
         // Process Page links
         if(!defined('QWCRM_SETUP')) {  
             //page_links_acl_replace($pagePayload);
-            $this->page_links_acl_removal($pagePayload);
-            $this->page_links_sdmenu_cleanup($pagePayload);        
+            $this->pageLinksAclRemoval($pagePayload);
+            $this->pageLinksSdmenuCleanup($pagePayload);        
         }
 
         // Add system messages
@@ -148,7 +148,7 @@ class Page extends System {
 
         // Convert to SEF (if enabled and NOT running setup)
         if (!defined('QWCRM_SETUP') && $this->app->config->get('sef')) { 
-            $this->page_links_to_sef($pagePayload);        
+            $this->pageLinksToSef($pagePayload);        
         }    
 
         return $pagePayload;
@@ -159,16 +159,16 @@ class Page extends System {
     #  This checks the links in templates for permissions      #
     ############################################################
 
-    public function check_page_link_permission($url) {
+    public function checkPageLinkPermission($url) {
 
         // index.php is a special case
         if($url === 'index.php') { return true; }
 
         // Get routing variables from URL
-        $url_routing = $this->app->system->router->get_routing_variables_from_url($url);
+        $url_routing = $this->app->system->router->getRoutingVariablesFromUrl($url);
 
         // Check to see if user is allowed to use the asset
-        if(isset($url_routing['component'], $url_routing['page_tpl']) && $this->app->system->router->check_page_acl($url_routing['component'], $url_routing['page_tpl'])) {
+        if(isset($url_routing['component'], $url_routing['page_tpl']) && $this->app->system->router->checkPageAcl($url_routing['component'], $url_routing['page_tpl'])) {
 
             return true;
 
@@ -182,13 +182,13 @@ class Page extends System {
     #  Replace all unauthorised page links with href="#"  #
     #######################################################
 
-    public function page_links_acl_replace(&$pagePayload) {
+    public function pageLinksAclReplace(&$pagePayload) {
 
         $pagePayload = preg_replace_callback('/(["\'])(index\.php.*)(["\'])/U',
             function($matches) {
 
                  // Check to see if user is allowed to use the link
-                if($this->check_page_link_permission($matches[2])) { 
+                if($this->checkPageLinkPermission($matches[2])) { 
 
                     // Return un-modified link
                     return $matches[0];
@@ -207,14 +207,14 @@ class Page extends System {
     #  Remove all unauthorised page links #
     #######################################
 
-    public function page_links_acl_removal(&$pagePayload) {
+    public function pageLinksAclRemoval(&$pagePayload) {
 
         // This allows for <a>...</a> being split over several lines. The opening <a .....> must be on one line - This is also optimized with atomic groups
         $pagePayload = preg_replace_callback('/<(?>a|button|input|form)[^\r\n]*["\'](index\.php[^\r\n]*)["\'][^\r\n]*>.*<\/(?>a|button|input|form)>/Us',
             function($matches) {
 
                 // Check to see if user is allowed to use the link
-                if($this->check_page_link_permission($matches[1])) { 
+                if($this->checkPageLinkPermission($matches[1])) { 
 
                     // Return un-modified link
                     return $matches[0];
@@ -233,7 +233,7 @@ class Page extends System {
     #  Remove unpopulated SD Menu groups    #
     #########################################
 
-    public function page_links_sdmenu_cleanup(&$pagePayload) {
+    public function pageLinksSdmenuCleanup(&$pagePayload) {
 
         $pagePayload = preg_replace_callback('/<div class="menugroup">.*<\/div>/Us',
             function($matches) {
@@ -258,13 +258,13 @@ class Page extends System {
     #  Change all internal page links to SEF  #
     ###########################################
 
-    public function page_links_to_sef(&$pagePayload) {
+    public function pageLinksToSef(&$pagePayload) {
 
         // Replace nonsef links within "" and ''
         $pagePayload = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
             function($matches) {
 
-                return $matches[1].$this->app->system->router->build_sef_url($matches[2]).$matches[3];
+                return $matches[1].$this->app->system->router->buildSefUrl($matches[2]).$matches[3];
 
             }, $pagePayload);
 
@@ -274,7 +274,7 @@ class Page extends System {
     #      Set Page Header and Meta Data       #
     ############################################
 
-    public function set_page_header_and_meta_data($component, $page_tpl) {
+    public function setPageHeaderAndMetaData($component, $page_tpl) {
 
         // Page Title
         $this->app->smarty->assign('page_title', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    
@@ -311,7 +311,7 @@ class Page extends System {
      * @license     GNU General Public License version 2 or later; see LICENSE
      */
 
-    public function compress_page_output($pagePayload)
+    public function compressPageOutput($pagePayload)
     {
         // Supported compression encodings.
         $supported = array(
@@ -395,7 +395,7 @@ class Page extends System {
      * will force a URL redirect exactly how it was supplied 
      */
 
-    function force_page($component, $page_tpl = null, $variables = null, $method = 'auto', $url_sef = 'auto', $url_protocol = 'auto') {
+    function forcePage($component, $page_tpl = null, $variables = null, $method = 'auto', $url_sef = 'auto', $url_protocol = 'auto') {
 
         // Preserve the Message Store (if there are any messages) for the next page load
         if($forcePageSystemMessageStore = $this->app->system->variables->systemMessagesReturnStore(false, 'array')) {
@@ -430,7 +430,7 @@ class Page extends System {
         if($component != 'index.php' && $page_tpl == null) {       
 
             // Build the URL and perform the redirect
-            $this->perform_redirect($protocol_domain_segment.$component);        
+            $this->performRedirect($protocol_domain_segment.$component);        
 
         }
 
@@ -463,11 +463,11 @@ class Page extends System {
                 $url = QWCRM_BASE_PATH.'index.php'.$variables;
 
                 // Convert to SEF if enabled            
-                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
+                if ($makeSEF) { $url = $this->app->system->router->buildSefUrl($url); }
 
                 // Perform redirect
                 if($method == 'get') {
-                    $this->perform_redirect($protocol_domain_segment.$url);
+                    $this->performRedirect($protocol_domain_segment.$url);
                 } else {
                     return $url;
                 }
@@ -482,11 +482,11 @@ class Page extends System {
                 $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl.$variables;
 
                 // Convert to SEF if enabled            
-                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
+                if ($makeSEF) { $url = $this->app->system->router->buildSefUrl($url); }
 
                 // Perform redirect
                 if($method == 'get') {
-                    $this->perform_redirect($protocol_domain_segment.$url);            
+                    $this->performRedirect($protocol_domain_segment.$url);            
                 } else {
                     return $url;
                 }
@@ -522,10 +522,10 @@ class Page extends System {
                 $url = QWCRM_BASE_PATH.'index.php';
 
                 // Convert to SEF if enabled            
-                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
+                if ($makeSEF) { $url = $this->app->system->router->buildSefUrl($url); }
 
                 // Perform redirect
-                $this->perform_redirect($protocol_domain_segment.$url);
+                $this->performRedirect($protocol_domain_segment.$url);
 
             // Page Name and Variables (QWcrm Style Redirect)     
             } else {
@@ -534,10 +534,10 @@ class Page extends System {
                 $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl;
 
                 // Convert to SEF if enabled            
-                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url);}
+                if ($makeSEF) { $url = $this->app->system->router->buildSefUrl($url);}
 
                 // Perform redirect
-                $this->perform_redirect($protocol_domain_segment.$url);
+                $this->performRedirect($protocol_domain_segment.$url);
 
             }
 
@@ -549,7 +549,7 @@ class Page extends System {
     #     Perform a Browser Redirect           #
     ############################################
 
-    function perform_redirect($url, $type = 'header') {
+    function performRedirect($url, $type = 'header') {
 
         // Redirect using Headers (cant always use this method in QWcrm)
         if($type == 'header') {
@@ -569,11 +569,11 @@ class Page extends System {
                 $error_msg = '<p>'._gettext("Headers already sent in").' '.$filename.' '._gettext("on line").' '.$linenum.'.</p>';
 
                 // Get routing variables
-                $routing_variables = $this->app->system->router->get_routing_variables_from_url($_SERVER['REQUEST_URI']);
+                $routing_variables = $this->app->system->router->getRoutingVariablesFromUrl($_SERVER['REQUEST_URI']);
 
                 // Log errors to log if enabled
                 if($this->app->config->get('qwcrm_error_log')) {    
-                    $this->app->system->general->write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
+                    $this->app->system->general->writeRecordToErrorLog($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
                 }
 
                 // Output the message and stop processing
@@ -600,19 +600,19 @@ class Page extends System {
     #           force_error_page               #
     ############################################
 
-    function force_error_page($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
+    function forceErrorPage($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
 
         // Get routing variables
-        $routing_variables = $this->app->system->router->get_routing_variables_from_url($_SERVER['REQUEST_URI']);
+        $routing_variables = $this->app->system->router->getRoutingVariablesFromUrl($_SERVER['REQUEST_URI']);
 
         // Prepare Variables
-        \CMSApplication::$VAR['error_component']     = $this->app->system->general->prepare_error_data('error_component', $routing_variables['component']);
-        \CMSApplication::$VAR['error_page_tpl']      = $this->app->system->general->prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
+        \CMSApplication::$VAR['error_component']     = $this->app->system->general->prepareErrorData('error_component', $routing_variables['component']);
+        \CMSApplication::$VAR['error_page_tpl']      = $this->app->system->general->prepareErrorData('error_page_tpl', $routing_variables['page_tpl']);
         \CMSApplication::$VAR['error_type']          = $error_type;
-        \CMSApplication::$VAR['error_location']      = $this->app->system->general->prepare_error_data('error_location', $error_location);
-        \CMSApplication::$VAR['error_php_function']  = $this->app->system->general->prepare_error_data('error_php_function', $error_php_function);
+        \CMSApplication::$VAR['error_location']      = $this->app->system->general->prepareErrorData('error_location', $error_location);
+        \CMSApplication::$VAR['error_php_function']  = $this->app->system->general->prepareErrorData('error_php_function', $error_php_function);
         \CMSApplication::$VAR['error_database']      = $error_database ;
-        \CMSApplication::$VAR['error_sql_query']     = $this->app->system->general->prepare_error_data('error_sql_query', $error_sql_query);
+        \CMSApplication::$VAR['error_sql_query']     = $this->app->system->general->prepareErrorData('error_sql_query', $error_sql_query);
         \CMSApplication::$VAR['error_msg']           = $error_msg;
 
         \CMSApplication::$VAR['error_enable_override'] = 'override'; // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
@@ -631,7 +631,7 @@ class Page extends System {
 
             // Load Error Page (normally) and output
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("An error has occured while accessing the database."));
-            die($this->app->system->page->load_page('get_payload', 'core', 'error'));
+            die($this->app->system->page->loadPage('get_payload', 'core', 'error'));
 
         }
 

@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-$this->app->smarty->assign('IPaddress',                $this->app->system->security->get_visitor_ip_address()            );  // IP address of the Visitor
+$this->app->smarty->assign('IPaddress',                $this->app->system->security->getVisitorIpAddress()            );  // IP address of the Visitor
 $this->app->smarty->assign('pageLoadTime',             microtime(1) - \CMSApplication::$VAR['system']['startTime']          );  // Time to load the page to the nearest microsecond
 $this->app->smarty->assign('pageDisplayController',    $page_controller                    );  // the location of the real php file that loads the page
 $this->app->smarty->assign('loadedComponent',          \CMSApplication::$VAR['component']                   );  // Loaded component

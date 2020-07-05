@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have an user_id
 if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No User ID supplied."));
-    $this->app->system->page->force_page('user', 'search');
+    $this->app->system->page->forcePage('user', 'search');
 }
 
 // If user data has been submitted, Update the record
@@ -19,7 +19,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Check if the username or email have been used (the extra vareiable is to ignore the users current username and email to prevent submission errors when only updating other values)
     if (
-            $this->app->components->user->checkUsernameExists(\CMSApplication::$VAR['qform']['username'], $this->app->components->user->getRecord(\CMSApplication::$VAR['qform']['user_id'], 'username')) ||
+            $this->app->components->user->checkUserUsernameExists(\CMSApplication::$VAR['qform']['username'], $this->app->components->user->getRecord(\CMSApplication::$VAR['qform']['user_id'], 'username')) ||
             $this->app->components->user->checkEmailExists(\CMSApplication::$VAR['qform']['email'], $this->app->components->user->getRecord(\CMSApplication::$VAR['qform']['user_id'], 'email'))
         ) {
 
@@ -33,7 +33,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Redirect to the new users's details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("User details updated."));
-        $this->app->system->page->force_page('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
+        $this->app->system->page->forcePage('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
             
     }
 

@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have an voucher_id
 if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['voucher_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
-    $this->app->system->page->force_page('voucher', 'search');
+    $this->app->system->page->forcePage('voucher', 'search');
 }
 
 $voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']);

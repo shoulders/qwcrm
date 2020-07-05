@@ -95,7 +95,7 @@ class Pdf extends System {
     }
     
     // Output a PDF in the browser
-    public function mpdf_output_in_browser($pdf_filename, $pdf_template) {
+    public function mpdfOutputBrowser($pdf_filename, $pdf_template) {
         
         // Intialise mPDF
         $this->getMpdf($pdf_template);
@@ -131,14 +131,14 @@ class Pdf extends System {
 
         } else {         
             // Load 404 page with the error/system messages            
-            die($this->app->system->page->load_page('get_payload', 'core', '404', ''));
+            die($this->app->system->page->loadPage('get_payload', 'core', '404', ''));
             //$this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
         }
         
     }
 
     // Return a PDF in a variable
-    public function mpdf_output_as_variable($pdf_template) {
+    public function mpdfOutputVariable($pdf_template) {
         
         // Intialise mPDF
         $this->getMpdf($pdf_template);
@@ -174,10 +174,10 @@ class Pdf extends System {
 
         } else {               
             // Clear any onscreen notifications        
-            $this->app->system->general->ajax_clear_onscreen_notifications();
+            $this->app->system->general->ajaxClearOnscreenNotifications();
 
             // Load error page with the messages via ajax // Output the system message to the browser (if allowed)
-            $this->app->system->general->ajax_output_system_messages_onscreen();
+            $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
             return false;
         }
             

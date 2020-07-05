@@ -35,7 +35,7 @@ class OtherIncome extends Components {
         $sql = "INSERT INTO ".PRFX."otherincome_records SET
                 employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
                 payee            =". $this->app->db->qstr( $qform['payee']                   ).",
-                date             =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
+                date             =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 tax_system       =". $this->app->db->qstr( QW_TAX_SYSTEM                   ).",            
                 item_type        =". $this->app->db->qstr( $qform['item_type']               ).",            
                 unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).",
@@ -44,17 +44,17 @@ class OtherIncome extends Components {
                 unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
                 unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
                 status           =". $this->app->db->qstr( 'unpaid'                        ).",            
-                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                ).",            
+                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                ).",            
                 items            =". $this->app->db->qstr( $qform['items']                   ).",
                 note             =". $this->app->db->qstr( $qform['note']                    );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the otherincome record into the database."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the otherincome record into the database."));
         } else {
 
             // Log activity        
             $record = _gettext("Otherincome Record").' '.$this->app->db->Insert_ID().' '._gettext("created.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
             return $this->app->db->Insert_ID();
 
@@ -109,7 +109,7 @@ class OtherIncome extends Components {
 
             // Figure out the total number of records in the database for the given search        
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching otherincome records."));
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching otherincome records."));
             } else {        
                 $total_results = $rs->RecordCount();            
                 $this->app->smarty->assign('total_results', $total_results);
@@ -148,7 +148,7 @@ class OtherIncome extends Components {
         /* Return the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching otherincome records."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching otherincome records."));
         } else {
 
             $records = $rs->GetArray();   // do i need to add the check empty
@@ -177,7 +177,7 @@ class OtherIncome extends Components {
         $sql = "SELECT * FROM ".PRFX."otherincome_records WHERE otherincome_id=".$this->app->db->qstr($otherincome_id);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the otherincome details."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the otherincome details."));
         } else {
 
             if($item === null){
@@ -208,7 +208,7 @@ class OtherIncome extends Components {
         }
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Otherincome statuses."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Otherincome statuses."));
         } else {
 
             return $rs->GetArray();     
@@ -226,7 +226,7 @@ class OtherIncome extends Components {
         $sql = "SELECT display_name FROM ".PRFX."otherincome_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the otherincome status display name."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the otherincome status display name."));
         } else {
 
             return $rs->fields['display_name'];
@@ -244,7 +244,7 @@ class OtherIncome extends Components {
         $sql = "SELECT * FROM ".PRFX."otherincome_types";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get otherincome types."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get otherincome types."));
         } else {
 
             return $rs->GetArray();
@@ -263,7 +263,7 @@ class OtherIncome extends Components {
         $sql = "SELECT * FROM ".PRFX."otherincome_records ORDER BY otherincome_id DESC LIMIT 1";
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last otherincome record ID."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last otherincome record ID."));
         } else {
 
             return $rs->fields['otherincome_id'];
@@ -284,25 +284,25 @@ class OtherIncome extends Components {
         $sql = "UPDATE ".PRFX."otherincome_records SET
                 employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
                 payee            =". $this->app->db->qstr( $qform['payee']                   ).",
-                date             =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",            
+                date             =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",            
                 item_type        =". $this->app->db->qstr( $qform['item_type']               ).",            
                 unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).",
                 vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).",
                 unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
                 unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
                 unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
-                last_active      =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                ).",
+                last_active      =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                ).",
                 items            =". $this->app->db->qstr( $qform['items']                   ).",
                 note             =". $this->app->db->qstr( $qform['note']                    )."
                 WHERE otherincome_id  =". $this->app->db->qstr( $qform['otherincome_id']     );                        
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the otherincome details."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the otherincome details."));
         } else {
 
             // Log activity        
             $record = _gettext("Otherincome Record").' '.$qform['otherincome_id'].' '._gettext("updated.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
             return true;
 
@@ -326,7 +326,7 @@ class OtherIncome extends Components {
         }    
 
         // Unify Dates and Times
-        $datetime = $this->app->system->general->mysql_datetime();
+        $datetime = $this->app->system->general->mysqlDatetime();
 
         // Set the appropriate closed_on date
         $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
@@ -338,7 +338,7 @@ class OtherIncome extends Components {
                 WHERE otherincome_id =". $this->app->db->qstr( $otherincome_id );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an otherincome Status."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an otherincome Status."));
 
         } else {    
 
@@ -350,7 +350,7 @@ class OtherIncome extends Components {
 
             // Log activity        
             $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '.$otherincome_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
             return true;
 
@@ -376,7 +376,7 @@ class OtherIncome extends Components {
 
         // Log activity        
         $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         return true;
 
@@ -414,12 +414,12 @@ class OtherIncome extends Components {
             WHERE otherincome_id =". $this->app->db->qstr($otherincome_id);
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the otherincome records."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the otherincome records."));
         } else {
 
             // Log activity        
             $record = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("deleted.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
             return true;
 
@@ -681,7 +681,7 @@ class OtherIncome extends Components {
                 WHERE otherincome_id    =". $this->app->db->qstr( $otherincome_id );
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the otherincome totals."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the otherincome totals."));
         } else {
 
             /* Update Status - only change if there is a change in status */        

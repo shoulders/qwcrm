@@ -36,7 +36,7 @@ class General extends System {
     #  Error Handling - Data preperation       #
     ############################################
 
-    function prepare_error_data($type, $data = null) {
+    function prepareErrorData($type, $data = null) {
 
         /* Error Page (by referring page) - only needed when using referrer - not currently used 
         if($type === 'error_page' && isset()) {
@@ -191,7 +191,7 @@ class General extends System {
     #  Verify QWcrm install state and set routing as needed  #
     ##########################################################
 
-    function verify_qwcrm_install_state() {
+    function verifyQwcrmInstallState() {
 
         // Temporary Development Override (stop the need to delete the /setup/ folder)- Keep
         //$this->app->db = \Factory::getDbo(); - This DB call might not be needed
@@ -209,7 +209,7 @@ class General extends System {
         \CMSApplication::$VAR['page_tpl']  = isset(\CMSApplication::$VAR['page_tpl'])  ? \CMSApplication::$VAR['page_tpl']  : null;
 
         // Installation is in progress
-        if ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
+        if ($this->app->system->security->checkPageAccessedViaQwcrm('setup', 'install', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
 
             \CMSApplication::$VAR['component'] = 'setup';
             \CMSApplication::$VAR['page_tpl']  = 'install';
@@ -220,7 +220,7 @@ class General extends System {
 
 
         // Migration is in progress (but if migration is passing to upgrade, ignore)
-        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
+        } elseif ($this->app->system->security->checkPageAccessedViaQwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
 
             \CMSApplication::$VAR['component'] = 'setup';
             \CMSApplication::$VAR['page_tpl']  = 'migrate';
@@ -231,7 +231,7 @@ class General extends System {
 
 
         // Upgrade is in progress
-        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
+        } elseif ($this->app->system->security->checkPageAccessedViaQwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
 
             \CMSApplication::$VAR['component'] = 'setup';
             \CMSApplication::$VAR['page_tpl']  = 'upgrade';
@@ -248,10 +248,10 @@ class General extends System {
         }*/        
 
         // Choice - Fresh Installation/Migrate/Upgrade (1st Run) (or refered from the migration process)
-        } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !$this->app->system->security->check_page_accessed_via_qwcrm()) {
+        } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !$this->app->system->security->checkPageAccessedViaQwcrm()) {
 
             // Prevent direct access to this page
-            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
+            if(!$this->app->system->security->checkPageAccessedViaQwcrm(null, null, 'no_referer-routing_disallowed', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
                 header('HTTP/1.1 403 Forbidden');
                 die(_gettext("No Direct Access Allowed."));
             }
@@ -281,19 +281,19 @@ class General extends System {
         } elseif (is_file('configuration.php') && is_dir(SETUP_DIR)) {
 
             // Prevent direct access to this page
-            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
+            if(!$this->app->system->security->checkPageAccessedViaQwcrm(null, null, 'no_referer-routing_disallowed', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {
                 header('HTTP/1.1 403 Forbidden');
                 die(_gettext("No Direct Access Allowed."));
             }        
 
             // Allow only root or index.php
-            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'root_only')) {
+            if(!$this->app->system->security->checkPageAccessedViaQwcrm(null, null, 'root_only')) {
                 header('HTTP/1.1 404 Not Found');
                 die(_gettext("This page does not exist."));
             }               
 
             // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
-            $this->app->system->general->compare_qwcrm_filesystem_and_database(\CMSApplication::$VAR);    
+            $this->app->system->general->compareQwcrmFilesystemAndDatabase(\CMSApplication::$VAR);    
 
         // Fallback option for those situations I have not thought about
         } else {
@@ -316,10 +316,10 @@ class General extends System {
     #  Compare the QWcrm file system and database versions  #  // This is only run if the /setup/ dir exists
     #########################################################
 
-    function compare_qwcrm_filesystem_and_database() {
+    function compareQwcrmFilesystemAndDatabase() {
         
         // Get the QWcrm database version number (assumes database connection is good)
-        $qwcrm_database_version = $this->app->system->general->get_qwcrm_database_version_number();
+        $qwcrm_database_version = $this->app->system->general->getQwcrmDatabaseVersionNumber();
 
         // File System and Database versions match(not needed handles in opening 'if' statement, left for reference)
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {
@@ -376,7 +376,7 @@ class General extends System {
     #  Get QWcrm version number from the database  #
     ################################################
 
-    function get_qwcrm_database_version_number() {
+    function getQwcrmDatabaseVersionNumber() {
 
         $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
 
@@ -393,13 +393,13 @@ class General extends System {
     }
 
     ####################################################################
-    #  check the selected template is valid for this version of QWcrm  #
+    #  check the selected template is valid for this version of QWcrm  #  // not currently used, it should be
     ####################################################################
 
-    function check_template_is_compatible() {
+    function checkTemplateCompatible() {
 
         // Get template details
-        $template_details = $this->parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');
+        $template_details = $this->parseXmlFileIntoArray(THEME_DIR.'templateDetails.xml');
 
         // is the QWCRM version too low to run the template
         if (version_compare(QWCRM_VERSION, $template_details['qwcrm_min_version'], '<')) {
@@ -431,7 +431,7 @@ class General extends System {
     #   Get MySQL version                          #
     ################################################
 
-    function get_mysql_version() {
+    function getMysqlVersion() {
 
         // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
         //$this->app->db->ServerInfo();
@@ -446,7 +446,7 @@ class General extends System {
     #   Parse XML file into an array           #
     ############################################
 
-    function parse_xml_sting_into_array($string) {
+    function parseXmlStingIntoArray($string) {
 
         // SimpleXML - Convert an XML file into a SimpleXMLElement object, then output keys and elements of the object:
         $xml_object = simplexml_load_string($string);
@@ -463,7 +463,7 @@ class General extends System {
     #   Parse XML file into an array           #
     ############################################
 
-    function parse_xml_file_into_array($file) {
+    function parseXmlFileIntoArray($file) {
 
         // Remove base path to make reference relative
         $file = str_replace(QWCRM_BASE_PATH, '', $file);
@@ -509,7 +509,7 @@ class General extends System {
     #  Write a record to the Access Log        #  // This will create an apache compatible access log (Combined Log Format)
     ############################################
 
-    function write_record_to_access_log() {    
+    function writeRecordToAccessLog() {    
 
         // Apache log format
         // https://httpd.apache.org/docs/2.4/logs.html
@@ -555,7 +555,7 @@ class General extends System {
 
         // Write log entry   
         if(!$fp = fopen(ACCESS_LOG, 'a')) {        
-            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
+            $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -569,7 +569,7 @@ class General extends System {
     #  Write a record to the Activity Log      #
     ############################################
 
-    function write_record_to_activity_log($record, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null) {
+    function writeRecordToActivityLog($record, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null) {
 
         // if activity logging not enabled exit
         if($this->app->config->get('qwcrm_activity_log') != true) { return; }
@@ -592,7 +592,7 @@ class General extends System {
 
         // Write log entry  
         if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
-            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
+            $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -606,7 +606,7 @@ class General extends System {
     #  Write a record to the Error Log         #
     ############################################
 
-    function write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
+    function writeRecordToErrorLog($error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
 
         // it is not - $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
 
@@ -622,7 +622,7 @@ class General extends System {
 
         // Write log entry  
         if(!$fp = fopen(ERROR_LOG, 'a')) {        
-            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__.'()', '', '', _gettext("Could not open the Error Log to save the record."));
+            $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__.'()', '', '', _gettext("Could not open the Error Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -638,12 +638,12 @@ class General extends System {
     #      Get Date Formats                  #
     ##########################################
 
-    function get_date_formats() {
+    function getDateFormats() {
 
         $sql = "SELECT * FROM ".PRFX."company_date_formats";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
         } else {
 
             return $rs->GetArray();
@@ -656,7 +656,7 @@ class General extends System {
     #   Convert Date into Unix Timestamp     #  // $date_format is not currently used
     ##########################################
 
-    function date_to_timestamp($date_to_convert, $date_format = null) {   
+    function dateToTimestamp($date_to_convert, $date_format = null) {   
 
         // http://php.net/manual/en/datetime.createfromformat.php
         // Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
@@ -707,13 +707,13 @@ class General extends System {
         $end_time   = smartytime_to_otherformat('datetime', $VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
      */
 
-    function smartytime_to_otherformat($format, $date, $hour, $minute, $second, $clock, $meridian = null) {
+    function smartytimeToOtherformat($format, $date, $hour, $minute, $second, $clock, $meridian = null) {
 
         // When using a 12 hour clock
         if($clock == '12') {
 
             // Create timestamp from date
-            $timestamp = $this->date_to_timestamp($date);
+            $timestamp = $this->dateToTimestamp($date);
 
             // if hour is 12am set hour as 0 - for correct calculation as no zero hour
             if($hour == '12' && $meridian == 'am') {$hour = '0';}
@@ -743,7 +743,7 @@ class General extends System {
         if($clock == '24') {
 
             // Create timestamp from date
-            $timestamp = $this->date_to_timestamp($date);        
+            $timestamp = $this->dateToTimestamp($date);        
 
             // Convert hours into seconds and then add
             $timestamp += ($hour * 60 * 60 );
@@ -772,7 +772,7 @@ class General extends System {
     #    Get Timestamp from year/month/day      #
     #############################################
 
-    function convert_year_month_day_to_timestamp($year, $month, $day) {  
+    function convertYearMonthDayToTimestamp($year, $month, $day) {  
 
             return DateTime::createFromFormat('!Y/m/d', $year.'/'.$month.'/'.$day)->getTimestamp();   
 
@@ -782,7 +782,7 @@ class General extends System {
     #   Timestamp to calendar date format    #
     ##########################################
 
-    function timestamp_to_calendar_format($timestamp) {
+    function timestampToCalendarFormat($timestamp) {
 
         return date('Ymd', $timestamp);
 
@@ -792,7 +792,7 @@ class General extends System {
     #     Timestamp to date                  #  // not used anywhere at the minute
     ##########################################
 
-    function timestamp_to_date($timestamp, $date_format = null) {    
+    function timestampToDate($timestamp, $date_format = null) {    
 
         switch(!is_null($date_format) ? $date_format : DATE_FORMAT) {
 
@@ -819,7 +819,7 @@ class General extends System {
     #   Convert a timestamp into MySQL DATE Format      #
     #####################################################
 
-    function timestamp_mysql_date($timestamp) {       
+    function timestampMysqlDate($timestamp) {       
 
        // If there is no timestamp return an empty MySQL DATE
         if($timestamp == '') {
@@ -838,7 +838,7 @@ class General extends System {
     #   Convert a timestamp into MySQL DATETIME Format  #  // not currently used
     #####################################################
 
-    function timestamp_mysql_datetime($timestamp) { 
+    function timestampMysqlDatetime($timestamp) { 
 
         // If there is no timestamp return an empty MySQL DATETIME
         if(!$timestamp) {
@@ -857,7 +857,7 @@ class General extends System {
     #   Convert Date into MySQL DATE Format    #  // $date_format is not currently used
     ############################################
 
-    function date_to_mysql_date($date_to_convert, $date_format = null) {   
+    function dateToMysqlDate($date_to_convert, $date_format = null) {   
 
         // http://php.net/manual/en/datetime.createfromformat.php
         // Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
@@ -891,7 +891,7 @@ class General extends System {
     #   Get current date in MySQL DATE Format        #  // gives current datetime unless a timstamp is used then that is converted
     ##################################################
 
-    function mysql_date($timestamp = null) {       
+    function mysqlDate($timestamp = null) {       
 
         // These do the same job and are for reference
         //(new DateTime('now'))->format('Y-m-d H:i:s');    
@@ -905,7 +905,7 @@ class General extends System {
     #   Get current time in MySQL DATETIME Format    #  // gives current datetime unless a timstamp is used then that is converted
     ##################################################
 
-    function mysql_datetime($timestamp = null) {       
+    function mysqlDatetime($timestamp = null) {       
 
         // These do the same job and are for reference
         //(new DateTime('now'))->format('Y-m-d H:i:s');    
@@ -919,7 +919,7 @@ class General extends System {
     #   Build MySQL DATETIME                     # 
     ##############################################
 
-    function build_mysql_datetime($hour = null, $minute = null, $second = null, $month = null, $day = null, $year = null) {
+    function buildMysqlDatetime($hour = null, $minute = null, $second = null, $month = null, $day = null, $year = null) {
 
         $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
         return date('Y-m-d H:i:s', $timestamp);
@@ -930,7 +930,7 @@ class General extends System {
     #   Return Date in correct format from year/month/day   #  // only used in schedule
     #########################################################
 
-    function convert_year_month_day_to_date($year, $month, $day) {    
+    function convertYearMonthDayToDate($year, $month, $day) {    
 
         // Ensure months supplied as 2 digits
         if(strlen($month) == 1) {$month = '0'.$month;}
@@ -965,7 +965,7 @@ class General extends System {
     #  Clear any onscreen notifications          #   // this is needed for messages when pages are requested via ajax (emails/config)
     ##############################################
 
-    function ajax_clear_onscreen_notifications() {
+    function ajaxClearOnscreenNotifications() {
 
         echo "<script>clearSystemMessages();</script>";
 
@@ -975,9 +975,9 @@ class General extends System {
     #  Output System Messages onscreen           #   // this is needed for messages when pages are requested via ajax (emails/config)
     ##############################################
 
-    function ajax_output_system_messages_onscreen() {
+    function ajaxOutputSystemMessagesOnscreen() {
 
-        echo "<script>processSystemMessages('".$this->escape_for_javascript($this->app->system->variables->systemMessagesReturnStore())."');</script>";
+        echo "<script>processSystemMessages('".$this->escapeForJavascript($this->app->system->variables->systemMessagesReturnStore())."');</script>";
 
     }
 
@@ -985,7 +985,7 @@ class General extends System {
     #  Escape string for use in Javascript       #
     ##############################################
 
-    function escape_for_javascript($text){
+    function escapeForJavascript($text){
 
         return strtr(nl2br($text), array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
 
@@ -995,7 +995,7 @@ class General extends System {
     #  Used for setup and button control         #   // this is needed for messages when pages are requested via ajax (emails/config)
     ##############################################
 
-    function toggle_element_by_id($element_id, $action = 'hide') {
+    function toggleElementById($element_id, $action = 'hide') {
 
         /* JQuery Version */
         if($action == 'hide') {
@@ -1071,10 +1071,10 @@ class General extends System {
     #      Clear Smarty Cache                  #
     ############################################
 
-    function clear_smarty_cache() {
+    function clearSmartyCache() {
 
         // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-        $this->ajax_clear_onscreen_notifications();
+        $this->ajaxClearOnscreenNotifications();
 
         // clear the entire cache
         $this->app->smarty->clearAllCache();
@@ -1084,10 +1084,10 @@ class General extends System {
 
         // Output the system message to the browser   
         $this->app->system->variables->systemMessagesWrite('success', _gettext("The Smarty cache has been emptied successfully."));
-        $this->ajax_output_system_messages_onscreen();
+        $this->ajaxOutputSystemMessagesOnscreen();
 
         // Log activity        
-        $this->app->system->general->write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
+        $this->app->system->general->writeRecordToActivityLog(_gettext("Smarty Cache Cleared."));
 
     }
 
@@ -1095,10 +1095,10 @@ class General extends System {
     #      Clear Smarty Compile                #
     ############################################
 
-    function clear_smarty_compile() {
+    function clearSmartyCompile() {
 
         // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-        $this->ajax_clear_onscreen_notifications();
+        $this->ajaxClearOnscreenNotifications();
 
         // clear a specific template resource
         //$this->app->smarty->clearCompiledTemplate('index.tpl');
@@ -1108,10 +1108,10 @@ class General extends System {
 
         // Output the system message to the browser
         $this->app->system->variables->systemMessagesWrite('success', _gettext("The Smarty compile directory has been emptied successfully."));
-        $this->ajax_output_system_messages_onscreen();
+        $this->ajaxOutputSystemMessagesOnscreen();
 
         // Log activity        
-        $this->app->system->general->write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
+        $this->app->system->general->writeRecordToActivityLog(_gettext("Smarty Compile Cache Cleared."));    
 
     }
 
@@ -1119,7 +1119,7 @@ class General extends System {
     #         Load Languages                       #  List the available languages and return as an array
     ################################################
 
-    function load_languages() {
+    function loadLanguages() {
 
         // Get the array of directories
         $languages = glob(LANGUAGE_DIR . '*', GLOB_ONLYDIR);
@@ -1149,7 +1149,7 @@ class General extends System {
     #         Load Language                        #  // Most people use $locale instead of $language
     ################################################
 
-    function load_language() {
+    function loadLanguage() {
 
         // Load compatibility layer (motranslator)
         PhpMyAdmin\MoTranslator\Loader::loadFunctions();
@@ -1211,7 +1211,7 @@ class General extends System {
     #   Process and correct user inputted URLs     #  // make sure the url has a https?:// before being added to the database, if not add one
     ################################################
 
-    function process_inputted_url($url) {
+    function processInputtedUrl($url) {
 
         // If no URL has been submitted return nothing
         if($url == '') {

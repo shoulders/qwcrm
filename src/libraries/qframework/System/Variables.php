@@ -14,7 +14,7 @@ class Variables extends System {
     #  Load and set the System's global variables  #
     ################################################
 
-    public function load_system_variables() {
+    public function loadSystemVariables() {
 
         ##########################################################
         #   Assign Global PHP Variables                          #
@@ -89,7 +89,7 @@ class Variables extends System {
     #  Set the User's Smarty Variables  #  // Empty if not logged in or installing (except for usergroup)
     #####################################
 
-    public function smarty_set_user_variables() {     
+    public function smartySetUserVariables() {     
 
         $this->app->smarty->assign('login_user_id',            $this->app->user->login_user_id          );
         $this->app->smarty->assign('login_username',           $this->app->user->login_username         );

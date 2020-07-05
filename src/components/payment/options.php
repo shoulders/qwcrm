@@ -57,7 +57,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment Options Updated.") );
     
     // Log activity 
-    $this->app->system->general->write_record_to_activity_log(_gettext("Payment Options Updated."));
+    $this->app->system->general->writeRecordToActivityLog(_gettext("Payment Options Updated."));
     
 }
 

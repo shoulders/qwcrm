@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!$this->app->system->security->check_page_accessed_via_qwcrm()) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm()) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -17,7 +17,7 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm()) {
 // Check if we have an invoice parts_id
 if(!isset(\CMSApplication::$VAR['parts_id']) || !\CMSApplication::$VAR['parts_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Invoice Parts ID supplied."));
-    $this->app->system->page->force_page('invoice', 'search');
+    $this->app->system->page->forcePage('invoice', 'search');
 }
 
 // Get Invoice ID before deletion
@@ -27,4 +27,4 @@ if(!isset(\CMSApplication::$VAR['parts_id']) || !\CMSApplication::$VAR['parts_id
 $this->app->components->invoice->deletePartsItem(\CMSApplication::$VAR['parts_id']);
 
 // Load the edit invoice page
-$this->app->system->page->force_page('invoice' , 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+$this->app->system->page->forcePage('invoice' , 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);

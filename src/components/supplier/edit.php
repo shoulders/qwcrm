@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a supplier_id
 if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
-    $this->app->system->page->force_page('supplier', 'search');
+    $this->app->system->page->forcePage('supplier', 'search');
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -21,14 +21,14 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->components->supplier->updateRecord(\CMSApplication::$VAR['qform']);
     
     // load the supplier details apge
-    $this->app->system->page->force_page('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id'], 'msg_success='._gettext("Supplier updated successfully."));     
+    $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id'], 'msg_success='._gettext("Supplier updated successfully."));     
     
 } else {
     
     // Check if supplier can be edited
     if(!$this->app->components->supplier->checkRecordAllowsEdit(\CMSApplication::$VAR['supplier_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this supplier because its status does not allow it."));
-        $this->app->system->page->force_page('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);
+        $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);
     }
 
     // Build the page

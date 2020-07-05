@@ -19,11 +19,11 @@ class Security extends System {
     #  Force SSL/HTTPS (if enabled)            #
     ############################################
 
-    public function force_ssl($force_ssl_config) {
+    public function forceSsl($force_ssl_config) {
 
         // Force SSL/HTTPS if enabled - add base path stuff here
         if($force_ssl_config >= 1 && !isset($_SERVER['HTTPS'])) {   
-            $this->app->system->page->force_page($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
+            $this->app->system->page->forcePage($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
         }
 
     }
@@ -32,7 +32,7 @@ class Security extends System {
     #  Check page has been internally refered  #
     ############################################
 
-    public function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $access_rule = null, $var_component = null, $var_page_tpl = null, $man_component = null, $man_page_tpl = null) {
+    public function checkPageAccessedViaQwcrm($component = null, $page_tpl = null, $access_rule = null, $var_component = null, $var_page_tpl = null, $man_component = null, $man_page_tpl = null) {
 
         // Get Referer
         $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
@@ -57,7 +57,7 @@ class Security extends System {
         // Allows page access during a setup process but block direct access
         if($access_rule == 'setup') {
 
-            if(defined('QWCRM_SETUP') && !$this->confirm_direct_access($component, $page_tpl)) {
+            if(defined('QWCRM_SETUP') && !$this->confirmDirectAccess($component, $page_tpl)) {
                 return true;            
             } else {
                 return false;        
@@ -156,7 +156,7 @@ class Security extends System {
         if($component && $page_tpl) {       
 
             // If 'Referring Page' matches the specified page (returns true/false as needed)
-            return preg_match('/^'.preg_quote($this->app->system->router->build_url_from_variables($component, $page_tpl, 'absolute', 'auto'), '/').'/U', $referer);
+            return preg_match('/^'.preg_quote($this->app->system->router->buildUrlFromVariables($component, $page_tpl, 'absolute', 'auto'), '/').'/U', $referer);
 
         // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
         } else {        
@@ -171,9 +171,9 @@ class Security extends System {
     #   Has the requested page been access directly  #
     ##################################################
 
-    public function confirm_direct_access($component, $page_tpl) {
+    public function confirmDirectAccess($component, $page_tpl) {
 
-        if($_SERVER['REQUEST_URI'] === $this->app->system->router->build_url_from_variables($component, $page_tpl, $url_length = 'relative')) {
+        if($_SERVER['REQUEST_URI'] === $this->app->system->router->buildUrlFromVariables($component, $page_tpl, $url_length = 'relative')) {
 
             return true;
 
@@ -193,7 +193,7 @@ class Security extends System {
      * This attempts to get the real IP address of the user 
      */
 
-    public function get_visitor_ip_address() {    
+    public function getVisitorIpAddress() {    
 
         $http_client_ip = isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : null;
         $http_x_forwarded_for = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null;

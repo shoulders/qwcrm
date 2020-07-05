@@ -19,12 +19,12 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Reload Company options and display a success message
     $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
-    $this->app->system->page->force_page('company', 'edit');
+    $this->app->system->page->forcePage('company', 'edit');
     
 }
 
 // Build the page
-$this->app->smarty->assign('date_formats', $this->app->system->general->get_date_formats());
+$this->app->smarty->assign('date_formats', $this->app->system->general->getDateFormats());
 $this->app->smarty->assign('tax_systems', $this->app->components->company->getTaxSystems() );
 $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(null, true) );
 $this->app->smarty->assign('company_details', $this->app->components->company->getRecord() );

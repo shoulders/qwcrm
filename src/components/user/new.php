@@ -20,7 +20,7 @@ if(isset(\CMSApplication::$VAR['client_id']) && \CMSApplication::$VAR['client_id
         
     } else {
         
-        $this->app->system->page->force_page('client', 'details', 'client_id='.\CMSApplication::$VAR['client_id'].'&msg_danger='._gettext("The client already has a login."));
+        $this->app->system->page->forcePage('client', 'details', 'client_id='.\CMSApplication::$VAR['client_id'].'&msg_danger='._gettext("The client already has a login."));
         
     }    
     
@@ -33,7 +33,7 @@ if(isset(\CMSApplication::$VAR['client_id']) && \CMSApplication::$VAR['client_id
 if(isset(\CMSApplication::$VAR['submit'])) { 
             
     // Insert the record - if the username or email have not been used
-    if ($this->app->components->user->checkUsernameExists(\CMSApplication::$VAR['qform']['username']) || $this->app->components->user->checkEmailExists(\CMSApplication::$VAR['qform']['email'])) {     
+    if ($this->app->components->user->checkUserUsernameExists(\CMSApplication::$VAR['qform']['username']) || $this->app->components->user->checkEmailExists(\CMSApplication::$VAR['qform']['email'])) {     
         
         // send the posted data back to smarty
         $user_details = \CMSApplication::$VAR['qform'];
@@ -48,7 +48,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
             
             // Redirect to the new user's details page
             $this->app->system->variables->systemMessagesWrite('success', _gettext("New user has been created."));
-            $this->app->system->page->force_page('user', 'details&user_id='.$user_id);
+            $this->app->system->page->forcePage('user', 'details&user_id='.$user_id);
             
         }
 

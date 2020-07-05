@@ -20,11 +20,11 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
     $record = _gettext("A search of clients has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    $this->app->system->general->write_record_to_activity_log($record);
+    $this->app->system->general->writeRecordToActivityLog($record);
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    $this->app->system->page->force_page('client', 'search', \CMSApplication::$VAR, 'get');
+    $this->app->system->page->forcePage('client', 'search', \CMSApplication::$VAR, 'get');
     
 }
 

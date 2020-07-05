@@ -17,12 +17,12 @@ if(isset(\CMSApplication::$VAR['submit']) || isset(\CMSApplication::$VAR['submit
     if (isset(\CMSApplication::$VAR['submitandnew'])) {
 
         // load the new supplier page
-        $this->app->system->page->force_page('supplier', 'new', 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
+        $this->app->system->page->forcePage('supplier', 'new', 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
 
     } else {
 
         // load the supplier details page
-        $this->app->system->page->force_page('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id'], 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
+        $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id'], 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
 
     }
 

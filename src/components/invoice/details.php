@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have an invoice_id
 if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
-    $this->app->system->page->force_page('invoice', 'search');
+    $this->app->system->page->forcePage('invoice', 'search');
 }
 
 $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);

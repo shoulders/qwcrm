@@ -45,15 +45,15 @@ class CMSApplication {
         self::$VAR = array_merge($_POST, $_GET, self::$VAR);                                // Merge Primary Arrays  - Merge the $_GET, $_POST and emulated $_POST ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
         self::classFilesExecuteStored('system');                                            // Instanciate the QWcrm Framework System Classes into $this->system
         $this->config = \Factory::getConfig();                                              // Load Global Config Object
-        $this->system->general->load_language();                                            // Load Language
+        $this->system->general->loadLanguage();                                            // Load Language
         $this->db = \Factory::getDbo();                                                     // This is needed to make sure the setup loadsds the database
-        $this->system->qerror->configure_php_error_reporting();                             // Configure PHP error reporting (Enable Error Reporting Immediately) (need to make static and first)----------- (has no dependencies so coulf go earlier)
-        $this->system->qerror->load_whoops($this->config->get('error_handler_whoops'));     // Whoops Error Handler - Here so it can load ASAP       
+        $this->system->qerror->configurePhpErrorReporting();                             // Configure PHP error reporting (Enable Error Reporting Immediately) (need to make static and first)----------- (has no dependencies so coulf go earlier)
+        $this->system->qerror->loadWhoops($this->config->get('error_handler_whoops'));     // Whoops Error Handler - Here so it can load ASAP       
         $this->smarty = \Factory::getSmarty();                                              // Load Global Smarty Object
-        $this->system->security->force_ssl($this->config->get('force_ssl'));                // Redirect to SSL (if enabled) 
-        $this->system->general->verify_qwcrm_install_state();                               // Verify Installation state (install/migrate/upgrade/complete) - This enables the DB if it checks the QWcrm database version (upgrade and migrate)
+        $this->system->security->forceSsl($this->config->get('force_ssl'));                // Redirect to SSL (if enabled) 
+        $this->system->general->verifyQwcrmInstallState();                               // Verify Installation state (install/migrate/upgrade/complete) - This enables the DB if it checks the QWcrm database version (upgrade and migrate)
         self::classFilesExecuteStored('components');                                        // Instanciate the QWcrm Component Classes into $this->components
-        $this->system->variables->load_system_variables();                                  // Load the system variables
+        $this->system->variables->loadSystemVariables();                                  // Load the system variables
         self::classFilesExecuteStored('modules');                                           // Instanciate the QWcrm Module Classes into $this->modules - Not currently used
         self::classFilesExecuteStored('plugins');                                           // Instanciate the QWcrm Plugin Classes into $this->plugins - Not currently used        
         

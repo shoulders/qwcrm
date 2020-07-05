@@ -30,7 +30,7 @@ $stage = 'enter_email';
 if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['email']) && \CMSApplication::$VAR['email']) {
     
     // Prevent direct access to this page (when submitting form)
-    if(!$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset')) {
+    if(!$this->app->system->security->checkPageAccessedViaQwcrm('user', 'reset')) {
         header('HTTP/1.1 403 Forbidden');
         die(_gettext("No Direct Access Allowed."));
     }
@@ -87,7 +87,7 @@ if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['token
     $stage = 'enter_token';
     
     // Prevent direct access to this page (when submitting form)
-    if(!$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset')) {
+    if(!$this->app->system->security->checkPageAccessedViaQwcrm('user', 'reset')) {
         header('HTTP/1.1 403 Forbidden');
         die(_gettext("No Direct Access Allowed."));
     }
@@ -122,7 +122,7 @@ if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['reset
     $stage = 'enter_password';
     
     // Prevent direct access to this page
-    if(!$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset')) {
+    if(!$this->app->system->security->checkPageAccessedViaQwcrm('user', 'reset')) {
         header('HTTP/1.1 403 Forbidden');
         die(_gettext("No Direct Access Allowed."));
     }       
@@ -149,7 +149,7 @@ if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['reset
 
         // Redirect to login page with success or failed message
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Password reset successfully."));
-        $this->app->system->page->force_page('user', 'login');
+        $this->app->system->page->forcePage('user', 'login');
 
     }    
 

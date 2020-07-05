@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    $this->app->system->page->force_page('workorder', 'search');
+    $this->app->system->page->forcePage('workorder', 'search');
 }
 
 // Check if we can edit the workorder description
 if($this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'is_closed')) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the description of a closed Work Order."));
-    $this->app->system->page->force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+    $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 }
 
 // If updated scope and description are submitted
@@ -28,7 +28,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // load the workorder details page
     $this->app->system->variables->systemMessagesWrite('success', _gettext("Description has been updated."));
-    $this->app->system->page->force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+    $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 
 }
 

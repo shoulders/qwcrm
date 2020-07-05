@@ -802,7 +802,7 @@ class Setup extends Components {
     public function getUpgradeSteps() {
         
         $upgrade_steps = array();
-        $current_db_version = $this->app->system->general->get_qwcrm_database_version_number();
+        $current_db_version = $this->app->system->general->getQwcrmDatabaseVersionNumber();
         $targetVersion = null;
 
         // This pattern scans within the folder for objects (files and directories)
@@ -1015,7 +1015,7 @@ class Setup extends Components {
     public function deleteSetupFolder() {
 
         // Clear any onscreen notifications        
-        $this->app->system->general->ajax_clear_onscreen_notifications();
+        $this->app->system->general->ajaxClearOnscreenNotifications();
 
         // Build a success or failure message
         if($this->removeDirectory(SETUP_DIR)) {        
@@ -1025,14 +1025,14 @@ class Setup extends Components {
             $message = $record;
 
             // Hide the delete button
-            $this->app->system->general->toggle_element_by_id('delete_setup_folder', 'hide');
+            $this->app->system->general->toggleElementById('delete_setup_folder', 'hide');
 
             // Display the success message and login button
-            $this->app->system->general->toggle_element_by_id('setup_folder_removed', 'show');
+            $this->app->system->general->toggleElementById('setup_folder_removed', 'show');
 
             // Output the system message to the browser
             $this->app->system->variables->systemMessagesWrite('success', $message);
-            $this->app->system->general->ajax_output_system_messages_onscreen();
+            $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
 
         } else {
 
@@ -1041,16 +1041,16 @@ class Setup extends Components {
             $message = $record.' '._gettext("You need to delete the folder manually.");
 
             // Hide the delete button
-            $this->app->system->general->toggle_element_by_id('delete_setup_folder_button', 'hide');
+            $this->app->system->general->toggleElementById('delete_setup_folder_button', 'hide');
 
             // Output the system message to the browser
             $this->app->system->variables->systemMessagesWrite('danger', $message);
-            $this->app->system->general->ajax_output_system_messages_onscreen();
+            $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
 
         }
 
         // Log activity
-        $this->app->system->general->write_record_to_activity_log($record);    
+        $this->app->system->general->writeRecordToActivityLog($record);    
 
         // Ajax has been done so die
         die();
@@ -1429,9 +1429,11 @@ class Setup extends Components {
     #########################################################
 
     public function checkQwcrmMinimumMysqlVersionValid() {
+        
+        $mysqlVersion = $this->app->system->general->getMysqlVersion();
 
-        if (version_compare(get_mysql_version(), QWCRM_MINIMUM_MYSQL, '<')) {
-            $msg = '<div style="color: red;">'._gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version().'</div>';
+        if (version_compare($mysqlVersion, QWCRM_MINIMUM_MYSQL, '<')) {
+            $msg = '<div style="color: red;">'._gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.$mysqlVersion.'</div>';
             $this->app->smarty->assign('msg_danger', $msg);
             return false;
             //die($msg);
@@ -1479,7 +1481,7 @@ class Setup extends Components {
         }
 
         // prepare database error for the log
-        $database_error = $this->app->system->general->prepare_error_data('error_database', $database_error);   
+        $database_error = $this->app->system->general->prepareErrorData('error_database', $database_error);   
 
         // prepare SQL statement for the log (I have disabled logging SQL for security reasons)
         //$sql_query = $this->app->system->general->prepare_error_data('sql_query_for_log', $sql_query);    
@@ -1490,7 +1492,7 @@ class Setup extends Components {
 
         // Write log entry  
         if(!$fp = fopen(SETUP_LOG, 'a')) {        
-            $this->app->system->page->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
+            $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
         }
 
         fwrite($fp, $log_entry);

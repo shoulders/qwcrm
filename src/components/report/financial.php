@@ -19,8 +19,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     /* Build Basic Data Set */
 
     // Change dates to proper timestamps
-    $start_date = $this->app->system->general->date_to_mysql_date(\CMSApplication::$VAR['start_date']);    
-    $end_date   = $this->app->system->general->date_to_mysql_date(\CMSApplication::$VAR['end_date']);    
+    $start_date = $this->app->system->general->dateToMysqlDate(\CMSApplication::$VAR['start_date']);    
+    $end_date   = $this->app->system->general->dateToMysqlDate(\CMSApplication::$VAR['end_date']);    
     
     // Clients
     $this->app->smarty->assign('client_stats', $this->app->components->report->getClientsStats('basic', $start_date, $end_date));      
@@ -229,7 +229,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     /* Logging */
     
     // Log activity
-    $this->app->system->general->write_record_to_activity_log(_gettext("Financial report run for the date range").': '.\CMSApplication::$VAR['start_date'].' - '.\CMSApplication::$VAR['end_date']);
+    $this->app->system->general->writeRecordToActivityLog(_gettext("Financial report run for the date range").': '.\CMSApplication::$VAR['start_date'].' - '.\CMSApplication::$VAR['end_date']);
     
 } else {
     

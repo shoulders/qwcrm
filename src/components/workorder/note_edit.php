@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a workorder_note_id
 if(!isset(\CMSApplication::$VAR['workorder_note_id']) || !\CMSApplication::$VAR['workorder_note_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Work Order Note ID supplied."));
-    $this->app->system->page->force_page('workorder', 'search');
+    $this->app->system->page->forcePage('workorder', 'search');
 }
 
 // Get teh work order note details
@@ -25,7 +25,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // load the workorder details page
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The note has been updated."));
-    $this->app->system->page->force_page('workorder', 'details&workorder_id='.$workorder_note_details['workorder_id']);
+    $this->app->system->page->forcePage('workorder', 'details&workorder_id='.$workorder_note_details['workorder_id']);
     
 }   
     

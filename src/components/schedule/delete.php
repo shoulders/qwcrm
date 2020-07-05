@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!$this->app->system->security->check_page_accessed_via_qwcrm()) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm()) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -17,7 +17,7 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm()) {
 // Check if we have a schedule_id
 if(!isset(\CMSApplication::$VAR['schedule_id']) || !\CMSApplication::$VAR['schedule_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Schedule ID supplied."));
-    $this->app->system->page->force_page('schedule', 'search');
+    $this->app->system->page->forcePage('schedule', 'search');
 }
 
 // Get workorder_id before deleting the record
@@ -27,4 +27,4 @@ if(!isset(\CMSApplication::$VAR['schedule_id']) || !\CMSApplication::$VAR['sched
 $this->app->components->schedule->deleteRecord(\CMSApplication::$VAR['schedule_id']);
 
 // load schedule search page
-$this->app->system->page->force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id'], 'msg_success='._gettext("Schedule record has been deleted."));
+$this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id'], 'msg_success='._gettext("Schedule record has been deleted."));

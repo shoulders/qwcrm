@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a invoice_id
 if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
-    $this->app->system->page->force_page('invoice', 'search');
+    $this->app->system->page->forcePage('invoice', 'search');
 }
 
 // Get the Id of the employee assigned to the invoice
@@ -20,13 +20,13 @@ $assigned_employee_id = $this->app->components->invoice->getRecord(\CMSApplicati
 // Update invoice Status
 if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->components->invoice->updateStatus(\CMSApplication::$VAR['invoice_id'], \CMSApplication::$VAR['assign_status']);    
-    $this->app->system->page->force_page('invoice', 'status&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+    $this->app->system->page->forcePage('invoice', 'status&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 }
 
 // Assign Work Order to another employee
 if(isset(\CMSApplication::$VAR['change_employee'])) {
     $this->app->components->invoice->assignToEmployee(\CMSApplication::$VAR['invoice_id'], \CMSApplication::$VAR['target_employee_id']);    
-    $this->app->system->page->force_page('invoice', 'status&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+    $this->app->system->page->forcePage('invoice', 'status&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 }
 
 // Get statuses that can be changed by the user

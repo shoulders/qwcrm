@@ -17,7 +17,7 @@ class QError extends System {
     #         Error Reporting Level                #
     ################################################
 
-    public function configure_php_error_reporting() {
+    public function configurePhpErrorReporting() {
 
         // Set the error_reporting
         switch ($this->app->config->get('error_reporting'))
@@ -65,7 +65,7 @@ class QError extends System {
     #         Load Whoops Error Handler            #  // This replaces the PHP default error handler
     ################################################
 
-    public function load_whoops($run_whoops = false) {
+    public function loadWhoops($run_whoops = false) {
 
         if($run_whoops) {    
             $whoops = new \Whoops\Run;

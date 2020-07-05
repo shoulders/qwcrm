@@ -81,7 +81,7 @@ class PaymentTypeRefund {
         // If the balance has been cleared, redirect to the record details page
         if($this->refund_details['balance'] == 0) {
             $this->app->system->variables->systemMessagesWrite('success', _gettext("The balance has been cleared."));
-            $this->app->system->page->force_page('refund', 'details&refund_id='.$this->VAR['refund_id']);
+            $this->app->system->page->forcePage('refund', 'details&refund_id='.$this->VAR['refund_id']);
         }
         
         return;
@@ -100,7 +100,7 @@ class PaymentTypeRefund {
         
         // Cancel
         if(!$this->refund_details['balance'] == 0) {            
-            if($this->app->system->security->check_page_accessed_via_qwcrm('refund', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('refund', 'details')) {
+            if($this->app->system->security->checkPageAccessedViaQwcrm('refund', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('refund', 'details')) {
                 Payment::$buttons['cancel']['allowed'] = true;
                 Payment::$buttons['cancel']['url'] = 'index.php?component=refund&page_tpl=details&refund_id='.$this->VAR['qpayment']['refund_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
@@ -108,7 +108,7 @@ class PaymentTypeRefund {
         }
         
         // Return To Record
-        if($this->app->system->security->check_page_accessed_via_qwcrm('payment', 'new')) {
+        if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new')) {
             Payment::$buttons['returnToRecord']['allowed'] = true;
             Payment::$buttons['returnToRecord']['url'] = 'index.php?component=refund&page_tpl=details&refund_id='.$this->VAR['qpayment']['refund_id'];
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
@@ -135,7 +135,7 @@ class PaymentTypeRefund {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
+        $this->app->system->page->forcePage('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
                 
         return;        
         
@@ -155,7 +155,7 @@ class PaymentTypeRefund {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
+        $this->app->system->page->forcePage('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
                 
         return;        
         
@@ -175,7 +175,7 @@ class PaymentTypeRefund {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
+        $this->app->system->page->forcePage('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
                 
         return;        
         
@@ -189,7 +189,7 @@ class PaymentTypeRefund {
         // Is on a different tax system
         if($this->refund_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The refund cannot receive a payment because it is on a different tax system."));
-            $this->app->system->page->force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
+            $this->app->system->page->forcePage('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id']);
             //$state_flag = false;
         }
 

@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    $this->app->system->page->force_page('workorder', 'search');
+    $this->app->system->page->forcePage('workorder', 'search');
 }
 
 // Check there is a print content and print type set
 if(!isset(\CMSApplication::$VAR['print_content'], \CMSApplication::$VAR['print_type']) || !\CMSApplication::$VAR['print_content'] || !\CMSApplication::$VAR['print_type']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Some or all of the Printing Options are not set."));
-    $this->app->system->page->force_page('workorder', 'search');
+    $this->app->system->page->forcePage('workorder', 'search');
 }
 
 // Get Record Details
@@ -45,7 +45,7 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_workorder_slip')
     {        
         // Log activity
         $record = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
-        $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Assign the correct version of this page
         $this->app->smarty->assign('print_content', \CMSApplication::$VAR['print_content']);    
@@ -58,10 +58,10 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_workorder_slip')
 
         // Log activity
         $record = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
-        $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Output PDF in brower
-        $this->app->system->pdf->mpdf_output_in_browser($pdf_filename, $pdf_template);
+        $this->app->system->pdf->mpdfOutputBrowser($pdf_filename, $pdf_template);
     }
     
     // Email PDF
@@ -71,7 +71,7 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_workorder_slip')
         $pdf_template = $this->app->smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
         
         // Get the PDF in a variable
-        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_template);
+        $pdf_as_string = $this->app->system->pdf->mpdfOutputVariable($pdf_template);
         
         // Build and Send email
         if($pdf_as_string)
@@ -84,14 +84,14 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_workorder_slip')
             $attachments[] = $attachment;
         
             // Build the message body        
-            $body = $this->app->system->email->get_email_message_body('email_msg_workorder', $client_details);
+            $body = $this->app->system->email->getEmailMessageBody('email_msg_workorder', $client_details);
 
             // Log activity
             $record = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
             // Email the PDF
-            $this->app->system->email->send_email($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachments);
+            $this->app->system->email->send($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachments);
 
             // End all other processing
             die();
@@ -113,7 +113,7 @@ if(\CMSApplication::$VAR['print_content'] == 'client_workorder_slip')
     {
         // Log activity
         $record = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
-        $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
         // Assign the correct version of this page
         $this->app->smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
@@ -128,10 +128,10 @@ if(\CMSApplication::$VAR['print_content'] == 'client_workorder_slip')
 
         // Log activity
         $record = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
-        $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Output PDF in brower
-        $this->app->system->pdf->mpdf_output_in_browser($pdf_filename, $pdf_template);       
+        $this->app->system->pdf->mpdfOutputBrowser($pdf_filename, $pdf_template);       
     }        
         
     // Email PDF
@@ -141,7 +141,7 @@ if(\CMSApplication::$VAR['print_content'] == 'client_workorder_slip')
         $pdf_template = $this->app->smarty->fetch('workorder/printing/print_client_workorder_slip.tpl');
 
         // Get the PDF in a variable
-        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_template);
+        $pdf_as_string = $this->app->system->pdf->mpdfOutputVariable($pdf_template);
 
         // Build and Send email
         if($pdf_as_string)
@@ -154,14 +154,14 @@ if(\CMSApplication::$VAR['print_content'] == 'client_workorder_slip')
             $attachments[] = $attachment;
 
             // Build the message body        
-            $body = $this->app->system->email->get_email_message_body('email_msg_workorder', $client_details);
+            $body = $this->app->system->email->getEmailMessageBody('email_msg_workorder', $client_details);
 
             // Log activity
             $record = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
             // Email the PDF
-            $this->app->system->email->send_email($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
+            $this->app->system->email->send($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
 
             // End all other processing
             die();
@@ -181,7 +181,7 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_job_sheet')
     {
         // Log activity
         $record = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
-        $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
                 
         // Assign the correct version of this page
         $this->app->smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
@@ -195,10 +195,10 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_job_sheet')
 
         // Log activity
         $record = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
-        $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Output PDF in brower
-        $this->app->system->pdf->mpdf_output_in_browser($pdf_filename, $pdf_template);
+        $this->app->system->pdf->mpdfOutputBrowser($pdf_filename, $pdf_template);
     }
         
     // Email PDF
@@ -208,7 +208,7 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_job_sheet')
         $pdf_template = $this->app->smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
 
         // Get the PDF in a variable
-        $pdf_as_string = $this->app->system->pdf->mpdf_output_as_variable($pdf_template);
+        $pdf_as_string = $this->app->system->pdf->mpdfOutputVariable($pdf_template);
 
         
         // Build and Send email
@@ -222,14 +222,14 @@ if(\CMSApplication::$VAR['print_content'] == 'technician_job_sheet')
             $attachments[] = $attachment;
 
             // Build the message body        
-            $body = $this->app->system->email->get_email_message_body('email_msg_workorder', $client_details);
+            $body = $this->app->system->email->getEmailMessageBody('email_msg_workorder', $client_details);
 
             // Log activity
             $record = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
             // Email the PDF
-            $this->app->system->email->send_email($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
+            $this->app->system->email->send($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
 
             // End all other processing
             die();

@@ -20,7 +20,7 @@ defined('_QWEXEC') or die;
 \CMSApplication::$VAR['error_enable_override'] = isset(\CMSApplication::$VAR['error_enable_override']) ? \CMSApplication::$VAR['error_enable_override'] : null;
 
 // Prevent direct access to this page
-if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, \CMSApplication::$VAR['error_enable_override'])) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm(null, null, \CMSApplication::$VAR['error_enable_override'])) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -37,7 +37,7 @@ if($this->app->config->get('qwcrm_sql_logging')) {
 
 // Log errors to log if enabled
 if($this->app->config->get('qwcrm_error_log')) {    
-    $this->app->system->general->write_record_to_error_log(\CMSApplication::$VAR['error_component'].':'.\CMSApplication::$VAR['error_page_tpl'], \CMSApplication::$VAR['error_type'], \CMSApplication::$VAR['error_location'], \CMSApplication::$VAR['error_php_function'], \CMSApplication::$VAR['error_database'], \CMSApplication::$VAR['error_msg'], $sql_query_for_log);    
+    $this->app->system->general->writeRecordToErrorLog(\CMSApplication::$VAR['error_component'].':'.\CMSApplication::$VAR['error_page_tpl'], \CMSApplication::$VAR['error_type'], \CMSApplication::$VAR['error_location'], \CMSApplication::$VAR['error_php_function'], \CMSApplication::$VAR['error_database'], \CMSApplication::$VAR['error_msg'], $sql_query_for_log);    
 }
     
 // View RAW error output if allowed and set

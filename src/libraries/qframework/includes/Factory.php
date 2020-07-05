@@ -360,7 +360,7 @@ abstract class Factory {
                     //var_dump($e);
                     //adodb_backtrace($e->gettrace());
                     $config->set('test_db_connection', 'failed');
-                    self::getApplication()->system->variables->systemMessagesWrite('danger', self::getApplication()->system->general->prepare_error_data('error_database_connection', $e->msg));
+                    self::getApplication()->system->variables->systemMessagesWrite('danger', self::getApplication()->system->general->prepareErrorData('error_database_connection', $e->msg));
                 }
 
                 return false;
@@ -376,7 +376,7 @@ abstract class Factory {
                 if(!$db->isConnected()) {
                     
                     // Database connection failed
-                    self::getApplication()->system->variables->systemMessagesWrite('danger', self::getApplication()->system->general->prepare_error_data('error_database_connection', $db->ErrorMsg()));
+                    self::getApplication()->system->variables->systemMessagesWrite('danger', self::getApplication()->system->general->prepareErrorData('error_database_connection', $db->ErrorMsg()));
                     $config->set('test_db_connection', 'failed');
                     return;
                     

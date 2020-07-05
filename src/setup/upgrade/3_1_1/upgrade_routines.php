@@ -26,26 +26,26 @@ class Upgrade3_1_1 extends Setup {
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces
         
         // Perform the upgrade
-        $this->pre_database();
-        $this->process_database();
-        $this->post_database();
+        $this->preDatabase();
+        $this->processDatabase();
+        $this->postDatabase();
                         
     }    
     
     // scripts executed before SQL script (if required)
-    public function pre_database() {        
+    public function preDatabase() {        
         
     }
     
     // Execute the upgrade SQL script
-    public function process_database() {
+    public function processDatabase() {
         
         $this->executeSqlFileLines(SETUP_DIR.'upgrade/'.$this->upgrade_step.'/upgrade_database.sql');      
         
     }
     
     // Execute post database scipts and tidy up the data
-    public function post_database() {
+    public function postDatabase() {
         
         // Correct user Based/Location database entries
         $this->updateColumnValues(PRFX.'user_records', 'based', '1', 'office');

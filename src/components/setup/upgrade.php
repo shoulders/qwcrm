@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!$this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm('setup', 'upgrade', 'index_allowed')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -19,7 +19,7 @@ if(!$this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrad
 $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
 
 // Delete Setup files Action
-if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && $this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade')) {
+if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && $this->app->system->security->checkPageAccessedViaQwcrm('setup', 'upgrade')) {
     $this->app->components->setup->deleteSetupFolder();
 }
 
@@ -43,7 +43,7 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
         $final_version = str_replace('_', '.', end($final_version));
         
         // Load the 'To' and 'From' version numbers
-        $this->app->smarty->assign('qwcrm_config', array('from' => $this->app->system->general->get_qwcrm_database_version_number(), 'to' => $final_version));        
+        $this->app->smarty->assign('qwcrm_config', array('from' => $this->app->system->general->getQwcrmDatabaseVersionNumber(), 'to' => $final_version));        
         
         // If multiple steps - Advertise the fact here
         if(Setup::$split_database_upgrade) {

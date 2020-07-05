@@ -56,7 +56,7 @@ class Administrator extends Components {
         $this->writeConfigFile($qwcrm_config);
 
         // Log activity
-        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was inserted."));    
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was inserted."));    
 
         return true;
 
@@ -90,7 +90,7 @@ class Administrator extends Components {
         $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
 
         if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
         }
 
         return $rs->GetArray(); 
@@ -121,7 +121,7 @@ class Administrator extends Components {
         $this->writeConfigFile($qwcrm_config);
 
         // Log activity
-        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was updated to").' `'.$value.'`.');    
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was updated to").' `'.$value.'`.');    
 
         return true;
 
@@ -165,7 +165,7 @@ class Administrator extends Components {
                     WHERE `page`    =". $this->app->db->qstr( $page_name                           ).";";
 
             if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
             }                 
 
         }
@@ -212,13 +212,13 @@ class Administrator extends Components {
                     WHERE `page`    =". $this->app->db->qstr( $page_name                         ).";";
 
              if(!$rs = $this->app->db->execute($sql)) {
-                 $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
+                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
             }               
 
         }
 
         // Log activity        
-        $this->app->system->general->write_record_to_activity_log(_gettext("ACL permissions updated."));      
+        $this->app->system->general->writeRecordToActivityLog(_gettext("ACL permissions updated."));      
 
     }
 
@@ -249,7 +249,7 @@ class Administrator extends Components {
         $this->writeConfigFile($merged_config);
 
         // Log activity        
-        $this->app->system->general->write_record_to_activity_log(_gettext("QWcrm config settings updated."));   
+        $this->app->system->general->writeRecordToActivityLog(_gettext("QWcrm config settings updated."));   
 
         return true;
 
@@ -279,7 +279,7 @@ class Administrator extends Components {
         $this->writeConfigFile($qwcrm_config);
 
         // Log activity
-        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));    
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));    
 
         return true;
 
@@ -294,7 +294,7 @@ class Administrator extends Components {
      * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
      * @license     GNU General Public License version 2 or later; see LICENSE.txt
      */
-    public function getPHPInfo()
+    public function getPhpInfo()
     {
         ob_start();
         date_default_timezone_set('UTC');
@@ -345,7 +345,7 @@ class Administrator extends Components {
         }
 
         // Parse the grabbed XML into an array
-        $update_response = $this->app->system->general->parse_xml_sting_into_array($curl_response);
+        $update_response = $this->app->system->general->parseXmlStingIntoArray($curl_response);
 
         // Verify there is a real response and flag error if not
         if(!$update_response['name']) {
@@ -372,7 +372,7 @@ class Administrator extends Components {
         $this->app->smarty->assign('update_response', $update_response);
 
         // Log activity        
-        $this->app->system->general->write_record_to_activity_log(_gettext("QWcrm checked for updates."));
+        $this->app->system->general->writeRecordToActivityLog(_gettext("QWcrm checked for updates."));
 
         return;
 
@@ -395,7 +395,7 @@ class Administrator extends Components {
         $this->app->config = \Factory::getConfig();
         
         // Log activity
-        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file.")); 
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm live config registry has been refreshed from the config file.")); 
         
         return;
                 
@@ -471,7 +471,7 @@ class Administrator extends Components {
         $current_config = $this->getQwcrmConfigAsArray();
 
         // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error becasue the variable is not present yet
-        if(isset($new_config['google_server'])) { $new_config['google_server'] = $this->app->system->general->process_inputted_url($new_config['google_server']); }
+        if(isset($new_config['google_server'])) { $new_config['google_server'] = $this->app->system->general->processInputtedUrl($new_config['google_server']); }
 
         // Purge the database session table if we are changing to the database handler.
         if(!defined('QWCRM_SETUP')) {
@@ -482,7 +482,7 @@ class Administrator extends Components {
                 $sql = "TRUNCATE ".PRFX."session";                    
 
                 if(!$rs = $this->app->db->Execute($sql)) {
-                    $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+                    $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
 
                 }
 
@@ -528,10 +528,10 @@ class Administrator extends Components {
 
         $user_details = $this->app->components->user->getRecord($this->app->user->login_user_id);
 
-        $this->app->system->email->send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$this->app->config->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
+        $this->app->system->email->send($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$this->app->config->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
 
         // Log activity        
-        $this->app->system->general->write_record_to_activity_log(_gettext("Test email initiated."));
+        $this->app->system->general->writeRecordToActivityLog(_gettext("Test email initiated."));
 
     }
 
@@ -545,7 +545,7 @@ class Administrator extends Components {
         $sql = "TRUNCATE ".PRFX."user_acl_page";
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
         } else {
 
@@ -665,14 +665,14 @@ class Administrator extends Components {
                     ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
             }
 
         }
 
         // Log activity        
-        $this->app->system->general->write_record_to_activity_log(_gettext("ACL permissions reset to default settings."));    
+        $this->app->system->general->writeRecordToActivityLog(_gettext("ACL permissions reset to default settings."));    
 
         return;
 

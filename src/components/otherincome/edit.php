@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
-    $this->app->system->page->force_page('otherincome', 'search');
+    $this->app->system->page->forcePage('otherincome', 'search');
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -22,13 +22,13 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->components->otherincome->recalculateTotals(\CMSApplication::$VAR['qform']['otherincome_id']);
     
     // load details page
-    $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id'], 'msg_success='._gettext("Otherincome updated successfully.")); 
+    $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id'], 'msg_success='._gettext("Otherincome updated successfully.")); 
 } else {  
 
     // Check if payment can be edited
     if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::$VAR['otherincome_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this otherincome because its status does not allow it."));
-        $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
+        $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
     }
     
     // Build the page

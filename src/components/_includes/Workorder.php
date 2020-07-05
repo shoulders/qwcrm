@@ -34,14 +34,14 @@ class WorkOrder extends Components {
                 client_id       =". $this->app->db->qstr( $client_id                           ).",
                 created_by      =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
                 status          =". $this->app->db->qstr( 'unassigned'                         ).",
-                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",            
+                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",            
                 is_closed       =". $this->app->db->qstr( 0                                    ).",            
                 scope           =". $this->app->db->qstr( $scope                               ).",
                 description     =". $this->app->db->qstr( $description                         ).",            
                 comment         =". $this->app->db->qstr( $comment                             );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the work order Record into the database."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the work order Record into the database."));
 
         } else {
 
@@ -53,7 +53,7 @@ class WorkOrder extends Components {
 
             // Log activity        
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Created by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id, $workorder_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
             // Update last active record        
             $this->app->components->client->updateLastActive($this->getRecord($workorder_id, 'client_id'));
@@ -73,11 +73,11 @@ class WorkOrder extends Components {
         $sql = "INSERT INTO ".PRFX."workorder_notes SET                        
                 employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
                 workorder_id    =". $this->app->db->qstr( $workorder_id                        ).", 
-                date            =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                date            =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
                 description     =". $this->app->db->qstr( $note                                );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert a work order note."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert a work order note."));
 
         } else {
 
@@ -92,7 +92,7 @@ class WorkOrder extends Components {
 
             // Log activity        
             $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added to Work Order").' '.$workorder_id.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id, $workorder_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
             // Update last active record
             $this->app->components->client->updateLastActive($client_id);
@@ -121,11 +121,11 @@ class WorkOrder extends Components {
         $sql = "INSERT INTO ".PRFX."workorder_history SET            
                 employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
                 workorder_id    =". $this->app->db->qstr( $workorder_id                        ).",
-                date            =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                date            =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
                 note            =". $this->app->db->qstr( $note                                );
 
         if(!$rs = $this->app->db->Execute($sql)) {        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert a work order history note."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert a work order history note."));
         } else {
 
             return true;
@@ -240,7 +240,7 @@ class WorkOrder extends Components {
 
             // Figure out the total number of records in the database for the given search        
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching work orders."));
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching work orders."));
             } else {        
                 $total_results = $rs->RecordCount();            
                 $this->app->smarty->assign('total_results', $total_results);
@@ -279,7 +279,7 @@ class WorkOrder extends Components {
         /* Return the records */
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching work orders."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching work orders."));
         } else {
 
             $records = $rs->GetArray();   // do i need to add the check empty
@@ -314,7 +314,7 @@ class WorkOrder extends Components {
         $sql = "SELECT * FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qstr($workorder_id);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get work order details."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get work order details."));
         } else {
 
             if($item === null){
@@ -347,7 +347,7 @@ class WorkOrder extends Components {
                 AND ".PRFX."user_records.user_id = ".PRFX."workorder_notes.employee_id";
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return notes for the work order."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return notes for the work order."));
         } else {
 
             return $rs->GetArray(); 
@@ -367,7 +367,7 @@ class WorkOrder extends Components {
         $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qstr($workorder_note_id);    
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get a work order Note."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get a work order Note."));
         } else { 
 
             if($item === null){
@@ -400,7 +400,7 @@ class WorkOrder extends Components {
                 ORDER BY ".PRFX."workorder_history.history_id";
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return history records for the work order."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return history records for the work order."));
         } else {
 
             return $rs->GetArray();  
@@ -423,7 +423,7 @@ class WorkOrder extends Components {
         }
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get work order statuses."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get work order statuses."));
         } else {
 
             return $rs->GetArray();
@@ -441,7 +441,7 @@ class WorkOrder extends Components {
         $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the work order status display name."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the work order status display name."));
         } else {
 
             return $rs->fields['display_name'];
@@ -534,7 +534,7 @@ class WorkOrder extends Components {
                 WHERE workorder_id  =".$this->app->db->qstr($workorder_id);
 
         if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order scope and description."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order scope and description."));
         } else {
 
             // Get Work Order Details
@@ -545,7 +545,7 @@ class WorkOrder extends Components {
 
             // Log activity        
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);        
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);        
 
             // Update last active record        
             $this->app->components->client->updateLastActive($workorder_details['client_id']);
@@ -568,7 +568,7 @@ class WorkOrder extends Components {
                 WHERE workorder_id  =". $this->app->db->qstr($workorder_id);
 
         if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Comment."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Comment."));
         } else {
 
             // Get Work Order Details
@@ -579,7 +579,7 @@ class WorkOrder extends Components {
 
             // Log activity        
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
             // Update last active record       
             $this->app->components->client->updateLastActive($workorder_details['client_id']); 
@@ -602,7 +602,7 @@ class WorkOrder extends Components {
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
 
         if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order resolution."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order resolution."));
         } else {
 
             // Get Work Order Details
@@ -613,7 +613,7 @@ class WorkOrder extends Components {
 
             // Log activity        
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
             // Update last active record        
             $this->app->components->client->updateLastActive($workorder_details['client_id']);
@@ -637,7 +637,7 @@ class WorkOrder extends Components {
                 WHERE workorder_note_id =". $this->app->db->qstr( $workorder_note_id                   );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order note."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order note."));
 
         } else {
 
@@ -648,7 +648,7 @@ class WorkOrder extends Components {
 
             // Log activity        
             $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
 
             // Update last active record        
             $this->app->components->client->updateLastActive($workorder_details['client_id']);
@@ -677,7 +677,7 @@ class WorkOrder extends Components {
         $employee_id = ($new_status == 'unassigned') ? '' : $workorder_details['employee_id'];
 
         // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysql_datetime() : '0000-00-00 00:00:00';
+        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."workorder_records SET   
                 employee_id         =". $this->app->db->qstr( $employee_id     ).",
@@ -686,7 +686,7 @@ class WorkOrder extends Components {
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Status."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Status."));
 
         } else {
 
@@ -713,7 +713,7 @@ class WorkOrder extends Components {
 
             // Log activity        
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
             // Update last active record        
             $this->app->components->client->updateLastActive($this->getRecord($workorder_id, 'client_id'));
@@ -744,14 +744,14 @@ class WorkOrder extends Components {
         if($new_closed_status == 'close') {        
             $sql = "UPDATE ".PRFX."workorder_records SET
                     closed_by           =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                    closed_on           =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                    closed_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
                     is_closed           =". $this->app->db->qstr( 1                                    )."
                     WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
 
         }
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order's Closed status."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order's Closed status."));
         }
 
     }
@@ -772,7 +772,7 @@ class WorkOrder extends Components {
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Invoice ID."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Invoice ID."));
         }    
 
     }
@@ -787,11 +787,11 @@ class WorkOrder extends Components {
         if(!$workorder_id) { return; }
 
         $sql = "UPDATE ".PRFX."workorder_records SET
-                last_active=".$this->app->db->qstr( $this->app->system->general->mysql_datetime() )."
+                last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
                 WHERE workorder_id=".$this->app->db->qstr($workorder_id);
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order last active time."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order last active time."));
         }
 
     }    
@@ -843,7 +843,7 @@ class WorkOrder extends Components {
             WHERE workorder_id =". $this->app->db->qstr($workorder_id);
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the Work Order").' '.$workorder_id.'.');
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the Work Order").' '.$workorder_id.'.');
 
         // Delete the workorder history
         } else {        
@@ -851,7 +851,7 @@ class WorkOrder extends Components {
             $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$this->app->db->qstr($workorder_id);
 
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the history notes for Work Order").' '.$workorder_id.'.');
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the history notes for Work Order").' '.$workorder_id.'.');
 
             // Delete the workorder notes    
             } else {
@@ -859,7 +859,7 @@ class WorkOrder extends Components {
                 $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_id=".$this->app->db->qstr($workorder_id);
 
                 if(!$rs = $this->app->db->Execute($sql)) {
-                    $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the notes for Work Order").' '.$workorder_id.'.');
+                    $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the notes for Work Order").' '.$workorder_id.'.');
 
 
                 // Delete the workorder schedule events     
@@ -868,14 +868,14 @@ class WorkOrder extends Components {
                     $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$this->app->db->qstr($workorder_id);
 
                     if(!$rs = $this->app->db->Execute($sql)) {
-                        $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the schedules for Work Order").' '.$workorder_id.'.');
+                        $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the schedules for Work Order").' '.$workorder_id.'.');
 
                     // Log the workorder deletion
                     } else {
 
                         // Write the record to the activity log                    
                         $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
-                        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id, $workorder_id);
+                        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
                         // Update last active record
                         $this->app->components->client->updateLastActive($client_id);                    
@@ -904,7 +904,7 @@ class WorkOrder extends Components {
         $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qstr( $workorder_note_id );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete a work order note."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete a work order note."));
 
         } else {        
 
@@ -913,7 +913,7 @@ class WorkOrder extends Components {
 
             // Log activity        
             $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
+            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
 
             // Update last active record        
             $this->app->components->client->updateLastActive($workorder_details['client_id']);
@@ -936,13 +936,13 @@ class WorkOrder extends Components {
         $sql = "UPDATE ".PRFX."workorder_records SET
                 closed_by           =". $this->app->db->qstr( $this->app->user->login_user_id   ).",                        
                 status              =". $this->app->db->qstr( 'closed_without_invoice'             ).",
-                closed_on           =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                closed_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
                 is_closed           =". $this->app->db->qstr( 1                                    ).",
                 resolution          =". $this->app->db->qstr( $resolution                          )."
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to close a work order without an invoice."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to close a work order without an invoice."));
         } else {
 
             // Update Work Order Status - not needed
@@ -961,7 +961,7 @@ class WorkOrder extends Components {
 
             // Log activity
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
 
             // Update last active record
             $this->app->components->client->updateLastActive($workorder_details['client_id']);
@@ -983,13 +983,13 @@ class WorkOrder extends Components {
         $sql = "UPDATE ".PRFX."workorder_records SET
                 closed_by           =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
                 status              =". $this->app->db->qstr( 'closed_with_invoice'                ).",
-                closed_on          =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",            
+                closed_on          =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",            
                 is_closed           =". $this->app->db->qstr( 1                                    ).",
                 resolution          =". $this->app->db->qstr( $resolution                          )."
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
 
         if(!$rs = $this->app->db->Execute($sql)){ 
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to close a work order with an invoice."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to close a work order with an invoice."));
         } else {
 
             // Update Work Order Status - not needed
@@ -1008,7 +1008,7 @@ class WorkOrder extends Components {
 
             // Log activity
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
 
             // Update last active record
             $this->app->components->client->updateLastActive($workorder_details['client_id']);
@@ -1319,7 +1319,7 @@ class WorkOrder extends Components {
         }
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to assign a work order to an employee."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to assign a work order to an employee."));
 
         } else {
 
@@ -1347,7 +1347,7 @@ class WorkOrder extends Components {
 
             // Log activity
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $target_employee_id, $workorder_details['client_id'], $workorder_id);
+            $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $workorder_details['client_id'], $workorder_id);
 
             // Update last active record
             $this->app->components->user->updateLastActive($workorder_details['employee_id']);

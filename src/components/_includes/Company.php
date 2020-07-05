@@ -74,7 +74,7 @@ class Company extends Components {
                 }        
 
             // Any other lookup error
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
 
         } else {
 
@@ -101,7 +101,7 @@ class Company extends Components {
         $sql = "SELECT * FROM ".PRFX."company_tax_systems";
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
         } else {
 
             return $rs->GetArray();
@@ -137,7 +137,7 @@ class Company extends Components {
         }
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
         } else {
 
             return $rs->GetArray();
@@ -157,7 +157,7 @@ class Company extends Components {
                 WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
         } else {
 
             return $rs->fields['rate'];
@@ -194,7 +194,7 @@ class Company extends Components {
                 WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
         } else {       
 
             return $rs->fields['enabled'];
@@ -213,7 +213,7 @@ class Company extends Components {
 
         // Convert Date to time stamp
         if($date) { 
-            $date_timestamp = $this->app->system->general->date_to_timestamp($date, $date_format);
+            $date_timestamp = $this->app->system->general->dateToTimestamp($date, $date_format);
         }
 
         // Smarty Time Format
@@ -237,14 +237,14 @@ class Company extends Components {
             // return opening time in correct format for smarty time builder
             if($event == 'opening_time') {            
                 //return $date.' '.$this->get_company_details('opening_hour').':'.$this->get_company_details('opening_minute');  // This only allows the use of DATE and not DATETIME            
-                return $this->app->system->general->build_mysql_datetime($this->getRecord('opening_hour'), $this->getRecord('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));            
+                return $this->app->system->general->buildMysqlDatetime($this->getRecord('opening_hour'), $this->getRecord('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));            
             }
 
             // return closing time in correct format for smarty time builder
             if($event == 'closing_time') {
                 //return $date.' '.$this->get_company_details('closing_hour').':'.$this->get_company_details('closing_minute');  // This only allows the use of DATE and not DATETIME
 
-                return $this->app->system->general->build_mysql_datetime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));                    
+                return $this->app->system->general->buildMysqlDatetime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));                    
             }
         }
 
@@ -312,14 +312,14 @@ class Company extends Components {
                 mobile_phone            =". $this->app->db->qstr( $qform['mobile_phone']                     ).",
                 fax                     =". $this->app->db->qstr( $qform['fax']                              ).",
                 email                   =". $this->app->db->qstr( $qform['email']                            ).",    
-                website                 =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])    ).",
+                website                 =". $this->app->db->qstr( $this->app->system->general->processInputtedUrl($qform['website'])    ).",
                 company_number          =". $this->app->db->qstr( $qform['company_number']                   ).",                                        
                 tax_system              =". $this->app->db->qstr( $qform['tax_system']                       ).",
                 sales_tax_rate          =". $this->app->db->qstr( $qform['sales_tax_rate']                   ).",
                 vat_number              =". $this->app->db->qstr( $qform['vat_number']                       ).",
                 vat_flat_rate           =". $this->app->db->qstr( $qform['vat_flat_rate']                    ).",   
-                year_start              =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['year_start'])   ).",
-                year_end                =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['year_end'])     ).",
+                year_start              =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['year_start'])   ).",
+                year_end                =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['year_end'])     ).",
                 welcome_msg             =". $this->app->db->qstr( $qform['welcome_msg']                      ).",
                 currency_symbol         =". $this->app->db->qstr( htmlentities($qform['currency_symbol'])    ).",
                 currency_code           =". $this->app->db->qstr( $qform['currency_code']                    ).",
@@ -331,7 +331,7 @@ class Company extends Components {
 
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         } else {       
 
             // Refresh company logo
@@ -341,7 +341,7 @@ class Company extends Components {
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
 
             // Log activity        
-            $this->app->system->general->write_record_to_activity_log(_gettext("Company details updated."));
+            $this->app->system->general->writeRecordToActivityLog(_gettext("Company details updated."));
 
             return;
 
@@ -362,14 +362,14 @@ class Company extends Components {
                 closing_minute  =". $this->app->db->qstr( $closingTime['Time_Minute']   );
 
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
         } else {
 
             // Assign success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Business hours have been updated."));
 
             // Log activity        
-            $this->app->system->general->write_record_to_activity_log(_gettext("Business hours have been updated."));        
+            $this->app->system->general->writeRecordToActivityLog(_gettext("Business hours have been updated."));        
 
             return true;
 
@@ -398,7 +398,7 @@ class Company extends Components {
 
         if($error_flag) {
 
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
             //return false;      
 
         } else {
@@ -522,7 +522,7 @@ class Company extends Components {
                 echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
                  */   
 
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
 
             }
 

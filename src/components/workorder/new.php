@@ -14,7 +14,7 @@ defined('_QWEXEC') or die;
 // Check if we have a client_id
 if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Client ID supplied."));
-    $this->app->system->page->force_page('client', 'search');
+    $this->app->system->page->forcePage('client', 'search');
 }
 
 // If a workorder is submitted
@@ -30,7 +30,7 @@ if(isset(\CMSApplication::$VAR['submit'])){
     
     // load the workorder details page
     $this->app->system->variables->systemMessagesWrite('success', _gettext("New Work Order created."));
-    $this->app->system->page->force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+    $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
         
 }
 

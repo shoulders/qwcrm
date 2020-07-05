@@ -80,7 +80,7 @@ class PaymentTypeInvoice {
         // If the balance has been cleared, redirect to the record details page
         if($this->invoice_details['balance'] == 0) {
             $this->app->system->variables->systemMessagesWrite('success', _gettext("The balance has been cleared."));
-            $this->app->system->page->force_page('invoice', 'details&invoice_id='.$this->VAR['invoice_id']);
+            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['invoice_id']);
         }
         
         return;
@@ -100,12 +100,12 @@ class PaymentTypeInvoice {
         // Cancel
         if(!$this->invoice_details['balance'] == 0) {
             
-            if($this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'edit')) {
+            if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit')) {
                 Payment::$buttons['cancel']['allowed'] = true;
                 Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
-            if($this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'details')) {
+            if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details')) {
                 Payment::$buttons['cancel']['allowed'] = true;
                 Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
@@ -114,7 +114,7 @@ class PaymentTypeInvoice {
         }
         
         // Return To Record
-        if($this->app->system->security->check_page_accessed_via_qwcrm('payment', 'new')) {
+        if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new')) {
             Payment::$buttons['returnToRecord']['allowed'] = true;
             Payment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
@@ -141,7 +141,7 @@ class PaymentTypeInvoice {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+        $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
                 
         return;        
         
@@ -161,7 +161,7 @@ class PaymentTypeInvoice {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+        $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
                 
         return;        
         
@@ -181,7 +181,7 @@ class PaymentTypeInvoice {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+        $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
                 
         return;        
         
@@ -195,7 +195,7 @@ class PaymentTypeInvoice {
         // Is on a different tax system
         if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));            
-            $this->app->system->page->force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
             //$state_flag = true;
             
         }

@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have an payment_id
 if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
-    $this->app->system->page->force_page('payment', 'search');
+    $this->app->system->page->forcePage('payment', 'search');
 }
     
 $payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);

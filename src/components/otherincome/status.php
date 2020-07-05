@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
-    $this->app->system->page->force_page('otherincome', 'search');
+    $this->app->system->page->forcePage('otherincome', 'search');
 }
 
 // Update Voucher Status
 if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->components->otherincome->updateStatus(\CMSApplication::$VAR['otherincome_id'], \CMSApplication::$VAR['assign_status']);    
-    $this->app->system->page->force_page('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
+    $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
 }
 
 // Build the page with the current status from the database

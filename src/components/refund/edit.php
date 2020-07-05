@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Check if we have a refund_id
 if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
-    $this->app->system->page->force_page('refund', 'search');
+    $this->app->system->page->forcePage('refund', 'search');
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -22,13 +22,13 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->components->refund->recalculateTotals(\CMSApplication::$VAR['refund_id']);
     
     // load details page
-    $this->app->system->page->force_page('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id'], 'msg_success='._gettext("Refund updated successfully.")); 
+    $this->app->system->page->forcePage('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id'], 'msg_success='._gettext("Refund updated successfully.")); 
 } else {
     
     // Check if refund can be edited
     if(!$this->app->components->refund->checkRecordAllowsEdit(\CMSApplication::$VAR['refund_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this refund because its status does not allow it."));
-        $this->app->system->page->force_page('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id']);
+        $this->app->system->page->forcePage('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id']);
     }
 
     // Build the page

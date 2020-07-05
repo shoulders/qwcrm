@@ -14,7 +14,7 @@ defined('_QWEXEC') or die;
 // Check if we have a client_id
 if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Client ID supplied."));
-    $this->app->system->page->force_page('client', 'search');
+    $this->app->system->page->forcePage('client', 'search');
 }
 
 // Build the page

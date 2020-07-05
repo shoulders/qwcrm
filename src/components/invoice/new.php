@@ -21,7 +21,7 @@ if(isset(\CMSApplication::$VAR['workorder_id']) && \CMSApplication::$VAR['workor
     $this->app->components->workorder->updateInvoiceId(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']);
 
     // Load the newly created invoice edit page
-    $this->app->system->page->force_page('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+    $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
     
 } 
 
@@ -32,8 +32,8 @@ if((isset(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['invoice_typ
     \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id'], '', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'unit_discount_rate'));
 
     // Load the newly created invoice edit page
-    $this->app->system->page->force_page('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+    $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 }    
   
 // Fallback Error Control 
-$this->app->system->page->force_page('workorder', 'search', 'msg_danger='._gettext("You cannot create an invoice by the method you just tried, report to admins."));
+$this->app->system->page->forcePage('workorder', 'search', 'msg_danger='._gettext("You cannot create an invoice by the method you just tried, report to admins."));

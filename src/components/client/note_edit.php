@@ -11,14 +11,14 @@ defined('_QWEXEC') or die;
 // check if we have a client_note_id
 if(!isset(\CMSApplication::$VAR['client_note_id']) || !\CMSApplication::$VAR['client_note_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Client Note ID supplied."));
-    $this->app->system->page->force_page('client', 'search');
+    $this->app->system->page->forcePage('client', 'search');
 }
 
 // If record submitted for updating
 if(isset(\CMSApplication::$VAR['submit'])) {
                
     $this->app->components->client->updateNote(\CMSApplication::$VAR['client_note_id'], \CMSApplication::$VAR['note']);
-    $this->app->system->page->force_page('client', 'details&client_id='.$this->app->components->client->getNote(\CMSApplication::$VAR['client_note_id'], 'client_id'));   
+    $this->app->system->page->forcePage('client', 'details&client_id='.$this->app->components->client->getNote(\CMSApplication::$VAR['client_note_id'], 'client_id'));   
     
 } else {    
         

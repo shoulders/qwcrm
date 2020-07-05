@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!$this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install', 'index_allowed')) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm('setup', 'install', 'index_allowed')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -22,7 +22,7 @@ $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
 \CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
 
 // Delete Setup files Action
-if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && $this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install')) {
+if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && $this->app->system->security->checkPageAccessedViaQwcrm('setup', 'install')) {
     $this->app->components->setup->deleteSetupFolder();
 }
 
@@ -145,8 +145,8 @@ if(\CMSApplication::$VAR['stage'] == 'database_install_results') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_install_results') {
         
         // Prefill Company Financial dates
-        $this->app->components->setup->updateRecordValue(PRFX.'company_record', 'year_start', $this->app->system->general->mysql_date());
-        $this->app->components->setup->updateRecordValue(PRFX.'company_record', 'year_end', $this->app->system->general->timestamp_mysql_date(strtotime('+1 year')));
+        $this->app->components->setup->updateRecordValue(PRFX.'company_record', 'year_start', $this->app->system->general->mysqlDate());
+        $this->app->components->setup->updateRecordValue(PRFX.'company_record', 'year_end', $this->app->system->general->timestampMysqlDate(strtotime('+1 year')));
         \CMSApplication::$VAR['stage'] = 'company_details';    
     
     // Load the page  
@@ -197,7 +197,7 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
             $this->app->smarty->assign('company_logo', '');
         }
         $this->app->smarty->assign('date_format', $this->app->components->company->getRecord('date_format'));
-        $this->app->smarty->assign('date_formats', $this->app->system->general->get_date_formats());
+        $this->app->smarty->assign('date_formats', $this->app->system->general->getDateFormats());
         $this->app->smarty->assign('tax_systems', $this->app->components->company->getTaxSystems());
         $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(null, true) );
         $this->app->smarty->assign('stage', 'company_details');

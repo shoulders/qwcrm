@@ -79,7 +79,7 @@ class PaymentTypeOtherincome {
         // If the balance has been cleared, redirect to the record details page
         if($this->otherincome_details['balance'] == 0) {
             $this->app->system->variables->systemMessagesWrite('success', _gettext("The balance has been cleared."));
-            $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.$this->VAR['otherincome_id']);
+            $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['otherincome_id']);
         }
         
         return;
@@ -98,7 +98,7 @@ class PaymentTypeOtherincome {
         
         // Cancel
         if(!$this->otherincome_details['balance'] == 0) {
-            if($this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'details')) {
+            if($this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'details')) {
                 Payment::$buttons['cancel']['allowed'] = true;
                 Payment::$buttons['cancel']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
@@ -106,7 +106,7 @@ class PaymentTypeOtherincome {
         }
         
         // Return To Record
-        if($this->app->system->security->check_page_accessed_via_qwcrm('payment', 'new')) {
+        if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new')) {
             Payment::$buttons['returnToRecord']['allowed'] = true;
             Payment::$buttons['returnToRecord']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'];
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
@@ -133,7 +133,7 @@ class PaymentTypeOtherincome {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
+        $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
                 
         return;        
         
@@ -153,7 +153,7 @@ class PaymentTypeOtherincome {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
+        $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
                 
         return;        
         
@@ -173,7 +173,7 @@ class PaymentTypeOtherincome {
         
         // Load the relevant record details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
+        $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
                 
         return;        
         
@@ -187,7 +187,7 @@ class PaymentTypeOtherincome {
         // Is on a different tax system
         if($this->otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The other income cannot receive a payment because it is on a different tax system."));
-            $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
+            $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             //$state_flag = false;
         }
 

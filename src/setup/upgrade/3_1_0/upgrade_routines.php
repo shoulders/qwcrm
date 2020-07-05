@@ -28,26 +28,26 @@ class Upgrade3_1_0 extends Setup {
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces
                 
         // Perform the upgrade
-        $this->pre_database();
-        $this->process_database();
-        $this->post_database();        
+        $this->preDatabase();
+        $this->processDatabase();
+        $this->postDatabase();        
         
     }    
     
     // scripts executed before SQL script (if required)
-    public function pre_database() {        
+    public function preDatabase() {        
         
     }
     
     // Execute the upgrade SQL script
-    public function process_database() {
+    public function processDatabase() {
         
         $this->executeSqlFileLines(SETUP_DIR.'upgrade/'.$this->upgrade_step.'/upgrade_database.sql');      
         
     }
     
     // Execute post database scipts and tidy up the data
-    public function post_database() {
+    public function postDatabase() {
         
         // Config File
         $this->app->components->administrator->insertQwcrmConfigSetting('sef', '0');
@@ -89,34 +89,34 @@ class Upgrade3_1_0 extends Setup {
         $this->updateColumnValues(PRFX.'voucher_records', 'blocked', '9', '0');        
         
         // Convert timestamps to MySQL DATE
-        $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_start', 'company_name');
-        $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_end', 'company_name');
-        $this->column_timestamp_to_mysql_date(PRFX.'expense_records', 'date', 'expense_id');
-        $this->column_timestamp_to_mysql_date(PRFX.'voucher_records', 'expiry_date', 'voucher_id');
-        $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'date', 'invoice_id');
-        $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'due_date', 'invoice_id');
-        $this->column_timestamp_to_mysql_date(PRFX.'payment_records', 'date', 'payment_id');        
-        $this->column_timestamp_to_mysql_date(PRFX.'otherincome_records', 'date', 'otherincome_id');
+        $this->columnTimestampToMysqlDate(PRFX.'company_record', 'year_start', 'company_name');
+        $this->columnTimestampToMysqlDate(PRFX.'company_record', 'year_end', 'company_name');
+        $this->columnTimestampToMysqlDate(PRFX.'expense_records', 'date', 'expense_id');
+        $this->columnTimestampToMysqlDate(PRFX.'voucher_records', 'expiry_date', 'voucher_id');
+        $this->columnTimestampToMysqlDate(PRFX.'invoice_records', 'date', 'invoice_id');
+        $this->columnTimestampToMysqlDate(PRFX.'invoice_records', 'due_date', 'invoice_id');
+        $this->columnTimestampToMysqlDate(PRFX.'payment_records', 'date', 'payment_id');        
+        $this->columnTimestampToMysqlDate(PRFX.'otherincome_records', 'date', 'otherincome_id');
                 
         // Convert timestamps to MySQL DATETIME
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_active', 'user_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'register_date', 'user_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_reset_time', 'user_id');     
-        $this->column_timestamp_to_mysql_datetime(PRFX.'client_notes', 'date', 'client_note_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'opened_on', 'client_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'last_active', 'client_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_history', 'date', 'history_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_notes', 'date', 'workorder_note_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'opened_on', 'workorder_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'closed_on', 'workorder_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'start_time', 'schedule_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'end_time', 'schedule_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'opened_on', 'invoice_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'closed_on', 'invoice_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'last_active', 'invoice_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'opened_on', 'voucher_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'redeemed_on', 'voucher_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'user_records', 'last_active', 'user_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'user_records', 'register_date', 'user_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'user_records', 'last_reset_time', 'user_id');     
+        $this->columnTimestampToMysqlDatetime(PRFX.'client_notes', 'date', 'client_note_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'client_records', 'opened_on', 'client_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'client_records', 'last_active', 'client_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'workorder_history', 'date', 'history_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'workorder_notes', 'date', 'workorder_note_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'workorder_records', 'opened_on', 'workorder_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'workorder_records', 'closed_on', 'workorder_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'schedule_records', 'start_time', 'schedule_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'schedule_records', 'end_time', 'schedule_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'invoice_records', 'opened_on', 'invoice_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'invoice_records', 'closed_on', 'invoice_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'invoice_records', 'last_active', 'invoice_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'voucher_records', 'opened_on', 'voucher_id');
+        $this->columnTimestampToMysqlDatetime(PRFX.'voucher_records', 'redeemed_on', 'voucher_id');
         
         // Populate the last_active columns with record date for the following becasue they have only just received last_Active
         $this->copyColumnAToColumnB('expense_records', 'date', 'last_active');
@@ -142,11 +142,11 @@ class Upgrade3_1_0 extends Setup {
         $this->updateColumnValues(PRFX.'invoice_parts', 'vat_tax_code', '*', $this->default_vat_tax_code);
         
         // Parse Labour and Parts records and update their totals to reflect the new VAT system
-        $this->invoice_correct_labour_totals();
-        $this->invoice_correct_parts_totals();        
+        $this->invoiceCorrectLabourTotals();
+        $this->invoiceCorrectPartsTotals();        
         
         // Parse Voucher records and correct records        
-        $this->voucher_correct_records();
+        $this->voucherCorrectRecords();
         $this->updateColumnValues(PRFX.'voucher_records', 'type', '*', 'MPV');
         $this->updateColumnValues(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
         $this->updateColumnValues(PRFX.'voucher_records', 'vat_tax_code', '*', $this->app->components->voucher->getVatTaxCode('MPV', $this->company_tax_system)); 
@@ -173,11 +173,11 @@ class Upgrade3_1_0 extends Setup {
         $this->updateColumnValues(PRFX.'payment_records', 'type', '*', 'invoice');
         
         // Parse Payment notes and extract information into 'additional_info' column for invoices
-        $this->payments_parse_import_additional_info();
+        $this->paymentsParseImportAdditionalInfo();
         
         // Convert expense, refund and otherincome transactions into separate record and payment
-        $this->payments_create_expense_records_payments();        
-        $this->payments_create_otherincome_records_payments(); 
+        $this->paymentsCreateExpenseRecordsPayments();        
+        $this->paymentsCreateOtherincomeRecordsPayments(); 
                 
         // Update Records to allow for openen_on, closed_on and last_active        
         $this->copyColumnAToColumnB('expense_records', 'date', 'opened_on');
@@ -186,10 +186,10 @@ class Upgrade3_1_0 extends Setup {
         $this->copyColumnAToColumnB('otherincome_records', 'date', 'opened_on');
         $this->copyColumnAToColumnB('otherincome_records', 'date', 'closed_on');
         $this->copyColumnAToColumnB('otherincome_records', 'date', 'last_active');
-        $this->updateColumnValues(PRFX.'supplier_records', 'opened_on', '*', $this->app->system->general->mysql_datetime($this->setup_time));
+        $this->updateColumnValues(PRFX.'supplier_records', 'opened_on', '*', $this->app->system->general->mysqlDatetime($this->setup_time));
         
         // correct users with 00:00:00 registered dates
-        $this->updateColumnValues(PRFX.'user_records', 'register_date', '0000-00-00 00:00:00', $this->app->system->general->mysql_datetime($this->setup_time));
+        $this->updateColumnValues(PRFX.'user_records', 'register_date', '0000-00-00 00:00:00', $this->app->system->general->mysqlDatetime($this->setup_time));
         
         // Correct logo filepath
         $this->updateRecordValue(PRFX.'company_record', 'logo', str_replace('media/', '', $this->app->components->company->getRecord('logo')));
@@ -209,7 +209,7 @@ class Upgrade3_1_0 extends Setup {
     #   Convert a timestamp `column` to a MySQL DATE `column`    #
     ##############################################################
     
-     public function column_timestamp_to_mysql_date($table, $column_timestamp, $column_primary_key) {
+     public function columnTimestampToMysqlDate($table, $column_timestamp, $column_primary_key) {
         
         $mysql_date = null;
         $temp_prfx = 'temp_';
@@ -274,7 +274,7 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
 
                 // Convert the timestamp into the correct MySQL DATE
-                $mysql_date = $this->timestamp_to_mysql_date_offset_aware($rs->fields[$column_timestamp]);
+                $mysql_date = $this->timestampToMysqlDateOffsetAware($rs->fields[$column_timestamp]);
 
                 // Update the temporary column record
                 $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_date."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
@@ -394,7 +394,7 @@ class Upgrade3_1_0 extends Setup {
     #  Convert a timestamp `column` to a MySQL DATETIME `column` #
     ##############################################################
     
-    public function column_timestamp_to_mysql_datetime($table, $column_timestamp, $column_primary_key) {
+    public function columnTimestampToMysqlDatetime($table, $column_timestamp, $column_primary_key) {
         
         $mysql_datetime = null;
         $temp_prfx = 'temp_';
@@ -458,7 +458,7 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
 
                 // Convert the timestamp into the correct MySQL DATETIME
-                $mysql_datetime = $this->app->system->general->timestamp_mysql_datetime($rs->fields[$column_timestamp]);
+                $mysql_datetime = $this->app->system->general->timestampMysqlDatetime($rs->fields[$column_timestamp]);
 
                 // Update the temporary column record
                 $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_datetime."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
@@ -572,7 +572,7 @@ class Upgrade3_1_0 extends Setup {
     #  Convert a timestamp a MySQL DATE whilst compensating for (GMT/BST) || (Winter/Summer) offsets #
     ##################################################################################################
     
-    public function timestamp_to_mysql_date_offset_aware($timestamp) {
+    public function timestampToMysqlDateOffsetAware($timestamp) {
         
         // If there is no timestamp return an empty MySQL DATE
         if(!$timestamp) {
@@ -581,7 +581,7 @@ class Upgrade3_1_0 extends Setup {
         
         // If the timestamp already is a proper date in the format xxxx/xx/xx 00:00 then timestamp is correct 'as is' (there is no offset)
         if(preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} 00:00:00$/', date('Y-m-d H:i:s', $timestamp))) {              
-            return $this->app->system->general->timestamp_mysql_date($timestamp);           
+            return $this->app->system->general->timestampMysqlDate($timestamp);           
         }
         
         // Calculate backward difference
@@ -612,7 +612,7 @@ class Upgrade3_1_0 extends Setup {
         $corrected_timestamp = $timestamp + $offset;
      
         // Return the correct date in MySQL DATE format
-        return $this->app->system->general->timestamp_mysql_date($corrected_timestamp);        
+        return $this->app->system->general->timestampMysqlDate($corrected_timestamp);        
         
     } 
     
@@ -621,7 +621,7 @@ class Upgrade3_1_0 extends Setup {
     #################################################################  // add in the other fixes to the vouceher records here and deleete the others
                                                                         
 
-    function voucher_correct_records() {
+    function voucherCorrectRecords() {
         
         $local_error_flag = false;                     
         
@@ -769,7 +769,7 @@ class Upgrade3_1_0 extends Setup {
     #  Recalculate Labour totals because of the new VAT system      #
     #################################################################
 
-    function invoice_correct_labour_totals() {
+    function invoiceCorrectLabourTotals() {
         
         $local_error_flag = false;                     
         
@@ -905,7 +905,7 @@ class Upgrade3_1_0 extends Setup {
     #  Recalculate Parts totals because of the new VAT system       #
     #################################################################
 
-    function invoice_correct_parts_totals() {
+    function invoiceCorrectPartsTotals() {
         
         $local_error_flag = false;                     
         
@@ -1041,7 +1041,7 @@ class Upgrade3_1_0 extends Setup {
     #  Parse Payment records and populate additinal information     #
     #################################################################
 
-    function payments_parse_import_additional_info() {
+    function paymentsParseImportAdditionalInfo() {
         
         $local_error_flag = false;                     
         
@@ -1206,7 +1206,7 @@ class Upgrade3_1_0 extends Setup {
     #  Convert Expenses into a separate item and make a related payment   #
     #######################################################################
 
-    function payments_create_expense_records_payments() {
+    function paymentsCreateExpenseRecordsPayments() {
         
         $local_error_flag = false;                     
         
@@ -1356,7 +1356,7 @@ class Upgrade3_1_0 extends Setup {
     #  Convert Otherincomes into a separate item and make a related payment    #
     ############################################################################
 
-    function payments_create_otherincome_records_payments() {
+    function paymentsCreateOtherincomeRecordsPayments() {
         
         $local_error_flag = false;                     
         

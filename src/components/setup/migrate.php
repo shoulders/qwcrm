@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 require(SETUP_DIR.'migrate/myitcrm/migrate_routines.php');
 
 // Prevent direct access to this page
-if(!$this->app->system->security->check_page_accessed_via_qwcrm('setup', 'migrate', 'index_allowed')) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm('setup', 'migrate', 'index_allowed')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -92,7 +92,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_connection_myitcrm') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_connection_myitcrm') {
         
         // Test the supplied database connection details
-        if($MigrateMyitcrm->check_myitcrm_database_connection(\CMSApplication::$VAR['qwcrm_config']['myitcrm_prefix'])) {
+        if($MigrateMyitcrm->checkMyitcrmDatabaseConnection(\CMSApplication::$VAR['qwcrm_config']['myitcrm_prefix'])) {
             
             // Record details into the config file and display success message and load the next page       
             $this->app->components->administrator->updateQwcrmConfigSettingsFile(\CMSApplication::$VAR['qwcrm_config']);           
@@ -212,7 +212,7 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'company_details') {
                 
         // Add missing information to the form submission
-        $company_details = $MigrateMyitcrm->get_company_details();
+        $company_details = $MigrateMyitcrm->getCompanyDetails();
         \CMSApplication::$VAR['welcome_msg']             = $company_details['welcome_msg'];
         \CMSApplication::$VAR['email_signature']         = $company_details['email_signature'];
         \CMSApplication::$VAR['email_signature_active']  = $company_details['email_signature_active'];
@@ -220,10 +220,10 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         \CMSApplication::$VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];
            
         // Set the date format required for $this->app->components->company->update_company_details()
-        defined('DATE_FORMAT') ?: define('DATE_FORMAT', $MigrateMyitcrm->get_company_details('date_format'));
+        defined('DATE_FORMAT') ?: define('DATE_FORMAT', $MigrateMyitcrm->getCompanyDetails('date_format'));
         
         // update company details and load next stage
-        $MigrateMyitcrm->update_company_details(\CMSApplication::$VAR);
+        $MigrateMyitcrm->updateCompanyDetails(\CMSApplication::$VAR);
         $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Company options inserted."));
         \CMSApplication::$VAR['stage'] = 'database_migrate';
         
@@ -232,7 +232,7 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         
         // date format is not set in the javascript date picker because i am manipulating stages not pages
         
-        $company_details = $MigrateMyitcrm->get_company_details_merged();
+        $company_details = $MigrateMyitcrm->getCompanyDetailsMerged();
         
         // Update the logo in the database with the merged value (this allows the logo to be displayed)
         $this->app->components->setup->updateRecordValue(PRFX.'company', 'logo', $company_details['logo']);
@@ -240,7 +240,7 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         // Assign Smarty variables
         $this->app->smarty->assign('company_details', $company_details);        
         $this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $company_details['logo'] );
-        $this->app->smarty->assign('date_format', $MigrateMyitcrm->get_company_details('date_format'));
+        $this->app->smarty->assign('date_format', $MigrateMyitcrm->getCompanyDetails('date_format'));
         $this->app->smarty->assign('stage', 'company_details');             
         
     }
@@ -256,7 +256,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_migrate') {
         $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Starting MyITCRM Database Migration."));
                 
         // install the database file and load the next page
-        if($MigrateMyitcrm->migrate_myitcrm_database($this->app->config->get('db_prefix'), $this->app->config->get('myitcrm_prefix'))) {
+        if($MigrateMyitcrm->migrateMyitcrmDatabase($this->app->config->get('db_prefix'), $this->app->config->get('myitcrm_prefix'))) {
             
             // remove MyITCRM prefix from the config file
             $this->app->components->administrator->deleteQwcrmConfigSetting('myitcrm_prefix');            
@@ -310,7 +310,7 @@ if(\CMSApplication::$VAR['stage'] == 'administrator_account') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'administrator_account') {
                 
         // Check if the username or email have been used (the extra variable is to ignore the users current username and email to prevent submission errors when only updating other values)
-        if ($MigrateMyitcrm->check_user_username_exists(\CMSApplication::$VAR['username']) || $MigrateMyitcrm->check_user_email_exists(\CMSApplication::$VAR['email'])) {     
+        if ($MigrateMyitcrm->checkUserUsernameExists(\CMSApplication::$VAR['username']) || $MigrateMyitcrm->checkUserEmailExists(\CMSApplication::$VAR['email'])) {     
 
             // send the posted data back to smarty
             $user_details = \CMSApplication::$VAR;
@@ -319,13 +319,13 @@ if(\CMSApplication::$VAR['stage'] == 'administrator_account') {
             $this->app->smarty->assign('user_details', $user_details);        
             
             // Set mandatory default values
-            $this->app->smarty->assign('date_format', $MigrateMyitcrm->get_company_details('date_format'));
+            $this->app->smarty->assign('date_format', $MigrateMyitcrm->getCompanyDetails('date_format'));
             $this->app->smarty->assign('stage', 'administrator_account');
 
         } else {    
 
             // Insert user record (and return the new ID)
-            $MigrateMyitcrm->insert_user(\CMSApplication::$VAR);
+            $MigrateMyitcrm->insertUser(\CMSApplication::$VAR);
 
             $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("The administrator account has been created."));
             $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
@@ -367,7 +367,7 @@ if(\CMSApplication::$VAR['stage'] == 'administrator_account') {
         $this->app->smarty->assign('user_details', $user_details); 
     
         // Set mandatory default values
-        $this->app->smarty->assign('date_format', $MigrateMyitcrm->get_company_details('date_format'));
+        $this->app->smarty->assign('date_format', $MigrateMyitcrm->getCompanyDetails('date_format'));
         $this->app->smarty->assign('stage', 'administrator_account');
         
     }

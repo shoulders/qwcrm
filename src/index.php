@@ -82,11 +82,11 @@ $app->system->variables->systemMessagesBuildStore(true);
     
 // Set the Smarty User Variables (only run once per session)
 if(!defined('QWCRM_SETUP')) {
-    $app->system->variables->smarty_set_user_variables();
+    $app->system->variables->smartySetUserVariables();
 }
 
 // Build and Load the page into memmory
-$app->system->page->load_page('set_controller');
+$app->system->page->loadPage('set_controller');
 
 ################################################
 #         Logging                              #
@@ -99,7 +99,7 @@ if(!defined('QWCRM_SETUP')) {
     
     // Access Logging - This logs QWcrm page load details to the access log
     if(!defined('SKIP_LOGGING') && $app->config->get('qwcrm_access_log')) {    
-        $app->system->general->write_record_to_access_log();    
+        $app->system->general->writeRecordToAccessLog();    
     }
 
 }
@@ -113,7 +113,7 @@ if(!isset($VAR['themeVar']) || $VAR['themeVar'] !== 'print') {
 
     // Compress page payload and send compression headers
     if (\Factory::getConfig()->get('gzip')) {
-        \CMSApplication::$BuildPage = $app->system->page->compress_page_output(\CMSApplication::$BuildPage);
+        \CMSApplication::$BuildPage = $app->system->page->compressPageOutput(\CMSApplication::$BuildPage);
     }
         
 }
