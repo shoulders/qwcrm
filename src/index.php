@@ -95,7 +95,7 @@ $app->system->page->load_page('set_controller');
 if(!defined('QWCRM_SETUP')) { 
     
     // Update the Logged in User's Last Active Times
-    $app->components->user->update_user_last_active($app->user->login_user_id);
+    $app->components->user->updateLastActive($app->user->login_user_id);
     
     // Access Logging - This logs QWcrm page load details to the access log
     if(!defined('SKIP_LOGGING') && $app->config->get('qwcrm_access_log')) {    

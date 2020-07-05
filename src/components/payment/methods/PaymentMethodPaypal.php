@@ -32,10 +32,10 @@ class PaymentMethodPaypal {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json(null, null, null, null, null, $this->VAR['qpayment']['paypal_payment_id']);  
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, null, null, null, null, $this->VAR['qpayment']['paypal_payment_id']);  
         
         // Insert the payment with the calculated information
-        if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
+        if($this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
             Payment::$payment_processed = true;            
         }
         

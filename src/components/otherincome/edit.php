@@ -18,23 +18,23 @@ if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['ot
 if(isset(\CMSApplication::$VAR['submit'])) {    
         
     // Update the otherincome in the database
-    $this->app->components->otherincome->update_otherincome(\CMSApplication::$VAR['qform']);
-    $this->app->components->otherincome->recalculate_otherincome_totals(\CMSApplication::$VAR['qform']['otherincome_id']);
+    $this->app->components->otherincome->updateRecord(\CMSApplication::$VAR['qform']);
+    $this->app->components->otherincome->recalculateTotals(\CMSApplication::$VAR['qform']['otherincome_id']);
     
     // load details page
     $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id'], 'msg_success='._gettext("Otherincome updated successfully.")); 
 } else {  
 
     // Check if payment can be edited
-    if(!$this->app->components->otherincome->check_otherincome_can_be_edited(\CMSApplication::$VAR['otherincome_id'])) {
+    if(!$this->app->components->otherincome->checkStatusAllowsEdit(\CMSApplication::$VAR['otherincome_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this otherincome because its status does not allow it."));
         $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
     }
     
     // Build the page
-    $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->get_otherincome_statuses());
-    $this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->get_otherincome_types());
-    $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes(false) );    
-    $this->app->smarty->assign('otherincome_details', $this->app->components->otherincome->get_otherincome_details(\CMSApplication::$VAR['otherincome_id']));
+    $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->getStatuses());
+    $this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->getTypes());
+    $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(false) );    
+    $this->app->smarty->assign('otherincome_details', $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id']));
 
 }

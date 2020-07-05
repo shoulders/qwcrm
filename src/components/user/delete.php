@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']
 }
 
 // Run the delete function
-if(!$this->app->components->user->delete_user(\CMSApplication::$VAR['user_id'])) {
+if(!$this->app->components->user->deleteRecord(\CMSApplication::$VAR['user_id'])) {
     
     // load the user details page
     $this->app->system->page->force_page('user', 'details&user_id='.\CMSApplication::$VAR['user_id']);    

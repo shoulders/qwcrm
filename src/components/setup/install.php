@@ -23,11 +23,11 @@ $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
 
 // Delete Setup files Action
 if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && $this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install')) {
-    $this->app->components->setup->delete_setup_folder();
+    $this->app->components->setup->deleteSetupFolder();
 }
 
 // Log message to setup log - only when starting the process - this start every page loads
-$this->app->components->setup->write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
+$this->app->components->setup->writeRecordToSetupLog('install', _gettext("QWcrm installation has begun."));
 
 // Database Connection
 if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == 'database_connection') {
@@ -35,18 +35,18 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_connection') {
         
         // Test the supplied database connection details and store details if successful
-        if($this->app->components->setup->verify_database_connection_details(\CMSApplication::$VAR['qwcrm_config']['db_host'], \CMSApplication::$VAR['qwcrm_config']['db_user'], \CMSApplication::$VAR['qwcrm_config']['db_pass'], \CMSApplication::$VAR['qwcrm_config']['db_name'])) {
+        if($this->app->components->setup->checkDatabaseConnectionDetailsValid(\CMSApplication::$VAR['qwcrm_config']['db_host'], \CMSApplication::$VAR['qwcrm_config']['db_user'], \CMSApplication::$VAR['qwcrm_config']['db_pass'], \CMSApplication::$VAR['qwcrm_config']['db_name'])) {
             
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Database connection successful."));
             
             // Create Configuration File
-            $this->app->components->setup->create_config_file_from_default(SETUP_DIR.'install/install_configuration.php');
+            $this->app->components->setup->createConfigFileFromDefault(SETUP_DIR.'install/install_configuration.php');
             
             // Load the configuration file into the registry            
-            $this->app->components->administrator->refresh_qwcrm_config();
+            $this->app->components->administrator->refreshQwcrmConfig();
             
-            $this->app->components->administrator->update_qwcrm_config_settings_file(\CMSApplication::$VAR['qwcrm_config']);           
-            $this->app->components->setup->write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
+            $this->app->components->administrator->updateQwcrmConfigSettingsFile(\CMSApplication::$VAR['qwcrm_config']);           
+            $this->app->components->setup->writeRecordToSetupLog('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             \CMSApplication::$VAR['stage'] = 'config_settings';
         
         // Load the page - Error message done by verify_database_connection_details();
@@ -54,7 +54,7 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
             
             // reload the database connection page with the entered values and error message
             $this->app->smarty->assign('qwcrm_config', \CMSApplication::$VAR['qwcrm_config']);                       
-            $this->app->components->setup->write_record_to_setup_log('install', _gettext("Failed to connect to the database with the supplied credentials.")); 
+            $this->app->components->setup->writeRecordToSetupLog('install', _gettext("Failed to connect to the database with the supplied credentials.")); 
             $this->app->smarty->assign('stage', 'database_connection');             
             
         }
@@ -88,14 +88,14 @@ if(\CMSApplication::$VAR['stage'] == 'config_settings') {
         // Add other required varibles
         \CMSApplication::$VAR['qwcrm_config']['secret_key']          = \Joomla\CMS\User\UserHelper::genRandomPassword(32);
         
-        $this->app->components->administrator->update_qwcrm_config_settings_file(\CMSApplication::$VAR['qwcrm_config']);
-        $this->app->components->setup->write_record_to_setup_log('install', _gettext("Config settings have been added to the config file."));
+        $this->app->components->administrator->updateQwcrmConfigSettingsFile(\CMSApplication::$VAR['qwcrm_config']);
+        $this->app->components->setup->writeRecordToSetupLog('install', _gettext("Config settings have been added to the config file."));
         \CMSApplication::$VAR['stage'] = 'database_install';
     
     // Load the page
     } else {
         
-        \CMSApplication::$VAR['qwcrm_config']['db_prefix'] = $this->app->components->setup->generate_database_prefix();
+        \CMSApplication::$VAR['qwcrm_config']['db_prefix'] = $this->app->components->setup->generateDatabasePrefix();
     
         $this->app->smarty->assign('qwcrm_config', \CMSApplication::$VAR['qwcrm_config']);        
         $this->app->smarty->assign('stage', 'config_settings');
@@ -110,14 +110,14 @@ if(\CMSApplication::$VAR['stage'] == 'database_install') {
     
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_install') {
        
-        $this->app->components->setup->write_record_to_setup_log('install', _gettext("Starting Database installation."));
+        $this->app->components->setup->writeRecordToSetupLog('install', _gettext("Starting Database installation."));
         
         // install the database file and load the next page
-        if($this->app->components->setup->install_database(SETUP_DIR.'install/install_database.sql')) {
+        if($this->app->components->setup->installDatabase(SETUP_DIR.'install/install_database.sql')) {
             
             $record = _gettext("The database installed successfully.");            
             $this->app->system->variables->systemMessagesWrite('success', $record); 
-            $this->app->components->setup->write_record_to_setup_log('install', $record);
+            $this->app->components->setup->writeRecordToSetupLog('install', $record);
             \CMSApplication::$VAR['stage'] = 'database_install_results';            
         
         // Load the page with the error message      
@@ -125,7 +125,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_install') {
               
            $record = _gettext("The database failed to install.");                      
            $this->app->system->variables->systemMessagesWrite('danger', $record);
-           $this->app->components->setup->write_record_to_setup_log('install', $record);
+           $this->app->components->setup->writeRecordToSetupLog('install', $record);
            \CMSApplication::$VAR['stage'] = 'database_install_results';
            
         }        
@@ -145,8 +145,8 @@ if(\CMSApplication::$VAR['stage'] == 'database_install_results') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_install_results') {
         
         // Prefill Company Financial dates
-        $this->app->components->setup->update_record_value(PRFX.'company_record', 'year_start', $this->app->system->general->mysql_date());
-        $this->app->components->setup->update_record_value(PRFX.'company_record', 'year_end', $this->app->system->general->timestamp_mysql_date(strtotime('+1 year')));
+        $this->app->components->setup->updateRecordValue(PRFX.'company_record', 'year_start', $this->app->system->general->mysql_date());
+        $this->app->components->setup->updateRecordValue(PRFX.'company_record', 'year_end', $this->app->system->general->timestamp_mysql_date(strtotime('+1 year')));
         \CMSApplication::$VAR['stage'] = 'company_details';    
     
     // Load the page  
@@ -168,7 +168,7 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'company_details') {
         
         // Add missing information
-        $company_details = $this->app->components->company->get_company_details();
+        $company_details = $this->app->components->company->getRecord();
         \CMSApplication::$VAR['welcome_msg']             = $company_details['welcome_msg'];
         \CMSApplication::$VAR['email_signature']         = $company_details['email_signature'];
         \CMSApplication::$VAR['email_signature_active']  = $company_details['email_signature_active'];
@@ -176,11 +176,11 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         \CMSApplication::$VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];                
         
         // Set the date format required for $this->app->components->company->update_company_details()
-        defined('DATE_FORMAT') ?: define('DATE_FORMAT', $this->app->components->company->get_company_details('date_format'));
+        defined('DATE_FORMAT') ?: define('DATE_FORMAT', $this->app->components->company->getRecord('date_format'));
         
         // update company details and load next stage      
-        $this->app->components->company->update_company_details(\CMSApplication::$VAR);
-        $this->app->components->setup->write_record_to_setup_log('install', _gettext("Company options inserted."));
+        $this->app->components->company->updateRecord(\CMSApplication::$VAR);
+        $this->app->components->setup->writeRecordToSetupLog('install', _gettext("Company options inserted."));
         \CMSApplication::$VAR['stage'] = 'start_numbers';
         
     // Load the page    
@@ -188,18 +188,18 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         
         // date format is not set in the javascript date picker because i am manipulating stages not pages
                 
-        $this->app->smarty->assign('company_details', $this->app->components->company->get_company_details());
+        $this->app->smarty->assign('company_details', $this->app->components->company->getRecord());
         // Only build the link if there is a logo set.
-        if($this->app->components->company->get_company_details('logo'))
+        if($this->app->components->company->getRecord('logo'))
         {
-            $this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->app->components->company->get_company_details('logo') );
+            $this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->app->components->company->getRecord('logo') );
         } else {
             $this->app->smarty->assign('company_logo', '');
         }
-        $this->app->smarty->assign('date_format', $this->app->components->company->get_company_details('date_format'));
+        $this->app->smarty->assign('date_format', $this->app->components->company->getRecord('date_format'));
         $this->app->smarty->assign('date_formats', $this->app->system->general->get_date_formats());
-        $this->app->smarty->assign('tax_systems', $this->app->components->company->get_tax_systems());
-        $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes(null, true) );
+        $this->app->smarty->assign('tax_systems', $this->app->components->company->getTaxSystems());
+        $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(null, true) );
         $this->app->smarty->assign('stage', 'company_details');
         
     }
@@ -214,13 +214,13 @@ if(\CMSApplication::$VAR['stage'] == 'start_numbers') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'start_numbers') {
         
         if(\CMSApplication::$VAR['workorder_start_number']) {
-            $this->app->components->setup->set_workorder_start_number(\CMSApplication::$VAR['workorder_start_number']);
-            $this->app->components->setup->write_record_to_setup_log('install', _gettext("Starting Work Order number has been set to").' '.\CMSApplication::$VAR['workorder_start_number']);
+            $this->app->components->setup->setWorkorderStartNumber(\CMSApplication::$VAR['workorder_start_number']);
+            $this->app->components->setup->writeRecordToSetupLog('install', _gettext("Starting Work Order number has been set to").' '.\CMSApplication::$VAR['workorder_start_number']);
         }
         
         if(\CMSApplication::$VAR['invoice_start_number']) {
-            $this->app->components->setup->set_invoice_start_number(\CMSApplication::$VAR['invoice_start_number']);
-            $this->app->components->setup->write_record_to_setup_log('install', _gettext("Starting Invoice number has been set to").' '.\CMSApplication::$VAR['invoice_start_number']);
+            $this->app->components->setup->setInvoiceStartNumber(\CMSApplication::$VAR['invoice_start_number']);
+            $this->app->components->setup->writeRecordToSetupLog('install', _gettext("Starting Invoice number has been set to").' '.\CMSApplication::$VAR['invoice_start_number']);
         }
         
         \CMSApplication::$VAR['stage'] = 'administrator_account';
@@ -239,9 +239,9 @@ if(\CMSApplication::$VAR['stage'] == 'administrator_account') {
     // create the administrator and load the next page
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'administrator_account') {
        
-        $this->app->components->user->insert_user(\CMSApplication::$VAR);
-        $this->app->components->setup->write_record_to_setup_log('install', _gettext("The administrator account has been created."));
-        $this->app->components->setup->write_record_to_setup_log('install', _gettext("The QWcrm installation process has completed successfully."));
+        $this->app->components->user->insertRecord(\CMSApplication::$VAR);
+        $this->app->components->setup->writeRecordToSetupLog('install', _gettext("The administrator account has been created."));
+        $this->app->components->setup->writeRecordToSetupLog('install', _gettext("The QWcrm installation process has completed successfully."));
         $this->app->system->variables->systemMessagesWrite('success', _gettext("The QWcrm installation process has completed successfully."));
         \CMSApplication::$VAR['stage'] = 'delete_setup_folder';        
     
@@ -276,9 +276,9 @@ if(\CMSApplication::$VAR['stage'] == 'administrator_account') {
                             );
     
         // Set mandatory default values
-        $this->app->smarty->assign('date_format', $this->app->components->company->get_company_details('date_format'));
+        $this->app->smarty->assign('date_format', $this->app->components->company->getRecord('date_format'));
         $this->app->smarty->assign('user_details', $user_details); 
-        $this->app->smarty->assign('user_locations', $this->app->components->user->get_user_locations());           
+        $this->app->smarty->assign('user_locations', $this->app->components->user->getLocations());           
         $this->app->smarty->assign('stage', 'administrator_account');
         
     }
@@ -298,10 +298,10 @@ if(\CMSApplication::$VAR['stage'] == 'delete_setup_folder') {
     } else {
     
         // Log message to setup log - only when starting the process - this start every page loads
-        $this->app->components->setup->write_record_to_setup_log('upgrade', _gettext("QWcrm installation has finished."));
+        $this->app->components->setup->writeRecordToSetupLog('upgrade', _gettext("QWcrm installation has finished."));
         
         // Clean up after setup process 
-        $this->app->components->setup->setup_finished();
+        $this->app->components->setup->setupFinished();
         
         // Set mandatory default values               
         $this->app->smarty->assign('stage', 'delete_setup_folder');

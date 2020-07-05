@@ -21,10 +21,10 @@ if(!isset(\CMSApplication::$VAR['schedule_id']) || !\CMSApplication::$VAR['sched
 }
 
 // Get workorder_id before deleting the record
-\CMSApplication::$VAR['workorder_id'] = $this->app->components->schedule->get_schedule_details(\CMSApplication::$VAR['schedule_id'], 'workorder_id');
+\CMSApplication::$VAR['workorder_id'] = $this->app->components->schedule->getRecord(\CMSApplication::$VAR['schedule_id'], 'workorder_id');
 
 // Delete the schedule
-$this->app->components->schedule->delete_schedule(\CMSApplication::$VAR['schedule_id']);
+$this->app->components->schedule->deleteRecord(\CMSApplication::$VAR['schedule_id']);
 
 // load schedule search page
 $this->app->system->page->force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id'], 'msg_success='._gettext("Schedule record has been deleted."));

@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
 }
 
 // Cancel Invoice
-if(!$this->app->components->invoice->cancel_invoice(\CMSApplication::$VAR['invoice_id'])) {    
+if(!$this->app->components->invoice->cancelRecord(\CMSApplication::$VAR['invoice_id'])) {    
     
     // Load the invoice details page with error
     $this->app->system->page->force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id'].'&msg_success='._gettext("The invoice failed to be cancelled."));

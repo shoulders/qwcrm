@@ -19,16 +19,16 @@ class PaymentTypeInvoice {
         // Set class variables
         $this->app = \Factory::getApplication();
         $this->VAR = &\CMSApplication::$VAR;        
-        $this->invoice_details = $this->app->components->invoice->get_invoice_details($this->VAR['qpayment']['invoice_id']);
+        $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']);
         
         // Set intial record balance
         Payment::$record_balance = $this->invoice_details['balance'];
                        
         // Assign Type specific template variables        
-        $this->app->smarty->assign('client_details', $this->app->components->client->get_client_details($this->invoice_details['client_id']));
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('receive', 'enabled'));
+        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->invoice_details['client_id']));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', 'enabled'));
         $this->app->smarty->assign('invoice_details', $this->invoice_details);
-        $this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->get_invoice_statuses());        
+        $this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->getStatuses());        
         
     }
         
@@ -42,7 +42,7 @@ class PaymentTypeInvoice {
         // Validate payment_amount (New Payments)
         if(Payment::$action === 'new') {
             //Payment::$record_balance = $this->invoice_details['balance'];  // this is not needed
-            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
+            if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
                 Payment::$payment_valid = false;
             }
         }
@@ -50,7 +50,7 @@ class PaymentTypeInvoice {
         // Validate payment_amount (Payment Update)
         if(Payment::$action === 'update') {
             Payment::$record_balance = ($this->invoice_details['balance'] + Payment::$payment_details['amount']);
-            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, Payment::$payment_details['amount'])) {
+            if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, Payment::$payment_details['amount'])) {
                 Payment::$payment_valid = false;
             }
         }
@@ -63,10 +63,10 @@ class PaymentTypeInvoice {
     public function process() {  
         
         // Recalculate record totals
-        $this->app->components->invoice->recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
+        $this->app->components->invoice->recalculateTotals($this->VAR['qpayment']['invoice_id']);
         
         // Refresh the record data        
-        $this->invoice_details = $this->app->components->invoice->get_invoice_details($this->VAR['qpayment']['invoice_id']);
+        $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']);
         $this->app->smarty->assign('invoice_details', $this->invoice_details);
         Payment::$record_balance = $this->invoice_details['balance'];
         
@@ -131,10 +131,10 @@ class PaymentTypeInvoice {
     public function update() {
         
         // Update the payment
-        $this->app->components->payment->update_payment($this->VAR['qpayment']);
+        $this->app->components->payment->updateRecord($this->VAR['qpayment']);
                 
         // Recalculate record totals
-        $this->app->components->invoice->recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
+        $this->app->components->invoice->recalculateTotals($this->VAR['qpayment']['invoice_id']);
         
         // Refresh the record data        
         //$this->invoice_details = $this->app->components->invoice->get_invoice_details($this->VAR['qpayment']['invoice_id']);        
@@ -151,10 +151,10 @@ class PaymentTypeInvoice {
     public function cancel() {
         
         // Cancel the payment
-        $this->app->components->payment->cancel_payment($this->VAR['qpayment']['payment_id']);
+        $this->app->components->payment->cancelRecord($this->VAR['qpayment']['payment_id']);
                 
         // Recalculate record totals
-        $this->app->components->invoice->recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
+        $this->app->components->invoice->recalculateTotals($this->VAR['qpayment']['invoice_id']);
         
         // Refresh the record data        
         //$this->invoice_details = $this->app->components->invoice->get_invoice_details($this->VAR['qpayment']['invoice_id']);        
@@ -171,10 +171,10 @@ class PaymentTypeInvoice {
     public function delete() {
         
         // Delete the payment
-        $this->app->components->payment->delete_payment($this->VAR['qpayment']['payment_id']);
+        $this->app->components->payment->deleteRecord($this->VAR['qpayment']['payment_id']);
                 
         // Recalculate record totals
-        $this->app->components->invoice->recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
+        $this->app->components->invoice->recalculateTotals($this->VAR['qpayment']['invoice_id']);
         
         // Refresh the record data        
         //$this->invoice_details = $this->app->components->invoice->get_invoice_details($this->VAR['qpayment']['invoice_id']);        

@@ -24,7 +24,7 @@ class Core extends Components {
     # Display Welcome Note                  #
     #########################################
 
-    public function display_welcome_msg() {
+    public function getWelcomeMsg() {
 
         $sql = "SELECT welcome_msg FROM ".PRFX."company_record";
 

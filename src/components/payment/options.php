@@ -48,10 +48,10 @@ foreach($checkboxes as $checkbox) {
 if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Update enabled payment methods (checkboxes)
-    $this->app->components->payment->update_payment_methods_statuses(\CMSApplication::$VAR['qform']['payment_methods']);
+    $this->app->components->payment->updateMethodsStatuses(\CMSApplication::$VAR['qform']['payment_methods']);
     
     // Update Payment details
-    $this->app->components->payment->update_payment_options(\CMSApplication::$VAR['qform']);
+    $this->app->components->payment->updateOptions(\CMSApplication::$VAR['qform']);
 
     // Assign success message    
     $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment Options Updated.") );
@@ -62,5 +62,5 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 }
 
 // Build the page
-$this->app->smarty->assign('payment_methods',          $this->app->components->payment->get_payment_methods() );
-$this->app->smarty->assign('payment_options',          $this->app->components->payment->get_payment_options() );
+$this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods() );
+$this->app->smarty->assign('payment_options',          $this->app->components->payment->getOptions() );

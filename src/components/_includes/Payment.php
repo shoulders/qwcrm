@@ -32,15 +32,68 @@ class Payment extends Components {
     //public static $paymentType = null;      // not currently used here
     //public static $paymentMtehod = null;    // not currently used here
 
-    /** Mandatory Code **/
 
-    /** Display Functions **/
+    /** Insert Functions **/
 
+    ############################
+    #   Insert Payment         #
+    ############################
+
+    public function insertRecord($qpayment) {
+
+        $sql = "INSERT INTO ".PRFX."payment_records SET            
+                employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id       ).",
+                client_id       = ".$this->app->db->qstr( $qpayment['client_id']                   ).",
+                workorder_id    = ".$this->app->db->qstr( $qpayment['workorder_id']                ).",
+                invoice_id      = ".$this->app->db->qstr( $qpayment['invoice_id']                  ).",
+                voucher_id      = ".$this->app->db->qstr( $qpayment['voucher_id']                  ).",               
+                refund_id       = ".$this->app->db->qstr( $qpayment['refund_id']                   ).", 
+                expense_id      = ".$this->app->db->qstr( $qpayment['expense_id']                  ).", 
+                otherincome_id  = ".$this->app->db->qstr( $qpayment['otherincome_id']              ).",
+                date            = ".$this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qpayment['date'])    ).",
+                tax_system      = ".$this->app->db->qstr( QW_TAX_SYSTEM                            ).",   
+                type            = ".$this->app->db->qstr( $qpayment['type']                        ).",
+                method          = ".$this->app->db->qstr( $qpayment['method']                      ).",
+                status          = 'valid',
+                amount          = ".$this->app->db->qstr( $qpayment['amount']                      ).",
+                last_active     =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                         ).",
+                additional_info = ".$this->app->db->qstr( $qpayment['additional_info']             ).",
+                note            = ".$this->app->db->qstr( $qpayment['note']                        );
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
+
+        } else {
+
+            // Get Payment Record ID
+            $payment_id = $this->app->db->Insert_ID();
+
+            // Create a Workorder History Note       
+            $this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
+
+            // Log activity        
+            $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
+
+            // Update last active record    
+            $this->app->components->client->updateLastActive($qpayment['client_id']);
+            $this->app->components->workorder->updateLastActive($qpayment['workorder_id']);
+            $this->app->components->invoice->updateLastActive($qpayment['invoice_id']);
+
+            // Return the payment_id
+            return $payment_id;
+
+        }    
+
+    }
+
+    /** Get Functions **/
+    
     #####################################################
     #  Display all payments the given status            #
     #####################################################
 
-    public function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -189,68 +242,12 @@ class Payment extends Components {
         }
 
     }
-
-    /** Insert Functions **/
-
-    ############################
-    #   Insert Payment         #
-    ############################
-
-    public function insert_payment($qpayment) {
-
-        $sql = "INSERT INTO ".PRFX."payment_records SET            
-                employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id       ).",
-                client_id       = ".$this->app->db->qstr( $qpayment['client_id']                   ).",
-                workorder_id    = ".$this->app->db->qstr( $qpayment['workorder_id']                ).",
-                invoice_id      = ".$this->app->db->qstr( $qpayment['invoice_id']                  ).",
-                voucher_id      = ".$this->app->db->qstr( $qpayment['voucher_id']                  ).",               
-                refund_id       = ".$this->app->db->qstr( $qpayment['refund_id']                   ).", 
-                expense_id      = ".$this->app->db->qstr( $qpayment['expense_id']                  ).", 
-                otherincome_id  = ".$this->app->db->qstr( $qpayment['otherincome_id']              ).",
-                date            = ".$this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qpayment['date'])    ).",
-                tax_system      = ".$this->app->db->qstr( QW_TAX_SYSTEM                            ).",   
-                type            = ".$this->app->db->qstr( $qpayment['type']                        ).",
-                method          = ".$this->app->db->qstr( $qpayment['method']                      ).",
-                status          = 'valid',
-                amount          = ".$this->app->db->qstr( $qpayment['amount']                      ).",
-                last_active     =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                         ).",
-                additional_info = ".$this->app->db->qstr( $qpayment['additional_info']             ).",
-                note            = ".$this->app->db->qstr( $qpayment['note']                        );
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
-
-        } else {
-
-            // Get Payment Record ID
-            $payment_id = $this->app->db->Insert_ID();
-
-            // Create a Workorder History Note       
-            $this->app->components->workorder->insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
-
-            // Log activity        
-            $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
-
-            // Update last active record    
-            $this->app->components->client->update_client_last_active($qpayment['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($qpayment['workorder_id']);
-            $this->app->components->invoice->update_invoice_last_active($qpayment['invoice_id']);
-
-            // Return the payment_id
-            return $payment_id;
-
-        }    
-
-    }
-
-    /** Get Functions **/
-
+    
     #############################
     #  Get payment details      #
     #############################
 
-    public function get_payment_details($payment_id, $item = null) {
+    public function getRecord($payment_id, $item = null) {
 
         $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$this->app->db->qstr($payment_id);
 
@@ -276,7 +273,7 @@ class Payment extends Components {
     #  Get payment options   #
     ##########################
 
-    public function get_payment_options($item = null) {
+    public function getOptions($item = null) {
 
         $sql = "SELECT * FROM ".PRFX."payment_options";
 
@@ -302,7 +299,7 @@ class Payment extends Components {
     #   Get get Payment Methods                    #
     ################################################
 
-    public function get_payment_methods($direction = null, $status = null) {
+    public function getMethods($direction = null, $status = null) {
 
         $sql = "SELECT *
                 FROM ".PRFX."payment_methods";
@@ -335,7 +332,7 @@ class Payment extends Components {
     #    Get Payment Types              #  // i.e. invoice, refund
     #####################################
 
-    public function get_payment_types() {
+    public function getTypes() {
 
         $sql = "SELECT * FROM ".PRFX."payment_types";
 
@@ -354,7 +351,7 @@ class Payment extends Components {
     #    Get Payment Statuses           #
     #####################################
 
-    public function get_payment_statuses() {
+    public function getStatuses() {
 
         $sql = "SELECT * FROM ".PRFX."payment_statuses";
 
@@ -368,12 +365,69 @@ class Payment extends Components {
         }    
 
     }
+    
+    #####################################
+    #  Get status names as an array     #
+    #####################################
+
+    public function getStatusDisplayNames() {
+
+        $sql = "SELECT status_key, display_name
+                FROM ".PRFX."payment_statuses";
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
+        } else {
+
+            $records = $rs->GetAssoc();
+
+            if(empty($records)){
+
+                return false;
+
+            } else {
+
+                return $records;
+
+            }
+
+        }  
+    }
+    
+    #####################################
+    #  Get Card names as an array       #  // Used in smarty modifier - libraries/vendor/smarty/smarty/libs/plugins/modifier.adinfodisplay.php
+    #####################################
+
+    public function getCardTypes() {
+
+        $sql = "SELECT type_key, display_name
+                FROM ".PRFX."payment_card_types";
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
+        } else {
+
+            $records = $rs->GetAssoc();
+
+            if(empty($records)){
+
+                return false;
+
+            } else {
+
+                return $records;
+
+            }
+
+        }  
+
+    }
 
     #########################################
     #   Get get active credit cards         #
     #########################################
 
-    public function get_payment_active_card_types() {
+    public function getActiveCardTypes() {
 
         $sql = "SELECT
                 type_key,
@@ -405,7 +459,7 @@ class Payment extends Components {
     #  Get Card name from type          # // not currently used
     #####################################
 
-    public function get_card_display_name_from_key($type_key) {
+    public function getCardDisplayNameFromKey($type_key) {
 
         $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$this->app->db->qstr($type_key);
 
@@ -419,69 +473,12 @@ class Payment extends Components {
 
     }
 
-    #####################################
-    #  Get status names as an array     #
-    #####################################
-
-    public function get_payment_status_names() {
-
-        $sql = "SELECT status_key, display_name
-                FROM ".PRFX."payment_statuses";
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
-        } else {
-
-            $records = $rs->GetAssoc();
-
-            if(empty($records)){
-
-                return false;
-
-            } else {
-
-                return $records;
-
-            }
-
-        }  
-
-    }
-
-    #####################################
-    #  Get Card names as an array       #  // Used in smarty modifier - libraries/vendor/smarty/smarty/libs/plugins/modifier.adinfodisplay.php
-    #####################################
-
-    public function get_payment_card_names() {
-
-        $sql = "SELECT type_key, display_name
-                FROM ".PRFX."payment_card_types";
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
-        } else {
-
-            $records = $rs->GetAssoc();
-
-            if(empty($records)){
-
-                return false;
-
-            } else {
-
-                return $records;
-
-            }
-
-        }  
-
-    }
 
     ##########################################
     #    Get Payment additional info names   #  // Used in smarty modifier - libraries/vendor/smarty/smarty/libs/plugins/modifier.adinfodisplay.php
     ##########################################  
 
-    public function get_payment_additional_info_names() {
+    public function getAdditionalInfoTypes() {
 
         $sql = "SELECT type_key, display_name
                 FROM ".PRFX."payment_additional_info_types";
@@ -512,7 +509,7 @@ class Payment extends Components {
     #   update payment  #
     #####################
 
-    public function update_payment($qpayment) {    
+    public function updateRecord($qpayment) {    
 
         $sql = "UPDATE ".PRFX."payment_records SET        
                 employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id    ).",
@@ -528,16 +525,16 @@ class Payment extends Components {
         } else {
 
             // Create a Workorder History Note       
-            $this->app->components->workorder->insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);           
+            $this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);           
 
             // Log activity 
             $record = _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated.");
             $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
 
             // Update last active record    
-            $this->app->components->client->update_client_last_active($qpayment['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($qpayment['workorder_id']);
-            $this->app->components->invoice->update_invoice_last_active($qpayment['invoice_id']);
+            $this->app->components->client->updateLastActive($qpayment['client_id']);
+            $this->app->components->workorder->updateLastActive($qpayment['workorder_id']);
+            $this->app->components->invoice->updateLastActive($qpayment['invoice_id']);
 
         }
 
@@ -549,7 +546,7 @@ class Payment extends Components {
     #    Update Payment options         #
     #####################################
 
-    public function update_payment_options($qform) {
+    public function updateOptions($qform) {
 
         $sql = "UPDATE ".PRFX."payment_options SET            
                 bank_account_name           =". $this->app->db->qstr( $qform['bank_account_name']            ).",
@@ -579,7 +576,7 @@ class Payment extends Components {
     #  Update Payment Methods statuses  #
     #####################################
 
-    public function update_payment_methods_statuses($payment_methods) {
+    public function updateMethodsStatuses($payment_methods) {
 
         // Loop throught the various payment system methods and update the database
         foreach($payment_methods as $payment_method) {
@@ -613,10 +610,10 @@ class Payment extends Components {
     # Update Payment Status    #
     ############################
 
-    public function update_payment_status($payment_id, $new_status, $silent = false) {
+    public function updateStatus($payment_id, $new_status, $silent = false) {
 
         // Get payment details
-        $payment_details = $this->get_payment_details($payment_id);
+        $payment_details = $this->getRecord($payment_id);
 
         // if the new status is the same as the current one, exit
         if($new_status == $payment_details['status']) {        
@@ -638,20 +635,20 @@ class Payment extends Components {
             if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment status updated.")); }
 
             // For writing message to log file, get payment status display name
-            $payment_status_names = $this->get_payment_status_names();
+            $payment_status_names = $this->getStatusDisplayNames();
             $payment_status_display_name = _gettext($payment_status_names[$new_status]);
 
             // Create a Workorder History Note (Not Used)      
-            $this->app->components->workorder->insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+            $this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
             $record = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
 
             // Update last active record (Not Used)
-            $this->app->components->client->update_client_last_active($payment_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($payment_details['workorder_id']);
-            $this->app->components->invoice->update_invoice_last_active($payment_details['invoice_id']);
+            $this->app->components->client->updateLastActive($payment_details['client_id']);
+            $this->app->components->workorder->updateLastActive($payment_details['workorder_id']);
+            $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
 
             return true;
 
@@ -661,30 +658,30 @@ class Payment extends Components {
 
     /** Close Functions **/
 
-    public function cancel_payment($payment_id) {
+    public function cancelRecord($payment_id) {
 
         // Make sure the payment can be cancelled
-        if(!$this->check_payment_can_be_cancelled($payment_id)) {        
+        if(!$this->checkStatusAllowsCancel($payment_id)) {        
             return false;
         }
 
         // Get payment details
-        $payment_details = $this->get_payment_details($payment_id);
+        $payment_details = $this->getRecord($payment_id);
 
         // Change the payment status to cancelled (I do this here to maintain consistency)
-        $this->update_payment_status($payment_id, 'cancelled');      
+        $this->updateStatus($payment_id, 'cancelled');      
 
         // Create a Workorder History Note  
-        $this->app->components->workorder->insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
+        $this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->update_client_last_active($payment_details['client_id']);
-        $this->app->components->workorder->update_workorder_last_active($payment_details['workorder_id']);
-        $this->app->components->invoice->update_invoice_last_active($payment_details['invoice_id']);
+        $this->app->components->client->updateLastActive($payment_details['client_id']);
+        $this->app->components->workorder->updateLastActive($payment_details['workorder_id']);
+        $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
 
         return true;
 
@@ -696,10 +693,10 @@ class Payment extends Components {
     #    Delete Payment                 #
     #####################################
 
-    public function delete_payment($payment_id) {
+    public function deleteRecord($payment_id) {
 
         // Get payment details before deleting the record
-        $payment_details = $this->get_payment_details($payment_id);
+        $payment_details = $this->getRecord($payment_id);
 
         $sql = "UPDATE ".PRFX."payment_records SET        
                 employee_id     = '',
@@ -726,51 +723,30 @@ class Payment extends Components {
         } else {
 
             // Create a Workorder History Note       
-            $this->app->components->workorder->insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);           
+            $this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);           
 
             // Log activity        
             $record = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
             $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
 
             // Update last active record    
-            $this->app->components->client->update_client_last_active($payment_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($payment_details['workorder_id']);
-            $this->app->components->invoice->update_invoice_last_active($payment_details['invoice_id']);
+            $this->app->components->client->updateLastActive($payment_details['client_id']);
+            $this->app->components->workorder->updateLastActive($payment_details['workorder_id']);
+            $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
 
             return true;        
 
         } 
 
     }
-
-    /** Other Functions **/
-
-    #########################################
-    #  Build additional_info JSON           #       
-    #########################################
-
-     public function build_additional_info_json($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
-
-        $additional_info = array();
-
-        // Build Array
-        $additional_info['bank_transfer_reference'] = $bank_transfer_reference ? $bank_transfer_reference : '';
-        $additional_info['card_type_key'] = $card_type_key ? $card_type_key : '';
-        $additional_info['name_on_card'] = $name_on_card ? $name_on_card : '';
-        $additional_info['cheque_number'] = $cheque_number ? $cheque_number : '';
-        $additional_info['direct_debit_reference'] = $direct_debit_reference ? $direct_debit_reference : '';
-        $additional_info['paypal_transaction_id'] = $paypal_transaction_id ? $paypal_transaction_id : '';
-
-        // Return the JSON data
-        return json_encode($additional_info);
-
-    }
-
+    
+    /** Check functions **/
+    
     ######################################################
     #   Make sure the submitted payment amount is valid  #
     ######################################################
 
-    public function validate_payment_amount($record_balance, $payment_amount) {
+    public function checkAmountValid($record_balance, $payment_amount) {
 
         // If a negative amount has been submitted. (This should not be allowed because of the <input> masks.)
         if($payment_amount < 0){
@@ -807,7 +783,7 @@ class Payment extends Components {
     #      Check if a payment method is active         #
     ####################################################
 
-    public function check_payment_method_is_active($method, $direction = null) {
+    public function checkMethodActive($method, $direction = null) {
 
         $sql = "SELECT *
                 FROM ".PRFX."payment_methods
@@ -838,15 +814,15 @@ class Payment extends Components {
     #  Check if the payment status is allowed to be changed  #  // not currently used
     ##########################################################
 
-     public function check_payment_status_can_be_changed($payment_id) {
+     public function checkStatusAllowsChange($payment_id) {
 
         $state_flag = false; // Disable the ability to manually change status for now
 
         // Get the payment details
-        $payment_details = $this->get_payment_details($payment_id);
+        $payment_details = $this->getRecord($payment_id);
 
         // Is the current payment method active, if not you cannot change status
-        if(!$this->check_payment_method_is_active($payment_details['method'], 'receive')) {
+        if(!$this->checkMethodActive($payment_details['method'], 'receive')) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because it's current payment method is not available."));
             $state_flag = false;       
         }
@@ -858,7 +834,7 @@ class Payment extends Components {
         }
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be changed because the parent invoice has been refunded."));
             $state_flag = false; 
         }
@@ -871,12 +847,12 @@ class Payment extends Components {
     #   Check to see if the payment can be refunded (by status)   #  // not currently used - i DONT think i will use this , you cant refund a payment?
     ###############################################################
 
-    public function check_payment_can_be_refunded($payment_id) {
+    public function checkStatusAllowsRefund($payment_id) {
 
         $state_flag = true;
 
         // Get the payment details
-        $payment_details = $this->get_payment_details($payment_id);
+        $payment_details = $this->getRecord($payment_id);
 
         // Is partially paid
         if($payment_details['status'] == 'partially_paid') {
@@ -903,7 +879,7 @@ class Payment extends Components {
         }    
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the parent invoice has been refunded."));
             $state_flag = false; 
         }
@@ -916,12 +892,12 @@ class Payment extends Components {
     #   Check to see if the payment can be cancelled              #
     ###############################################################
 
-    public function check_payment_can_be_cancelled($payment_id) {
+    public function checkStatusAllowsCancel($payment_id) {
 
         $state_flag = true;
 
         // Get the payment details
-        $payment_details = $this->get_payment_details($payment_id);
+        $payment_details = $this->getRecord($payment_id);
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
@@ -936,7 +912,7 @@ class Payment extends Components {
         }
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the parent invoice has been refunded."));
             $state_flag = false; 
         }
@@ -949,12 +925,12 @@ class Payment extends Components {
     #   Check to see if the payment can be deleted                #
     ###############################################################
 
-    public function check_payment_can_be_deleted($payment_id) {
+    public function checkStatusAllowsDelete($payment_id) {
 
         $state_flag = true;
 
         // Get the payment details
-        $payment_details = $this->get_payment_details($payment_id);
+        $payment_details = $this->getRecord($payment_id);
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
@@ -969,7 +945,7 @@ class Payment extends Components {
         }
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be deleted because the parent invoice has been refunded."));
             $state_flag = false; 
         }
@@ -979,15 +955,15 @@ class Payment extends Components {
     }
 
     ##########################################################
-    #  Check if the payment status allows editing            #       
+    #  Check if the payment status allows editing            #
     ##########################################################
 
-     public function check_payment_can_be_edited($payment_id) {
+     public function checkStatusAllowsEdit($payment_id) {
 
         $state_flag = true;
 
         // Get the payment details
-        $payment_details = $this->get_payment_details($payment_id);
+        $payment_details = $this->getRecord($payment_id);
 
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -1014,17 +990,42 @@ class Payment extends Components {
         }
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
             $state_flag = false; 
         }
 
         return $state_flag; 
 
+    }    
+
+    /** Other Functions **/
+
+    #########################################
+    #  Build additional_info JSON           #       
+    #########################################
+
+     public function buildAdditionalInfoJson($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
+
+        $additional_info = array();
+
+        // Build Array
+        $additional_info['bank_transfer_reference'] = $bank_transfer_reference ? $bank_transfer_reference : '';
+        $additional_info['card_type_key'] = $card_type_key ? $card_type_key : '';
+        $additional_info['name_on_card'] = $name_on_card ? $name_on_card : '';
+        $additional_info['cheque_number'] = $cheque_number ? $cheque_number : '';
+        $additional_info['direct_debit_reference'] = $direct_debit_reference ? $direct_debit_reference : '';
+        $additional_info['paypal_transaction_id'] = $paypal_transaction_id ? $paypal_transaction_id : '';
+
+        // Return the JSON data
+        return json_encode($additional_info);
+
     }
+
+
     
     // Build the buttons array for payment buttons (currently only used for new payments)
-    function prepare_buttons_holder() {
+    function prepareButtonsHolder() {
         
         Payment::$buttons = array(
             'submit' => array('allowed' => false, 'url' => null, 'title' => null),
@@ -1036,7 +1037,7 @@ class Payment extends Components {
     }
     
     // Build qpayment array - Set the various payment type IDs in to qpayment
-    function build_qpayment_array() {
+    function buildQpaymentArray() {
         
         \CMSApplication::$VAR['qpayment']['payment_id'] = Payment::$payment_details['payment_id'];
         \CMSApplication::$VAR['qpayment']['type'] = Payment::$payment_details['type'];

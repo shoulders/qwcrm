@@ -11,10 +11,10 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Get the company VAT Flat Rate
-    $vat_flat_rate = $this->app->components->company->get_company_details('vat_flat_rate');
+    $vat_flat_rate = $this->app->components->company->getRecord('vat_flat_rate');
         
     // Update all Voucher expiry statuses
-    $this->app->components->voucher->check_all_vouchers_for_expiry();
+    $this->app->components->voucher->checkAllVouchersForExpiry();
     
     /* Build Basic Data Set */
 
@@ -23,33 +23,33 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $end_date   = $this->app->system->general->date_to_mysql_date(\CMSApplication::$VAR['end_date']);    
     
     // Clients
-    $this->app->smarty->assign('client_stats', $this->app->components->report->get_clients_stats('basic', $start_date, $end_date));      
+    $this->app->smarty->assign('client_stats', $this->app->components->report->getClientsStats('basic', $start_date, $end_date));      
     
     // Workorders
-    $this->app->smarty->assign('workorder_stats', $this->app->components->report->get_workorders_stats('historic', $start_date, $end_date));
+    $this->app->smarty->assign('workorder_stats', $this->app->components->report->getWorkordersStats('historic', $start_date, $end_date));
              
     // Invoices
-    $invoice_stats = $this->app->components->report->get_invoices_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);
+    $invoice_stats = $this->app->components->report->getInvoicesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);
     $this->app->smarty->assign('invoice_stats', $invoice_stats );       
         
     // Vouchers
-    $voucher_stats = $this->app->components->report->get_vouchers_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);
+    $voucher_stats = $this->app->components->report->getVouchersStats('all', $start_date, $end_date, QW_TAX_SYSTEM);
     $this->app->smarty->assign('voucher_stats', $voucher_stats);
        
     // Payments
-    $payment_stats = $this->app->components->report->get_payments_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $payment_stats = $this->app->components->report->getPaymentsStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     $this->app->smarty->assign('payment_stats', $payment_stats);   
     
     // Refunds
-    $refund_stats = $this->app->components->report->get_refunds_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $refund_stats = $this->app->components->report->getRefundsStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     $this->app->smarty->assign('refund_stats', $refund_stats);   
         
     // Expense    
-    $expense_stats = $this->app->components->report->get_expenses_stats('revenue', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $expense_stats = $this->app->components->report->getExpensesStats('revenue', $start_date, $end_date, QW_TAX_SYSTEM);    
     $this->app->smarty->assign('expense_stats', $expense_stats);    
     
     // Otherincomes
-    $otherincome_stats = $this->app->components->report->get_otherincomes_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $otherincome_stats = $this->app->components->report->getOtherincomesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     $this->app->smarty->assign('otherincome_stats', $otherincome_stats);    
     
     
@@ -68,7 +68,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Prorata Calculations Calculate NET/TAX/GROSS totals based on the prorata of payments against their parent transaction (if appropriate)
     if (QW_TAX_SYSTEM == 'sales_tax_cash' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_cash') {
-        $prorata_totals = $this->app->components->report->revenue_payments_prorated_against_records($start_date, $end_date, QW_TAX_SYSTEM);
+        $prorata_totals = $this->app->components->report->revenuePaymentsProratedAgainstRecords($start_date, $end_date, QW_TAX_SYSTEM);
     }     
         
     // No Tax - Straight profit and loss calculations     
@@ -237,12 +237,12 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->smarty->assign('enable_report_section', false);
     
     // Load company finacial year dates
-    $start_date = $this->app->components->company->get_company_details('year_start'); 
-    $end_date   = $this->app->components->company->get_company_details('year_end'); 
+    $start_date = $this->app->components->company->getRecord('year_start'); 
+    $end_date   = $this->app->components->company->getRecord('year_end'); 
     
 }
 
 // Build the page
 $this->app->smarty->assign('start_date', $start_date);
 $this->app->smarty->assign('end_date', $end_date);
-$this->app->smarty->assign('tax_systems', $this->app->components->company->get_tax_systems() );
+$this->app->smarty->assign('tax_systems', $this->app->components->company->getTaxSystems() );

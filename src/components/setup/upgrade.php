@@ -20,7 +20,7 @@ $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
 
 // Delete Setup files Action
 if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && $this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade')) {
-    $this->app->components->setup->delete_setup_folder();
+    $this->app->components->setup->deleteSetupFolder();
 }
 
 
@@ -39,7 +39,7 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_connection') {
         
         // Get the final version number for this part of the process, in the correct format, this also detects a multi-process upgrade
-        $final_version = $this->app->components->setup->get_upgrade_steps();
+        $final_version = $this->app->components->setup->getUpgradeSteps();
         $final_version = str_replace('_', '.', end($final_version));
         
         // Load the 'To' and 'From' version numbers
@@ -62,12 +62,12 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
             $this->app->smarty->assign('enable_next', true);
             $record = _gettext("Connected successfully to the database with the supplied credentials from the config file.");
             $this->app->system->variables->systemMessagesWrite('success', $record);
-            $this->app->components->setup->write_record_to_setup_log('upgrade', $record);                   
+            $this->app->components->setup->writeRecordToSetupLog('upgrade', $record);                   
         } else {            
             $this->app->smarty->assign('enable_next', false);
             $record = _gettext("Failed to connect to the database with the supplied credentials. Check your config file.");
             $this->app->system->variables->systemMessagesWrite('danger', $record);
-            $this->app->components->setup->write_record_to_setup_log('upgrade', $record);            
+            $this->app->components->setup->writeRecordToSetupLog('upgrade', $record);            
         }
         
         // Load the Database Connection page
@@ -83,25 +83,25 @@ if(\CMSApplication::$VAR['stage'] == 'database_upgrade') {
     
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_upgrade') {
        
-        $this->app->components->setup->write_record_to_setup_log('upgrade', _gettext("Starting Database upgrade."));
+        $this->app->components->setup->writeRecordToSetupLog('upgrade', _gettext("Starting Database upgrade."));
         
         // Build a List of all of the upgrade version steps
-        $upgrade_steps = $this->app->components->setup->get_upgrade_steps();
+        $upgrade_steps = $this->app->components->setup->getUpgradeSteps();
         
         // Upgrade the database by Process each upgrade step
-        $process_upgrade_steps = $this->app->components->setup->process_upgrade_steps(\CMSApplication::$VAR, $upgrade_steps);
+        $process_upgrade_steps = $this->app->components->setup->processUpgradeSteps(\CMSApplication::$VAR, $upgrade_steps);
         
         if(!Setup::$setup_error_flag) {            
             $record = _gettext("The database upgraded successfully.");            
             $this->app->system->variables->systemMessagesWrite('success', $record); 
-            $this->app->components->setup->write_record_to_setup_log('upgrade', $record);
+            $this->app->components->setup->writeRecordToSetupLog('upgrade', $record);
             \CMSApplication::$VAR['stage'] = 'database_upgrade_results';            
         
         // Load the results page with the error message      
         } else {              
            $record = _gettext("The database failed to upgrade.");                      
            $this->app->system->variables->systemMessagesWrite('danger', $record);
-           $this->app->components->setup->write_record_to_setup_log('upgrade', $record);
+           $this->app->components->setup->writeRecordToSetupLog('upgrade', $record);
            \CMSApplication::$VAR['stage'] = 'database_upgrade_results';
            
         }        
@@ -122,7 +122,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_upgrade_results') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_upgrade_results') {        
         
             $record = _gettext("The QWcrm upgrade process has completed successfully.");
-            $this->app->components->setup->write_record_to_setup_log('upgrade', $record);
+            $this->app->components->setup->writeRecordToSetupLog('upgrade', $record);
             $this->app->system->variables->systemMessagesWrite('success', $record);
             \CMSApplication::$VAR['stage'] = 'delete_setup_folder'; 
     
@@ -132,7 +132,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_upgrade_results') {
         // If the upgrade has been split by break.txt, continue the database upgrade and tell the user, else continue to next stage        
         if(Setup::$split_database_upgrade) {  
             $record = _gettext("This QWcrm upgrade `Part` has completed successfully.");
-            $this->app->components->setup->write_record_to_setup_log('upgrade', $record);
+            $this->app->components->setup->writeRecordToSetupLog('upgrade', $record);
             $this->app->system->variables->systemMessagesWrite('success', $record);
             
             // Set the 'Next' button to restart from the datbase upgrade step
@@ -165,10 +165,10 @@ if(\CMSApplication::$VAR['stage'] == 'delete_setup_folder') {
     } else {
         
         // Log message to setup log - only when starting the process - this start every page loads
-        $this->app->components->setup->write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has finished."));
+        $this->app->components->setup->writeRecordToSetupLog('upgrade', _gettext("QWcrm upgrade has finished."));
     
         // Clean up after setup process 
-        $this->app->components->setup->setup_finished();
+        $this->app->components->setup->setupFinished();
         
         // Set mandatory default values               
         $this->app->smarty->assign('stage', 'delete_setup_folder');

@@ -21,11 +21,11 @@ if(!isset(\CMSApplication::$VAR['print_content'], \CMSApplication::$VAR['print_t
 }
 
 // Get Record Details
-$invoice_details = $this->app->components->invoice->get_invoice_details(\CMSApplication::$VAR['invoice_id']);
-$client_details = $this->app->components->client->get_client_details($invoice_details['client_id']);
+$invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
+$client_details = $this->app->components->client->getRecord($invoice_details['client_id']);
 
 // Only show payment instruction if bank_transfer|cheque|PayPal is enabled, these are the only valid instructions you can put on an invoice
-$payment_methods = $this->app->components->payment->get_payment_methods('receive', 'enabled');
+$payment_methods = $this->app->components->payment->getMethods('receive', 'enabled');
 $display_payment_instructions = false;
 foreach ($payment_methods as $key => $value) {
     if(
@@ -38,32 +38,32 @@ foreach ($payment_methods as $key => $value) {
 }
 
 // Details
-$this->app->smarty->assign('company_details',                  $this->app->components->company->get_company_details()                                      );
+$this->app->smarty->assign('company_details',                  $this->app->components->company->getRecord()                                      );
 $this->app->smarty->assign('client_details',                   $client_details                                            );
-$this->app->smarty->assign('workorder_details',                $this->app->components->workorder->get_workorder_details($invoice_details['workorder_id'])    );
+$this->app->smarty->assign('workorder_details',                $this->app->components->workorder->getRecord($invoice_details['workorder_id'])    );
 $this->app->smarty->assign('invoice_details',                  $invoice_details                                           );
 
 // Prefill Items
-$this->app->smarty->assign('vat_tax_codes',                    $this->app->components->company->get_vat_tax_codes(false)                                                               );
+$this->app->smarty->assign('vat_tax_codes',                    $this->app->components->company->getVatTaxCodes(false)                                                               );
 
 // Invoice Items
-$this->app->smarty->assign('labour_items',                     $this->app->components->invoice->get_invoice_labour_items(\CMSApplication::$VAR['invoice_id'])               );
-$this->app->smarty->assign('parts_items',                      $this->app->components->invoice->get_invoice_parts_items(\CMSApplication::$VAR['invoice_id'])                );
-$this->app->smarty->assign('display_vouchers',                 $this->app->components->voucher->display_vouchers('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
+$this->app->smarty->assign('labour_items',                     $this->app->components->invoice->getLabourItems(\CMSApplication::$VAR['invoice_id'])               );
+$this->app->smarty->assign('parts_items',                      $this->app->components->invoice->getPartsItems(\CMSApplication::$VAR['invoice_id'])                );
+$this->app->smarty->assign('display_vouchers',                 $this->app->components->voucher->getRecords('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
 
 // Sub Totals
-$this->app->smarty->assign('labour_items_sub_totals',          $this->app->components->invoice->get_labour_items_sub_totals(\CMSApplication::$VAR['invoice_id'])                                                          );
-$this->app->smarty->assign('parts_items_sub_totals',           $this->app->components->invoice->get_parts_items_sub_totals(\CMSApplication::$VAR['invoice_id'])                                                           );
-$this->app->smarty->assign('voucher_sub_totals',               $this->app->components->voucher->get_invoice_vouchers_sub_totals(\CMSApplication::$VAR['invoice_id'])                                                       );
+$this->app->smarty->assign('labour_items_sub_totals',          $this->app->components->invoice->getLabourItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );
+$this->app->smarty->assign('parts_items_sub_totals',           $this->app->components->invoice->getPartsItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                           );
+$this->app->smarty->assign('voucher_sub_totals',               $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id'])                                                       );
 
 // Payment Details
-$this->app->smarty->assign('payment_options',                  $this->app->components->payment->get_payment_options()                                      );
+$this->app->smarty->assign('payment_options',                  $this->app->components->payment->getOptions()                                      );
 $this->app->smarty->assign('payment_methods',                  $payment_methods                                           );
 
 // Misc
 $this->app->smarty->assign('display_payment_instructions',     $display_payment_instructions                              );
-$this->app->smarty->assign('employee_display_name',            $this->app->components->user->get_user_details($invoice_details['employee_id'], 'display_name')  );
-$this->app->smarty->assign('invoice_statuses',                 $this->app->components->invoice->get_invoice_statuses()                                     );
+$this->app->smarty->assign('employee_display_name',            $this->app->components->user->getRecord($invoice_details['employee_id'], 'display_name')  );
+$this->app->smarty->assign('invoice_statuses',                 $this->app->components->invoice->getStatuses()                                     );
 
 // Invoice Print Routine
 if(\CMSApplication::$VAR['print_content'] == 'invoice')

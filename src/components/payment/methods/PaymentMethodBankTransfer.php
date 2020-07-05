@@ -33,10 +33,10 @@ class PaymentMethodBanktransfer {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json($this->VAR['qpayment']['bank_transfer_reference']);     
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson($this->VAR['qpayment']['bank_transfer_reference']);     
         
         // Insert the payment with the calculated information
-        if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
+        if($this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
             Payment::$payment_processed = true;            
         }
         

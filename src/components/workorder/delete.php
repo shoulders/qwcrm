@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['work
 }
 
 // Delete the Workorder
-if(!$this->app->components->workorder->delete_workorder(\CMSApplication::$VAR['workorder_id'])) {
+if(!$this->app->components->workorder->deleteRecord(\CMSApplication::$VAR['workorder_id'])) {
     
     // load the staus page
     $this->app->system->page->force_page('workorder', 'status', 'workorder_id='.\CMSApplication::$VAR['workorder_id']);

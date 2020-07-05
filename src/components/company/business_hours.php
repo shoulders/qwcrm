@@ -16,10 +16,10 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $closing_time = strtotime(\CMSApplication::$VAR['closingTime']['Time_Hour'].':'.\CMSApplication::$VAR['closingTime']['Time_Minute'].':'.'00');
 
     // Validate the submitted times
-    if ($this->app->components->company->check_start_end_times($opening_time, $closing_time)) {
+    if ($this->app->components->company->checkOpeningHoursValid($opening_time, $closing_time)) {
         
         // Update opening and closing Times into the database
-        $this->app->components->company->update_company_hours(\CMSApplication::$VAR['openingTime'], \CMSApplication::$VAR['closingTime']);
+        $this->app->components->company->updateOpeningHours(\CMSApplication::$VAR['openingTime'], \CMSApplication::$VAR['closingTime']);
         
     }
     
@@ -29,6 +29,6 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
 // If page is just loaded get the opening and closing times stored in the database
 } else {    
-    $this->app->smarty->assign('opening_time', $this->app->components->company->get_company_opening_hours('opening_time', 'smartytime'));
-    $this->app->smarty->assign('closing_time', $this->app->components->company->get_company_opening_hours('closing_time', 'smartytime'));   
+    $this->app->smarty->assign('opening_time', $this->app->components->company->getOpeningHours('opening_time', 'smartytime'));
+    $this->app->smarty->assign('closing_time', $this->app->components->company->getOpeningHours('closing_time', 'smartytime'));   
 }

@@ -19,15 +19,15 @@ class PaymentTypeOtherincome {
         // Set class variables
         $this->app = \Factory::getApplication();
         $this->VAR = &\CMSApplication::$VAR;        
-        $this->otherincome_details = $this->app->components->otherincome->get_otherincome_details($this->VAR['qpayment']['otherincome_id']);
+        $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']);
         
         // Set intial record balance
         Payment::$record_balance = $this->otherincome_details['balance'];
         
         // Assign Type specific template variables  
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('receive', 'enabled'));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', 'enabled'));
         $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
-        $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->get_otherincome_statuses());
+        $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->getStatuses());
         
     }
     
@@ -41,7 +41,7 @@ class PaymentTypeOtherincome {
         // Validate payment_amount (New Payments)
         if(Payment::$action === 'new') {
             Payment::$record_balance = $this->otherincome_details['balance'];
-            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
+            if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
                 Payment::$payment_valid = false;
             }
         }
@@ -49,7 +49,7 @@ class PaymentTypeOtherincome {
         // Validate payment_amount (Payment Update)
         if(Payment::$action === 'update') {
             Payment::$record_balance = ($this->otherincome_details['balance'] + Payment::$payment_details['amount']);
-            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, Payment::$payment_details['amount'])) {
+            if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, Payment::$payment_details['amount'])) {
                 Payment::$payment_valid = false;
             }
         }
@@ -62,10 +62,10 @@ class PaymentTypeOtherincome {
     public function process() {
         
         // Recalculate record totals
-        $this->app->components->otherincome->recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
+        $this->app->components->otherincome->recalculateTotals($this->VAR['qpayment']['otherincome_id']);
         
         // Refresh the record data        
-        $this->otherincome_details = $this->app->components->otherincome->get_otherincome_details($this->VAR['qpayment']['otherincome_id']);
+        $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']);
         $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
         Payment::$record_balance = $this->otherincome_details['balance'];
         
@@ -123,10 +123,10 @@ class PaymentTypeOtherincome {
     public function update() {
         
         // Update the payment
-        $this->app->components->payment->update_payment($this->VAR['qpayment']);
+        $this->app->components->payment->updateRecord($this->VAR['qpayment']);
                 
         // Recalculate record totals
-        $this->app->components->otherincome->recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
+        $this->app->components->otherincome->recalculateTotals($this->VAR['qpayment']['otherincome_id']);
         
         // Refresh the record data        
         //$this->otherincome_details = $this->app->components->otherincome->get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        
@@ -143,10 +143,10 @@ class PaymentTypeOtherincome {
     public function cancel() {
         
         // Cancel the payment
-        $this->app->components->payment->cancel_payment($this->VAR['qpayment']['payment_id']);
+        $this->app->components->payment->cancelRecord($this->VAR['qpayment']['payment_id']);
                 
         // Recalculate record totals
-        $this->app->components->otherincome->recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
+        $this->app->components->otherincome->recalculateTotals($this->VAR['qpayment']['otherincome_id']);
         
         // Refresh the record data        
         //$this->otherincome_details = $this->app->components->otherincome->get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        
@@ -163,10 +163,10 @@ class PaymentTypeOtherincome {
     public function delete() {
         
         // Delete the payment
-        $this->app->components->payment->delete_payment($this->VAR['qpayment']['payment_id']);
+        $this->app->components->payment->deleteRecord($this->VAR['qpayment']['payment_id']);
                 
         // Recalculate record totals
-        $this->app->components->otherincome->recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
+        $this->app->components->otherincome->recalculateTotals($this->VAR['qpayment']['otherincome_id']);
         
         // Refresh the record data        
         //$this->otherincome_details = $this->app->components->otherincome->get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        

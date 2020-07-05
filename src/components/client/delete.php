@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_
 }
 
 // Run the delete function and return the results
-if(!$this->app->components->client->delete_client(\CMSApplication::$VAR['client_id'])) {
+if(!$this->app->components->client->deleteRecord(\CMSApplication::$VAR['client_id'])) {
     
     // Reload client details page with error messages
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client cannot be deleted."));

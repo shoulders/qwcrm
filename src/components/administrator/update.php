@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Check for updates
-    $this->app->components->administrator->check_for_qwcrm_update();
+    $this->app->components->administrator->checkQwcrmUpdateAvailability();
 
 } else {
     // Prevent undefined variable errors

@@ -23,15 +23,52 @@ defined('_QWEXEC') or die;
 class OtherIncome extends Components {
 
 
-    /** Mandatory Code **/
 
-    /** Display Functions **/
+    /** Insert Functions **/
+
+    ##########################################
+    #      Insert Otherincome                #
+    ##########################################
+
+    public function insertRecord($qform) {
+
+        $sql = "INSERT INTO ".PRFX."otherincome_records SET
+                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
+                payee            =". $this->app->db->qstr( $qform['payee']                   ).",
+                date             =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
+                tax_system       =". $this->app->db->qstr( QW_TAX_SYSTEM                   ).",            
+                item_type        =". $this->app->db->qstr( $qform['item_type']               ).",            
+                unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).",
+                vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).",
+                unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
+                unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
+                unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
+                status           =". $this->app->db->qstr( 'unpaid'                        ).",            
+                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                ).",            
+                items            =". $this->app->db->qstr( $qform['items']                   ).",
+                note             =". $this->app->db->qstr( $qform['note']                    );
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the otherincome record into the database."));
+        } else {
+
+            // Log activity        
+            $record = _gettext("Otherincome Record").' '.$this->app->db->Insert_ID().' '._gettext("created.");
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+
+            return $this->app->db->Insert_ID();
+
+        } 
+
+    }
+
+     /** Get Functions **/
 
     ###############################
     #  Display otherincomes       #
     ###############################
 
-    public function display_otherincomes($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -129,52 +166,13 @@ class OtherIncome extends Components {
         }
 
     }
-
-    /** Insert Functions **/
-
-    ##########################################
-    #      Insert Otherincome                #
-    ##########################################
-
-    public function insert_otherincome($qform) {
-
-        $sql = "INSERT INTO ".PRFX."otherincome_records SET
-                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                payee            =". $this->app->db->qstr( $qform['payee']                   ).",
-                date             =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
-                tax_system       =". $this->app->db->qstr( QW_TAX_SYSTEM                   ).",            
-                item_type        =". $this->app->db->qstr( $qform['item_type']               ).",            
-                unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).",
-                vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).",
-                unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
-                unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
-                unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
-                status           =". $this->app->db->qstr( 'unpaid'                        ).",            
-                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                ).",            
-                items            =". $this->app->db->qstr( $qform['items']                   ).",
-                note             =". $this->app->db->qstr( $qform['note']                    );
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the otherincome record into the database."));
-        } else {
-
-            // Log activity        
-            $record = _gettext("Otherincome Record").' '.$this->app->db->Insert_ID().' '._gettext("created.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
-
-            return $this->app->db->Insert_ID();
-
-        } 
-
-    }
-
-    /** Get Functions **/
+   
 
     ###############################
     #   Get otherincome details   #
     ###############################
 
-    public function get_otherincome_details($otherincome_id, $item = null) {
+    public function getRecord($otherincome_id, $item = null) {
 
         $sql = "SELECT * FROM ".PRFX."otherincome_records WHERE otherincome_id=".$this->app->db->qstr($otherincome_id);
 
@@ -200,7 +198,7 @@ class OtherIncome extends Components {
     #    Get Otherincome Statuses       #
     #####################################
 
-    public function get_otherincome_statuses($restricted_statuses = false) {
+    public function getStatuses($restricted_statuses = false) {
 
         $sql = "SELECT * FROM ".PRFX."otherincome_statuses";
 
@@ -223,7 +221,7 @@ class OtherIncome extends Components {
     #  Get Otherincome status display name   #
     ##########################################
 
-    public function get_otherincome_status_display_name($status_key) {
+    public function getStatusDisplayName($status_key) {
 
         $sql = "SELECT display_name FROM ".PRFX."otherincome_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
@@ -241,7 +239,7 @@ class OtherIncome extends Components {
     #    Get Otherincome Types          #
     #####################################
 
-    public function get_otherincome_types() {
+    public function getTypes() {
 
         $sql = "SELECT * FROM ".PRFX."otherincome_types";
 
@@ -254,6 +252,26 @@ class OtherIncome extends Components {
         }    
 
     }
+    
+
+    ##########################################
+    #      Last Record Look Up               #  // not currently used
+    ##########################################
+
+    public function getLastRecordId() {
+
+        $sql = "SELECT * FROM ".PRFX."otherincome_records ORDER BY otherincome_id DESC LIMIT 1";
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last otherincome record ID."));
+        } else {
+
+            return $rs->fields['otherincome_id'];
+
+        }
+
+    }
+        
 
     /** Update Functions **/
 
@@ -261,7 +279,7 @@ class OtherIncome extends Components {
     #     Update otherincome            #
     #####################################
 
-    public function update_otherincome($qform) {
+    public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
                 employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
@@ -296,10 +314,10 @@ class OtherIncome extends Components {
     # Update Otherincome Status #
     #############################
 
-    public function update_otherincome_status($otherincome_id, $new_status, $silent = false) {
+    public function updateStatus($otherincome_id, $new_status, $silent = false) {
 
         // Get otherincome details
-        $otherincome_details = $this->get_otherincome_details($otherincome_id);
+        $otherincome_details = $this->getRecord($otherincome_id);
 
         // if the new status is the same as the current one, exit
         if($new_status == $otherincome_details['status']) {        
@@ -328,7 +346,7 @@ class OtherIncome extends Components {
             if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("otherincome status updated.")); }
 
             // For writing message to log file, get otherincome status display name
-            $otherincome_status_display_name = _gettext($this->get_otherincome_status_display_name($new_status));
+            $otherincome_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
             // Log activity        
             $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '.$otherincome_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
@@ -346,15 +364,15 @@ class OtherIncome extends Components {
     #   Cancel Otherincome              #
     #####################################
 
-    public function cancel_otherincome($otherincome_id) {
+    public function cancelRecord($otherincome_id) {
 
         // Make sure the otherincome can be cancelled
-        if(!$this->check_otherincome_can_be_cancelled($otherincome_id)) {        
+        if(!$this->checkStatusAllowsCancel($otherincome_id)) {        
             return false;
         }
 
         // Change the otherincome status to cancelled (I do this here to maintain consistency)
-        $this->update_otherincome_status($otherincome_id, 'cancelled');      
+        $this->updateStatus($otherincome_id, 'cancelled');      
 
         // Log activity        
         $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
@@ -370,10 +388,10 @@ class OtherIncome extends Components {
     #    Delete Record                  #
     #####################################
 
-    public function delete_otherincome($otherincome_id) {
+    public function deleteRecord($otherincome_id) {
 
         // Change the otherincome status to deleted (I do this here to maintain consistency)
-        $this->update_otherincome_status($otherincome_id, 'deleted'); 
+        $this->updateStatus($otherincome_id, 'deleted'); 
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
             employee_id         = '',
@@ -408,80 +426,20 @@ class OtherIncome extends Components {
         }
 
     }
-
-    /** Other Functions **/
-
-    ##########################################
-    #      Last Record Look Up               #  // not currently used
-    ##########################################
-
-    public function last_otherincome_id_lookup() {
-
-        $sql = "SELECT * FROM ".PRFX."otherincome_records ORDER BY otherincome_id DESC LIMIT 1";
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last otherincome record ID."));
-        } else {
-
-            return $rs->fields['otherincome_id'];
-
-        }
-
-    }
     
-    ##########################################
-    #    Recalculate Other income totals     #
-    ##########################################
-
-    public function recalculate_otherincome_totals($otherincome_id) {
-
-        $otherincome_details            = $this->get_otherincome_details($otherincome_id);    
-
-        $unit_gross                     = $otherincome_details['unit_gross'];   
-        $payments_sub_total             = $this->app->components->report->sum_payments(null, null, 'date', null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
-        $balance                        = $unit_gross - $payments_sub_total;
-
-        $sql = "UPDATE ".PRFX."otherincome_records SET
-                balance                 =". $this->app->db->qstr( $balance        )."
-                WHERE otherincome_id    =". $this->app->db->qstr( $otherincome_id );
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the otherincome totals."));
-        } else {
-
-            /* Update Status - only change if there is a change in status */        
-
-            // Balance = Gross Amount (i.e no payments)
-            if($unit_gross > 0 && $unit_gross == $balance && $otherincome_details['status'] != 'unpaid') {
-                $this->update_otherincome_status($otherincome_id, 'unpaid');
-            }
-
-            // Balance < Gross Amount (i.e some payments)
-            elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $otherincome_details['status'] != 'partially_paid') {            
-                $this->update_otherincome_status($otherincome_id, 'partially_paid');
-            }
-
-            // Balance = 0.00 (i.e has payments and is all paid)
-            elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $otherincome_details['status'] != 'paid') {            
-                $this->update_otherincome_status($otherincome_id, 'paid');
-            }        
-
-            return;        
-
-        }
-
-    }
+    
+    /** Check Functions **/
 
     ##############################################################
     #  Check if the otherincome status is allowed to be changed  #  // not currently used
     ##############################################################
 
-     public function check_otherincome_status_can_be_changed($otherincome_id) {
+     public function checkStatusAllowsChange($otherincome_id) {
 
         $state_flag = true;
 
         // Get the otherincome details
-        $otherincome_details = $this->get_otherincome_details($otherincome_id);
+        $otherincome_details = $this->getRecord($otherincome_id);
 
         // Is partially paid
         if($otherincome_details['status'] == 'partially_paid') {
@@ -502,7 +460,7 @@ class OtherIncome extends Components {
         }
 
         // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
             $state_flag = false;        
         }
@@ -515,12 +473,12 @@ class OtherIncome extends Components {
     #   Check to see if the otherincome can be refunded (by status)   #  // not currently used - i DONT think i will use this
     ###################################################################
 
-    public function check_otherincome_can_be_refunded($otherincome_id) {
+    public function checkStatusAllowsRefund($otherincome_id) {
 
         $state_flag = true;
 
         // Get the otherincome details
-        $otherincome_details = $this->get_otherincome_details($otherincome_id);
+        $otherincome_details = $this->getRecord($otherincome_id);
 
         // Is partially paid
         if($otherincome_details['status'] == 'partially_paid') {
@@ -547,7 +505,7 @@ class OtherIncome extends Components {
         }    
 
         // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(!$this->app->components->report->count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if(!$this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be refunded because the otherincome has no payments."));
             $state_flag = false;        
         }
@@ -560,12 +518,12 @@ class OtherIncome extends Components {
     #   Check to see if the otherincome can be cancelled          #
     ###############################################################
 
-    public function check_otherincome_can_be_cancelled($otherincome_id) {
+    public function checkStatusAllowsCancel($otherincome_id) {
 
         $state_flag = true;
 
         // Get the otherincome details
-        $otherincome_details = $this->get_otherincome_details($otherincome_id);
+        $otherincome_details = $this->getRecord($otherincome_id);
 
         // Is partially paid
         if($otherincome_details['status'] == 'partially_paid') {
@@ -592,7 +550,7 @@ class OtherIncome extends Components {
         }    
 
         // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
             $state_flag = false;        
         }
@@ -605,12 +563,12 @@ class OtherIncome extends Components {
     #   Check to see if the otherincome can be deleted            #
     ###############################################################
 
-    public function check_otherincome_can_be_deleted($otherincome_id) {
+    public function checkStatusAllowsDelete($otherincome_id) {
 
         $state_flag = true;
 
         // Get the otherincome details
-        $otherincome_details = $this->get_otherincome_details($otherincome_id);
+        $otherincome_details = $this->getRecord($otherincome_id);
 
         // Is partially paid
         if($otherincome_details['status'] == 'partially_paid') {
@@ -637,7 +595,7 @@ class OtherIncome extends Components {
         }
 
         // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments."));
             $state_flag = false;        
         }
@@ -650,12 +608,12 @@ class OtherIncome extends Components {
     #  Check if the otherincome status allows editing        #       
     ##########################################################
 
-     public function check_otherincome_can_be_edited($otherincome_id) {
+     public function checkStatusAllowsEdit($otherincome_id) {
 
         $state_flag = true;
 
         // Get the otherincome details
-        $otherincome_details = $this->get_otherincome_details($otherincome_id);
+        $otherincome_details = $this->getRecord($otherincome_id);
 
         // Is on a different tax system
         if($otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -688,13 +646,13 @@ class OtherIncome extends Components {
         }
 
         // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has payments."));
             $state_flag = false;        
         }
 
         // The current record VAT code is enabled
-        if(!$this->app->components->company->get_vat_tax_code_status($otherincome_details['vat_tax_code'])) {
+        if(!$this->app->components->company->getVatTaxCodeStatus($otherincome_details['vat_tax_code'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."));
             $state_flag = false; 
         }
@@ -702,5 +660,51 @@ class OtherIncome extends Components {
         return $state_flag;   
 
     }
-    
+       
+
+    /** Other Functions **/
+
+    ##########################################
+    #    Recalculate Other income totals     #
+    ##########################################
+
+    public function recalculateTotals($otherincome_id) {
+
+        $otherincome_details            = $this->getRecord($otherincome_id);    
+
+        $unit_gross                     = $otherincome_details['unit_gross'];   
+        $payments_sub_total             = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
+        $balance                        = $unit_gross - $payments_sub_total;
+
+        $sql = "UPDATE ".PRFX."otherincome_records SET
+                balance                 =". $this->app->db->qstr( $balance        )."
+                WHERE otherincome_id    =". $this->app->db->qstr( $otherincome_id );
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the otherincome totals."));
+        } else {
+
+            /* Update Status - only change if there is a change in status */        
+
+            // Balance = Gross Amount (i.e no payments)
+            if($unit_gross > 0 && $unit_gross == $balance && $otherincome_details['status'] != 'unpaid') {
+                $this->updateStatus($otherincome_id, 'unpaid');
+            }
+
+            // Balance < Gross Amount (i.e some payments)
+            elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $otherincome_details['status'] != 'partially_paid') {            
+                $this->updateStatus($otherincome_id, 'partially_paid');
+            }
+
+            // Balance = 0.00 (i.e has payments and is all paid)
+            elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $otherincome_details['status'] != 'paid') {            
+                $this->updateStatus($otherincome_id, 'paid');
+            }        
+
+            return;        
+
+        }
+
+    }
+
 }

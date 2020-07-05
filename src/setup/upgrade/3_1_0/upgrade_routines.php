@@ -42,7 +42,7 @@ class Upgrade3_1_0 extends Setup {
     // Execute the upgrade SQL script
     public function process_database() {
         
-        $this->execute_sql_file_lines(SETUP_DIR.'upgrade/'.$this->upgrade_step.'/upgrade_database.sql');      
+        $this->executeSqlFileLines(SETUP_DIR.'upgrade/'.$this->upgrade_step.'/upgrade_database.sql');      
         
     }
     
@@ -50,43 +50,43 @@ class Upgrade3_1_0 extends Setup {
     public function post_database() {
         
         // Config File
-        $this->app->components->administrator->insert_qwcrm_config_setting('sef', '0');
-        $this->app->components->administrator->insert_qwcrm_config_setting('error_handler_whoops', '1');
-        $this->app->components->administrator->update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
+        $this->app->components->administrator->insertQwcrmConfigSetting('sef', '0');
+        $this->app->components->administrator->insertQwcrmConfigSetting('error_handler_whoops', '1');
+        $this->app->components->administrator->updateQwcrmConfigSetting('smarty_debugging_ctrl', 'NONE');
         
         // Tag all previous payments as type 'invoice'
-        $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
+        $this->updateColumnValues(PRFX.'payment_records', 'type', '*', 'invoice');
         
         // Change expense record types
-        $this->update_column_values(PRFX.'expense_records', 'item_type', 'broadband', 'telco');
-        $this->update_column_values(PRFX.'expense_records', 'item_type', 'landline', 'telco');
-        $this->update_column_values(PRFX.'expense_records', 'item_type', 'mobile_phone', 'telco');
-        $this->update_column_values(PRFX.'expense_records', 'item_type', 'advertising', 'marketing');
-        $this->update_column_values(PRFX.'expense_records', 'item_type', 'customer_refund', 'other');
-        $this->update_column_values(PRFX.'expense_records', 'item_type', 'tax', 'other');
-        $this->update_column_values(PRFX.'expense_records', 'item_type', 'gift_certificate', 'voucher');
+        $this->updateColumnValues(PRFX.'expense_records', 'item_type', 'broadband', 'telco');
+        $this->updateColumnValues(PRFX.'expense_records', 'item_type', 'landline', 'telco');
+        $this->updateColumnValues(PRFX.'expense_records', 'item_type', 'mobile_phone', 'telco');
+        $this->updateColumnValues(PRFX.'expense_records', 'item_type', 'advertising', 'marketing');
+        $this->updateColumnValues(PRFX.'expense_records', 'item_type', 'customer_refund', 'other');
+        $this->updateColumnValues(PRFX.'expense_records', 'item_type', 'tax', 'other');
+        $this->updateColumnValues(PRFX.'expense_records', 'item_type', 'gift_certificate', 'voucher');
 
         // Change otherincome record types
-        $this->update_column_values(PRFX.'otherincome_records', 'item_type', 'credit_note', 'other');
-        $this->update_column_values(PRFX.'otherincome_records', 'item_type', 'proxy_invoice', 'other');
-        $this->update_column_values(PRFX.'otherincome_records', 'item_type', 'returned_services', 'cancelled_services');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'item_type', 'credit_note', 'other');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'item_type', 'proxy_invoice', 'other');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'item_type', 'returned_services', 'cancelled_services');
                 
         // Change otherincome record payment_methods
-        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'google_checkout', 'other');
-        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'direct_deposit', 'bank_transfer');
-        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit', 'other');
-        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit_card', 'card');
-        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'voucher', 'other');
-        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit_note', 'other');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'payment_method', 'google_checkout', 'other');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'payment_method', 'direct_deposit', 'bank_transfer');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'payment_method', 'credit', 'other');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'payment_method', 'credit_card', 'card');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'payment_method', 'voucher', 'other');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'payment_method', 'credit_note', 'other');
         
         // Change supplier record types
-        $this->update_column_values(PRFX.'supplier_records', 'type', 'advertising', 'marketing');
-        $this->update_column_values(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
+        $this->updateColumnValues(PRFX.'supplier_records', 'type', 'advertising', 'marketing');
+        $this->updateColumnValues(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
                        
         // Reverse blocked account values because of the rename active --> blocked
-        $this->update_column_values(PRFX.'voucher_records', 'blocked', '0', '9');
-        $this->update_column_values(PRFX.'voucher_records', 'blocked', '1', '0');
-        $this->update_column_values(PRFX.'voucher_records', 'blocked', '9', '0');        
+        $this->updateColumnValues(PRFX.'voucher_records', 'blocked', '0', '9');
+        $this->updateColumnValues(PRFX.'voucher_records', 'blocked', '1', '0');
+        $this->updateColumnValues(PRFX.'voucher_records', 'blocked', '9', '0');        
         
         // Convert timestamps to MySQL DATE
         $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_start', 'company_name');
@@ -119,27 +119,27 @@ class Upgrade3_1_0 extends Setup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'redeemed_on', 'voucher_id');
         
         // Populate the last_active columns with record date for the following becasue they have only just received last_Active
-        $this->copy_columnA_to_columnB('expense_records', 'date', 'last_active');
-        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'last_active');
-        $this->copy_columnA_to_columnB('payment_records', 'date', 'last_active');  
+        $this->copyColumnAToColumnB('expense_records', 'date', 'last_active');
+        $this->copyColumnAToColumnB('otherincome_records', 'date', 'last_active');
+        $this->copyColumnAToColumnB('payment_records', 'date', 'last_active');  
         
         // Update Invoice Tax Types
-        $this->update_column_values(PRFX.'company_record', 'tax_system', 'none', 'no_tax');
-        $this->update_column_values(PRFX.'company_record', 'tax_system', 'vat', 'vat_standard');
-        $this->update_column_values(PRFX.'company_record', 'tax_system', 'sales', 'sales_tax_cash');        
-        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'none', 'no_tax');
-        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
-        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax_cash');
+        $this->updateColumnValues(PRFX.'company_record', 'tax_system', 'none', 'no_tax');
+        $this->updateColumnValues(PRFX.'company_record', 'tax_system', 'vat', 'vat_standard');
+        $this->updateColumnValues(PRFX.'company_record', 'tax_system', 'sales', 'sales_tax_cash');        
+        $this->updateColumnValues(PRFX.'invoice_records', 'tax_system', 'none', 'no_tax');
+        $this->updateColumnValues(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
+        $this->updateColumnValues(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax_cash');
         
         // Set the Company Tax system and VAT tax code now the Company Record has been updated
-        $this->company_tax_system = $this->app->components->company->get_company_details('tax_system');
-        $this->default_vat_tax_code = $this->app->components->company->get_default_vat_tax_code($this->company_tax_system); // This is an educated guess
+        $this->company_tax_system = $this->app->components->company->getRecord('tax_system');
+        $this->default_vat_tax_code = $this->app->components->company->getDefaultVatTaxCode($this->company_tax_system); // This is an educated guess
                 
         // Update Invoice Items        
-        $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $this->company_tax_system);
-        $this->update_column_values(PRFX.'invoice_parts', 'tax_system', '*', $this->company_tax_system);         
-        $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $this->default_vat_tax_code);
-        $this->update_column_values(PRFX.'invoice_parts', 'vat_tax_code', '*', $this->default_vat_tax_code);
+        $this->updateColumnValues(PRFX.'invoice_labour', 'tax_system', '*', $this->company_tax_system);
+        $this->updateColumnValues(PRFX.'invoice_parts', 'tax_system', '*', $this->company_tax_system);         
+        $this->updateColumnValues(PRFX.'invoice_labour', 'vat_tax_code', '*', $this->default_vat_tax_code);
+        $this->updateColumnValues(PRFX.'invoice_parts', 'vat_tax_code', '*', $this->default_vat_tax_code);
         
         // Parse Labour and Parts records and update their totals to reflect the new VAT system
         $this->invoice_correct_labour_totals();
@@ -147,30 +147,30 @@ class Upgrade3_1_0 extends Setup {
         
         // Parse Voucher records and correct records        
         $this->voucher_correct_records();
-        $this->update_column_values(PRFX.'voucher_records', 'type', '*', 'MPV');
-        $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
-        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', $this->app->components->voucher->get_voucher_vat_tax_code('MPV', $this->company_tax_system)); 
+        $this->updateColumnValues(PRFX.'voucher_records', 'type', '*', 'MPV');
+        $this->updateColumnValues(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
+        $this->updateColumnValues(PRFX.'voucher_records', 'vat_tax_code', '*', $this->app->components->voucher->getVatTaxCode('MPV', $this->company_tax_system)); 
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax_cash' type
-        $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax_cash', '!');
+        $this->updateRecordValue(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax_cash', '!');
         
         // Populate newley created 'tax_system' and 'vat_tax_code' columns
-        $this->update_column_values(PRFX.'expense_records', 'tax_system', '*', $this->company_tax_system);
-        $this->update_column_values(PRFX.'expense_records', 'vat_tax_code', '*', $this->default_vat_tax_code);  
-        $this->update_column_values(PRFX.'otherincome_records', 'tax_system', '*', $this->company_tax_system);
-        $this->update_column_values(PRFX.'otherincome_records', 'vat_tax_code', '*', $this->default_vat_tax_code);
+        $this->updateColumnValues(PRFX.'expense_records', 'tax_system', '*', $this->company_tax_system);
+        $this->updateColumnValues(PRFX.'expense_records', 'vat_tax_code', '*', $this->default_vat_tax_code);  
+        $this->updateColumnValues(PRFX.'otherincome_records', 'tax_system', '*', $this->company_tax_system);
+        $this->updateColumnValues(PRFX.'otherincome_records', 'vat_tax_code', '*', $this->default_vat_tax_code);
         
         // Populate newly created status columns
-        $this->update_column_values(PRFX.'expense_records', 'status', '*', 'valid');
-        $this->update_column_values(PRFX.'otherincome_records', 'status', '*', 'valid');        
-        $this->update_column_values(PRFX.'supplier_records', 'status', '*', 'valid');
-        $this->update_column_values(PRFX.'payment_records', 'status', '*', 'valid');
+        $this->updateColumnValues(PRFX.'expense_records', 'status', '*', 'valid');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'status', '*', 'valid');        
+        $this->updateColumnValues(PRFX.'supplier_records', 'status', '*', 'valid');
+        $this->updateColumnValues(PRFX.'payment_records', 'status', '*', 'valid');
         
         // Correct currently upgraded invoice payment records  
-        $this->update_column_values(PRFX.'payment_records', 'method', '6', 'bank_transfer'); // This might be a MyITCRM correction
-        $this->update_column_values(PRFX.'payment_records', 'method', 'direct_deposit', 'bank_transfer');
-        $this->update_column_values(PRFX.'payment_records', 'tax_system', '*', $this->company_tax_system );
-        $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
+        $this->updateColumnValues(PRFX.'payment_records', 'method', '6', 'bank_transfer'); // This might be a MyITCRM correction
+        $this->updateColumnValues(PRFX.'payment_records', 'method', 'direct_deposit', 'bank_transfer');
+        $this->updateColumnValues(PRFX.'payment_records', 'tax_system', '*', $this->company_tax_system );
+        $this->updateColumnValues(PRFX.'payment_records', 'type', '*', 'invoice');
         
         // Parse Payment notes and extract information into 'additional_info' column for invoices
         $this->payments_parse_import_additional_info();
@@ -180,26 +180,26 @@ class Upgrade3_1_0 extends Setup {
         $this->payments_create_otherincome_records_payments(); 
                 
         // Update Records to allow for openen_on, closed_on and last_active        
-        $this->copy_columnA_to_columnB('expense_records', 'date', 'opened_on');
-        $this->copy_columnA_to_columnB('expense_records', 'date', 'closed_on');
-        $this->copy_columnA_to_columnB('expense_records', 'date', 'last_active');
-        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'opened_on');
-        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'closed_on');
-        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'last_active');
-        $this->update_column_values(PRFX.'supplier_records', 'opened_on', '*', $this->app->system->general->mysql_datetime($this->setup_time));
+        $this->copyColumnAToColumnB('expense_records', 'date', 'opened_on');
+        $this->copyColumnAToColumnB('expense_records', 'date', 'closed_on');
+        $this->copyColumnAToColumnB('expense_records', 'date', 'last_active');
+        $this->copyColumnAToColumnB('otherincome_records', 'date', 'opened_on');
+        $this->copyColumnAToColumnB('otherincome_records', 'date', 'closed_on');
+        $this->copyColumnAToColumnB('otherincome_records', 'date', 'last_active');
+        $this->updateColumnValues(PRFX.'supplier_records', 'opened_on', '*', $this->app->system->general->mysql_datetime($this->setup_time));
         
         // correct users with 00:00:00 registered dates
-        $this->update_column_values(PRFX.'user_records', 'register_date', '0000-00-00 00:00:00', $this->app->system->general->mysql_datetime($this->setup_time));
+        $this->updateColumnValues(PRFX.'user_records', 'register_date', '0000-00-00 00:00:00', $this->app->system->general->mysql_datetime($this->setup_time));
         
         // Correct logo filepath
-        $this->update_record_value(PRFX.'company_record', 'logo', str_replace('media/', '', $this->app->components->company->get_company_details('logo')));
+        $this->updateRecordValue(PRFX.'company_record', 'logo', str_replace('media/', '', $this->app->components->company->getRecord('logo')));
         
         // Update database version number
-        $this->update_record_value(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
+        $this->updateRecordValue(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
         
         // Log message to setup log
         $record = _gettext("Database has now been upgraded to").' v'.str_replace('_', '.', $this->upgrade_step);
-        $this->write_record_to_setup_log('upgrade', $record);
+        $this->writeRecordToSetupLog('upgrade', $record);
         
     }    
     
@@ -217,7 +217,7 @@ class Upgrade3_1_0 extends Setup {
         $column_comment = null;
         
         // Get Column Comment if present
-        if ($column_comment = $this->get_column_comment($table, $column_timestamp)) {
+        if ($column_comment = $this->getColumnComment($table, $column_timestamp)) {
             $column_comment = "COMMENT '$column_comment' ";
         }
         
@@ -238,7 +238,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);            
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);            
            
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -262,7 +262,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -293,7 +293,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;                    
@@ -322,7 +322,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -346,7 +346,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -368,7 +368,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -382,7 +382,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -402,7 +402,7 @@ class Upgrade3_1_0 extends Setup {
         $column_comment = null;
         
         // Get Column Comment if present
-        if ($column_comment = $this->get_column_comment($table, $column_timestamp)) {
+        if ($column_comment = $this->getColumnComment($table, $column_timestamp)) {
             $column_comment = "COMMENT '$column_comment' ";
         }
         
@@ -423,7 +423,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
            
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -447,7 +447,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -474,7 +474,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -500,7 +500,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                 
                 // The process has failed so stop any further proccesing
                 goto process_end;   
@@ -524,7 +524,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -546,7 +546,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -560,7 +560,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -642,7 +642,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -716,7 +716,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -743,7 +743,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -757,7 +757,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -792,7 +792,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -803,7 +803,7 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
                 
                 // Get the invoice details or use manual options here (compensates for records with missing invoices)
-                if(!$invoice_details = $this->app->components->invoice->get_invoice_details($rs->fields['invoice_id'])) {
+                if(!$invoice_details = $this->app->components->invoice->getRecord($rs->fields['invoice_id'])) {
                     $invoice_details['tax_system'] = 'no_tax';
                 } 
                 
@@ -811,14 +811,14 @@ class Upgrade3_1_0 extends Setup {
                 $sales_tax_exempt = 0;
 
                 // Set the correct VAT code
-                $vat_tax_code = $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']); 
+                $vat_tax_code = $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
 
                 // Calculate the correct tax rate based on tax system (and exemption status)
                 if($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
                 elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = get_vat_rate($vat_tax_code); }
                 else { $unit_tax_rate = 0.00; }
 
-                $item_totals = $this->app->components->invoice->calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
+                $item_totals = $this->app->components->invoice->calculateItemsSubtotals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
 
                 $sql = "UPDATE `".PRFX."invoice_labour` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
@@ -852,7 +852,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
 
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -879,7 +879,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -893,7 +893,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -928,7 +928,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -939,7 +939,7 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
                                 
                 // Get the invoice details or use manual options here (compensates for records with missing invoices)
-                if(!$invoice_details = $this->app->components->invoice->get_invoice_details($rs->fields['invoice_id'])) {
+                if(!$invoice_details = $this->app->components->invoice->getRecord($rs->fields['invoice_id'])) {
                     $invoice_details['tax_system'] = 'no_tax';
                 }                
                 
@@ -947,14 +947,14 @@ class Upgrade3_1_0 extends Setup {
                 $sales_tax_exempt = 0;
 
                 // Set the correct VAT code
-                $vat_tax_code = $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']); 
+                $vat_tax_code = $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
 
                 // Calculate the correct tax rate based on tax system (and exemption status)
                 if($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
-                elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = $this->app->components->company->get_vat_rate($vat_tax_code); }
+                elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = $this->app->components->company->getVatRate($vat_tax_code); }
                 else { $unit_tax_rate = 0.00; }
 
-                $item_totals = $this->app->components->invoice->calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
+                $item_totals = $this->app->components->invoice->calculateItemsSubtotals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
 
                 $sql = "UPDATE `".PRFX."invoice_parts` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
@@ -988,7 +988,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -1015,7 +1015,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1029,7 +1029,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -1062,7 +1062,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -1119,7 +1119,7 @@ class Upgrade3_1_0 extends Setup {
                 // Voucher / Giftcert
                 if(preg_match('/Gift Certificate Code: (.*),/U', $rs->fields['note'], $matches)) {
                     $voucher_code =  $matches[1];
-                    $voucher_id = $this->app->components->voucher->get_voucher_id_by_voucher_code($voucher_code);                    
+                    $voucher_id = $this->app->components->voucher->getIdByVoucherCode($voucher_code);                    
                 }                          
                                 
                 // Build 'additional_info' array
@@ -1153,7 +1153,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -1180,7 +1180,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1194,7 +1194,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -1229,7 +1229,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -1255,7 +1255,7 @@ class Upgrade3_1_0 extends Setup {
                     status          = 'valid',
                     amount          = ".$this->app->db->qstr($rs->fields['unit_gross']                    ).",
                     last_active     = ".$this->app->db->qstr($rs->fields['date']                          ).",
-                    additional_info = ".$this->app->db->qstr($this->app->components->payment->build_additional_info_json()                 ).",
+                    additional_info = ".$this->app->db->qstr($this->app->components->payment->buildAdditionalInfoJson()                 ).",
                     note            = ".$this->app->db->qstr('<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
@@ -1274,7 +1274,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -1308,7 +1308,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -1330,7 +1330,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1344,7 +1344,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             
@@ -1379,7 +1379,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             // The process has failed so stop any further proccesing
             goto process_end;
@@ -1405,7 +1405,7 @@ class Upgrade3_1_0 extends Setup {
                     status          = 'valid',
                     amount          = ".$this->app->db->qstr($rs->fields['unit_gross']                    ).",
                     last_active     = ".$this->app->db->qstr($rs->fields['date']                          ).",
-                    additional_info = ".$this->app->db->qstr($this->app->components->payment->build_additional_info_json()                 ).",
+                    additional_info = ".$this->app->db->qstr($this->app->components->payment->buildAdditionalInfoJson()                 ).",
                     note            = ".$this->app->db->qstr('<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
@@ -1424,7 +1424,7 @@ class Upgrade3_1_0 extends Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
                     
                     // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
                     
                     // The process has failed so stop any further proccesing
                     goto process_end;
@@ -1458,7 +1458,7 @@ class Upgrade3_1_0 extends Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
                 // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
 
                 // The process has failed so stop any further proccesing
                 goto process_end;
@@ -1480,7 +1480,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1494,7 +1494,7 @@ class Upgrade3_1_0 extends Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
             
             return true;
             

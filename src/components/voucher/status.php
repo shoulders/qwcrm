@@ -16,13 +16,13 @@ if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['vouche
 
 // Update Voucher Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    $this->app->components->voucher->update_voucher_status(\CMSApplication::$VAR['voucher_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->components->voucher->updateStatus(\CMSApplication::$VAR['voucher_id'], \CMSApplication::$VAR['assign_status']);    
     $this->app->system->page->force_page('voucher', 'status&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 }
 
 // Build the page with the current status from the database
-$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->voucher->check_voucher_status_can_be_changed(\CMSApplication::$VAR['voucher_id'])       );
-$this->app->smarty->assign('voucher_status',              $this->app->components->voucher->get_voucher_details(\CMSApplication::$VAR['voucher_id'], 'status')             );
-$this->app->smarty->assign('voucher_statuses',            $this->app->components->voucher->get_voucher_statuses() );
-$this->app->smarty->assign('allowed_to_delete',            $this->app->components->voucher->check_voucher_can_be_deleted(\CMSApplication::$VAR['voucher_id'])              );
-$this->app->smarty->assign('voucher_selectable_statuses',     $this->app->components->voucher->get_voucher_statuses(true) );
+$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->voucher->checkStatusAllowsChange(\CMSApplication::$VAR['voucher_id'])       );
+$this->app->smarty->assign('voucher_status',              $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id'], 'status')             );
+$this->app->smarty->assign('voucher_statuses',            $this->app->components->voucher->getStatuses() );
+$this->app->smarty->assign('allowed_to_delete',            $this->app->components->voucher->checkStatusAllowsDelete(\CMSApplication::$VAR['voucher_id'])              );
+$this->app->smarty->assign('voucher_selectable_statuses',     $this->app->components->voucher->getStatuses(true) );

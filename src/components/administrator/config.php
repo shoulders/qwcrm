@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Send a Test Mail
 if(isset(\CMSApplication::$VAR['send_test_mail'])) {
     if($this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
-        $this->app->components->administrator->send_test_mail();
+        $this->app->components->administrator->sendTestEmail();
     }
     die();    
 }
@@ -35,14 +35,14 @@ if(isset(\CMSApplication::$VAR['clear_smarty_cache'])) {
 // Update Config details
 if(isset(\CMSApplication::$VAR['submit'])) {   
     
-    if($this->app->components->administrator->update_qwcrm_config_settings_file(\CMSApplication::$VAR['qform'])) {
+    if($this->app->components->administrator->updateQwcrmConfigSettingsFile(\CMSApplication::$VAR['qform'])) {
         
         // Compensate for SEF change  
         $url_sef = \CMSApplication::$VAR['qform']['sef'] ? 'sef' : 'nonsef';
         
         // Load maintenance page if enabled
         if(!$this->app->config->get('maintenance') && \CMSApplication::$VAR['qform']['maintenance']) {
-            $this->app->components->user->logout_all_users();
+            $this->app->components->user->logoutAllUsers();
             $this->app->system->page->force_page('index.php', null, null, 'get', $url_sef);
         }        
         
@@ -52,7 +52,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
             
         // Reload page with forced logout (SSL to nonSSL)
         } elseif($this->app->config->get('force_ssl') && !\CMSApplication::$VAR['qform']['force_ssl']) {
-            $this->app->components->user->logout_all_users();
+            $this->app->components->user->logoutAllUsers();
             $this->app->system->page->force_page('user', 'login', null, 'get', $url_sef, 'http');
         
         // Reload Page (No change in SSL state or maintenance mode)
@@ -70,7 +70,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {
 
     // No data submitted so just load the current config settings
-    $this->app->smarty->assign('qwcrm_config', $this->app->components->administrator->get_qwcrm_config_as_array() );
+    $this->app->smarty->assign('qwcrm_config', $this->app->components->administrator->getQwcrmConfigAsArray() );
 
 }
 

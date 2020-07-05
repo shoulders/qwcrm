@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit']) || isset(\CMSApplication::$VAR['submitandnew'])) {
         
     // insert the supplier record and get the supplier_id
-    \CMSApplication::$VAR['supplier_id'] = $this->app->components->supplier->insert_supplier(\CMSApplication::$VAR['qform']);
+    \CMSApplication::$VAR['supplier_id'] = $this->app->components->supplier->insertRecord(\CMSApplication::$VAR['qform']);
             
     if (isset(\CMSApplication::$VAR['submitandnew'])) {
 
@@ -29,4 +29,4 @@ if(isset(\CMSApplication::$VAR['submit']) || isset(\CMSApplication::$VAR['submit
 }
 
 // Build the page
-$this->app->smarty->assign('supplier_types', $this->app->components->supplier->get_supplier_types());
+$this->app->smarty->assign('supplier_types', $this->app->components->supplier->getTypes());

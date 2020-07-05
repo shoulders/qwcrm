@@ -40,7 +40,7 @@ class Upgrade3_1_1 extends Setup {
     // Execute the upgrade SQL script
     public function process_database() {
         
-        $this->execute_sql_file_lines(SETUP_DIR.'upgrade/'.$this->upgrade_step.'/upgrade_database.sql');      
+        $this->executeSqlFileLines(SETUP_DIR.'upgrade/'.$this->upgrade_step.'/upgrade_database.sql');      
         
     }
     
@@ -48,16 +48,16 @@ class Upgrade3_1_1 extends Setup {
     public function post_database() {
         
         // Correct user Based/Location database entries
-        $this->update_column_values(PRFX.'user_records', 'based', '1', 'office');
-        $this->update_column_values(PRFX.'user_records', 'based', '2', 'home');
-        $this->update_column_values(PRFX.'user_records', 'based', '3', 'onsite');
+        $this->updateColumnValues(PRFX.'user_records', 'based', '1', 'office');
+        $this->updateColumnValues(PRFX.'user_records', 'based', '2', 'home');
+        $this->updateColumnValues(PRFX.'user_records', 'based', '3', 'onsite');
         
         // Update database version number
-        $this->update_record_value(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
+        $this->updateRecordValue(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
         
         // Log message to setup log
         $record = _gettext("Database has now been upgraded to").' v'.str_replace('_', '.', $this->upgrade_step);
-        $this->write_record_to_setup_log('upgrade', $record);
+        $this->writeRecordToSetupLog('upgrade', $record);
         
     }    
     

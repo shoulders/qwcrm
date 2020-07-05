@@ -26,7 +26,7 @@ if ($this->app->config->get('remember_me') && isset(\CMSApplication::$VAR['remem
 if(\CMSApplication::$VAR['action'] === 'login') {
     
     // recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$this->app->config->get('recaptcha') || ($this->app->config->get('recaptcha') && $this->app->components->user->authenticate_recaptcha($this->app->config->get('recaptcha_secret_key'), \CMSApplication::$VAR['g-recaptcha-response']))) {
+    if(!$this->app->config->get('recaptcha') || ($this->app->config->get('recaptcha') && $this->app->components->user->authenticateRecaptcha($this->app->config->get('recaptcha_secret_key'), \CMSApplication::$VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */        
 

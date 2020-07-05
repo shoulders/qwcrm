@@ -9,16 +9,16 @@
 defined('_QWEXEC') or die;
 
 // Create an invoice for the supplied workorder
-if(isset(\CMSApplication::$VAR['workorder_id']) && \CMSApplication::$VAR['workorder_id'] && !$this->app->components->workorder->get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'invoice_id')) {
+if(isset(\CMSApplication::$VAR['workorder_id']) && \CMSApplication::$VAR['workorder_id'] && !$this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'invoice_id')) {
 
     // Get client_id from the workorder    
-    \CMSApplication::$VAR['client_id'] = $this->app->components->workorder->get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'client_id');
+    \CMSApplication::$VAR['client_id'] = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'client_id');
     
     // Create the invoice and return the new invoice_id
-    \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insert_invoice(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['workorder_id'], $this->app->components->client->get_client_details(\CMSApplication::$VAR['client_id'], 'unit_discount_rate'));
+    \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['workorder_id'], $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'unit_discount_rate'));
     
     // Update the workorder with the new invoice_id
-    $this->app->components->workorder->update_workorder_invoice_id(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']);
+    $this->app->components->workorder->updateInvoiceId(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']);
 
     // Load the newly created invoice edit page
     $this->app->system->page->force_page('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
@@ -29,7 +29,7 @@ if(isset(\CMSApplication::$VAR['workorder_id']) && \CMSApplication::$VAR['workor
 if((isset(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['invoice_type']) && \CMSApplication::$VAR['client_id'] && \CMSApplication::$VAR['invoice_type'] == 'invoice-only')) {
     
     // Create the invoice and return the new invoice_id
-    \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insert_invoice(\CMSApplication::$VAR['client_id'], '', $this->app->components->client->get_client_details(\CMSApplication::$VAR['client_id'], 'unit_discount_rate'));
+    \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id'], '', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'unit_discount_rate'));
 
     // Load the newly created invoice edit page
     $this->app->system->page->force_page('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);

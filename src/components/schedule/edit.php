@@ -31,11 +31,11 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!$this->app->components->schedule->update_schedule(\CMSApplication::$VAR['qform'])) {        
+    if (!$this->app->components->schedule->updateRecord(\CMSApplication::$VAR['qform'])) {        
         
         // Build the page
         $this->app->smarty->assign('schedule_details', \CMSApplication::$VAR['qform']);
-        $this->app->smarty->assign('active_employees', $this->app->components->user->get_active_users('employees'));                      
+        $this->app->smarty->assign('active_employees', $this->app->components->user->getActiveUsers('employees'));                      
             
     } else {       
         
@@ -55,7 +55,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {
     
     // Build the page       
-    $this->app->smarty->assign('schedule_details', $this->app->components->schedule->get_schedule_details(\CMSApplication::$VAR['schedule_id']));
-    $this->app->smarty->assign('active_employees', $this->app->components->user->get_active_users('employees')       );
+    $this->app->smarty->assign('schedule_details', $this->app->components->schedule->getRecord(\CMSApplication::$VAR['schedule_id']));
+    $this->app->smarty->assign('active_employees', $this->app->components->user->getActiveUsers('employees')       );
     
 }

@@ -66,12 +66,12 @@ if($this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'edit'
 \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/methods/'); 
        
 // Build button array
-$this->app->components->payment->prepare_buttons_holder();
+$this->app->components->payment->prepareButtonsHolder();
 
 // Set name on card to company name (if appropriate)
 if(!\CMSApplication::$VAR['qpayment']['name_on_card'] && (\CMSApplication::$VAR['qpayment']['type'] == 'refund' || \CMSApplication::$VAR['qpayment']['type'] == 'expense'))
 {
-    \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->get_company_details('company_name');
+    \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
 }
 
 // Set Action Type
@@ -116,13 +116,13 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 $paymentType->build_buttons();
       
 // Build the page
-$this->app->smarty->assign('display_payments',                  $this->app->components->payment->display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'])  );
+$this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'])  );
 $this->app->smarty->assign('payment_method',                    \CMSApplication::$VAR['qpayment']['method']                                                      );
 $this->app->smarty->assign('payment_type',                      \CMSApplication::$VAR['qpayment']['type']                                                        );
-$this->app->smarty->assign('payment_types',                     $this->app->components->payment->get_payment_types()                                                             );
-$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->get_payment_methods()                                                           );
-$this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->get_payment_statuses()                                                          );
-$this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->get_payment_active_card_types()                                                 );
+$this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes()                                                             );
+$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods()                                                           );
+$this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses()                                                          );
+$this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes()                                                 );
 $this->app->smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
 $this->app->smarty->assign('record_balance',                    Payment::$record_balance                                                     );
 $this->app->smarty->assign('buttons',                           Payment::$buttons                                                            );

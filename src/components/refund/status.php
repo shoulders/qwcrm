@@ -16,14 +16,14 @@ if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_
 
 // Update Voucher Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    $this->app->components->refund->update_refund_status(\CMSApplication::$VAR['refund_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->components->refund->updateStatus(\CMSApplication::$VAR['refund_id'], \CMSApplication::$VAR['assign_status']);    
     $this->app->system->page->force_page('refund', 'status&refund_id='.\CMSApplication::$VAR['refund_id']);
 }
 
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',       false      );
-$this->app->smarty->assign('refund_status',                  $this->app->components->refund->get_refund_details(\CMSApplication::$VAR['refund_id'], 'status')             );
-$this->app->smarty->assign('refund_statuses',                $this->app->components->refund->get_refund_statuses() );
-$this->app->smarty->assign('allowed_to_cancel',              $this->app->components->refund->check_refund_can_be_cancelled(\CMSApplication::$VAR['refund_id'])              );
-$this->app->smarty->assign('allowed_to_delete',              $this->app->components->refund->check_refund_can_be_deleted(\CMSApplication::$VAR['refund_id'])              );
-$this->app->smarty->assign('refund_selectable_statuses',     $this->app->components->refund->get_refund_statuses(true) );
+$this->app->smarty->assign('refund_status',                  $this->app->components->refund->getRecord(\CMSApplication::$VAR['refund_id'], 'status')             );
+$this->app->smarty->assign('refund_statuses',                $this->app->components->refund->getStatuses() );
+$this->app->smarty->assign('allowed_to_cancel',              $this->app->components->refund->checkStatusAllowsCancel(\CMSApplication::$VAR['refund_id'])              );
+$this->app->smarty->assign('allowed_to_delete',              $this->app->components->refund->checkStatusAllowsDelete(\CMSApplication::$VAR['refund_id'])              );
+$this->app->smarty->assign('refund_selectable_statuses',     $this->app->components->refund->getStatuses(true) );

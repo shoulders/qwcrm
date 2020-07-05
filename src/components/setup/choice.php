@@ -21,4 +21,4 @@ isset(\CMSApplication::$VAR['setup_type']) ? $this->app->smarty->assign('setup_t
 $qsetup = new Setup(\CMSApplication::$VAR);
 
 // Get Compatibility Results
-$this->app->smarty->assign('compatibility_results', $qsetup->test_server_enviroment_compatibility());
+$this->app->smarty->assign('compatibility_results', $qsetup->checkServerEnviromentCompatibility());

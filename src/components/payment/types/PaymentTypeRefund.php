@@ -19,17 +19,17 @@ class PaymentTypeRefund {
         // Set class variables
         $this->app = \Factory::getApplication();
         $this->VAR = &\CMSApplication::$VAR;          
-        $this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);
+        $this->refund_details = $this->app->components->refund->getRecord($this->VAR['qpayment']['refund_id']);
         
         // Set intial record balance
         Payment::$record_balance = $this->refund_details['balance'];
         
         // Assign Type specific template variables
-        $this->app->smarty->assign('client_details', $this->app->components->client->get_client_details($this->refund_details['client_id']));
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->get_payment_methods('send', 'enabled'));
+        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->refund_details['client_id']));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', 'enabled'));
         $this->app->smarty->assign('refund_details', $this->refund_details);
-        $this->app->smarty->assign('refund_statuses', $this->app->components->refund->get_refund_statuses());
-        $this->app->smarty->assign('name_on_card', $this->app->components->company->get_company_details('company_name'));
+        $this->app->smarty->assign('refund_statuses', $this->app->components->refund->getStatuses());
+        $this->app->smarty->assign('name_on_card', $this->app->components->company->getRecord('company_name'));
         
     }
     
@@ -43,7 +43,7 @@ class PaymentTypeRefund {
         // Validate payment_amount (New Payments)
         if(Payment::$action === 'new') {
             Payment::$record_balance = $this->refund_details['balance'];
-            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
+            if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
                 Payment::$payment_valid = false;
             }
         }
@@ -51,7 +51,7 @@ class PaymentTypeRefund {
         // Validate payment_amount (Payment Update)
         if(Payment::$action === 'update') {
             Payment::$record_balance = ($this->refund_details['balance'] + Payment::$payment_details['amount']);
-            if(!$this->app->components->payment->validate_payment_amount(Payment::$record_balance, Payment::$payment_details['amount'])) {
+            if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, Payment::$payment_details['amount'])) {
                 Payment::$payment_valid = false;
             }
         }
@@ -64,10 +64,10 @@ class PaymentTypeRefund {
     public function process() {
         
         // Recalculate record totals
-        $this->app->components->refund->recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
+        $this->app->components->refund->recalculateTotals($this->VAR['qpayment']['refund_id']);
         
         // Refresh the record data        
-        $this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);
+        $this->refund_details = $this->app->components->refund->getRecord($this->VAR['qpayment']['refund_id']);
         $this->app->smarty->assign('refund_details', $this->refund_details);
         Payment::$record_balance = $this->refund_details['balance'];
         
@@ -125,10 +125,10 @@ class PaymentTypeRefund {
     public function update() {
         
         // update the payment
-        $this->app->components->payment->update_payment($this->VAR['qpayment']);
+        $this->app->components->payment->updateRecord($this->VAR['qpayment']);
                 
         // Recalculate record totals
-        $this->app->components->refund->recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
+        $this->app->components->refund->recalculateTotals($this->VAR['qpayment']['refund_id']);
         
         // Refresh the record data        
         //$this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        
@@ -145,10 +145,10 @@ class PaymentTypeRefund {
     public function cancel() {
         
         // Cancel the payment
-        $this->app->components->payment->cancel_payment($this->VAR['qpayment']['payment_id']);
+        $this->app->components->payment->cancelRecord($this->VAR['qpayment']['payment_id']);
                 
         // Recalculate record totals
-        $this->app->components->refund->recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
+        $this->app->components->refund->recalculateTotals($this->VAR['qpayment']['refund_id']);
         
         // Refresh the record data        
         //$this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        
@@ -165,10 +165,10 @@ class PaymentTypeRefund {
     public function delete() {
         
         // Delete the payment
-        $this->app->components->payment->delete_payment($this->VAR['qpayment']['payment_id']);
+        $this->app->components->payment->deleteRecord($this->VAR['qpayment']['payment_id']);
                 
         // Recalculate record totals
-        $this->app->components->refund->recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
+        $this->app->components->refund->recalculateTotals($this->VAR['qpayment']['refund_id']);
         
         // Refresh the record data        
         //$this->refund_details = $this->app->components->refund->get_refund_details($this->VAR['qpayment']['refund_id']);        

@@ -187,12 +187,12 @@ class Email extends System {
         }
 
         // Subject - prefix with the QWcrm company name to all emails
-        $email->setSubject($this->app->components->company->get_company_details('company_name').' - '.$subject);    
+        $email->setSubject($this->app->components->company->getRecord('company_name').' - '.$subject);    
 
         /* Build the message body */
 
         // Add the email signature if enabled (if not a reset email)
-        if($this->app->components->company->get_company_details('email_signature_active') && !$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset') && !$this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
+        if($this->app->components->company->getRecord('email_signature_active') && !$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset') && !$this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
             $body .= $this->add_email_signature($email);
         } 
 
@@ -262,7 +262,7 @@ class Email extends System {
 
                 // Log activity
                 $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
-                if($workorder_id) {$this->app->components->workorder->insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
+                if($workorder_id) {$this->app->components->workorder->insertHistory($workorder_id, $record.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
                 $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);            
 
                 // Build System message 
@@ -270,10 +270,10 @@ class Email extends System {
                 $this->app->system->variables->systemMessagesWrite('success', $message);                
 
                 // Update last active record (will not error if no invoice_id sent )
-                $this->app->components->user->update_user_last_active($employee_id);
-                if($client_id) {$this->app->components->client->update_client_last_active($client_id);}  
-                if($workorder_id) {$this->app->components->workorder->update_workorder_last_active($workorder_id);}
-                if($invoice_id) {$this->app->components->invoice->update_invoice_last_active($invoice_id);}
+                $this->app->components->user->updateLastActive($employee_id);
+                if($client_id) {$this->app->components->client->updateLastActive($client_id);}  
+                if($workorder_id) {$this->app->components->workorder->updateLastActive($workorder_id);}
+                if($invoice_id) {$this->app->components->invoice->updateLastActive($invoice_id);}
 
             }
 
@@ -313,7 +313,7 @@ class Email extends System {
     function get_email_message_body($message_name, $client_details) {
 
         // get the message from the database
-        $content = $this->app->components->company->get_company_details($message_name);
+        $content = $this->app->components->company->getRecord($message_name);
 
         // Process placeholders
         if($message_name == 'email_msg_invoice') {        
@@ -337,7 +337,7 @@ class Email extends System {
 
     function add_email_signature($swift_emailer = null) {
 
-        $company_details = $this->app->components->company->get_company_details();
+        $company_details = $this->app->components->company->getRecord();
 
         // Load the signature from the database
         $email_signature = $company_details['email_signature'];

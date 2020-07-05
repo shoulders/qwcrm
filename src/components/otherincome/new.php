@@ -12,8 +12,8 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // insert the otherincome and get the otherincome_id
-    $otherincome_id = $this->app->components->otherincome->insert_otherincome(\CMSApplication::$VAR['qform']);
-    $this->app->components->otherincome->recalculate_otherincome_totals($otherincome_id);
+    $otherincome_id = $this->app->components->otherincome->insertRecord(\CMSApplication::$VAR['qform']);
+    $this->app->components->otherincome->recalculateTotals($otherincome_id);
         
     if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
 
@@ -35,6 +35,6 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 }
 
 // Build the page
-$this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->get_otherincome_types());
-$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes(false));
-$this->app->smarty->assign('default_vat_tax_code', $this->app->components->company->get_default_vat_tax_code());
+$this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->getTypes());
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(false));
+$this->app->smarty->assign('default_vat_tax_code', $this->app->components->company->getDefaultVatTaxCode());

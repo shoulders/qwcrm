@@ -21,16 +21,265 @@
 defined('_QWEXEC') or die;
 
     class Invoice extends Components {
+        
+    /** Insert Functions **/
 
-    /** Mandatory Code **/
+    #####################################
+    #     insert invoice                #
+    #####################################
 
-    /** Display Functions **/
+    public function insertRecord($client_id, $workorder_id, $unit_discount_rate) {
+
+        // Unify Dates and Times
+        $timestamp = time();
+
+        // Get invoice tax type
+        $tax_system = QW_TAX_SYSTEM;
+
+        // Sales Tax Rate based on Tax Type
+        $sales_tax_rate = ($tax_system == 'sales_tax_cash') ? $sales_tax_rate = $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
+
+        $sql = "INSERT INTO ".PRFX."invoice_records SET     
+                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
+                client_id       =". $this->app->db->qstr( $client_id                           ).",
+                workorder_id    =". $this->app->db->qstr( $workorder_id                        ).",
+                date            =". $this->app->db->qstr( $this->app->system->general->mysql_date($timestamp)               ).",
+                due_date        =". $this->app->db->qstr( $this->app->system->general->mysql_date($timestamp)               ).",            
+                unit_discount_rate   =". $this->app->db->qstr( $unit_discount_rate             ).",
+                tax_system      =". $this->app->db->qstr( $tax_system                          ).",
+                sales_tax_rate  =". $this->app->db->qstr( $sales_tax_rate                      ).",            
+                status          =". $this->app->db->qstr( 'pending'                            ).",
+                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime($timestamp)           ).",
+                is_closed       =". $this->app->db->qstr( 0                                    ); 
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the invoice record into the database."));
+        } else {
+
+            // Get invoice_id
+            $invoice_id = $this->app->db->Insert_ID();
+
+            // Create a Workorder History Note  
+            $this->app->components->workorder->insertHistory($workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+
+            // Log activity        
+            if($workorder_id) {            
+                $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
+            } else {            
+                $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Created with no Work Order").'.';
+            }        
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id, $workorder_id, $invoice_id);
+
+            // Update last active record    
+            $this->app->components->client->updateLastActive($client_id);
+            $this->app->components->workorder->updateLastActive($workorder_id);        
+
+            return $invoice_id;
+
+        }
+
+    }
+
+    #####################################
+    #     Insert Labour Items           #
+    #####################################
+
+    public function insertLabourItems($invoice_id, $labour_items = null) {
+
+        // Get Invoice Details
+        $invoice_details = $this->getRecord($invoice_id); 
+
+        // Insert Labour Items into database (if any)
+        if($labour_items) {
+
+            $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
+
+            foreach($labour_items as $labour_item) {
+
+                // Add in missing sales tax exempt option - This prevents undefined variable errors
+                $sales_tax_exempt = isset($labour_item['sales_tax_exempt']) ? $labour_item['sales_tax_exempt'] : 0;
+
+                // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
+                $vat_tax_code = isset($labour_item['vat_tax_code']) ? $labour_item['vat_tax_code'] : $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
+
+                // Calculate the correct tax rate based on tax system (and exemption status)
+                if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+                elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+                elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($labour_item['vat_tax_code']); }
+                else { $unit_tax_rate = 0.00; }
+
+                // Build labour item totals based on selected TAX system
+                $labour_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $labour_item['unit_qty'], $labour_item['unit_net'], $unit_tax_rate);
+
+                $sql .="(".
+
+                        $this->app->db->qstr( $invoice_id                         ).",".                    
+                        $this->app->db->qstr( $invoice_details['tax_system']      ).",".                    
+                        $this->app->db->qstr( $labour_item['description']         ).",".                    
+                        $this->app->db->qstr( $labour_item['unit_qty']            ).",".
+                        $this->app->db->qstr( $labour_item['unit_net']            ).",".
+                        $this->app->db->qstr( $sales_tax_exempt                   ).",".
+                        $this->app->db->qstr( $vat_tax_code                       ).",".
+                        $this->app->db->qstr( $unit_tax_rate                      ).",".
+                        $this->app->db->qstr( $labour_totals['unit_tax']          ).",".
+                        $this->app->db->qstr( $labour_totals['unit_gross']        ).",".                    
+                        $this->app->db->qstr( $labour_totals['sub_total_net']     ).",".
+                        $this->app->db->qstr( $labour_totals['sub_total_tax']     ).",".
+                        $this->app->db->qstr( $labour_totals['sub_total_gross']   )."),";
+
+            }
+
+            // Strips off last comma as this is a joined SQL statement
+            $sql = substr($sql , 0, -1);
+
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
+            }
+
+            return;
+
+        }
+
+    }
+
+    #####################################
+    #     Insert Parts Items           #
+    #####################################
+
+    public function insertPartsItems($invoice_id, $parts_items = null) {
+
+        // Get Invoice Details
+        $invoice_details = $this->getRecord($invoice_id); 
+
+        // Insert Parts Items into database (if any)
+        if($parts_items) {
+
+            $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
+
+            foreach($parts_items as $parts_item) {
+
+                // Add in missing sales tax exempt option - This prevents undefined variable errors
+                $sales_tax_exempt = isset($parts_item['sales_tax_exempt']) ? $parts_item['sales_tax_exempt'] : 0;
+
+                // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
+                $vat_tax_code = isset($parts_item['vat_tax_code']) ? $parts_item['vat_tax_code'] : $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
+
+                // Calculate the correct tax rate based on tax system (and exemption status)
+                if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+                elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+                elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($parts_item['vat_tax_code']); }
+                else { $unit_tax_rate = 0.00; }
+
+                // Build labour item totals based on selected TAX system
+                $parts_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $parts_item['unit_qty'], $parts_item['unit_net'], $unit_tax_rate);
+
+                $sql .="(".
+
+                        $this->app->db->qstr( $invoice_id                        ).",".                    
+                        $this->app->db->qstr( $invoice_details['tax_system']     ).",".                    
+                        $this->app->db->qstr( $parts_item['description']         ).",".                    
+                        $this->app->db->qstr( $parts_item['unit_qty']            ).",".
+                        $this->app->db->qstr( $parts_item['unit_net']            ).",".
+                        $this->app->db->qstr( $sales_tax_exempt                  ).",".
+                        $this->app->db->qstr( $vat_tax_code                      ).",".
+                        $this->app->db->qstr( $unit_tax_rate                     ).",".
+                        $this->app->db->qstr( $parts_totals['unit_tax']          ).",".
+                        $this->app->db->qstr( $parts_totals['unit_gross']        ).",".                    
+                        $this->app->db->qstr( $parts_totals['sub_total_net']     ).",".
+                        $this->app->db->qstr( $parts_totals['sub_total_tax']     ).",".
+                        $this->app->db->qstr( $parts_totals['sub_total_gross']   )."),";
+
+            }
+
+            // Strips off last comma as this is a joined SQL statement
+            $sql = substr($sql , 0, -1);
+
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert parts item into the database."));
+            }
+
+            return;
+
+        }
+
+    }
+
+    /*#####################################
+    #     Insert Labour Items           # // KEEP this old version for the code as a reference
+    ##################################### // This public function combines multiple arrays created by the invoice:edit page.
+
+    public function insertLabourItems($invoice_id, $descriptions, $amounts, $qtys) {
+
+        // Insert Labour Items into database (if any)
+        if($qtys > 0 ) {
+
+            $i = 1;
+
+            $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, description, amount, qty, sub_total) VALUES ";
+
+            foreach($qtys as $key) {
+
+                // Rrename $key to $qty, and then below swap $qty[$i] --> $qty - removes the error, both work
+
+                $sql .="(".
+
+                        $this->app->db->qstr( $invoice_id               ).",".                    
+                        $this->app->db->qstr( $descriptions[$i]         ).",".
+                        $this->app->db->qstr( $amounts[$i]              ).",".
+                        $this->app->db->qstr( $qtys[$i]                 ).",".
+                        $this->app->db->qstr( $qtys[$i] * $amounts[$i]  ).
+
+                        "),";
+
+                $i++;
+
+            }
+
+            // Strips off last comma as this is a joined SQL statement
+            $sql = substr($sql , 0, -1);
+
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
+            }
+
+        }
+
+    }
+    */
+
+    #####################################
+    #   insert invoice prefill item     #
+    #####################################
+
+    public function insertInvoicePrefillItem($qform) {
+
+        $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
+                description =". $this->app->db->qstr( $qform['description']  ).",
+                type        =". $this->app->db->qstr( $qform['type']         ).",
+                unit_net    =". $this->app->db->qstr( $qform['unit_net']     ).",
+                active      =". $this->app->db->qstr( $qform['active']       );
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill item into the database."));
+
+        } else {
+
+            // Log activity       
+            $this->app->system->general->write_record_to_activity_log(_gettext("The Invoice Prefill Item").' '.$this->app->db->Insert_ID().' '._gettext("was added by").' '.$this->app->user->login_display_name.'.');    
+
+        }
+
+    }
+
+        
+        
+    /** Get Functions **/
 
     #########################################
     #     Display Invoices                  #
     #########################################
 
-    public function display_invoices($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -217,262 +466,13 @@ defined('_QWEXEC') or die;
 
     }
 
-    /** Insert Functions **/
-
-    #####################################
-    #     insert invoice                #
-    #####################################
-
-    public function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
-
-        // Unify Dates and Times
-        $timestamp = time();
-
-        // Get invoice tax type
-        $tax_system = QW_TAX_SYSTEM;
-
-        // Sales Tax Rate based on Tax Type
-        $sales_tax_rate = ($tax_system == 'sales_tax_cash') ? $sales_tax_rate = $this->app->components->company->get_company_details('sales_tax_rate') : 0.00;
-
-        $sql = "INSERT INTO ".PRFX."invoice_records SET     
-                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                client_id       =". $this->app->db->qstr( $client_id                           ).",
-                workorder_id    =". $this->app->db->qstr( $workorder_id                        ).",
-                date            =". $this->app->db->qstr( $this->app->system->general->mysql_date($timestamp)               ).",
-                due_date        =". $this->app->db->qstr( $this->app->system->general->mysql_date($timestamp)               ).",            
-                unit_discount_rate   =". $this->app->db->qstr( $unit_discount_rate             ).",
-                tax_system      =". $this->app->db->qstr( $tax_system                          ).",
-                sales_tax_rate  =". $this->app->db->qstr( $sales_tax_rate                      ).",            
-                status          =". $this->app->db->qstr( 'pending'                            ).",
-                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime($timestamp)           ).",
-                is_closed       =". $this->app->db->qstr( 0                                    ); 
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the invoice record into the database."));
-        } else {
-
-            // Get invoice_id
-            $invoice_id = $this->app->db->Insert_ID();
-
-            // Create a Workorder History Note  
-            $this->app->components->workorder->insert_workorder_history_note($workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity        
-            if($workorder_id) {            
-                $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
-            } else {            
-                $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Created with no Work Order").'.';
-            }        
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id, $workorder_id, $invoice_id);
-
-            // Update last active record    
-            $this->app->components->client->update_client_last_active($client_id);
-            $this->app->components->workorder->update_workorder_last_active($workorder_id);        
-
-            return $invoice_id;
-
-        }
-
-    }
-
-    #####################################
-    #     Insert Labour Items           #
-    #####################################
-
-    public function insert_labour_items($invoice_id, $labour_items = null) {
-
-        // Get Invoice Details
-        $invoice_details = $this->get_invoice_details($invoice_id); 
-
-        // Insert Labour Items into database (if any)
-        if($labour_items) {
-
-            $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
-
-            foreach($labour_items as $labour_item) {
-
-                // Add in missing sales tax exempt option - This prevents undefined variable errors
-                $sales_tax_exempt = isset($labour_item['sales_tax_exempt']) ? $labour_item['sales_tax_exempt'] : 0;
-
-                // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
-                $vat_tax_code = isset($labour_item['vat_tax_code']) ? $labour_item['vat_tax_code'] : $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']); 
-
-                // Calculate the correct tax rate based on tax system (and exemption status)
-                if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-                elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
-                elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->get_vat_rate($labour_item['vat_tax_code']); }
-                else { $unit_tax_rate = 0.00; }
-
-                // Build labour item totals based on selected TAX system
-                $labour_totals = $this->calculate_invoice_item_sub_totals($invoice_details['tax_system'], $labour_item['unit_qty'], $labour_item['unit_net'], $unit_tax_rate);
-
-                $sql .="(".
-
-                        $this->app->db->qstr( $invoice_id                         ).",".                    
-                        $this->app->db->qstr( $invoice_details['tax_system']      ).",".                    
-                        $this->app->db->qstr( $labour_item['description']         ).",".                    
-                        $this->app->db->qstr( $labour_item['unit_qty']            ).",".
-                        $this->app->db->qstr( $labour_item['unit_net']            ).",".
-                        $this->app->db->qstr( $sales_tax_exempt                   ).",".
-                        $this->app->db->qstr( $vat_tax_code                       ).",".
-                        $this->app->db->qstr( $unit_tax_rate                      ).",".
-                        $this->app->db->qstr( $labour_totals['unit_tax']          ).",".
-                        $this->app->db->qstr( $labour_totals['unit_gross']        ).",".                    
-                        $this->app->db->qstr( $labour_totals['sub_total_net']     ).",".
-                        $this->app->db->qstr( $labour_totals['sub_total_tax']     ).",".
-                        $this->app->db->qstr( $labour_totals['sub_total_gross']   )."),";
-
-            }
-
-            // Strips off last comma as this is a joined SQL statement
-            $sql = substr($sql , 0, -1);
-
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
-            }
-
-            return;
-
-        }
-
-    }
-
-    #####################################
-    #     Insert Parts Items           #
-    #####################################
-
-    public function insert_parts_items($invoice_id, $parts_items = null) {
-
-        // Get Invoice Details
-        $invoice_details = $this->get_invoice_details($invoice_id); 
-
-        // Insert Parts Items into database (if any)
-        if($parts_items) {
-
-            $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
-
-            foreach($parts_items as $parts_item) {
-
-                // Add in missing sales tax exempt option - This prevents undefined variable errors
-                $sales_tax_exempt = isset($parts_item['sales_tax_exempt']) ? $parts_item['sales_tax_exempt'] : 0;
-
-                // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
-                $vat_tax_code = isset($parts_item['vat_tax_code']) ? $parts_item['vat_tax_code'] : $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']); 
-
-                // Calculate the correct tax rate based on tax system (and exemption status)
-                if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-                elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
-                elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->get_vat_rate($parts_item['vat_tax_code']); }
-                else { $unit_tax_rate = 0.00; }
-
-                // Build labour item totals based on selected TAX system
-                $parts_totals = $this->calculate_invoice_item_sub_totals($invoice_details['tax_system'], $parts_item['unit_qty'], $parts_item['unit_net'], $unit_tax_rate);
-
-                $sql .="(".
-
-                        $this->app->db->qstr( $invoice_id                        ).",".                    
-                        $this->app->db->qstr( $invoice_details['tax_system']     ).",".                    
-                        $this->app->db->qstr( $parts_item['description']         ).",".                    
-                        $this->app->db->qstr( $parts_item['unit_qty']            ).",".
-                        $this->app->db->qstr( $parts_item['unit_net']            ).",".
-                        $this->app->db->qstr( $sales_tax_exempt                  ).",".
-                        $this->app->db->qstr( $vat_tax_code                      ).",".
-                        $this->app->db->qstr( $unit_tax_rate                     ).",".
-                        $this->app->db->qstr( $parts_totals['unit_tax']          ).",".
-                        $this->app->db->qstr( $parts_totals['unit_gross']        ).",".                    
-                        $this->app->db->qstr( $parts_totals['sub_total_net']     ).",".
-                        $this->app->db->qstr( $parts_totals['sub_total_tax']     ).",".
-                        $this->app->db->qstr( $parts_totals['sub_total_gross']   )."),";
-
-            }
-
-            // Strips off last comma as this is a joined SQL statement
-            $sql = substr($sql , 0, -1);
-
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert parts item into the database."));
-            }
-
-            return;
-
-        }
-
-    }
-
-    /*#####################################
-    #     Insert Labour Items           # // KEEP this old version for the code as a reference
-    ##################################### // This public function combines multiple arrays created by the invoice:edit page.
-
-    public function insert_labour_items($invoice_id, $descriptions, $amounts, $qtys) {
-
-        // Insert Labour Items into database (if any)
-        if($qtys > 0 ) {
-
-            $i = 1;
-
-            $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, description, amount, qty, sub_total) VALUES ";
-
-            foreach($qtys as $key) {
-
-                // Rrename $key to $qty, and then below swap $qty[$i] --> $qty - removes the error, both work
-
-                $sql .="(".
-
-                        $this->app->db->qstr( $invoice_id               ).",".                    
-                        $this->app->db->qstr( $descriptions[$i]         ).",".
-                        $this->app->db->qstr( $amounts[$i]              ).",".
-                        $this->app->db->qstr( $qtys[$i]                 ).",".
-                        $this->app->db->qstr( $qtys[$i] * $amounts[$i]  ).
-
-                        "),";
-
-                $i++;
-
-            }
-
-            // Strips off last comma as this is a joined SQL statement
-            $sql = substr($sql , 0, -1);
-
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
-            }
-
-        }
-
-    }
-    */
-
-    #####################################
-    #   insert invoice prefill item     #
-    #####################################
-
-    public function insert_invoice_prefill_item($qform) {
-
-        $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
-                description =". $this->app->db->qstr( $qform['description']  ).",
-                type        =". $this->app->db->qstr( $qform['type']         ).",
-                unit_net    =". $this->app->db->qstr( $qform['unit_net']     ).",
-                active      =". $this->app->db->qstr( $qform['active']       );
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill item into the database."));
-
-        } else {
-
-            // Log activity       
-            $this->app->system->general->write_record_to_activity_log(_gettext("The Invoice Prefill Item").' '.$this->app->db->Insert_ID().' '._gettext("was added by").' '.$this->app->user->login_display_name.'.');    
-
-        }
-
-    }
-
-    /** Get Functions **/
+        
 
     #####################################
     #   Get invoice details             #
     #####################################
 
-    public function get_invoice_details($invoice_id, $item = null) {
+    public function getRecord($invoice_id, $item = null) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_records WHERE invoice_id =".$this->app->db->qstr($invoice_id);
 
@@ -500,12 +500,13 @@ defined('_QWEXEC') or die;
         }
 
     }
-
+    
+    
     #########################################
     #   Get All invoice labour items        #
     #########################################
 
-    public function get_invoice_labour_items($invoice_id) {
+    public function getLabourItems($invoice_id) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$this->app->db->qstr($invoice_id);
 
@@ -527,7 +528,7 @@ defined('_QWEXEC') or die;
     #   Get invoice labour item details   #
     #######################################
 
-    public function get_invoice_labour_item_details($invoice_labour_id, $item = null) {
+    public function getLabourItem($invoice_labour_id, $item = null) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$this->app->db->qstr($invoice_labour_id);
 
@@ -548,12 +549,38 @@ defined('_QWEXEC') or die;
         }
 
     }
+    
+    ############################################
+    #   Get Labour Invoice Sub Totals          #
+    ############################################
+
+    public function getLabourItemsSubtotals($invoice_id) {
+
+        // I could use $this->app->components->report->sum_labour_items() 
+        // NB: i dont think i need the aliases
+
+        $sql = "SELECT
+                SUM(sub_total_net) AS sub_total_net,
+                SUM(sub_total_tax) AS sub_total_tax,
+                SUM(sub_total_gross) AS sub_total_gross
+                FROM ".PRFX."invoice_labour
+                WHERE invoice_id=". $this->app->db->qstr($invoice_id);
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice labour sub total."));
+        } else {
+
+            return $rs->GetRowAssoc(); 
+
+        }    
+
+    }
 
     #####################################
     #   Get All invoice parts items     #
     #####################################
 
-    public function get_invoice_parts_items($invoice_id) {
+    public function getPartsItems($invoice_id) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$this->app->db->qstr( $invoice_id );
 
@@ -575,7 +602,7 @@ defined('_QWEXEC') or die;
     #   Get invoice parts item details    #
     #######################################
 
-    public function get_invoice_parts_item_details($invoice_parts_id, $item = null) {
+    public function getPartsItem($invoice_parts_id, $item = null) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$this->app->db->qstr($invoice_parts_id);
 
@@ -596,12 +623,37 @@ defined('_QWEXEC') or die;
         }
 
     }
+    
+    ###########################################
+    #   Get Parts Invoice Sub Total           #
+    ###########################################
+
+    public function getPartsItemsSubtotals($invoice_id) {
+
+        // I could use $this->app->components->report->sum_parts_items()
+        // NB: i dont think i need the aliases
+
+        $sql = "SELECT
+                SUM(sub_total_net) AS sub_total_net,
+                SUM(sub_total_tax) AS sub_total_tax,
+                SUM(sub_total_gross) AS sub_total_gross
+                FROM ".PRFX."invoice_parts
+                WHERE invoice_id=". $this->app->db->qstr($invoice_id);
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice parts sub total."));
+        } else {
+
+            return $rs->GetRowAssoc(); 
+
+        }  
+    }
 
     #######################################
     #   Get invoice prefill items         #
     #######################################
 
-    public function get_invoice_prefill_items($type = null, $status = null) {
+    public function getPrefillItems($type = null, $status = null) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_prefill_items";
 
@@ -632,7 +684,7 @@ defined('_QWEXEC') or die;
     #    Get Invoice Statuses           #
     #####################################
 
-    public function get_invoice_statuses($restricted_statuses = false) {
+    public function getStatuses($restricted_statuses = false) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_statuses";
 
@@ -655,7 +707,7 @@ defined('_QWEXEC') or die;
     #  Get Invoice status display name   #
     ######################################
 
-    public function get_invoice_status_display_name($status_key) {
+    public function getStatusDisplayName($status_key) {
 
         $sql = "SELECT display_name FROM ".PRFX."invoice_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
@@ -668,101 +720,15 @@ defined('_QWEXEC') or die;
         }    
 
     }
-
-    ############################################
-    #   Get Labour Invoice Sub Totals          #
-    ############################################
-
-    public function get_labour_items_sub_totals($invoice_id) {
-
-        // I could use $this->app->components->report->sum_labour_items() 
-        // NB: i dont think i need the aliases
-
-        $sql = "SELECT
-                SUM(sub_total_net) AS sub_total_net,
-                SUM(sub_total_tax) AS sub_total_tax,
-                SUM(sub_total_gross) AS sub_total_gross
-                FROM ".PRFX."invoice_labour
-                WHERE invoice_id=". $this->app->db->qstr($invoice_id);
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice labour sub total."));
-        } else {
-
-            return $rs->GetRowAssoc(); 
-
-        }    
-
-    }
-
-    ###########################################
-    #   Get Parts Invoice Sub Total           #
-    ###########################################
-
-    public function get_parts_items_sub_totals($invoice_id) {
-
-        // I could use $this->app->components->report->sum_parts_items()
-        // NB: i dont think i need the aliases
-
-        $sql = "SELECT
-                SUM(sub_total_net) AS sub_total_net,
-                SUM(sub_total_tax) AS sub_total_tax,
-                SUM(sub_total_gross) AS sub_total_gross
-                FROM ".PRFX."invoice_parts
-                WHERE invoice_id=". $this->app->db->qstr($invoice_id);
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice parts sub total."));
-        } else {
-
-            return $rs->GetRowAssoc(); 
-
-        }  
-    }
+    
 
     /** Update Functions **/
-
-    ####################################
-    #   update invoice static values   #  // This is used when a user updates an invoice before any payments
-    ####################################
-
-    public function update_invoice_static_values($invoice_id, $date, $due_date, $unit_discount_rate) {
-
-        $sql = "UPDATE ".PRFX."invoice_records SET
-                date                =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($date)     ).",
-                due_date            =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($due_date) ).",
-                unit_discount_rate  =". $this->app->db->qstr( $unit_discount_rate           )."               
-                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id                   );
-
-        if(!$rs = $this->app->db->execute($sql)){        
-
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the invoice dates and discount rate."));
-
-        } else {
-
-            $invoice_details = $this->get_invoice_details($invoice_id);
-
-            // Create a Workorder History Note  
-            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity        
-            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
-            $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-            // Update last active record    
-            $this->app->components->client->update_client_last_active($this->get_invoice_details($invoice_id, 'client_id'));
-            $this->app->components->workorder->update_workorder_last_active($this->get_invoice_details($invoice_id, 'workorder_id'));
-            $this->update_invoice_last_active($invoice_id);
-
-        }
-
-    }
-
+    
     #####################################
     #     update invoice (full)         #  // not currently used
     #####################################
 
-    public function update_invoice_full($qform, $doNotLog = false) {
+    public function updateRecordFull($qform, $doNotLog = false) {
 
         $sql = "UPDATE ".PRFX."invoice_records SET     
                 employee_id         =". $this->app->db->qstr( $qform['employee_id']     ).", 
@@ -795,16 +761,16 @@ defined('_QWEXEC') or die;
             if (!$doNotLog) {
 
                 // Create a Workorder History Note  
-                $this->app->components->workorder->insert_workorder_history_note($this->db, $qform['workorder_id'], _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
+                $this->app->components->workorder->insertHistory($this->db, $qform['workorder_id'], _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
                 // Log activity        
                 $record = _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
                 $this->app->system->general->write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
 
                 // Update last active record    
-                $this->app->components->client->update_client_last_active($this->db, $qform['client_id']);
-                $this->app->components->workorder->update_workorder_last_active($this->db, $qform['workorder_id']);
-                $this->update_invoice_last_active($this->db, $qform['invoice_id']);        
+                $this->app->components->client->updateLastActive($this->db, $qform['client_id']);
+                $this->app->components->workorder->updateLastActive($this->db, $qform['workorder_id']);
+                $this->updateLastActive($this->db, $qform['invoice_id']);        
 
             }
 
@@ -812,13 +778,50 @@ defined('_QWEXEC') or die;
 
         return true;
 
+    }    
+
+    ####################################
+    #   update invoice static values   #  // This is used when a user updates an invoice before any payments
+    ####################################
+
+    public function updateStaticValues($invoice_id, $date, $due_date, $unit_discount_rate) {
+
+        $sql = "UPDATE ".PRFX."invoice_records SET
+                date                =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($date)     ).",
+                due_date            =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($due_date) ).",
+                unit_discount_rate  =". $this->app->db->qstr( $unit_discount_rate           )."               
+                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id                   );
+
+        if(!$rs = $this->app->db->execute($sql)){        
+
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the invoice dates and discount rate."));
+
+        } else {
+
+            $invoice_details = $this->getRecord($invoice_id);
+
+            // Create a Workorder History Note  
+            $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
+
+            // Log activity        
+            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
+            $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+
+            // Update last active record    
+            $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'));
+            $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'));
+            $this->updateLastActive($invoice_id);
+
+        }
+
     }
+
 
     #####################################
     #   update invoice prefill item     #
     #####################################
 
-    public function update_invoice_prefill_item($qform) {
+    public function updatePrefillItem($qform) {
 
         $sql = "UPDATE ".PRFX."invoice_prefill_items SET
                 description                 =". $this->app->db->qstr( $qform['description']          ).",
@@ -843,10 +846,10 @@ defined('_QWEXEC') or die;
     # Update Invoice Status    #
     ############################
 
-    public function update_invoice_status($invoice_id, $new_status) {
+    public function updateStatus($invoice_id, $new_status) {
 
         // Get invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);
+        $invoice_details = $this->getRecord($invoice_id);
 
         // if the new status is the same as the current one, exit
         if($new_status == $invoice_details['status']) {        
@@ -873,28 +876,28 @@ defined('_QWEXEC') or die;
 
             // Update invoice 'is_closed' boolean
             if($new_status == 'paid' || $new_status == 'refunded' || $new_status == 'cancelled' || $new_status == 'deleted') {
-                $this->update_invoice_closed_status($invoice_id, 'closed');
+                $this->updateClosedStatus($invoice_id, 'closed');
             } else {
-                $this->update_invoice_closed_status($invoice_id, 'open');
+                $this->updateClosedStatus($invoice_id, 'open');
             }
 
             // Status updated message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice status updated."));  
 
             // For writing message to log file, get invoice status display name
-            $inv_status_diplay_name = _gettext($this->get_invoice_status_display_name($new_status));
+            $inv_status_diplay_name = _gettext($this->getStatusDisplayName($new_status));
 
             // Create a Workorder History Note       
-            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+            $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
             $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
             // Update last active record
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            $this->update_invoice_last_active($invoice_id);                
+            $this->app->components->client->updateLastActive($invoice_details['client_id']);
+            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+            $this->updateLastActive($invoice_id);                
 
             return true;
 
@@ -906,7 +909,7 @@ defined('_QWEXEC') or die;
     # Update invoice Closed Status    #
     ###################################
 
-    public function update_invoice_closed_status($invoice_id, $new_closed_status) {
+    public function updateClosedStatus($invoice_id, $new_closed_status) {
 
         if($new_closed_status == 'open') {
 
@@ -931,11 +934,29 @@ defined('_QWEXEC') or die;
 
     }
 
+
+
+    #################################
+    #    Update invoice refund ID   #
+    #################################
+
+    public function updateRefundId($invoice_id, $refund_id) {
+
+        $sql = "UPDATE ".PRFX."invoice_records SET
+                refund_id           =".$this->app->db->qstr($refund_id)."
+                WHERE invoice_id    =".$this->app->db->qstr($invoice_id);
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add a Refund ID to the invoice."));
+        }
+
+    }
+    
     #################################
     #    Update Last Active         #
     #################################
 
-    public function update_invoice_last_active($invoice_id = null) {
+    public function updateLastActive($invoice_id = null) {
 
         // compensate for some workorders not having invoices
         if(!$invoice_id) { return; }
@@ -948,23 +969,8 @@ defined('_QWEXEC') or die;
             $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an invoice last active time."));
         }
 
-    }
-
-    #################################
-    #    Update invoice refund ID   #
-    #################################
-
-    public function update_invoice_refund_id($invoice_id, $refund_id) {
-
-        $sql = "UPDATE ".PRFX."invoice_records SET
-                refund_id           =".$this->app->db->qstr($refund_id)."
-                WHERE invoice_id    =".$this->app->db->qstr($invoice_id);
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add a Refund ID to the invoice."));
-        }
-
-    }
+    }    
+        
 
     /** Close Functions **/
 
@@ -972,75 +978,75 @@ defined('_QWEXEC') or die;
     #   Refund Invoice                  #
     #####################################
 
-    public function refund_invoice($refund_details) {
+    public function refundRecord($refund_details) {
 
         // Make sure the invoice can be refunded
-        if(!$this->check_invoice_can_be_refunded($refund_details['invoice_id'])) {
+        if(!$this->checkStatusAllowsRefund($refund_details['invoice_id'])) {
             return false;
         }
 
         // Get invoice details
-        $invoice_details = $this->get_invoice_details($refund_details['invoice_id']);
+        $invoice_details = $this->getRecord($refund_details['invoice_id']);
 
         // Insert refund record and return refund_id
-        $refund_id = $this->app->components->refund->insert_refund($refund_details);
+        $refund_id = $this->app->components->refund->insertRecord($refund_details);
 
         // Refund any Vouchers
-        $this->app->components->voucher->refund_invoice_vouchers($refund_details['invoice_id'], $refund_id);
+        $this->app->components->voucher->refundInvoiceVouchers($refund_details['invoice_id'], $refund_id);
 
         // Update the invoice with the new refund_id
-        $this->update_invoice_refund_id($refund_details['invoice_id'], $refund_id);    
+        $this->updateRefundId($refund_details['invoice_id'], $refund_id);    
 
         // Change the invoice status to refunded (I do this here to maintain consistency)
-        $this->update_invoice_status($refund_details['invoice_id'], 'refunded');
+        $this->updateStatus($refund_details['invoice_id'], 'refunded');
 
         // Create a Workorder History Note  
-        $this->app->components->workorder->insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$refund_details['invoice_id'].' '._gettext("was refunded by").' '.$this->app->user->login_display_name.'.');
+        $this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$refund_details['invoice_id'].' '._gettext("was refunded by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Invoice").' '.$refund_details['invoice_id'].' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was refunded by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $refund_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-        $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-        $this->update_invoice_last_active($invoice_details['invoice_id']);
+        $this->app->components->client->updateLastActive($invoice_details['client_id']);
+        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+        $this->updateLastActive($invoice_details['invoice_id']);
 
         return $refund_id;
 
     }
-
+    
     #####################################
     #   Cancel Invoice                  # // This does not delete information i.e. client went bust and did not pay
     #####################################
 
-    public function cancel_invoice($invoice_id) {
+    public function cancelRecord($invoice_id) {
 
         // Make sure the invoice can be cancelled
-        if(!$this->check_invoice_can_be_cancelled($invoice_id)) {        
+        if(!$this->checkStatusAllowsCancel($invoice_id)) {        
             return false;
         }
 
         // Get invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);  
+        $invoice_details = $this->getRecord($invoice_id);  
 
         // Cancel any Vouchers
-        $this->app->components->voucher->cancel_invoice_vouchers($invoice_id);
+        $this->app->components->voucher->cancelInvoiceVouchers($invoice_id);
 
         // Change the invoice status to cancelled (I do this here to maintain consistency)
-        $this->update_invoice_status($invoice_id, 'cancelled');      
+        $this->updateStatus($invoice_id, 'cancelled');      
 
         // Create a Workorder History Note  
-        $this->app->components->workorder->insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
+        $this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record
-        $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-        $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-        $this->update_invoice_last_active($invoice_id);
+        $this->app->components->client->updateLastActive($invoice_details['client_id']);
+        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+        $this->updateLastActive($invoice_id);
 
         return true;
 
@@ -1052,25 +1058,25 @@ defined('_QWEXEC') or die;
     #   Delete Invoice                  #
     #####################################
 
-    public function delete_invoice($invoice_id) {
+    public function deleteRecord($invoice_id) {
 
         // Make sure the invoice can be deleted 
-        if(!$this->check_invoice_can_be_deleted($invoice_id)) {        
+        if(!$this->checkStatusAllowsDelete($invoice_id)) {        
             return false;
         }
 
         // Get invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);
+        $invoice_details = $this->getRecord($invoice_id);
 
         // Delete any Vouchers
-        $this->app->components->voucher->delete_invoice_vouchers($invoice_id);  
+        $this->app->components->voucher->deleteInvoiceVouchers($invoice_id);  
 
         // Delete parts and labour
-        $this->delete_invoice_labour_items($invoice_id);
-        $this->delete_invoice_parts_items($invoice_id);
+        $this->deleteLabourItems($invoice_id);
+        $this->deletePartsItems($invoice_id);
 
         // Change the invoice status to deleted (I do this here to maintain log consistency)
-        $this->update_invoice_status($invoice_id, 'deleted'); 
+        $this->updateStatus($invoice_id, 'deleted'); 
 
         // Build the data to replace the invoice record (some stuff has just been updated with $this->update_invoice_status())
         $sql = "UPDATE ".PRFX."invoice_records SET        
@@ -1100,22 +1106,22 @@ defined('_QWEXEC') or die;
         } else {
 
             // Remove the invoice_if from the related Workorder record (if present)
-            $this->app->components->workorder->update_workorder_invoice_id($invoice_details['workorder_id'], '');               
+            $this->app->components->workorder->updateInvoiceId($invoice_details['workorder_id'], '');               
 
             // Create a Workorder History Note  
-            $this->app->components->workorder->insert_workorder_history_note($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
+            $this->app->components->workorder->insertHistory($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
             $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
             // Update workorder status
-            $this->app->components->workorder->update_workorder_status($invoice_details['workorder_id'], 'closed_without_invoice');        
+            $this->app->components->workorder->updateStatus($invoice_details['workorder_id'], 'closed_without_invoice');        
 
             // Update last active record
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            $this->update_invoice_last_active($invoice_id);
+            $this->app->components->client->updateLastActive($invoice_details['client_id']);
+            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+            $this->updateLastActive($invoice_id);
 
             return true;
 
@@ -1123,46 +1129,13 @@ defined('_QWEXEC') or die;
 
     }
 
-    #####################################
-    #   Delete Labour Item              #
-    #####################################
 
-    public function delete_invoice_labour_item($invoice_labour_id) {
-
-        $invoice_details = $this->get_invoice_details($this->get_invoice_labour_item_details($invoice_labour_id, 'invoice_id'));    
-
-        $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $this->app->db->qstr($invoice_labour_id);
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice labour item."));
-        } else {
-
-            // Recalculate the invoice totals and update them
-            $this->recalculate_invoice_totals($invoice_details['invoice_id']);
-
-            // Create a Workorder History Note 
-            // not currently needed
-
-            // Log activity        
-            $record = _gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
-
-            // Update last active record
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            $this->update_invoice_last_active($invoice_details['invoice_id']);  
-
-            return true;
-
-        }
-
-    }
 
     #############################################
     #   Delete an invoice's Labour Items (ALL)  #
     #############################################
 
-    public function delete_invoice_labour_items($invoice_id) {
+    public function deleteLabourItems($invoice_id) {
 
         $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $this->app->db->qstr($invoice_id);
 
@@ -1175,48 +1148,47 @@ defined('_QWEXEC') or die;
         }
 
     }
-
+    
     #####################################
-    #   Delete Parts Item               #
+    #   Delete Labour Item              #
     #####################################
 
-    public function delete_invoice_parts_item($invoice_parts_id) {
+    public function deleteLabourItem($invoice_labour_id) {
 
-        $invoice_details = $this->get_invoice_details($this->get_invoice_parts_item_details($invoice_parts_id, 'invoice_id'));  
+        $invoice_details = $this->getRecord($this->getLabourItem($invoice_labour_id, 'invoice_id'));    
 
-        $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $this->app->db->qstr($invoice_parts_id);
+        $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $this->app->db->qstr($invoice_labour_id);
 
         if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice parts item."));
-
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice labour item."));
         } else {
 
             // Recalculate the invoice totals and update them
-            $this->recalculate_invoice_totals($invoice_details['invoice_id']);
+            $this->recalculateTotals($invoice_details['invoice_id']);
 
             // Create a Workorder History Note 
             // not currently needed
 
             // Log activity        
-            $record = _gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+            $record = _gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
 
             // Update last active record
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            $this->update_invoice_last_active($invoice_details['invoice_id']);  
+            $this->app->components->client->updateLastActive($invoice_details['client_id']);
+            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+            $this->updateLastActive($invoice_details['invoice_id']);  
 
             return true;
 
         }
 
-    }
+    }    
 
     #############################################
     #   Delete an invoice's Parts Items (ALL)   #
     #############################################
 
-    public function delete_invoice_parts_items($invoice_id) {
+    public function deletePartsItems($invoice_id) {
 
         $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $this->app->db->qstr($invoice_id);
 
@@ -1229,12 +1201,50 @@ defined('_QWEXEC') or die;
         }
 
     }
+    
+    #####################################
+    #   Delete Parts Item               #
+    #####################################
+
+    public function deletePartsItem($invoice_parts_id) {
+
+        $invoice_details = $this->getRecord($this->getPartsItem($invoice_parts_id, 'invoice_id'));  
+
+        $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $this->app->db->qstr($invoice_parts_id);
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice parts item."));
+
+        } else {
+
+            // Recalculate the invoice totals and update them
+            $this->recalculateTotals($invoice_details['invoice_id']);
+
+            // Create a Workorder History Note 
+            // not currently needed
+
+            // Log activity        
+            $record = _gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+
+            // Update last active record
+            $this->app->components->client->updateLastActive($invoice_details['client_id']);
+            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+            $this->updateLastActive($invoice_details['invoice_id']);  
+
+            return true;
+
+        }
+
+    }
+
+
 
     #####################################
-    #     delete labour rate item       #
+    #     delete Prefill item           #
     #####################################
 
-    public function delete_invoice_prefill_item($invoice_prefill_id) {
+    public function deletePrefillItem($invoice_prefill_id) {
 
         $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE invoice_prefill_id =".$this->app->db->qstr($invoice_prefill_id);
 
@@ -1251,6 +1261,369 @@ defined('_QWEXEC') or die;
         }
 
     }
+    
+
+    /** Check Functions **/
+    
+    ##########################################################
+    #  Check if the invoice status is allowed to be changed  #
+    ##########################################################
+
+     public function checkStatusAllowsChange($invoice_id) {
+
+        $state_flag = true; 
+
+        // Get the invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Is partially paid
+        if($invoice_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments and is partially paid."));
+            return false;        
+        }
+
+        // Is paid
+        if($invoice_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments and is paid."));
+            return false;        
+        }
+
+        // Is partially refunded (not currently used)
+        if($invoice_details['status'] == 'partially_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
+            return false;        
+        }
+
+        // Is refunded
+        if($invoice_details['status'] == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been refunded."));
+            return false;        
+        }
+
+        // Is cancelled
+        if($invoice_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been cancelled."));
+            return false;        
+        }
+
+        // Is deleted
+        if($invoice_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been deleted."));
+            return false;        
+        }
+
+        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
+            return false;        
+        }
+
+        // Does the invoice have any Vouchers preventing changing the invoice status
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceEdit($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+            return false;
+        } 
+
+        return $state_flag;     
+
+     }
+
+    ###############################################################
+    #   Check to see if the invoice can be refunded (by status)   #
+    ###############################################################
+
+    public function checkStatusAllowsRefund($invoice_id) {
+
+        $state_flag = true;
+
+        // Get the invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Is partially paid
+        if($invoice_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be refunded because the invoice is partially paid."));
+            return false;
+        }
+
+        // Is partially refunded (not currently used)
+        if($invoice_details['status'] == 'partially_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
+            return false;        
+        }
+
+        // Is refunded
+        if($invoice_details['status'] == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
+            return false;        
+        }
+
+        // Is cancelled
+        if($invoice_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has been cancelled."));
+            return false;        
+        }
+
+        // Is deleted
+        if($invoice_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has been deleted."));
+            return false;        
+        }    
+
+        // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if(!$this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be refunded because the invoice has no payments."));
+            return false;        
+        }
+
+        // Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
+            return false;
+        }
+
+        // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefund($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+            return false;
+        }    
+
+        return $state_flag;
+
+    }
+
+    ###############################################################
+    #   Check to see if the invoice can be cancelled              #
+    ###############################################################
+
+    public function checkStatusAllowsCancel($invoice_id) {
+
+        $state_flag = true;
+
+        // Get the invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Does not have a balance
+        if($invoice_details['balance'] == 0) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice does not have a balance."));
+            return false;
+        }
+
+        // Is partially paid
+        if($invoice_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice is partially paid."));
+            return false;
+        }
+
+        // Is partially refunded (not currently used)
+        if($invoice_details['status'] == 'partially_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
+            return false;        
+        }
+
+
+        // Is refunded
+        if($invoice_details['status'] == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
+            return false;        
+        }
+
+        // Is cancelled
+        if($invoice_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has already been cancelled."));
+            return false;        
+        }
+
+        // Is deleted
+        if($invoice_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been deleted."));
+            return false;        
+        }    
+
+        // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice has payments."));
+            return false;        
+        }
+
+        // Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
+            return false;
+        }
+
+        // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceCancel($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
+            return false;
+        } 
+
+        return $state_flag;
+
+    }
+
+    ###############################################################
+    #   Check to see if the invoice can be deleted                #
+    ###############################################################
+
+    public function checkStatusAllowsDelete($invoice_id) {
+
+        $state_flag = true;
+
+        // Get the invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Is closed
+        if($invoice_details['is_closed'] == true) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it is closed."));
+            $state_flag = false;       
+        }
+
+        // Is partially paid
+        if($invoice_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments and is partially paid."));
+            $state_flag = false;       
+        }
+
+        // Is paid
+        if($invoice_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments and is paid."));
+            $state_flag = false;       
+        }
+
+        // Is partially refunded (not currently used)
+        if($invoice_details['status'] == 'partially_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
+            $state_flag = false;       
+        }     
+
+        // Is refunded
+        if($invoice_details['status'] == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been refunded."));
+            $state_flag = false;       
+        }
+
+        // Is cancelled
+        if($invoice_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been cancelled."));
+            $state_flag = false;       
+        }
+
+        // Is deleted
+        if($invoice_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."));
+            $state_flag = false;       
+        }
+
+        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."));
+            $state_flag = false;       
+        }
+
+        /*
+        // Has Labour (these will get deleted anyway)
+        if(!empty($this->get_invoice_labour_items($invoice_id))) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has labour items."));
+            $state_flag = false;         
+        }    
+
+        // Has Parts (these will get deleted anyway)
+        if(!empty($this->get_invoice_parts_items($invoice_id))) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has parts."));
+            $state_flag = false;         
+        }
+        */
+
+        // Has Refunds (should not be needed)
+        if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been refunded."));
+            return false;
+        }
+
+        // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceDelete($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
+            return false;
+        } 
+
+        return $state_flag;
+
+    }
+
+    ##########################################################
+    #  Check if the invoice status is allowed to be Edited   #
+    ##########################################################
+
+     public function checkStatusAllowsEdit($invoice_id) {
+
+        $state_flag = true;
+
+        // Get the invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Is on a different tax system
+        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it is on a different Tax system."));
+            $state_flag = false;       
+        }
+
+        // Is partially paid
+        if($invoice_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."));
+            $state_flag = false;       
+        }
+
+        // Is paid
+        if($invoice_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."));
+            $state_flag = false;       
+        }
+
+        // Is partially refunded (not currently used)
+        if($invoice_details['status'] == 'partially_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been partially refunded."));
+            $state_flag = false;       
+        }
+
+        // Is refunded
+        if($invoice_details['status'] == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been refunded."));
+            $state_flag = false;       
+        }
+
+        // Is cancelled
+        if($invoice_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been cancelled."));
+            $state_flag = false;       
+        }
+
+        // Is deleted
+        if($invoice_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."));
+            $state_flag = false;       
+        }
+
+        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
+            $state_flag = false;       
+        }
+
+        // Does the invoice have any Vouchers preventing changing the invoice status
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceEdit($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."));
+            return false;
+        }
+
+        // The current record VAT code is enabled
+        if(!$this->checkVatTaxCodeStatuses($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of the parts or labour have a VAT Tax Code that is not enabled."));
+            $state_flag = false;
+        }
+
+        return $state_flag;   
+
+    }    
 
     /** Other Functions **/
 
@@ -1258,7 +1631,7 @@ defined('_QWEXEC') or die;
     #   calculate an Invoice Item Sub Totals       #  // remove sales tax rate? or should i put it back to vat rate
     ################################################
 
-    public function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
+    public function calculateItemsSubtotals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
 
         $item_totals = array();
 
@@ -1293,23 +1666,23 @@ defined('_QWEXEC') or die;
 
     }
 
-    #####################################
-    #   Recalculate Invoice Totals      #   ///  re-check these calcuclationsa s they are wrong (not much though) i should account for vouchers as if they had tax allow for development later.
+    ##################################### (are these notes still true??)
+    #   Recalculate Invoice Totals      #   ///  re-check these calcuclations as they are wrong (not much though) i should account for vouchers as if they had tax allow for development later.
     #####################################  // Vouchers are not discounted
 
-    public function recalculate_invoice_totals($invoice_id) {
+    public function recalculateTotals($invoice_id) {
 
-        $invoice_details            = $this->get_invoice_details($invoice_id);    
+        $invoice_details            = $this->getRecord($invoice_id);    
 
-        $labour_items_sub_totals    = $this->get_labour_items_sub_totals($invoice_id); 
-        $parts_items_sub_totals     = $this->get_parts_items_sub_totals($invoice_id);   
-        $voucher_sub_totals         = $this->app->components->voucher->get_invoice_vouchers_sub_totals($invoice_id);
+        $labour_items_sub_totals    = $this->getLabourItemsSubtotals($invoice_id); 
+        $parts_items_sub_totals     = $this->getPartsItemsSubtotals($invoice_id);   
+        $voucher_sub_totals         = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);
 
         $unit_discount              = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net']) * ($invoice_details['unit_discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
         $unit_net                   = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net']) - $unit_discount;
         $unit_tax                   = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
         $unit_gross                 = $unit_net + $unit_tax;    
-        $payments_sub_total         = $this->app->components->report->sum_payments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
+        $payments_sub_total         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
         $balance                    = $unit_gross - $payments_sub_total;
 
         $sql = "UPDATE ".PRFX."invoice_records SET            
@@ -1329,22 +1702,22 @@ defined('_QWEXEC') or die;
 
             // No invoiceable amount, set to pending (if not already)
             if($unit_gross == 0 && $invoice_details['status'] != 'pending') {
-                $this->update_invoice_status($invoice_id, 'pending');
+                $this->updateStatus($invoice_id, 'pending');
             }
 
             // Has invoiceable amount with no payments, set to unpaid (if not already)
             elseif($unit_gross > 0 && $unit_gross == $balance && $invoice_details['status'] != 'unpaid') {
-                $this->update_invoice_status($invoice_id, 'unpaid');
+                $this->updateStatus($invoice_id, 'unpaid');
             }
 
             // Has invoiceable amount with partially payment, set to partially paid (if not already)
             elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $invoice_details['status'] != 'partially_paid') {            
-                $this->update_invoice_status($invoice_id, 'partially_paid');
+                $this->updateStatus($invoice_id, 'partially_paid');
             }
 
             // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
             elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $invoice_details['status'] != 'paid') {            
-                $this->update_invoice_status($invoice_id, 'paid');
+                $this->updateStatus($invoice_id, 'paid');
             }        
 
             return;        
@@ -1357,7 +1730,7 @@ defined('_QWEXEC') or die;
     #   Upload labour rates CSV file    #
     #####################################
 
-    public function upload_invoice_prefill_items_csv($empty_prefill_items_table) {
+    public function uploadPrefillItemsCsv($empty_prefill_items_table) {
 
         // Allowed extensions
         $allowedExts = array('csv');
@@ -1447,7 +1820,7 @@ defined('_QWEXEC') or die;
     #   Export Invoice Prefill Items as a CSV file   #
     ##################################################
 
-    public function export_invoice_prefill_items_csv() {
+    public function exportPrefillItemsCsv() {
 
         $sql = "SELECT description, type, unit_net, active FROM ".PRFX."invoice_prefill_items";
 
@@ -1488,10 +1861,10 @@ defined('_QWEXEC') or die;
     # Assign Workorder to another employee  #
     #########################################
 
-    public function assign_invoice_to_employee($invoice_id, $target_employee_id) {
+    public function assignToEmployee($invoice_id, $target_employee_id) {
 
         // get the invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);
+        $invoice_details = $this->getRecord($invoice_id);
 
         // if the new employee is the same as the current one, exit
         if($target_employee_id == $invoice_details['employee_id']) {         
@@ -1534,25 +1907,25 @@ defined('_QWEXEC') or die;
             if($assigned_employee_id == ''){
                 $assigned_employee_display_name = _gettext("Unassigned");            
             } else {            
-                $assigned_employee_display_name = $this->app->components->user->get_user_details($assigned_employee_id, 'display_name');
+                $assigned_employee_display_name = $this->app->components->user->getRecord($assigned_employee_id, 'display_name');
             }
 
             // Get the Display Name of the Target Employee        
-            $target_employee_display_name = $this->app->components->user->get_user_details($target_employee_id, 'display_name');
+            $target_employee_display_name = $this->app->components->user->getRecord($target_employee_id, 'display_name');
 
             // Creates a History record
-            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
+            $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
 
             // Log activity        
             $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
             // Update last active record
-            $this->app->components->user->update_user_last_active($invoice_details['employee_id']);
-            $this->app->components->user->update_user_last_active($target_employee_id);
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            $this->update_invoice_last_active($invoice_id);
+            $this->app->components->user->updateLastActive($invoice_details['employee_id']);
+            $this->app->components->user->updateLastActive($target_employee_id);
+            $this->app->components->client->updateLastActive($invoice_details['client_id']);
+            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+            $this->updateLastActive($invoice_id);
 
             return true;
 
@@ -1560,382 +1933,22 @@ defined('_QWEXEC') or die;
 
     }
 
-    ##########################################################
-    #  Check if the invoice status is allowed to be changed  #
-    ##########################################################
-
-     public function check_invoice_status_can_be_changed($invoice_id) {
-
-        $state_flag = true; 
-
-        // Get the invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments and is partially paid."));
-            return false;        
-        }
-
-        // Is paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments and is paid."));
-            return false;        
-        }
-
-        // Is partially refunded (not currently used)
-        if($invoice_details['status'] == 'partially_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
-            return false;        
-        }
-
-        // Is refunded
-        if($invoice_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been refunded."));
-            return false;        
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been cancelled."));
-            return false;        
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been deleted."));
-            return false;        
-        }
-
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
-            return false;        
-        }
-
-        // Does the invoice have any Vouchers preventing changing the invoice status
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_editing($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
-            return false;
-        } 
-
-        return $state_flag;     
-
-     }
-
-    ###############################################################
-    #   Check to see if the invoice can be refunded (by status)   #
-    ###############################################################
-
-    public function check_invoice_can_be_refunded($invoice_id) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be refunded because the invoice is partially paid."));
-            return false;
-        }
-
-        // Is partially refunded (not currently used)
-        if($invoice_details['status'] == 'partially_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
-            return false;        
-        }
-
-        // Is refunded
-        if($invoice_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
-            return false;        
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has been cancelled."));
-            return false;        
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has been deleted."));
-            return false;        
-        }    
-
-        // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(!$this->app->components->report->count_payments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be refunded because the invoice has no payments."));
-            return false;        
-        }
-
-        // Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_refunds(null, null, null, null, $invoice_id) > 0) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
-            return false;
-        }
-
-        // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refunding($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
-            return false;
-        }    
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the invoice can be cancelled              #
-    ###############################################################
-
-    public function check_invoice_can_be_cancelled($invoice_id) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);
-
-        // Does not have a balance
-        if($invoice_details['balance'] == 0) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice does not have a balance."));
-            return false;
-        }
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice is partially paid."));
-            return false;
-        }
-
-        // Is partially refunded (not currently used)
-        if($invoice_details['status'] == 'partially_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
-            return false;        
-        }
-
-
-        // Is refunded
-        if($invoice_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
-            return false;        
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has already been cancelled."));
-            return false;        
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been deleted."));
-            return false;        
-        }    
-
-        // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice has payments."));
-            return false;        
-        }
-
-        // Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_refunds(null, null, null, null, $invoice_id) > 0) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
-            return false;
-        }
-
-        // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_cancellation($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
-            return false;
-        } 
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the invoice can be deleted                #
-    ###############################################################
-
-    public function check_invoice_can_be_deleted($invoice_id) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);
-
-        // Is closed
-        if($invoice_details['is_closed'] == true) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it is closed."));
-            $state_flag = false;       
-        }
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments and is partially paid."));
-            $state_flag = false;       
-        }
-
-        // Is paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments and is paid."));
-            $state_flag = false;       
-        }
-
-        // Is partially refunded (not currently used)
-        if($invoice_details['status'] == 'partially_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
-            $state_flag = false;       
-        }     
-
-        // Is refunded
-        if($invoice_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been refunded."));
-            $state_flag = false;       
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been cancelled."));
-            $state_flag = false;       
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."));
-            $state_flag = false;       
-        }
-
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."));
-            $state_flag = false;       
-        }
-
-        /*
-        // Has Labour (these will get deleted anyway)
-        if(!empty($this->get_invoice_labour_items($invoice_id))) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has labour items."));
-            $state_flag = false;         
-        }    
-
-        // Has Parts (these will get deleted anyway)
-        if(!empty($this->get_invoice_parts_items($invoice_id))) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has parts."));
-            $state_flag = false;         
-        }
-        */
-
-        // Has Refunds (should not be needed)
-        if($this->app->components->report->count_refunds(null, null, null, null, $invoice_id) > 0) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been refunded."));
-            return false;
-        }
-
-        // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_deletion($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
-            return false;
-        } 
-
-        return $state_flag;
-
-    }
-
-    ##########################################################
-    #  Check if the invoice status is allowed to be changed  #
-    ##########################################################
-
-     public function check_invoice_can_be_edited($invoice_id) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->get_invoice_details($invoice_id);
-
-        // Is on a different tax system
-        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it is on a different Tax system."));
-            $state_flag = false;       
-        }
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."));
-            $state_flag = false;       
-        }
-
-        // Is paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."));
-            $state_flag = false;       
-        }
-
-        // Is partially refunded (not currently used)
-        if($invoice_details['status'] == 'partially_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been partially refunded."));
-            $state_flag = false;       
-        }
-
-        // Is refunded
-        if($invoice_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been refunded."));
-            $state_flag = false;       
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been cancelled."));
-            $state_flag = false;       
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."));
-            $state_flag = false;       
-        }
-
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
-            $state_flag = false;       
-        }
-
-        // Does the invoice have any Vouchers preventing changing the invoice status
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_editing($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."));
-            return false;
-        }
-
-        // The current record VAT code is enabled
-        if(!$this->check_invoice_vat_tax_code_statuses($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of the parts or labour have a VAT Tax Code that is not enabled."));
-            $state_flag = false;
-        }
-
-        return $state_flag;   
-
-    }
-
     ####################################################################
     #   Check invoice Labour and parts VAT Tax Codes are all enabled   #
     ####################################################################
 
-    public function check_invoice_vat_tax_code_statuses($invoice_id) {
+    public function checkVatTaxCodeStatuses($invoice_id) {
 
         $state_flag = true;
 
         // Check all labour
-        foreach ($this->get_invoice_labour_items($invoice_id) as $key => $value) {        
-            if(!$this->app->components->company->get_vat_tax_code_status($value['vat_tax_code'])) { $state_flag = false;}        
+        foreach ($this->getLabourItems($invoice_id) as $key => $value) {        
+            if(!$this->app->components->company->getVatTaxCodeStatus($value['vat_tax_code'])) { $state_flag = false;}        
         }
 
         // Check all parts
-        foreach ($this->get_invoice_parts_items($invoice_id) as $key => $value) {        
-            if(!$this->app->components->company->get_vat_tax_code_status($value['vat_tax_code'])) { $state_flag = false;}        
+        foreach ($this->getPartsItems($invoice_id) as $key => $value) {        
+            if(!$this->app->components->company->getVatTaxCodeStatus($value['vat_tax_code'])) { $state_flag = false;}        
         }
 
         return $state_flag; 

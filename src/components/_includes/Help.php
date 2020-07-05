@@ -9,12 +9,12 @@
 
 /*
  * Mandatory Code - Code that is run upon the file being loaded
- * Display Functions - Code that is used to primarily display records - linked tables
- * New/Insert Functions - Creation of new records
+ * Insert Functions - Creation of new records
  * Get Functions - Grabs specific records/fields ready for update - no table linking
  * Update Functions - For updating records/fields
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
+ * Check Functions - Checking/Testing routines
  * Other Functions - All other public functions not covered above
  */
 
@@ -24,8 +24,6 @@ class Help extends Components {
 
     /** Mandatory Code **/
 
-    /** Display Functions **/
-
     /** Insert Functions **/
 
     /** Get Functions **/
@@ -34,6 +32,8 @@ class Help extends Components {
 
     /** Close Functions **/
 
+    /** Delete Functions **/
+    
     /** Delete Functions **/
 
     /** Other Functions **/

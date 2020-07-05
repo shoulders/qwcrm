@@ -12,11 +12,11 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['client_id']) && \CMSApplication::$VAR['client_id']) {
     
     // check if there is already a user for the client (and error if there is)
-    if(!$this->app->components->user->check_client_already_has_login(\CMSApplication::$VAR['client_id'])) {
+    if(!$this->app->components->user->checkClientLoginExists(\CMSApplication::$VAR['client_id'])) {
         
         $this->app->smarty->assign('is_employee', '0');
-        $this->app->smarty->assign('client_display_name', $this->app->components->client->get_client_details(\CMSApplication::$VAR['client_id'], 'client_display_name'));
-        $this->app->smarty->assign('usergroups', $this->app->components->user->get_usergroups('clients'));
+        $this->app->smarty->assign('client_display_name', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'client_display_name'));
+        $this->app->smarty->assign('usergroups', $this->app->components->user->getUsergroups('clients'));
         
     } else {
         
@@ -26,14 +26,14 @@ if(isset(\CMSApplication::$VAR['client_id']) && \CMSApplication::$VAR['client_id
     
 } else {
     $this->app->smarty->assign('is_employee', '1');    
-    $this->app->smarty->assign('usergroups', $this->app->components->user->get_usergroups('employees'));
+    $this->app->smarty->assign('usergroups', $this->app->components->user->getUsergroups('employees'));
 }
 
 // If user data has been submitted
 if(isset(\CMSApplication::$VAR['submit'])) { 
             
     // Insert the record - if the username or email have not been used
-    if ($this->app->components->user->check_user_username_exists(\CMSApplication::$VAR['qform']['username']) || $this->app->components->user->check_user_email_exists(\CMSApplication::$VAR['qform']['email'])) {     
+    if ($this->app->components->user->checkUsernameExists(\CMSApplication::$VAR['qform']['username']) || $this->app->components->user->checkEmailExists(\CMSApplication::$VAR['qform']['email'])) {     
         
         // send the posted data back to smarty
         $user_details = \CMSApplication::$VAR['qform'];
@@ -44,7 +44,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         } else {    
             
             // Insert user record (and return the new ID)
-            $user_id = $this->app->components->user->insert_user(\CMSApplication::$VAR['qform']);
+            $user_id = $this->app->components->user->insertRecord(\CMSApplication::$VAR['qform']);
             
             // Redirect to the new user's details page
             $this->app->system->variables->systemMessagesWrite('success', _gettext("New user has been created."));
@@ -60,4 +60,4 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 }
 
 // Build the page
-$this->app->smarty->assign('user_locations', $this->app->components->user->get_user_locations());
+$this->app->smarty->assign('user_locations', $this->app->components->user->getLocations());

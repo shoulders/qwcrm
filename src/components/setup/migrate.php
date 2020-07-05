@@ -33,23 +33,23 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_connection_qwcrm') {
         
         // test the supplied database connection details
-        if($MigrateMyitcrm->verify_database_connection_details(\CMSApplication::$VAR['qwcrm_config']['db_host'], \CMSApplication::$VAR['qwcrm_config']['db_user'], \CMSApplication::$VAR['qwcrm_config']['db_pass'], \CMSApplication::$VAR['qwcrm_config']['db_name'])) {
+        if($MigrateMyitcrm->checkDatabaseConnectionDetailsValid(\CMSApplication::$VAR['qwcrm_config']['db_host'], \CMSApplication::$VAR['qwcrm_config']['db_user'], \CMSApplication::$VAR['qwcrm_config']['db_pass'], \CMSApplication::$VAR['qwcrm_config']['db_name'])) {
             
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Database connection successful."));
             
             // Create Configuration File
-            $MigrateMyitcrm->create_config_file_from_default(SETUP_DIR.'migrate/myitcrm/migrate_configuration.php');
+            $MigrateMyitcrm->createConfigFileFromDefault(SETUP_DIR.'migrate/myitcrm/migrate_configuration.php');
             
             // Load the configuration file into the registry            
-            $this->app->components->administrator->refresh_qwcrm_config();
+            $this->app->components->administrator->refreshQwcrmConfig();
             
             // Update the Database Credentials
-            $this->app->components->administrator->update_qwcrm_config_setting('db_host', \CMSApplication::$VAR['qwcrm_config']['db_host']);
-            $this->app->components->administrator->update_qwcrm_config_setting('db_user', \CMSApplication::$VAR['qwcrm_config']['db_user']);
-            $this->app->components->administrator->update_qwcrm_config_setting('db_pass', \CMSApplication::$VAR['qwcrm_config']['db_pass']);
-            $this->app->components->administrator->update_qwcrm_config_setting('db_name', \CMSApplication::$VAR['qwcrm_config']['db_name']);
+            $this->app->components->administrator->updateQwcrmConfigSetting('db_host', \CMSApplication::$VAR['qwcrm_config']['db_host']);
+            $this->app->components->administrator->updateQwcrmConfigSetting('db_user', \CMSApplication::$VAR['qwcrm_config']['db_user']);
+            $this->app->components->administrator->updateQwcrmConfigSetting('db_pass', \CMSApplication::$VAR['qwcrm_config']['db_pass']);
+            $this->app->components->administrator->updateQwcrmConfigSetting('db_name', \CMSApplication::$VAR['qwcrm_config']['db_name']);
             
-            $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
+            $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             \CMSApplication::$VAR['stage'] = 'database_connection_myitcrm';
             
         // Load the page - Error message done by verify_database_connection_details();
@@ -57,7 +57,7 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
             
             // reload the database connection page with the details and error message
             $this->app->smarty->assign('qwcrm_config', \CMSApplication::$VAR['qwcrm_config']);            
-            $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("Failed to connect to the database with the supplied credentials."));
+            $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Failed to connect to the database with the supplied credentials."));
             $this->app->smarty->assign('stage', 'database_connection_qwcrm');  
             
             
@@ -79,7 +79,7 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
         $this->app->smarty->assign('stage', 'database_connection_qwcrm');
         
         // Log message to setup log - only when starting the process
-        $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("QWcrm migration from MyITCRM has begun."));
+        $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("QWcrm migration from MyITCRM has begun."));
         
     }
     
@@ -95,8 +95,8 @@ if(\CMSApplication::$VAR['stage'] == 'database_connection_myitcrm') {
         if($MigrateMyitcrm->check_myitcrm_database_connection(\CMSApplication::$VAR['qwcrm_config']['myitcrm_prefix'])) {
             
             // Record details into the config file and display success message and load the next page       
-            $this->app->components->administrator->update_qwcrm_config_settings_file(\CMSApplication::$VAR['qwcrm_config']);           
-            $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("Connected successfully to the MyITCRM database with the supplied prefix."));  
+            $this->app->components->administrator->updateQwcrmConfigSettingsFile(\CMSApplication::$VAR['qwcrm_config']);           
+            $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Connected successfully to the MyITCRM database with the supplied prefix."));  
             $this->app->system->variables->systemMessagesWrite('success', _gettext("MyITCRM database connection successful."));
             \CMSApplication::$VAR['stage'] = 'config_settings';
         
@@ -106,7 +106,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_connection_myitcrm') {
             // Reload the database connection page with the details and error message
             $this->app->smarty->assign('qwcrm_config', \CMSApplication::$VAR['qwcrm_config']);
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The MyITCRM database is either missing or the prefix is wrong."));
-            $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("Failed to connect to the MyITCRM database with the supplied prefix.")); 
+            $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Failed to connect to the MyITCRM database with the supplied prefix.")); 
             $this->app->smarty->assign('stage', 'database_connection_myitcrm');
             
         }        
@@ -136,14 +136,14 @@ if(\CMSApplication::$VAR['stage'] == 'config_settings') {
         \CMSApplication::$VAR['qwcrm_config']['session_name']        = \Joomla\CMS\User\UserHelper::genRandomPassword(16);
         \CMSApplication::$VAR['qwcrm_config']['secret_key']          = \Joomla\CMS\User\UserHelper::genRandomPassword(32);
         
-        $this->app->components->administrator->update_qwcrm_config_settings_file(\CMSApplication::$VAR['qwcrm_config']);
-        $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("Config settings have been added to the config file."));
+        $this->app->components->administrator->updateQwcrmConfigSettingsFile(\CMSApplication::$VAR['qwcrm_config']);
+        $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Config settings have been added to the config file."));
         \CMSApplication::$VAR['stage'] = 'database_install_qwcrm';
     
     // Load the page
     } else {
         
-        \CMSApplication::$VAR['qwcrm_config']['db_prefix'] = $this->app->components->setup->generate_database_prefix();
+        \CMSApplication::$VAR['qwcrm_config']['db_prefix'] = $this->app->components->setup->generateDatabasePrefix();
     
         $this->app->smarty->assign('qwcrm_config', \CMSApplication::$VAR['qwcrm_config']);        
         $this->app->smarty->assign('stage', 'config_settings');
@@ -158,14 +158,14 @@ if(\CMSApplication::$VAR['stage'] == 'database_install_qwcrm') {
     
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_install_qwcrm') {
         
-        $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("Starting Database installation."));
+        $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Starting Database installation."));
         
         // install the database file and load the next page
-        if($this->app->components->setup->install_database(SETUP_DIR.'migrate/myitcrm/migrate_database.sql')) {
+        if($this->app->components->setup->installDatabase(SETUP_DIR.'migrate/myitcrm/migrate_database.sql')) {
             
             $record = _gettext("The database installed successfully.");
             $this->app->system->variables->systemMessagesWrite('success', $record);
-            $this->app->components->setup->write_record_to_setup_log('migrate', $record);
+            $this->app->components->setup->writeRecordToSetupLog('migrate', $record);
             \CMSApplication::$VAR['stage'] = 'database_install_results_qwcrm';            
         
         // Load the page with the error message      
@@ -173,7 +173,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_install_qwcrm') {
               
            $record = _gettext("The database failed to install.");                     
            $this->app->system->variables->systemMessagesWrite('danger', $record);
-           $this->app->components->setup->write_record_to_setup_log('migrate', $record); 
+           $this->app->components->setup->writeRecordToSetupLog('migrate', $record); 
            \CMSApplication::$VAR['stage'] = 'database_install_results_qwcrm';
            
         }
@@ -224,7 +224,7 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         
         // update company details and load next stage
         $MigrateMyitcrm->update_company_details(\CMSApplication::$VAR);
-        $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("Company options inserted."));
+        $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Company options inserted."));
         \CMSApplication::$VAR['stage'] = 'database_migrate';
         
     // Load the page    
@@ -235,7 +235,7 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         $company_details = $MigrateMyitcrm->get_company_details_merged();
         
         // Update the logo in the database with the merged value (this allows the logo to be displayed)
-        $this->app->components->setup->update_record_value(PRFX.'company', 'logo', $company_details['logo']);
+        $this->app->components->setup->updateRecordValue(PRFX.'company', 'logo', $company_details['logo']);
         
         // Assign Smarty variables
         $this->app->smarty->assign('company_details', $company_details);        
@@ -253,17 +253,17 @@ if(\CMSApplication::$VAR['stage'] == 'database_migrate') {
     
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'database_migrate') {
         
-        $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("Starting MyITCRM Database Migration."));
+        $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("Starting MyITCRM Database Migration."));
                 
         // install the database file and load the next page
         if($MigrateMyitcrm->migrate_myitcrm_database($this->app->config->get('db_prefix'), $this->app->config->get('myitcrm_prefix'))) {
             
             // remove MyITCRM prefix from the config file
-            $this->app->components->administrator->delete_qwcrm_config_setting('myitcrm_prefix');            
+            $this->app->components->administrator->deleteQwcrmConfigSetting('myitcrm_prefix');            
             
             $record = _gettext("The MyITCRM database migrated successfully.");            
             $this->app->system->variables->systemMessagesWrite('success', $record);
-            $this->app->components->setup->write_record_to_setup_log('migrate', $record);            
+            $this->app->components->setup->writeRecordToSetupLog('migrate', $record);            
             \CMSApplication::$VAR['stage'] = 'database_migrate_results';            
         
         // Load the page with the error message      
@@ -271,7 +271,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_migrate') {
               
             $this->app->system->variables->systemMessagesWrite('danger', $record); 
             $record = _gettext("The MyITCRM database failed to migrate successfully.");           
-            $this->app->components->setup->write_record_to_setup_log('migrate', $record);
+            $this->app->components->setup->writeRecordToSetupLog('migrate', $record);
             \CMSApplication::$VAR['stage'] = 'database_migrate_results';
            
         }
@@ -327,8 +327,8 @@ if(\CMSApplication::$VAR['stage'] == 'administrator_account') {
             // Insert user record (and return the new ID)
             $MigrateMyitcrm->insert_user(\CMSApplication::$VAR);
 
-            $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("The administrator account has been created."));
-            $this->app->components->setup->write_record_to_setup_log('migrate', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
+            $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("The administrator account has been created."));
+            $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
             $this->app->system->variables->systemMessagesWrite('success', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
             \CMSApplication::$VAR['stage'] = 'upgrade_confirmation';        
 
@@ -387,10 +387,10 @@ if(\CMSApplication::$VAR['stage'] == 'upgrade_confirmation') {
     } else {
         
         // Log message to setup log - only when starting the process - this start every page loads
-        $this->app->components->setup->write_record_to_setup_log('upgrade', _gettext("MyITCRM to QWcrm migration has finished."));
+        $this->app->components->setup->writeRecordToSetupLog('upgrade', _gettext("MyITCRM to QWcrm migration has finished."));
     
         // Clean up after setup process 
-        $this->app->components->setup->setup_finished();
+        $this->app->components->setup->setupFinished();
         
         // Set mandatory default values               
         $this->app->smarty->assign('stage', 'upgrade_confirmation');

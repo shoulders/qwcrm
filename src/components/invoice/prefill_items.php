@@ -13,7 +13,7 @@ defined('_QWEXEC') or die;
 
 // If the export of the invoice prefill items has been requested
 if(isset(\CMSApplication::$VAR['export_invoice_prefill_items'])) {
-    $this->app->components->invoice->export_invoice_prefill_items_csv();
+    $this->app->components->invoice->exportPrefillItemsCsv();
     die();
 }
 
@@ -22,25 +22,25 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
     // New invoice labour rates item
     if(\CMSApplication::$VAR['submit'] == 'new') {
-        $this->app->components->invoice->insert_invoice_prefill_item(\CMSApplication::$VAR['qform']);
+        $this->app->components->invoice->insertInvoicePrefillItem(\CMSApplication::$VAR['qform']);
     }    
     
     // Update invoice labour rates item
     if(\CMSApplication::$VAR['submit'] == 'update') {            
-        $this->app->components->invoice->update_invoice_prefill_item(\CMSApplication::$VAR['qform']);        
+        $this->app->components->invoice->updatePrefillItem(\CMSApplication::$VAR['qform']);        
     }
     
     // Delete invoice labour rates item
     if(\CMSApplication::$VAR['submit'] == 'delete') {        
-        $this->app->components->invoice->delete_invoice_prefill_item(\CMSApplication::$VAR['qform']['invoice_prefill_id']);
+        $this->app->components->invoice->deletePrefillItem(\CMSApplication::$VAR['qform']['invoice_prefill_id']);
     }
     
     // Upload CSV file of invoice labour rates items
     if(\CMSApplication::$VAR['submit'] == 'csv_upload') {
-        $this->app->components->invoice->upload_invoice_prefill_items_csv(\CMSApplication::$VAR['empty_prefill_items_table']);
+        $this->app->components->invoice->uploadPrefillItemsCsv(\CMSApplication::$VAR['empty_prefill_items_table']);
     }
     
 }
 
 // Build Page
-$this->app->smarty->assign('invoice_prefill_items', $this->app->components->invoice->get_invoice_prefill_items());
+$this->app->smarty->assign('invoice_prefill_items', $this->app->components->invoice->getPrefillItems());

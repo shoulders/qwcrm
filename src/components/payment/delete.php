@@ -28,10 +28,10 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
 Payment::$action = 'delete';
 
 // Set Payment details
-Payment::$payment_details = $this->app->components->payment->get_payment_details(\CMSApplication::$VAR['payment_id']);
+Payment::$payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);
 
 // Set Payment into [qpayment]
-$this->app->components->payment->build_qpayment_array();
+$this->app->components->payment->buildQpaymentArray();
 
 // Set the payment type class (Capitlaise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
 $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['type']));

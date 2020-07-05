@@ -21,10 +21,10 @@ if(!isset(\CMSApplication::$VAR['workorder_note_id']) || !\CMSApplication::$VAR[
 }
 
 // Get the workorder_id before we delete the record
-$workorder_id = $this->app->components->workorder->get_workorder_note_details(\CMSApplication::$VAR['workorder_note_id'], 'workorder_id');
+$workorder_id = $this->app->components->workorder->getNote(\CMSApplication::$VAR['workorder_note_id'], 'workorder_id');
 
 // Delete the record
-$this->app->components->workorder->delete_workorder_note(\CMSApplication::$VAR['workorder_note_id']);
+$this->app->components->workorder->deleteNote(\CMSApplication::$VAR['workorder_note_id']);
 
 // Reload the workorder details page
 $this->app->system->page->force_page('workorder', 'details&workorder_id='.$workorder_id, 'msg_success='._gettext("The note has been deleted."));

@@ -23,16 +23,70 @@ defined('_QWEXEC') or die;
 
 class Schedule extends Components {
 
+    /** Insert Functions **/
 
-    /** Mandatory Code **/
+    ######################################
+    #  Insert schedule                   #  // Cannot use 'qform' because of smarty variables 'StartTime' and 'EndTime'
+    ######################################  // supply times in DATETIME
 
-    /** Display Functions **/
+    public function insertRecord($qform) {
+
+        // Validate the submitted dates
+        if(!$this->checkRecordTimesValid($qform['start_time'], $qform['end_time'], $qform['employee_id'])) { return false; }        
+
+        // Insert schedule item into the database
+        $sql = "INSERT INTO ".PRFX."schedule_records SET
+                employee_id     =". $this->app->db->qstr( $qform['employee_id']      ).",
+                client_id       =". $this->app->db->qstr( $qform['client_id']        ).",   
+                workorder_id    =". $this->app->db->qstr( $qform['workorder_id']     ).",
+                start_time      =". $this->app->db->qstr( $qform['start_time']       ).",
+                end_time        =". $this->app->db->qstr( $qform['end_time']         ).",            
+                note            =". $this->app->db->qstr( $qform['note']             );            
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
+        } else {
+
+            // Get work order details
+            $workorder_details = $this->app->components->workorder->getRecord($qform['workorder_id']);
+
+            // Get the new Schedule ID
+            $schedule_id = $this->app->db->Insert_ID();
+
+            // Assign the work order to the scheduled employee (if not already)
+            if($qform['employee_id'] != $workorder_details['employee_id']) {
+                $this->app->components->workorder->assignToEmployee($qform['workorder_id'], $qform['employee_id']);
+            }
+
+            // Change the Workorders Status to scheduled (if not already)
+            if($workorder_details['status'] != 'scheduled') {
+                $this->app->components->workorder->updateStatus($qform['workorder_id'], 'scheduled');
+            }
+
+            // Insert Work Order History Note
+            $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.');             
+
+            // Log activity 
+            $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
+
+            // Update last active record
+            $this->app->components->workorder->updateLastActive($qform['workorder_id']);
+            $this->app->components->client->updateLastActive($qform['client_id']);
+
+            return true;
+
+        }    
+
+    }
+
+    /** Get Functions **/
 
     #####################################################
     # Display all Work orders for the given status      # // Status is not currently used but it will be
     #####################################################
 
-    public function display_schedules($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -172,70 +226,12 @@ class Schedule extends Components {
 
     }
 
-    /** Insert Functions **/
-
-    ######################################
-    #  Insert schedule                   #  // Cannot use 'qform' because of smarty variables 'StartTime' and 'EndTime'
-    ######################################  // supply times in DATETIME
-
-    public function insert_schedule($qform) {
-
-        // Validate the submitted dates
-        if(!$this->validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'])) { return false; }        
-
-        // Insert schedule item into the database
-        $sql = "INSERT INTO ".PRFX."schedule_records SET
-                employee_id     =". $this->app->db->qstr( $qform['employee_id']      ).",
-                client_id       =". $this->app->db->qstr( $qform['client_id']        ).",   
-                workorder_id    =". $this->app->db->qstr( $qform['workorder_id']     ).",
-                start_time      =". $this->app->db->qstr( $qform['start_time']       ).",
-                end_time        =". $this->app->db->qstr( $qform['end_time']         ).",            
-                note            =". $this->app->db->qstr( $qform['note']             );            
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
-        } else {
-
-            // Get work order details
-            $workorder_details = $this->app->components->workorder->get_workorder_details($qform['workorder_id']);
-
-            // Get the new Schedule ID
-            $schedule_id = $this->app->db->Insert_ID();
-
-            // Assign the work order to the scheduled employee (if not already)
-            if($qform['employee_id'] != $workorder_details['employee_id']) {
-                $this->app->components->workorder->assign_workorder_to_employee($qform['workorder_id'], $qform['employee_id']);
-            }
-
-            // Change the Workorders Status to scheduled (if not already)
-            if($workorder_details['status'] != 'scheduled') {
-                $this->app->components->workorder->update_workorder_status($qform['workorder_id'], 'scheduled');
-            }
-
-            // Insert Work Order History Note
-            $this->app->components->workorder->insert_workorder_history_note($qform['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.');             
-
-            // Log activity 
-            $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
-
-            // Update last active record
-            $this->app->components->workorder->update_workorder_last_active($qform['workorder_id']);
-            $this->app->components->client->update_client_last_active($qform['client_id']);
-
-            return true;
-
-        }    
-
-    }
-
-    /** Get Functions **/
 
     ################################
     #  Get Schedule Details        #
     ################################
 
-    public function get_schedule_details($schedule_id, $item = null) {
+    public function getRecord($schedule_id, $item = null) {
 
         $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$this->app->db->qstr($schedule_id);
 
@@ -261,11 +257,11 @@ class Schedule extends Components {
     #    Get all schedule IDs for an employee for a date     #
     ##########################################################
 
-    public function get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start_month, $start_day) {
+    public function getRecordIdsForEmployeeOnDate($employee_id, $start_year, $start_month, $start_day) {
 
         // Get the start and end time of the calendar schedule to be displayed, Office hours only
-        $company_day_start = $this->app->components->company->get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
-        $company_day_end   = $this->app->components->company->get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
+        $company_day_start = $this->app->components->company->getOpeningHours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
+        $company_day_end   = $this->app->components->company->getOpeningHours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
 
         // Look in the database for a scheduled events for the current schedule day (within business hours)
         $sql = "SELECT schedule_id
@@ -291,10 +287,10 @@ class Schedule extends Components {
     #      Update Schedule               #  // Cannot use 'qform' because of smarty variables 'StartTime' and 'EndTime'
     ######################################
 
-    public function update_schedule($qform) {
+    public function updateRecord($qform) {
 
         // Validate the submitted dates
-        if(!$this->validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }        
+        if(!$this->checkRecordTimesValid($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }        
 
         $sql = "UPDATE ".PRFX."schedule_records SET
             schedule_id         =". $this->app->db->qstr( $qform['schedule_id']      ).",
@@ -311,23 +307,21 @@ class Schedule extends Components {
         } else {       
 
             // Insert Work Order History Note
-            $this->app->components->workorder->insert_workorder_history_note($qform['workorder_id'], _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');             
+            $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');             
 
             // Log activity 
             $record = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
 
             // Update last active record
-            $this->app->components->workorder->update_workorder_last_active($qform['workorder_id']);
-            $this->app->components->client->update_client_last_active($qform['client_id']);        
+            $this->app->components->workorder->updateLastActive($qform['workorder_id']);
+            $this->app->components->client->updateLastActive($qform['client_id']);        
 
             return true;
 
         }        
 
-    }
-
-    /** Close Functions **/
+    }    
 
     /** Delete Functions **/
 
@@ -335,10 +329,10 @@ class Schedule extends Components {
     #        Delete Schedule         #
     ##################################
 
-    public function delete_schedule($schedule_id) {
+    public function deleteRecord($schedule_id) {
 
         // Get schedule details before deleting
-        $schedule_details = $this->get_schedule_details($schedule_id);
+        $schedule_details = $this->getRecord($schedule_id);
 
         $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->app->db->qstr($schedule_id);
 
@@ -348,39 +342,121 @@ class Schedule extends Components {
         } else {
 
             // If there are no schedules left for this workorder
-            if($this->app->components->report->count_schedules($schedule_details['workorder_id']) == 0) {
+            if($this->app->components->report->countSchedules($schedule_details['workorder_id']) == 0) {
 
                 // if the workorder status is 'scheduled', change the status to 'assigned'
-                if($this->app->components->workorder->get_workorder_details($schedule_details['workorder_id'], 'status') == 'scheduled') {
-                    $this->app->components->workorder->update_workorder_status($schedule_details['workorder_id'], 'assigned');
+                if($this->app->components->workorder->getRecord($schedule_details['workorder_id'], 'status') == 'scheduled') {
+                    $this->app->components->workorder->updateStatus($schedule_details['workorder_id'], 'assigned');
                 }
 
             }
 
             // Create a Workorder History Note        
-            $this->app->components->workorder->insert_workorder_history_note($schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
+            $this->app->components->workorder->insertHistory($schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
             $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['client_id'], $schedule_details['workorder_id']);
 
             // Update last active record
-            $this->app->components->workorder->update_workorder_last_active($schedule_details['workorder_id']);
-            $this->app->components->client->update_client_last_active($schedule_details['client_id']);
+            $this->app->components->workorder->updateLastActive($schedule_details['workorder_id']);
+            $this->app->components->client->updateLastActive($schedule_details['client_id']);
 
             return true;
 
         }
 
     }
+    
+    /** Check Functions **/
+    
+    ############################################
+    #   Validate schedule start and end time   #  // supply times in DATETIME
+    ############################################
 
-    /** iCalendar Functions **/
+    public function checkRecordTimesValid($start_time, $end_time, $employee_id, $schedule_id = null) {    
 
+        // convert the submitted $start_date to the correct format
+        //$start_date = $this->app->system->general->date_to_timestamp($start_date);
+        //$start_date = timestamp_to_date($start_date, '%Y-%m-%d');
+
+        // Get the start and end time of the calendar schedule to be displayed, Office hours only
+        $company_day_start = $this->app->components->company->getOpeningHours('opening_time', 'datetime', $start_time, 'datetime');
+        $company_day_end   = $this->app->components->company->getOpeningHours('closing_time', 'datetime', $start_time, 'datetime');
+
+        // Prevents Schedule Start and End times getting confused
+        $end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
+
+        // If start time is after end time show message and stop further processing
+        if($start_time > $end_time) {        
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule ends before it starts."));
+            return false;
+        }
+
+        // If the start time is the same as the end time show message and stop further processing
+        if($start_time == $end_time) {       
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Start Time and End Time are the Same."));        
+            return false;
+        }
+
+        // Check the schedule is within Company Hours    
+        if($start_time < $company_day_start || $end_time > $company_day_end) {            
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot book work outside of company hours"));    
+            return false;
+        }    
+
+        // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
+        $sql = "SELECT
+                schedule_id, start_time, end_time
+                FROM ".PRFX."schedule_records
+                WHERE start_time >= ".$this->app->db->qstr($company_day_start)."
+                AND end_time <=".$this->app->db->qstr($company_day_end)."
+                AND employee_id =".$this->app->db->qstr($employee_id)."
+                ORDER BY start_time
+                ASC";
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
+        }   
+
+        // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
+        while (!$rs->EOF) {
+
+            // Prevents Schedule Start and End times getting confused
+            $rs->fields['end_time'] = (new DateTime($rs->fields['end_time']))->modify('-1 second')->format('Y-m-d H:i:s');
+
+            // Check the schedule is not getting updated
+            if($schedule_id != $rs->fields['schedule_id']) {
+
+                // Check if this schedule item ends after another item has started      
+                if($start_time <= $rs->fields['start_time'] && $end_time >= $rs->fields['start_time']) {                        
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
+                    return false;           
+                }
+
+                // Check if this schedule item starts before another item has finished
+                if($start_time >= $rs->fields['start_time'] && $start_time <= $rs->fields['end_time']) {                    
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
+                    return false;
+                }
+
+            }
+
+            $rs->MoveNext();
+
+        }
+
+        return true;
+
+    }    
+
+    /** Other **/
+    
     #####################################################
     #     .ics header settings                          #
     #####################################################
 
-    public function ics_header_settings() {
+    public function icsHeaderSettings() {
 
         $ics_header_settings =
             'BEGIN:VCALENDAR'."\r\n".
@@ -397,28 +473,28 @@ class Schedule extends Components {
     #        This is the schedule .ics builder          #
     #####################################################
 
-    public function build_single_schedule_ics($schedule_id, $ics_type = 'single') {
+    public function buildRecordIcs($schedule_id, $ics_type = 'single') {
 
         // Get the schedule information
-        $schedule_details   = $this->get_schedule_details($schedule_id);
-        $client_details     = $this->app->components->client->get_client_details($schedule_details['client_id']);
+        $schedule_details   = $this->getRecord($schedule_id);
+        $client_details     = $this->app->components->client->getRecord($schedule_details['client_id']);
 
-        $start_datetime     = $this->mysql_datetime_to_ics_datetime($schedule_details['start_time']);
-        $end_datetime       = $this->mysql_datetime_to_ics_datetime($schedule_details['end_time']);
-        $current_datetime   = $this->timestamp_to_ics_datetime( time() );
+        $start_datetime     = $this->mysqlDatetimeToIcsDatetime($schedule_details['start_time']);
+        $end_datetime       = $this->mysqlDatetimeToIcsDatetime($schedule_details['end_time']);
+        $current_datetime   = $this->timestampToIcsDatetime( time() );
 
-        $summary            = $this->prepare_ics_strings('SUMMARY', $client_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
-        $description        = $this->prepare_ics_strings('DESCRIPTION', $this->build_ics_description('textarea', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
-        $x_alt_desc         = $this->prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', $this->build_ics_description('html', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
+        $summary            = $this->prepareIcsStrings('SUMMARY', $client_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
+        $description        = $this->prepareIcsStrings('DESCRIPTION', $this->buildIcsDescription('textarea', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
+        $x_alt_desc         = $this->prepareIcsStrings('X-ALT-DESC;FMTTYPE=text/html', $this->buildIcsDescription('html', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
 
-        $location           = $this->prepare_ics_strings('LOCATION', $this->build_single_line_address($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']));
+        $location           = $this->prepareIcsStrings('LOCATION', $this->buildSingleLineAddress($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']));
         $uniqid             = 'QWcrm-'.$schedule_details['schedule_id'].'-'.$schedule_details['start_time'];    
 
         // Build the Schedule .ics content
 
         $single_schedule_ics = '';    
 
-        if($ics_type == 'single') {$single_schedule_ics .= $this->ics_header_settings();}
+        if($ics_type == 'single') {$single_schedule_ics .= $this->icsHeaderSettings();}
 
         $single_schedule_ics .= 
             'BEGIN:VEVENT'."\r\n".
@@ -443,15 +519,15 @@ class Schedule extends Components {
     #    Build a multi .ics - the employees schedule items for that day     #
     #########################################################################
 
-    public function build_ics_schedule_day($employee_id, $start_year, $start_month, $start_day) {
+    public function buildDayIcs($employee_id, $start_year, $start_month, $start_day) {
 
         // fetch all schdule items for this setup
-        $schedule_multi_ics = $this->ics_header_settings();
+        $schedule_multi_ics = $this->icsHeaderSettings();
 
-        $schedule_multi_id = $this->get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start_month, $start_day);    
+        $schedule_multi_id = $this->getRecordIdsForEmployeeOnDate($employee_id, $start_year, $start_month, $start_day);    
 
         foreach($schedule_multi_id as $schedule_id) {
-            $schedule_multi_ics .= $this->build_single_schedule_ics($schedule_id['schedule_id'], $type = 'multi');
+            $schedule_multi_ics .= $this->buildRecordIcs($schedule_id['schedule_id'], $type = 'multi');
         }
 
         $schedule_multi_ics .= 'END:VCALENDAR'."\r\n";
@@ -464,7 +540,7 @@ class Schedule extends Components {
     # Build single line address (suitable for .ics location #
     #########################################################
 
-    public function build_single_line_address($address, $city, $state, $postcode){
+    public function buildSingleLineAddress($address, $city, $state, $postcode){
 
         // Replace real newlines with comma and space, build address using commans
         return preg_replace("/(\r\n|\r|\n)/", ', ', $address).', '.$city.', '.$state.', '.$postcode;
@@ -476,7 +552,7 @@ class Schedule extends Components {
     #####################################
 
     // build adddress html style
-    public function build_html_adddress($address, $city, $state, $postcode){
+    public function buildHtmlAddress($address, $city, $state, $postcode){
 
         // Open address block
         $html_address = '<address>';
@@ -496,10 +572,10 @@ class Schedule extends Components {
     #    Build description for ics                   #
     ##################################################
 
-    public function build_ics_description($type, $single_schedule, $client_id, $workorder_id) {
+    public function buildIcsDescription($type, $single_schedule, $client_id, $workorder_id) {
 
-        $workorder_details  = $this->app->components->workorder->get_workorder_details($workorder_id);
-        $client_details   = $this->app->components->client->get_client_details($client_id);
+        $workorder_details  = $this->app->components->workorder->getRecord($workorder_id);
+        $client_details   = $this->app->components->client->getRecord($client_id);
 
         if($type == 'textarea') {      
 
@@ -507,9 +583,9 @@ class Schedule extends Components {
             $description =  _gettext("Scope").': \n\n'.
                             $workorder_details['scope'].'\n\n'.
                             _gettext("Description").': \n\n'.
-                            $this->html_to_textarea($workorder_details['description']).'\n\n'.
+                            $this->htmlToTextarea($workorder_details['description']).'\n\n'.
                             _gettext("Schedule Note").': \n\n'.
-                            $this->html_to_textarea($single_schedule['note']);
+                            $this->htmlToTextarea($single_schedule['note']);
 
             // Contact Information
             $description .= _gettext("Contact Information")  .'\n\n'.
@@ -519,7 +595,7 @@ class Schedule extends Components {
                             _gettext("Mobile")               .': '   .$client_details['mobile_phone'].'\n\n'.
                             _gettext("Website")              .': '   .$client_details['website'].'\n\n'.
                             _gettext("Email")                .': '   .$client_details['email'].'\n\n'.
-                            _gettext("Address")              .': '   .$this->build_single_line_address($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']).'\n\n';                        
+                            _gettext("Address")              .': '   .$this->buildSingleLineAddress($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']).'\n\n';                        
 
         }
 
@@ -555,7 +631,7 @@ class Schedule extends Components {
                                 '<strong>'._gettext("Email")     .':</strong> '  .$client_details['email'].'<br>'.                        
                             '</p>'.                
                             '<p><strong>'._gettext("Address").': </strong><br></p>'.
-                            $this->build_html_adddress($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']);
+                            $this->buildHtmlAddress($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']);
 
             // Close HTML Wrapper
             $description .= '</BODY>\n'.
@@ -579,7 +655,7 @@ class Schedule extends Components {
     // Also note that we are using "H" instead of "g" because iCalendar's Time format
     // requires 24-hour time (see RFC 5545 section 3.3.12 for info).
 
-    public function timestamp_to_ics_datetime($timestamp) {
+    public function timestampToIcsDatetime($timestamp) {
         return date('Ymd\THis\Z', $timestamp);
     }
 
@@ -595,7 +671,7 @@ class Schedule extends Components {
     // Also note that we are using "H" instead of "g" because iCalendar's Time format
     // requires 24-hour time (see RFC 5545 section 3.3.12 for info).
 
-    public function mysql_datetime_to_ics_datetime($mysql_date) {
+    public function mysqlDatetimeToIcsDatetime($mysql_date) {
         return date('Ymd\THis\Z', strtotime($mysql_date));
     }
 
@@ -603,7 +679,7 @@ class Schedule extends Components {
     #      Convert HTML into Textarea                #
     ##################################################
 
-    public function html_to_textarea($content) {   
+    public function htmlToTextarea($content) {   
 
         // Remove real newlines
         $content = preg_replace("/(\r|\n)/", '', $content);
@@ -626,7 +702,7 @@ class Schedule extends Components {
     ##################################################
 
     // prepare the text strings
-    public function prepare_ics_strings($ics_keyname, $ics_string) {
+    public function prepareIcsStrings($ics_keyname, $ics_string) {
 
         // Remove whitespace at the beginning and end of the string
         $ics_string = trim($ics_string);
@@ -641,7 +717,7 @@ class Schedule extends Components {
         $ics_string = preg_replace('/([\,;])/', '\\\$1', $ics_string);
 
         // Break into octets with 75 character line limit (as per spec)
-        $ics_string = $this->ics_string_octet_split($ics_keyname, $ics_string);
+        $ics_string = $this->icsStringOctetSplit($ics_keyname, $ics_string);
 
         return $ics_string;
 
@@ -653,7 +729,7 @@ class Schedule extends Components {
 
     // Original script from https://gist.github.com/hugowetterberg/81747
 
-    public function ics_string_octet_split($ics_keyname, $ics_string) {    
+    public function icsStringOctetSplit($ics_keyname, $ics_string) {    
 
         // Get the ics_key length (after correction)
         $ics_keyname        .= ':';                 
@@ -696,19 +772,17 @@ class Schedule extends Components {
 
     }
 
-    /** Other **/
-
     #####################################################
     #        Build Calendar Matrix                      #
     #####################################################
 
-    public function build_calendar_matrix($start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
+    public function buildCalendarMatrix($start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
 
         $calendar_matrix = '';
 
         // Get the start and end time of the calendar schedule to be displayed, Office hours only
-        $company_day_start = $this->app->components->company->get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
-        $company_day_end   = $this->app->components->company->get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
+        $company_day_start = $this->app->components->company->getOpeningHours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
+        $company_day_end   = $this->app->components->company->getOpeningHours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
 
         // Look in the database for a scheduled events for the current schedule day (within business hours)
         $sql ="SELECT 
@@ -817,7 +891,7 @@ class Schedule extends Components {
                     // Links for schedule
                     $calendar_matrix .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
                     $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
-                    if(!$this->app->components->workorder->get_workorder_details($scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
+                    if(!$this->app->components->workorder->getRecord($scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
                         $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ";
                         $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&themeVar=print\">"._gettext("Export")."</a></b> - ";
                         $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
@@ -890,86 +964,6 @@ class Schedule extends Components {
 
         // Return Calender HTML Matrix
         return $calendar_matrix;
-
-    }
-
-    ############################################
-    #   Validate schedule start and end time   #  // supply times in DATETIME
-    ############################################
-
-    public function validate_schedule_times($start_time, $end_time, $employee_id, $schedule_id = null) {    
-
-        // convert the submitted $start_date to the correct format
-        //$start_date = $this->app->system->general->date_to_timestamp($start_date);
-        //$start_date = timestamp_to_date($start_date, '%Y-%m-%d');
-
-        // Get the start and end time of the calendar schedule to be displayed, Office hours only
-        $company_day_start = $this->app->components->company->get_company_opening_hours('opening_time', 'datetime', $start_time, 'datetime');
-        $company_day_end   = $this->app->components->company->get_company_opening_hours('closing_time', 'datetime', $start_time, 'datetime');
-
-        // Prevents Schedule Start and End times getting confused
-        $end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
-
-        // If start time is after end time show message and stop further processing
-        if($start_time > $end_time) {        
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule ends before it starts."));
-            return false;
-        }
-
-        // If the start time is the same as the end time show message and stop further processing
-        if($start_time == $end_time) {       
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Start Time and End Time are the Same."));        
-            return false;
-        }
-
-        // Check the schedule is within Company Hours    
-        if($start_time < $company_day_start || $end_time > $company_day_end) {            
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot book work outside of company hours"));    
-            return false;
-        }    
-
-        // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
-        $sql = "SELECT
-                schedule_id, start_time, end_time
-                FROM ".PRFX."schedule_records
-                WHERE start_time >= ".$this->app->db->qstr($company_day_start)."
-                AND end_time <=".$this->app->db->qstr($company_day_end)."
-                AND employee_id =".$this->app->db->qstr($employee_id)."
-                ORDER BY start_time
-                ASC";
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
-        }   
-
-        // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
-        while (!$rs->EOF) {
-
-            // Prevents Schedule Start and End times getting confused
-            $rs->fields['end_time'] = (new DateTime($rs->fields['end_time']))->modify('-1 second')->format('Y-m-d H:i:s');
-
-            // Check the schedule is not getting updated
-            if($schedule_id != $rs->fields['schedule_id']) {
-
-                // Check if this schedule item ends after another item has started      
-                if($start_time <= $rs->fields['start_time'] && $end_time >= $rs->fields['start_time']) {                        
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
-                    return false;           
-                }
-
-                // Check if this schedule item starts before another item has finished
-                if($start_time >= $rs->fields['start_time'] && $start_time <= $rs->fields['end_time']) {                    
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
-                    return false;
-                }
-
-            }
-
-            $rs->MoveNext();
-
-        }
-
-        return true;
 
     }
     

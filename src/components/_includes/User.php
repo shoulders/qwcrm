@@ -24,16 +24,72 @@ defined('_QWEXEC') or die;
 
 class User extends Components {
 
+    /** Insert Functions **/
 
-    /** Mandatory Code **/
+    #####################################
+    #    Insert new user                #
+    #####################################
 
-    /** Display Functions **/
+    public function insertRecord($qform) {
+
+        $sql = "INSERT INTO ".PRFX."user_records SET
+                client_id           =". $this->app->db->qstr( $qform['client_id']                            ).", 
+                username            =". $this->app->db->qstr( $qform['username']                             ).",
+                password            =". $this->app->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($qform['password'])  ).",
+                email               =". $this->app->db->qstr( $qform['email']                                ).",
+                usergroup           =". $this->app->db->qstr( $qform['usergroup']                            ).",
+                active              =". $this->app->db->qstr( $qform['active']                               ).",
+                register_date       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()  ).",   
+                require_reset       =". $this->app->db->qstr( $qform['require_reset']                        ).",
+                is_employee         =". $this->app->db->qstr( $qform['is_employee']                          ).", 
+                first_name          =". $this->app->db->qstr( $qform['first_name']                           ).",
+                last_name           =". $this->app->db->qstr( $qform['last_name']                            ).",
+                work_primary_phone  =". $this->app->db->qstr( $qform['work_primary_phone']                   ).",
+                work_mobile_phone   =". $this->app->db->qstr( $qform['work_mobile_phone']                    ).",
+                work_fax            =". $this->app->db->qstr( $qform['work_fax']                             ).",                    
+                home_primary_phone  =". $this->app->db->qstr( $qform['home_primary_phone']                   ).",
+                home_mobile_phone   =". $this->app->db->qstr( $qform['home_mobile_phone']                    ).",
+                home_email          =". $this->app->db->qstr( $qform['home_email']                           ).",
+                home_address        =". $this->app->db->qstr( $qform['home_address']                         ).",
+                home_city           =". $this->app->db->qstr( $qform['home_city']                            ).",  
+                home_state          =". $this->app->db->qstr( $qform['home_state']                           ).",
+                home_zip            =". $this->app->db->qstr( $qform['home_zip']                             ).",
+                home_country        =". $this->app->db->qstr( $qform['home_country']                         ).", 
+                based               =". $this->app->db->qstr( $qform['based']                                ).",  
+                note                =". $this->app->db->qstr( $qform['note']                                 );                     
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
+        } else {
+
+            // Get user_id
+            $user_id = $this->app->db->Insert_ID();
+
+            // Update last active record        
+            $this->app->components->client->updateLastActive($qform['client_id']);        
+
+            // Log activity
+            if($qform['client_id']) {
+                $user_type = _gettext("Client");
+            } else {
+                $user_type = _gettext("Employee");
+            }        
+            $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
+            $this->app->system->general->write_record_to_activity_log($record, $user_id);
+
+            return $user_id;
+
+        }
+
+    }
+    
+    /** Get Functions **/
 
     #####################################
     #    Display Users                  #  // 'display_name' and 'full_name' are the same. This is usability issues.
     #####################################
 
-    public function display_users($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $usergroup = null, $usertype = null, $status = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $usergroup = null, $usertype = null, $status = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -164,72 +220,11 @@ class User extends Components {
 
     }
 
-    /** Insert Functions **/
-
-    #####################################
-    #    Insert new user                #
-    #####################################
-
-    public function insert_user($qform) {
-
-        $sql = "INSERT INTO ".PRFX."user_records SET
-                client_id           =". $this->app->db->qstr( $qform['client_id']                            ).", 
-                username            =". $this->app->db->qstr( $qform['username']                             ).",
-                password            =". $this->app->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($qform['password'])  ).",
-                email               =". $this->app->db->qstr( $qform['email']                                ).",
-                usergroup           =". $this->app->db->qstr( $qform['usergroup']                            ).",
-                active              =". $this->app->db->qstr( $qform['active']                               ).",
-                register_date       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()  ).",   
-                require_reset       =". $this->app->db->qstr( $qform['require_reset']                        ).",
-                is_employee         =". $this->app->db->qstr( $qform['is_employee']                          ).", 
-                first_name          =". $this->app->db->qstr( $qform['first_name']                           ).",
-                last_name           =". $this->app->db->qstr( $qform['last_name']                            ).",
-                work_primary_phone  =". $this->app->db->qstr( $qform['work_primary_phone']                   ).",
-                work_mobile_phone   =". $this->app->db->qstr( $qform['work_mobile_phone']                    ).",
-                work_fax            =". $this->app->db->qstr( $qform['work_fax']                             ).",                    
-                home_primary_phone  =". $this->app->db->qstr( $qform['home_primary_phone']                   ).",
-                home_mobile_phone   =". $this->app->db->qstr( $qform['home_mobile_phone']                    ).",
-                home_email          =". $this->app->db->qstr( $qform['home_email']                           ).",
-                home_address        =". $this->app->db->qstr( $qform['home_address']                         ).",
-                home_city           =". $this->app->db->qstr( $qform['home_city']                            ).",  
-                home_state          =". $this->app->db->qstr( $qform['home_state']                           ).",
-                home_zip            =". $this->app->db->qstr( $qform['home_zip']                             ).",
-                home_country        =". $this->app->db->qstr( $qform['home_country']                         ).", 
-                based               =". $this->app->db->qstr( $qform['based']                                ).",  
-                note                =". $this->app->db->qstr( $qform['note']                                 );                     
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
-        } else {
-
-            // Get user_id
-            $user_id = $this->app->db->Insert_ID();
-
-            // Update last active record        
-            $this->app->components->client->update_client_last_active($qform['client_id']);        
-
-            // Log activity
-            if($qform['client_id']) {
-                $user_type = _gettext("Client");
-            } else {
-                $user_type = _gettext("Employee");
-            }        
-            $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->get_user_details($user_id, 'display_name').' '._gettext("created").'.';
-            $this->app->system->general->write_record_to_activity_log($record, $user_id);
-
-            return $user_id;
-
-        }
-
-    }
-
-    /** Get Functions **/
-
     #####################################
     #     Get User Details              #  // 'display_name' and 'full_name' are the same. This is usability issues.
     #####################################
 
-    public function get_user_details($user_id = null, $item = null) {
+    public function getRecord($user_id = null, $item = null) {
 
         // This allows for workorder:status to work
         if(!$user_id){
@@ -287,7 +282,7 @@ class User extends Components {
      * 
      */
 
-    public function get_user_id_by_username($username) {
+    public function getIdByUsername($username) {
 
         $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username =".$this->app->db->qstr($username);
 
@@ -305,7 +300,7 @@ class User extends Components {
     # Get User ID by username               #
     #########################################
 
-    public function get_user_id_by_email($email) {
+    public function getIdByEmail($email) {
 
         $sql = "SELECT user_id FROM ".PRFX."user_records WHERE email =".$this->app->db->qstr($email);
 
@@ -333,7 +328,7 @@ class User extends Components {
     # Get the usergroups             #
     ##################################
 
-    public function get_usergroups($user_type = null) {
+    public function getUsergroups($user_type = null) {
 
         $sql = "SELECT * FROM ".PRFX."user_usergroups";
 
@@ -356,7 +351,7 @@ class User extends Components {
     # Get all active users display name and ID       #
     ##################################################
 
-    public function get_active_users($user_type = null) {  
+    public function getActiveUsers($user_type = null) {  
 
         $sql = "SELECT        
                 user_id,
@@ -383,7 +378,7 @@ class User extends Components {
     # Get all active users display name and ID       #
     ##################################################
 
-    public function get_user_locations() {  
+    public function getLocations() {  
 
         $sql = "SELECT * FROM ".PRFX."user_locations";
 
@@ -403,7 +398,7 @@ class User extends Components {
     #   Update Employee     #
     #########################
 
-    public function update_user($qform) {
+    public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."user_records SET        
                 username            =". $this->app->db->qstr( $qform['username']                             ).",
@@ -434,15 +429,15 @@ class User extends Components {
 
             // Reset user password if required
             if($qform['password']) {
-                $this->reset_user_password($qform['user_id'], $qform['password']);
+                $this->resetPassword($qform['user_id'], $qform['password']);
             }
 
             // Update last active record
-            $this->update_user_last_active($qform['user_id']);
-            $this->app->components->client->update_client_last_active($this->get_user_details($qform['user_id'], 'client_id'));        
+            $this->updateLastActive($qform['user_id']);
+            $this->app->components->client->updateLastActive($this->getRecord($qform['user_id'], 'client_id'));        
 
             // Log activity        
-            $record = _gettext("User Account").' '.$qform['user_id'].' ('.$this->get_user_details($qform['user_id'], 'display_name').') '._gettext("updated.");
+            $record = _gettext("User Account").' '.$qform['user_id'].' ('.$this->getRecord($qform['user_id'], 'display_name').') '._gettext("updated.");
             $this->app->system->general->write_record_to_activity_log($record, $qform['user_id']);
 
             return true;
@@ -455,7 +450,7 @@ class User extends Components {
     #    Update User's Last Active Date   #
     #######################################
 
-    public function update_user_last_active($user_id = null) {
+    public function updateLastActive($user_id = null) {
 
         // compensate for some operations not having a user_id
         if(!$user_id) { return; }        
@@ -476,13 +471,13 @@ class User extends Components {
     #    Delete User                    #
     #####################################
 
-    public function delete_user($user_id) {
+    public function deleteRecord($user_id) {
 
         // get user details before deleting
-        $user_details = $this->get_user_details($user_id);
+        $user_details = $this->getRecord($user_id);
 
         // Make sure the client can be deleted 
-        if(!$this->check_user_can_be_deleted($user_id)) {        
+        if(!$this->checkStatusAllowsDelete($user_id)) {        
             return false;
         }
 
@@ -499,57 +494,19 @@ class User extends Components {
         $this->app->system->general->write_record_to_activity_log($record, $user_id);
 
         // Update last active record
-        $this->app->components->client->update_client_last_active($user_details['client_id']);    
+        $this->app->components->client->updateLastActive($user_details['client_id']);    
 
         return true;
 
     }
-
-    /** Other Functions **/
-
-    ##############################################
-    #   Build an active employee <option> list   #  // Not currently used keep for reference
-    ##############################################
-
-    /*
-     * This utilises the ADODB PHP Framework for building a <option> list from the supplied data set.
-     * 
-     * Build <option></option> list for a <form></form> to select employee for 'Assign To' feature
-     * GetMenu2('assign_employee_val, null, false') will turn off the blank option
-     * GetMenu2('dataset values', 'default option', 'blank 1st record' )
-     * 
-     * The assigned employee is the default option selected
-     * 
-     * I will use Smarty for this feature
-     * 
-     */
-
-    public function build_active_employee_form_option_list($assigned_user_id) {
-
-        // select all employees and return their display name and ID as an array
-        $sql = "SELECT
-                CONCAT(".PRFX."first_name, ' ', ".PRFX."last_name) AS display_name,
-                user_id
-
-                FROM ".PRFX."user_records
-                WHERE active=1 AND is_employee=1";
-
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
-        } else {
-
-            // Get ADODB to build the form using the loaded dataset
-            return $rs->GetMenu2('assign_user', $assigned_user_id, false);
-
-        }
-
-    }
-
+    
+    /** Check Functions **/
+    
     #################################################
     #    Check if username already exists           #
     #################################################
 
-    public function check_user_username_exists($username, $current_username = null) {
+    public function checkUsernameExists($username, $current_username = null) {
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_username != null && $username === $current_username) {return false;}
@@ -582,7 +539,7 @@ class User extends Components {
     #  Check if an email address has already been used   #
     ######################################################
 
-    public function check_user_email_exists($email, $current_email = null) {
+    public function checkEmailExists($email, $current_email = null) {
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_email != null && $email === $current_email) {return false;}
@@ -617,7 +574,7 @@ class User extends Components {
     #    Check if user already has login            #
     #################################################
 
-    public function check_client_already_has_login($client_id) {
+    public function checkClientLoginExists($client_id) {
 
         $sql = "SELECT user_id FROM ".PRFX."user_records WHERE client_id =". $this->app->db->qstr($client_id);
 
@@ -641,570 +598,18 @@ class User extends Components {
 
         }     
 
-    }
-
-    #####################################
-    #    Reset a user's password        #    
-    #####################################
-
-    public function reset_user_password($user_id, $password = null) { 
-
-        // if no password supplied generate a random one
-        if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
-
-        $sql = "UPDATE ".PRFX."user_records SET
-                password        =". $this->app->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
-                require_reset   =". $this->app->db->qstr( 0                                    ).",   
-                last_reset_time =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
-                reset_count     =". $this->app->db->qstr( 0                                    )."
-                WHERE user_id   =". $this->app->db->qstr( $user_id                             );
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
-
-        } else {
-
-            // Log activity        
-            $record = _gettext("User Account").' '.$user_id.' ('.$this->get_user_details($user_id, 'display_name').') '._gettext("password has been reset.");
-            $this->app->system->general->write_record_to_activity_log($record, $user_id);
-
-            // Update last active record
-            $this->update_user_last_active($user_id);
-            $this->app->components->client->update_client_last_active($this->get_user_details($user_id, 'client_id'));
-
-            return;
-
-        }      
-
-    }
-
-    #####################################
-    #    Reset all user's passwords     #   // used for migrations or security
-    #####################################
-
-    public function reset_all_user_passwords() { 
-
-        $sql = "SELECT user_id FROM ".PRFX."user_records";
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
-
-        } else {
-
-            // Loop through all users
-            while(!$rs->EOF) { 
-
-                // Reset User's password
-                $this->reset_user_password($rs->fields['user_id']);
-
-                // Advance the INSERT loop to the next record            
-                $rs->MoveNext();            
-
-            }
-
-            // Log activity        
-            $this->app->system->general->write_record_to_activity_log(_gettext("All User Account passwords have been reset."));
-
-            return;
-
-        }      
-
-    }
-
-    /* Login */
-
-    ####################################
-    #  Login authentication public function   #
-    ####################################
-
-    public function login($qform, $credentials, $options = array())
-    {   
-        $this->smarty = \Factory::getSmarty();   
-
-        // If username or password is missing
-        if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
-
-            // Set error message
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Username or Password Missing."));
-
-            return false;
-
-        } 
-
-        // Does the account require the password to be reset, if so force it
-        if($this->get_user_details($this->get_user_id_by_username($qform['login_username']), 'require_reset')) {
-
-            // Set error message
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You must reset your password before you are allowed to login."));
-
-            return false;
-
-        }
-
-        // If user is blocked - QFramework returns True for a blocked user, but does blocks it.
-        if($this->get_user_details($this->get_user_id_by_username($qform['login_username']), 'active') === '0') {  
-
-            // Set error message
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
-
-            // Log activity       
-            $this->app->system->general->write_record_to_activity_log(_gettext("Login denied for").' '.$qform['login_username'].'.');
-
-            return false;
-
-        }
-
-        if(\Factory::getAuth()->login($credentials, $options)) {
-
-            /* Login Successful */
-
-            // Wipe the current user details (probably guest) is this needed?
-            //$this->app->user = null; \Factory::$user = null;
-            
-            // Get the new login details
-            $user = \Factory::getUser();       
-
-            // Log activity       
-            $record = _gettext("Login successful for").' '.$user->login_username.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $user->login_user_id);        
-
-            // Update last active record        
-            $this->app->components->client->update_client_last_active($user->login_client_id);        
-
-            // set success message to survice the login event
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Login successful."));
-
-            return true;
-
-        } else {
-
-            /* Login failed */
-
-            // Log activity       
-            $this->app->system->general->write_record_to_activity_log(_gettext("Login unsuccessful for").' '.$credentials['username'].'.');
-
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Login Failed. Check you username and password."));
-
-            return false;
-
-        }
-    }
-
-    ###########################
-    #  Login authentication   #
-    ###########################
-
-    public function logout($silent = null)        
-    {   
-        // Build logout message (while user details exist)
-        $record = _gettext("Logout successful for").' '.$this->app->user->login_username.'.';
-
-        // Logout
-        \Factory::getAuth()->logout();    
-
-        // Log activity       
-        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
-
-        // Update last active record 
-        $this->update_user_last_active($this->app->user->login_user_id);
-        $this->app->components->client->update_client_last_active($this->app->user->login_client_id);
-
-        // Action after logout
-        if($silent) {
-
-            // No message or redirect
-
-            return;        
-
-        } else {
-
-            // Reload Homepage with message (default)
-
-            // only $_GET will work because the session store is destroyed (this is good behaviour)
-            $this->app->system->page->force_page('index.php', null, 'msg_success='._gettext("Logout successful."), 'get');
-
-        }
-
-    } 
-
-    ####################################
-    #  Logout all online users         #  // This terminates sessions fo those currently connected (Logged in and Guests). This does not handle users with 'remember me' enabled. 
-    ####################################
-
-    public function logout_all_users($except_me = false) {
-
-        //truncate something like `#__user_keys` destroys the remember_me link, the session kills the imediate session
-
-        // Logout all users
-        if(!$except_me) {
-
-            // Sessions
-            $sql = "TRUNCATE ".PRFX."session";
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
-            }
-
-            // Remember Me
-            $sql = "TRUNCATE ".PRFX."user_keys";
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
-            }
-
-        // Delete all sessions except the currently logged in user 
-        } else {
-
-            $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$this->app->db->qstr($this->app->user->login_user_id);
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
-            }
-
-            $sql = "DELETE FROM ".PRFX."user_keys WHERE userid <> ".$this->app->db->qstr($this->app->user->login_user_id);
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
-            }
-
-        }
-
-        return;
-
-    }
-
-    /* Reset Password */
-
-    #####################################
-    #    Verify submitted reCAPTCHA     #    
-    #####################################
-
-    public function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
-
-        // Load ReCaptcha library       
-        $recaptcha = new \ReCaptcha\ReCaptcha($recaptcha_secret_key);
-
-        // Get response from Google
-        $response = $recaptcha->verify($recaptcha_response, $_SERVER['REMOTE_ADDR']);
-
-        //  and if successfull authenticate
-        if ($response->isSuccess()) {
-
-            // Success
-            return true;
-
-        } else {
-
-            /* If it's not successful, then one or more error codes will be returned.      
-            $error_msg .= '<h2>Something went wrong</h2>';
-            $error_msg .= '<p>The following error was returned:';
-                foreach ($response->getErrorCodes() as $error_code) {
-                    $error_msg .= '<kbd>'.$error_code.'</kbd> ';
-                }
-            $error_msg .= '</p>';
-            $error_msg .= '<p>Check the error code reference at <kbd><a href="https://developers.google.com/recaptcha/docs/verify#error-code-reference">https://developers.google.com/recaptcha/docs/verify#error-code-reference</a></kbd>.';
-            $error_msg .= '<p><strong>Note:</strong> Error code <kbd>missing-input-response</kbd> may mean the user just didn\'t complete the reCAPTCHA.</p>';
-            $error_msg .= '<p><a href="/">Try again</a></p>';*/        
-
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Google reCAPTCHA Verification Failed."));
-            return false;
-
-        }  
-
-    }
-
-    ######################################################################################
-    #    Validate that the email submitted belongs to a valid account and can be reset   #    
-    ######################################################################################
-
-    public function validate_reset_email($email) {
-
-        // get the user_id if the user exists
-        if(!$user_id = $this->get_user_id_by_email($email)) {
-            return false;        
-        }
-
-        // is the user active
-        if(!$this->get_user_details($user_id, 'active')) {
-            return false;
-        }
-
-        return $user_id;
-
-    }
-
-    #####################################
-    #    Build and send a reset email   #    
-    #####################################
-
-    public function send_reset_email($user_id) {
-
-        // Get recipient email
-        $recipient_email = $this->get_user_details($user_id, 'email');
-
-        // Set subject  
-        $subject = _gettext("Your QWcrm password reset request");    
-
-        // Create Token
-        $token = $this->create_reset_token($user_id);
-
-        /* Build Email body
-        $body = '';
-
-        $body .= _gettext("Hello").','."\r\n\r\n";
-
-        $body .= _gettext("A request has been made to reset your QWcrm account password.").' ';
-        $body .= _gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.")."\r\n\r\n";
-
-        $body .= _gettext("The verification code is").' '.$token."\r\n\r\n";
-
-        $body .= _gettext("Select the URL below and proceed with resetting your password.")."\r\n\r\n";
-
-        $body .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_BASE_PATH."index.php?component=user&page_tpl=reset&token=".$token."\r\n\r\n";
-
-        $body .= _gettext("Thank you.");*/
-
-
-        // Build Email body
-        $body = '';
-
-        $body .= '<p>'._gettext("Hello").','.'</p>';
-
-        $body .= '<p>'._gettext("A request has been made to reset your QWcrm account password.").' ';
-        $body .= _gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.").'</p>';
-
-        $body .= '<p>'._gettext("The verification code is").' '.$token.'</p>';
-
-        $body .= '<p>'._gettext("Select the URL below and proceed with resetting your password.").'</p>';
-
-        $body .= '<p>'. QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH ."index.php?component=user&page_tpl=reset&token=".$token.'</p>';  
-
-        $body .= '<p>'._gettext("Thank you.").'</p>';    
-
-        // Send Reset Email (no onscreen notifications to prevent headers already sent error)
-        $this->app->system->email->send_email($recipient_email, $subject, $body, null, null, null, null, null, null, true);
-
-        // Log activity        
-        $record = _gettext("User Account").' '.$user_id.' ('.$this->get_user_details($user_id, 'display_name').') '._gettext("reset email has been sent.");
-        $this->app->system->general->write_record_to_activity_log($record, $user_id);
-
-        return;
-
-    }
-
-    ###################################################################################
-    #   Set time limited reset code to allow new passwords to be submitted securely   #
-    ###################################################################################
-
-    public function authorise_password_reset($token) {
-
-        $reset_code = \Joomla\CMS\User\UserHelper::genRandomPassword(64);   // 64 character token
-        $reset_code_expiry_time = time() + (60 * 5);                        // sets a 5 minute expiry time
-
-        $sql = "UPDATE ".PRFX."user_reset
-                SET
-                reset_code              =". $this->app->db->qstr( $reset_code              ).",
-                reset_code_expiry_time  =". $this->app->db->qstr( $reset_code_expiry_time  )."            
-                WHERE token             =". $this->app->db->qstr( $token                   );
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
-        } else{
-
-            return $reset_code;
-
-        }    
-
-    }
-
-    #####################################
-    #    create a reset user token      #    
-    #####################################
-
-    public function create_reset_token($user_id) {
-
-        // check for previous tokens for this user and delete them
-        $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$this->app->db->qstr($user_id);
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
-        } else {        
-            $result_count = $rs->RecordCount();       
-        } 
-
-        // Delete any reset tokens for this user
-        if($result_count >= 1) {
-
-            $this->delete_user_reset_code($user_id);
-
-        }
-
-        // Insert a new token
-        $expiry_time = time() + (60 * 15);              // 15 minute expiry time
-        $token = \Joomla\CMS\User\UserHelper::genRandomPassword(64);    // 64 character token
-
-        $sql = "INSERT INTO ".PRFX."user_reset SET              
-                user_id         =". $this->app->db->qstr( $user_id     ).", 
-                expiry_time     =". $this->app->db->qstr( $expiry_time ).",   
-                token           =". $this->app->db->qstr( $token       );                     
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user reset token into the database."));
-        }
-
-        // Return the token
-        return $token;    
-
-    }
-
-    #########################################
-    # Get User ID by reset code             #
-    #########################################
-
-    public function get_user_id_by_reset_code($reset_code) {
-
-        $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$this->app->db->qstr($reset_code);
-
-        if(!$rs = $this->app->db->execute($sql)){
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by secret code."));
-        } else {
-
-            return $rs->fields['user_id'];
-
-        }
-
-    }
-
-    ##############################################
-    #    validate the reset token can be used    #    
-    ##############################################
-
-    public function validate_reset_token($token) {
-
-        // check for previous tokens for this user and delete them
-        $sql = "SELECT * FROM ".PRFX."user_reset WHERE token =".$this->app->db->qstr($token);
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
-        } else {
-
-            // Check there is only 1 record
-            if($rs->RecordCount() != 1) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token does not exist."));
-                return false;
-            }
-
-            // check if user is blocked        
-            if(!$this->get_user_details($rs->fields['user_id'], 'active')){
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The user is blocked."));
-                return false;
-            }
-
-            // Check not expired
-            if($rs->fields['expiry_time'] < time()){
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token has expired."));
-                return false;
-            }
-
-            // All checked passed
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Token accepted."));
-            return true;
-
-
-        }
-
-    }
-
-    #########################################################
-    #   validate reset code - submitted with password form  #
-    #########################################################
-
-    public function validate_reset_code($reset_code) {
-
-       // Check for previous tokens for this user and delete them
-        $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code =".$this->app->db->qstr($reset_code);
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));
-        } else {
-
-            // Check there is only 1 record
-            if($rs->RecordCount() != 1) {            
-                $this->app->system->variables->systemMessagesWrite('danger', 'The reset code does not exist.');
-                return false;
-            }
-
-            // Check not expired
-            if($rs->fields['reset_code_expiry_time'] < time()){
-                $this->app->system->variables->systemMessagesWrite('danger', 'The reset code has expired.');
-                return false;
-            }
-
-            // All checked passed
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Reset code accepted."));        
-            return true;
-
-
-        }
-
-    }
-
-    ##########################################
-    #    Delete user reset codes             #
-    ##########################################
-
-    public function delete_user_reset_code($user_id) {  
-
-        $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$this->app->db->qstr($user_id);
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
-        }
-
-    }
-
-    ##########################################
-    #    Delete all expired reset codes      #
-    ##########################################
-
-    public function delete_expired_reset_codes() {   
-
-        $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$this->app->db->qstr( time() );
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
-        }
-
-    }
-
-
-    #####################################
-    #    Update users reset count       #    
-    #####################################
-
-     public function update_user_reset_count($user_id) {
-
-        $sql = "UPDATE ".PRFX."user_records SET       
-                reset_count     = reset_count + 1
-                WHERE user_id   =". $this->app->db->qstr($user_id);
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
-
-        } else{
-
-            return;
-
-        }
-
-     }
+    }    
 
     ###############################################################
     #   Check to see if the user can be deleted                   #
     ###############################################################
 
-    public function check_user_can_be_deleted($user_id) {
+    public function checkStatusAllowsDelete($user_id) {
 
         $state_flag = true;
 
         // Get the user details
-        $user_details = $this->get_user_details($user_id);
+        $user_details = $this->getRecord($user_id);
 
         // User cannot delete their own account
         if($user_id == $this->app->user->login_user_id) {
@@ -1267,6 +672,601 @@ class User extends Components {
 
         return $state_flag;
 
+    }    
+
+    /** Other Functions **/
+
+    ##############################################
+    #   Build an active employee <option> list   #  // Not currently used keep for reference
+    ##############################################
+
+    /*
+     * This utilises the ADODB PHP Framework for building a <option> list from the supplied data set.
+     * 
+     * Build <option></option> list for a <form></form> to select employee for 'Assign To' feature
+     * GetMenu2('assign_employee_val, null, false') will turn off the blank option
+     * GetMenu2('dataset values', 'default option', 'blank 1st record' )
+     * 
+     * The assigned employee is the default option selected
+     * 
+     * I will use Smarty for this feature
+     * 
+     */
+
+    public function buildActiveEmployeeFormOptionList($assigned_user_id) {
+
+        // select all employees and return their display name and ID as an array
+        $sql = "SELECT
+                CONCAT(".PRFX."first_name, ' ', ".PRFX."last_name) AS display_name,
+                user_id
+
+                FROM ".PRFX."user_records
+                WHERE active=1 AND is_employee=1";
+
+        if(!$rs = $this->app->db->execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
+        } else {
+
+            // Get ADODB to build the form using the loaded dataset
+            return $rs->GetMenu2('assign_user', $assigned_user_id, false);
+
+        }
+
     }
+
+    #####################################
+    #    Reset a user's password        #    
+    #####################################
+
+    public function resetPassword($user_id, $password = null) { 
+
+        // if no password supplied generate a random one
+        if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
+
+        $sql = "UPDATE ".PRFX."user_records SET
+                password        =". $this->app->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
+                require_reset   =". $this->app->db->qstr( 0                                    ).",   
+                last_reset_time =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                reset_count     =". $this->app->db->qstr( 0                                    )."
+                WHERE user_id   =". $this->app->db->qstr( $user_id                             );
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+
+        } else {
+
+            // Log activity        
+            $record = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("password has been reset.");
+            $this->app->system->general->write_record_to_activity_log($record, $user_id);
+
+            // Update last active record
+            $this->updateLastActive($user_id);
+            $this->app->components->client->updateLastActive($this->getRecord($user_id, 'client_id'));
+
+            return;
+
+        }      
+
+    }
+
+
+    /* Login */
+
+    ####################################
+    #  Login authentication public function   #
+    ####################################
+
+    public function login($qform, $credentials, $options = array())
+    {   
+        $this->smarty = \Factory::getSmarty();   
+
+        // If username or password is missing
+        if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
+
+            // Set error message
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Username or Password Missing."));
+
+            return false;
+
+        } 
+
+        // Does the account require the password to be reset, if so force it
+        if($this->getRecord($this->getIdByUsername($qform['login_username']), 'require_reset')) {
+
+            // Set error message
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You must reset your password before you are allowed to login."));
+
+            return false;
+
+        }
+
+        // If user is blocked - QFramework returns True for a blocked user, but does blocks it.
+        if($this->getRecord($this->getIdByUsername($qform['login_username']), 'active') === '0') {  
+
+            // Set error message
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
+
+            // Log activity       
+            $this->app->system->general->write_record_to_activity_log(_gettext("Login denied for").' '.$qform['login_username'].'.');
+
+            return false;
+
+        }
+
+        if(\Factory::getAuth()->login($credentials, $options)) {
+
+            /* Login Successful */
+
+            // Wipe the current user details (probably guest) is this needed?
+            //$this->app->user = null; \Factory::$user = null;
+            
+            // Get the new login details
+            $user = \Factory::getUser();       
+
+            // Log activity       
+            $record = _gettext("Login successful for").' '.$user->login_username.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $user->login_user_id);        
+
+            // Update last active record        
+            $this->app->components->client->updateLastActive($user->login_client_id);        
+
+            // set success message to survice the login event
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Login successful."));
+
+            return true;
+
+        } else {
+
+            /* Login failed */
+
+            // Log activity       
+            $this->app->system->general->write_record_to_activity_log(_gettext("Login unsuccessful for").' '.$credentials['username'].'.');
+
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Login Failed. Check you username and password."));
+
+            return false;
+
+        }
+    }
+
+    ###########################
+    #  Login authentication   #
+    ###########################
+
+    public function logout($silent = null)        
+    {   
+        // Build logout message (while user details exist)
+        $record = _gettext("Logout successful for").' '.$this->app->user->login_username.'.';
+
+        // Logout
+        \Factory::getAuth()->logout();    
+
+        // Log activity       
+        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+
+        // Update last active record 
+        $this->updateLastActive($this->app->user->login_user_id);
+        $this->app->components->client->updateLastActive($this->app->user->login_client_id);
+
+        // Action after logout
+        if($silent) {
+
+            // No message or redirect
+
+            return;        
+
+        } else {
+
+            // Reload Homepage with message (default)
+
+            // only $_GET will work because the session store is destroyed (this is good behaviour)
+            $this->app->system->page->force_page('index.php', null, 'msg_success='._gettext("Logout successful."), 'get');
+
+        }
+
+    } 
+
+    ####################################
+    #  Logout all online users         #  // This terminates sessions fo those currently connected (Logged in and Guests). This does not handle users with 'remember me' enabled. 
+    ####################################
+
+    public function logoutAllUsers($except_me = false) {
+
+        //truncate something like `#__user_keys` destroys the remember_me link, the session kills the imediate session
+
+        // Logout all users
+        if(!$except_me) {
+
+            // Sessions
+            $sql = "TRUNCATE ".PRFX."session";
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
+            }
+
+            // Remember Me
+            $sql = "TRUNCATE ".PRFX."user_keys";
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
+            }
+
+        // Delete all sessions except the currently logged in user 
+        } else {
+
+            $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$this->app->db->qstr($this->app->user->login_user_id);
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
+            }
+
+            $sql = "DELETE FROM ".PRFX."user_keys WHERE userid <> ".$this->app->db->qstr($this->app->user->login_user_id);
+            if(!$rs = $this->app->db->Execute($sql)) {
+                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
+            }
+
+        }
+
+        return;
+
+    }
+
+    /* Reset Password */
+
+    #####################################
+    #    Verify submitted reCAPTCHA     #    
+    #####################################
+
+    public function authenticateRecaptcha($recaptcha_secret_key, $recaptcha_response) {
+
+        // Load ReCaptcha library       
+        $recaptcha = new \ReCaptcha\ReCaptcha($recaptcha_secret_key);
+
+        // Get response from Google
+        $response = $recaptcha->verify($recaptcha_response, $_SERVER['REMOTE_ADDR']);
+
+        //  and if successfull authenticate
+        if ($response->isSuccess()) {
+
+            // Success
+            return true;
+
+        } else {
+
+            /* If it's not successful, then one or more error codes will be returned.      
+            $error_msg .= '<h2>Something went wrong</h2>';
+            $error_msg .= '<p>The following error was returned:';
+                foreach ($response->getErrorCodes() as $error_code) {
+                    $error_msg .= '<kbd>'.$error_code.'</kbd> ';
+                }
+            $error_msg .= '</p>';
+            $error_msg .= '<p>Check the error code reference at <kbd><a href="https://developers.google.com/recaptcha/docs/verify#error-code-reference">https://developers.google.com/recaptcha/docs/verify#error-code-reference</a></kbd>.';
+            $error_msg .= '<p><strong>Note:</strong> Error code <kbd>missing-input-response</kbd> may mean the user just didn\'t complete the reCAPTCHA.</p>';
+            $error_msg .= '<p><a href="/">Try again</a></p>';*/        
+
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Google reCAPTCHA Verification Failed."));
+            return false;
+
+        }  
+
+    }
+
+    ######################################################################################
+    #    Validate that the email submitted belongs to a valid account and can be reset   #    
+    ######################################################################################
+
+    public function validateResetEmail($email) {
+
+        // get the user_id if the user exists
+        if(!$user_id = $this->getIdByEmail($email)) {
+            return false;        
+        }
+
+        // is the user active
+        if(!$this->getRecord($user_id, 'active')) {
+            return false;
+        }
+
+        return $user_id;
+
+    }
+
+    #####################################
+    #    Build and send a reset email   #    
+    #####################################
+
+    public function sendResetEmail($user_id) {
+
+        // Get recipient email
+        $recipient_email = $this->getRecord($user_id, 'email');
+
+        // Set subject  
+        $subject = _gettext("Your QWcrm password reset request");    
+
+        // Create Token
+        $token = $this->createResetToken($user_id);
+
+        /* Build Email body
+        $body = '';
+
+        $body .= _gettext("Hello").','."\r\n\r\n";
+
+        $body .= _gettext("A request has been made to reset your QWcrm account password.").' ';
+        $body .= _gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.")."\r\n\r\n";
+
+        $body .= _gettext("The verification code is").' '.$token."\r\n\r\n";
+
+        $body .= _gettext("Select the URL below and proceed with resetting your password.")."\r\n\r\n";
+
+        $body .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_BASE_PATH."index.php?component=user&page_tpl=reset&token=".$token."\r\n\r\n";
+
+        $body .= _gettext("Thank you.");*/
+
+
+        // Build Email body
+        $body = '';
+
+        $body .= '<p>'._gettext("Hello").','.'</p>';
+
+        $body .= '<p>'._gettext("A request has been made to reset your QWcrm account password.").' ';
+        $body .= _gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.").'</p>';
+
+        $body .= '<p>'._gettext("The verification code is").' '.$token.'</p>';
+
+        $body .= '<p>'._gettext("Select the URL below and proceed with resetting your password.").'</p>';
+
+        $body .= '<p>'. QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH ."index.php?component=user&page_tpl=reset&token=".$token.'</p>';  
+
+        $body .= '<p>'._gettext("Thank you.").'</p>';    
+
+        // Send Reset Email (no onscreen notifications to prevent headers already sent error)
+        $this->app->system->email->send_email($recipient_email, $subject, $body, null, null, null, null, null, null, true);
+
+        // Log activity        
+        $record = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("reset email has been sent.");
+        $this->app->system->general->write_record_to_activity_log($record, $user_id);
+
+        return;
+
+    }
+
+    ###################################################################################
+    #   Set time limited reset code to allow new passwords to be submitted securely   #
+    ###################################################################################
+
+    public function authorisePasswordReset($token) {
+
+        $reset_code = \Joomla\CMS\User\UserHelper::genRandomPassword(64);   // 64 character token
+        $reset_code_expiry_time = time() + (60 * 5);                        // sets a 5 minute expiry time
+
+        $sql = "UPDATE ".PRFX."user_reset
+                SET
+                reset_code              =". $this->app->db->qstr( $reset_code              ).",
+                reset_code_expiry_time  =". $this->app->db->qstr( $reset_code_expiry_time  )."            
+                WHERE token             =". $this->app->db->qstr( $token                   );
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        } else{
+
+            return $reset_code;
+
+        }    
+
+    }
+
+    #####################################
+    #    create a reset user token      #    
+    #####################################
+
+    public function createResetToken($user_id) {
+
+        // check for previous tokens for this user and delete them
+        $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$this->app->db->qstr($user_id);
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
+        } else {        
+            $result_count = $rs->RecordCount();       
+        } 
+
+        // Delete any reset tokens for this user
+        if($result_count >= 1) {
+
+            $this->deleteResetCode($user_id);
+
+        }
+
+        // Insert a new token
+        $expiry_time = time() + (60 * 15);              // 15 minute expiry time
+        $token = \Joomla\CMS\User\UserHelper::genRandomPassword(64);    // 64 character token
+
+        $sql = "INSERT INTO ".PRFX."user_reset SET              
+                user_id         =". $this->app->db->qstr( $user_id     ).", 
+                expiry_time     =". $this->app->db->qstr( $expiry_time ).",   
+                token           =". $this->app->db->qstr( $token       );                     
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user reset token into the database."));
+        }
+
+        // Return the token
+        return $token;    
+
+    }
+
+    #########################################
+    # Get User ID by reset code             #
+    #########################################
+
+    public function getIdByResetCode($reset_code) {
+
+        $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$this->app->db->qstr($reset_code);
+
+        if(!$rs = $this->app->db->execute($sql)){
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by secret code."));
+        } else {
+
+            return $rs->fields['user_id'];
+
+        }
+
+    }
+
+    ##############################################
+    #    validate the reset token can be used    #    
+    ##############################################
+
+    public function validateResetToken($token) {
+
+        // check for previous tokens for this user and delete them
+        $sql = "SELECT * FROM ".PRFX."user_reset WHERE token =".$this->app->db->qstr($token);
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
+        } else {
+
+            // Check there is only 1 record
+            if($rs->RecordCount() != 1) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token does not exist."));
+                return false;
+            }
+
+            // check if user is blocked        
+            if(!$this->getRecord($rs->fields['user_id'], 'active')){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The user is blocked."));
+                return false;
+            }
+
+            // Check not expired
+            if($rs->fields['expiry_time'] < time()){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token has expired."));
+                return false;
+            }
+
+            // All checked passed
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Token accepted."));
+            return true;
+
+
+        }
+
+    }
+
+    #########################################################
+    #   validate reset code - submitted with password form  #
+    #########################################################
+
+    public function validateResetCode($reset_code) {
+
+       // Check for previous tokens for this user and delete them
+        $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code =".$this->app->db->qstr($reset_code);
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));
+        } else {
+
+            // Check there is only 1 record
+            if($rs->RecordCount() != 1) {            
+                $this->app->system->variables->systemMessagesWrite('danger', 'The reset code does not exist.');
+                return false;
+            }
+
+            // Check not expired
+            if($rs->fields['reset_code_expiry_time'] < time()){
+                $this->app->system->variables->systemMessagesWrite('danger', 'The reset code has expired.');
+                return false;
+            }
+
+            // All checked passed
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Reset code accepted."));        
+            return true;
+
+
+        }
+
+    }
+
+    ##########################################
+    #    Delete user reset codes             #
+    ##########################################
+
+    public function deleteResetCode($user_id) {  
+
+        $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$this->app->db->qstr($user_id);
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
+        }
+
+    }
+
+    ##########################################
+    #    Delete all expired reset codes      #
+    ##########################################
+
+    public function deleteExpiredResetCodes() {   
+
+        $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$this->app->db->qstr( time() );
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
+        }
+
+    }
+
+
+    #####################################
+    #    Update users reset count       #    
+    #####################################
+
+     public function updateResetCount($user_id) {
+
+        $sql = "UPDATE ".PRFX."user_records SET       
+                reset_count     = reset_count + 1
+                WHERE user_id   =". $this->app->db->qstr($user_id);
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+
+        } else{
+
+            return;
+
+        }
+
+     }
+     
+     
+    #####################################   // Not Currently used
+    #    Reset all user's passwords     #   // used for migrations or security
+    #####################################
+
+    public function resetAllPasswords() { 
+
+        $sql = "SELECT user_id FROM ".PRFX."user_records";
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
+
+        } else {
+
+            // Loop through all users
+            while(!$rs->EOF) { 
+
+                // Reset User's password
+                $this->resetPassword($rs->fields['user_id']);
+
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }
+
+            // Log activity        
+            $this->app->system->general->write_record_to_activity_log(_gettext("All User Account passwords have been reset."));
+
+            return;
+
+        }      
+
+    }
+
     
 }

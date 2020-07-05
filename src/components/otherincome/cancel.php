@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['ot
 } 
 
 // Cancel the otherincome function call
-$this->app->components->otherincome->cancel_otherincome(\CMSApplication::$VAR['otherincome_id']);
+$this->app->components->otherincome->cancelRecord(\CMSApplication::$VAR['otherincome_id']);
 
 // Load the otherincome search page
 $this->app->system->page->force_page('otherincome', 'search', 'msg_success='._gettext("Otherincome cancelled successfully."));

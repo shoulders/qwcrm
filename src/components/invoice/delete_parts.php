@@ -21,10 +21,10 @@ if(!isset(\CMSApplication::$VAR['parts_id']) || !\CMSApplication::$VAR['parts_id
 }
 
 // Get Invoice ID before deletion
-\CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->get_invoice_parts_item_details(\CMSApplication::$VAR['parts_id'], 'invoice_id');
+\CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->getPartsItem(\CMSApplication::$VAR['parts_id'], 'invoice_id');
 
 // Delete Invoice Labour item
-$this->app->components->invoice->delete_invoice_parts_item(\CMSApplication::$VAR['parts_id']);
+$this->app->components->invoice->deletePartsItem(\CMSApplication::$VAR['parts_id']);
 
 // Load the edit invoice page
 $this->app->system->page->force_page('invoice' , 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);

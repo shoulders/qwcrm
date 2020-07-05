@@ -22,16 +22,56 @@ defined('_QWEXEC') or die;
 
 class Supplier extends Components {
 
+    /** Insert Functions **/
 
-    /** Mandatory Code **/
+    ##########################################
+    #      Insert New Record                 #
+    ##########################################
 
-    /** Display Functions **/
+    public function insertRecord($qform) {
+
+        $sql = "INSERT INTO ".PRFX."supplier_records SET       
+                employee_id    =". $this->app->db->qstr( $this->app->user->login_user_id ).",
+                company_name   =". $this->app->db->qstr( $qform['company_name']  ).",
+                first_name     =". $this->app->db->qstr( $qform['first_name']    ).",
+                last_name      =". $this->app->db->qstr( $qform['last_name']     ).",
+                website        =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])).",
+                email          =". $this->app->db->qstr( $qform['email']         ).",
+                type           =". $this->app->db->qstr( $qform['type']          ).",
+                primary_phone  =". $this->app->db->qstr( $qform['primary_phone'] ).",
+                mobile_phone   =". $this->app->db->qstr( $qform['mobile_phone']  ).",
+                fax            =". $this->app->db->qstr( $qform['fax']           ).",
+                address        =". $this->app->db->qstr( $qform['address']       ).",
+                city           =". $this->app->db->qstr( $qform['city']          ).",
+                state          =". $this->app->db->qstr( $qform['state']         ).",
+                zip            =". $this->app->db->qstr( $qform['zip']           ).",
+                country        =". $this->app->db->qstr( $qform['country']       ).",
+                status         =". $this->app->db->qstr( 'valid'               ).",
+                opened_on      =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()      ).", 
+                description    =". $this->app->db->qstr( $qform['description']   ).", 
+                note           =". $this->app->db->qstr( $qform['note']          );            
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
+        } else {
+
+            // Log activity        
+            $record = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+
+            return $this->app->db->Insert_ID();
+
+        }
+
+    } 
+    
+    /** Get Functions **/
 
     ###############################
     #     Display Suppliers       #
     ###############################
 
-    public function display_suppliers($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -142,56 +182,11 @@ class Supplier extends Components {
 
     }
 
-    /** Insert Functions **/
-
-    ##########################################
-    #      Insert New Record                 #
-    ##########################################
-
-    public function insert_supplier($qform) {
-
-        $sql = "INSERT INTO ".PRFX."supplier_records SET       
-                employee_id    =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                company_name   =". $this->app->db->qstr( $qform['company_name']  ).",
-                first_name     =". $this->app->db->qstr( $qform['first_name']    ).",
-                last_name      =". $this->app->db->qstr( $qform['last_name']     ).",
-                website        =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])).",
-                email          =". $this->app->db->qstr( $qform['email']         ).",
-                type           =". $this->app->db->qstr( $qform['type']          ).",
-                primary_phone  =". $this->app->db->qstr( $qform['primary_phone'] ).",
-                mobile_phone   =". $this->app->db->qstr( $qform['mobile_phone']  ).",
-                fax            =". $this->app->db->qstr( $qform['fax']           ).",
-                address        =". $this->app->db->qstr( $qform['address']       ).",
-                city           =". $this->app->db->qstr( $qform['city']          ).",
-                state          =". $this->app->db->qstr( $qform['state']         ).",
-                zip            =". $this->app->db->qstr( $qform['zip']           ).",
-                country        =". $this->app->db->qstr( $qform['country']       ).",
-                status         =". $this->app->db->qstr( 'valid'               ).",
-                opened_on      =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()      ).", 
-                description    =". $this->app->db->qstr( $qform['description']   ).", 
-                note           =". $this->app->db->qstr( $qform['note']          );            
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
-        } else {
-
-            // Log activity        
-            $record = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
-
-            return $this->app->db->Insert_ID();
-
-        }
-
-    } 
-
-    /** Get Functions **/
-
     ############################
     #   Get supplier details   #
     ############################
 
-    public function get_supplier_details($supplier_id, $item = null) {
+    public function getRecord($supplier_id, $item = null) {
 
         $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qstr($supplier_id);
 
@@ -235,7 +230,7 @@ class Supplier extends Components {
     #    Get Supplier Statuses          #
     #####################################
 
-    public function get_supplier_statuses($restricted_statuses = false) {
+    public function getStatuses($restricted_statuses = false) {
 
         $sql = "SELECT * FROM ".PRFX."supplier_statuses";
 
@@ -258,7 +253,7 @@ class Supplier extends Components {
     #  Get Supplier status display name   #
     #######################################
 
-    public function get_supplier_status_display_name($status_key) {
+    public function getStatusDisplayName($status_key) {
 
         $sql = "SELECT display_name FROM ".PRFX."supplier_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
@@ -276,7 +271,7 @@ class Supplier extends Components {
     #    Get Supplier Types             #
     #####################################
 
-    public function get_supplier_types() {
+    public function getTypes() {
 
         $sql = "SELECT * FROM ".PRFX."supplier_types";
 
@@ -289,6 +284,25 @@ class Supplier extends Components {
         }    
 
     }
+    
+    ############################################
+    #      Last supplier Record ID Look Up     #  // not curently used
+    ############################################
+
+    public function getLastRecordId() {
+
+        $sql = "SELECT * FROM ".PRFX."supplier_records ORDER BY supplier_id DESC LIMIT 1";
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
+        } else {
+
+            return $rs->fields['supplier_id'];
+
+        }
+
+    }
+    
 
     /** Update Functions **/
 
@@ -296,7 +310,7 @@ class Supplier extends Components {
     #     Update Record                 #
     #####################################
 
-    public function update_supplier($qform) {
+    public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."supplier_records SET
                 employee_id    =". $this->app->db->qstr( $this->app->user->login_user_id ).",
@@ -337,10 +351,10 @@ class Supplier extends Components {
     # Update Supplier Status    #
     #############################
 
-    public function update_supplier_status($supplier_id, $new_status, $silent = false) {
+    public function updateStatus($supplier_id, $new_status, $silent = false) {
 
         // Get supplier details
-        $supplier_details = $this->get_supplier_details($supplier_id);
+        $supplier_details = $this->getRecord($supplier_id);
 
         // if the new status is the same as the current one, exit
         if($new_status == $supplier_details['status']) {        
@@ -369,7 +383,7 @@ class Supplier extends Components {
             if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("supplier status updated.")); }
 
             // For writing message to log file, get supplier status display name
-            $supplier_status_display_name = _gettext($this->get_supplier_status_display_name($new_status));
+            $supplier_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
             // Log activity        
             $record = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
@@ -387,10 +401,10 @@ class Supplier extends Components {
     #   Cancel Supplier                 #
     #####################################
 
-    public function cancel_supplier($supplier) {
+    public function cancelRecord($supplier) {
 
         // Make sure the supplier can be cancelled
-        if(!$this->check_supplier_can_be_cancelled($supplier)) {        
+        if(!$this->checkStatusAllowsCancel($supplier)) {        
             return false;
         }
 
@@ -398,7 +412,7 @@ class Supplier extends Components {
         //$supplier_details = $this->get_supplier_details($supplier);  
 
         // Change the supplier status to cancelled (I do this here to maintain consistency)
-        $this->update_supplier_status($supplier, 'cancelled');      
+        $this->updateStatus($supplier, 'cancelled');      
 
         // Log activity        
         $record = _gettext("Supplier").' '.$supplier.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
@@ -414,12 +428,12 @@ class Supplier extends Components {
     #    Delete Record                  #
     #####################################
 
-    public function delete_supplier($supplier_id) {
+    public function deleteRecord($supplier_id) {
 
-        $display_name = $this->get_supplier_details($supplier_id, 'display_name');
+        $display_name = $this->getRecord($supplier_id, 'display_name');
 
         // Make sure the supplier can be deleted 
-        if(!$this->check_supplier_can_be_deleted($supplier_id)) {        
+        if(!$this->checkStatusAllowsDelete($supplier_id)) {        
             return false;
         }
 
@@ -439,31 +453,13 @@ class Supplier extends Components {
 
     }
 
-    /** Other Functions **/
-
-    ############################################
-    #      Last supplier Record ID Look Up     #  // not curently used
-    ############################################
-
-    public function last_supplier_id_lookup() {
-
-        $sql = "SELECT * FROM ".PRFX."supplier_records ORDER BY supplier_id DESC LIMIT 1";
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
-        } else {
-
-            return $rs->fields['supplier_id'];
-
-        }
-
-    }
+    /** Check Functions **/
 
     ###########################################################
     #  Check if the supplier status is allowed to be changed  #  // not currently used
     ###########################################################
 
-     public function check_supplier_status_can_be_changed($supplier_id) {
+     public function checkStatusAllowsChange($supplier_id) {
 
         $state_flag = true;
 
@@ -485,12 +481,12 @@ class Supplier extends Components {
     #   Check to see if the supplier can be cancelled             #  // not currently used
     ###############################################################
 
-    public function check_supplier_can_be_cancelled($supplier_id) {
+    public function checkStatusAllowsCancel($supplier_id) {
 
         $state_flag = true;
 
         // Get the supplier details
-        $supplier_details = $this->get_supplier_details($supplier_id);   
+        $supplier_details = $this->getRecord($supplier_id);   
 
         // Is cancelled
         if($supplier_details['status'] == 'cancelled') {
@@ -506,7 +502,7 @@ class Supplier extends Components {
     #   Check to see if the supplier can be deleted               #
     ###############################################################
 
-    public function check_supplier_can_be_deleted($supplier_id) {
+    public function checkStatusAllowsDelete($supplier_id) {
 
         $state_flag = true;
 
@@ -527,12 +523,12 @@ class Supplier extends Components {
     #  Check if the supplier status allows editing           #  // not currently used
     ##########################################################
 
-     public function check_supplier_can_be_edited($supplier_id) {
+     public function checkStatusAllowsEdit($supplier_id) {
 
         $state_flag = true;
 
         // Get the supplier details
-        $supplier_details = $this->get_supplier_details($supplier_id);
+        $supplier_details = $this->getRecord($supplier_id);
 
         // Is cancelled
         if($supplier_details['status'] == 'cancelled') {
@@ -543,5 +539,8 @@ class Supplier extends Components {
         return $state_flag;
 
     }
+    
+        
+    /** Other Functions **/
     
 }

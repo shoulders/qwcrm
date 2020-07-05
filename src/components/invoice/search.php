@@ -31,5 +31,5 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 $this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                          );
 $this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                              );
 $this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                            );
-$this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->get_invoice_statuses()                                                                           );
-$this->app->smarty->assign('display_invoices', $this->app->components->invoice->display_invoices('invoice_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status'])   );
+$this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->getStatuses()                                                                           );
+$this->app->smarty->assign('display_invoices', $this->app->components->invoice->getRecords('invoice_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status'])   );

@@ -15,11 +15,11 @@ if(!isset(\CMSApplication::$VAR['client_note_id']) || !\CMSApplication::$VAR['cl
 }
 
 // Get the client_id before we delete the record
-\CMSApplication::$VAR['client_id'] = $this->app->components->client->get_client_note_details(\CMSApplication::$VAR['client_note_id'], 'client_id');
+\CMSApplication::$VAR['client_id'] = $this->app->components->client->getNote(\CMSApplication::$VAR['client_note_id'], 'client_id');
 
 // Delete the client note
 $this->app->system->variables->systemMessagesWrite('success', _gettext("The client note has been deleted."));
-$this->app->components->client->delete_client_note(\CMSApplication::$VAR['client_note_id']);
+$this->app->components->client->deleteNote(\CMSApplication::$VAR['client_note_id']);
 
 // Reload the clients details page
 $this->app->system->page->force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);

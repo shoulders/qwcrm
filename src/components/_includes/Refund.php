@@ -21,16 +21,64 @@
 defined('_QWEXEC') or die;
 
 class Refund extends Components {
+    
+        /** Insert Functions **/
 
-    /** Mandatory Code **/
+    ##########################################
+    #      Insert Refund                     #
+    ##########################################
 
-    /** Display Functions **/
+    public function insertRecord($qform) {
+
+        $sql = "INSERT INTO ".PRFX."refund_records SET
+                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
+                client_id        =". $this->app->db->qstr( $qform['client_id']               ).",
+                workorder_id     =". $this->app->db->qstr( $qform['workorder_id']            ).",
+                invoice_id       =". $this->app->db->qstr( $qform['invoice_id']              ).",                        
+                date             =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
+                tax_system       =". $this->app->db->qstr( $qform['tax_system']              ).",
+                item_type        =". $this->app->db->qstr( $qform['item_type']               ).",             
+                unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).", 
+                vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).", 
+                unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
+                unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
+                unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
+                balance          =". $this->app->db->qstr( $qform['unit_gross']              ).",
+                status           =". $this->app->db->qstr( 'unpaid'                        ).",   
+                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                ).",                        
+                note             =". $this->app->db->qstr( $qform['note']                    );
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
+        } else {
+
+            $refund_id = $this->app->db->Insert_ID();
+
+            // Create a Workorder History Note
+            $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+
+            // Log activity        
+            $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("created.");
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
+
+            // Update last active record    
+            $this->app->components->client->updateLastActive($qform['client_id']);
+            $this->app->components->workorder->updateLastActive($qform['workorder_id']);
+            $this->app->components->invoice->updateLastActive($qform['invoice_id']);
+
+            return $refund_id;
+
+        } 
+
+    }
+
+    /** Get Functions **/
 
     #############################
     #     Display refunds       #
     #############################
 
-    public function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -147,63 +195,12 @@ class Refund extends Components {
 
     }
 
-    /** Insert Functions **/
-
-    ##########################################
-    #      Insert Refund                     #
-    ##########################################
-
-    public function insert_refund($qform) {
-
-        $sql = "INSERT INTO ".PRFX."refund_records SET
-                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                client_id        =". $this->app->db->qstr( $qform['client_id']               ).",
-                workorder_id     =". $this->app->db->qstr( $qform['workorder_id']            ).",
-                invoice_id       =". $this->app->db->qstr( $qform['invoice_id']              ).",                        
-                date             =". $this->app->db->qstr( $this->app->system->general->date_to_mysql_date($qform['date'])).",
-                tax_system       =". $this->app->db->qstr( $qform['tax_system']              ).",
-                item_type        =". $this->app->db->qstr( $qform['item_type']               ).",             
-                unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).", 
-                vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).", 
-                unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
-                unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
-                unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
-                balance          =". $this->app->db->qstr( $qform['unit_gross']              ).",
-                status           =". $this->app->db->qstr( 'unpaid'                        ).",   
-                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                ).",                        
-                note             =". $this->app->db->qstr( $qform['note']                    );
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
-        } else {
-
-            $refund_id = $this->app->db->Insert_ID();
-
-            // Create a Workorder History Note
-            $this->app->components->workorder->insert_workorder_history_note($qform['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity        
-            $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("created.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
-
-            // Update last active record    
-            $this->app->components->client->update_client_last_active($qform['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($qform['workorder_id']);
-            $this->app->components->invoice->update_invoice_last_active($qform['invoice_id']);
-
-            return $refund_id;
-
-        } 
-
-    }
-
-    /** Get Functions **/
 
     ##########################
     #   Get refund details   #
     ##########################
 
-    public function get_refund_details($refund_id, $item = null) {
+    public function getRecord($refund_id, $item = null) {
 
         $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$this->app->db->qstr($refund_id);
 
@@ -229,7 +226,7 @@ class Refund extends Components {
     #    Get Refund Statuses            #
     #####################################
 
-    public function get_refund_statuses($restricted_statuses = false) {
+    public function getStatuses($restricted_statuses = false) {
 
         $sql = "SELECT * FROM ".PRFX."refund_statuses";
 
@@ -252,7 +249,7 @@ class Refund extends Components {
     #  Get Refund status display name    #
     ######################################
 
-    public function get_refund_status_display_name($status_key) {
+    public function getStatusDisplayName($status_key) {
 
         $sql = "SELECT display_name FROM ".PRFX."refund_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
@@ -270,7 +267,7 @@ class Refund extends Components {
     #    Get Refund Types               #
     #####################################
 
-    public function get_refund_types() {
+    public function getTypes() {
 
         $sql = "SELECT * FROM ".PRFX."refund_types";
 
@@ -283,6 +280,24 @@ class Refund extends Components {
         }    
 
     }
+    
+    ##########################################
+    #      Last Record Look Up               #  // not currently used
+    ##########################################
+
+    public function getLastRecordId() {
+
+        $sql = "SELECT * FROM ".PRFX."refund_records ORDER BY refund_id DESC LIMIT 1";
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
+        } else {
+
+            return $rs->fields['refund_id'];
+
+        }
+
+    }    
 
     /** Update Functions **/
 
@@ -290,7 +305,7 @@ class Refund extends Components {
     #     Update refund                 #
     #####################################
 
-    public function update_refund($qform) {
+    public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."refund_records SET
                 employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
@@ -303,22 +318,22 @@ class Refund extends Components {
             $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
         } else {
 
-            $refund_details = $this->get_refund_details($qform['refund_id']);
+            $refund_details = $this->getRecord($qform['refund_id']);
 
             // Get related workorder_id
-            $workorder_id = $this->app->components->invoice->get_invoice_details($refund_details['invoice_id'], 'workorder_id');
+            $workorder_id = $this->app->components->invoice->getRecord($refund_details['invoice_id'], 'workorder_id');
 
             // Create a Workorder History Note
-            $this->app->components->workorder->insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$qform['refund_id'].' '._gettext("updated").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+            $this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund").' '.$qform['refund_id'].' '._gettext("updated").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
             $record = _gettext("Refund Record").' '.$qform['refund_id'].' '._gettext("updated.");
             $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
 
             // Update last active record  
-            $this->app->components->client->update_client_last_active($refund_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($workorder_id);
-            $this->app->components->invoice->update_invoice_last_active($refund_details['invoice_id']);
+            $this->app->components->client->updateLastActive($refund_details['client_id']);
+            $this->app->components->workorder->updateLastActive($workorder_id);
+            $this->app->components->invoice->updateLastActive($refund_details['invoice_id']);
 
             return true;
 
@@ -330,10 +345,10 @@ class Refund extends Components {
     # Update Refund Status     #
     ############################
 
-    public function update_refund_status($refund_id, $new_status, $silent = false) {
+    public function updateStatus($refund_id, $new_status, $silent = false) {
 
         // Get refund details
-        $refund_details = $this->get_refund_details($refund_id);
+        $refund_details = $this->getRecord($refund_id);
 
         // if the new status is the same as the current one, exit
         if($new_status == $refund_details['status']) {        
@@ -359,25 +374,25 @@ class Refund extends Components {
         } else {    
 
             // Get related workorder_id
-            $workorder_id = $this->app->components->invoice->get_invoice_details($refund_details['invoice_id'], 'workorder_id');
+            $workorder_id = $this->app->components->invoice->getRecord($refund_details['invoice_id'], 'workorder_id');
 
             // Status updated message
             if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Refund status updated.")); }
 
             // For writing message to log file, get refund status display name
-            $refund_status_display_name = _gettext($this->get_refund_status_display_name($new_status));
+            $refund_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
             // Create a Workorder History Note
-            $this->app->components->workorder->insert_workorder_history_note($workorder_id, _gettext("Refund Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+            $this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
             $record = _gettext("Refund").' '.$refund_id.' '._gettext("Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
 
             // Update last active record - // not used, the current user is updated elsewhere  
-            $this->app->components->client->update_client_last_active($refund_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($workorder_id);
-            $this->app->components->invoice->update_invoice_last_active($refund_details['invoice_id']);              
+            $this->app->components->client->updateLastActive($refund_details['client_id']);
+            $this->app->components->workorder->updateLastActive($workorder_id);
+            $this->app->components->invoice->updateLastActive($refund_details['invoice_id']);              
 
             return true;
 
@@ -391,42 +406,42 @@ class Refund extends Components {
     #   Cancel Refund                   #
     #####################################
 
-    public function cancel_refund($refund_id) {
+    public function cancelRecord($refund_id) {
 
         // Make sure the refund can be cancelled
-        if(!$this->check_refund_can_be_cancelled($refund_id)) {        
+        if(!$this->checkStatusAllowsCancel($refund_id)) {        
             return false;
         }
 
         // Get refund details
-        $refund_details = $this->get_refund_details($refund_id);
+        $refund_details = $this->getRecord($refund_id);
 
         // Get related workorder_id
-        $workorder_id = $this->app->components->invoice->get_invoice_details($refund_details['invoice_id'], 'workorder_id');
+        $workorder_id = $this->app->components->invoice->getRecord($refund_details['invoice_id'], 'workorder_id');
 
         // Change the refund status to cancelled (I do this here to maintain consistency)
-        $this->update_refund_status($refund_id, 'cancelled');
+        $this->updateStatus($refund_id, 'cancelled');
 
         // Revert invoice status back to paid
-        $this->app->components->invoice->update_invoice_status($refund_details['invoice_id'], 'paid');
+        $this->app->components->invoice->updateStatus($refund_details['invoice_id'], 'paid');
 
         // Remove the refund ID from the invoice
-        $this->app->components->invoice->update_invoice_refund_id($refund_details['invoice_id'], '');
+        $this->app->components->invoice->updateRefundId($refund_details['invoice_id'], '');
 
         // Revert attached vouchers status back to paid
-        $this->app->components->voucher->revert_refunded_invoice_vouchers($refund_details['invoice_id']);
+        $this->app->components->voucher->revertRefundedInvoiceVouchers($refund_details['invoice_id']);
 
         // Create a Workorder History Note  
-        $this->app->components->workorder->insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
+        $this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->update_client_last_active($refund_details['client_id']);
-        $this->app->components->workorder->update_workorder_last_active($workorder_id);
-        $this->app->components->invoice->update_invoice_last_active($refund_details['invoice_id']);
+        $this->app->components->client->updateLastActive($refund_details['client_id']);
+        $this->app->components->workorder->updateLastActive($workorder_id);
+        $this->app->components->invoice->updateLastActive($refund_details['invoice_id']);
 
         return true;
 
@@ -438,27 +453,27 @@ class Refund extends Components {
     #    Delete Record                  #
     #####################################
 
-    public function delete_refund($refund_id) {
+    public function deleteRecord($refund_id) {
 
         // Make sure the invoice can be deleted (does not harm to check again here, other check is on status button)
-        if(!$this->check_refund_can_be_deleted($refund_id)) {        
+        if(!$this->checkStatusAllowsDelete($refund_id)) {        
             return false;
         }
 
         // Get record before deleting the record
-        $refund_details = $this->get_refund_details($refund_id);
+        $refund_details = $this->getRecord($refund_id);
 
         // Change the refund status to deleted (I do this here to maintain consistency)
-        $this->update_refund_status($refund_id, 'deleted');  
+        $this->updateStatus($refund_id, 'deleted');  
 
         // Revert invoice status back to paid
-        $this->app->components->invoice->update_invoice_status($refund_details['invoice_id'], 'paid');
+        $this->app->components->invoice->updateStatus($refund_details['invoice_id'], 'paid');
 
         // Remove the refund ID from the invoice
-        $this->app->components->invoice->update_invoice_refund_id($refund_details['invoice_id'], '');
+        $this->app->components->invoice->updateRefundId($refund_details['invoice_id'], '');
 
         // Revert attached vouchers status back to paid
-        $this->app->components->voucher->revert_refunded_invoice_vouchers($refund_details['invoice_id']);
+        $this->app->components->voucher->revertRefundedInvoiceVouchers($refund_details['invoice_id']);
 
         $sql = "UPDATE ".PRFX."refund_records SET
                 employee_id         = '',
@@ -486,99 +501,38 @@ class Refund extends Components {
         } else {
 
             // Get related workorder_id
-            $workorder_id = $this->app->components->invoice->get_invoice_details($refund_details['invoice_id'], 'workorder_id');
+            $workorder_id = $this->app->components->invoice->getRecord($refund_details['invoice_id'], 'workorder_id');
 
             // Create a Workorder History Note  
-            $this->app->components->workorder->insert_workorder_history_note($workorder_id, _gettext("Expense").' '.$refund_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
+            $this->app->components->workorder->insertHistory($workorder_id, _gettext("Expense").' '.$refund_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
             $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("deleted.");
             $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
 
             // Update last active record    
-            $this->app->components->client->update_client_last_active($refund_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($workorder_id);
-            $this->app->components->invoice->update_invoice_last_active($refund_details['invoice_id']);
+            $this->app->components->client->updateLastActive($refund_details['client_id']);
+            $this->app->components->workorder->updateLastActive($workorder_id);
+            $this->app->components->invoice->updateLastActive($refund_details['invoice_id']);
 
             return true;
 
         }
 
     }
-
-    /** Other Functions **/
-
-    ##########################################
-    #      Last Record Look Up               #  // not currently used
-    ##########################################
-
-    public function last_refund_id_lookup() {
-
-        $sql = "SELECT * FROM ".PRFX."refund_records ORDER BY refund_id DESC LIMIT 1";
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
-        } else {
-
-            return $rs->fields['refund_id'];
-
-        }
-
-    }
-
-    #####################################
-    #   Recalculate Refund Totals       #
-    #####################################
-
-    public function recalculate_refund_totals($refund_id) {
-
-        $refund_details             = $this->get_refund_details($refund_id);    
-
-        $unit_gross                 = $refund_details['unit_gross'];   
-        $payments_sub_total         = $this->app->components->report->sum_payments(null, null, 'date', null, 'valid', 'refund', null, null, null, null, $refund_id);
-        $balance                    = $unit_gross - $payments_sub_total;
-
-        $sql = "UPDATE ".PRFX."refund_records SET
-                balance             =". $this->app->db->qstr( $balance   )."
-                WHERE refund_id     =". $this->app->db->qstr( $refund_id );
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the refund totals."));
-        } else {
-
-            /* Update Status - only change if there is a change in status */        
-
-            // Balance = Gross Amount (i.e no payments)
-            if($unit_gross > 0 && $unit_gross == $balance && $refund_details['status'] != 'unpaid') {
-                $this->update_refund_status($refund_id, 'unpaid');
-            }
-
-            // Balance < Gross Amount (i.e some payments)
-            elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $refund_details['status'] != 'partially_paid') {            
-                $this->update_refund_status($refund_id, 'partially_paid');
-            }
-
-            // Balance = 0.00 (i.e has payments and is all paid)
-            elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $refund_details['status'] != 'paid') {            
-                $this->update_refund_status($refund_id, 'paid');
-            }        
-
-            return;        
-
-        }
-
-    }
-
+    
+    /** Check Functions **/
+    
     ##########################################################
     #  Check if the refund status is allowed to be changed   #  // not currently used (from refund:status), manual change
     ##########################################################
 
-     public function check_refund_status_can_be_changed($refund_id) {
+     public function checkStatusAllowsChange($refund_id) {
 
         $state_flag = true;
 
         // Get the refund details
-        $refund_details = $this->get_refund_details($refund_id);
+        $refund_details = $this->getRecord($refund_id);
 
         // Is unpaid
         if($refund_details['status'] == 'unpaid') {
@@ -611,13 +565,13 @@ class Refund extends Components {
         }
 
         // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments."));
             $state_flag = false;       
         }
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refunding($refund_details ['invoice_id'])) {
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefund($refund_details ['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
             $state_flag = false;
         }
@@ -630,12 +584,12 @@ class Refund extends Components {
     #   Check to see if the refund can be cancelled               #
     ###############################################################
 
-    public function check_refund_can_be_cancelled($refund_id) {
+    public function checkStatusAllowsCancel($refund_id) {
 
         $state_flag = true;
 
         // Get the refund details
-        $refund_details = $this->get_refund_details($refund_id);
+        $refund_details = $this->getRecord($refund_id);
 
         // Is partially paid (not used yet)
         if($refund_details['status'] == 'partially_paid') {
@@ -656,13 +610,13 @@ class Refund extends Components {
         }    
 
         // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be cancelled because the refund has payments."));
             $state_flag = false;       
         }
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refund_cancellation($refund_details['invoice_id'])) {
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefundCancel($refund_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
             $state_flag = false;
         }
@@ -675,12 +629,12 @@ class Refund extends Components {
     #   Check to see if the refund can be deleted                 #
     ###############################################################
 
-    public function check_refund_can_be_deleted($refund_id) {
+    public function checkStatusAllowsDelete($refund_id) {
 
         $state_flag = true;
 
         // Get the refund details
-        $refund_details = $this->get_refund_details($refund_id);
+        $refund_details = $this->getRecord($refund_id);
 
         // Is partially paid (not used yet)
         if($refund_details['status'] == 'partially_paid') {
@@ -707,13 +661,13 @@ class Refund extends Components {
         }
 
         // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments."));
             $state_flag = false;       
         }
 
         // Does the invoice status allow it to have its refund deleted (including vouchers)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refund_deletion($refund_details['invoice_id'])) {
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefundDelete($refund_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
             $state_flag = false;
         } 
@@ -726,12 +680,12 @@ class Refund extends Components {
     #  Check if the refund status allows editing             #       
     ##########################################################
 
-     public function check_refund_can_be_edited($refund_id) {
+     public function checkStatusAllowsEdit($refund_id) {
 
         $state_flag = true;
 
         // Get the refund details
-        $refund_details = $this->get_refund_details($refund_id);
+        $refund_details = $this->getRecord($refund_id);
 
         // Is on a different tax system
         if($refund_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -770,25 +724,71 @@ class Refund extends Components {
         }
 
         // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
+        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments."));
             $state_flag = false;       
         }
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->check_invoice_vouchers_allow_invoice_refunding($refund_details['invoice_id'])) {
+        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefund($refund_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
             $state_flag = false;
         }
 
         // The current record VAT code is enabled
-        if(!$this->app->components->company->get_vat_tax_code_status($refund_details['vat_tax_code'])) {
+        if(!$this->app->components->company->getVatTaxCodeStatus($refund_details['vat_tax_code'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be edited because it's current VAT Tax Code is not enabled."));
             $state_flag = false;
         }
 
         return $state_flag;
 
+    }    
+
+    /** Other Functions **/
+
+    #####################################
+    #   Recalculate Refund Totals       #
+    #####################################
+
+    public function recalculateTotals($refund_id) {
+
+        $refund_details             = $this->getRecord($refund_id);    
+
+        $unit_gross                 = $refund_details['unit_gross'];   
+        $payments_sub_total         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'refund', null, null, null, null, $refund_id);
+        $balance                    = $unit_gross - $payments_sub_total;
+
+        $sql = "UPDATE ".PRFX."refund_records SET
+                balance             =". $this->app->db->qstr( $balance   )."
+                WHERE refund_id     =". $this->app->db->qstr( $refund_id );
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the refund totals."));
+        } else {
+
+            /* Update Status - only change if there is a change in status */        
+
+            // Balance = Gross Amount (i.e no payments)
+            if($unit_gross > 0 && $unit_gross == $balance && $refund_details['status'] != 'unpaid') {
+                $this->updateStatus($refund_id, 'unpaid');
+            }
+
+            // Balance < Gross Amount (i.e some payments)
+            elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $refund_details['status'] != 'partially_paid') {            
+                $this->updateStatus($refund_id, 'partially_paid');
+            }
+
+            // Balance = 0.00 (i.e has payments and is all paid)
+            elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $refund_details['status'] != 'paid') {            
+                $this->updateStatus($refund_id, 'paid');
+            }        
+
+            return;        
+
+        }
+
     }
+
     
 }

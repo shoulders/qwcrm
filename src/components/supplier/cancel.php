@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['suppl
 }  
 
 // Cancel the supplier function call
-$this->app->components->supplier->cancel_supplier(\CMSApplication::$VAR['supplier_id']);
+$this->app->components->supplier->cancelRecord(\CMSApplication::$VAR['supplier_id']);
 
 // Load the supplier search page
 $this->app->system->page->force_page('supplier', 'search', 'msg_success='._gettext("Supplier cancelled successfully."));

@@ -24,7 +24,7 @@ class Company extends Components {
 
     /** Mandatory Code **/
 
-    /** Display Functions **/
+   
 
     /** Insert Functions **/
 
@@ -40,7 +40,7 @@ class Company extends Components {
      * supply the required field name for a single item or all for all items as an array.
      */
 
-    public function get_company_details($item = null) {
+    public function getRecord($item = null) {
 
         // This is a fallback to make diagnosing critical database failure - This is the first function loaded for $date_format
         if (!$this->app->db->isConnected()) {
@@ -96,7 +96,7 @@ class Company extends Components {
     #    Get company tax systems        #
     #####################################
 
-    public function get_tax_systems() {
+    public function getTaxSystems() {
 
         $sql = "SELECT * FROM ".PRFX."company_tax_systems";
 
@@ -111,29 +111,10 @@ class Company extends Components {
     }
 
     #####################################
-    #   Get VAT rate for given tax_key  #
-    #####################################
-
-    public function get_vat_rate($vat_tax_code) {
-
-        $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
-                WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
-        } else {
-
-            return $rs->fields['rate'];
-
-        }    
-
-    }
-
-    #####################################
     #    Get VAT Tax Codes              # Editable is only used in company:edit
     ##################################### system_tax_code is not currently used and might be removed
 
-    public function get_vat_tax_codes($hidden_status = null, $editable_status = null, $system_tax_code = null) {
+    public function getVatTaxCodes($hidden_status = null, $editable_status = null, $system_tax_code = null) {
 
         $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
 
@@ -164,12 +145,49 @@ class Company extends Components {
         }    
 
     }
+    
+    
+    #####################################
+    #   Get VAT rate for given tax_key  #
+    #####################################
+
+    public function getVatRate($vat_tax_code) {
+
+        $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
+                WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
+
+        if(!$rs = $this->app->db->execute($sql)){        
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
+        } else {
+
+            return $rs->fields['rate'];
+
+        }    
+
+    }
+
+    #####################################
+    #    Get default VAT Code           # // This gets the default VAT Tax Code based on the company tax system or supplied tax_system
+    #####################################
+
+    public function getDefaultVatTaxCode($tax_system = null) {
+
+        if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
+
+        if($tax_system == 'no_tax') { return 'TNA'; }
+        if($tax_system == 'sales_tax_cash') { return 'TNA'; }     
+        if($tax_system == 'vat_standard') { return 'T1'; }    
+        if($tax_system == 'vat_cash') { return 'T1'; }
+        if($tax_system == 'vat_flat_basic') { return 'T1'; }
+        if($tax_system == 'vat_flat_cash') { return 'T1'; }       
+
+    }
 
     ############################
     #  Get VAT Code Status     #  // Only return true is a valid configuration for the code
     ############################
 
-    public function get_vat_tax_code_status($vat_tax_code) {
+    public function getVatTaxCodeStatus($vat_tax_code) {
 
         $sql = "SELECT enabled
                 FROM ".PRFX."company_vat_tax_codes
@@ -185,28 +203,13 @@ class Company extends Components {
 
     }
 
-    #####################################
-    #    Get default VAT Code           # // This gets the default VAT Tax Code based on the company tax system or supplied tax_system
-    #####################################
 
-    public function get_default_vat_tax_code($tax_system = null) {
-
-        if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
-
-        if($tax_system == 'no_tax') { return 'TNA'; }
-        if($tax_system == 'sales_tax_cash') { return 'TNA'; }     
-        if($tax_system == 'vat_standard') { return 'T1'; }    
-        if($tax_system == 'vat_cash') { return 'T1'; }
-        if($tax_system == 'vat_flat_basic') { return 'T1'; }
-        if($tax_system == 'vat_flat_cash') { return 'T1'; }       
-
-    }
 
     ##########################################
     #      Get Company Opening Hours         # // return opening hours in smarty/datetime/timestamp with an optional specified date (2019-05-72)
     ##########################################
 
-    public function get_company_opening_hours($event, $type, $date = null, $date_format = null) {
+    public function getOpeningHours($event, $type, $date = null, $date_format = null) {
 
         // Convert Date to time stamp
         if($date) { 
@@ -218,12 +221,12 @@ class Company extends Components {
 
             // return opening time in correct format for smartytime builder
             if($event == 'opening_time') {
-                return $this->get_company_details('opening_hour').':'.$this->get_company_details('opening_minute').':00';
+                return $this->getRecord('opening_hour').':'.$this->getRecord('opening_minute').':00';
             }
 
             // return closing time in correct format for smartytime builder
             if($event == 'closing_time') {
-                return $this->get_company_details('closing_hour').':'.$this->get_company_details('closing_minute').':00';
+                return $this->getRecord('closing_hour').':'.$this->getRecord('closing_minute').':00';
             }   
 
         }
@@ -234,14 +237,14 @@ class Company extends Components {
             // return opening time in correct format for smarty time builder
             if($event == 'opening_time') {            
                 //return $date.' '.$this->get_company_details('opening_hour').':'.$this->get_company_details('opening_minute');  // This only allows the use of DATE and not DATETIME            
-                return $this->app->system->general->build_mysql_datetime($this->get_company_details('opening_hour'), $this->get_company_details('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));            
+                return $this->app->system->general->build_mysql_datetime($this->getRecord('opening_hour'), $this->getRecord('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));            
             }
 
             // return closing time in correct format for smarty time builder
             if($event == 'closing_time') {
                 //return $date.' '.$this->get_company_details('closing_hour').':'.$this->get_company_details('closing_minute');  // This only allows the use of DATE and not DATETIME
 
-                return $this->app->system->general->build_mysql_datetime($this->get_company_details('closing_hour'), $this->get_company_details('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));                    
+                return $this->app->system->general->build_mysql_datetime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));                    
             }
         }
 
@@ -250,12 +253,12 @@ class Company extends Components {
 
             // return opening time in correct format for smarty time builder
             if($event == 'opening_time') {
-                return mktime($this->get_company_details('opening_hour'), $this->get_company_details('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
+                return mktime($this->getRecord('opening_hour'), $this->getRecord('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
             }
 
             // return closing time in correct format for smarty time builder
             if($event == 'closing_time') {
-                return mktime($this->get_company_details('closing_hour'), $this->get_company_details('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
+                return mktime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
             }   
 
         }    
@@ -268,25 +271,25 @@ class Company extends Components {
     #  Update Company details   #
     #############################
 
-    public function update_company_details($qform) {
+    public function updateRecord($qform) {
             
         $sql = null;
 
         // Update VAT rates
-        $this->update_vat_rates($qform['vat_tax_codes']);
+        $this->updateVatRates($qform['vat_tax_codes']);
 
         // Prevent undefined variable errors
         $qform['delete_logo'] = isset($qform['delete_logo']) ? $qform['delete_logo'] : null;   
         
         // Delete logo if selected and no new logo is presented
         if($qform['delete_logo'] && !$_FILES['logo']['name']) {
-            $this->delete_logo();        
+            $this->deleteLogo();        
         }
 
         // A new logo is supplied, delete old and upload new
         if($_FILES['logo']['name']) {
-            $this->delete_logo();
-            $new_logo_filepath = $this->upload_logo();
+            $this->deleteLogo();
+            $new_logo_filepath = $this->uploadLogo();
         }
 
         $sql .= "UPDATE ".PRFX."company_record SET
@@ -350,7 +353,7 @@ class Company extends Components {
     #        Update Company Hours            #
     ##########################################
 
-    public function update_company_hours($openingTime, $closingTime) {
+    public function updateOpeningHours($openingTime, $closingTime) {
 
         $sql = "UPDATE ".PRFX."company_record SET
                 opening_hour    =". $this->app->db->qstr( $openingTime['Time_Hour']     ).",
@@ -378,7 +381,7 @@ class Company extends Components {
     #        Update VAT Rates                #
     ##########################################
 
-    public function update_vat_rates($vat_rates) {
+    public function updateVatRates($vat_rates) {
 
         $error_flag = false;
 
@@ -414,14 +417,38 @@ class Company extends Components {
     /** Close Functions **/
 
     /** Delete Functions **/
+    
+    ##########################
+    #  Delete Company Logo   #
+    ##########################
 
-    /** Other Functions **/
+    public function deleteLogo() {
 
+        // Only delete a logo if there is one set
+        if($this->getRecord('logo')) {
+
+            // Build the full logo file path (new)
+            $logo_file = parse_url(MEDIA_DIR . $this->getRecord('logo'), PHP_URL_PATH);
+
+            // Check the file exists
+            if(file_exists($logo_file)) {
+
+                // Perform the deletion
+                unlink($logo_file);        
+
+            }
+
+        }
+
+    }
+    
+    /** Check Functions **/
+    
     ##########################################
     #  Check Start and End times are valid   #
     ##########################################
 
-    public function check_start_end_times($start_time, $end_time) {
+    public function checkOpeningHoursValid($start_time, $end_time) {
 
         // If start time is before end time
         if($start_time > $end_time) {        
@@ -439,35 +466,14 @@ class Company extends Components {
 
     }
 
-    ##########################
-    #  Delete Company Logo   #
-    ##########################
+    /** Other Functions **/
 
-    public function delete_logo() {
-
-        // Only delete a logo if there is one set
-        if($this->get_company_details('logo')) {
-
-            // Build the full logo file path (new)
-            $logo_file = parse_url(MEDIA_DIR . $this->get_company_details('logo'), PHP_URL_PATH);
-
-            // Check the file exists
-            if(file_exists($logo_file)) {
-
-                // Perform the deletion
-                unlink($logo_file);        
-
-            }
-
-        }
-
-    }
 
     ##########################
     #  Upload Company Logo   #
     ##########################
 
-    public function upload_logo() {
+    public function uploadLogo() {
 
         $chicken = $_FILES;
         // Logo - Only process if there is an image uploaded

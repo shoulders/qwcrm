@@ -21,10 +21,10 @@ if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['vouche
 }
 
 // Get invoice_id before deleting
-$invoice_id = $this->app->components->voucher->get_voucher_details(\CMSApplication::$VAR['voucher_id'], 'invoice_id');
+$invoice_id = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id'], 'invoice_id');
 
 // Delete the Voucher - The Voucher is effectively only deactivated
-if(!$this->app->components->voucher->delete_voucher(\CMSApplication::$VAR['voucher_id'])) {
+if(!$this->app->components->voucher->deleteRecord(\CMSApplication::$VAR['voucher_id'])) {
     
     // Load the relevant invoice page with fail message
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher failed to be deleted."));

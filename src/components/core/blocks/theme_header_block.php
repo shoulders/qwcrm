@@ -13,7 +13,7 @@ $this->app->smarty->assign('todays_display_date', date('l, j F Y'));
 
 //Add a welcome message based on time
 if(!defined('QWCRM_SETUP')) {
-    $this->app->smarty->assign('greeting_msg', $this->app->components->coretheme->greeting_message_based_on_time($this->app->user->login_display_name));    
+    $this->app->smarty->assign('greeting_msg', $this->app->components->coretheme->getGreetingMsg($this->app->user->login_display_name));    
 } else {
-    $this->app->smarty->assign('greeting_msg', $this->app->components->coretheme->greeting_message_based_on_time(null)); 
+    $this->app->smarty->assign('greeting_msg', $this->app->components->coretheme->getGreetingMsg(null)); 
 }

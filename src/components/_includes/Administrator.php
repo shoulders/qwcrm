@@ -38,22 +38,22 @@ class Administrator extends Components {
     #   Insert a single QWcrm setting file     #
     ############################################
 
-    public function insert_qwcrm_config_setting($key, $value) {
+    public function insertQwcrmConfigSetting($key, $value) {
 
         // Add the setting into the Registry
         $this->app->config->set($key, $value);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = $this->get_qwcrm_config_as_array();  
+        $qwcrm_config = $this->getQwcrmConfigAsArray();  
 
         // Add the key/value pair into the array
         //$qwcrm_config[$key] = $value;
 
         // Prepare the config file content
-        $qwcrm_config = $this->build_config_file_content($qwcrm_config);
+        $qwcrm_config = $this->buildConfigFileContent($qwcrm_config);
 
         // Write the configuration file.
-        $this->write_config_file($qwcrm_config);
+        $this->writeConfigFile($qwcrm_config);
 
         // Log activity
         $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was inserted."));    
@@ -68,7 +68,7 @@ class Administrator extends Components {
     #  Load Config settings from file or use the registry if present  #
     ###################################################################
 
-    public function get_qwcrm_config_as_array() {
+    public function getQwcrmConfigAsArray() {
 
         // Use the config settings in the live Registry 
         return get_object_vars($this->app->config->toObject());
@@ -79,33 +79,13 @@ class Administrator extends Components {
     }  
 
 
-    ##############################################
-    #   Reload configuration registry from file  #
-    ##############################################
-    
-    function refresh_qwcrm_config() {        
-            
-        // Wipe the live registry - i dont think this works (because of context ?)
-        //$this->app->system->config = null;        
-
-        // Wipe the live registry - Must call the static directly because of context
-        \Factory::$config = null;
-
-        // Re-populate the Config Registry
-        $this->app->config = \Factory::getConfig();
-        
-        // Log activity
-        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file.")); 
-        
-        return;
-                
-    }     
+ 
 
     #################################
     #   Get ACL Permissions         #
     #################################
 
-    public function get_acl_permissions() {
+    public function getAclPermissions() {
 
         $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
 
@@ -123,22 +103,22 @@ class Administrator extends Components {
     #   Update a single QWcrm setting file     #
     ############################################
 
-    public function update_qwcrm_config_setting($key, $value) {
+    public function updateQwcrmConfigSetting($key, $value) {
 
         // Update a setting into the Registry
         $this->app->config->set($key, $value);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = $this->get_qwcrm_config_as_array();
+        $qwcrm_config = $this->getQwcrmConfigAsArray();
 
         // Add the key/value pair into the object
         //$qwcrm_config[$key] = $value;
 
         // Prepare the config file content
-        $qwcrm_config = $this->build_config_file_content($qwcrm_config);
+        $qwcrm_config = $this->buildConfigFileContent($qwcrm_config);
 
         // Write the configuration file.
-        $this->write_config_file($qwcrm_config);
+        $this->writeConfigFile($qwcrm_config);
 
         // Log activity
         $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was updated to").' `'.$value.'`.');    
@@ -151,7 +131,7 @@ class Administrator extends Components {
     #   Update ACL Permissions      #
     #################################
 
-    public function update_acl($permissions) {
+    public function updateAcl($permissions) {
 
         /* Process Submitted Permissions */
 
@@ -246,13 +226,13 @@ class Administrator extends Components {
     #   Update the QWcrm settings file         #
     ############################################
 
-    public function update_qwcrm_config_settings_file($new_config) {
+    public function updateQwcrmConfigSettingsFile($new_config) {
 
         // Perform miscellaneous operations based on configuration settings/changes. (not currently need for setup
-        $new_config = $this->process_submitted_config_data($new_config);
+        $new_config = $this->processSubmittedConfigData($new_config);
 
         // Get a fresh copy of the current settings as an array        
-        $current_config = $this->get_qwcrm_config_as_array();
+        $current_config = $this->getQwcrmConfigAsArray();
 
         // Merge the new_config and the current_config. We do this to preserve values that were not in the submitted form but are in the config.    
         $merged_config = array_merge($current_config, $new_config);
@@ -263,10 +243,10 @@ class Administrator extends Components {
         });
 
         // Prepare the config file content
-        $merged_config = $this->build_config_file_content($merged_config);
+        $merged_config = $this->buildConfigFileContent($merged_config);
 
         // Write the configuration file.
-        $this->write_config_file($merged_config);
+        $this->writeConfigFile($merged_config);
 
         // Log activity        
         $this->app->system->general->write_record_to_activity_log(_gettext("QWcrm config settings updated."));   
@@ -281,22 +261,22 @@ class Administrator extends Components {
     #   Delete s QWcrm setting                 #
     ############################################
 
-    public function delete_qwcrm_config_setting($key) {
+    public function deleteQwcrmConfigSetting($key) {
 
         // Remove the setting from the Registry
         $this->app->config->remove($key);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = $this->get_qwcrm_config_as_array();
+        $qwcrm_config = $this->getQwcrmConfigAsArray();
 
         // Remove the key from the array
         //unset($qwcrm_config[$key]);
 
         // Prepare the config file content
-        $qwcrm_config = $this->build_config_file_content($qwcrm_config);
+        $qwcrm_config = $this->buildConfigFileContent($qwcrm_config);
 
         // Write the configuration file.
-        $this->write_config_file($qwcrm_config);
+        $this->writeConfigFile($qwcrm_config);
 
         // Log activity
         $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));    
@@ -337,7 +317,7 @@ class Administrator extends Components {
     #   Check for QWcrm update      #
     #################################
 
-    public function check_for_qwcrm_update() {
+    public function checkQwcrmUpdateAvailability() {
 
         // Get curent version and check against quantumwarp.com
         $update_page    = 'https://quantumwarp.com/ext/updates/qwcrm/qwcrm.xml';
@@ -397,12 +377,35 @@ class Administrator extends Components {
         return;
 
     }
+    
+
+    ##############################################
+    #   Reload configuration registry from file  #
+    ##############################################
+    
+    function refreshQwcrmConfig() {        
+            
+        // Wipe the live registry - i dont think this works (because of context ?)
+        //$this->app->system->config = null;        
+
+        // Wipe the live registry - Must call the static directly because of context
+        \Factory::$config = null;
+
+        // Re-populate the Config Registry
+        $this->app->config = \Factory::getConfig();
+        
+        // Log activity
+        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file.")); 
+        
+        return;
+                
+    }        
 
     ############################################
     #   Prepare the Config file data layout    #
     ############################################
 
-    public function build_config_file_content($config_data)
+    public function buildConfigFileContent($config_data)
     {
         $output = "<?php\r\n";
         $output .= "class QConfig {\r\n";
@@ -422,7 +425,7 @@ class Administrator extends Components {
     #      Write data to config file           #
     ############################################
 
-    public function write_config_file($content)
+    public function writeConfigFile($content)
     {
         // Set the configuration file path.
         $file = 'configuration.php';
@@ -462,10 +465,10 @@ class Administrator extends Components {
     #   Process form SUBMITTED config data before saving      #  // joomla/administrator/components/com_config/model/application.php  -  public public function save($data)
     ###########################################################
 
-    public function process_submitted_config_data($new_config) {    
+    public function processSubmittedConfigData($new_config) {    
 
         // Get a fresh copy of the current settings as an array        
-        $current_config = $this->get_qwcrm_config_as_array();
+        $current_config = $this->getQwcrmConfigAsArray();
 
         // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error becasue the variable is not present yet
         if(isset($new_config['google_server'])) { $new_config['google_server'] = $this->app->system->general->process_inputted_url($new_config['google_server']); }
@@ -505,7 +508,7 @@ class Administrator extends Components {
                 //unset($new_config['session_name']);
 
                 // Remove 'session_name' from the live config registry and configuration.php (prevents 'session_name' getting remerged from these sources)
-                $this->delete_qwcrm_config_setting('session_name');
+                $this->deleteQwcrmConfigSetting('session_name');
 
                 // Logout the current user out silently (this should be for all users ie.e TRUNCATE #_session when on database handler, but this a work around for the current user)
                 $this->app->user->logout(true);
@@ -518,12 +521,12 @@ class Administrator extends Components {
     }
 
     ############################################
-    #      Send Test Mail                      #
+    #      Send Test EMail                      #
     ############################################
 
-    public function send_test_mail() {
+    public function sendTestEmail() {
 
-        $user_details = $this->app->components->user->get_user_details($this->app->user->login_user_id);
+        $user_details = $this->app->components->user->getRecord($this->app->user->login_user_id);
 
         $this->app->system->email->send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$this->app->config->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
 
@@ -536,7 +539,7 @@ class Administrator extends Components {
     #   Reset ACL Permissions       #
     #################################
 
-    public function reset_acl_permissions() {
+    public function resetAclPermissions() {
 
         // Remove current permissions
         $sql = "TRUNCATE ".PRFX."user_acl_page";

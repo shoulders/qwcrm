@@ -17,7 +17,7 @@ if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_
 if(isset(\CMSApplication::$VAR['submit'])) {    
         
     // Update the Client's Details
-    $this->app->components->client->update_client(\CMSApplication::$VAR['qform']);
+    $this->app->components->client->updateRecord(\CMSApplication::$VAR['qform']);
     
     // Load the client's details page
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The Client's information was updated."));
@@ -26,7 +26,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {    
 
     // Build the page
-    $this->app->smarty->assign('client_types',   $this->app->components->client->get_client_types());
-    $this->app->smarty->assign('client_details', $this->app->components->client->get_client_details(\CMSApplication::$VAR['client_id']));
+    $this->app->smarty->assign('client_types',   $this->app->components->client->getTypes());
+    $this->app->smarty->assign('client_details', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id']));
     
 }

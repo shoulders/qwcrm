@@ -33,6 +33,6 @@ $this->app->smarty->assign('search_category',      \CMSApplication::$VAR['search
 $this->app->smarty->assign('search_term',          \CMSApplication::$VAR['search_term']                                                                                                 );
 $this->app->smarty->assign('filter_type',          \CMSApplication::$VAR['filter_type']                                                                                                 );
 $this->app->smarty->assign('filter_status',        \CMSApplication::$VAR['filter_status']                                                                                               );
-$this->app->smarty->assign('supplier_statuses',    $this->app->components->supplier->get_supplier_statuses()   );
-$this->app->smarty->assign('supplier_types',       $this->app->components->supplier->get_supplier_types()                                                                                                );
-$this->app->smarty->assign('display_suppliers',    $this->app->components->supplier->display_suppliers('supplier_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'])   );
+$this->app->smarty->assign('supplier_statuses',    $this->app->components->supplier->getStatuses()   );
+$this->app->smarty->assign('supplier_types',       $this->app->components->supplier->getTypes()                                                                                                );
+$this->app->smarty->assign('display_suppliers',    $this->app->components->supplier->getRecords('supplier_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'])   );

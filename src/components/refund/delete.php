@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_
 } 
 
 // Delete the refund function call
-$this->app->components->refund->delete_refund(\CMSApplication::$VAR['refund_id']);
+$this->app->components->refund->deleteRecord(\CMSApplication::$VAR['refund_id']);
 
 // Load the refund search page
 $this->app->system->page->force_page('refund', 'search', 'msg_success='._gettext("Refund deleted successfully."));

@@ -23,7 +23,7 @@ class Variables extends System {
         // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
         if(!defined('QWCRM_SETUP')) {
             
-            $company_details = $this->app->components->company->get_company_details();
+            $company_details = $this->app->components->company->getRecord();
             define('DATE_FORMAT',   $company_details['date_format']);
             define('QW_TAX_SYSTEM', $company_details['tax_system'] );
         }
@@ -67,9 +67,9 @@ class Variables extends System {
             $this->app->smarty->assign('currency_sym',  $company_details['currency_symbol']     );
             $this->app->smarty->assign('company_logo',  QW_MEDIA_DIR . $company_details['logo'] );
             // Only build the link if there is a logo set.
-            if($this->app->components->company->get_company_details('logo'))
+            if($this->app->components->company->getRecord('logo'))
             {
-                $this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->app->components->company->get_company_details('logo') );
+                $this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->app->components->company->getRecord('logo') );
             } else {
                 $this->app->smarty->assign('company_logo', '');
             }

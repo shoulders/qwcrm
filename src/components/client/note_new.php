@@ -18,7 +18,7 @@ if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_
 // Insert the client note
 if(isset(\CMSApplication::$VAR['submit'])) {   
     
-    $this->app->components->client->insert_client_note(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['note']); 
+    $this->app->components->client->insertNote(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['note']); 
     $this->app->system->variables->systemMessagesWrite('success', _gettext("Client note created."));
     $this->app->system->page->force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);    
 

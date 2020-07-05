@@ -21,11 +21,11 @@ if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_
 if(isset(\CMSApplication::$VAR['submit'])){
     
     // insert the submitted workorder and return it's id
-    \CMSApplication::$VAR['workorder_id'] = $this->app->components->workorder->insert_workorder(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['scope'], \CMSApplication::$VAR['description'], \CMSApplication::$VAR['comment']);
+    \CMSApplication::$VAR['workorder_id'] = $this->app->components->workorder->insertRecord(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['scope'], \CMSApplication::$VAR['description'], \CMSApplication::$VAR['comment']);
 
     // If workorder is to be assigned to an employee
     if(\CMSApplication::$VAR['assign_to_employee'] === '1') {       
-        $this->app->components->workorder->assign_workorder_to_employee(\CMSApplication::$VAR['workorder_id'], $this->app->user->login_user_id);  
+        $this->app->components->workorder->assignToEmployee(\CMSApplication::$VAR['workorder_id'], $this->app->user->login_user_id);  
     }
     
     // load the workorder details page
@@ -35,4 +35,4 @@ if(isset(\CMSApplication::$VAR['submit'])){
 }
 
 // Build the page
-$this->app->smarty->assign('client_display_name', $this->app->components->client->get_client_details(\CMSApplication::$VAR['client_id'], 'display_name'));
+$this->app->smarty->assign('client_display_name', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'display_name'));

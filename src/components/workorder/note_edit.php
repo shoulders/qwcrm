@@ -15,13 +15,13 @@ if(!isset(\CMSApplication::$VAR['workorder_note_id']) || !\CMSApplication::$VAR[
 }
 
 // Get teh work order note details
-$workorder_note_details = $this->app->components->workorder->get_workorder_note_details(\CMSApplication::$VAR['workorder_note_id']);
+$workorder_note_details = $this->app->components->workorder->getNote(\CMSApplication::$VAR['workorder_note_id']);
 
 // If record submitted for updating
 if(isset(\CMSApplication::$VAR['submit'])) {    
     
     // update the workorder note
-    $this->app->components->workorder->update_workorder_note(\CMSApplication::$VAR['workorder_note_id'], \CMSApplication::$VAR['note']);
+    $this->app->components->workorder->updateNote(\CMSApplication::$VAR['workorder_note_id'], \CMSApplication::$VAR['note']);
     
     // load the workorder details page
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The note has been updated."));

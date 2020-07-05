@@ -37,13 +37,13 @@ if(!isset(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_mont
 if(isset(\CMSApplication::$VAR['ics_type']) && \CMSApplication::$VAR['ics_type'] == 'day') {
     
     // Get Employee Display Name
-    $user_display_name = $this->app->components->user->get_user_details(\CMSApplication::$VAR['employee_id'], 'display_name');
+    $user_display_name = $this->app->components->user->getRecord(\CMSApplication::$VAR['employee_id'], 'display_name');
     
     // Set filename    
     $ics_filename = str_replace(' ', '-', $user_display_name).'_'._gettext("Day").'-'._gettext("Schedule").'_'.\CMSApplication::$VAR['start_year'].'-'.\CMSApplication::$VAR['start_month'].'-'.\CMSApplication::$VAR['start_day'].'.ics';
     
     // Build Day Schedule for the employee as an .ics
-    $ics_content =  $this->app->components->schedule->build_ics_schedule_day(\CMSApplication::$VAR['employee_id'], \CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']);
+    $ics_content =  $this->app->components->schedule->buildDayIcs(\CMSApplication::$VAR['employee_id'], \CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']);
     
     // Log activity
     $record = 'Day Schedule'.' ('.\CMSApplication::$VAR['start_year'].'-'.\CMSApplication::$VAR['start_month'].'-'.\CMSApplication::$VAR['start_day'].') '._gettext("for").' ' .$user_display_name.' '._gettext("has been exported.");
@@ -53,17 +53,17 @@ if(isset(\CMSApplication::$VAR['ics_type']) && \CMSApplication::$VAR['ics_type']
 } else {
     
     // Get Schedule Details
-    $schedule_details = $this->app->components->schedule->get_schedule_details(\CMSApplication::$VAR['schedule_id']);
+    $schedule_details = $this->app->components->schedule->getRecord(\CMSApplication::$VAR['schedule_id']);
     
     // Get Client Display Name
-    $client_display_name = $this->app->components->client->get_client_details($schedule_details['client_id'], 'display_name');
+    $client_display_name = $this->app->components->client->getRecord($schedule_details['client_id'], 'display_name');
     
     // Set filename
     $ics_filename   = _gettext("Schedule").'-'.\CMSApplication::$VAR['schedule_id'].'_'._gettext("WorkOrder").'-'.$schedule_details['workorder_id'].'_'.str_replace(' ', '-', $client_display_name).'.ics';
     //$ics_filename   = 'schedule.ics';
     
     // Build a single schedule item as an .ics
-    $ics_content =  $this->app->components->schedule->build_single_schedule_ics(\CMSApplication::$VAR['schedule_id']);
+    $ics_content =  $this->app->components->schedule->buildRecordIcs(\CMSApplication::$VAR['schedule_id']);
     
     // Log activity
     $record = _gettext("Schedule").' '.\CMSApplication::$VAR['schedule_id'].' '._gettext("has been exported.");

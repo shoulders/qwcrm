@@ -22,15 +22,89 @@ defined('_QWEXEC') or die;
 
 class Client extends Components {
 
-    /** Mandatory Code **/
 
-    /** Display Functions **/
+    /** Insert Functions **/
+
+    #####################################
+    #    Insert new client              #
+    #####################################
+
+    public function insertRecord($qform) {
+
+        $sql = "INSERT INTO ".PRFX."client_records SET
+                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()         ).",
+                company_name    =". $this->app->db->qstr( $qform['company_name']     ).",
+                first_name      =". $this->app->db->qstr( $qform['first_name']       ).",
+                last_name       =". $this->app->db->qstr( $qform['last_name']        ).",
+                website         =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])).",
+                email           =". $this->app->db->qstr( $qform['email']            ).",     
+                credit_terms    =". $this->app->db->qstr( $qform['credit_terms']     ).",
+                unit_discount_rate   =". $this->app->db->qstr( $qform['unit_discount_rate']    ).",
+                type            =". $this->app->db->qstr( $qform['type']             ).",
+                active          =". $this->app->db->qstr( $qform['active']           ).",
+                primary_phone   =". $this->app->db->qstr( $qform['primary_phone']    ).",    
+                mobile_phone    =". $this->app->db->qstr( $qform['mobile_phone']     ).",
+                fax             =". $this->app->db->qstr( $qform['fax']              ).",
+                address         =". $this->app->db->qstr( $qform['address']          ).",
+                city            =". $this->app->db->qstr( $qform['city']             ).", 
+                state           =". $this->app->db->qstr( $qform['state']            ).", 
+                zip             =". $this->app->db->qstr( $qform['zip']              ).",
+                country         =". $this->app->db->qstr( $qform['country']          ).",
+                note            =". $this->app->db->qstr( $qform['note']             );          
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));
+        } else {
+
+            $client_id = $this->app->db->Insert_ID();
+
+            // Log activity
+            $record = _gettext("New client").', '.$this->getRecord($client_id, 'display_name').', '._gettext("has been created.");
+            $this->app->system->general->write_record_to_activity_log($record, null, $this->app->db->Insert_ID());  
+
+            return $client_id;
+
+        }
+
+    } 
+
+    #############################
+    #    Insert client note     #
+    #############################
+
+    public function insertNote($client_id, $note) {
+
+        $sql = "INSERT INTO ".PRFX."client_notes SET            
+                employee_id =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
+                client_id   =". $this->app->db->qstr( $client_id                           ).",
+                date        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                note        =". $this->app->db->qstr( $note                                );
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the client note into the database."));
+
+        } else {
+
+            // Log activity        
+            $record = _gettext("A new client note was added to the client").' '.$this->getRecord($client_id, 'display_name').' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id);
+
+            // Update last active record      
+            $this->updateLastActive($client_id);
+
+            return true;
+
+        }
+
+    }
+
+    /** Get Functions **/
 
     #####################################
     #   Display Clients                 #
     #####################################
 
-    public function display_clients($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -143,89 +217,13 @@ class Client extends Components {
         }
 
     }
-
-    /** Insert Functions **/
-
-    #####################################
-    #    Insert new client              #
-    #####################################
-
-    public function insert_client($qform) {
-
-        $sql = "INSERT INTO ".PRFX."client_records SET
-                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()         ).",
-                company_name    =". $this->app->db->qstr( $qform['company_name']     ).",
-                first_name      =". $this->app->db->qstr( $qform['first_name']       ).",
-                last_name       =". $this->app->db->qstr( $qform['last_name']        ).",
-                website         =". $this->app->db->qstr( $this->app->system->general->process_inputted_url($qform['website'])).",
-                email           =". $this->app->db->qstr( $qform['email']            ).",     
-                credit_terms    =". $this->app->db->qstr( $qform['credit_terms']     ).",
-                unit_discount_rate   =". $this->app->db->qstr( $qform['unit_discount_rate']    ).",
-                type            =". $this->app->db->qstr( $qform['type']             ).",
-                active          =". $this->app->db->qstr( $qform['active']           ).",
-                primary_phone   =". $this->app->db->qstr( $qform['primary_phone']    ).",    
-                mobile_phone    =". $this->app->db->qstr( $qform['mobile_phone']     ).",
-                fax             =". $this->app->db->qstr( $qform['fax']              ).",
-                address         =". $this->app->db->qstr( $qform['address']          ).",
-                city            =". $this->app->db->qstr( $qform['city']             ).", 
-                state           =". $this->app->db->qstr( $qform['state']            ).", 
-                zip             =". $this->app->db->qstr( $qform['zip']              ).",
-                country         =". $this->app->db->qstr( $qform['country']          ).",
-                note            =". $this->app->db->qstr( $qform['note']             );          
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));
-        } else {
-
-            $client_id = $this->app->db->Insert_ID();
-
-            // Log activity
-            $record = _gettext("New client").', '.$this->get_client_details($client_id, 'display_name').', '._gettext("has been created.");
-            $this->app->system->general->write_record_to_activity_log($record, null, $this->app->db->Insert_ID());  
-
-            return $client_id;
-
-        }
-
-    } 
-
-    #############################
-    #    Insert client note     #
-    #############################
-
-    public function insert_client_note($client_id, $note) {
-
-        $sql = "INSERT INTO ".PRFX."client_notes SET            
-                employee_id =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                client_id   =". $this->app->db->qstr( $client_id                           ).",
-                date        =". $this->app->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
-                note        =". $this->app->db->qstr( $note                                );
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the client note into the database."));
-
-        } else {
-
-            // Log activity        
-            $record = _gettext("A new client note was added to the client").' '.$this->get_client_details($client_id, 'display_name').' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id);
-
-            // Update last active record      
-            $this->update_client_last_active($client_id);
-
-            return true;
-
-        }
-
-    }
-
-    /** Get Functions **/
+    
 
     ################################
     #  Get Client Details          #
     ################################
 
-    public function get_client_details($client_id, $item = null) {
+    public function getRecord($client_id, $item = null) {
 
         // This allows blank calls (i.e. payment:details, not all records have a client_id)
         if(!$client_id) {
@@ -271,37 +269,13 @@ class Client extends Components {
 
     }
 
-    #####################################
-    #  Get a single client note         #
-    #####################################
 
-    public function get_client_note_details($client_note_id, $item = null) {
-
-        $sql = "SELECT * FROM ".PRFX."client_notes WHERE client_note_id=".$this->app->db->qstr($client_note_id);    
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the client note."));
-        } else { 
-
-            if($item === null){
-
-                return $rs->GetRowAssoc(); 
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
-
-    }
 
     #####################################
     #  Get ALL of a client's notes      #
     #####################################
 
-    public function get_client_notes($client_id) {
+    public function getNotes($client_id) {
 
         $sql = "SELECT 
                 ".PRFX."client_notes.*,
@@ -323,12 +297,38 @@ class Client extends Components {
         }   
 
     }
+    
+    #####################################
+    #  Get a single client note         #
+    #####################################
+
+    public function getNote($client_note_id, $item = null) {
+
+        $sql = "SELECT * FROM ".PRFX."client_notes WHERE client_note_id=".$this->app->db->qstr($client_note_id);    
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the client note."));
+        } else { 
+
+            if($item === null){
+
+                return $rs->GetRowAssoc(); 
+
+            } else {
+
+                return $rs->fields[$item];   
+
+            } 
+
+        }
+
+    }    
 
     #####################################
     #    Get Client Types               #
     #####################################
 
-    public function get_client_types() {
+    public function getTypes() {
 
         $sql = "SELECT * FROM ".PRFX."client_types";
 
@@ -348,7 +348,7 @@ class Client extends Components {
     #    Update Client                  #
     #####################################
 
-    public function update_client($qform) {
+    public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."client_records SET
                 company_name    =". $this->app->db->qstr( $qform['company_name']     ).",
@@ -376,11 +376,11 @@ class Client extends Components {
         } else {
 
             // Log activity        
-            $record = _gettext("The client").' '.$this->get_client_details($qform['client_id'], 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+            $record = _gettext("The client").' '.$this->getRecord($qform['client_id'], 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, null, $qform['client_id']);
 
             // Update last active record      
-            $this->update_client_last_active($qform['client_id']);
+            $this->updateLastActive($qform['client_id']);
 
           return true;
 
@@ -392,7 +392,7 @@ class Client extends Components {
     #   update client note      #
     #############################
 
-    public function update_client_note($client_note_id, $note) {
+    public function updateNote($client_note_id, $note) {
 
         $sql = "UPDATE ".PRFX."client_notes SET
                 employee_id             =". $this->app->db->qstr( $this->app->user->login_user_id   ).",            
@@ -405,14 +405,14 @@ class Client extends Components {
         } else {
 
             // get client_id
-            $client_id = $this->get_client_note_details($client_note_id, 'client_id');
+            $client_id = $this->getNote($client_note_id, 'client_id');
 
             // Log activity        
-            $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for").' '.$this->get_client_details($client_id, 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+            $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for").' '.$this->getRecord($client_id, 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id);
 
             // Update last active record        
-            $this->update_client_last_active($client_id);
+            $this->updateLastActive($client_id);
 
         }
 
@@ -422,7 +422,7 @@ class Client extends Components {
     #    Update Last Active         #
     #################################
 
-    public function update_client_last_active($client_id = null) {
+    public function updateLastActive($client_id = null) {
 
         // compensate for some operations not having a client_id - i.e. sending some emails
         if(!$client_id) { return; }    
@@ -445,17 +445,17 @@ class Client extends Components {
     #    Delete Client                  #
     #####################################
 
-    public function delete_client($client_id) {
+    public function deleteRecord($client_id) {
 
         // Make sure the client can be deleted 
-        if(!$this->check_client_can_be_deleted($client_id)) {        
+        if(!$this->checkStatusAllowsDelete($client_id)) {        
             return false;
         }
 
         /* We can now delete the client */
 
         // Get client details for logging before we delete anything
-        $client_details = $this->get_client_details($client_id);
+        $client_details = $this->getRecord($client_id);
 
         // Delete any Client user accounts
         $sql = "DELETE FROM ".PRFX."user_records WHERE client_id=".$this->app->db->qstr($client_id);    
@@ -481,11 +481,11 @@ class Client extends Components {
     #    Delete a client's note      #
     ##################################
 
-    public function delete_client_note($client_note_id) {
+    public function deleteNote($client_note_id) {
 
         // Get information before deleting the record
-        $client_id = $this->get_client_note_details($client_note_id, 'client_id');
-        $employee_id = $this->get_client_note_details($client_note_id, 'employee_id');
+        $client_id = $this->getNote($client_note_id, 'client_id');
+        $employee_id = $this->getNote($client_note_id, 'employee_id');
 
         $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$this->app->db->qstr($client_note_id);
 
@@ -494,92 +494,27 @@ class Client extends Components {
 
         } else {        
 
-            $client_details = $this->get_client_details($client_id);
+            $client_details = $this->getRecord($client_id);
 
             // Log activity        
             $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for Client").' '.$client_details['display_name'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
             $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id);
 
             // Update last active record        
-            $this->update_client_last_active($client_id);
+            $this->updateLastActive($client_id);
 
         }
 
     }
 
-    /** Other Functions **/
-
-    #########################################
-    #    check for Duplicate display name   #  // is not currently used
-    #########################################
-
-    public function check_client_display_name_exists($display_name) {
-
-        $sql = "SELECT COUNT(*) AS count FROM ".PRFX."client_records WHERE display_name=".$this->app->db->qstr($display_name);
-
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));
-        } else {
-            $row = $rs->FetchRow();
-        }
-
-        if ($row['count'] == 1) {
-
-            return false;    
-
-        } else {
-
-            return true;
-
-        }
-
-    }
-
-    #####################################
-    #    Build a Google map string      #
-    #####################################
-
-    public function build_googlemap_directions_string($client_id, $employee_id) {
-
-        $company_details    = $this->app->components->company->get_company_details();
-        $client_details     = $this->get_client_details($client_id);
-        $employee_details   = $this->app->components->user->get_user_details($employee_id);
-
-        // Get google server or use default value, then removes a trailing slash if present
-        $google_server = rtrim($this->app->config->get('google_server', 'https://www.google.com/'), '/');
-
-        // Determine the employee's start location
-        if ($employee_details['based'] == 'office' || $employee_details['based'] == 'onsite') {
-
-            // Works from the office
-            $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $company_details['address']);
-            $employee_city     = $company_details['city'];
-            $employee_zip      = $company_details['zip'];
-
-        } else {        
-
-            // Works from home
-            $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $employee_details['home_address']);
-            $employee_city     = $employee_details['home_city'];
-            $employee_zip      = $employee_details['home_zip'];
-
-        }
-
-        // Get Client's Address    
-        $client_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $client_details['address']);
-        $client_city      = $client_details['city'];
-        $client_zip       = $client_details['zip'];
-
-        // return the built google map string
-        return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$client_address,$client_city,$client_zip";
-
-    }
+    /** Check Functions **/
+    
 
     ###############################################################
     #   Check to see if the client can be deleted                 #
     ###############################################################
 
-    public function check_client_can_be_deleted($client_id) {
+    public function checkStatusAllowsDelete($client_id) {
 
         $state_flag = true;
 
@@ -625,6 +560,78 @@ class Client extends Components {
 
         return $state_flag;
 
+    }    
+    
+
+    #########################################
+    #    check for Duplicate display name   #  // is not currently used
+    #########################################
+
+    public function checkDisplayNameExists($display_name) {
+
+        $sql = "SELECT COUNT(*) AS count FROM ".PRFX."client_records WHERE display_name=".$this->app->db->qstr($display_name);
+
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));
+        } else {
+            $row = $rs->FetchRow();
+        }
+
+        if ($row['count'] == 1) {
+
+            return false;    
+
+        } else {
+
+            return true;
+
+        }
+
+    }    
+    
+    
+    /** Other Functions **/
+
+
+    #####################################
+    #    Build a Google map string      #
+    #####################################
+
+    public function buildGooglemapDirectionsURL($client_id, $employee_id) {
+
+        $company_details    = $this->app->components->company->getRecord();
+        $client_details     = $this->getRecord($client_id);
+        $employee_details   = $this->app->components->user->getRecord($employee_id);
+
+        // Get google server or use default value, then removes a trailing slash if present
+        $google_server = rtrim($this->app->config->get('google_server', 'https://www.google.com/'), '/');
+
+        // Determine the employee's start location
+        if ($employee_details['based'] == 'office' || $employee_details['based'] == 'onsite') {
+
+            // Works from the office
+            $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $company_details['address']);
+            $employee_city     = $company_details['city'];
+            $employee_zip      = $company_details['zip'];
+
+        } else {        
+
+            // Works from home
+            $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $employee_details['home_address']);
+            $employee_city     = $employee_details['home_city'];
+            $employee_zip      = $employee_details['home_zip'];
+
+        }
+
+        // Get Client's Address    
+        $client_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $client_details['address']);
+        $client_city      = $client_details['city'];
+        $client_zip       = $client_details['zip'];
+
+        // return the built google map URL
+        return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$client_address,$client_city,$client_zip";
+
     }
+
     
 }

@@ -18,7 +18,7 @@ if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['work
 if(isset(\CMSApplication::$VAR['submit'])){
     
     // insert the note into the database
-    $this->app->components->workorder->insert_workorder_note(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['workorder_note']);
+    $this->app->components->workorder->insertNote(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['workorder_note']);
     
     // load the workorder details page    
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The note has been inserted."));

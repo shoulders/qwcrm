@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
 }
 
 // Check if voucher payment method is enabled
-if(!$this->app->components->payment->check_payment_method_is_active('voucher')) {
+if(!$this->app->components->payment->checkMethodActive('voucher')) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher payment method is not enabled. Goto Payment Options and enable Vouchers there."));
     $this->app->system->page->force_page('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 }
@@ -30,7 +30,7 @@ if(!$this->app->components->payment->check_payment_method_is_active('voucher')) 
 if(isset(\CMSApplication::$VAR['submit'])) {   
         
     // Create a new Voucher
-    $voucher_id = $this->app->components->voucher->insert_voucher(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['type'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['note']);
+    $voucher_id = $this->app->components->voucher->insertRecord(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['type'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['note']);
 
     // Load the attached invoice Details page
     $this->app->system->page->force_page('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id'], 'msg_success'._gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
@@ -38,6 +38,6 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 }
     
 // Build the page
-$this->app->smarty->assign('client_details', $this->app->components->client->get_client_details($this->app->components->invoice->get_invoice_details(\CMSApplication::$VAR['invoice_id'], 'client_id')));
-$this->app->smarty->assign('voucher_types', $this->app->components->voucher->get_voucher_types());
-$this->app->smarty->assign('voucher_tax_system', $this->app->components->invoice->get_invoice_details(\CMSApplication::$VAR['invoice_id'], 'tax_system'));
+$this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'client_id')));
+$this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
+$this->app->smarty->assign('voucher_tax_system', $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'tax_system'));

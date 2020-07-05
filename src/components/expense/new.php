@@ -12,8 +12,8 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Insert the Expense into the database
-    $expense_id = $this->app->components->expense->insert_expense(\CMSApplication::$VAR['qform']);
-    $this->app->components->expense->recalculate_expense_totals($expense_id);
+    $expense_id = $this->app->components->expense->insertRecord(\CMSApplication::$VAR['qform']);
+    $this->app->components->expense->recalculateTotals($expense_id);
 
     if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
 
@@ -35,7 +35,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {
     
     // Build the page
-    $this->app->smarty->assign('expense_types', $this->app->components->expense->get_expense_types());    
-    $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes(false));   
-    $this->app->smarty->assign('default_vat_tax_code', $this->app->components->company->get_default_vat_tax_code());
+    $this->app->smarty->assign('expense_types', $this->app->components->expense->getTypes());    
+    $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(false));   
+    $this->app->smarty->assign('default_vat_tax_code', $this->app->components->company->getDefaultVatTaxCode());
 }

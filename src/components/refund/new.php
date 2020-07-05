@@ -32,8 +32,8 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
 if (isset(\CMSApplication::$VAR['submit'])) {
     
     // Insert the Refund into the database
-    $refund_id = $this->app->components->invoice->refund_invoice(\CMSApplication::$VAR['qform']);
-    $this->app->components->refund->recalculate_refund_totals($refund_id);  // This is not strictly needed here because balance = unit_gross
+    $refund_id = $this->app->components->invoice->refundRecord(\CMSApplication::$VAR['qform']);
+    $this->app->components->refund->recalculateTotals($refund_id);  // This is not strictly needed here because balance = unit_gross
     
         if (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
 
@@ -50,12 +50,12 @@ if (isset(\CMSApplication::$VAR['submit'])) {
 } else { 
 
     // Make sure the invoice is allowed to be refunded
-    if(!$this->app->components->invoice->check_invoice_can_be_refunded(\CMSApplication::$VAR['invoice_id'])) {
+    if(!$this->app->components->invoice->checkStatusAllowsRefund(\CMSApplication::$VAR['invoice_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'].' '._gettext("cannot be refunded."));
         $this->app->system->page->force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
     }
 
-    $invoice_details = $this->app->components->invoice->get_invoice_details(\CMSApplication::$VAR['invoice_id']);
+    $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
         
     // Build array
     $refund_details['client_id'] = $invoice_details['client_id'];
@@ -68,20 +68,20 @@ if (isset(\CMSApplication::$VAR['submit'])) {
     if(preg_match('/^vat_/', $invoice_details['tax_system']) && \CMSApplication::$VAR['item_type'] == 'invoice') {
         $refund_details['vat_tax_code'] = 'TVM';
     } else {
-        $refund_details['vat_tax_code'] = $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']);
+        $refund_details['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']);
     }
-    $refund_details['unit_tax_rate'] = ($invoice_details['tax_system'] == 'sales_tax_cash') ? $invoice_details['sales_tax_rate'] : $this->app->components->company->get_vat_rate($refund_details['vat_tax_code']); 
+    $refund_details['unit_tax_rate'] = ($invoice_details['tax_system'] == 'sales_tax_cash') ? $invoice_details['sales_tax_rate'] : $this->app->components->company->getVatRate($refund_details['vat_tax_code']); 
     $refund_details['unit_tax'] = $invoice_details['unit_tax'];
     $refund_details['unit_gross'] = $invoice_details['unit_gross'];  
     $refund_details['note'] = '';
 
     // Get Client display_name
-    $client_display_name = $this->app->components->client->get_client_details($invoice_details['client_id'], 'display_name'); 
+    $client_display_name = $this->app->components->client->getRecord($invoice_details['client_id'], 'display_name'); 
 
 }  
 
 // Build the page
 $this->app->smarty->assign('refund_details', $refund_details);
-$this->app->smarty->assign('refund_types', $this->app->components->refund->get_refund_types());
-$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes()); 
+$this->app->smarty->assign('refund_types', $this->app->components->refund->getTypes());
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes()); 
 $this->app->smarty->assign('client_display_name', $client_display_name);

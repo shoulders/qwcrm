@@ -19,8 +19,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Check if the username or email have been used (the extra vareiable is to ignore the users current username and email to prevent submission errors when only updating other values)
     if (
-            $this->app->components->user->check_user_username_exists(\CMSApplication::$VAR['qform']['username'], $this->app->components->user->get_user_details(\CMSApplication::$VAR['qform']['user_id'], 'username')) ||
-            $this->app->components->user->check_user_email_exists(\CMSApplication::$VAR['qform']['email'], $this->app->components->user->get_user_details(\CMSApplication::$VAR['qform']['user_id'], 'email'))
+            $this->app->components->user->checkUsernameExists(\CMSApplication::$VAR['qform']['username'], $this->app->components->user->getRecord(\CMSApplication::$VAR['qform']['user_id'], 'username')) ||
+            $this->app->components->user->checkEmailExists(\CMSApplication::$VAR['qform']['email'], $this->app->components->user->getRecord(\CMSApplication::$VAR['qform']['user_id'], 'email'))
         ) {
 
         // Reload the page with the POST'ed data        
@@ -29,7 +29,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     } else {    
             
         // Insert user record
-        $this->app->components->user->update_user(\CMSApplication::$VAR['qform']);
+        $this->app->components->user->updateRecord(\CMSApplication::$VAR['qform']);
 
         // Redirect to the new users's details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("User details updated."));
@@ -39,19 +39,19 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
 } else { 
   
-    $this->app->smarty->assign('user_details', $this->app->components->user->get_user_details(\CMSApplication::$VAR['user_id']));     
+    $this->app->smarty->assign('user_details', $this->app->components->user->getRecord(\CMSApplication::$VAR['user_id']));     
     
 }
 
 // Set the template for the correct user type (client/employee)
-if($this->app->components->user->get_user_details(\CMSApplication::$VAR['user_id'], 'is_employee')) {
+if($this->app->components->user->getRecord(\CMSApplication::$VAR['user_id'], 'is_employee')) {
     $this->app->smarty->assign('is_employee', '1');
-    $this->app->smarty->assign('usergroups', $this->app->components->user->get_usergroups('employees'));
+    $this->app->smarty->assign('usergroups', $this->app->components->user->getUsergroups('employees'));
 } else {    
     $this->app->smarty->assign('is_employee', '0');
-    $this->app->smarty->assign('client_display_name', $this->app->components->client->get_client_details($this->app->components->user->get_user_details(\CMSApplication::$VAR['user_id'], 'client_id'), 'client_display_name'));
-    $this->app->smarty->assign('usergroups', $this->app->components->user->get_usergroups('clients')); 
+    $this->app->smarty->assign('client_display_name', $this->app->components->client->getRecord($this->app->components->user->getRecord(\CMSApplication::$VAR['user_id'], 'client_id'), 'client_display_name'));
+    $this->app->smarty->assign('usergroups', $this->app->components->user->getUsergroups('clients')); 
 }
 
 // Build the page
-$this->app->smarty->assign('user_locations', $this->app->components->user->get_user_locations());
+$this->app->smarty->assign('user_locations', $this->app->components->user->getLocations());

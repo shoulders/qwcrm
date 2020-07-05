@@ -24,7 +24,7 @@ if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['work
 }
 
 // Get client_id
-\CMSApplication::$VAR['client_id'] =  $this->app->components->workorder->get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'client_id');
+\CMSApplication::$VAR['client_id'] =  $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'client_id');
 
 // If new schedule item submitted
 if(isset(\CMSApplication::$VAR['submit'])) {    
@@ -42,7 +42,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     \CMSApplication::$VAR['qform']['end_time'] = \CMSApplication::$VAR['EndTime']['Time_Hour'].":".\CMSApplication::$VAR['EndTime']['Time_Minute'];*/
     
     // If insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!$this->app->components->schedule->insert_schedule(\CMSApplication::$VAR['qform'])) {        
+    if (!$this->app->components->schedule->insertRecord(\CMSApplication::$VAR['qform'])) {        
                  
        $this->app->smarty->assign('schedule_details', \CMSApplication::$VAR['qform']);
             

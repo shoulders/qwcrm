@@ -16,14 +16,14 @@ if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expens
 
 // Update Expense Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    $this->app->components->expense->update_expense_status(\CMSApplication::$VAR['expense_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->components->expense->updateStatus(\CMSApplication::$VAR['expense_id'], \CMSApplication::$VAR['assign_status']);    
     $this->app->system->page->force_page('expense', 'status&expense_id='.\CMSApplication::$VAR['expense_id']);
 }
 
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',        false       ); // I am not sure this is needed
-$this->app->smarty->assign('expense_status',                  $this->app->components->expense->get_expense_details(\CMSApplication::$VAR['expense_id'], 'status')             );
-$this->app->smarty->assign('expense_statuses',                $this->app->components->expense->get_expense_statuses() );
-$this->app->smarty->assign('allowed_to_cancel',               $this->app->components->expense->check_expense_can_be_cancelled(\CMSApplication::$VAR['expense_id'])     );
-$this->app->smarty->assign('allowed_to_delete',               $this->app->components->expense->check_expense_can_be_deleted(\CMSApplication::$VAR['expense_id'])              );
-$this->app->smarty->assign('expense_selectable_statuses',     $this->app->components->expense->get_expense_statuses(true) );
+$this->app->smarty->assign('expense_status',                  $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'status')             );
+$this->app->smarty->assign('expense_statuses',                $this->app->components->expense->getStatuses() );
+$this->app->smarty->assign('allowed_to_cancel',               $this->app->components->expense->checkStatusAllowsCancel(\CMSApplication::$VAR['expense_id'])     );
+$this->app->smarty->assign('allowed_to_delete',               $this->app->components->expense->checkStatusAllowsDelete(\CMSApplication::$VAR['expense_id'])              );
+$this->app->smarty->assign('expense_selectable_statuses',     $this->app->components->expense->getStatuses(true) );

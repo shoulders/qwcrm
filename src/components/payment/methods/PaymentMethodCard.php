@@ -33,10 +33,10 @@ class PaymentMethodCard {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json(null, $this->VAR['qpayment']['card_type_key'], $this->VAR['qpayment']['name_on_card']);  
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, $this->VAR['qpayment']['card_type_key'], $this->VAR['qpayment']['name_on_card']);  
         
         // Insert the payment with the calculated information
-        if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
+        if($this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
             Payment::$payment_processed = true;            
         }
         

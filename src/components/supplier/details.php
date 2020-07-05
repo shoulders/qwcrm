@@ -15,6 +15,6 @@ if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['suppl
 }  
 
 // Build the page
-$this->app->smarty->assign('supplier_statuses',   $this->app->components->supplier->get_supplier_statuses()   );
-$this->app->smarty->assign('supplier_types', $this->app->components->supplier->get_supplier_types());
-$this->app->smarty->assign('supplier_details', $this->app->components->supplier->get_supplier_details(\CMSApplication::$VAR['supplier_id']));
+$this->app->smarty->assign('supplier_statuses',   $this->app->components->supplier->getStatuses()   );
+$this->app->smarty->assign('supplier_types', $this->app->components->supplier->getTypes());
+$this->app->smarty->assign('supplier_details', $this->app->components->supplier->getRecord(\CMSApplication::$VAR['supplier_id']));

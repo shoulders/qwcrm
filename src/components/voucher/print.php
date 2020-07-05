@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Generate the barcode (as html)
 $bc_generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-$barcode = $bc_generator->getBarcode($this->app->components->voucher->get_voucher_details(\CMSApplication::$VAR['voucher_id'], 'voucher_code'), $bc_generator::TYPE_CODE_128);
+$barcode = $bc_generator->getBarcode($this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id'], 'voucher_code'), $bc_generator::TYPE_CODE_128);
 
 // Check if we have an voucher_id
 if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['voucher_id']) {
@@ -25,11 +25,11 @@ if(!isset(\CMSApplication::$VAR['print_content'], \CMSApplication::$VAR['print_t
 }
 
 // Get Voucher details
-$voucher_details = $this->app->components->voucher->get_voucher_details(\CMSApplication::$VAR['voucher_id']);
-$client_details = $this->app->components->client->get_client_details($voucher_details['client_id']);
+$voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']);
+$client_details = $this->app->components->client->getRecord($voucher_details['client_id']);
 
 // Assign Variables
-$this->app->smarty->assign('company_details',  $this->app->components->company->get_company_details()       );
+$this->app->smarty->assign('company_details',  $this->app->components->company->getRecord()       );
 $this->app->smarty->assign('client_details',   $client_details             );
 $this->app->smarty->assign('voucher_details', $voucher_details           );
 $this->app->smarty->assign('barcode',          $barcode                    );

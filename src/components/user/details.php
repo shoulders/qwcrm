@@ -19,8 +19,8 @@ if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']
 
 // Build the page
 
-$this->app->smarty->assign('user_details',             $this->app->components->user->get_user_details(\CMSApplication::$VAR['user_id'])                                                                            );
-$this->app->smarty->assign('client_display_name',      $this->app->components->client->get_client_details($this->app->components->user->get_user_details(\CMSApplication::$VAR['user_id'], 'client_id'), 'client_display_name')                    );
-$this->app->smarty->assign('usergroups',               $this->app->components->user->get_usergroups()                                                                                             );
-$this->app->smarty->assign('user_workorders',          $this->app->components->workorder->display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'open', \CMSApplication::$VAR['user_id']));
-$this->app->smarty->assign('user_locations',           $this->app->components->user->get_user_locations());
+$this->app->smarty->assign('user_details',             $this->app->components->user->getRecord(\CMSApplication::$VAR['user_id'])                                                                            );
+$this->app->smarty->assign('client_display_name',      $this->app->components->client->getRecord($this->app->components->user->getRecord(\CMSApplication::$VAR['user_id'], 'client_id'), 'client_display_name')                    );
+$this->app->smarty->assign('usergroups',               $this->app->components->user->getUsergroups()                                                                                             );
+$this->app->smarty->assign('user_workorders',          $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'open', \CMSApplication::$VAR['user_id']));
+$this->app->smarty->assign('user_locations',           $this->app->components->user->getLocations());
