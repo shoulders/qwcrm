@@ -26,7 +26,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {
     
     // Check if refund can be edited
-    if(!$this->app->components->refund->checkStatusAllowsEdit(\CMSApplication::$VAR['refund_id'])) {
+    if(!$this->app->components->refund->checkRecordAllowsEdit(\CMSApplication::$VAR['refund_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this refund because its status does not allow it."));
         $this->app->system->page->force_page('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id']);
     }

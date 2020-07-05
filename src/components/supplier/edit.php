@@ -26,7 +26,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {
     
     // Check if supplier can be edited
-    if(!$this->app->components->supplier->checkStatusAllowsEdit(\CMSApplication::$VAR['supplier_id'])) {
+    if(!$this->app->components->supplier->checkRecordAllowsEdit(\CMSApplication::$VAR['supplier_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this supplier because its status does not allow it."));
         $this->app->system->page->force_page('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);
     }

@@ -661,7 +661,7 @@ class Payment extends Components {
     public function cancelRecord($payment_id) {
 
         // Make sure the payment can be cancelled
-        if(!$this->checkStatusAllowsCancel($payment_id)) {        
+        if(!$this->checkRecordAllowsCancel($payment_id)) {        
             return false;
         }
 
@@ -814,7 +814,7 @@ class Payment extends Components {
     #  Check if the payment status is allowed to be changed  #  // not currently used
     ##########################################################
 
-     public function checkStatusAllowsChange($payment_id) {
+     public function checkRecordAllowsChange($payment_id) {
 
         $state_flag = false; // Disable the ability to manually change status for now
 
@@ -847,7 +847,7 @@ class Payment extends Components {
     #   Check to see if the payment can be refunded (by status)   #  // not currently used - i DONT think i will use this , you cant refund a payment?
     ###############################################################
 
-    public function checkStatusAllowsRefund($payment_id) {
+    public function checkRecordAllowsRefund($payment_id) {
 
         $state_flag = true;
 
@@ -892,7 +892,7 @@ class Payment extends Components {
     #   Check to see if the payment can be cancelled              #
     ###############################################################
 
-    public function checkStatusAllowsCancel($payment_id) {
+    public function checkRecordAllowsCancel($payment_id) {
 
         $state_flag = true;
 
@@ -925,7 +925,7 @@ class Payment extends Components {
     #   Check to see if the payment can be deleted                #
     ###############################################################
 
-    public function checkStatusAllowsDelete($payment_id) {
+    public function checkRecordAllowsDelete($payment_id) {
 
         $state_flag = true;
 
@@ -958,7 +958,7 @@ class Payment extends Components {
     #  Check if the payment status allows editing            #
     ##########################################################
 
-     public function checkStatusAllowsEdit($payment_id) {
+     public function checkRecordAllowsEdit($payment_id) {
 
         $state_flag = true;
 

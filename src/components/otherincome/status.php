@@ -24,6 +24,6 @@ if(isset(\CMSApplication::$VAR['change_status'])){
 $this->app->smarty->assign('allowed_to_change_status',     false       );
 $this->app->smarty->assign('otherincome_status',              $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id'], 'status')             );
 $this->app->smarty->assign('otherincome_statuses',            $this->app->components->otherincome->getStatuses() );
-$this->app->smarty->assign('allowed_to_cancel',            $this->app->components->otherincome->checkStatusAllowsCancel(\CMSApplication::$VAR['otherincome_id'])    );
-$this->app->smarty->assign('allowed_to_delete',            $this->app->components->otherincome->checkStatusAllowsDelete(\CMSApplication::$VAR['otherincome_id'])              );
+$this->app->smarty->assign('allowed_to_cancel',            $this->app->components->otherincome->checkRecordAllowsCancel(\CMSApplication::$VAR['otherincome_id'])    );
+$this->app->smarty->assign('allowed_to_delete',            $this->app->components->otherincome->checkRecordAllowsDelete(\CMSApplication::$VAR['otherincome_id'])              );
 $this->app->smarty->assign('otherincome_selectable_statuses',     $this->app->components->otherincome->getStatuses(true));

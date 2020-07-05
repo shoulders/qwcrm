@@ -981,7 +981,7 @@ defined('_QWEXEC') or die;
     public function refundRecord($refund_details) {
 
         // Make sure the invoice can be refunded
-        if(!$this->checkStatusAllowsRefund($refund_details['invoice_id'])) {
+        if(!$this->checkRecordAllowsRefund($refund_details['invoice_id'])) {
             return false;
         }
 
@@ -1023,7 +1023,7 @@ defined('_QWEXEC') or die;
     public function cancelRecord($invoice_id) {
 
         // Make sure the invoice can be cancelled
-        if(!$this->checkStatusAllowsCancel($invoice_id)) {        
+        if(!$this->checkRecordAllowsCancel($invoice_id)) {        
             return false;
         }
 
@@ -1061,7 +1061,7 @@ defined('_QWEXEC') or die;
     public function deleteRecord($invoice_id) {
 
         // Make sure the invoice can be deleted 
-        if(!$this->checkStatusAllowsDelete($invoice_id)) {        
+        if(!$this->checkRecordAllowsDelete($invoice_id)) {        
             return false;
         }
 
@@ -1269,7 +1269,7 @@ defined('_QWEXEC') or die;
     #  Check if the invoice status is allowed to be changed  #
     ##########################################################
 
-     public function checkStatusAllowsChange($invoice_id) {
+     public function checkRecordAllowsChange($invoice_id) {
 
         $state_flag = true; 
 
@@ -1332,7 +1332,7 @@ defined('_QWEXEC') or die;
     #   Check to see if the invoice can be refunded (by status)   #
     ###############################################################
 
-    public function checkStatusAllowsRefund($invoice_id) {
+    public function checkRecordAllowsRefund($invoice_id) {
 
         $state_flag = true;
 
@@ -1395,7 +1395,7 @@ defined('_QWEXEC') or die;
     #   Check to see if the invoice can be cancelled              #
     ###############################################################
 
-    public function checkStatusAllowsCancel($invoice_id) {
+    public function checkRecordAllowsCancel($invoice_id) {
 
         $state_flag = true;
 
@@ -1465,7 +1465,7 @@ defined('_QWEXEC') or die;
     #   Check to see if the invoice can be deleted                #
     ###############################################################
 
-    public function checkStatusAllowsDelete($invoice_id) {
+    public function checkRecordAllowsDelete($invoice_id) {
 
         $state_flag = true;
 
@@ -1554,7 +1554,7 @@ defined('_QWEXEC') or die;
     #  Check if the invoice status is allowed to be Edited   #
     ##########################################################
 
-     public function checkStatusAllowsEdit($invoice_id) {
+     public function checkRecordAllowsEdit($invoice_id) {
 
         $state_flag = true;
 

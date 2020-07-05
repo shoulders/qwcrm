@@ -404,7 +404,7 @@ class Supplier extends Components {
     public function cancelRecord($supplier) {
 
         // Make sure the supplier can be cancelled
-        if(!$this->checkStatusAllowsCancel($supplier)) {        
+        if(!$this->checkRecordAllowsCancel($supplier)) {        
             return false;
         }
 
@@ -433,7 +433,7 @@ class Supplier extends Components {
         $display_name = $this->getRecord($supplier_id, 'display_name');
 
         // Make sure the supplier can be deleted 
-        if(!$this->checkStatusAllowsDelete($supplier_id)) {        
+        if(!$this->checkRecordAllowsDelete($supplier_id)) {        
             return false;
         }
 
@@ -459,7 +459,7 @@ class Supplier extends Components {
     #  Check if the supplier status is allowed to be changed  #  // not currently used
     ###########################################################
 
-     public function checkStatusAllowsChange($supplier_id) {
+     public function checkRecordAllowsChange($supplier_id) {
 
         $state_flag = true;
 
@@ -481,7 +481,7 @@ class Supplier extends Components {
     #   Check to see if the supplier can be cancelled             #  // not currently used
     ###############################################################
 
-    public function checkStatusAllowsCancel($supplier_id) {
+    public function checkRecordAllowsCancel($supplier_id) {
 
         $state_flag = true;
 
@@ -502,7 +502,7 @@ class Supplier extends Components {
     #   Check to see if the supplier can be deleted               #
     ###############################################################
 
-    public function checkStatusAllowsDelete($supplier_id) {
+    public function checkRecordAllowsDelete($supplier_id) {
 
         $state_flag = true;
 
@@ -523,7 +523,7 @@ class Supplier extends Components {
     #  Check if the supplier status allows editing           #  // not currently used
     ##########################################################
 
-     public function checkStatusAllowsEdit($supplier_id) {
+     public function checkRecordAllowsEdit($supplier_id) {
 
         $state_flag = true;
 

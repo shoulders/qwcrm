@@ -24,6 +24,6 @@ if(isset(\CMSApplication::$VAR['change_status'])){
 $this->app->smarty->assign('allowed_to_change_status',       false      );
 $this->app->smarty->assign('refund_status',                  $this->app->components->refund->getRecord(\CMSApplication::$VAR['refund_id'], 'status')             );
 $this->app->smarty->assign('refund_statuses',                $this->app->components->refund->getStatuses() );
-$this->app->smarty->assign('allowed_to_cancel',              $this->app->components->refund->checkStatusAllowsCancel(\CMSApplication::$VAR['refund_id'])              );
-$this->app->smarty->assign('allowed_to_delete',              $this->app->components->refund->checkStatusAllowsDelete(\CMSApplication::$VAR['refund_id'])              );
+$this->app->smarty->assign('allowed_to_cancel',              $this->app->components->refund->checkRecordAllowsCancel(\CMSApplication::$VAR['refund_id'])              );
+$this->app->smarty->assign('allowed_to_delete',              $this->app->components->refund->checkRecordAllowsDelete(\CMSApplication::$VAR['refund_id'])              );
 $this->app->smarty->assign('refund_selectable_statuses',     $this->app->components->refund->getStatuses(true) );

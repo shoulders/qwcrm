@@ -24,7 +24,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {
     
     // Check if expense can be edited
-    if(!$this->app->components->expense->checkStatusAllowsEdit(\CMSApplication::$VAR['expense_id'])) {
+    if(!$this->app->components->expense->checkRecordAllowsEdit(\CMSApplication::$VAR['expense_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this expense because its status does not allow it."));
         $this->app->system->page->force_page('expense', 'details&expense_id='.\CMSApplication::$VAR['expense_id']);
     }

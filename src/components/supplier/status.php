@@ -25,5 +25,5 @@ $this->app->smarty->assign('allowed_to_change_status',     false       );
 $this->app->smarty->assign('supplier_status',              $this->app->components->supplier->getRecord(\CMSApplication::$VAR['supplier_id'], 'status')             );
 $this->app->smarty->assign('supplier_statuses',            $this->app->components->supplier->getStatuses() );
 $this->app->smarty->assign('allowed_to_cancel',            false      );
-$this->app->smarty->assign('allowed_to_delete',            $this->app->components->supplier->checkStatusAllowsDelete(\CMSApplication::$VAR['supplier_id'])              );
+$this->app->smarty->assign('allowed_to_delete',            $this->app->components->supplier->checkRecordAllowsDelete(\CMSApplication::$VAR['supplier_id'])              );
 $this->app->smarty->assign('supplier_selectable_statuses',     $this->app->components->supplier->getStatuses(true) );

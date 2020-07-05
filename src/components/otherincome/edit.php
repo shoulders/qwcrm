@@ -26,7 +26,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {  
 
     // Check if payment can be edited
-    if(!$this->app->components->otherincome->checkStatusAllowsEdit(\CMSApplication::$VAR['otherincome_id'])) {
+    if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::$VAR['otherincome_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this otherincome because its status does not allow it."));
         $this->app->system->page->force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
     }

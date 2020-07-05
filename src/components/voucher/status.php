@@ -21,8 +21,8 @@ if(isset(\CMSApplication::$VAR['change_status'])){
 }
 
 // Build the page with the current status from the database
-$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->voucher->checkStatusAllowsChange(\CMSApplication::$VAR['voucher_id'])       );
+$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->voucher->checkRecordAllowsChange(\CMSApplication::$VAR['voucher_id'])       );
 $this->app->smarty->assign('voucher_status',              $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id'], 'status')             );
 $this->app->smarty->assign('voucher_statuses',            $this->app->components->voucher->getStatuses() );
-$this->app->smarty->assign('allowed_to_delete',            $this->app->components->voucher->checkStatusAllowsDelete(\CMSApplication::$VAR['voucher_id'])              );
+$this->app->smarty->assign('allowed_to_delete',            $this->app->components->voucher->checkRecordAllowsDelete(\CMSApplication::$VAR['voucher_id'])              );
 $this->app->smarty->assign('voucher_selectable_statuses',     $this->app->components->voucher->getStatuses(true) );

@@ -367,7 +367,7 @@ class OtherIncome extends Components {
     public function cancelRecord($otherincome_id) {
 
         // Make sure the otherincome can be cancelled
-        if(!$this->checkStatusAllowsCancel($otherincome_id)) {        
+        if(!$this->checkRecordAllowsCancel($otherincome_id)) {        
             return false;
         }
 
@@ -434,7 +434,7 @@ class OtherIncome extends Components {
     #  Check if the otherincome status is allowed to be changed  #  // not currently used
     ##############################################################
 
-     public function checkStatusAllowsChange($otherincome_id) {
+     public function checkRecordAllowsChange($otherincome_id) {
 
         $state_flag = true;
 
@@ -473,7 +473,7 @@ class OtherIncome extends Components {
     #   Check to see if the otherincome can be refunded (by status)   #  // not currently used - i DONT think i will use this
     ###################################################################
 
-    public function checkStatusAllowsRefund($otherincome_id) {
+    public function checkRecordAllowsRefund($otherincome_id) {
 
         $state_flag = true;
 
@@ -518,7 +518,7 @@ class OtherIncome extends Components {
     #   Check to see if the otherincome can be cancelled          #
     ###############################################################
 
-    public function checkStatusAllowsCancel($otherincome_id) {
+    public function checkRecordAllowsCancel($otherincome_id) {
 
         $state_flag = true;
 
@@ -563,7 +563,7 @@ class OtherIncome extends Components {
     #   Check to see if the otherincome can be deleted            #
     ###############################################################
 
-    public function checkStatusAllowsDelete($otherincome_id) {
+    public function checkRecordAllowsDelete($otherincome_id) {
 
         $state_flag = true;
 
@@ -608,7 +608,7 @@ class OtherIncome extends Components {
     #  Check if the otherincome status allows editing        #       
     ##########################################################
 
-     public function checkStatusAllowsEdit($otherincome_id) {
+     public function checkRecordAllowsEdit($otherincome_id) {
 
         $state_flag = true;
 

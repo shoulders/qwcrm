@@ -654,7 +654,7 @@ class Voucher extends Components {
     public function refundRecord($voucher_id, $refund_id) {
 
         // make sure the voucher can be cancelled
-        if(!$this->checkSingleVoucherStatusAllowsRefund($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsRefund($voucher_id)) {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
@@ -694,7 +694,7 @@ class Voucher extends Components {
     public function revertRecordRefund($voucher_id) {
 
         /* make sure the voucher can be cancelled
-        if(!$this->checkSingleVoucherStatusAllowsRefund($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsRefund($voucher_id)) {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
@@ -768,7 +768,7 @@ class Voucher extends Components {
 
         $voucher_details = $this->getRecord($voucher_id);    
 
-        if(!$this->checkSingleVoucherStatusAllowsCancel($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsCancel($voucher_id)) {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
@@ -836,7 +836,7 @@ class Voucher extends Components {
 
         $voucher_details = $this->getRecord($voucher_id);    
 
-        if(!$this->checkSingleVoucherStatusAllowsDelete($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsDelete($voucher_id)) {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
@@ -988,7 +988,7 @@ class Voucher extends Components {
     #  Check if the voucher status is allowed to be changed   #
     ###########################################################
 
-     public function checkStatusAllowsChange($voucher_id) {
+     public function checkRecordAllowsChange($voucher_id) {
         
          $state_flag = true;
         
@@ -996,7 +996,7 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);        
         
         // Check the specified voucher record allows change
-        if(!$this->checkSingleVoucherStatusAllowsChange($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsChange($voucher_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be changed because it's status does not allow it."));
             $state_flag = false;
         }
@@ -1015,7 +1015,7 @@ class Voucher extends Components {
     #  Check if the Voucher can be redeemed                      #
     ##############################################################
 
-    public function checkStatusAllowsRedeem($voucher_id, $redeem_invoice_id) {
+    public function checkRecordAllowsRedeem($voucher_id, $redeem_invoice_id) {
                 
         $state_flag = true;
         
@@ -1023,7 +1023,7 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);        
         
         // Check the specified voucher record allows redeem
-        if(!$this->checkSingleVoucherStatusAllowsRedeem($voucher_id, $redeem_invoice_id)) {
+        if(!$this->checkSingleVoucherAllowsRedeem($voucher_id, $redeem_invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it's status does not allow it."));
             $state_flag = false;
         }
@@ -1042,7 +1042,7 @@ class Voucher extends Components {
     #   Check to see if the voucher can be refunded               #   // not currently used - Needed for refund via button on voucher:status
     ###############################################################
 
-    public function checkStatusAllowsRefund($voucher_id) {
+    public function checkRecordAllowsRefund($voucher_id) {
 
         $state_flag = true;
         
@@ -1050,7 +1050,7 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);        
         
         // Check the specified voucher record allows refund
-        if(!$this->checkSingleVoucherStatusAllowsRefund($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsRefund($voucher_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be refunded because it's status does not allow it."));
             $state_flag = false;
         }
@@ -1071,7 +1071,7 @@ class Voucher extends Components {
     #   Check to see if the voucher can be cancelled              #  // not currently used - Needed for cancellation via button on voucher:status (checks parent invoice aswell)
     ###############################################################
 
-    public function checkStatusAllowsCancel($voucher_id) {
+    public function checkRecordAllowsCancel($voucher_id) {
 
         $state_flag = true;
         
@@ -1079,7 +1079,7 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);        
         
         // Check the specified voucher record allows cancel
-        if(!$this->checkSingleVoucherStatusAllowsCancel($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsCancel($voucher_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because it's status does not allow it."));
             $state_flag = false;        
         }
@@ -1098,7 +1098,7 @@ class Voucher extends Components {
     #   Check to see if the voucher can be deleted                #  // Needed for deleting via button on voucher:status (checks parent invoice aswell)
     ###############################################################
 
-    public function checkStatusAllowsDelete($voucher_id) {
+    public function checkRecordAllowsDelete($voucher_id) {
 
         $state_flag = true;
         
@@ -1106,7 +1106,7 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);        
         
         // Check the specified voucher record allows delete
-        if(!$this->checkSingleVoucherStatusAllowsDelete($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsDelete($voucher_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because it's status does not allow it."));
             $state_flag = false;        
         }
@@ -1125,7 +1125,7 @@ class Voucher extends Components {
     #   Check to see if the voucher can be edited                 #
     ###############################################################
 
-    public function checkStatusAllowsEdit($voucher_id) {
+    public function checkRecordAllowsEdit($voucher_id) {
 
         $state_flag = true;
         
@@ -1133,7 +1133,7 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);        
         
         // Check the specified voucher record allows edit
-        if(!$this->checkSingleVoucherStatusAllowsEdit($voucher_id)) {
+        if(!$this->checkSingleVoucherAllowsEdit($voucher_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because it's status does not allow it."));
             $state_flag = false;        
         }
@@ -1158,7 +1158,7 @@ class Voucher extends Components {
     #  Check if the voucher status is allowed to be changed   #
     ###########################################################
 
-    private function checkSingleVoucherStatusAllowsChange($voucher_id) {
+    private function checkSingleVoucherAllowsChange($voucher_id) {
 
         $state_flag = true;
 
@@ -1209,7 +1209,7 @@ class Voucher extends Components {
     #  Check if the Voucher can be redeemed                      #
     ##############################################################
 
-    private function checkSingleVoucherStatusAllowsRedeem($voucher_id, $redeem_invoice_id) {
+    private function checkSingleVoucherAllowsRedeem($voucher_id, $redeem_invoice_id) {
 
         $state_flag = true;
 
@@ -1253,7 +1253,7 @@ class Voucher extends Components {
     #   Check to see if the voucher status allows refunding       #
     ###############################################################
 
-    private function checkSingleVoucherStatusAllowsRefund($voucher_id) {
+    private function checkSingleVoucherAllowsRefund($voucher_id) {
 
         $state_flag = true;
 
@@ -1305,7 +1305,7 @@ class Voucher extends Components {
     #   Check to see if the voucher status allows refund to be cancelled    #
     #########################################################################
 
-    private function checkSingleVoucherStatusAllowsRefundCancel($voucher_id) {
+    private function checkSingleVoucherAllowsRefundCancel($voucher_id) {
 
         $state_flag = true;
 
@@ -1338,7 +1338,7 @@ class Voucher extends Components {
     #   Check to see if the voucher status allows refund to be deleted      #
     #########################################################################
 
-    private function checkSingleVoucherStatusAllowsRefundDelete($voucher_id) {
+    private function checkSingleVoucherAllowsRefundDelete($voucher_id) {
 
         $state_flag = true;
 
@@ -1371,7 +1371,7 @@ class Voucher extends Components {
     #   Check to see if the voucher status allows cancellation    #
     ###############################################################
 
-    private function checkSingleVoucherStatusAllowsCancel($voucher_id) {
+    private function checkSingleVoucherAllowsCancel($voucher_id) {
 
         $state_flag = true;
 
@@ -1422,7 +1422,7 @@ class Voucher extends Components {
     #   Check to see if the voucher status allows deletion        # /* These are looped through when checking Vouchers on invoices and if they effect anything */
     ###############################################################
 
-    private function checkSingleVoucherStatusAllowsDelete($voucher_id) {
+    private function checkSingleVoucherAllowsDelete($voucher_id) {
 
         $state_flag = true;
 
@@ -1473,7 +1473,7 @@ class Voucher extends Components {
     #  Check if the voucher status allows editing            # 
     ##########################################################
 
-    private function checkSingleVoucherStatusAllowsEdit($voucher_id) {
+    private function checkSingleVoucherAllowsEdit($voucher_id) {
 
         $state_flag = true;
 
@@ -1625,7 +1625,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
                 //$voucher_details = $rs->GetRowAssoc();
 
                 // Check the Voucher to see if it can be refunded
-                if(!$this->checkSingleVoucherStatusAllowsRefund($rs->fields['voucher_id'])) {
+                if(!$this->checkSingleVoucherAllowsRefund($rs->fields['voucher_id'])) {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
                     $state_flag = false;                
                 }
@@ -1662,7 +1662,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
             while(!$rs->EOF) {            
 
                 // Check the Voucher to see if it can be cancelled
-                if(!$this->checkSingleVoucherStatusAllowsRefundCancel($rs->fields['voucher_id'])) {  
+                if(!$this->checkSingleVoucherAllowsRefundCancel($rs->fields['voucher_id'])) {  
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']); 
                     $state_flag = false;
                 }
@@ -1699,7 +1699,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
             while(!$rs->EOF) {            
 
                 // Check the Voucher to see if it can be refunded
-                if(!$this->checkSingleVoucherStatusAllowsRefundDelete($rs->fields['voucher_id'])) {  
+                if(!$this->checkSingleVoucherAllowsRefundDelete($rs->fields['voucher_id'])) {  
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
                     $state_flag = false;
                 }
@@ -1738,7 +1738,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
                 //$voucher_details = $rs->GetRowAssoc(); 
 
                 // Check the Voucher to see if it can be deleted
-                if(!$this->checkSingleVoucherStatusAllowsCancel($rs->fields['voucher_id'])) {   
+                if(!$this->checkSingleVoucherAllowsCancel($rs->fields['voucher_id'])) {   
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']); 
                     $state_flag = false;
                 }
@@ -1775,7 +1775,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
             while(!$rs->EOF) {            
 
                 // Check the Voucher to see if it can be deleted
-                if(!$this->checkSingleVoucherStatusAllowsDelete($rs->fields['voucher_id'])) {     
+                if(!$this->checkSingleVoucherAllowsDelete($rs->fields['voucher_id'])) {     
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Voucher").': '.$rs->fields['voucher_id']);
                     $state_flag = false;
                 }
@@ -1812,7 +1812,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
             while(!$rs->EOF) {            
 
                 // Check the Voucher to see if it can be deleted
-                if(!$this->checkSingleVoucherStatusAllowsEdit($rs->fields['voucher_id'])) {  
+                if(!$this->checkSingleVoucherAllowsEdit($rs->fields['voucher_id'])) {  
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Voucher").': '.$rs->fields['voucher_id']);
                     $state_flag = false;
                 }

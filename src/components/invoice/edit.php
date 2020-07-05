@@ -19,7 +19,7 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
 }
 
 // Check if invoice can be edited
-if(!$this->app->components->invoice->checkStatusAllowsEdit(\CMSApplication::$VAR['invoice_id'])) {
+if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR['invoice_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this invoice because its status does not allow it."));
     $this->app->system->page->force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 }

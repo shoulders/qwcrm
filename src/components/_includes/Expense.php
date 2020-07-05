@@ -403,7 +403,7 @@ class Expense extends Components {
     public function cancelRecord($expense_id) {
 
         // Make sure the expense can be cancelled
-        if(!$this->checkStatusAllowsCancel($expense_id)) {        
+        if(!$this->checkRecordAllowsCancel($expense_id)) {        
             return false;
         }
 
@@ -506,7 +506,7 @@ class Expense extends Components {
     #  Check if the expense status is allowed to be changed  #  // not currently used
     ##########################################################
 
-     public function checkStatusAllowsChange($expense_id) {
+     public function checkRecordAllowsChange($expense_id) {
 
         $state_flag = true;
 
@@ -545,7 +545,7 @@ class Expense extends Components {
     #   Check to see if the expense can be refunded (by status)   #  // not currently used - i DONT think i will use this
     ###############################################################
 
-    public function checkStatusAllowsRefund($expense_id) {
+    public function checkRecordAllowsRefund($expense_id) {
 
         $state_flag = true;
 
@@ -590,7 +590,7 @@ class Expense extends Components {
     #   Check to see if the expense can be cancelled              #  // Do I actuallu use this, the code seems to be implemented
     ###############################################################
 
-    public function checkStatusAllowsCancel($expense_id) {
+    public function checkRecordAllowsCancel($expense_id) {
 
         $state_flag = true;
 
@@ -635,7 +635,7 @@ class Expense extends Components {
     #   Check to see if the expense can be deleted                #
     ###############################################################
 
-    public function checkStatusAllowsDelete($expense_id) {
+    public function checkRecordAllowsDelete($expense_id) {
 
         $state_flag = true;
 
@@ -680,7 +680,7 @@ class Expense extends Components {
     #  Check if the expense status allows editing            #       
     ##########################################################
 
-     public function checkStatusAllowsEdit($expense_id) {
+     public function checkRecordAllowsEdit($expense_id) {
 
         $state_flag = true;
 

@@ -50,7 +50,7 @@ if (isset(\CMSApplication::$VAR['submit'])) {
 } else { 
 
     // Make sure the invoice is allowed to be refunded
-    if(!$this->app->components->invoice->checkStatusAllowsRefund(\CMSApplication::$VAR['invoice_id'])) {
+    if(!$this->app->components->invoice->checkRecordAllowsRefund(\CMSApplication::$VAR['invoice_id'])) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'].' '._gettext("cannot be refunded."));
         $this->app->system->page->force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
     }

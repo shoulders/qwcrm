@@ -448,7 +448,7 @@ class Client extends Components {
     public function deleteRecord($client_id) {
 
         // Make sure the client can be deleted 
-        if(!$this->checkStatusAllowsDelete($client_id)) {        
+        if(!$this->checkRecordAllowsDelete($client_id)) {        
             return false;
         }
 
@@ -514,7 +514,7 @@ class Client extends Components {
     #   Check to see if the client can be deleted                 #
     ###############################################################
 
-    public function checkStatusAllowsDelete($client_id) {
+    public function checkRecordAllowsDelete($client_id) {
 
         $state_flag = true;
 

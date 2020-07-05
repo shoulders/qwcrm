@@ -24,6 +24,6 @@ if(isset(\CMSApplication::$VAR['change_status'])){
 $this->app->smarty->assign('allowed_to_change_status',        false       ); // I am not sure this is needed
 $this->app->smarty->assign('expense_status',                  $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'status')             );
 $this->app->smarty->assign('expense_statuses',                $this->app->components->expense->getStatuses() );
-$this->app->smarty->assign('allowed_to_cancel',               $this->app->components->expense->checkStatusAllowsCancel(\CMSApplication::$VAR['expense_id'])     );
-$this->app->smarty->assign('allowed_to_delete',               $this->app->components->expense->checkStatusAllowsDelete(\CMSApplication::$VAR['expense_id'])              );
+$this->app->smarty->assign('allowed_to_cancel',               $this->app->components->expense->checkRecordAllowsCancel(\CMSApplication::$VAR['expense_id'])     );
+$this->app->smarty->assign('allowed_to_delete',               $this->app->components->expense->checkRecordAllowsDelete(\CMSApplication::$VAR['expense_id'])              );
 $this->app->smarty->assign('expense_selectable_statuses',     $this->app->components->expense->getStatuses(true) );

@@ -33,7 +33,7 @@ class PaymentMethodVoucher {
     public function pre_process() {
         
         // Make sure the Voucher is valid and then pass the amount to the next process
-        if(!$this->app->components->voucher->checkStatusAllowsRedeem($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'])) {
+        if(!$this->app->components->voucher->checkRecordAllowsRedeem($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'])) {
             Payment::$payment_valid = false;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This Voucher is not valid or cannot be redeemed."));
             return false;                

@@ -812,7 +812,7 @@ class WorkOrder extends Components {
         }
 
         // Is the workorder in an allowed state to be deleted
-        if(!$this->checkStatusAllowsDelete($workorder_id)) {        
+        if(!$this->checkRecordAllowsDelete($workorder_id)) {        
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because its status does not allow it."));
             return false;
         }
@@ -1028,7 +1028,7 @@ class WorkOrder extends Components {
     #  Check if the workorder status is allowed to be changed  #
     ############################################################
 
-     public function checkStatusAllowsChange($workorder_id) {
+     public function checkRecordAllowsChange($workorder_id) {
 
         $state_flag = true;
 
@@ -1103,7 +1103,7 @@ class WorkOrder extends Components {
     # Is the workorder in an allowed state to be deleted #
     ######################################################
 
-    public function checkStatusAllowsDelete($workorder_id) {
+    public function checkRecordAllowsDelete($workorder_id) {
 
         $state_flag = true;
 
@@ -1178,7 +1178,7 @@ class WorkOrder extends Components {
     # Resolution Edit Status Check #  // not currently used
     ################################
 
-    public function checkStatusAllowsResolutionUpdate($workorder_id) {    
+    public function checkRecordAllowsResolutionUpdate($workorder_id) {    
 
         $wo_is_closed   = $this->getRecord($workorder_id, 'is_closed');
         $wo_status      = $this->getRecord($workorder_id, 'status');
@@ -1206,7 +1206,7 @@ class WorkOrder extends Components {
     #  Check if the workorder employee is allowed to be changed  #
     ##############################################################
 
-     public function checkStatusAllowsEmployeeUpdate($workorder_id) {
+     public function checkRecordAllowsEmployeeUpdate($workorder_id) {
 
         $state_flag = true;
 

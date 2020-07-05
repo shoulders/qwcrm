@@ -30,9 +30,9 @@ if(isset(\CMSApplication::$VAR['change_employee'])) {
 }
 
 // Build the page with the current status from the database
-$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->workorder->checkStatusAllowsChange(\CMSApplication::$VAR['workorder_id']) );
-$this->app->smarty->assign('allowed_to_change_employee',   $this->app->components->workorder->checkStatusAllowsEmployeeUpdate(\CMSApplication::$VAR['workorder_id']));
-$this->app->smarty->assign('allowed_to_delete',            $this->app->components->workorder->checkStatusAllowsDelete(\CMSApplication::$VAR['workorder_id'])  );
+$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->workorder->checkRecordAllowsChange(\CMSApplication::$VAR['workorder_id']) );
+$this->app->smarty->assign('allowed_to_change_employee',   $this->app->components->workorder->checkRecordAllowsEmployeeUpdate(\CMSApplication::$VAR['workorder_id']));
+$this->app->smarty->assign('allowed_to_delete',            $this->app->components->workorder->checkRecordAllowsDelete(\CMSApplication::$VAR['workorder_id'])  );
 $this->app->smarty->assign('active_employees',             $this->app->components->user->getActiveUsers('employees')                                     );
 $this->app->smarty->assign('workorder_statuses',           $this->app->components->workorder->getStatuses(true)                                      );
 $this->app->smarty->assign('workorder_status',             $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'status')             );

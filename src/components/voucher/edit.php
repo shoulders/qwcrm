@@ -21,7 +21,7 @@ if(!$this->app->components->payment->checkMethodActive('voucher')) {
 }
 
 // Check if voucher can be edited
-if(!$this->app->components->voucher->checkStatusAllowsEdit(\CMSApplication::$VAR['voucher_id'])) {
+if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR['voucher_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this Voucher because its status does not allow it."));
     $this->app->system->page->force_page('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 }

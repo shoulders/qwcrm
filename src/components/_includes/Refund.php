@@ -409,7 +409,7 @@ class Refund extends Components {
     public function cancelRecord($refund_id) {
 
         // Make sure the refund can be cancelled
-        if(!$this->checkStatusAllowsCancel($refund_id)) {        
+        if(!$this->checkRecordAllowsCancel($refund_id)) {        
             return false;
         }
 
@@ -456,7 +456,7 @@ class Refund extends Components {
     public function deleteRecord($refund_id) {
 
         // Make sure the invoice can be deleted (does not harm to check again here, other check is on status button)
-        if(!$this->checkStatusAllowsDelete($refund_id)) {        
+        if(!$this->checkRecordAllowsDelete($refund_id)) {        
             return false;
         }
 
@@ -527,7 +527,7 @@ class Refund extends Components {
     #  Check if the refund status is allowed to be changed   #  // not currently used (from refund:status), manual change
     ##########################################################
 
-     public function checkStatusAllowsChange($refund_id) {
+     public function checkRecordAllowsChange($refund_id) {
 
         $state_flag = true;
 
@@ -584,7 +584,7 @@ class Refund extends Components {
     #   Check to see if the refund can be cancelled               #
     ###############################################################
 
-    public function checkStatusAllowsCancel($refund_id) {
+    public function checkRecordAllowsCancel($refund_id) {
 
         $state_flag = true;
 
@@ -629,7 +629,7 @@ class Refund extends Components {
     #   Check to see if the refund can be deleted                 #
     ###############################################################
 
-    public function checkStatusAllowsDelete($refund_id) {
+    public function checkRecordAllowsDelete($refund_id) {
 
         $state_flag = true;
 
@@ -680,7 +680,7 @@ class Refund extends Components {
     #  Check if the refund status allows editing             #       
     ##########################################################
 
-     public function checkStatusAllowsEdit($refund_id) {
+     public function checkRecordAllowsEdit($refund_id) {
 
         $state_flag = true;
 
