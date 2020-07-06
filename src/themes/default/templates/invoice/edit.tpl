@@ -15,435 +15,72 @@
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.css">
 <script>
     
-    
- 
-    /**--  LABOUR  --**/
-
-
-
-    //// Add Row to Labour Table    
-    function addRowToTableLabour() {
+    // Dynamically Copy, Process and add an new Table Row
+    function createNewTableRow(section) {
         
-        var tbl = document.getElementById('labour_items');
-        var lastRow = tbl.rows.length;
-
-        // Insert Row - if there's no header row in the table, then iteration = lastRow + 1
-        var iteration = lastRow;
-        var row = tbl.insertRow(lastRow);
-        row.setAttribute('class', 'olotd4');
-
-
-
-        // Number Cell - Create Cell
-        var buildRow = row.insertCell(0);        
-        //buildRow.setAttribute('width', '40px');
-        //buildRow.setAttribute('class', 'olotd4'); 
-        var el = document.createTextNode(iteration);        
-        buildRow.appendChild(el);
-
-
-
-        // Description Cell - Create Cell
-        var buildRow = row.insertCell(1);        
-        //buildRow.setAttribute('width', '100px');
-        //buildRow.setAttribute('class', 'olotd4');
-
-        // Description Cell - Create Select Input
-        var el = document.createElement('select');
-        el.setAttribute('id', 'qform[labour_items]['+iteration+'][description]');
-        el.setAttribute('name', 'qform[labour_items]['+iteration+'][description]');
-        //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '62');
-        //el.setAttribute('value', '1');
-        //el.setAttribute('type', 'text');  // only required of 'input'
-        //el.setAttribute('maxlength', '100');
-        el.required = true;
-        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-        buildRow.appendChild(el);
+        // Get Table + info for refactoring
+        var tbl = document.getElementById(section+'_items');
         
-        // Other key press examples - utested, unused
-        //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
-        //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
-        //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
-        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-
-
-        // Description Cell - Populate the Select Options
-        {section loop=$labour_prefill_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_prefill_items[i].description}', '{$labour_prefill_items[i].description}');
-        {/section}
-
-
-        // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
-        var combo = dhtmlXComboFromSelect('qform[labour_items]['+iteration+'][description]');
-
-        // Description Cell - Set Combobox settings
-        combo.setSize(400);    
+        // Get Next Row Number
+        var iteration = tbl.rows.length - 1; 
+        
+        // Clone Dummy Row        
+        var clonedRow = $('#'+section+'_items_row_dummy').clone();
+                
+        // Get the outerHTML
+        var clonedRowStr = clonedRow.prop("outerHTML");   
+                
+        // Refactor variables
+        clonedRowStr = clonedRowStr.replace(/ hidden/, "");
+        clonedRowStr = clonedRowStr.replace(/ disabled/g, "");
+        clonedRowStr = clonedRowStr.replace(/dummy/g, iteration);        
+        
+        // Append the row to the end of the table
+        $(tbl).append(clonedRowStr);
+        
+        // Convert description cell into a combobox
+        var combo = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][description]');
+        //combo.setSize(400);    
         combo.DOMelem_input.maxLength = 100;    
         combo.DOMelem_input.required = true;
-        combo.setComboText('');                 // by default sets comobobox to empty
-
-        // Description Cell - Apply Key restriction to the virtual combobox
+        combo.setComboText('');
+        combo.setFontSize("10px","10px");
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
-
             if(onlyAlphaNumericPunctuation(e)) { return true; }
-
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();
                 return false;
-        } );
-        
-        
-        
-        // Unit QTY Cell - Create Cell
-        var buildRow = row.insertCell(2);        
-        //buildRow.setAttribute('width', '40px');
-        //buildRow.setAttribute('class', 'olotd4'); 
-
-        // Unit QTY Cell - Create Input Box
-        var el = document.createElement('input');
-        el.setAttribute('id', 'qform[labour_items]['+iteration+'][unit_qty]');
-        el.setAttribute('name', 'qform[labour_items]['+iteration+'][unit_qty]');
-        //el.setAttribute('class', 'olotd4');
-        el.setAttribute('size', '6');        
-        el.setAttribute('value', '1.00');
-        el.setAttribute('type', 'text');
-        el.setAttribute('maxlength', '6');
-        el.required = true;
-        el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
-        buildRow.appendChild(el);
-
-
-
-        // Unit Net Cell - Create Cell
-        var buildRow = row.insertCell(3);        
-        //buildRow.setAttribute('width', '40px');
-        //buildRow.setAttribute('class', 'olotd4');
-
-        // Unit Net Cell - Create Select Input
-        var el = document.createElement('select');
-        el.setAttribute('id', 'qform[labour_items]['+iteration+'][unit_net]');
-        el.setAttribute('name', 'qform[labour_items]['+iteration+'][unit_net]');
-        //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '6');
-        //el.setAttribute('value', '1');
-        //el.setAttribute('type', 'text');  // only required of 'input'
-        //el.setAttribute('maxlength', '6');
-        //el.required = true;
-        //el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
-        buildRow.appendChild(el);
-
-
-        // Amount Cell - Populate the Select Options
-        {section loop=$labour_prefill_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_prefill_items[i].unit_net}', '{$labour_prefill_items[i].unit_net}');
-        {/section}
-
-        // Amount Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
-        buildRow.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + buildRow.innerHTML + '</div>';
-
-
-        // Amount Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-        var combo = dhtmlXComboFromSelect('qform[labour_items]['+iteration+'][unit_net]');         
-
-        // Amount Cell - Set Combobox settings
-        combo.setSize(90);  // This sets the width of the combo box and drop down options width  
+        } ); 
+                
+        // Unit Net Cell        
+        var combo = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][unit_net]');
+        combo.setSize(90);
         combo.DOMelem_input.maxLength = 10;
         combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
         combo.DOMelem_input.required = true;
-        combo.setComboText('');                 // by default sets comobobox to empty
-
-        // Amount Cell - Apply Key restriction to the virtual combobox
+        combo.setComboText('');
+        combo.setFontSize("10px","10px");
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
-
             if(onlyNumberPeriod(e)) { return true; }
-
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();
                 return false;
         } );
-        
-        {if '/^vat_/'|preg_match:$invoice_details.tax_system}
+                 
+    }
     
-            // VAT Tax Code Cell - Create Cell
-            var buildRow = row.insertCell(4);        
-            //buildRow.setAttribute('width', '100px');
-            //buildRow.setAttribute('class', 'olotd4');
-
-            // VAT Tax Code Cell - Create Select Input
-            var el = document.createElement('select');
-            el.setAttribute('id', 'qform[labour_items]['+iteration+'][vat_tax_code]');
-            el.setAttribute('name', 'qform[labour_items]['+iteration+'][vat_tax_code]');
-            //el.setAttribute('class', 'olotd4');
-            //el.setAttribute('size', '62');
-            //el.setAttribute('value', '1');
-            //el.setAttribute('type', 'text');  // only required of 'input'
-            //el.setAttribute('maxlength', '100');
-            el.required = true;
-            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-            buildRow.appendChild(el);
-
-            // Other key press examples - utested, unused
-            //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
-            //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
-            //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
-            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-
-
-            // VAT Tax Code Cell  - Populate the Select Options
-            {section loop=$vat_tax_codes name=i}
-                el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%', '{$vat_tax_codes[i].tax_key}');
-                {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
-                    el.options[{$smarty.section.i.index}].setAttribute('selected', true);
-                {/if}
-            {/section}
-            
-        {/if}
-            
-        {if $invoice_details.tax_system == 'sales_tax_cash'}
-    
-            // Sales Tax Exempt Checkbox Cell - Create Cell
-            var buildRow = row.insertCell(4);        
-            //buildRow.setAttribute('width', '100px');
-            //buildRow.setAttribute('class', 'olotd4');
-
-            // Sales Tax Exempt Checkbox Cell Cell - Create Select Input
-            var el = document.createElement('input');
-            el.setAttribute('id', 'qform[labour_items]['+iteration+'][sales_tax_exempt]');
-            el.setAttribute('name', 'qform[labour_items]['+iteration+'][sales_tax_exempt]');
-            //el.setAttribute('class', 'olotd4');
-            //el.setAttribute('size', '62');
-            el.setAttribute('value', '1');
-            el.setAttribute('type', 'checkbox');
-            //el.setAttribute('maxlength', '100');
-            //el.required = true;
-            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-            buildRow.appendChild(el);
-
-            // Other key press examples - utested, unused
-            //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
-            //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
-            //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
-            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-            
-        {/if}
+    // Populater Labour and Parts Tables with records form the database
+    function populateTables() {
         
+        // read variable in the html
+        // labour/parts sepearate  : cycle thourhg each record and run the fucntion above to create a new row and populate it
+        // delete the erroneous variable
     }
 
-    //// Remove row from Labour table
-    function removeRowFromTableLabour() {
-        var tbl = document.getElementById('labour_items');
-        var lastRow = tbl.rows.length;
-        if (lastRow > 1) tbl.deleteRow(lastRow - 1);
-    }        
-
-
-
-    /**--  PARTS  --**/
-
-
-
-    //// Add Row to Parts Table
-    function addRowToTableParts() {
-        
-        var tbl = document.getElementById('parts_items');
-        var lastRow = tbl.rows.length;
-
-        // Insert Row - if there's no header row in the table, then iteration = lastRow + 1
-        var iteration = lastRow;
-        var row = tbl.insertRow(lastRow);
-        row.setAttribute('class', 'olotd4');
-
-
-
-        // Number Cell - Create Cell
-        var buildRow = row.insertCell(0);        
-        //buildRow.setAttribute('width', '40px');
-        //buildRow.setAttribute('class', 'olotd4'); 
-        var el = document.createTextNode(iteration);        
-        buildRow.appendChild(el);
-
-
-
-        // Description Cell - Create Cell
-        var buildRow = row.insertCell(1);        
-        //buildRow.setAttribute('width', '100px');
-        //buildRow.setAttribute('class', 'olotd4');
-
-        // Description Cell - Create Select Input
-        var el = document.createElement('select');
-        el.setAttribute('id', 'qform[parts_items]['+iteration+'][description]');
-        el.setAttribute('name', 'qform[parts_items]['+iteration+'][description]');    
-        //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '62');
-        //el.setAttribute('value', '1');
-        //el.setAttribute('type', 'text');
-        //el.setAttribute('maxlength', '100');
-        el.required = true;       
-        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-        buildRow.appendChild(el);
-        
-        
-        // Description Cell - Populate the Select Options
-        {section loop=$parts_prefill_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$parts_prefill_items[i].description}', '{$parts_prefill_items[i].description}');
-        {/section}
-
-
-        // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
-        var combo = dhtmlXComboFromSelect('qform[parts_items]['+iteration+'][description]');
-
-        // Description Cell - Set Combobox settings
-        combo.setSize(400);    
-        combo.DOMelem_input.maxLength = 100;    
-        combo.DOMelem_input.required = true;
-        combo.setComboText('');                 // by default sets comobobox to empty
-
-        // Description Cell - Apply Key restriction to the virtual combobox
-        dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
-
-            if(onlyAlphaNumericPunctuation(e)) { return true; }
-
-            e.cancelBubble=true;
-            if (e.preventDefault) e.preventDefault();
-                return false;
-        } );        
-
-
-
-        // Unit QTY Cell - Create Cell
-        var buildRow = row.insertCell(2);        
-        //buildRow.setAttribute('width', '40px');
-        //buildRow.setAttribute('class', 'olotd4'); 
-
-        // Unit QTY Cell - Create Input Box
-        var el = document.createElement('input');
-        el.setAttribute('id', 'qform[parts_items]['+iteration+'][unit_qty]');
-        el.setAttribute('name', 'qform[parts_items]['+iteration+'][unit_qty]');
-        //el.setAttribute('class', 'olotd4');
-        el.setAttribute('size', '6');        
-        el.setAttribute('value', '1.00');
-        el.setAttribute('type', 'text');
-        el.setAttribute('maxlength', '6');
-        el.required = true;
-        el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
-        buildRow.appendChild(el);
-        
-
-
-        // Unit Net Cell - Create Cell
-        var buildRow = row.insertCell(3);        
-        //buildRow.setAttribute('width', '40px');
-        //buildRow.setAttribute('class', 'olotd4');
-
-        // Unit Net Cell - Create Select Input
-        var el = document.createElement('select');
-        el.setAttribute('id', 'qform[parts_items]['+iteration+'][unit_net]');
-        el.setAttribute('name', 'qform[parts_items]['+iteration+'][unit_net]');
-        //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '10');
-        //el.setAttribute('value', '1');
-        //el.setAttribute('maxlength', '10');    
-        //el.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');        
-        //el.required = true;
-        //el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
-        buildRow.appendChild(el);
-        
-        
-        // Unit Net Cell - Populate the Select Options
-        {section loop=$parts_prefill_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$parts_prefill_items[i].unit_net}', '{$parts_prefill_items[i].unit_net}');
-        {/section}
-
-        // Unit Net Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
-        buildRow.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + buildRow.innerHTML + '</div>';
-        
-        // Unit Net Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-        var combo = dhtmlXComboFromSelect('qform[parts_items]['+iteration+'][unit_net]');         
-
-        // Unit Net Cell - Set Combobox settings
-        combo.setSize(90);  // This sets the width of the combo box and drop down options width  
-        combo.DOMelem_input.maxLength = 10;
-        combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
-        combo.DOMelem_input.required = true;
-        combo.setComboText('');                 // by default sets comobobox to empty
-
-        // Amount Cell - Apply Key restriction to the virtual combobox
-        dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
-
-            if(onlyNumberPeriod(e)) { return true; }
-
-            e.cancelBubble=true;
-            if (e.preventDefault) e.preventDefault();
-                return false;
-        } );
-        
-        
-        {if '/^vat_/'|preg_match:$invoice_details.tax_system}
-            
-            // VAT Tax Code Cell - Create Cell
-            var buildRow = row.insertCell(4);        
-            //buildRow.setAttribute('width', '100px');
-            //buildRow.setAttribute('class', 'olotd4');
-
-            // VAT Tax Code Cell - Create Select Input
-            var el = document.createElement('select');
-            el.setAttribute('id', 'qform[parts_items]['+iteration+'][vat_tax_code]');
-            el.setAttribute('name', 'qform[parts_items]['+iteration+'][vat_tax_code]');    
-            //el.setAttribute('class', 'olotd4');
-            //el.setAttribute('size', '62');
-            //el.setAttribute('value', '1');
-            //el.setAttribute('type', 'text');
-            //el.setAttribute('maxlength', '100');
-            el.required = true;       
-            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-            buildRow.appendChild(el);
-
-            // VAT Tax Code Cell - Populate the Select Options
-            {section loop=$vat_tax_codes name=i}
-                el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%', '{$vat_tax_codes[i].tax_key}');
-                {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
-                    el.options[{$smarty.section.i.index}].setAttribute('selected', true);
-                {/if}
-            {/section}
-            
-        {/if}
-            
-        {if $invoice_details.tax_system == 'sales_tax_cash'}
-    
-            // Sales Tax Exempt Checkbox Cell - Create Cell
-            var buildRow = row.insertCell(4);        
-            //buildRow.setAttribute('width', '100px');
-            //buildRow.setAttribute('class', 'olotd4');
-
-            // Sales Tax Exempt Checkbox Cell Cell - Create Select Input
-            var el = document.createElement('input');
-            el.setAttribute('id', 'qform[parts_items]['+iteration+'][sales_tax_exempt]');
-            el.setAttribute('name', 'qform[parts_items]['+iteration+'][sales_tax_exempt]');
-            //el.setAttribute('class', 'olotd4');
-            //el.setAttribute('size', '62');
-            el.setAttribute('value', '1');
-            el.setAttribute('type', 'checkbox');
-            //el.setAttribute('maxlength', '100');
-            //el.required = true;
-            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-            buildRow.appendChild(el);
-
-            // Other key press examples - utested, unused
-            //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
-            //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
-            //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
-            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-            
-        {/if}
-    }
-
-
-    //// Remove row from Parts table
-    function removeRowFromTableParts() {
-        var tbl = document.getElementById('parts_items');
-        var lastRow = tbl.rows.length;
-        if (lastRow > 1) tbl.deleteRow(lastRow - 1);
+    function oonanychange() {
+     
+        //when any of the input feilds are change recalculate all of the totals
+        // if htere are changes disable all buttons until the save is hit which will casue the page to realod and the falg to be removed. perhaps also grey out the buttons and add hover over messages
     }
 
 </script>
@@ -736,23 +373,68 @@
                                                         <!-- Additional Javascript Labour Table -->
                                                         {if !$display_payments}                                                        
                                                             <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
-                                                                <tr class="olotd4">
-                                                                    <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>                                                                    
+                                                                <tr class="olotd4">                                                                                                                                        
                                                                     <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>                                                                    
                                                                     <td class="row2" style="width: 66px;"><b>{t}Unit Qty{/t}</b></td>                                                                    
                                                                     {if $invoice_details.tax_system != 'no_tax'}
                                                                         <td class="row2" style="width: 110px;"><b>{t}Unit Net{/t}</b></td>
                                                                     {else}
                                                                         <td class="row2" style="width: 110px;"><b>{t}Unit Gross{/t}</b></td>
-                                                                    {/if} 
-                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2" style="width: 110px;"><b>{t}Exempt from Sales Tax{/t}</b></td>{/if}
+                                                                    {/if}                                                                     
                                                                     {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2" style="width: 110px;"><b>{t}Exempt from Sales Tax{/t}</b></td>{/if}
+                                                                    <td class="row2" style="width: 110px;"><b>{t}Actions{/t}</b></td>
                                                                 </tr>
+                                                                
+                                                                <!-- Labour Items Dummy Row -->
+                                                                <tr id="labour_items_row_dummy" class="olotd4" hidden>
+                                                                    <!-- Description -->
+                                                                    <td>                                                                        
+                                                                        <select style='width:200px;' id="qform[labour_items][dummy][description]" name="qform[labour_items][dummy][description]" value="" disabled>
+                                                                            {section loop=$labour_prefill_items name=i}
+                                                                                <option value="{$labour_prefill_items[i].description}">{$labour_prefill_items[i].description}</option>
+                                                                            {/section}                                                                            
+                                                                        </select>
+                                                                    </td>
+                                                                    <!-- Unit Qty -->
+                                                                    <td>
+                                                                        <input id="qform[labour_items][dummy][unit_qty]" name="qform[labour_items][dummy][unit_qty]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" disabled>                                                                        
+                                                                    </td>
+                                                                    <!-- Unit Net -->
+                                                                    <td>
+                                                                        <b>£&nbsp;</b>
+                                                                        <select id="qform[labour_items][dummy][unit_net]" name="qform[labour_items][dummy][unit_net]" value="" required disabled>
+                                                                        {section loop=$labour_prefill_items name=i}
+                                                                            <option value="{$labour_prefill_items[i].unit_net}">{$labour_prefill_items[i].unit_net}</option>
+                                                                        {/section}
+                                                                    </td>
+                                                                    <!-- VAT Tax Code -->
+                                                                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}  
+                                                                        <td>
+                                                                            <select id="qform[labour_items][dummy][vat_tax_code]" name="qform[labour_items][dummy][vat_tax_code]" required disabled>                                                                            
+                                                                                {section loop=$vat_tax_codes name=i}
+                                                                                    <option value="{$vat_tax_codes[i].tax_key}"{if $default_vat_tax_code == $vat_tax_codes[i].tax_key} selected{/if}>{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
+                                                                                {/section}                                                                            
+                                                                            </select>
+                                                                        </td>
+                                                                    {/if}
+                                                                    <!-- Sales Tax Exempt -->
+                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}  
+                                                                        <td>
+                                                                            <input id="qform[labour_items][dummy][sales_tax_exempt]" name="qform[labour_items][dummy][sales_tax_exempt]" type="checkbox">
+                                                                        </td>
+                                                                    {/if}
+                                                                    <!-- Actions -->
+                                                                    <td>                                                                       
+                                                                        <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" onmouseover="ddrivetip('<b>Delete Labour Record</b>');" onmouseout="hideddrivetip();" onclick="return confirmChoice('Are you Sure you want to delete this Labour Record?') && $(this).parent().parent().remove();">
+                                                                    </td>
+                                                                </tr>
+                                                                
                                                                 <!-- Additional Rows are added here -->
+                                                                
                                                             </table>
-                                                            <p>
-                                                                <button type="button" onclick="addRowToTableLabour();">{t}Add{/t}</button>
-                                                                <button type="button" onclick="removeRowFromTableLabour();">{t}Remove{/t}</button>
+                                                            <p>                                                                
+                                                                <button type="button" onclick="createNewTableRow('labour');">{t}Add{/t}</button>                                                                
                                                             </p>
                                                         {/if}
 
@@ -861,6 +543,58 @@
                                                                     {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>{/if}
                                                                 </tr>
                                                                 <!-- Additional Rows are added here -->
+                                                                
+                                                                {* temp code
+                                                                <tr class="olotd4">
+                                                                    <td>1</td>
+                                                                    <td>
+                                                                        <span>
+                                                                            <div style="width: 398px;" class="dhxcombo_dhx_skyblue">
+                                                                                <input type="text" class="dhxcombo_input" style="width: 374px; margin-left: 0px;" autocomplete="off" maxlength="100" required="">
+                                                                                <input type="hidden" value="" name="qform[parts_items][1][description]">
+                                                                                <input type="hidden" value="true" name="qform_new_value[parts_items][1][description]">
+                                                                                <div class="dhxcombo_select_button"><div class="dhxcombo_select_img"></div></div>                                                                                    
+                                                                            </div>
+                                                                        </span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input id="qform[parts_items][1][unit_qty]" name="qform[parts_items][1][unit_qty]" size="6" value="1.00" type="text" maxlength="6" required="" onkeydown="return onlyNumberPeriod(event);">
+                                                                    </td>
+                                                                    <td>
+                                                                        <div style="float:left;"><b>£&nbsp;</b></div>
+                                                                        <div>
+                                                                            <span>
+                                                                                <div style="width: 88px;" class="dhxcombo_dhx_skyblue"><input type="text" class="dhxcombo_input" style="width: 64px; margin-left: 0px;" autocomplete="off" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required="">
+                                                                                    <input type="hidden" value="" name="qform[parts_items][1][unit_net]">
+                                                                                    <input type="hidden" value="true" name="qform_new_value[parts_items][1][unit_net]">
+                                                                                    <div class="dhxcombo_select_button"><div class="dhxcombo_select_img"></div></div>                                                                                        
+                                                                                </div>
+                                                                            </span>                                                                                
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <select id="qform[parts_items][1][vat_tax_code]" name="qform[parts_items][1][vat_tax_code]" required="">
+                                                                            <option value="T0">T0 - Zero Rate @ 0.00%</option>
+                                                                            <option value="T1" selected="true">T1 - Standard Rate @ 20.00%</option>
+                                                                            <option value="T2">T2 - Exempt @ 0.00%</option>
+                                                                            <option value="T4">T4 - Sales - Goods - EC VAT Customers @ 0.00%</option>
+                                                                            <option value="T5">T5 - Reduced Rate @ 5.00%</option>
+                                                                            <option value="T7">T7 - Zero Rate Purchases - Goods - EC @ 0.00%</option>
+                                                                            <option value="T8">T8 - Standard Rate Purchases - Goods - EC @ 0.00%</option>
+                                                                            <option value="T9">T9 - Transactions not involving VAT @ 0.00%</option>
+                                                                            <option value="T20">T20 - Reverse Charges @ 0.00%</option>
+                                                                            <option value="T22">T22 - Sales - Services - EC VAT Customers @ 0.00%</option>
+                                                                            <option value="T23">T23 - Zero Rate / Exempt Purchases - Services - EC @ 0.00%</option>
+                                                                            <option value="T24">T24 - Standard Rate Purchases - Services - EC @ 0.00%</option>
+                                                                            <option value="T25">T25 - Flat Rate Capital Asset @ 0.00%</option>
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                *}
+                                                                
+                                                                
+                                                                
+                                                                
                                                             </table>
                                                             <p>
                                                                 <button type="button" onclick="addRowToTableParts();">{t}Add{/t}</button>
