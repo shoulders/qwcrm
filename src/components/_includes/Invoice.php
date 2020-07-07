@@ -81,13 +81,19 @@ defined('_QWEXEC') or die;
     }
 
     #####################################
-    #     Insert Labour Items           #
+    #     Insert Labour Items           #  // Some or all of these calculations are done on the invoice:edit page - This extra code might not be needed in the future
     #####################################
 
     public function insertLabourItems($invoice_id, $labour_items = null) {
 
         // Get Invoice Details
-        $invoice_details = $this->getRecord($invoice_id); 
+        $invoice_details = $this->getRecord($invoice_id);
+        
+        // Delete all labour items from the invoice to prevent duplication
+        $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice's labour items from the database."));
+        }
 
         // Insert Labour Items into database (if any)
         if($labour_items) {
@@ -143,13 +149,19 @@ defined('_QWEXEC') or die;
     }
 
     #####################################
-    #     Insert Parts Items           #
+    #     Insert Parts Items            #  // Some or all of these calculations are done on the invoice:edit page - This extra code might not be needed in the future
     #####################################
 
     public function insertPartsItems($invoice_id, $parts_items = null) {
 
         // Get Invoice Details
         $invoice_details = $this->getRecord($invoice_id); 
+        
+        // Delete all parts items from the invoice to prevent duplication
+        $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
+        if(!$rs = $this->app->db->Execute($sql)) {
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice's parts items from the database."));
+        }
 
         // Insert Parts Items into database (if any)
         if($parts_items) {

@@ -57,14 +57,15 @@ $this->app->smarty->assign('vat_tax_codes',            $this->app->components->c
 $this->app->smarty->assign('default_vat_tax_code',     $this->app->components->company->getDefaultVatTaxCode($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'tax_system'))        );
 
 // Invoice Items
-$this->app->smarty->assign('labour_items',             $this->app->components->invoice->getLabourItems(\CMSApplication::$VAR['invoice_id'])                                                  );
-$this->app->smarty->assign('parts_items',              $this->app->components->invoice->getPartsItems(\CMSApplication::$VAR['invoice_id'])                                                   );
-$this->app->smarty->assign('display_vouchers',        $this->app->components->voucher->getRecords('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
+//htmlentities()
+$this->app->smarty->assign('labour_items_json',        json_encode($this->app->components->invoice->getLabourItems(\CMSApplication::$VAR['invoice_id']))                                                  );
+$this->app->smarty->assign('parts_items_json',         json_encode($this->app->components->invoice->getPartsItems(\CMSApplication::$VAR['invoice_id']))                                                   );
+$this->app->smarty->assign('display_vouchers',         $this->app->components->voucher->getRecords('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
 
 // Sub Totals
-$this->app->smarty->assign('labour_items_sub_totals',     $this->app->components->invoice->getLabourItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );
-$this->app->smarty->assign('parts_items_sub_totals',      $this->app->components->invoice->getPartsItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                           );
-$this->app->smarty->assign('voucher_items_sub_totals',    $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id'])                                                       );
+$this->app->smarty->assign('labour_items_sub_totals',  $this->app->components->invoice->getLabourItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );
+$this->app->smarty->assign('parts_items_sub_totals',   $this->app->components->invoice->getPartsItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                           );
+$this->app->smarty->assign('voucher_items_sub_totals', $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id'])                                                       );
 
 // Payment Details
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes()                                                                                 );
@@ -75,4 +76,4 @@ $this->app->smarty->assign('display_payments',         $this->app->components->p
 // Misc
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'employee_id'), 'display_name') );
 $this->app->smarty->assign('invoice_statuses',         $this->app->components->invoice->getStatuses()                                                                   );
-$this->app->smarty->assign('voucher_statuses',        $this->app->components->voucher->getStatuses()                                                                   );
+$this->app->smarty->assign('voucher_statuses',         $this->app->components->voucher->getStatuses()                                                                   );

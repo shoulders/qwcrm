@@ -64,6 +64,7 @@ tipobj.style.left="-1000px";
 tipobj.style.backgroundColor='';
 tipobj.style.width='';
 }
+return true;
 }
 
 document.onmousemove=positiontip;

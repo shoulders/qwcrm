@@ -40,6 +40,7 @@
         
         // Convert description cell into a combobox
         var combo = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][description]');
+        combo.DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][description_combobox]';        
         //combo.setSize(400);    
         combo.DOMelem_input.maxLength = 100;    
         combo.DOMelem_input.required = true;
@@ -54,7 +55,8 @@
                 
         // Unit Net Cell        
         var combo = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][unit_net]');
-        //combo.setSize(90);
+        combo.DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][unit_net_combobox]';  
+        //combo.setSize(90);        
         combo.DOMelem_input.maxLength = 10;
         combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
         combo.DOMelem_input.required = true;
@@ -66,6 +68,8 @@
             if (e.preventDefault) e.preventDefault();
                 return false;
         } );
+        
+        return iteration;
                  
     }
     
@@ -83,6 +87,65 @@
         // if htere are changes disable all buttons until the save is hit which will casue the page to realod and the falg to be removed. perhaps also grey out the buttons and add hover over messages
     }
 
+</script>
+
+<script id="labourPartsJson">
+    
+    // Get Labour and Parts items from JSON (if i put apostorphes arounf the json it turns it into a string)
+    var labourItems = {$labour_items_json};
+    var partsItems = {$parts_items_json};
+    
+    function processInvoiceItems(section, items) {
+    
+        // Fields that are submitted, not all record fields are submitted via Labour and parts
+        var recordFields = [
+            //"invoice_labour_id",
+            //"invoice_id",
+            //"tax_system",            
+            "description_combobox",
+            "unit_qty",            
+            "unit_net_combobox",
+            "sales_tax_exempt",
+            "vat_tax_code",
+            "unit_tax_rate",
+            //"unit_tax",
+            //"unit_gross",
+            "sub_total_net",
+            "sub_total_tax",
+            "sub_total_gross"];
+
+
+
+        // loop through labour items
+        $.each(items, function(recordIndex, record) {
+
+            // Create a new row to be populated and get the row identifier
+            var iteration = createNewTableRow(section);
+            
+            // Loop through the various fields and populate with their data
+            $.each(recordFields, function(fieldIndex, fieldName) {
+                
+                // Compensate for fields with a combobox by removing '_combobox' when present
+                var realName = fieldName.replace("_combobox", "");
+                   
+                // Works - Native javascript works as is or single escape, JQuery needs double escaping when special characters are used when using the functions below
+                // See - https://stackoverflow.com/questions/11873721/jquery-val-change-doesnt-change-input-value
+                $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').val(record[realName]);
+                //$('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').attr('value', record[realName]);
+                //document.getElementById('qform['+section+'_items]['+iteration+']['+fieldName+']').value = record[realName]; (this does not work for some reason)               
+
+            });
+        
+   
+
+        });
+    }
+    $(document).ready(function() {
+       processInvoiceItems('labour', labourItems);
+       processInvoiceItems('parts', partsItems);
+    });  
+    
+    
 </script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
@@ -295,67 +358,65 @@
                                                 <td class="menuhead2">&nbsp;{t}Labour{/t}</td>
                                             </tr>
                                             <tr>
-                                                <td class="menutd2">
-                                                    {if $labour_items}
-                                                        <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
-                                                            <tr class="olotd4">
-                                                                <td class="row2" style="width: 200px;"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2"><b>{t}Unit Qty{/t}</b></td>                                                            
-                                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                                    <td class="row2"  style="width: 75px;"><b>{t}Unit Net{/t}</b></td>
-                                                                {else}
-                                                                    <td class="row2"  style="width: 75px;"><b>{t}Unit Gross{/t}</b></td> 
-                                                                {/if}                                                                 
-                                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                                    <td class="row2"><b>{t}Net{/t}</b></td>
-                                                                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
-                                                                    <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                    <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
-                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2"><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>{/if} 
-                                                                {/if}
-                                                                <td class="row2"><b>{t}Gross{/t}</b></td>
-                                                                <td class="row2"><b>{t}Actions{/t}</b></td>                                                                
-                                                            </tr>
-                                                            
-                                                            <!-- Labour Items Dummy Row -->                                                            
-                                                            <tr id="labour_items_row_dummy" class="olotd4" hidden>
-                                                                <td>
-                                                                    <select id="qform[labour_items][dummy][description]" name="qform[labour_items][dummy][description]" value="" style="width: 100%" disabled>
-                                                                        {section loop=$labour_prefill_items name=i}
-                                                                            <option value="{$labour_prefill_items[i].description}">{$labour_prefill_items[i].description}</option>
-                                                                        {/section}                                                                            
-                                                                    </select>
-                                                                </td>
-                                                                <td><input id="qform[labour_items][dummy][unit_qty]" name="qform[labour_items][dummy][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
-                                                                <td>
-                                                                    <select id="qform[labour_items][dummy][unit_net]" name="qform[labour_items][dummy][unit_net]" style="width: 100%;" value="" required disabled>
+                                                <td class="menutd2">                                                    
+                                                    <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
+                                                        <tr class="olotd4">
+                                                            <td class="row2" style="width: 200px;"><b>{t}Description{/t}</b></td>
+                                                            <td class="row2"><b>{t}Unit Qty{/t}</b></td>                                                            
+                                                            {if $invoice_details.tax_system != 'no_tax'}
+                                                                <td class="row2"  style="width: 75px;"><b>{t}Unit Net{/t}</b></td>                                                                
+                                                            {else}
+                                                                <td class="row2"  style="width: 75px;"><b>{t}Unit Gross{/t}</b></td> 
+                                                            {/if}                                                                 
+                                                            {if $invoice_details.tax_system != 'no_tax'}
+                                                                <td class="row2"><b>{t}Net{/t}</b></td>
+                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                                {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2"><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>{/if} 
+                                                            {/if}
+                                                            <td class="row2"><b>{t}Gross{/t}</b></td>
+                                                            <td class="row2"><b>{t}Actions{/t}</b></td>                                                                
+                                                        </tr>
+
+                                                        <!-- Labour Items Dummy Row -->                                                            
+                                                        <tr id="labour_items_row_dummy" class="olotd4" hidden>
+                                                            <td>
+                                                                <select id="qform[labour_items][dummy][description]" name="qform[labour_items][dummy][description]" value="" style="width: 100%" disabled>
                                                                     {section loop=$labour_prefill_items name=i}
-                                                                        <option value="{$labour_prefill_items[i].unit_net}">{$labour_prefill_items[i].unit_net}</option>
-                                                                    {/section}
-                                                                </td>   
-                                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                                    <td><input id="qform[labour_items][dummy][sub_total_net]" name="qform[labour_items][dummy][sub_total_net]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
-                                                                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}
-                                                                        <td>
-                                                                            <select id="qform[labour_items][dummy][vat_tax_code]" name="qform[labour_items][dummy][vat_tax_code]" style="width: 100%; font-size: 10px;" required disabled>                                                                            
-                                                                                {section loop=$vat_tax_codes name=i}
-                                                                                    <option value="{$vat_tax_codes[i].tax_key}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
-                                                                                {/section}                                                                            
-                                                                            </select>
-                                                                        </td>                                                                               
-                                                                    {/if}
-                                                                    <td><input id="qform[labour_items][dummy][unit_tax_rate]" name="qform[labour_items][dummy][unit_tax_rate]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled>%</td>
-                                                                    <td><input id="qform[labour_items][dummy][sub_total_tax]" name="qform[labour_items][dummy][sub_total_tax]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>                                                                                                                                      
-                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}<td><input id="qform[labour_items][dummy][sales_tax_exempt]" name="qform[labour_items][dummy][sales_tax_exempt]" type="checkbox"></td>{/if}
+                                                                        <option value="{$labour_prefill_items[i].description}">{$labour_prefill_items[i].description}</option>
+                                                                    {/section}                                                                            
+                                                                </select>
+                                                            </td>
+                                                            <td><input id="qform[labour_items][dummy][unit_qty]" name="qform[labour_items][dummy][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                                            <td>
+                                                                <select id="qform[labour_items][dummy][unit_net]" name="qform[labour_items][dummy][unit_net]" style="width: 100%;" value="" required disabled>
+                                                                {section loop=$labour_prefill_items name=i}
+                                                                    <option value="{$labour_prefill_items[i].unit_net}">{$labour_prefill_items[i].unit_net}</option>
+                                                                {/section}
+                                                            </td>   
+                                                            {if $invoice_details.tax_system != 'no_tax'}
+                                                                <td><input id="qform[labour_items][dummy][sub_total_net]" name="qform[labour_items][dummy][sub_total_net]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
+                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}
+                                                                    <td>
+                                                                        <select id="qform[labour_items][dummy][vat_tax_code]" name="qform[labour_items][dummy][vat_tax_code]" style="width: 100%; font-size: 10px;" required disabled>                                                                            
+                                                                            {section loop=$vat_tax_codes name=i}
+                                                                                <option value="{$vat_tax_codes[i].tax_key}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
+                                                                            {/section}                                                                            
+                                                                        </select>
+                                                                    </td>                                                                               
                                                                 {/if}
-                                                                <td><input id="qform[labour_items][dummy][sub_total_gross]" name="qform[labour_items][dummy][sub_total_gross]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
-                                                                <td>
-                                                                    <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" onmouseover="ddrivetip('<b>Delete Labour Record</b>');" onmouseout="hideddrivetip();" onclick="return confirmChoice('Are you Sure you want to delete this Labour Record?') && $(this).parent().parent().remove();">
-                                                                </td>
-                                                            </tr>                                                            
-                                                            <!-- Labour Table Record Rows are added here -->                                                            
-                                                        </table>
-                                                    {/if}
+                                                                <td><input id="qform[labour_items][dummy][unit_tax_rate]" name="qform[labour_items][dummy][unit_tax_rate]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled>%</td>
+                                                                <td><input id="qform[labour_items][dummy][sub_total_tax]" name="qform[labour_items][dummy][sub_total_tax]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>                                                                                                                                      
+                                                                {if $invoice_details.tax_system == 'sales_tax_cash'}<td><input id="qform[labour_items][dummy][sales_tax_exempt]" name="qform[labour_items][dummy][sales_tax_exempt]" type="checkbox"></td>{/if}
+                                                            {/if}
+                                                            <td><input id="qform[labour_items][dummy][sub_total_gross]" name="qform[labour_items][dummy][sub_total_gross]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
+                                                            <td>
+                                                                <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" onmouseover="ddrivetip('<b>Delete Labour Record</b>');" onmouseout="hideddrivetip();" onclick="return hideddrivetip() && confirmChoice('Are you Sure you want to delete this Labour Record?') && $(this).parent().parent().remove();">
+                                                            </td>
+                                                        </tr>                                                            
+                                                        <!-- Labour Table Record Rows are added here -->                                                            
+                                                    </table>                                                    
                                                     {if !$display_payments}
                                                         <p>                                                                
                                                             <button type="button" onclick="createNewTableRow('labour');">{t}Add{/t}</button>                                                                
@@ -392,66 +453,64 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
-                                                    {if $labour_items}
-                                                        <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="parts_items">
-                                                            <tr class="olotd4">
-                                                                <td class="row2" style="width: 200px;"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2"><b>{t}Unit Qty{/t}</b></td>                                                            
-                                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                                    <td class="row2"  style="width: 75px;"><b>{t}Unit Net{/t}</b></td>
-                                                                {else}
-                                                                    <td class="row2"  style="width: 75px;"><b>{t}Unit Gross{/t}</b></td> 
-                                                                {/if}                                                                 
-                                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                                    <td class="row2"><b>{t}Net{/t}</b></td>
-                                                                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
-                                                                    <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                    <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
-                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2"><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>{/if} 
-                                                                {/if}
-                                                                <td class="row2"><b>{t}Gross{/t}</b></td>
-                                                                <td class="row2"><b>{t}Actions{/t}</b></td>                                                                
-                                                            </tr>
-                                                            
-                                                            <!-- Parts Items Dummy Row -->                                                            
-                                                            <tr id="parts_items_row_dummy" class="olotd4" hidden>
-                                                                <td>
-                                                                    <select id="qform[parts_items][dummy][description]" name="qform[parts_items][dummy][description]" value="" style="width: 100%" disabled>
-                                                                        {section loop=$parts_prefill_items name=i}
-                                                                            <option value="{$parts_prefill_items[i].description}">{$parts_prefill_items[i].description}</option>
-                                                                        {/section}                                                                            
-                                                                    </select>
-                                                                </td>
-                                                                <td><input id="qform[parts_items][dummy][unit_qty]" name="qform[parts_items][dummy][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
-                                                                <td>
-                                                                    <select id="qform[parts_items][dummy][unit_net]" name="qform[parts_items][dummy][unit_net]" style="width: 100%;" value="" required disabled>
+                                                    <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="parts_items">
+                                                        <tr class="olotd4">
+                                                            <td class="row2" style="width: 200px;"><b>{t}Description{/t}</b></td>
+                                                            <td class="row2"><b>{t}Unit Qty{/t}</b></td>                                                            
+                                                            {if $invoice_details.tax_system != 'no_tax'}
+                                                                <td class="row2"  style="width: 75px;"><b>{t}Unit Net{/t}</b></td>
+                                                            {else}
+                                                                <td class="row2"  style="width: 75px;"><b>{t}Unit Gross{/t}</b></td> 
+                                                            {/if}                                                                 
+                                                            {if $invoice_details.tax_system != 'no_tax'}
+                                                                <td class="row2"><b>{t}Net{/t}</b></td>
+                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                                {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2"><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>{/if} 
+                                                            {/if}
+                                                            <td class="row2"><b>{t}Gross{/t}</b></td>
+                                                            <td class="row2"><b>{t}Actions{/t}</b></td>                                                                
+                                                        </tr>
+
+                                                        <!-- Parts Items Dummy Row -->                                                            
+                                                        <tr id="parts_items_row_dummy" class="olotd4" hidden>
+                                                            <td>
+                                                                <select id="qform[parts_items][dummy][description]" name="qform[parts_items][dummy][description]" value="" style="width: 100%" disabled>
                                                                     {section loop=$parts_prefill_items name=i}
-                                                                        <option value="{$parts_prefill_items[i].unit_net}">{$parts_prefill_items[i].unit_net}</option>
-                                                                    {/section}
-                                                                </td>   
-                                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                                    <td><input id="qform[parts_items][dummy][sub_total_net]" name="qform[parts_items][dummy][sub_total_net]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
-                                                                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}
-                                                                        <td>
-                                                                            <select id="qform[parts_items][dummy][vat_tax_code]" name="qform[parts_items][dummy][vat_tax_code]" style="width: 100%; font-size: 10px;" required disabled>                                                                            
-                                                                                {section loop=$vat_tax_codes name=i}
-                                                                                    <option value="{$vat_tax_codes[i].tax_key}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
-                                                                                {/section}                                                                            
-                                                                            </select>
-                                                                        </td>                                                                               
-                                                                    {/if}
-                                                                    <td><input id="qform[parts_items][dummy][unit_tax_rate]" name="qform[parts_items][dummy][unit_tax_rate]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled>%</td>
-                                                                    <td><input id="qform[parts_items][dummy][sub_total_tax]" name="qform[parts_items][dummy][sub_total_tax]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>                                                                                                                                      
-                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}<td><input id="qform[parts_items][dummy][sales_tax_exempt]" name="qform[parts_items][dummy][sales_tax_exempt]" type="checkbox"></td>{/if}
+                                                                        <option value="{$parts_prefill_items[i].description}">{$parts_prefill_items[i].description}</option>
+                                                                    {/section}                                                                            
+                                                                </select>
+                                                            </td>
+                                                            <td><input id="qform[parts_items][dummy][unit_qty]" name="qform[parts_items][dummy][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                                            <td>
+                                                                <select id="qform[parts_items][dummy][unit_net]" name="qform[parts_items][dummy][unit_net]" style="width: 100%;" value="" required disabled>
+                                                                {section loop=$parts_prefill_items name=i}
+                                                                    <option value="{$parts_prefill_items[i].unit_net}">{$parts_prefill_items[i].unit_net}</option>
+                                                                {/section}
+                                                            </td>   
+                                                            {if $invoice_details.tax_system != 'no_tax'}
+                                                                <td><input id="qform[parts_items][dummy][sub_total_net]" name="qform[parts_items][dummy][sub_total_net]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
+                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}
+                                                                    <td>
+                                                                        <select id="qform[parts_items][dummy][vat_tax_code]" name="qform[parts_items][dummy][vat_tax_code]" style="width: 100%; font-size: 10px;" required disabled>                                                                            
+                                                                            {section loop=$vat_tax_codes name=i}
+                                                                                <option value="{$vat_tax_codes[i].tax_key}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
+                                                                            {/section}                                                                            
+                                                                        </select>
+                                                                    </td>                                                                               
                                                                 {/if}
-                                                                <td><input id="qform[parts_items][dummy][sub_total_gross]" name="qform[parts_items][dummy][sub_total_gross]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
-                                                                <td>
-                                                                    <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" onmouseover="ddrivetip('<b>Delete Parts Record</b>');" onmouseout="hideddrivetip();" onclick="return confirmChoice('Are you Sure you want to delete this Parts Record?') && $(this).parent().parent().remove();">
-                                                                </td>
-                                                            </tr>                                                            
-                                                            <!-- Parts Table Record Rows are added here -->                                                            
-                                                        </table>                                                        
-                                                    {/if}
+                                                                <td><input id="qform[parts_items][dummy][unit_tax_rate]" name="qform[parts_items][dummy][unit_tax_rate]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled>%</td>
+                                                                <td><input id="qform[parts_items][dummy][sub_total_tax]" name="qform[parts_items][dummy][sub_total_tax]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>                                                                                                                                      
+                                                                {if $invoice_details.tax_system == 'sales_tax_cash'}<td><input id="qform[parts_items][dummy][sales_tax_exempt]" name="qform[parts_items][dummy][sales_tax_exempt]" type="checkbox"></td>{/if}
+                                                            {/if}
+                                                            <td><input id="qform[parts_items][dummy][sub_total_gross]" name="qform[parts_items][dummy][sub_total_gross]" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
+                                                            <td>
+                                                                <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" onmouseover="ddrivetip('<b>Delete Parts Record</b>');" onmouseout="hideddrivetip();" onclick="return hideddrivetip() && confirmChoice('Are you Sure you want to delete this Parts Record?') && $(this).parent().parent().remove();">
+                                                            </td>
+                                                        </tr>                                                            
+                                                        <!-- Parts Table Record Rows are added here -->                                                            
+                                                    </table>                                                    
                                                     {if !$display_payments}
                                                         <p>                                                                
                                                             <button type="button" onclick="createNewTableRow('parts');">{t}Add{/t}</button>                                                                
@@ -479,26 +538,28 @@
                                     </td>
                                 </tr>
                                 
-                                <!-- Vouchers -->                                
-                                <tr>
-                                    <td>                                                
-                                        {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$display_vouchers block_title=_gettext("Vouchers")}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <table class="olotable" style="margin-top: 10px;" width="400" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
-                                            <tr style="background-color: #c3d9ea;">
-                                                <td style="text-align:right;"><b>{t}Voucher{/t} {t}Totals{/t}</b></td>
-                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                    <td width="80" align="left">{t}Net{/t}: {$currency_sym}{$voucher_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>                                                    
-                                                    <td width="80" align="left">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$voucher_items_sub_totals.sub_total_tax|string_format:"%.2f"}</td>
-                                                {/if}
-                                                <td width="80" align="left">{t}Gross{/t}: {$currency_sym}{$voucher_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
-                                            </tr>
-                                        </table>  
-                                    </td>
-                                </tr>
+                                <!-- Vouchers -->
+                                {*if $display_vouchers*}
+                                    <tr>
+                                        <td>                                                
+                                            {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$display_vouchers block_title=_gettext("Vouchers")}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table class="olotable" style="margin-top: 10px;" width="400" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
+                                                <tr style="background-color: #c3d9ea;">
+                                                    <td style="text-align:right;"><b>{t}Voucher{/t} {t}Totals{/t}</b></td>
+                                                    {if $invoice_details.tax_system != 'no_tax'}
+                                                        <td width="80" align="left">{t}Net{/t}: {$currency_sym}{$voucher_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>                                                    
+                                                        <td width="80" align="left">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$voucher_items_sub_totals.sub_total_tax|string_format:"%.2f"}</td>
+                                                    {/if}
+                                                    <td width="80" align="left">{t}Gross{/t}: {$currency_sym}{$voucher_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
+                                                </tr>
+                                            </table>  
+                                        </td>
+                                    </tr>
+                                {*/if*}
 
                                 <!-- Totals Section -->
                                 <tr>
