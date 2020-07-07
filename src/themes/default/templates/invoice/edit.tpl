@@ -72,18 +72,10 @@
         return iteration;
                  
     }
-    
-    // Populater Labour and Parts Tables with records form the database
-    function populateTables() {
-        
-        // read variable in the html
-        // labour/parts sepearate  : cycle thourhg each record and run the fucntion above to create a new row and populate it
-        // delete the erroneous variable
-    }
 
-    function oonanychange() {
+function onAnyChange() {
      
-        //when any of the input feilds are change recalculate all of the totals
+        //when any of the input fields are change recalculate all of the totals
         // if htere are changes disable all buttons until the save is hit which will casue the page to realod and the falg to be removed. perhaps also grey out the buttons and add hover over messages
     }
 
@@ -114,8 +106,6 @@
             "sub_total_tax",
             "sub_total_gross"];
 
-
-
         // loop through labour items
         $.each(items, function(recordIndex, record) {
 
@@ -140,11 +130,11 @@
 
         });
     }
+    
     $(document).ready(function() {
        processInvoiceItems('labour', labourItems);
        processInvoiceItems('parts', partsItems);
-    });  
-    
+    });   
     
 </script>
 
@@ -183,8 +173,7 @@
                                                 <td class="row2"><b>{t}Date{/t}</b></td>
                                                 <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
                                                 <td class="row2"><b>{t}Status{/t}</b></td>
-                                                <td class="row2"><b>{t}Gross{/t}</b></td>
-                                                <td class="row2"><b>{t}Balance{/t}</b></td>                                                    
+                                                <td class="row2"><b>{t}Gross{/t}</b></td>                                                                                              
                                             </tr>
                                             <tr class="olotd4">
 
@@ -233,15 +222,14 @@
                                                         {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
                                                     {/section}
                                                     {if $invoice_details.status == 'refunded'}</a>{/if}                                                    
-                                                <td>{$currency_sym}{$invoice_details.unit_gross|string_format:"%.2f"}</td>
-                                                <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>                                                
+                                                <td>{$currency_sym}{$invoice_details.unit_gross|string_format:"%.2f"}</td>                                                                                            
 
                                             </tr>                                        
                                             <tr class="olotd4">
 
                                                 <!-- Scope -->
                                                 <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
-                                                <td colspan="6">{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
+                                                <td colspan="5">{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
 
                                             </tr>
                                             <tr>
@@ -266,7 +254,7 @@
                                                 </td>
 
                                                 <!-- Company Details -->
-                                                <td colspan="3" valign="top" >
+                                                <td colspan="2" valign="top" >
                                                     <b>{t}Pay{/t}</b>
                                                     <table cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
@@ -288,7 +276,7 @@
                                             <tr>
 
                                                 <!-- Terms and Discount -->
-                                                <td colspan="8" valign="top" align="left">                                                        
+                                                <td colspan="7" valign="top" align="left">                                                        
                                                     <b>{t}TERMS{/t}:</b> {$client_details.credit_terms}<br>
                                                     <b>{t}Client Discount Rate{/t}:</b>
                                                     {if !$display_payments}

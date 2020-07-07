@@ -960,8 +960,6 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('invoice:delete_labour', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-('invoice:delete_parts', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('invoice:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('invoice:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('invoice:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
