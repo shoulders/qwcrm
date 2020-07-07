@@ -808,3 +808,15 @@ div.sdmenu div a:hover {
     background-color: #d6d8d9;
     border-color: #c6c8ca;
 }
+
+
+/* Misc */
+
+/* Make Readonly Fields Grey like disabled ones - taken from firefox */
+input[readonly] {
+    /*color: -internal-light-dark-color(graytext, rgb(170, 170, 170));
+    background-color: -internal-light-dark-color(rgb(255, 255, 255), rgb(59, 59, 59));*/
+    background-color: #f0f0f0;
+    opacity: 0.7;
+    border-color: rgba(118, 118, 118, 0.3);
+}
