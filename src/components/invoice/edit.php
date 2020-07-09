@@ -31,8 +31,8 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
 if(isset(\CMSApplication::$VAR['submit'])) {
     
     // insert the parts and labour item arrays
-    $this->app->components->invoice->insertLabourItems(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['labour_items']);
-    $this->app->components->invoice->insertPartsItems(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['parts_items']);
+    $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], 'labour', \CMSApplication::$VAR['qform']['labour_items']);
+    $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], 'parts', \CMSApplication::$VAR['qform']['parts_items']);
     
     // update and recalculate the invoice
     $this->app->components->invoice->updateStaticValues(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['date'], \CMSApplication::$VAR['qform']['due_date'], \CMSApplication::$VAR['qform']['unit_discount_rate']);    

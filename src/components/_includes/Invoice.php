@@ -80,58 +80,57 @@ defined('_QWEXEC') or die;
 
     }
 
-    #####################################
-    #     Insert Labour Items           #  // Some or all of these calculations are done on the invoice:edit page - This extra code might not be needed in the future
-    #####################################
+    ##################################### 
+    #     Insert Items                  #  // Some or all of these calculations are done on the invoice:edit page - This extra code might not be needed in the future
+    ##################################### // section = 'labour' or 'parts'
 
-    public function insertLabourItems($invoice_id, $labour_items = null) {
-
+    public function insertItems($invoice_id, $section, $items = null) {
+        
         // Get Invoice Details
         $invoice_details = $this->getRecord($invoice_id);
         
-        // Delete all labour items from the invoice to prevent duplication
-        $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
+        // Delete all items from the invoice to prevent duplication
+        $sql = "DELETE FROM ".PRFX."invoice_$section WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
         if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice's labour items from the database."));
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice's items from the database."));
         }
 
-        // Insert Labour Items into database (if any)
-        if($labour_items) {
+        // Insert Items into database (if any)
+        if($items) {
 
-            $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
+            $sql = "INSERT INTO `".PRFX."invoice_$section` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
 
-            foreach($labour_items as $labour_item) {
+            foreach($items as $item) {
 
                 // Add in missing sales tax exempt option - This prevents undefined variable errors
-                $sales_tax_exempt = isset($labour_item['sales_tax_exempt']) ? $labour_item['sales_tax_exempt'] : 0;
+                $sales_tax_exempt = isset($item['sales_tax_exempt']) ? 1 : 0;
 
                 // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
-                $vat_tax_code = isset($labour_item['vat_tax_code']) ? $labour_item['vat_tax_code'] : $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
+                $vat_tax_code = isset($item['vat_tax_code']) ? $item['vat_tax_code'] : $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
 
                 // Calculate the correct tax rate based on tax system (and exemption status)
                 if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
                 elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
-                elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($labour_item['vat_tax_code']); }
+                elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($item['vat_tax_code']); }
                 else { $unit_tax_rate = 0.00; }
 
-                // Build labour item totals based on selected TAX system
-                $labour_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $labour_item['unit_qty'], $labour_item['unit_net'], $unit_tax_rate);
+                // Build item totals based on selected TAX system
+                $item_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $item['unit_qty'], $item['unit_net'], $unit_tax_rate);
 
                 $sql .="(".
-
-                        $this->app->db->qstr( $invoice_id                         ).",".                    
-                        $this->app->db->qstr( $invoice_details['tax_system']      ).",".                    
-                        $this->app->db->qstr( $labour_item['description']         ).",".                    
-                        $this->app->db->qstr( $labour_item['unit_qty']            ).",".
-                        $this->app->db->qstr( $labour_item['unit_net']            ).",".
-                        $this->app->db->qstr( $sales_tax_exempt                   ).",".
-                        $this->app->db->qstr( $vat_tax_code                       ).",".
-                        $this->app->db->qstr( $unit_tax_rate                      ).",".
-                        $this->app->db->qstr( $labour_totals['unit_tax']          ).",".
-                        $this->app->db->qstr( $labour_totals['unit_gross']        ).",".                    
-                        $this->app->db->qstr( $labour_totals['sub_total_net']     ).",".
-                        $this->app->db->qstr( $labour_totals['sub_total_tax']     ).",".
-                        $this->app->db->qstr( $labour_totals['sub_total_gross']   )."),";
+                        $this->app->db->qstr( $invoice_id                       ).",".                    
+                        $this->app->db->qstr( $invoice_details['tax_system']    ).",".                    
+                        $this->app->db->qstr( $item['description']              ).",".                    
+                        $this->app->db->qstr( $item['unit_qty']                 ).",".
+                        $this->app->db->qstr( $item['unit_net']                 ).",".
+                        $this->app->db->qstr( $sales_tax_exempt                 ).",".
+                        $this->app->db->qstr( $vat_tax_code                     ).",".
+                        $this->app->db->qstr( $unit_tax_rate                    ).",".
+                        $this->app->db->qstr( $item_totals['unit_tax']          ).",".
+                        $this->app->db->qstr( $item_totals['unit_gross']        ).",".                    
+                        $this->app->db->qstr( $item_totals['sub_total_net']     ).",".
+                        $this->app->db->qstr( $item_totals['sub_total_tax']     ).",".
+                        $this->app->db->qstr( $item_totals['sub_total_gross']   )."),";
 
             }
 
@@ -139,7 +138,7 @@ defined('_QWEXEC') or die;
             $sql = substr($sql , 0, -1);
 
             if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert item into the database."));
             }
 
             return;
@@ -147,117 +146,6 @@ defined('_QWEXEC') or die;
         }
 
     }
-
-    #####################################
-    #     Insert Parts Items            #  // Some or all of these calculations are done on the invoice:edit page - This extra code might not be needed in the future
-    #####################################
-
-    public function insertPartsItems($invoice_id, $parts_items = null) {
-
-        // Get Invoice Details
-        $invoice_details = $this->getRecord($invoice_id); 
-        
-        // Delete all parts items from the invoice to prevent duplication
-        $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
-        if(!$rs = $this->app->db->Execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice's parts items from the database."));
-        }
-
-        // Insert Parts Items into database (if any)
-        if($parts_items) {
-
-            $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
-
-            foreach($parts_items as $parts_item) {
-
-                // Add in missing sales tax exempt option - This prevents undefined variable errors
-                $sales_tax_exempt = isset($parts_item['sales_tax_exempt']) ? $parts_item['sales_tax_exempt'] : 0;
-
-                // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
-                $vat_tax_code = isset($parts_item['vat_tax_code']) ? $parts_item['vat_tax_code'] : $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
-
-                // Calculate the correct tax rate based on tax system (and exemption status)
-                if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-                elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
-                elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($parts_item['vat_tax_code']); }
-                else { $unit_tax_rate = 0.00; }
-
-                // Build labour item totals based on selected TAX system
-                $parts_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $parts_item['unit_qty'], $parts_item['unit_net'], $unit_tax_rate);
-
-                $sql .="(".
-
-                        $this->app->db->qstr( $invoice_id                        ).",".                    
-                        $this->app->db->qstr( $invoice_details['tax_system']     ).",".                    
-                        $this->app->db->qstr( $parts_item['description']         ).",".                    
-                        $this->app->db->qstr( $parts_item['unit_qty']            ).",".
-                        $this->app->db->qstr( $parts_item['unit_net']            ).",".
-                        $this->app->db->qstr( $sales_tax_exempt                  ).",".
-                        $this->app->db->qstr( $vat_tax_code                      ).",".
-                        $this->app->db->qstr( $unit_tax_rate                     ).",".
-                        $this->app->db->qstr( $parts_totals['unit_tax']          ).",".
-                        $this->app->db->qstr( $parts_totals['unit_gross']        ).",".                    
-                        $this->app->db->qstr( $parts_totals['sub_total_net']     ).",".
-                        $this->app->db->qstr( $parts_totals['sub_total_tax']     ).",".
-                        $this->app->db->qstr( $parts_totals['sub_total_gross']   )."),";
-
-            }
-
-            // Strips off last comma as this is a joined SQL statement
-            $sql = substr($sql , 0, -1);
-
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert parts item into the database."));
-            }
-
-            return;
-
-        }
-
-    }
-
-    /*#####################################
-    #     Insert Labour Items           # // KEEP this old version for the code as a reference
-    ##################################### // This public function combines multiple arrays created by the invoice:edit page.
-
-    public function insertLabourItems($invoice_id, $descriptions, $amounts, $qtys) {
-
-        // Insert Labour Items into database (if any)
-        if($qtys > 0 ) {
-
-            $i = 1;
-
-            $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, description, amount, qty, sub_total) VALUES ";
-
-            foreach($qtys as $key) {
-
-                // Rrename $key to $qty, and then below swap $qty[$i] --> $qty - removes the error, both work
-
-                $sql .="(".
-
-                        $this->app->db->qstr( $invoice_id               ).",".                    
-                        $this->app->db->qstr( $descriptions[$i]         ).",".
-                        $this->app->db->qstr( $amounts[$i]              ).",".
-                        $this->app->db->qstr( $qtys[$i]                 ).",".
-                        $this->app->db->qstr( $qtys[$i] * $amounts[$i]  ).
-
-                        "),";
-
-                $i++;
-
-            }
-
-            // Strips off last comma as this is a joined SQL statement
-            $sql = substr($sql , 0, -1);
-
-            if(!$rs = $this->app->db->Execute($sql)) {
-                $this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
-            }
-
-        }
-
-    }
-    */
 
     #####################################
     #   insert invoice prefill item     #
@@ -1678,7 +1566,7 @@ defined('_QWEXEC') or die;
 
     }
 
-    ##################################### (are these notes still true??)
+    #####################################  // A lot of these calculations are done in the invoice:edit tpl - this is still required for when payments are made becasue of the balance field
     #   Recalculate Invoice Totals      #   ///  re-check these calcuclations as they are wrong (not much though) i should account for vouchers as if they had tax allow for development later.
     #####################################  // Vouchers are not discounted
 
