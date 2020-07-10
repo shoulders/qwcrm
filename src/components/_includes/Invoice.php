@@ -1049,41 +1049,6 @@ defined('_QWEXEC') or die;
 
     }
     
-    #####################################
-    #   Delete Labour Item              #
-    #####################################
-
-    public function deleteLabourItem($invoice_labour_id) {
-
-        $invoice_details = $this->getRecord($this->getLabourItem($invoice_labour_id, 'invoice_id'));    
-
-        $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $this->app->db->qstr($invoice_labour_id);
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice labour item."));
-        } else {
-
-            // Recalculate the invoice totals and update them
-            $this->recalculateTotals($invoice_details['invoice_id']);
-
-            // Create a Workorder History Note 
-            // not currently needed
-
-            // Log activity        
-            $record = _gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
-
-            // Update last active record
-            $this->app->components->client->updateLastActive($invoice_details['client_id']);
-            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-            $this->updateLastActive($invoice_details['invoice_id']);  
-
-            return true;
-
-        }
-
-    }    
-
     #############################################
     #   Delete an invoice's Parts Items (ALL)   #
     #############################################
@@ -1101,44 +1066,6 @@ defined('_QWEXEC') or die;
         }
 
     }
-    
-    #####################################
-    #   Delete Parts Item               #
-    #####################################
-
-    public function deletePartsItem($invoice_parts_id) {
-
-        $invoice_details = $this->getRecord($this->getPartsItem($invoice_parts_id, 'invoice_id'));  
-
-        $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $this->app->db->qstr($invoice_parts_id);
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice parts item."));
-
-        } else {
-
-            // Recalculate the invoice totals and update them
-            $this->recalculateTotals($invoice_details['invoice_id']);
-
-            // Create a Workorder History Note 
-            // not currently needed
-
-            // Log activity        
-            $record = _gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
-
-            // Update last active record
-            $this->app->components->client->updateLastActive($invoice_details['client_id']);
-            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-            $this->updateLastActive($invoice_details['invoice_id']);  
-
-            return true;
-
-        }
-
-    }
-
-
 
     #####################################
     #     delete Prefill item           #
@@ -1527,8 +1454,8 @@ defined('_QWEXEC') or die;
 
     /** Other Functions **/
 
-    ################################################
-    #   calculate an Invoice Item Sub Totals       #  // remove sales tax rate? or should i put it back to vat rate
+    ################################################  // sales tax and VAT are the same
+    #   calculate an Invoice Item Sub Totals       #  // The exact dane totals calculation is done for all, just the inputs are different
     ################################################
 
     public function calculateItemsSubtotals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
@@ -1578,8 +1505,8 @@ defined('_QWEXEC') or die;
         $parts_items_sub_totals     = $this->getPartsItemsSubtotals($invoice_id);   
         $voucher_sub_totals         = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);
 
-        $unit_discount              = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net']) * ($invoice_details['unit_discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
-        $unit_net                   = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net']) - $unit_discount;
+        $unit_discount              = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net']) * ($invoice_details['unit_discount_rate'] / 100);          // Divide by 100; turns 17.5 in to 0.17575
+        $unit_net                   = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net']) - $unit_discount;   // Vouchers are not discounted on purpose
         $unit_tax                   = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
         $unit_gross                 = $unit_net + $unit_tax;    
         $payments_sub_total         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);

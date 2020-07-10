@@ -18,42 +18,46 @@
     // Default Sales Tax Rate
     var invoiceSalesTaxRate = {$invoice_details.sales_tax_rate|string_format:"%.2f"};
     
+    // Invoice Tax System
+    var invoiceTaxSystem = '{$invoice_details.tax_system}';
+    
     // Run these functions when the DOM is ready
     $(document).ready(function() {
+        modifyDummyRowsForTaxSystem();
         processInvoiceItems('labour', labourItems);
         processInvoiceItems('parts', partsItems);       
-        refreshTotals();
-       
-       /* Setup the function to be run on an observed mutation
-        var mutationObserver = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            //console.log(mutation);
-            refreshTotals();
-            });
-        });
-
-        // Starts listening for changes in the root HTML element of the page.
-        mutationObserver.observe(document.documentElement, {
-            attributes: true,
-            characterData: true,
-            childList: true,
-            subtree: true,
-            attributeOldValue: true,
-            characterDataOldValue: true
-        });*/
-    
+        refreshTotals(true);    
     });
  
-    // Labour and Parts items JSON
+    // Change the Dummy rcords so the visible fields match the Tax System
+    function modifyDummyRowsForTaxSystem() {
+        
+        // class="dummy_item_row olotd4" hidden>
+        
+        // If the Tax system is No Tax
+        if(invoiceTaxSystem.startsWith("no_tax")) {            
+        }
+        
+        // If the Tax system is VAT based
+        if(invoiceTaxSystem.startsWith("vat_")) {
+            $(".vatTaxSystem").show();
+        }
+        
+        // If the Tax system Sales Tax based
+        if(invoiceTaxSystem.startsWith("sales_tax_cash")) {
+            $(".salesTaxSystem").show();
+        }
+        
+    }
+ 
+    // Labour and Parts items JSON (items from the database)
     var labourItems = {$labour_items_json};
     var partsItems  = {$parts_items_json};
     
-    // This uses the JSONs and populates the Labour and Parts Items
+    // Create and populate Labour and Parts item rows with sotered data from the database
     function processInvoiceItems(section, items) {
-        
-        // Consider using this page for calculations rather than doing it twice i.e. invoice.php
     
-        // Fields that are submitted, not all record fields submitted are currently used Labour and parts
+        // Fields that are submitted, not all record fields submitted are currently used in the backend
         recordFields = [
             //"invoice_labour_id",
             //"invoice_id",
@@ -70,7 +74,7 @@
             "sub_total_tax",
             "sub_total_gross"];
 
-        // loop through items
+        // Loop through section items from the database
         $.each(items, function(recordIndex, record) {
 
             // Create a new row to be populated and get the row identifier
@@ -98,10 +102,10 @@
         });
     }
     
-    // Dynamically Copy, Process and add an new Table Row
+    // Dynamically Copy, Process and add an new item row to the relevant table
     function createNewTableRow(section) {
         
-        // Get Table + info for refactoring
+        // Get Table
         var tbl = document.getElementById(section+'_items');
         
         // Get Next Row Number
@@ -111,10 +115,10 @@
         var clonedRow = $('#dummy_'+section+'_items_row_iteration').clone();
                 
         // Get the outerHTML
-        var clonedRowStr = clonedRow.prop("outerHTML");   
+        var clonedRowStr = clonedRow.prop("outerHTML");
                 
         // Refactor variables
-        clonedRowStr = clonedRowStr.replace(/ hidden/, "");
+        clonedRowStr = clonedRowStr.replace(/style="display: none;"/, "");
         clonedRowStr = clonedRowStr.replace(/ disabled/g, "");
         clonedRowStr = clonedRowStr.replace(/dummy_/g, "");
         clonedRowStr = clonedRowStr.replace(/iteration/g, iteration);        
@@ -122,7 +126,7 @@
         // Append the row to the end of the table
         $(tbl).append(clonedRowStr);
         
-        // Convert description cell into a combobox
+        // Convert Description cell into a combobox
         combo = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][description]');
         combo.DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][description_combobox]';        
         //combo.setSize(400);    
@@ -130,14 +134,17 @@
         combo.DOMelem_input.required = true;
         combo.setComboText('');
         combo.setFontSize("10px","10px");
+        combo.attachEvent("onChange", function(value, text) {
+            refreshTotals();
+        } );
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
             if(onlyAlphaNumericPunctuation(e)) { return true; }
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();
                 return false;
-        } ); 
+        } );        
                 
-        // Unit Net Cell        
+        // Convert Unit Net cell into a combobox   
         combo = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][unit_net]');
         combo.DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][unit_net_combobox]';  
         //combo.setSize(90);        
@@ -146,6 +153,9 @@
         combo.DOMelem_input.required = true;
         combo.setComboText('');
         combo.setFontSize("10px","10px");
+        combo.attachEvent("onChange", function(value, text) {
+            refreshTotals();
+        } );
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
             if(onlyNumberPeriod(e)) { return true; }
             e.cancelBubble=true;
@@ -153,15 +163,12 @@
                 return false;
         } );     
         
-        /* Event Binding */
+        // Set Vat Tax Code default value
+        $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[vat_tax_code\\]').val('{$default_vat_tax_code}');
         
-        // Extra Row Event Handlers - Based on current Tax System (not currently used - might remove */
-        {if $invoice_details.tax_system != 'no_tax'}
-            {if '/^vat_/'|preg_match:$invoice_details.tax_system}{/if}
-            {if $invoice_details.tax_system == 'sales_tax_cash'}{/if}
-        {/if}
+        /* Event Binding */
            
-        // Monitor for change in VAT Tax Code/Rate selectbox and update taz rate accordingly        
+        // Monitor for change in VAT Tax Code/Rate selectbox and update tax rate accordingly   
         $("select[id$='\\[vat_tax_code\\]']" ).off("change").on("change", function() {
             selected = $(this).find('option:selected');
             newTaxRate = selected.data('taxrate'); 
@@ -178,8 +185,7 @@
             } else {                
                 $(this).closest('tr').find("input[id$='\\[unit_tax_rate\\]']").val(parseFloat(invoiceSalesTaxRate).toFixed(2));
             }
-            refreshTotals();
-            
+            refreshTotals();            
         });
                 
         // Monitor all input boxes for changes
@@ -187,45 +193,44 @@
             refreshTotals();            
         });
         
-        // Monitor all input boxes for changes and on delete buttons
+        // Monitor all input boxes for changes
         $("input[type='text']").off("keyup").on("keyup", function() {
             refreshTotals();            
         });
         
-        // Item Delete buttons
+        // Item Delete button action
         $(".confirmDelete").off("click").on("click", function() {
-            //this.preventDefault();
             hideddrivetip();
             if(!confirmChoice('Are you Sure you want to delete this item?')) { return; }
             $(this).closest('tr').remove();
-            refreshTotals();
-                       
+            refreshTotals();                       
         });        
             
+        // Return the current row index number
         return iteration;
                  
     }
 
-    // This recalculated and then refreshes all onscreen values
-    function refreshTotals() {
+    // Recalculate and then refresh all onscreen values
+    function refreshTotals(onPageLoad = false) {
         
-        /* Calculate Individual Labour and Parts Rows */
+        /* Individual Labour and Parts Items */
         
-        // loop through rows and calculate new values
+        // Loop through item rows, calculate and refresh new values onscreen (Tax System Aware)
         $('.item_row').each(function() {
-
+            
             // Get User inputed data
             rowUnitQty      = $(this).find("input[id$='\\[unit_qty\\]']").val();
             rowUnitNet      = $(this).find("input[id$='\\[unit_net_combobox\\]']").val();
             rowUnitTaxRate  = $(this).find("input[id$='\\[unit_tax_rate\\]']").val();
-            
+                        
             // Calculate new values
             rowUnitTax          = rowUnitNet * (rowUnitTaxRate / 100);
             rowUnitGross        = rowUnitNet + rowUnitTax;
             rowSubTotalNet      = rowUnitNet * rowUnitQty;
             rowSubTotalTax      = rowSubTotalNet * (rowUnitTaxRate / 100);
             rowSubTotalGross    = rowSubTotalNet + rowSubTotalTax;
-                        
+            
             // Update values onscreen + Convert Value to 0.00 format
             rowSubTotalNet      = $(this).find("input[id$='\\[sub_total_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             rowSubTotalTax      = $(this).find("input[id$='\\[sub_total_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
@@ -235,7 +240,7 @@
 
         /* Labour and Parts SubTotals */
         
-        // Variables for Labour and Parts - do I need these ??
+        // Variables stores for Labour and Parts Sum
         labourItemsSubTotalNet      = 0.00;
         labourItemsSubTotalTax      = 0.00;
         labourItemsSubTotalGross    = 0.00;
@@ -243,7 +248,7 @@
         partsItemsSubTotalTax       = 0.00;
         partsItemsSubTotalGross     = 0.00;   
         
-        // Identifier of Values to be Totaled / Target identfier to put the result / Target variable to store the result in
+        // Identifier of values to be Totaled / Target identfier for new value / Variable store to sum values in
         totalsLabourParts = [
             ["#labour_items .item_row input[id$='\\[sub_total_net\\]']","#labour_items_sub_total_net","labourItemsSubTotalNet"],
             ["#labour_items .item_row input[id$='\\[sub_total_tax\\]']","#labour_items_sub_total_tax","labourItemsSubTotalTax"],
@@ -274,7 +279,7 @@
         vouchersTotalGross  = +$("#vouchersTotalGross").text();
                 
         // The actual calculations
-        invoiceTotalDiscount    = (labourItemsSubTotalNet + partsItemsSubTotalNet) * (invoiceDiscountRate / 100);               // divide by 100; turns 17.5 in to 0.17575
+        invoiceTotalDiscount    = (labourItemsSubTotalNet + partsItemsSubTotalNet) * (invoiceDiscountRate / 100);               // Divide by 100; turns 17.5 in to 0.17575
         invoiceTotalNet         = (labourItemsSubTotalNet + partsItemsSubTotalNet + vouchersTotalNet) - invoiceTotalDiscount;   // Vouchers are not discounted on purpose
         invoiceTotalTax         = labourItemsSubTotalTax + partsItemsSubTotalTax + vouchersTotalTax;
         invoiceTotalGross       = invoiceTotalNet + invoiceTotalTax;
@@ -288,7 +293,14 @@
         $("#invoiceTotalNet").text(parseFloat(invoiceTotalNet).toFixed(2)); 
         $("#invoiceTotalTax").text(parseFloat(invoiceTotalTax).toFixed(2)); 
         $("#invoiceTotalGross").text(parseFloat(invoiceTotalGross).toFixed(2));
-        $("#invoiceTotalGrossTop").text(parseFloat(invoiceTotalGross).toFixed(2));      // This sets the Gross at the top of the page - might not keep this
+        $("#invoiceTotalGrossTop").text(parseFloat(invoiceTotalGross).toFixed(2));
+        
+        /* Error Prevention */
+        
+        // Disable all buttons until data is saved to the database except on page load
+        if(onPageLoad !== true) {            
+            $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
+        }
 
     }
     
@@ -350,7 +362,8 @@
                                                             Calendar.setup( {
                                                                 trigger     : "date_button",
                                                                 inputField  : "date",
-                                                                dateFormat  : "{$date_format}"                                                                                            
+                                                                dateFormat  : "{$date_format}",
+                                                                onChange    : function() { refreshTotals(); }
                                                             } );                                                        
                                                         </script>
                                                     {else}
@@ -365,7 +378,8 @@
                                                            Calendar.setup({
                                                                trigger     : "due_date_button",
                                                                inputField  : "due_date",
-                                                               dateFormat  : "{$date_format}"                                                                                            
+                                                               dateFormat  : "{$date_format}",
+                                                               onChange    : function() { refreshTotals(); }
                                                            });                                                         
                                                         </script>
                                                     {else}
@@ -460,9 +474,9 @@
 
                                                     <!-- Print Buttons -->  
                                                     {if $invoice_details.unit_gross > 0 }                                                             
-                                                        <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&themeVar=print');">{t}Print HTML{/t}</button>
-                                                        <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&themeVar=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
-                                                        <button type="button" onclick="confirmChoice('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&themeVar=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
+                                                        <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&themeVar=print');">{t}Print HTML{/t}</button>
+                                                        <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&themeVar=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
+                                                        <button type="button" class="userButton" onclick="confirmChoice('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&themeVar=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
                                                         <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=client_envelope&themeVar=print');">{t}Print Client Envelope{/t}</button>                                            
                                                         <br>
                                                         <br>
@@ -475,7 +489,7 @@
 
                                                     <!-- Receive Payment Button -->
                                                     {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}                                                            
-                                                        <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                        <button type="button" class="userButton" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                     {/if}
 
                                                 </td>
@@ -505,57 +519,48 @@
                                                 <td class="menutd2">                                                    
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                         <tr class="olotd4">
-                                                            <td class="row2" style="width: 200px;"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>{t}Unit Qty{/t}</b></td>                                                            
-                                                            {if $invoice_details.tax_system != 'no_tax'}
-                                                                <td class="row2"  style="width: 75px;"><b>{t}Unit Net{/t}</b></td>                                                                
-                                                            {else}
-                                                                <td class="row2"  style="width: 75px;"><b>{t}Unit Gross{/t}</b></td> 
-                                                            {/if}                                                                 
-                                                            {if $invoice_details.tax_system != 'no_tax'}
-                                                                <td class="row2"><b>{t}Net{/t}</b></td>
-                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
-                                                                {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2"><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>{/if} 
-                                                            {/if}
-                                                            <td class="row2"><b>{t}Gross{/t}</b></td>
-                                                            <td class="row2"><b>{t}Actions{/t}</b></td>                                                                
+                                                            <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
+                                                            <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>                                                            
+                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $invoice_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if}</b></td>                                                                
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t}</b></td>
+                                                            <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                            <td class="salesTaxSystem row2"  align="right" hidden><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>
+                                                            <td class="row2" align="right"><b>{t}Gross{/t}</b></td>
+                                                            <td class="row2" align="right"><b>{t}Actions{/t}</b></td>                                                                
                                                         </tr>
 
                                                         <!-- Labour Items Dummy Row -->                                                            
-                                                        <tr id="dummy_labour_items_row_iteration" class="dummy_item_row olotd4" hidden>
-                                                            <td>
+                                                        <tr id="dummy_labour_items_row_iteration" class="dummy_item_row olotd4" style="display: none;">
+                                                            <td align="left">
                                                                 <select id="qform[labour_items][iteration][description]" name="qform[labour_items][iteration][description]" value="" style="width: 100%" disabled>
                                                                     {section loop=$labour_prefill_items name=i}
                                                                         <option value="{$labour_prefill_items[i].description}">{$labour_prefill_items[i].description}</option>
                                                                     {/section}                                                                            
                                                                 </select>
                                                             </td>
-                                                            <td><input id="qform[labour_items][iteration][unit_qty]" name="qform[labour_items][iteration][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
-                                                            <td>
-                                                                <select id="qform[labour_items][iteration][unit_net]" name="qform[labour_items][iteration][unit_net]" style="width: 100%;" value="" required disabled>
+                                                            <td align="left"><input id="qform[labour_items][iteration][unit_qty]" name="qform[labour_items][iteration][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td align="left">
+                                                                <select id="qform[labour_items][iteration][unit_net]" name="qform[labour_items][iteration][unit_net]" class="vatTaxSystem" style="width: 100%;" value="" required disabled>
                                                                 {section loop=$labour_prefill_items name=i}
                                                                     <option value="{$labour_prefill_items[i].unit_net}">{$labour_prefill_items[i].unit_net}</option>
                                                                 {/section}
-                                                            </td>   
-                                                            {if $invoice_details.tax_system != 'no_tax'}
-                                                                <td><input id="qform[labour_items][iteration][sub_total_net]" name="qform[labour_items][iteration][sub_total_net]" size="6" value="0.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
-                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}
-                                                                    <td>
-                                                                        <select id="qform[labour_items][iteration][vat_tax_code]" name="qform[labour_items][iteration][vat_tax_code]" style="width: 100%; font-size: 10px;" required disabled>                                                                            
-                                                                            {section loop=$vat_tax_codes name=i}
-                                                                                <option value="{$vat_tax_codes[i].tax_key}" data-taxrate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
-                                                                            {/section}                                                                            
-                                                                        </select>
-                                                                    </td>                                                                               
-                                                                {/if}
-                                                                <td><input id="qform[labour_items][iteration][unit_tax_rate]" name="qform[labour_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="{if $invoice_details.tax_system == 'sales_tax_cash'}{$invoice_details.sales_tax_rate|string_format:"%.2f"}{else}0.00{/if}" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled>%</td>
-                                                                <td><input id="qform[labour_items][iteration][sub_total_tax]" name="qform[labour_items][iteration][sub_total_tax]" size="6" value="0.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>                                                                                                                                      
-                                                                {if $invoice_details.tax_system == 'sales_tax_cash'}<td><input id="qform[labour_items][iteration][sales_tax_exempt]" name="qform[labour_items][iteration][sales_tax_exempt]" type="checkbox"></td>{/if}
-                                                            {/if}
-                                                            <td><input id="qform[labour_items][iteration][sub_total_gross]" name="qform[labour_items][iteration][sub_total_gross]" size="6" value="0.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
-                                                            <td>
+                                                            </td>
+                                                            <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[labour_items][iteration][sub_total_net]" name="qform[labour_items][iteration][sub_total_net]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td class="vatTaxSystem" align="right" hidden>
+                                                                <select id="qform[labour_items][iteration][vat_tax_code]" name="qform[labour_items][iteration][vat_tax_code]" value="TNA" style="width: 100%; font-size: 10px;" required disabled>                                                                            
+                                                                    <option value="TNA" data-taxrate="0.00" hidden>TNA - Not Applicable @ 0.00%</option>
+                                                                    {section loop=$vat_tax_codes name=i}
+                                                                        <option value="{$vat_tax_codes[i].tax_key}" data-taxrate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
+                                                                    {/section}                                                                            
+                                                                </select>
+                                                            </td>                                                                               
+                                                            <td class="vatTaxSystem salesTaxSystem" align="right" hidden><input id="qform[labour_items][iteration][unit_tax_rate]" name="qform[labour_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="{if $invoice_details.tax_system == 'sales_tax_cash'}{$invoice_details.sales_tax_rate|string_format:"%.2f"}{else}0.00{/if}" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);">%</td>
+                                                            <td class="vatTaxSystem salesTaxSystem" align="right" hidden><input id="qform[labour_items][iteration][sub_total_tax]" name="qform[labour_items][iteration][sub_total_tax]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>                                                                                                                                      
+                                                            <td class="salesTaxSystem" align="right" hidden><input id="qform[labour_items][iteration][sales_tax_exempt]" name="qform[labour_items][iteration][sales_tax_exempt]" type="checkbox" disabled></td>
+                                                            <td align="right"><input id="qform[labour_items][iteration][sub_total_gross]" name="qform[labour_items][iteration][sub_total_gross]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td align="right">
                                                                 <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" class="confirmDelete" onmouseover="ddrivetip('<b>Delete Labour Record</b>');" onmouseout="hideddrivetip();">
                                                             </td>
                                                         </tr>                                                            
@@ -578,10 +583,8 @@
                                         <table class="olotable" style="margin-top: 10px;" width="400" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                             <tr style="background-color: #c3d9ea;">
                                                 <td style="text-align:right;"><b>{t}Labour{/t} {t}Totals{/t}</b></td>
-                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                    <td width="80" align="left">{t}Net{/t}: {$currency_sym}<span id="labour_items_sub_total_net">0.00</span></td>                                                                            
-                                                    <td width="80" align="left">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}<span id="labour_items_sub_total_tax">0.00</sapn></td>
-                                                {/if}
+                                                <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{t}Net{/t}: {$currency_sym}<span id="labour_items_sub_total_net">0.00</span></td>                                                                            
+                                                <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}<span id="labour_items_sub_total_tax">0.00</sapn></td>
                                                 <td width="80" align="left">{t}Gross{/t}: {$currency_sym}<span id="labour_items_sub_total_gross">0.00</span></td>
                                             </tr>
                                         </table>
@@ -596,60 +599,51 @@
                                                 <td class="menuhead2">&nbsp;{t}Parts{/t}</td>
                                             </tr>
                                             <tr>
-                                                <td class="menutd2">
+                                                <td class="menutd2">                                                    
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="parts_items">
                                                         <tr class="olotd4">
-                                                            <td class="row2" style="width: 200px;"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>{t}Unit Qty{/t}</b></td>                                                            
-                                                            {if $invoice_details.tax_system != 'no_tax'}
-                                                                <td class="row2"  style="width: 75px;"><b>{t}Unit Net{/t}</b></td>
-                                                            {else}
-                                                                <td class="row2"  style="width: 75px;"><b>{t}Unit Gross{/t}</b></td> 
-                                                            {/if}                                                                 
-                                                            {if $invoice_details.tax_system != 'no_tax'}
-                                                                <td class="row2"><b>{t}Net{/t}</b></td>
-                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
-                                                                {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2"><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>{/if} 
-                                                            {/if}
-                                                            <td class="row2"><b>{t}Gross{/t}</b></td>
-                                                            <td class="row2"><b>{t}Actions{/t}</b></td>                                                                
+                                                            <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
+                                                            <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>                                                            
+                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $invoice_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if}</b></td>                                                                
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t}</b></td>
+                                                            <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                            <td class="salesTaxSystem row2"  align="right" hidden><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>
+                                                            <td class="row2" align="right"><b>{t}Gross{/t}</b></td>
+                                                            <td class="row2" align="right"><b>{t}Actions{/t}</b></td>                                                                
                                                         </tr>
 
                                                         <!-- Parts Items Dummy Row -->                                                            
-                                                        <tr id="dummy_parts_items_row_iteration" class="dummy_item_row olotd4" hidden>
-                                                            <td>
+                                                        <tr id="dummy_parts_items_row_iteration" class="dummy_item_row olotd4" style="display: none;">
+                                                            <td align="left">
                                                                 <select id="qform[parts_items][iteration][description]" name="qform[parts_items][iteration][description]" value="" style="width: 100%" disabled>
                                                                     {section loop=$parts_prefill_items name=i}
                                                                         <option value="{$parts_prefill_items[i].description}">{$parts_prefill_items[i].description}</option>
                                                                     {/section}                                                                            
                                                                 </select>
                                                             </td>
-                                                            <td><input id="qform[parts_items][iteration][unit_qty]" name="qform[parts_items][iteration][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
-                                                            <td>
-                                                                <select id="qform[parts_items][iteration][unit_net]" name="qform[parts_items][iteration][unit_net]" style="width: 100%;" value="" required disabled>
+                                                            <td align="left"><input id="qform[parts_items][iteration][unit_qty]" name="qform[parts_items][iteration][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td align="left">
+                                                                <select id="qform[parts_items][iteration][unit_net]" name="qform[parts_items][iteration][unit_net]" class="vatTaxSystem" style="width: 100%;" value="" required disabled>
                                                                 {section loop=$parts_prefill_items name=i}
                                                                     <option value="{$parts_prefill_items[i].unit_net}">{$parts_prefill_items[i].unit_net}</option>
                                                                 {/section}
-                                                            </td>   
-                                                            {if $invoice_details.tax_system != 'no_tax'}
-                                                                <td><input id="qform[parts_items][iteration][sub_total_net]" name="qform[parts_items][iteration][sub_total_net]" size="6" value="0.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
-                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}
-                                                                    <td>
-                                                                        <select id="qform[parts_items][iteration][vat_tax_code]" name="qform[parts_items][iteration][vat_tax_code]" style="width: 100%; font-size: 10px;" required disabled>                                                                            
-                                                                            {section loop=$vat_tax_codes name=i}
-                                                                                <option value="{$vat_tax_codes[i].tax_key}" data-taxrate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
-                                                                            {/section}                                                                            
-                                                                        </select>
-                                                                    </td>                                                                               
-                                                                {/if}
-                                                                <td><input id="qform[parts_items][iteration][unit_tax_rate]" name="qform[parts_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="{if $invoice_details.tax_system == 'sales_tax_cash'}{$invoice_details.sales_tax_rate|string_format:"%.2f"}{else}0.00{/if}" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled>%</td>
-                                                                <td><input id="qform[parts_items][iteration][sub_total_tax]" name="qform[parts_items][iteration][sub_total_tax]" size="6" value="0.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>                                                                                                                                      
-                                                                {if $invoice_details.tax_system == 'sales_tax_cash'}<td><input id="qform[parts_items][iteration][sales_tax_exempt]" name="qform[parts_items][iteration][sales_tax_exempt]" type="checkbox"></td>{/if}
-                                                            {/if}
-                                                            <td><input id="qform[parts_items][iteration][sub_total_gross]" name="qform[parts_items][iteration][sub_total_gross]" size="6" value="0.00" type="text" maxlength="6" required onkeydown="return onlyNumberPeriod(event);" readonly disabled></td>
-                                                            <td>
+                                                            </td>
+                                                            <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[parts_items][iteration][sub_total_net]" name="qform[parts_items][iteration][sub_total_net]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td class="vatTaxSystem" align="right" hidden>
+                                                                <select id="qform[parts_items][iteration][vat_tax_code]" name="qform[parts_items][iteration][vat_tax_code]" value="TNA" style="width: 100%; font-size: 10px;" required disabled>                                                                            
+                                                                    <option value="TNA" data-taxrate="0.00" hidden>TNA - Not Applicable @ 0.00%</option>
+                                                                    {section loop=$vat_tax_codes name=i}
+                                                                        <option value="{$vat_tax_codes[i].tax_key}" data-taxrate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
+                                                                    {/section}                                                                            
+                                                                </select>
+                                                            </td>                                                                               
+                                                            <td class="vatTaxSystem salesTaxSystem" align="right" hidden><input id="qform[parts_items][iteration][unit_tax_rate]" name="qform[parts_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="{if $invoice_details.tax_system == 'sales_tax_cash'}{$invoice_details.sales_tax_rate|string_format:"%.2f"}{else}0.00{/if}" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);">%</td>
+                                                            <td class="vatTaxSystem salesTaxSystem" align="right" hidden><input id="qform[parts_items][iteration][sub_total_tax]" name="qform[parts_items][iteration][sub_total_tax]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>                                                                                                                                      
+                                                            <td class="salesTaxSystem" align="right" hidden><input id="qform[parts_items][iteration][sales_tax_exempt]" name="qform[parts_items][iteration][sales_tax_exempt]" type="checkbox" disabled></td>
+                                                            <td align="right"><input id="qform[parts_items][iteration][sub_total_gross]" name="qform[parts_items][iteration][sub_total_gross]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td align="right">
                                                                 <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" class="confirmDelete" onmouseover="ddrivetip('<b>Delete Parts Record</b>');" onmouseout="hideddrivetip();">
                                                             </td>
                                                         </tr>                                                            
@@ -665,20 +659,18 @@
                                         </table>
                                     </td>
                                 </tr>
-                                    
+                                
                                 <!-- Parts Sub Totals -->
                                 <tr>
-                                    <td>                                            
+                                    <td>
                                         <table class="olotable" style="margin-top: 10px;" width="400" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                             <tr style="background-color: #c3d9ea;">
                                                 <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
-                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                    <td width="80" align="left">{t}Net{/t}: {$currency_sym}<span id="parts_items_sub_total_net">0.00</span></td>                                                                            
-                                                    <td width="80" align="left">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}<span id="parts_items_sub_total_tax">0.00</span></td>
-                                                {/if}
+                                                <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{t}Net{/t}: {$currency_sym}<span id="parts_items_sub_total_net">0.00</span></td>                                                                            
+                                                <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}<span id="parts_items_sub_total_tax">0.00</sapn></td>
                                                 <td width="80" align="left">{t}Gross{/t}: {$currency_sym}<span id="parts_items_sub_total_gross">0.00</span></td>
                                             </tr>
-                                        </table>                                            
+                                        </table>
                                     </td>
                                 </tr>
                                 
@@ -694,10 +686,8 @@
                                             <table class="olotable" style="margin-top: 10px;" width="400" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                                 <tr style="background-color: #c3d9ea;">
                                                     <td style="text-align:right;"><b>{t}Voucher{/t} {t}Totals{/t}</b></td>
-                                                    {if $invoice_details.tax_system != 'no_tax'}
-                                                        <td width="80" align="left">{t}Net{/t}: {$currency_sym}<span id="vouchersTotalNet">{$voucher_items_sub_totals.sub_total_net|string_format:"%.2f"}</span></td>                                                    
-                                                        <td width="80" align="left">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}<span id="vouchersTotalTax">{$voucher_items_sub_totals.sub_total_tax|string_format:"%.2f"}</span></td>
-                                                    {/if}
+                                                    <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{t}Net{/t}: {$currency_sym}<span id="vouchersTotalNet">{$voucher_items_sub_totals.sub_total_net|string_format:"%.2f"}</span></td>                                                    
+                                                    <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}<span id="vouchersTotalTax">{$voucher_items_sub_totals.sub_total_tax|string_format:"%.2f"}</span></td>
                                                     <td width="80" align="left">{t}Gross{/t}: {$currency_sym}<span id="vouchersTotalGross">{$voucher_items_sub_totals.sub_total_gross|string_format:"%.2f"}</span></td>
                                                 </tr>
                                             </table>  
@@ -733,17 +723,15 @@
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}<span id="invoiceTotalVouchersTotalNet">0.00</span></td>
-                                                                    </tr> 
-                                                                    {if $invoice_details.tax_system != 'no_tax'}
-                                                                        <tr>
-                                                                            <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
-                                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}<span id="invoiceTotalNet">0.00</span></td>
-                                                                        </tr>                                                                    
-                                                                        <tr>                                                            
-                                                                            <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$invoice_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
-                                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}<span id="invoiceTotalTax">0.00</span></td>                                                            
-                                                                        </tr>
-                                                                    {/if}                                                                     
+                                                                    </tr>                                                                   
+                                                                    <tr class="vatTaxSystem salesTaxSystem" hidden>
+                                                                        <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
+                                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}<span id="invoiceTotalNet">0.00</span></td>
+                                                                    </tr>                                                                    
+                                                                    <tr class="vatTaxSystem salesTaxSystem" hidden>                                                           
+                                                                        <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$invoice_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
+                                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}<span id="invoiceTotalTax">0.00</span></td>                                                            
+                                                                    </tr>                                                                                                                                       
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}<span id="invoiceTotalGross">0.00</span></td>
