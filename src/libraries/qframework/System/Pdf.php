@@ -105,8 +105,8 @@ class Pdf extends System {
         {
             try
             {
-                // Output the PDF to the browser
-                $this->mpdf->Output($pdf_filename.'.pdf', 'I');
+                // Output the PDF to the browser (.pdf has been added downstream)
+                $this->mpdf->Output($pdf_filename, 'I');
             }
             
             catch (\Mpdf\MpdfException $e)
