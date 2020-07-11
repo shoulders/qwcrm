@@ -561,7 +561,7 @@
                                                             <td class="salesTaxSystem" align="right" hidden><input id="qform[labour_items][iteration][sales_tax_exempt]" name="qform[labour_items][iteration][sales_tax_exempt]" type="checkbox" disabled></td>
                                                             <td align="right"><input id="qform[labour_items][iteration][sub_total_gross]" name="qform[labour_items][iteration][sub_total_gross]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td align="right">
-                                                                <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" class="confirmDelete" onmouseover="ddrivetip('<b>Delete Labour Record</b>');" onmouseout="hideddrivetip();">
+                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" class="confirmDelete" onmouseover="ddrivetip('<b>Delete Labour Record</b>');" onmouseout="hideddrivetip();">
                                                             </td>
                                                         </tr>                                                            
                                                         <!-- Labour Table Record Rows are added here -->                                                            
@@ -644,7 +644,7 @@
                                                             <td class="salesTaxSystem" align="right" hidden><input id="qform[parts_items][iteration][sales_tax_exempt]" name="qform[parts_items][iteration][sales_tax_exempt]" type="checkbox" disabled></td>
                                                             <td align="right"><input id="qform[parts_items][iteration][sub_total_gross]" name="qform[parts_items][iteration][sub_total_gross]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td align="right">
-                                                                <img src="/projects/qwcrm/src/themes/default/images/icons/delete.gif" alt="" border="0" height="14" width="14" class="confirmDelete" onmouseover="ddrivetip('<b>Delete Parts Record</b>');" onmouseout="hideddrivetip();">
+                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" class="confirmDelete" onmouseover="ddrivetip('<b>Delete Parts Record</b>');" onmouseout="hideddrivetip();">
                                                             </td>
                                                         </tr>                                                            
                                                         <!-- Parts Table Record Rows are added here -->                                                            
