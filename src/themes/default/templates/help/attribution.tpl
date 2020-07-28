@@ -41,7 +41,7 @@
         <li>Default Template</li>
         
         <li>TinyMCE | 4.7.10 (2018-04-03) | LGPL v2.1 (or later)</li>
-        <li>DHTMLXCombo | v50 Standard | GPL v2 (or later)</li>
+        <li>DHTMLXCombo | v5.1.0 Standard (2020-07-11) | GPL v2 (or later)</li>
         <li>JQuery | v3.1.1 | jquery.org/license | https://jquery.com/ | jQuery is a fast, small, and feature-rich JavaScript library.</li>        
         <li>Slashdot Menu (SDMenu) | (2007-03-22) | no license specified, but seems free | http://dynamicdrive.com/dynamicindex1/slashdot.htm</li>
         <li>Cool DHMTL Tooltip | (04-12-16) | Dynamic Drive License http://www.dynamicdrive.com/notice.htm | http://www.dynamicdrive.com/dynamicindex5/dhtmltooltip.htm </li>

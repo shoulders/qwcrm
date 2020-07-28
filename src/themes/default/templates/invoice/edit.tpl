@@ -10,29 +10,39 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
+<script src="{$theme_js_dir}dhtmlxcommon.js"></script>
 <script src="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.js"></script>
-<link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/fonts/font_roboto/roboto.css"/>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.css">
 <script>
+    
+    // Page Building Flag
+    var pageBuilding = true;
     
     // Default Sales Tax Rate
     var invoiceSalesTaxRate = {$invoice_details.sales_tax_rate|string_format:"%.2f"};
     
     // Invoice Tax System
-    var invoiceTaxSystem = '{$invoice_details.tax_system}';
+    var invoiceTaxSystem = '{$invoice_details.tax_system}';    
+     
+    // Labour and Parts items JSON (items from the database)
+    var labourItems = {$labour_items_json};
+    var partsItems  = {$parts_items_json};    
     
     // Run these functions when the DOM is ready
     $(document).ready(function() {
+        
         modifyDummyRowsForTaxSystem();
-        processInvoiceItems('labour', labourItems);
-        processInvoiceItems('parts', partsItems);       
-        refreshTotals(true);    
+        processInvoiceItemsFromDatabase('labour', labourItems);
+        processInvoiceItemsFromDatabase('parts', partsItems);       
+        refreshTotals();
+            
+        // Page Building has now completed
+        pageBuilding = false;
+        
     });
  
     // Change the Dummy rcords so the visible fields match the Tax System
     function modifyDummyRowsForTaxSystem() {
-        
-        // class="dummy_item_row olotd4" hidden>
         
         // If the Tax system is No Tax
         if(invoiceTaxSystem.startsWith("no_tax")) {            
@@ -49,22 +59,18 @@
         }
         
     }
- 
-    // Labour and Parts items JSON (items from the database)
-    var labourItems = {$labour_items_json};
-    var partsItems  = {$parts_items_json};
-    
+
     // Create and populate Labour and Parts item rows with sotered data from the database
-    function processInvoiceItems(section, items) {
+    function processInvoiceItemsFromDatabase(section, items) {
     
-        // Fields that are submitted, not all record fields submitted are currently used in the backend
-        recordFields = [
+        // Form Fields that are submitted, not all item fields submitted are currently used in the backend
+        fieldNames = [
             //"invoice_labour_id",
             //"invoice_id",
             //"tax_system",            
-            "description_combobox",
+            "description",
             "unit_qty",            
-            "unit_net_combobox",
+            "unit_net",
             "sales_tax_exempt",
             "vat_tax_code",
             "unit_tax_rate",
@@ -75,31 +81,41 @@
             "sub_total_gross"];
 
         // Loop through section items from the database
-        $.each(items, function(recordIndex, record) {
+        $.each(items, function(itemIndex, item) {
 
             // Create a new row to be populated and get the row identifier
             iteration = createNewTableRow(section);
             
             // Loop through the various fields and populate with their data
-            $.each(recordFields, function(fieldIndex, fieldName) {
+            $.each(fieldNames, function(fieldIndex, fieldName) {
                 
                 // If it is a checkbox
                 if(fieldName == "sales_tax_exempt") {
-                    if(record[fieldName] === '1') {
+                    if(item[fieldName] === '1') {
                         $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').prop('checked', true);
                     }
-                } else {                
-                    // Compensate for fields with a combobox by removing '_combobox' when present
-                    realName = fieldName.replace("_combobox", "");
-                   
+                
+                // If it is a Combobox
+                } else if(fieldName === "description" || fieldName === "unit_net") {
+                    
+                    // Build the Combobox identifier
+                    let comboboxInputName = fieldName.replace("_", "")+'Combobox';
+                    
+                    // Update Combobox text value using it's API to prevent a change trigger                    
+                    // If you change a combobox <option> with Javascript after the comobobox is initiated the the "onChange" and "onSelectionChange" are fired on the first mouse click on <body> (see _doOnBodyMouseDown())
+                    window[section+iteration+comboboxInputName].setComboText(item[fieldName]);
+                                    
+                // Standard Input Value
+                } else {
                     // Update field value
-                    $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').val(record[realName]);
-                    //$('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').attr('value', record[realName]);
-                    //document.getElementById('qform['+section+'_items]['+iteration+']['+fieldName+']').value = record[realName]; (this does not work for some reason)                
+                    $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').val(item[fieldName]);
+                    //$('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').attr('value', item[fieldName]);
+                    //document.getElementById('qform['+section+'_items]['+iteration+']['+fieldName+']').value = item[fieldName]; (this does not work for some reason)                
                 }
             });
 
-        });
+        });        
+
     }
     
     // Dynamically Copy, Process and add an new item row to the relevant table
@@ -127,36 +143,38 @@
         $(tbl).append(clonedRowStr);
         
         // Convert Description cell into a combobox
-        combo = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][description]');
-        combo.DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][description_combobox]';        
-        //combo.setSize(400);    
-        combo.DOMelem_input.maxLength = 100;    
-        combo.DOMelem_input.required = true;
-        combo.setComboText('');
-        combo.setFontSize("10px","10px");
-        combo.attachEvent("onChange", function(value, text) {
-            refreshTotals();
-        } );
-        dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
+        window[section+iteration+'descriptionCombobox'] = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][description]');
+        
+        // Set Combobox Options
+        window[section+iteration+'descriptionCombobox'].DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][description_combobox]';        
+        //window[section+iteration+'descriptionCombobox'].setSize(400);    
+        window[section+iteration+'descriptionCombobox'].DOMelem_input.maxLength = 100;    
+        window[section+iteration+'descriptionCombobox'].DOMelem_input.required = true;
+        window[section+iteration+'descriptionCombobox'].setComboText('');
+        window[section+iteration+'descriptionCombobox'].setFontSize("10px","10px");
+        window[section+iteration+'descriptionCombobox'].attachEvent("onChange", function(value, text) { refreshTotals(); } );
+        window[section+iteration+'descriptionCombobox'].attachEvent("onSelectionChange", function() { refreshTotals(); } );  
+        dhtmlxEvent(window[section+iteration+'descriptionCombobox'].DOMelem_input, "keypress", function(e) {
             if(onlyAlphaNumericPunctuation(e)) { return true; }
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();
                 return false;
         } );        
                 
-        // Convert Unit Net cell into a combobox   
-        combo = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][unit_net]');
-        combo.DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][unit_net_combobox]';  
-        //combo.setSize(90);        
-        combo.DOMelem_input.maxLength = 10;
-        combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
-        combo.DOMelem_input.required = true;
-        combo.setComboText('');
-        combo.setFontSize("10px","10px");
-        combo.attachEvent("onChange", function(value, text) {
-            refreshTotals();
-        } );
-        dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
+        // Convert Unit Net cell into a combobox
+        window[section+iteration+'unitnetCombobox'] = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][unit_net]');
+        
+        // Set Combobox Options
+        window[section+iteration+'unitnetCombobox'].DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][unit_net_combobox]';  
+        //window[section+iteration+'unitnetCombobox'].setSize(90);        
+        window[section+iteration+'unitnetCombobox'].DOMelem_input.maxLength = 10;
+        window[section+iteration+'unitnetCombobox'].DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
+        window[section+iteration+'unitnetCombobox'].DOMelem_input.required = true;
+        window[section+iteration+'unitnetCombobox'].setComboText('');
+        window[section+iteration+'unitnetCombobox'].setFontSize("10px","10px");
+        window[section+iteration+'unitnetCombobox'].attachEvent("onChange", function(value, text) { refreshTotals(); } );
+        window[section+iteration+'unitnetCombobox'].attachEvent("onSelectionChange", function() { refreshTotals(); } );  
+        dhtmlxEvent(window[section+iteration+'unitnetCombobox'].DOMelem_input, "keypress", function(e) {
             if(onlyNumberPeriod(e)) { return true; }
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();
@@ -166,7 +184,7 @@
         // Set Vat Tax Code default value
         $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[vat_tax_code\\]').val('{$default_vat_tax_code}');
         
-        /* Event Binding */
+        /* Event Binding - Refreshes All Rows*/
            
         // Monitor for change in VAT Tax Code/Rate selectbox and update tax rate accordingly   
         $("select[id$='\\[vat_tax_code\\]']" ).off("change").on("change", function() {
@@ -204,7 +222,12 @@
             if(!confirmChoice('Are you Sure you want to delete this item?')) { return; }
             $(this).closest('tr').remove();
             refreshTotals();                       
-        });        
+        });   
+        
+        // Disable all buttons until data is saved to the database except on page build
+        if(pageBuilding === false) {            
+            $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
+        }
             
         // Return the current row index number
         return iteration;
@@ -212,7 +235,7 @@
     }
 
     // Recalculate and then refresh all onscreen values
-    function refreshTotals(onPageLoad = false) {
+    function refreshTotals() {
         
         /* Individual Labour and Parts Items */
         
@@ -297,8 +320,8 @@
         
         /* Error Prevention */
         
-        // Disable all buttons until data is saved to the database except on page load
-        if(onPageLoad !== true) {            
+        // Disable all buttons until data is saved to the database except on page build
+        if(pageBuilding === false) {            
             $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
         }
 
