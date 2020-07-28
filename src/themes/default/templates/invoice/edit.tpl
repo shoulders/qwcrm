@@ -34,7 +34,7 @@
         modifyDummyRowsForTaxSystem();
         processInvoiceItemsFromDatabase('labour', labourItems);
         processInvoiceItemsFromDatabase('parts', partsItems);       
-        refreshTotals();
+        refreshPage();
             
         // Page Building has now completed
         pageBuilding = false;
@@ -152,8 +152,8 @@
         window[section+iteration+'descriptionCombobox'].DOMelem_input.required = true;
         window[section+iteration+'descriptionCombobox'].setComboText('');
         window[section+iteration+'descriptionCombobox'].setFontSize("10px","10px");
-        window[section+iteration+'descriptionCombobox'].attachEvent("onChange", function(value, text) { refreshTotals(); } );
-        window[section+iteration+'descriptionCombobox'].attachEvent("onSelectionChange", function() { refreshTotals(); } );  
+        window[section+iteration+'descriptionCombobox'].attachEvent("onChange", function(value, text) { refreshPage(); } );
+        window[section+iteration+'descriptionCombobox'].attachEvent("onSelectionChange", function() { refreshPage(); } );  
         dhtmlxEvent(window[section+iteration+'descriptionCombobox'].DOMelem_input, "keypress", function(e) {
             if(onlyAlphaNumericPunctuation(e)) { return true; }
             e.cancelBubble=true;
@@ -172,8 +172,8 @@
         window[section+iteration+'unitnetCombobox'].DOMelem_input.required = true;
         window[section+iteration+'unitnetCombobox'].setComboText('');
         window[section+iteration+'unitnetCombobox'].setFontSize("10px","10px");
-        window[section+iteration+'unitnetCombobox'].attachEvent("onChange", function(value, text) { refreshTotals(); } );
-        window[section+iteration+'unitnetCombobox'].attachEvent("onSelectionChange", function() { refreshTotals(); } );  
+        window[section+iteration+'unitnetCombobox'].attachEvent("onChange", function(value, text) { refreshPage(); } );
+        window[section+iteration+'unitnetCombobox'].attachEvent("onSelectionChange", function() { refreshPage(); } );  
         dhtmlxEvent(window[section+iteration+'unitnetCombobox'].DOMelem_input, "keypress", function(e) {
             if(onlyNumberPeriod(e)) { return true; }
             e.cancelBubble=true;
@@ -184,14 +184,21 @@
         // Set Vat Tax Code default value
         $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[vat_tax_code\\]').val('{$default_vat_tax_code}');
         
-        /* Event Binding - Refreshes All Rows*/
+        // Update the intial Tax Rate to match the intial VAT Tax Code (Only if the Tax system is VAT based)        
+        if(invoiceTaxSystem.startsWith("vat_")) {
+            let selected = $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[vat_tax_code\\]').find('option:selected');
+            let newTaxRate = selected.data('taxrate');
+            $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[unit_tax_rate\\]').val(parseFloat(newTaxRate).toFixed(2));
+        }
+        
+        /* Event Binding - Refreshes All Rows */
            
         // Monitor for change in VAT Tax Code/Rate selectbox and update tax rate accordingly   
         $("select[id$='\\[vat_tax_code\\]']" ).off("change").on("change", function() {
-            selected = $(this).find('option:selected');
-            newTaxRate = selected.data('taxrate'); 
+            let selected = $(this).find('option:selected');
+            let newTaxRate = selected.data('taxrate'); 
             $(this).closest('tr').find("input[id$='\\[unit_tax_rate\\]']").val(parseFloat(newTaxRate).toFixed(2));            
-            refreshTotals();            
+            refreshPage();            
         });
         
         // Monitor Sales Tax Exempt Checkboxes for click
@@ -203,17 +210,17 @@
             } else {                
                 $(this).closest('tr').find("input[id$='\\[unit_tax_rate\\]']").val(parseFloat(invoiceSalesTaxRate).toFixed(2));
             }
-            refreshTotals();            
+            refreshPage();            
         });
                 
         // Monitor all input boxes for changes
         $("input[type='text']").off("change").on("change", function() {
-            refreshTotals();            
+            refreshPage();            
         });
         
         // Monitor all input boxes for changes
         $("input[type='text']").off("keyup").on("keyup", function() {
-            refreshTotals();            
+            refreshPage();            
         });
         
         // Item Delete button action
@@ -221,20 +228,33 @@
             hideddrivetip();
             if(!confirmChoice('Are you Sure you want to delete this item?')) { return; }
             $(this).closest('tr').remove();
-            refreshTotals();                       
+            refreshPage();                       
         });   
         
-        // Disable all buttons until data is saved to the database except on page build
-        if(pageBuilding === false) {            
-            $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
-        }
+        /* Cleaning Up */
+        
+        // Refresh the page
+        refreshPage();
             
         // Return the current row index number
         return iteration;
                  
     }
 
-    // Recalculate and then refresh all onscreen values
+    // Refresh all dynamic items onscreen
+    function refreshPage() {
+        
+        // Refresh Invoice Totals
+        refreshTotals();
+        
+        // Disable all buttons on page refresh unless on initial page build
+        if(pageBuilding === false) {            
+            $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
+        }
+        
+    }
+
+    // Recalculate and then refresh all onscreen invoice totals
     function refreshTotals() {
         
         /* Individual Labour and Parts Items */
@@ -317,13 +337,6 @@
         $("#invoiceTotalTax").text(parseFloat(invoiceTotalTax).toFixed(2)); 
         $("#invoiceTotalGross").text(parseFloat(invoiceTotalGross).toFixed(2));
         $("#invoiceTotalGrossTop").text(parseFloat(invoiceTotalGross).toFixed(2));
-        
-        /* Error Prevention */
-        
-        // Disable all buttons until data is saved to the database except on page build
-        if(pageBuilding === false) {            
-            $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
-        }
 
     }
     
@@ -386,7 +399,7 @@
                                                                 trigger     : "date_button",
                                                                 inputField  : "date",
                                                                 dateFormat  : "{$date_format}",
-                                                                onChange    : function() { refreshTotals(); }
+                                                                onChange    : function() { refreshPage(); }
                                                             } );                                                        
                                                         </script>
                                                     {else}
@@ -402,7 +415,7 @@
                                                                trigger     : "due_date_button",
                                                                inputField  : "due_date",
                                                                dateFormat  : "{$date_format}",
-                                                               onChange    : function() { refreshTotals(); }
+                                                               onChange    : function() { refreshPage(); }
                                                            });                                                         
                                                         </script>
                                                     {else}
