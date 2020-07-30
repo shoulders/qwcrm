@@ -270,7 +270,7 @@
                                             <td></td>
                                             <td>
                                                 <input id="direct_debit_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
-                                                <button type="button" id="bank_transfer_date_button">+</button>
+                                                <button type="button" id="direct_debit_date_button">+</button>
                                                 <script>                                                        
                                                     Calendar.setup( {
                                                         trigger     : "direct_debit_date_button",
@@ -348,8 +348,8 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="cash_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
-                                                <button type="button" id="cash_date_button">+</button>
+                                                <input id="other_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <button type="button" id="other_date_button">+</button>
                                                 <script>                                                        
                                                     Calendar.setup( {
                                                         trigger     : "other_date_button",
