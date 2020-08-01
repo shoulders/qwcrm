@@ -18,6 +18,9 @@
     // Page Building Flag
     var pageBuilding = true;
     
+    // Key pressed Boolean - Allow me to determine if action was started by a mouse click or typing
+    var keyPressed = false;
+    
     // Default Sales Tax Rate
     var invoiceSalesTaxRate = {$invoice_details.sales_tax_rate|string_format:"%.2f"};
     
@@ -96,7 +99,7 @@
                     }
                 
                 // If it is a Combobox
-                } else if(fieldName === "description" || fieldName === "unit_net") {
+                } else if(fieldName === "description") {
                     
                     // Build the Combobox identifier
                     let comboboxInputName = fieldName.replace("_", "")+'Combobox';
@@ -145,41 +148,38 @@
         // Convert Description cell into a combobox
         window[section+iteration+'descriptionCombobox'] = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][description]');
         
-        // Set Combobox Options
+        // Set Combobox Options - https://docs.dhtmlx.com/api__refs__dhtmlxcombo.html    
         window[section+iteration+'descriptionCombobox'].DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][description_combobox]';        
         //window[section+iteration+'descriptionCombobox'].setSize(400);    
         window[section+iteration+'descriptionCombobox'].DOMelem_input.maxLength = 100;    
         window[section+iteration+'descriptionCombobox'].DOMelem_input.required = true;
         window[section+iteration+'descriptionCombobox'].setComboText('');
-        window[section+iteration+'descriptionCombobox'].setFontSize("10px","10px");
-        window[section+iteration+'descriptionCombobox'].attachEvent("onChange", function(value, text) { refreshPage(); } );
-        window[section+iteration+'descriptionCombobox'].attachEvent("onSelectionChange", function() { refreshPage(); } );  
+        window[section+iteration+'descriptionCombobox'].setFontSize("10px","10px");        
         dhtmlxEvent(window[section+iteration+'descriptionCombobox'].DOMelem_input, "keypress", function(e) {
+            // This uses Suite API - https://docs.dhtmlx.com/event__index.html
+            keyPressed = true;    
             if(onlyAlphaNumericPunctuation(e)) { return true; }
-            e.cancelBubble=true;
+            e.cancelBubble = true;
             if (e.preventDefault) e.preventDefault();
-                return false;
-        } );        
-                
-        // Convert Unit Net cell into a combobox
-        window[section+iteration+'unitnetCombobox'] = dhtmlXComboFromSelect('qform['+section+'_items]['+iteration+'][unit_net]');
+            return false;
+        } );
+        //window[section+iteration+'descriptionCombobox'].attachEvent("keypress", function(e) { /* Does not Work with keypress */ } ); 
+        //window[section+iteration+'descriptionCombobox'].attachEvent("onSelectionChange", function() { /* this does not really do what I want */ } );
+        window[section+iteration+'descriptionCombobox'].attachEvent("onChange", function(value, text) {
+            
+            // Set Unit Net default with the prefill's value (pulled from the Dummy row because dhtmlxcombo does not support data-values)
+            if(keyPressed != true) {
+                let matchingOption = $('#qform\\['+section+'_items\\]\\[iteration\\]\\[description\\]').find('option[value="'+window[section+iteration+'descriptionCombobox'].getComboText()+'"]');
+                let unitNet = matchingOption.data('unit-net');
+                if(unitNet != null) { $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[unit_net\\]').val(parseFloat(unitNet).toFixed(2)); }
+            }
+                    
+            // Reset the keyPessed Boolean as it has now been called and used
+            keyPressed = false;
         
-        // Set Combobox Options
-        window[section+iteration+'unitnetCombobox'].DOMelem_input.id = 'qform['+section+'_items]['+iteration+'][unit_net_combobox]';  
-        //window[section+iteration+'unitnetCombobox'].setSize(90);        
-        window[section+iteration+'unitnetCombobox'].DOMelem_input.maxLength = 10;
-        window[section+iteration+'unitnetCombobox'].DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
-        window[section+iteration+'unitnetCombobox'].DOMelem_input.required = true;
-        window[section+iteration+'unitnetCombobox'].setComboText('');
-        window[section+iteration+'unitnetCombobox'].setFontSize("10px","10px");
-        window[section+iteration+'unitnetCombobox'].attachEvent("onChange", function(value, text) { refreshPage(); } );
-        window[section+iteration+'unitnetCombobox'].attachEvent("onSelectionChange", function() { refreshPage(); } );  
-        dhtmlxEvent(window[section+iteration+'unitnetCombobox'].DOMelem_input, "keypress", function(e) {
-            if(onlyNumberPeriod(e)) { return true; }
-            e.cancelBubble=true;
-            if (e.preventDefault) e.preventDefault();
-                return false;
-        } );     
+            refreshPage();
+            
+        } );        
         
         // Set Vat Tax Code default value
         $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[vat_tax_code\\]').val('{$default_vat_tax_code}');
@@ -187,7 +187,7 @@
         // Update the intial Tax Rate to match the intial VAT Tax Code (Only if the Tax system is VAT based)        
         if(invoiceTaxSystem.startsWith("vat_")) {
             let selected = $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[vat_tax_code\\]').find('option:selected');
-            let newTaxRate = selected.data('taxrate');
+            let newTaxRate = selected.data('tax-rate');
             $('#qform\\['+section+'_items\\]\\['+iteration+'\\]\\[unit_tax_rate\\]').val(parseFloat(newTaxRate).toFixed(2));
         }
         
@@ -196,7 +196,7 @@
         // Monitor for change in VAT Tax Code/Rate selectbox and update tax rate accordingly   
         $("select[id$='\\[vat_tax_code\\]']" ).off("change").on("change", function() {
             let selected = $(this).find('option:selected');
-            let newTaxRate = selected.data('taxrate'); 
+            let newTaxRate = selected.data('tax-rate'); 
             $(this).closest('tr').find("input[id$='\\[unit_tax_rate\\]']").val(parseFloat(newTaxRate).toFixed(2));            
             refreshPage();            
         });
@@ -264,7 +264,7 @@
             
             // Get User inputed data
             rowUnitQty      = $(this).find("input[id$='\\[unit_qty\\]']").val();
-            rowUnitNet      = $(this).find("input[id$='\\[unit_net_combobox\\]']").val();
+            rowUnitNet      = $(this).find("input[id$='\\[unit_net\\]']").val();
             rowUnitTaxRate  = $(this).find("input[id$='\\[unit_tax_rate\\]']").val();
                         
             // Calculate new values
@@ -520,7 +520,7 @@
 
                                                     <!-- Add Voucher Button -->
                                                     {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}  
-                                                        <button type="button" onclick="location.href='index.php?component=voucher&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Voucher{/t}</button>
+                                                        <button type="button" class="userButton" onclick="location.href='index.php?component=voucher&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Voucher{/t}</button>
                                                     {/if}
 
                                                     <!-- Receive Payment Button -->
@@ -572,23 +572,18 @@
                                                             <td align="left">
                                                                 <select id="qform[labour_items][iteration][description]" name="qform[labour_items][iteration][description]" value="" style="width: 100%" disabled>
                                                                     {section loop=$labour_prefill_items name=i}
-                                                                        <option value="{$labour_prefill_items[i].description}">{$labour_prefill_items[i].description}</option>
+                                                                        <option value="{$labour_prefill_items[i].description}" data-unit-net="{$labour_prefill_items[i].unit_net|string_format:"%.2f"}">{$labour_prefill_items[i].description}</option>
                                                                     {/section}                                                                            
                                                                 </select>
                                                             </td>
-                                                            <td align="left"><input id="qform[labour_items][iteration][unit_qty]" name="qform[labour_items][iteration][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
-                                                            <td align="left">
-                                                                <select id="qform[labour_items][iteration][unit_net]" name="qform[labour_items][iteration][unit_net]" class="vatTaxSystem" style="width: 100%;" value="" required disabled>
-                                                                {section loop=$labour_prefill_items name=i}
-                                                                    <option value="{$labour_prefill_items[i].unit_net}">{$labour_prefill_items[i].unit_net}</option>
-                                                                {/section}
-                                                            </td>
+                                                            <td align="left"><input id="qform[labour_items][iteration][unit_qty]" name="qform[labour_items][iteration][unit_qty]" style="width: 50px;" size="6" value="" type="text" maxlength="6" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td class="vatTaxSystem" align="left"><input id="qform[labour_items][iteration][unit_net]" name="qform[labour_items][iteration][unit_net]" style="width: 100%;" size="6" value="1.00" type="text" maxlength="6" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[labour_items][iteration][sub_total_net]" name="qform[labour_items][iteration][sub_total_net]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="right" hidden>
                                                                 <select id="qform[labour_items][iteration][vat_tax_code]" name="qform[labour_items][iteration][vat_tax_code]" value="TNA" style="width: 100%; font-size: 10px;" required disabled>                                                                            
-                                                                    <option value="TNA" data-taxrate="0.00" hidden>TNA - Not Applicable @ 0.00%</option>
+                                                                    <option value="TNA" data-tax-rate="0.00" hidden>TNA - Not Applicable @ 0.00%</option>
                                                                     {section loop=$vat_tax_codes name=i}
-                                                                        <option value="{$vat_tax_codes[i].tax_key}" data-taxrate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
+                                                                        <option value="{$vat_tax_codes[i].tax_key}" data-tax-rate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
                                                                     {/section}                                                                            
                                                                 </select>
                                                             </td>                                                                               
@@ -599,8 +594,10 @@
                                                             <td align="right">
                                                                 <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" class="confirmDelete" onmouseover="ddrivetip('<b>Delete Labour Record</b>');" onmouseout="hideddrivetip();">
                                                             </td>
-                                                        </tr>                                                            
-                                                        <!-- Labour Table Record Rows are added here -->                                                            
+                                                        </tr>
+                                                        
+                                                        <!-- Labour Table Record Rows are added here -->
+                                                        
                                                     </table>                                                    
                                                     {if !$display_payments}
                                                         <p>                                                                
@@ -655,23 +652,18 @@
                                                             <td align="left">
                                                                 <select id="qform[parts_items][iteration][description]" name="qform[parts_items][iteration][description]" value="" style="width: 100%" disabled>
                                                                     {section loop=$parts_prefill_items name=i}
-                                                                        <option value="{$parts_prefill_items[i].description}">{$parts_prefill_items[i].description}</option>
+                                                                        <option value="{$parts_prefill_items[i].description}" data-unit-net="{$parts_prefill_items[i].unit_net|string_format:"%.2f"}">{$parts_prefill_items[i].description}</option>
                                                                     {/section}                                                                            
                                                                 </select>
                                                             </td>
-                                                            <td align="left"><input id="qform[parts_items][iteration][unit_qty]" name="qform[parts_items][iteration][unit_qty]" style="width: 50px;" size="6" value="1.00" type="text" maxlength="6" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
-                                                            <td align="left">
-                                                                <select id="qform[parts_items][iteration][unit_net]" name="qform[parts_items][iteration][unit_net]" class="vatTaxSystem" style="width: 100%;" value="" required disabled>
-                                                                {section loop=$parts_prefill_items name=i}
-                                                                    <option value="{$parts_prefill_items[i].unit_net}">{$parts_prefill_items[i].unit_net}</option>
-                                                                {/section}
-                                                            </td>
+                                                            <td align="left"><input id="qform[parts_items][iteration][unit_qty]" name="qform[parts_items][iteration][unit_qty]" style="width: 50px;" size="6" value="" type="text" maxlength="6" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td class="vatTaxSystem" align="left"><input id="qform[parts_items][iteration][unit_net]" name="qform[parts_items][iteration][unit_net]" style="width: 100%;" size="6" value="1.00" type="text" maxlength="6" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[parts_items][iteration][sub_total_net]" name="qform[parts_items][iteration][sub_total_net]" size="6" value="0.00" type="text" maxlength="6" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="right" hidden>
                                                                 <select id="qform[parts_items][iteration][vat_tax_code]" name="qform[parts_items][iteration][vat_tax_code]" value="TNA" style="width: 100%; font-size: 10px;" required disabled>                                                                            
-                                                                    <option value="TNA" data-taxrate="0.00" hidden>TNA - Not Applicable @ 0.00%</option>
+                                                                    <option value="TNA" data-tax-rate="0.00" hidden>TNA - Not Applicable @ 0.00%</option>
                                                                     {section loop=$vat_tax_codes name=i}
-                                                                        <option value="{$vat_tax_codes[i].tax_key}" data-taxrate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
+                                                                        <option value="{$vat_tax_codes[i].tax_key}" data-tax-rate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
                                                                     {/section}                                                                            
                                                                 </select>
                                                             </td>                                                                               
@@ -682,8 +674,10 @@
                                                             <td align="right">
                                                                 <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" class="confirmDelete" onmouseover="ddrivetip('<b>Delete Parts Record</b>');" onmouseout="hideddrivetip();">
                                                             </td>
-                                                        </tr>                                                            
-                                                        <!-- Parts Table Record Rows are added here -->                                                            
+                                                        </tr>
+                                                        
+                                                        <!-- Parts Table Record Rows are added here -->
+                                                        
                                                     </table>                                                    
                                                     {if !$display_payments}
                                                         <p>                                                                
