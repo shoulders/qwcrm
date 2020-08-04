@@ -194,7 +194,7 @@
         /* Event Binding - Refreshes All Rows */
            
         // Monitor for change in VAT Tax Code/Rate selectbox and update tax rate accordingly   
-        $("select[id$='\\[vat_tax_code\\]']" ).off("change").on("change", function() {
+        $(".item_row select[id$='\\[vat_tax_code\\]']" ).off("change").on("change", function() {
             let selected = $(this).find('option:selected');
             let newTaxRate = selected.data('tax-rate'); 
             $(this).closest('tr').find("input[id$='\\[unit_tax_rate\\]']").val(parseFloat(newTaxRate).toFixed(2));            
@@ -213,18 +213,18 @@
             refreshPage();            
         });
                 
-        // Monitor all input boxes for changes
+        /* Monitor all input boxes for changes
         $("input[type='text']").off("change").on("change", function() {
             refreshPage();            
-        });
+        });*/
         
-        // Monitor all input boxes for changes
+        // Monitor all input boxes for keyup
         $("input[type='text']").off("keyup").on("keyup", function() {
             refreshPage();            
         });
         
         // Item Delete button action
-        $(".confirmDelete").off("click").on("click", function() {
+        $(".item_row .confirmDelete").off("click").on("click", function() {
             hideddrivetip();
             if(!confirmChoice('Are you Sure you want to delete this item?')) { return; }
             $(this).closest('tr').remove();
@@ -247,7 +247,7 @@
         // Refresh Invoice Totals
         refreshTotals();
         
-        // Disable all buttons on page refresh unless on initial page build
+        // Disable all buttons on page refresh unless on initial page build, if there is a change
         if(pageBuilding === false) {            
             $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
         }
@@ -553,7 +553,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">                                                    
-                                                    <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
+                                                    <table id="labour_items" width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                         <tr class="olotd4">
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>                                                            
@@ -633,7 +633,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">                                                    
-                                                    <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="parts_items">
+                                                    <table id="parts_items" width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                         <tr class="olotd4">
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>                                                            

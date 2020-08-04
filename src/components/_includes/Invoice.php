@@ -148,31 +148,49 @@ defined('_QWEXEC') or die;
     }
 
     #####################################
-    #   insert invoice prefill item     #
+    #   insert invoice prefill items    #
     #####################################
 
-    public function insertInvoicePrefillItem($qform) {
-
-        $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
-                description =". $this->app->db->qstr( $qform['description']  ).",
-                type        =". $this->app->db->qstr( $qform['type']         ).",
-                unit_net    =". $this->app->db->qstr( $qform['unit_net']     ).",
-                active      =". $this->app->db->qstr( $qform['active']       );
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill item into the database."));
-
-        } else {
-
-            // Log activity       
-            $this->app->system->general->writeRecordToActivityLog(_gettext("The Invoice Prefill Item").' '.$this->app->db->Insert_ID().' '._gettext("was added by").' '.$this->app->user->login_display_name.'.');    
-
+    public function insertPrefillItems($prefill_items = null) {
+        
+        // Empty the invoice_prefill_items table
+        $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
+        if(!$rs = $this->app->db->execute($sql)) {
+            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the prefill items table."));
         }
+        
+        // Only insert items if there are some
+        if($prefill_items) {
+            
+            // Build SQL
+            $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, unit_net, active) VALUES ";
+            foreach($prefill_items as $prefill_item) {
+            
+                // When not checked, no value is sent so this sets zero for those cases
+                if(!isset($prefill_item['active'])) { $prefill_item['active'] = '0'; }
+            
+                $sql .="(".
+                    $this->app->db->qstr( $prefill_item['description'] ).",".                    
+                    $this->app->db->qstr( $prefill_item['type']        ).",".                    
+                    $this->app->db->qstr( $prefill_item['unit_net']    ).",".                    
+                    $this->app->db->qstr( $prefill_item['active']      )."),";
+            }
+
+            // Strips off last comma as this is a joined SQL statement
+            $sql = substr($sql , 0, -1);            
+            
+            // Execute the SQL
+            if(!$rs = $this->app->db->execute($sql)) {        
+                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill items into the database."));
+            }
+            
+        }
+            
+        // Log activity       
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The Invoice Prefill Items").' '._gettext("were modified by").' '.$this->app->user->login_display_name.'.');    
 
     }
-
-        
-        
+ 
     /** Get Functions **/
 
     #########################################
@@ -716,32 +734,6 @@ defined('_QWEXEC') or die;
 
     }
 
-
-    #####################################
-    #   update invoice prefill item     #
-    #####################################
-
-    public function updatePrefillItem($qform) {
-
-        $sql = "UPDATE ".PRFX."invoice_prefill_items SET
-                description                 =". $this->app->db->qstr( $qform['description']          ).",
-                type                        =". $this->app->db->qstr( $qform['type']                 ).",
-                unit_net                    =". $this->app->db->qstr( $qform['unit_net']             ).",
-                active                      =". $this->app->db->qstr( $qform['active']               )."            
-                WHERE invoice_prefill_id    =". $this->app->db->qstr( $qform['invoice_prefill_id']   );
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an invoice labour rates item."));
-
-        } else {
-
-            // Log activity        
-            $this->app->system->general->writeRecordToActivityLog(_gettext("The Invoice Prefill Item").' '.$qform['invoice_prefill_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');    
-
-        }
-
-    }
-
     ############################
     # Update Invoice Status    #
     ############################
@@ -1065,30 +1057,7 @@ defined('_QWEXEC') or die;
 
         }
 
-    }
-
-    #####################################
-    #     delete Prefill item           #
-    #####################################
-
-    public function deletePrefillItem($invoice_prefill_id) {
-
-        $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE invoice_prefill_id =".$this->app->db->qstr($invoice_prefill_id);
-
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice prefill item."));
-
-        } else {
-
-            // Log activity        
-            $this->app->system->general->writeRecordToActivityLog(_gettext("The Invoice Prefill Item").' '.$invoice_prefill_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
-
-            return true;
-
-        }
-
-    }
-    
+    }   
 
     /** Check Functions **/
     
@@ -1665,7 +1634,7 @@ defined('_QWEXEC') or die;
             $output_stream = fopen('php://output', 'w');
 
             // output the column headings
-            fputcsv($output_stream, array(_gettext("Description"), _gettext("Type"), _gettext("Amount"), _gettext("Active")));
+            fputcsv($output_stream, array(_gettext("Description"), _gettext("Type"), _gettext("Unit Net"), _gettext("Active")));
 
             // loop over the rows, outputting them
             foreach($prefill_items as $key => $value) {
