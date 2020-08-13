@@ -402,7 +402,7 @@ class Page extends System {
             $this->app->system->variables->postEmulationWrite('forcePageSystemMessageStore', $forcePageSystemMessageStore);
         }
         
-        // Wipe the system variables (workaround because I need to hive of the Query variables)
+        // Wipe the system variables (workaround because I need to hive off the Query variables)
         if(isset($variables['system']))
         {
             unset($variables['system']);
@@ -419,7 +419,7 @@ class Page extends System {
         elseif(class_exists('\CMSApplication')) { $makeSEF = $this->app->config->get('sef'); }
         else { $makeSEF = false; }
 
-        // Configure and set URL protocol and domain segment (allows for https to http, http to https using QWcrm style force_page() links)
+        // Configure and set URL protocol and domain segment (allows for https to http, http to https using QWcrm style forcePage() links)
         if ($url_protocol == 'https') { $protocol_domain_segment = 'https://'.QWCRM_DOMAIN; }
         elseif ($url_protocol == 'http') { $protocol_domain_segment = 'http://'.QWCRM_DOMAIN; }
         //else { $protocol_domain_segment = null; }                         // This makes relative links
@@ -430,7 +430,7 @@ class Page extends System {
         if($component != 'index.php' && $page_tpl == null) {       
 
             // Build the URL and perform the redirect
-            $this->performRedirect($protocol_domain_segment.$component);        
+            $this->performRedirect($component);        
 
         }
 

@@ -174,7 +174,7 @@
                         <a href="index.php?component=invoice&page_tpl=prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>                                
                     </div>
                     
-                <!-- Suppliers -->
+                <!-- Supplier -->
                 <div class="menugroup">
                     <span>{t}Suppliers{/t}</span> 
                     <a href="index.php?component=supplier&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
@@ -205,7 +205,12 @@
                         {/if}
                         <a href="index.php?component=administrator&page_tpl=acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {t}Permissions{/t}</a>
                         
-                        <!-- System -->
+                        <!-- Cronjob -->
+                        <a href="index.php?component=cronjob&page_tpl=overview"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Cron{/t} {t}Overview{/t}</a>
+                        {if $cronjob_id}
+                            <a href="index.php?component=cronjob&page_tpl=edit&cronjob_id={$cronjob_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t} {t}Cron{/t}</a>
+                        {/if}                        
+                        <!-- Administrator -->
                         <a href="index.php?component=administrator&page_tpl=phpinfo"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHP Info{/t}</a>
                         <a href="index.php?component=administrator&page_tpl=update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Update{/t}</a>
                         <a href="index.php?component=administrator&page_tpl=config"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Config{/t}</a>

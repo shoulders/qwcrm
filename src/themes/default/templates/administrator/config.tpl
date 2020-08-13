@@ -7,6 +7,43 @@
 *}
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
+<script>
+    $(document).ready(function() {
+        
+        // Cron System dropdown - only change option if user confirms
+        $('#cronjob_system').focus(function() {            
+            cronjobSystemPreviousVal = $(this).val();
+        } ).change(function() {             
+            if(confirm('{t}Are you sure you want to change the Cron system used by QWcrm?{/t}')) {
+                cronjobConfigureOnscreen();
+                return true;
+            } else {
+                $(this).val(cronjobSystemPreviousVal);
+                return false;
+            }            
+        } );                
+        cronjobConfigureOnscreen();
+    } );
+    
+    // Refresh Cron information and settings displayed onscreen
+    function cronjobConfigureOnscreen() {
+        let cronjobSystem = $('#cronjob_system').val();
+        let cronjobPseudoInterval = $('#pseudo_interval_row');
+        let cronjobServerSettings = $('#server_cron_settings_row');        
+        if(cronjobSystem === '0') {
+            cronjobPseudoInterval.hide('fast');
+            cronjobServerSettings.hide('fast');
+        }
+        if(cronjobSystem === 'pseudo') {
+            cronjobPseudoInterval.show('fast');
+            cronjobServerSettings.hide('fast');
+        }
+        if(cronjobSystem === 'real') {
+           cronjobPseudoInterval.hide('fast');
+           cronjobServerSettings.show('fast');
+        }        
+    }
+</script>
 
 <form method="post" action="index.php?component=administrator&page_tpl=config">                   
     <table width="600" cellpadding="5" cellspacing="0" border="0">
@@ -226,7 +263,7 @@
                     <tr>
                         <td align="right"><b>{t}SMTP Port{/t}:</b></td>
                         <td>
-                            <input name="qform[email_smtp_port]" class="olotd5" size="5" value="{$qwcrm_config.email_smtp_port}" type="text" maxlength="50" onkeydown="return onlyNumber(event);">
+                            <input name="qform[email_smtp_port]" class="olotd5" size="5" value="{$qwcrm_config.email_smtp_port}" type="text" maxlength="7" onkeydown="return onlyNumber(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Port{/t}</strong></div><hr><div>{t escape=tooltip}Enter the port number of the SMTP server QWcrm will use to send emails. Usually:<br /><br />- 25 or 26 when using an unsecure mail server.<br /><br />- 465 when using a secure server with SMTPS.<br /><br />- 25, 26 or 587 when using a secure server with SMTP with STARTTLS extension.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -279,6 +316,62 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Send Test Mail{/t}</strong></div><hr><div>{t escape=tooltip}You must save your changes before using this as the test uses the saved settings not those on the page.<br><br>The email will be sent to the logged in user\'s email address{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
+                    
+                    <!-- Cronjobs -->
+                    
+                    <tr class="row2">
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Cronjob{/t}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td align="right"><b>{t}System{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="cronjob_system" name="qform[cronjob_system]">                                                       
+                                <option value="0"{if $qwcrm_config.cronjob_system == '0'} selected{/if}>{t}None{/t}</option>
+                                <option value="pseudo"{if $qwcrm_config.cronjob_system == 'pseudo'} selected{/if}>{t}Pseudo{/t}</option>*}
+                                <option value="real"{if $qwcrm_config.cronjob_system == 'real'} selected{/if}>{t}Real{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cron{/t}</strong></div><hr><div>{t escape=tooltip}The System Cron automates tasks within QWcrm and is required by QWcrm so time based actions happen when they are required such as invoice reminders.<br /><br />Do <strong>NOT</strong> turn this feature off unless you have been advised to as certain things might break or not function as expected.<br /><br />There are two types of cron, <strong>Pseudo</strong> and <strong>Real</strong>, which do the same job but from different starting points.<br /><br /><strong>Pseudo:</strong> When you do not have access to a cron system on your server you can use QWcrm to trigger cron events on page loads. This can cause page loading to become slow on large sites.<br /><br /><strong>Real:</strong> This is the traditional option where your server handles cron events but requires your server to support this feature. This is the <strong>preferred</strong> option.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr id="pseudo_interval_row">
+                        <td align="right"><b>{t}Pseudo Interval{/t}</b> <span style="color: #ff0000">*</span></td>
+                        <td>
+                            <input name="qform[cronjob_pseudo_interval]" class="olotd5" size="5" value="{$qwcrm_config.cronjob_pseudo_interval}" type="text" maxlength="20" placeholder="15" required onkeydown="return onlyNumber(event);"/>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Pseudo Cron Interval{/t}</strong></div><hr><div>{t escape=tooltip}When using Cron system type `Pseudo` you need to tell QWcrm how often the system cron should be run. This setting does not guarantee that the system cron will be run on a regular basis or at the time specified because it depends on page loads but should offer an affective alternative to a real cron system.<br /><br />This setting is defined in minutes.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
+                    <tr id="server_cronjob_settings_row">
+                        <td align="right"><b>{t}Server Cron Settings{/t}</b><br>({$server_os})</td>
+                        {if $server_os === 'Windows'}
+                            <td>                            
+                                <p>{t}You need to add the following schedule to your Windows Task Scheduler. It will run the QWcrm cron every 15 minutes.{/t}</p>
+                                <ul>
+                                    <li>{t}Name{/t}: <strong>QWCron</strong></li>                               
+                                    <li>{t}Trigger{/t}:</li>
+                                    <ul>
+                                        <li><strong>{t}On a schedule{/t}</strong></li>
+                                        <li><strong>{t}Daily{/t}</strong></li>
+                                        <li><strong>{t}Start any day in the future with a time of 00:00:00{/t}</strong></li>
+                                        <li><strong>{t}Repeat task every 15 minutes for a duration of 1 day{/t}</strong></li>
+                                    </ul>                                
+                                    <li>{t}Action{/t}:</li>
+                                    <ul>
+                                        <li>{t}Action{/t}: <strong>{t}Start a program{/t}</strong></li>
+                                        <li>{t}Program/script{/t}: <strong>php</strong></li>
+                                        <li>{t}Add arguments{/t}: <strong>cron.php</strong></li>
+                                        <li>{t}Start in{/t}: <strong>{$qwcrm_physical_path}</strong></li>
+                                    </ul>
+                                </ul>                            
+                            </td>
+                        {else}
+                            <td>                            
+                                <p>{t}You need to add the following cron command to your server. It will run the QWcrm cron every 15 minutes.{/t}</p>
+                                <p>{t}Make sure your provider allows for the cronjob to be run this often. Most providers will allow this frequency.{/t}</p>
+                                <p><strong>*/15 * * * * {$qwcrm_physical_path}cron.php</strong></p>                            
+                            </td>
+                        {/if}
+                    </tr> 
                         
                     <!-- Security -->
                     
@@ -342,7 +435,7 @@
                     <tr>
                         <td align="right"><b>{t}Session Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="qform[session_lifetime]" class="olotd5" size="25" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" placeholder="15" required onkeydown="return onlyNumber(event);"/>
+                            <input name="qform[session_lifetime]" class="olotd5" size="25" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="10" placeholder="15" required onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Session Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}Auto log out a User after they have been inactive for the entered number of minutes. Do not set too high.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
@@ -376,14 +469,14 @@
                     <tr>
                         <td align="right"><b>{t}Cookie Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="qform[cookie_lifetime]" class="olotd5" size="25" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" placeholder="60" required onkeydown="return onlyNumber(event);"/>
+                            <input name="qform[cookie_lifetime]" class="olotd5" size="25" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="10" placeholder="60" required onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}The number of days until the authentication cookie will expire. Other factors may cause it to expire before this. Longer lengths are less secure.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Token Length{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="qform[cookie_token_length]" class="olotd5" size="25" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" placeholder="16" required onkeydown="return onlyNumber(event);"/>
+                            <input name="qform[cookie_token_length]" class="olotd5" size="25" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="10" placeholder="16" required onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Token Length{/t}</strong></div><hr><div>{t escape=tooltip}The length of the key to use to encrypt the cookie. Longer lengths are more secure, but they will slow performance.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>

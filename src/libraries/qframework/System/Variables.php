@@ -60,7 +60,8 @@ class Variables extends System {
         isset(\CMSApplication::$VAR['refund_id'])        ? $this->app->smarty->assign('refund_id', \CMSApplication::$VAR['refund_id'])           : $this->app->smarty->assign('refund_id', null);
         isset(\CMSApplication::$VAR['expense_id'])       ? $this->app->smarty->assign('expense_id', \CMSApplication::$VAR['expense_id'])         : $this->app->smarty->assign('expense_id', null);    
         isset(\CMSApplication::$VAR['otherincome_id'])   ? $this->app->smarty->assign('otherincome_id', \CMSApplication::$VAR['otherincome_id']) : $this->app->smarty->assign('otherincome_id', null);      
-        isset(\CMSApplication::$VAR['supplier_id'])      ? $this->app->smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'])       : $this->app->smarty->assign('supplier_id', null);    
+        isset(\CMSApplication::$VAR['supplier_id'])      ? $this->app->smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'])       : $this->app->smarty->assign('supplier_id', null);
+        isset(\CMSApplication::$VAR['cronjob_id'])          ? $this->app->smarty->assign('cronjob_id', \CMSApplication::$VAR['cronjob_id'])               : $this->app->smarty->assign('cronjob_id', null);   
 
         // Used throughout the site
         if(!defined('QWCRM_SETUP')) {
@@ -184,9 +185,9 @@ class Variables extends System {
     }
 
 
-    ######################################  // This function will take any messages from \CMSApplication::$VAR and put them into \CMSApplication::$messages
-    #  System Messages                   #  // This has all of the bootstrap message types here
-    ######################################
+    ######################################  // This builds the message store which set message display order
+    #  System Messages                   #  // This will take any messages from \CMSApplication::$VAR and put them into \CMSApplication::$messages
+    ######################################  // This has all of the bootstrap message types here
 
     // Build the System Messages Store
     public function systemMessagesBuildStore($grabVar = false) {
@@ -222,7 +223,9 @@ class Variables extends System {
 
     }
 
-    // Write a system messgae to the store
+    ########################################
+    #  Write a system message to the store #
+    ########################################
     public function systemMessagesWrite($type, $message) {
 
         \CMSApplication::$messages[$type][] = $message;

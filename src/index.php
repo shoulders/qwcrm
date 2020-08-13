@@ -24,15 +24,15 @@ if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
 ini_set('magic_quotes_runtime', 0);
 
 // Constant that is checked in included files to prevent direct access
-define('_QWEXEC', 1);
-define('_JEXEC', 1);
-define('JPATH_PLATFORM', 1);
+const _QWEXEC = 1;
+const _JEXEC = 1;
+const JPATH_PLATFORM = 1;
 
 // Get Root Folder and Physical path info (moved from index.php)
 define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);                         // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\ || /home/myuser/public_html/develop/qwcrm/
 define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');   // QWcrm Protocol - http:// || https://    
-define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);                                      // QWcrm Domain - quantumwarp.com    
-define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));      // QWcrm Base Path - /develop/qwcrm/    
+define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST'] ?? null);                                      // QWcrm Domain - quantumwarp.com    
+define('QWCRM_BASE_PATH', str_replace(array('index.php', 'cron.php'), '', $_SERVER['PHP_SELF']));      // QWcrm Base Path - /develop/qwcrm/    
 define('QWCRM_PART_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.'/');                          // QWcrm Part URL  - http(s)://quantumwarp.com/
 define('QWCRM_FULL_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.QWCRM_BASE_PATH);              // QWcrm Full URL  - http(s)://quantumwarp.com/develop/qwcrm/
 
@@ -67,7 +67,7 @@ require(QFRAMEWORK_DIR.'includes/loader.php');
 // Start the QFramework 
 //$app = new \CMSApplication();
 
-// Instantiate the application.
+// Instantciate the application.
 $app = \Factory::getApplication('site');
 
 // Execute the application.
@@ -77,9 +77,14 @@ $app->execute();
 #  Finish Building the Environment and Load Page           #
 ############################################################
 
-// Build and set the System Messages Store (only run once per session)
+// Build System Messages Store and add messages from $VAR
 $app->system->variables->systemMessagesBuildStore(true);
-    
+
+// Cron System
+if(!defined('QWCRM_SETUP')) {
+    $app->components->cronjob->systemRun();
+}
+
 // Set the Smarty User Variables (only run once per session)
 if(!defined('QWCRM_SETUP')) {
     $app->system->variables->smartySetUserVariables();

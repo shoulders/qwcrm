@@ -521,14 +521,14 @@ class Administrator extends Components {
     }
 
     ############################################
-    #      Send Test EMail                      #
+    #      Send Test Email                     #
     ############################################
 
     public function sendTestEmail() {
 
         $user_details = $this->app->components->user->getRecord($this->app->user->login_user_id);
 
-        $this->app->system->email->send($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$this->app->config->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
+        $this->app->system->email->send($user_details['email'], _gettext("Test mail from QWcrm"), _gettext("This is a test mail sent using").' '.$this->app->config->get('email_mailer').'. '._gettext("Your email settings are correct!"), $user_details['display_name']);
 
         // Log activity        
         $this->app->system->general->writeRecordToActivityLog(_gettext("Test email initiated."));
@@ -571,6 +571,11 @@ class Administrator extends Components {
                     ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),
                     ('core:home', 1, 1, 1, 1, 1, 1, 1, 1, 1),
                     ('core:maintenance', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                    ('cronjob:details', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
+                    ('cronjob:edit', '1', '0', '0', '0', '0', '0', '0', '0', '0'),
+                    ('cronjob:overview', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
+                    ('cronjob:run', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
+                    ('cronjob:unlock', '1', '0', '0', '0', '0', '0', '0', '0', '0'),
                     ('expense:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                     ('expense:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                     ('expense:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),

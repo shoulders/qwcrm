@@ -25,6 +25,8 @@ class QConfig {
     public $email_smtp_auth = '0';
     public $email_smtp_username = '';
     public $email_smtp_password = '';
+    public $cronjob_system = 'pseudo';   
+    public $cronjob_pseudo_interval = '15';
     public $secret_key = '';
     public $force_ssl = '0';
     public $recaptcha = '0';

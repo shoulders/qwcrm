@@ -37,7 +37,8 @@
         <li>symfony/cache | v3.3.9 | MIT | https://github.com/symfony/cache | Symfony Cache component with PSR-6, PSR-16, and tags</li>
         <li>symfony/expression-language | v3.3.9 | MIT | https://github.com/symfony/expression-language | Symfony ExpressionLanguage Component</li>
         <li>symfony/polyfill-acpu | v1.5.0 | MIT | https://github.com/symfony/polyfill-apcu | Symfony polyfill backporting apcu_* functions to lower PHP versions</li>        
-            
+        <li>dragonmantank/cron-expression | v3.0.0 | MIT | https://github.com/dragonmantank/cron-expression | PHP Cron Expression Parser</li>
+        
         <li>Default Template</li>
         
         <li>TinyMCE | 4.7.10 (2018-04-03) | LGPL v2.1 (or later)</li>

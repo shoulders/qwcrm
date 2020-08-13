@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
+## [3.1.3]
+### Added
+- Cronjob system (Pseudo and Real) for future automation
+
+### Changed
+- Invoice are now fully editable with live onscreen totals update
+- Invoice Prefill Items are now fully editable on one page
+
 ## [3.1.3] 2020-02-16
 ### Added
 - emails can now send multiple attachments

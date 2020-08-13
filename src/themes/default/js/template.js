@@ -162,6 +162,10 @@ function onlyFilePath(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/\\:_.", false);
 }
 
+// Cron
+function onlyCron(e) {
+    return keyRestriction(e, "0123456789*/:,", false);
+}
 /* Escape Strings for parsing - is this needed?
 function escapeRegExp(string){
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -290,7 +294,7 @@ function clearSystemMessages() {
     
 }
 
-// A standard confirmation dialogue - e.g. return confirmChoice(msg);
+// A standard confirmation dialogue - e.g. return confirmChoice(msg); - confirmChoice my be a pointless wrapper
 function confirmChoice(msg) {
     
     var choice = confirm(msg);

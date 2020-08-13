@@ -194,7 +194,7 @@
         /* Event Binding - Refreshes All Rows */
            
         // Monitor for change in VAT Tax Code/Rate selectbox and update tax rate accordingly   
-        $(".item_row select[id$='\\[vat_tax_code\\]']" ).off("change").on("change", function() {
+        $(".item_row select[id$='\\[vat_tax_code\\]']").off("change").on("change", function() {
             let selected = $(this).find('option:selected');
             let newTaxRate = selected.data('tax-rate'); 
             $(this).closest('tr').find("input[id$='\\[unit_tax_rate\\]']").val(parseFloat(newTaxRate).toFixed(2));            

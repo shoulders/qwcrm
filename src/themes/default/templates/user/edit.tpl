@@ -220,7 +220,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     
-                                                                    <!-- note -->
+                                                                    <!-- Note -->
                                                                     
                                                                     <tr class="row2">
                                                                         <td class="menuhead" colspan="2">{t}Note{/t}</td>
@@ -251,6 +251,7 @@
                                                             </td>
                                                     </table>
                                                 </td>
+                                            </tr>
                                         </table>
                                     </form>                                                                        
                                 </td>

@@ -75,4 +75,6 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 }
 
 // Build the page
-$this->app->smarty->assign('available_languages', $this->app->system->general->loadLanguages() );
+$this->app->smarty->assign('server_os', PHP_OS_FAMILY);
+$this->app->smarty->assign('qwcrm_physical_path', QWCRM_PHYSICAL_PATH);
+$this->app->smarty->assign('available_languages', $this->app->system->general->loadLanguages());

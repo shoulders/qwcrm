@@ -48,7 +48,8 @@ class Upgrade3_1_4 extends Setup {
     public function postDatabase() {
                 
         // Config File
-
+        $this->app->components->administrator->insertQwcrmConfigSetting('cronjob_system', 'pseudo');
+        $this->app->components->administrator->insertQwcrmConfigSetting('cronjob_pseudo_interval', '15');
         
         // Update database version number
         $this->updateRecordValue(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));

@@ -27,7 +27,7 @@
     {section name=r loop=$display_otherincomes}                                                            
         <!-- This allows double clicking on a row and opens the corresponding otherincome view details -->
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_otherincomes[r].status != 'deleted'} onDblClick="window.location='index.php?component=otherincome&page_tpl=details&otherincome_id={$display_otherincomes[r].otherincome_id}';"{/if}>                                                                
-            <td class="olotd4" nowrap><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_otherincomes[r].otherincome_id}">{$display_otherincomes[r].otherincome_id}</a></td>                                                                
+            <td class="olotd4" nowrap><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_otherincomes[r].otherincome_id}">{$display_otherincomes[r].otherincome_id}</a></td>
             <td class="olotd4" nowrap>{$display_otherincomes[r].payee}</td>                                                                
             <td class="olotd4" nowrap>{$display_otherincomes[r].date|date_format:$date_format}</td>                                                                
             <td class="olotd4" nowrap>
