@@ -314,18 +314,19 @@ class Administrator extends Components {
     }
 
     #################################
-    #   Check for QWcrm update      #
+    #   Check for QWcrm update      #  // Get QWcrm curent version and check against latest version info on quantumwarp.com
     #################################
 
     public function checkQwcrmUpdateAvailability() {
-
-        // Get curent version and check against quantumwarp.com
+        
         $update_page    = 'https://quantumwarp.com/ext/updates/qwcrm/qwcrm.xml';
+        $useragent      = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        // FALSE to stop cURL from verifying the peer's certificate (need unless i bundle certs with my install)
         curl_setopt($ch, CURLOPT_URL, $update_page);            // The URL to fetch. This can also be set when initializing a session with curl_init(). 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);            // TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly. 
+        curl_setopt($ch, CURLOPT_USERAGENT, $useragent);        // Make the http request using this user agent string
 
         $curl_response = curl_exec($ch);     
         $curl_error = curl_errno($ch);  
