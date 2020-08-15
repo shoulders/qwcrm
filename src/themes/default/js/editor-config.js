@@ -14,18 +14,13 @@ tinymce.init( {
         
         editor.on('submit', function(e) {
 
-            var placeholderElement = editor.getElement();  
-            var testClass = "mceCheckForContent";
-            
-            if(
-                placeholderElement.classList.contains(testClass) &&
-                (editor.getContent() === '' ||
-                
-                // This section might not be required on newer versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
-                editor.getContent() === '<p><\/p>' || editor.getContent() === '<p>&nbsp;<\/p>' ||
-                editor.getContent() === '<div><\/div>' || editor.getContent() === '<div>&nbsp;<\/div>')
-                
-            ) {
+            let placeholderElement = editor.getElement();  
+            let testClass = "mceCheckForContent";
+            let editorContent = editor.getContent();
+            // This index search might not be required on newer versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
+            let editorEmptyStrings = ['<p><\/p>', '<p>&nbsp;<\/p>', '<div><\/div>', '<div>&nbsp;<\/div>'];
+
+            if(placeholderElement.classList.contains(testClass) && (!editorContent || editorEmptyStrings.indexOf(editorContent) !== -1)) {
                 editor.getContainer().style.border = '3px solid red';
                 return false;
             }

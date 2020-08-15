@@ -413,13 +413,27 @@ class WorkOrder extends Components {
     #    Get Workorder Statuses         #
     #####################################
 
-    public function getStatuses($restricted_statuses = false) {
-
+    public function getStatuses($restricted = false, $workorder_id = null) {
+        
         $sql = "SELECT * FROM ".PRFX."workorder_statuses";
 
-        // Restrict statuses to those that are allowed to be changed by the user
-        if($restricted_statuses) {
-            $sql .= "\nWHERE status_key NOT IN ('closed_with_invoice', 'deleted')";
+        // Restrict statuses
+        if($restricted) {
+            
+            // Restrict statuses to those that are only allowed to be changed by the user
+            $restricted_statuses = "'closed_with_invoice', 'deleted'";
+            
+            // Check and restrict close statuses if required
+            if($workorder_id) {
+                // Check to see if close status are allowed
+                if(!$this->checkRecordAllowsClosedStatus($workorder_id)) {
+                    $restricted_statuses .= " ,'closed_without_invoice'";
+                }
+            }
+            
+            // Final Restriction SQL
+            $sql .= "\nWHERE status_key NOT IN ($restricted_statuses)";
+        
         }
 
         if(!$rs = $this->app->db->execute($sql)){        
@@ -1099,6 +1113,33 @@ class WorkOrder extends Components {
 
      }
 
+    ############################################################
+    #  Check if the workorder status is allowed to be changed  #  // currently only on status
+    ############################################################
+
+    private function checkRecordAllowsClosedStatus($workorder_id) {
+
+        $state_flag = true;
+
+        // Get the workorder details
+        $workorder_details = $this->getRecord($workorder_id);
+
+        // Check Description has content - in_array() might not be required on newer versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
+        if(!$workorder_details['description'] || in_array($workorder_details['description'], array('<p></p>', '<p>&nbsp;</p>', '<div></div>', '<div>&nbsp;</div>'))) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder does not have a description, so it cannot be closed."));
+            $state_flag = false;        
+        }
+        
+        // Check Resolution has content
+        if(!$workorder_details['resolution'] || in_array($workorder_details['resolution'], array('<p></p>', '<p>&nbsp;</p>', '<div></div>', '<div>&nbsp;</div>'))) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder does not have a resolution, so it cannot be closed."));
+            $state_flag = false;        
+        }
+
+        return $state_flag;
+
+     }
+     
     ######################################################
     # Is the workorder in an allowed state to be deleted #
     ######################################################
@@ -1107,7 +1148,7 @@ class WorkOrder extends Components {
 
         $state_flag = true;
 
-        // Get the otherincome details
+        // Get the workorder details
         $workorder_details = $this->getRecord($workorder_id);
 
         /* Is Unassigned

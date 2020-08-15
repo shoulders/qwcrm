@@ -34,7 +34,7 @@ $this->app->smarty->assign('allowed_to_change_status',     $this->app->component
 $this->app->smarty->assign('allowed_to_change_employee',   $this->app->components->workorder->checkRecordAllowsEmployeeUpdate(\CMSApplication::$VAR['workorder_id']));
 $this->app->smarty->assign('allowed_to_delete',            $this->app->components->workorder->checkRecordAllowsDelete(\CMSApplication::$VAR['workorder_id'])  );
 $this->app->smarty->assign('active_employees',             $this->app->components->user->getActiveUsers('employees')                                     );
-$this->app->smarty->assign('workorder_statuses',           $this->app->components->workorder->getStatuses(true)                                      );
+$this->app->smarty->assign('workorder_statuses',           $this->app->components->workorder->getStatuses(true, \CMSApplication::$VAR['workorder_id'])                                      );
 $this->app->smarty->assign('workorder_status',             $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'status')             );
 $this->app->smarty->assign('workorder_status_display_name',$this->app->components->workorder->getStatusDisplayName($this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'status')));
 $this->app->smarty->assign('assigned_employee_id',         $assigned_employee_id                                             );
