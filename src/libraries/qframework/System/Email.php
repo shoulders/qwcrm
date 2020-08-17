@@ -308,21 +308,21 @@ class Email extends System {
     function getEmailMessageBody($message_name, $client_details) {
 
         // get the message from the database
-        $content = $this->app->components->company->getRecord($message_name);
+        $message = $this->app->components->company->getRecord($message_name);
 
         // Process placeholders
         if($message_name == 'email_msg_invoice') {        
-            $content = $this->replacePlaceholder($content, '{client_display_name}', $client_details['display_name']);
-            $content = $this->replacePlaceholder($content, '{client_first_name}', $client_details['first_name']);
-            $content = $this->replacePlaceholder($content, '{client_last_name}', $client_details['last_name']);
-            $content = $this->replacePlaceholder($content, '{client_credit_terms}', $client_details['credit_terms']);
+            $this->replacePlaceholder($message, '{client_display_name}', $client_details['display_name']);
+            $this->replacePlaceholder($message, '{client_first_name}', $client_details['first_name']);
+            $this->replacePlaceholder($message, '{client_last_name}', $client_details['last_name']);
+            $this->replacePlaceholder($message, '{client_credit_terms}', $client_details['credit_terms']);
         }
         if($message_name == 'email_msg_workorder') {
             // not currently used
         }
 
         // return the process email
-        return $content;
+        return $message;
 
     }
 
@@ -362,11 +362,11 @@ class Email extends System {
         $company_website = '<a href="'.$company_details['website'].'">'.$company_website.'</a>';        
 
         // Swap placeholders -- Change to by referens??
-        $email_signature  = $this->replacePlaceholder($email_signature, '{company_logo}', $logo_string);
-        $email_signature  = $this->replacePlaceholder($email_signature, '{company_name}', $company_details['company_name']);
-        $email_signature  = $this->replacePlaceholder($email_signature, '{company_address}', $company_address);
-        $email_signature  = $this->replacePlaceholder($email_signature, '{company_telephone}', $company_details['primary_phone']);
-        $email_signature  = $this->replacePlaceholder($email_signature, '{company_website}', $company_website);
+        $this->replacePlaceholder($email_signature, '{company_logo}', $logo_string);
+        $this->replacePlaceholder($email_signature, '{company_name}', $company_details['company_name']);
+        $this->replacePlaceholder($email_signature, '{company_address}', $company_address);
+        $this->replacePlaceholder($email_signature, '{company_telephone}', $company_details['primary_phone']);
+        $this->replacePlaceholder($email_signature, '{company_website}', $company_website);
 
         // Return the processed signature
         return $email_signature ;
@@ -374,12 +374,12 @@ class Email extends System {
     }
 
     ###########################################
-    #  Replace placeholders with new content  #  // change $content to by reference?
+    #  Replace placeholders with new content  #
     ###########################################
 
-    function replacePlaceholder($content, $placeholder, $replacement) {
+    function replacePlaceholder(&$text, $placeholder, $replacement) {
 
-        return preg_replace('/'.$placeholder.'/', $replacement, $content);
+        $text = str_replace($placeholder, $replacement, $text);
 
     }
 
