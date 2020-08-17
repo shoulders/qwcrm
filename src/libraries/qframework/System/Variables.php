@@ -234,7 +234,10 @@ class Variables extends System {
 
     }
 
-    // Return the Messages Store
+    ###############################
+    #  Return the Messages Store  #  //  in html format or array
+    ###############################
+    
     public function systemMessagesReturnStore($keep_store = false, $format = 'html') {
 
         // Remove all empty message type holders

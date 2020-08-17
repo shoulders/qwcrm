@@ -52,29 +52,6 @@ class Email extends System {
 
     function send($recipient_email, $subject, $body, $recipient_name = null, $attachments = array(), $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null, $silent = false) {
 
-        // Clear any onscreen notifications - this allows for mutiple errors to be displayed (if allowed)
-        if (!$silent) {
-            $this->app->system->general->ajaxClearOnscreenNotifications();
-        }
-
-        // Check for a recipient email address
-        if(!$recipient_email) {
-
-            // Log activity 
-            $record = _gettext("Failed to send email to").' `'._gettext("Not Specified").'` ('.$recipient_name.')';        
-            $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
-
-            // Output the system message to the browser (if allowed)
-            if (!$silent) {
-                $message = $record.'<br>'._gettext("There is no email address to send to.");
-                $this->app->system->variables->systemMessagesWrite('danger', $message);
-                $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
-            }
-
-            return false;
-
-        }
-
         // If email is not enabled, do not send emails
         if(!$this->app->config->get('email_online')) {
 
@@ -91,7 +68,25 @@ class Email extends System {
 
             return false;
 
-        }    
+        } 
+        
+        // Check for a recipient email address
+        if(!$recipient_email) {
+
+            // Log activity 
+            $record = _gettext("Failed to send email to").' `'._gettext("Not Specified").'` ('.$recipient_name.')';        
+            $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+
+            // Output the system message to the browser (if allowed)
+            if (!$silent) {
+                $message = $record.'<br>'._gettext("There is no email address to send to.");
+                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
+            }
+
+            return false;
+
+        }   
 
         /* Create the Transport */
 

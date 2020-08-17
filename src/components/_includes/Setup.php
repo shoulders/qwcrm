@@ -1014,9 +1014,6 @@ class Setup extends Components {
 
     public function deleteSetupFolder() {
 
-        // Clear any onscreen notifications        
-        $this->app->system->general->ajaxClearOnscreenNotifications();
-
         // Build a success or failure message
         if($this->removeDirectory(SETUP_DIR)) {        
 

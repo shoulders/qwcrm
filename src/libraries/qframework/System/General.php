@@ -962,21 +962,25 @@ class General extends System {
     /* Other */
 
     ##############################################
-    #  Clear any onscreen notifications          #   // this is needed for messages when pages are requested via ajax (emails/config)
+    #  Clear any onscreen notifications          #   // not currently used
     ##############################################
 
-    function ajaxClearOnscreenNotifications() {
+    public function ajaxClearOnscreenNotifications() {
 
         echo "<script>clearSystemMessages();</script>";
 
     }
 
-    ##############################################
-    #  Output System Messages onscreen           #   // this is needed for messages when pages are requested via ajax (emails/config)
+    ##############################################  // this is needed for messages when pages are requested via AJAX (emails/config)
+    #  Output System Messages store onscreen     #  // Currently only the complete message store is sent, not individual messages
     ##############################################
 
-    function ajaxOutputSystemMessagesOnscreen() {
-
+    public function ajaxOutputSystemMessagesOnscreen() {        
+        
+        // Clear any onscreen notifications
+        echo "<script>clearSystemMessages();</script>";
+        
+        // Output the new messages via the template JS function
         echo "<script>processSystemMessages('".$this->escapeForJavascript($this->app->system->variables->systemMessagesReturnStore())."');</script>";
 
     }
@@ -1073,9 +1077,6 @@ class General extends System {
 
     function clearSmartyCache() {
 
-        // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-        $this->ajaxClearOnscreenNotifications();
-
         // clear the entire cache
         $this->app->smarty->clearAllCache();
 
@@ -1096,9 +1097,6 @@ class General extends System {
     ############################################
 
     function clearSmartyCompile() {
-
-        // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-        $this->ajaxClearOnscreenNotifications();
 
         // clear a specific template resource
         //$this->app->smarty->clearCompiledTemplate('index.tpl');

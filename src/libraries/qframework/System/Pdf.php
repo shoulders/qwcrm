@@ -173,9 +173,6 @@ class Pdf extends System {
             return $pdfVariable;
 
         } else {               
-            // Clear any onscreen notifications        
-            $this->app->system->general->ajaxClearOnscreenNotifications();
-
             // Load error page with the messages via ajax // Output the system message to the browser (if allowed)
             $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
             return false;
