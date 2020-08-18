@@ -330,7 +330,7 @@ class Company extends Components {
                 email_msg_workorder     =". $this->app->db->qstr( $qform['email_msg_workorder']              );                          
 
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         } else {       
 
@@ -361,7 +361,7 @@ class Company extends Components {
                 closing_hour    =". $this->app->db->qstr( $closingTime['Time_Hour']     ).",
                 closing_minute  =". $this->app->db->qstr( $closingTime['Time_Minute']   );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
         } else {
 
@@ -391,7 +391,7 @@ class Company extends Components {
                     rate = ".$this->app->db->qstr($rate)."
                     WHERE tax_key = ".$this->app->db->qstr($tax_key);
 
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $error_flag = true;            
             }        
         }

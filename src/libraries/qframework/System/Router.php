@@ -465,7 +465,7 @@ class Router extends System {
         // Check to see if the page exists in the ACL
         $sql = "SELECT page FROM ".PRFX."user_acl_page WHERE page = ".$this->app->db->qstr($component.':'.$page_tpl);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
         } else {
 

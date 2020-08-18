@@ -48,7 +48,7 @@ class OtherIncome extends Components {
                 items            =". $this->app->db->qstr( $qform['items']                   ).",
                 note             =". $this->app->db->qstr( $qform['note']                    );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the otherincome record into the database."));
         } else {
 
@@ -108,7 +108,7 @@ class OtherIncome extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching otherincome records."));
             } else {        
                 $total_results = $rs->RecordCount();            
@@ -147,7 +147,7 @@ class OtherIncome extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching otherincome records."));
         } else {
 
@@ -262,7 +262,7 @@ class OtherIncome extends Components {
 
         $sql = "SELECT * FROM ".PRFX."otherincome_records ORDER BY otherincome_id DESC LIMIT 1";
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last otherincome record ID."));
         } else {
 
@@ -296,7 +296,7 @@ class OtherIncome extends Components {
                 note             =". $this->app->db->qstr( $qform['note']                    )."
                 WHERE otherincome_id  =". $this->app->db->qstr( $qform['otherincome_id']     );                        
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the otherincome details."));
         } else {
 
@@ -337,7 +337,7 @@ class OtherIncome extends Components {
                 last_active        =". $this->app->db->qstr( $datetime     )." 
                 WHERE otherincome_id =". $this->app->db->qstr( $otherincome_id );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an otherincome Status."));
 
         } else {    
@@ -413,7 +413,7 @@ class OtherIncome extends Components {
             note                = ''
             WHERE otherincome_id =". $this->app->db->qstr($otherincome_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the otherincome records."));
         } else {
 

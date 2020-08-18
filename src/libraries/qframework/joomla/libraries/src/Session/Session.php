@@ -1058,7 +1058,7 @@ class Session implements \IteratorAggregate
         $user   = \Factory::getUser();      // this gets the user from the session
 
         $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
-        $rs     = $db->Execute($sql);    
+        $rs     = $db->execute($sql);    
 
         // If the session record doesn't exist initialise it.
         if ($rs->RecordCount() != 1)

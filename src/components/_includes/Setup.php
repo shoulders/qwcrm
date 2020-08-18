@@ -197,7 +197,7 @@ class Setup extends Components {
             preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);
 
            // Perform the query
-            if(!$this->app->db->Execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -377,7 +377,7 @@ class Setup extends Components {
                 /* EOF Rule Name Building */                
                  
                 // Perform the query
-                if(!$this->app->db->Execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -932,7 +932,7 @@ class Setup extends Components {
         // Loop through all of the labour records
         $sql = "UPDATE `".PRFX.$table."` SET `".$columnB."` = `".$columnA."`";          
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;

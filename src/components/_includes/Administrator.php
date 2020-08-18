@@ -482,7 +482,7 @@ class Administrator extends Components {
             {
                 $sql = "TRUNCATE ".PRFX."session";                    
 
-                if(!$rs = $this->app->db->Execute($sql)) {
+                if(!$rs = $this->app->db->execute($sql)) {
                     $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
 
                 }
@@ -545,7 +545,7 @@ class Administrator extends Components {
         // Remove current permissions
         $sql = "TRUNCATE ".PRFX."user_acl_page";
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
         } else {
@@ -668,7 +668,7 @@ class Administrator extends Components {
                     ('workorder:search', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                     ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
             }

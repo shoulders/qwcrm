@@ -52,7 +52,7 @@ defined('_QWEXEC') or die;
                 opened_on       =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime($timestamp)           ).",
                 is_closed       =". $this->app->db->qstr( 0                                    ); 
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the invoice record into the database."));
         } else {
 
@@ -91,7 +91,7 @@ defined('_QWEXEC') or die;
         
         // Delete all items from the invoice to prevent duplication
         $sql = "DELETE FROM ".PRFX."invoice_$section WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice's items from the database."));
         }
 
@@ -137,7 +137,7 @@ defined('_QWEXEC') or die;
             // Strips off last comma as this is a joined SQL statement
             $sql = substr($sql , 0, -1);
 
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert item into the database."));
             }
 
@@ -325,7 +325,7 @@ defined('_QWEXEC') or die;
             $start_record = (($page_no * $records_per_page) - $records_per_page);        
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Invoice records."));
             } else {        
                 $total_results = $rs->RecordCount();            
@@ -364,7 +364,7 @@ defined('_QWEXEC') or die;
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoice records."));
         } else {
 
@@ -428,7 +428,7 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$this->app->db->qstr($invoice_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour items."));
         } else {
 
@@ -502,7 +502,7 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$this->app->db->qstr( $invoice_id );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts items."));
         } else {
 
@@ -584,7 +584,7 @@ defined('_QWEXEC') or die;
         // filter by status
         if($status) {$sql .= " AND active=".$this->app->db->qstr($status);}
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice prefill items for the selected status."));
         } else {
 
@@ -761,7 +761,7 @@ defined('_QWEXEC') or die;
                 closed_on           =". $this->app->db->qstr( $closed_on       )."  
                 WHERE invoice_id    =". $this->app->db->qstr( $invoice_id      );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Invoice Status."));
 
         } else {    
@@ -820,7 +820,7 @@ defined('_QWEXEC') or die;
                     WHERE invoice_id    =". $this->app->db->qstr( $invoice_id      );
         }    
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an invoice Closed status."));
         }
 
@@ -838,7 +838,7 @@ defined('_QWEXEC') or die;
                 refund_id           =".$this->app->db->qstr($refund_id)."
                 WHERE invoice_id    =".$this->app->db->qstr($invoice_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add a Refund ID to the invoice."));
         }
 
@@ -857,7 +857,7 @@ defined('_QWEXEC') or die;
                 last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
                 WHERE invoice_id=".$this->app->db->qstr($invoice_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an invoice last active time."));
         }
 
@@ -1620,7 +1620,7 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT description, type, unit_net, active FROM ".PRFX."invoice_prefill_items";
 
-        if(!$rs = $this->app->db->Execute($sql)) {        
+        if(!$rs = $this->app->db->execute($sql)) {        
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice prefill items from the database."));
         } else {        
 
@@ -1685,7 +1685,7 @@ defined('_QWEXEC') or die;
 
         }
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to assign a Work Order to an employee."));
 
         } else {

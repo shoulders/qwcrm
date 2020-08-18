@@ -28,7 +28,7 @@ class Cronjob extends Components {
                 ".$direction;      
 
         // Return the records
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching cronjob records."));
         } else {
 
@@ -118,7 +118,7 @@ class Cronjob extends Components {
                 month               =". $this->app->db->qstr( $qform['month']               ).",
                 weekday             =". $this->app->db->qstr( $qform['weekday']             );                        
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the cronjob details."));
         } else {
 
@@ -142,7 +142,7 @@ class Cronjob extends Components {
                 last_run_time=".$this->app->db->qstr($lastRunTime)."
                 WHERE cronjob_id=".$this->app->db->qstr($cronjob_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Cronjob's last run time."));
         }
 
@@ -158,7 +158,7 @@ class Cronjob extends Components {
                 last_run_status=".$this->app->db->qstr($status)."
                 WHERE cronjob_id=".$this->app->db->qstr($cronjob_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Cronjob's last run status."));
         }
 
@@ -174,7 +174,7 @@ class Cronjob extends Components {
                 locked=".$this->app->db->qstr($status)."
                 WHERE cronjob_id=".$this->app->db->qstr($cronjob_id);
                 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the cronjob's lock."));
         }
 
@@ -189,7 +189,7 @@ class Cronjob extends Components {
         $sql = "UPDATE ".PRFX."cronjob_system SET
                 last_run_time=".$this->app->db->qstr($lastRunTime);
                 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update cronjob system last run time."));
         }
 
@@ -204,7 +204,7 @@ class Cronjob extends Components {
         $sql = "UPDATE ".PRFX."cronjob_system SET
                 last_run_status=".$this->app->db->qstr($status);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Cronjob's last run status."));
         }
 
@@ -218,7 +218,7 @@ class Cronjob extends Components {
         $sql = "UPDATE ".PRFX."cronjob_system SET
                 locked=".$this->app->db->qstr($status);
                 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the cronjob system lock."));
         }
 
@@ -308,7 +308,7 @@ class Cronjob extends Components {
         $sql =  "SELECT cronjob_id FROM ".PRFX."cronjob_records";
 
         // Return the records
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching cronjob records."));
         } else {
             $records = $rs->GetArray();

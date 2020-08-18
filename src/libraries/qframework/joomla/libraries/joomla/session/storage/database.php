@@ -47,7 +47,7 @@ class JSessionStorageDatabase extends JSessionStorage
              */
 
             $sql = "SELECT data FROM ".PRFX."session WHERE session_id = ".$db->qstr($id);
-            $rs = $db->Execute($sql); 
+            $rs = $db->execute($sql); 
             $result = (string) $rs->fields['data'];
 
             $result = str_replace('\0\0\0', chr(0) . '*' . chr(0), $result);
@@ -95,7 +95,7 @@ class JSessionStorageDatabase extends JSessionStorage
                     data = ". $db->qstr( $data  ).",
                     time = ". time()."
                     WHERE session_id = ".$db->qstr($id);
-            $db->Execute($sql);
+            $db->execute($sql);
 
             /*
              * Since $db->execute did not throw an exception, so the query was successful.
@@ -139,7 +139,7 @@ class JSessionStorageDatabase extends JSessionStorage
 
             // Remove a session from the database.
             $sql = "DELETE FROM ".PRFX."session WHERE session_id = ".$db->qstr($id);
-            return (boolean) $db->Execute($sql);
+            return (boolean) $db->execute($sql);
         }
         catch (RuntimeException $e)
         {
@@ -180,7 +180,7 @@ class JSessionStorageDatabase extends JSessionStorage
             // Remove expired sessions from the database.
             $sql = "DELETE FROM ".PRFX."session WHERE time = ".$db->qstr((int) $past);
 
-            return (boolean) $db->Execute($sql);
+            return (boolean) $db->execute($sql);
         }
         catch (RuntimeException $e)
         {

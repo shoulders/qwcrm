@@ -247,7 +247,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Loop through all of the timestamps, calculate the correct Date and enter it into the temporary timestamp column
         $sql = "SELECT * FROM ".$table;
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
                         
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -432,7 +432,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Loop through all of the timestamps, calculate the correct Datetime and enter them into the temporary column
         $sql = "SELECT * FROM ".$table;
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -627,7 +627,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Loop through all of the Voucher records
         $sql = "SELECT * FROM ".PRFX."voucher_records";
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -777,7 +777,7 @@ class Upgrade3_1_0 extends Setup {
         $sql = "SELECT *
                 FROM ".PRFX."invoice_labour";                
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -913,7 +913,7 @@ class Upgrade3_1_0 extends Setup {
         $sql = "SELECT *
                 FROM ".PRFX."invoice_parts";                
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -1047,7 +1047,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Loop through all of the payment records
         $sql = "SELECT * FROM ".PRFX."payment_records";
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -1214,7 +1214,7 @@ class Upgrade3_1_0 extends Setup {
         $sql = "SELECT *
                 FROM ".PRFX."expense_records";                
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -1364,7 +1364,7 @@ class Upgrade3_1_0 extends Setup {
         $sql = "SELECT *
                 FROM ".PRFX."otherincome_records";                
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;

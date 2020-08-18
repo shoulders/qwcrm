@@ -69,7 +69,7 @@ class PlgUserJoomla //extends JPlugin
 
         try
         {
-            $this->db->Execute($sql);
+            $this->db->execute($sql);
         }
         catch (JDatabaseExceptionExecuting $e)
         {
@@ -254,7 +254,7 @@ class PlgUserJoomla //extends JPlugin
 
         try
         {
-            $this->db->Execute($sql);
+            $this->db->execute($sql);
         }
         catch (RuntimeException $e)
         {
@@ -334,7 +334,7 @@ class PlgUserJoomla //extends JPlugin
 
             try
             {
-                $this->db->Execute($sql);
+                $this->db->execute($sql);
             }
             catch (RuntimeException $e)
             {

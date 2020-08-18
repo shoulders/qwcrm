@@ -46,7 +46,7 @@ class Expense extends Components {
                 items           =". $this->app->db->qstr( $qform['items']                   ).",
                 note            =". $this->app->db->qstr( $qform['note']                    );            
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
         } else {
 
@@ -120,7 +120,7 @@ class Expense extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching expense records."));
             } else {        
                 $total_results = $rs->RecordCount();            
@@ -159,7 +159,7 @@ class Expense extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
 
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching expense records."));
 
@@ -274,7 +274,7 @@ class Expense extends Components {
 
         $sql = "SELECT * FROM ".PRFX."expense_records ORDER BY expense_id DESC LIMIT 1";
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last expense record ID."));
         } else {
 
@@ -308,7 +308,7 @@ class Expense extends Components {
                 note                =". $this->app->db->qstr( $qform['note']                     )."
                 WHERE expense_id    =". $this->app->db->qstr( $qform['expense_id']               );                        
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
         } else {
 
@@ -361,7 +361,7 @@ class Expense extends Components {
                 last_active        =". $this->app->db->qstr( $datetime     )."
                 WHERE expense_id   =". $this->app->db->qstr( $expense_id   );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Expense Status."));
 
         } else {        
@@ -473,7 +473,7 @@ class Expense extends Components {
                 note                = ''
                 WHERE expense_id    =". $this->app->db->qstr($expense_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
         } else {
 

@@ -51,7 +51,7 @@ class Supplier extends Components {
                 description    =". $this->app->db->qstr( $qform['description']   ).", 
                 note           =". $this->app->db->qstr( $qform['note']          );            
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
         } else {
 
@@ -123,7 +123,7 @@ class Supplier extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching supplier records."));
             } else {        
                 $total_results = $rs->RecordCount();            
@@ -162,7 +162,7 @@ class Supplier extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching supplier records."));
         } else {
 
@@ -293,7 +293,7 @@ class Supplier extends Components {
 
         $sql = "SELECT * FROM ".PRFX."supplier_records ORDER BY supplier_id DESC LIMIT 1";
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
         } else {
 
@@ -333,7 +333,7 @@ class Supplier extends Components {
                 note           =". $this->app->db->qstr( $qform['note']          )."
                 WHERE supplier_id = ". $this->app->db->qstr( $qform['supplier_id'] );                        
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
         } else {
 
@@ -374,7 +374,7 @@ class Supplier extends Components {
                 last_active        =". $this->app->db->qstr( $datetime     )." 
                 WHERE supplier_id  =". $this->app->db->qstr( $supplier_id  );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an supplier Status."));
 
         } else {    
@@ -439,7 +439,7 @@ class Supplier extends Components {
 
         $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qstr($supplier_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
         } else {
 

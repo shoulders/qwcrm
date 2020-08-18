@@ -184,7 +184,7 @@ class Payment extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching payments."));
             } else {        
                 $total_results = $rs->RecordCount();            
@@ -223,7 +223,7 @@ class Payment extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
         } else {
 
@@ -626,7 +626,7 @@ class Payment extends Components {
                 last_active          =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
                 WHERE payment_id     =". $this->app->db->qstr( $payment_id      );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
 
         } else {        
@@ -718,7 +718,7 @@ class Payment extends Components {
                 note            = ''
                 WHERE payment_id =". $this->app->db->qstr( $payment_id );    
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
         } else {
 

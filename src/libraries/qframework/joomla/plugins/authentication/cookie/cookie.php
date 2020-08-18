@@ -126,7 +126,7 @@ class PlgAuthenticationCookie //extends JPlugin
         try
         {
             //$this->db->setQuery($query)->execute();
-            $this->db->Execute($sql);
+            $this->db->execute($sql);
         }
         catch (RuntimeException $e)
         {
@@ -139,7 +139,7 @@ class PlgAuthenticationCookie //extends JPlugin
         try
         {
             //$results = $this->db->setQuery($query)->loadObjectList();
-            $rs = $this->db->Execute($sql);
+            $rs = $this->db->execute($sql);
             $results = $rs->GetArray();            
         }
         catch (RuntimeException $e)
@@ -171,7 +171,7 @@ class PlgAuthenticationCookie //extends JPlugin
 
             try
             {
-                $this->db->Execute($sql);
+                $this->db->execute($sql);
             }
             catch (RuntimeException $e)
             {
@@ -198,7 +198,7 @@ class PlgAuthenticationCookie //extends JPlugin
 
         try
         {
-            $rs = $this->db->Execute($sql);
+            $rs = $this->db->execute($sql);
             $result = $rs->GetRowAssoc();  
         }
         catch (RuntimeException $e)
@@ -293,7 +293,7 @@ class PlgAuthenticationCookie //extends JPlugin
 
                 try
                 {
-                    $rs = $this->db->Execute($sql);
+                    $rs = $this->db->execute($sql);
                     $results = $rs->RecordCount();             
 
                     if ($results === 0)
@@ -428,7 +428,7 @@ class PlgAuthenticationCookie //extends JPlugin
 
         try
         {
-            $this->db->Execute($sql);
+            $this->db->execute($sql);
         }
         catch (RuntimeException $e)
         {

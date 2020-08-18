@@ -54,7 +54,7 @@ class MigrateMyitcrm extends Setup {
                 based               =". $this->app->db->qstr( $VAR['based']                                ).",  
                 notes               =". $this->app->db->qstr( $VAR['notes']                                );                 
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
         } else {
 
@@ -289,7 +289,7 @@ class MigrateMyitcrm extends Setup {
                 email_msg_invoice       =". $this->app->db->qstr( $VAR['email_msg_invoice']                ).",
                 email_msg_workorder     =". $this->app->db->qstr( $VAR['email_msg_workorder']              );                          
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         } else {       
 
@@ -825,7 +825,7 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Work Orders."));
 
         } else {
@@ -925,7 +925,7 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoices."));
 
         } else {
@@ -1017,7 +1017,7 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
 
         } else {
@@ -1092,7 +1092,7 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Schedules."));
 
         } else {
@@ -1151,7 +1151,7 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Users."));
 
         } else {
@@ -1230,7 +1230,7 @@ class MigrateMyitcrm extends Setup {
 
         $sql = "SELECT user_id FROM ".PRFX."user";
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
 
         } else {
@@ -1271,7 +1271,7 @@ class MigrateMyitcrm extends Setup {
                 reset_count     =". $this->app->db->qstr( 0                                    )."
                 WHERE user_id   =". $this->app->db->qstr( $user_id                             );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
 
         } else {
@@ -1296,7 +1296,7 @@ class MigrateMyitcrm extends Setup {
 
         $sql = "SELECT username FROM ".PRFX."user WHERE username =". $this->app->db->qstr($username);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
         } else {
 
@@ -1329,7 +1329,7 @@ class MigrateMyitcrm extends Setup {
 
         $sql = "SELECT email FROM ".PRFX."user WHERE email =". $this->app->db->qstr($email);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
 
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
 

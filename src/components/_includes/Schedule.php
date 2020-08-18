@@ -43,7 +43,7 @@ class Schedule extends Components {
                 end_time        =". $this->app->db->qstr( $qform['end_time']         ).",            
                 note            =". $this->app->db->qstr( $qform['note']             );            
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
         } else {
 
@@ -167,7 +167,7 @@ class Schedule extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->Execute($sql)) {
+            if(!$rs = $this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
             } else {        
                 $total_results = $rs->RecordCount();            
@@ -206,7 +206,7 @@ class Schedule extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
         } else {
 
@@ -235,7 +235,7 @@ class Schedule extends Components {
 
         $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$this->app->db->qstr($schedule_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
         } else { 
 
@@ -271,7 +271,7 @@ class Schedule extends Components {
                 ORDER BY start_time
                 ASC";
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
         } else {
 
@@ -302,7 +302,7 @@ class Schedule extends Components {
             note                =". $this->app->db->qstr( $qform['note']             )."
             WHERE schedule_id   =". $this->app->db->qstr( $qform['schedule_id']      );
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
         } else {       
 
@@ -336,7 +336,7 @@ class Schedule extends Components {
 
         $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->app->db->qstr($schedule_id);
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
 
         } else {
@@ -415,7 +415,7 @@ class Schedule extends Components {
                 ORDER BY start_time
                 ASC";
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
         }   
 
@@ -800,7 +800,7 @@ class Schedule extends Components {
             ORDER BY ".PRFX."schedule_records.start_time
             ASC";
 
-        if(!$rs = $this->app->db->Execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
         }
 

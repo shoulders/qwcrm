@@ -325,7 +325,7 @@ class CMSApplication {
            // The modulus '% 2' introduces a little entropy, making the flushing less accurate
            // by firing the query less than half the time.
            $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - \Factory::$session->getExpire());            
-           $this->db->Execute($sql);
+           $this->db->execute($sql);
        }  
     }  
     
