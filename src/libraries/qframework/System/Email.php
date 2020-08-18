@@ -275,15 +275,15 @@ class Email extends System {
         }
 
         // This will present any transport errors - this one is faulty when no transport available
-        catch(Swift_TransportException $Transport_exception)
+        catch(Swift_TransportException $transportException)
         {
             // Log activity 
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
-            $this->writeRecordToEmailErrorLog($Transport_exception->getMessage());
+            $this->writeRecordToEmailErrorLog($transportException->getMessage());
             $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
             // Build System message         
-            preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);  // output the first line of the error message only
+            preg_match('/^(.*)$/m', $transportException->getMessage(), $matches);  // output the first line of the error message only
             $message = $record.'<br>'.$matches[0];                          
             $this->app->system->variables->systemMessagesWrite('danger', $message);
         }
