@@ -311,7 +311,7 @@ class CMSApplication {
       
     
     /** 
-     * From Joomla 3.7.0 libraries/legacy/application/application.php - no longer used, merged into QFramework::loadSession()
+     * From Joomla 3.7.0 libraries/legacy/application/application.php
      * I wrote this one myself but based on code from line 999 -> 1012
      */
     public function removeExpiredSessions()
