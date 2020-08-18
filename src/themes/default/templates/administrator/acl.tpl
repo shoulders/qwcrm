@@ -141,7 +141,7 @@
                                         <button type="reset" name="reset" value="reset">{t}Reset{/t}</button>&nbsp;
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php';">{t}Cancel{/t}</button>
                                     </td>
-                                    <td width="25%"><button type="submit" name="submit" value="reset_default" onclick="return confirmChoice('{t}Are you sure you want to reset the permissions to their defaults?{/t}');">{t}Reset to default{/t}</button></td>    
+                                    <td width="25%"><button type="submit" name="submit" value="reset_default" onclick="return confirm('{t}Are you sure you want to reset the permissions to their defaults?{/t}');">{t}Reset to default{/t}</button></td>    
                                 </tr>
                             </table>
                         </td>

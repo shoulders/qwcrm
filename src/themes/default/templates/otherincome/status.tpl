@@ -59,7 +59,7 @@
                                 <!-- Cancel Button -->
                                 <td class="olotd4" align="center" width="33%">                                                                            
                                     {if $allowed_to_cancel}
-                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to cancel this otherincome?.{/t}')) window.location.href='index.php?component=otherincome&page_tpl=cancel&otherincome_id={$otherincome_id}';">{t}Cancel{/t}</button>                                                                                   
+                                        <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to cancel this otherincome?.{/t}')) window.location.href='index.php?component=otherincome&page_tpl=cancel&otherincome_id={$otherincome_id}';">{t}Cancel{/t}</button>                                                                                   
                                     {else}
                                         {t}This Otherincome cannot be cancelled because it's status does not allow it.{/t}
                                     {/if}                                        
@@ -69,7 +69,7 @@
                                 <td class="olotd4" align="center" width="33%">                                                                       
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=otherincome&page_tpl=delete&otherincome_id={$otherincome_id}">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this Otherincome?{/t}');">                                            
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Otherincome?{/t}');">                                            
                                         </form>                                            
                                     {else}
                                         {t}This Otherincome cannot be deleted because it's status does not allow it.{/t}

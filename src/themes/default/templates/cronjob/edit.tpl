@@ -409,7 +409,7 @@
                                                                 <input type="hidden" name="qform[cronjob_id]" value="{$cronjob_details.cronjob_id}">
                                                                 <button type="submit" name="submit" value="update">{t}Update{/t}</button>
                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=cronjob&page_tpl=details&cronjob_id={$cronjob_id}';">{t}Cancel{/t}</button>
-                                                                <button type="button" value="reset_default" style="float: right;" onclick="return confirmChoice('{t}Are you sure you want to reset the cron to it\'s default settings?{/t}') && resetToDefaults();">{t}Reset to defaults{/t}</button>
+                                                                <button type="button" value="reset_default" style="float: right;" onclick="return confirm('{t}Are you sure you want to reset the cron to it\'s default settings?{/t}') && resetToDefaults();">{t}Reset to defaults{/t}</button>
                                                             </td>
                                                         </tr>
                                                     </form>

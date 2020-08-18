@@ -60,7 +60,7 @@
                 <a href="index.php?component=expense&page_tpl=edit&expense_id={$display_expenses[e].expense_id}">
                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                 </a>
-                {*<a href="index.php?component=expense&page_tpl=delete&expense_id={$display_expenses[e].expense_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
+                {*<a href="index.php?component=expense&page_tpl=delete&expense_id={$display_expenses[e].expense_id}" onclick="return confirm('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Expense Record{/t}</b>');" onMouseOut="hideddrivetip();">
                 </a>*}
             </td>

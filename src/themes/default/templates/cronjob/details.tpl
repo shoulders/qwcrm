@@ -97,8 +97,8 @@
                                         </tr>
                                         <tr>
                                             <td colspan="2">                                                
-                                                <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you Sure you want to run this cronjob now?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=run&cronjob_id={$cronjob_id}';">{t}Run Now{/t}</button>
-                                                {if $cronjob_details.locked}<button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you Sure you want to unlock this cronjob?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=unlock&unlock_type=cronjob&cronjob_id={$cronjob_id}';">{t}Unlock{/t}</button>{/if}
+                                                <button type="button" class="olotd4" onclick="if (confirm('{t}Are you Sure you want to run this cronjob now?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=run&cronjob_id={$cronjob_id}';">{t}Run Now{/t}</button>
+                                                {if $cronjob_details.locked}<button type="button" class="olotd4" onclick="if (confirm('{t}Are you Sure you want to unlock this cronjob?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=unlock&unlock_type=cronjob&cronjob_id={$cronjob_id}';">{t}Unlock{/t}</button>{/if}
                                             </td>
                                         </tr>
                                     </table>

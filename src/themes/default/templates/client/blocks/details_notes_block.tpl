@@ -40,7 +40,7 @@
                                         <a href="index.php?component=client&page_tpl=note_edit&client_note_id={$client_notes[n].client_note_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                         </a>
-                                        <a href="index.php?component=client&page_tpl=note_delete&client_note_id={$client_notes[n].client_note_id}" oNclick="return confirmChoice('{t}Are you sure you want to delete this client note?{/t}');">
+                                        <a href="index.php?component=client&page_tpl=note_delete&client_note_id={$client_notes[n].client_note_id}" oNclick="return confirm('{t}Are you sure you want to delete this client note?{/t}');">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Delete the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                         </a>                                        
                                     </td>

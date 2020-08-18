@@ -226,7 +226,7 @@
         // Item Delete button action
         $(".item_row .confirmDelete").off("click").on("click", function() {
             hideddrivetip();
-            if(!confirmChoice('Are you Sure you want to delete this item?')) { return; }
+            if(!confirm('Are you Sure you want to delete this item?')) { return; }
             $(this).closest('tr').remove();
             refreshPage();                       
         });   
@@ -512,7 +512,7 @@
                                                     {if $invoice_details.unit_gross > 0 }                                                             
                                                         <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&themeVar=print');">{t}Print HTML{/t}</button>
                                                         <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&themeVar=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
-                                                        <button type="button" class="userButton" onclick="confirmChoice('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&themeVar=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
+                                                        <button type="button" class="userButton" onclick="confirm('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&themeVar=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
                                                         <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=client_envelope&themeVar=print');">{t}Print Client Envelope{/t}</button>                                            
                                                         <br>
                                                         <br>

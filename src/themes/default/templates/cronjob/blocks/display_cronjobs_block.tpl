@@ -50,7 +50,7 @@
                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit{/t}</b>');" onMouseOut="hideddrivetip();">
                 </a>
                 <a href="index.php?component=cronjob&page_tpl=run&cronjob_id={$display_cronjobs[r].cronjob_id}">
-                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}Run Now{/t}');" onMouseOut="hideddrivetip();" onclick="return confirmChoice('{t}Are you Sure you want to run this cron now?{/t}');">
+                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}Run Now{/t}');" onMouseOut="hideddrivetip();" onclick="return confirm('{t}Are you Sure you want to run this cron now?{/t}');">
                 </a>
             </td>
         </tr>

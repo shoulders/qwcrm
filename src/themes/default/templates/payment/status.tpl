@@ -59,7 +59,7 @@
                                 <!-- Cancel Button -->
                                 <td class="olotd4" align="center" width="33%"> 
                                     {if $allowed_to_cancel}
-                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to cancel this payment?{/t}')) window.location.href='index.php?component=payment&page_tpl=cancel&payment_id={$payment_id}';">{t}Cancel{/t}</button>                                                                                   
+                                        <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to cancel this payment?{/t}')) window.location.href='index.php?component=payment&page_tpl=cancel&payment_id={$payment_id}';">{t}Cancel{/t}</button>                                                                                   
                                     {else}
                                         {t}This Payment cannot be cancelled because it's current state does not allow it.{/t}
                                     {/if}                                        
@@ -69,7 +69,7 @@
                                 <td class="olotd4" align="center" width="33%">                                                                       
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=payment&page_tpl=delete&payment_id={$payment_id}">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this Payment?{/t}');">                                            
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Payment?{/t}');">                                            
                                         </form>                                            
                                     {else}
                                         {t}This Payment cannot be deleted because it's current state does not allow it.{/t}

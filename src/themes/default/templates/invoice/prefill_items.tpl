@@ -138,7 +138,7 @@
         // Item Delete button action
         $(".item_row .confirmDelete").off("click").on("click", function() {
             hideddrivetip();
-            if(!confirmChoice('Are you Sure you want to delete this item?')) { return; }
+            if(!confirm('Are you Sure you want to delete this item?')) { return; }
             $(this).closest('tr').remove();
             refreshPage();                       
         });   
@@ -260,7 +260,7 @@
                                                         <tr>
                                                             <td class="olotd4" colspan="6" nowrap>
                                                                 <button type="button" onclick="createNewTableRow();">{t}Add{/t}</button>
-                                                                <button type="submit" name="submit" value="submit" onclick="return checkForDuplicates() && confirmChoice('{t}Are you sure you want to update the invoice prefill items.{/t}');">{t}Submit{/t}</button>
+                                                                <button type="submit" name="submit" value="submit" onclick="return checkForDuplicates() && confirm('{t}Are you sure you want to update the invoice prefill items.{/t}');">{t}Submit{/t}</button>
                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=prefill_items';">{t}Cancel{/t}</button>
                                                             </td>
                                                         </tr>
@@ -302,7 +302,7 @@
                                                                             <td width="246">                                                                                    
                                                                                 <input name="invoice_prefill_csv" class="userButton" type="file" accept=".csv" required>
                                                                             </td>
-                                                                            <td width="80"><button name="submit" type="submit" class="userButton box" value="import" onclick="return confirmChoice('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}Upload{/t}</button></td>
+                                                                            <td width="80"><button name="submit" type="submit" class="userButton box" value="import" onclick="return confirm('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}Upload{/t}</button></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td width="246"><input name="empty_prefill_items_table" type="checkbox" value="1">{t}Empty Prefill Table{/t}</td>                                                                                

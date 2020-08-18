@@ -76,7 +76,7 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if work order is created and open, you can delete it, otherwise you cannot -->                                        
                                     {if $allowed_to_delete}
-                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to delete this Workorder?{/t}')) window.location.href='index.php?component=workorder&page_tpl=delete&workorder_id={$workorder_id}';">{t}Delete{/t}</button>                                                                                
+                                        <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to delete this Workorder?{/t}')) window.location.href='index.php?component=workorder&page_tpl=delete&workorder_id={$workorder_id}';">{t}Delete{/t}</button>                                                                                
                                     {else}
                                         {t}This work order cannot be deleted. You can only delete the work order if it's status is either unassigned or management and the work order has no invoice.{/t}
                                     {/if}                                        

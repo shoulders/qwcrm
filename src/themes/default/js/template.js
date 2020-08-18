@@ -294,17 +294,6 @@ function clearSystemMessages() {
     
 }
 
-// A standard confirmation dialogue - e.g. return confirmChoice(msg); - confirmChoice my be a pointless wrapper
-function confirmChoice(msg) {
-    
-    var choice = confirm(msg);
-    if (choice)
-        return true;
-    else
-        return false;
-    
-}
-
 // Check to see if the 'Enter' button has been press and return true if it has been (Used for search boxes to allow searching when enter is pressed)
 function checkForEnterKeyPress(e) {
         
