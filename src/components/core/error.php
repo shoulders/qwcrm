@@ -9,15 +9,15 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['error_component'] = isset(\CMSApplication::$VAR['error_component']) ? \CMSApplication::$VAR['error_component'] : null;
-\CMSApplication::$VAR['error_page_tpl'] = isset(\CMSApplication::$VAR['error_page_tpl']) ? \CMSApplication::$VAR['error_page_tpl'] : null;
-\CMSApplication::$VAR['error_type'] = isset(\CMSApplication::$VAR['error_type']) ? \CMSApplication::$VAR['error_type'] : null;
-\CMSApplication::$VAR['error_location'] = isset(\CMSApplication::$VAR['error_location']) ? \CMSApplication::$VAR['error_location'] : null;
-\CMSApplication::$VAR['error_php_function'] = isset(\CMSApplication::$VAR['error_php_function']) ? \CMSApplication::$VAR['error_php_function'] : null;
-\CMSApplication::$VAR['error_database'] = isset(\CMSApplication::$VAR['error_database']) ? \CMSApplication::$VAR['error_database'] : null;
-\CMSApplication::$VAR['error_sql_query'] = isset(\CMSApplication::$VAR['error_sql_query']) ? \CMSApplication::$VAR['error_sql_query'] : null;
-\CMSApplication::$VAR['error_msg'] = isset(\CMSApplication::$VAR['error_msg']) ? \CMSApplication::$VAR['error_msg'] : null;
-\CMSApplication::$VAR['error_enable_override'] = isset(\CMSApplication::$VAR['error_enable_override']) ? \CMSApplication::$VAR['error_enable_override'] : null;
+\CMSApplication::$VAR['error_component'] = \CMSApplication::$VAR['error_component'] ?? null;
+\CMSApplication::$VAR['error_page_tpl'] = \CMSApplication::$VAR['error_page_tpl'] ?? null;
+\CMSApplication::$VAR['error_type'] = \CMSApplication::$VAR['error_type'] ?? null;
+\CMSApplication::$VAR['error_location'] = \CMSApplication::$VAR['error_location'] ?? null;
+\CMSApplication::$VAR['error_php_function'] = \CMSApplication::$VAR['error_php_function'] ?? null;
+\CMSApplication::$VAR['error_database'] = \CMSApplication::$VAR['error_database'] ?? null;
+\CMSApplication::$VAR['error_sql_query'] = \CMSApplication::$VAR['error_sql_query'] ?? null;
+\CMSApplication::$VAR['error_msg'] = \CMSApplication::$VAR['error_msg'] ?? null;
+\CMSApplication::$VAR['error_enable_override'] = \CMSApplication::$VAR['error_enable_override'] ?? null;
 
 // Prevent direct access to this page
 if(!$this->app->system->security->checkPageAccessedViaQwcrm(null, null, \CMSApplication::$VAR['error_enable_override'])) {

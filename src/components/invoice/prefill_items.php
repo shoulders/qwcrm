@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['empty_prefill_items_table'] = isset(\CMSApplication::$VAR['empty_prefill_items_table']) ? \CMSApplication::$VAR['empty_prefill_items_table'] : null;
+\CMSApplication::$VAR['empty_prefill_items_table'] = \CMSApplication::$VAR['empty_prefill_items_table'] ?? null;
 
 // If the export of the invoice prefill items has been requested
 if(isset(\CMSApplication::$VAR['export_invoice_prefill_items'])) {

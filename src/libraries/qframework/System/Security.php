@@ -35,7 +35,7 @@ class Security extends System {
     public function checkPageAccessedViaQwcrm($component = null, $page_tpl = null, $access_rule = null, $var_component = null, $var_page_tpl = null, $man_component = null, $man_page_tpl = null) {
 
         // Get Referer
-        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+        $referer = $_SERVER['HTTP_REFERER'] ?? null;
 
         /* General Rules */
 
@@ -195,9 +195,9 @@ class Security extends System {
 
     public function getVisitorIpAddress() {    
 
-        $http_client_ip = isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : null;
-        $http_x_forwarded_for = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null;
-        $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;    
+        $http_client_ip = $_SERVER['HTTP_CLIENT_IP'] ?? null;
+        $http_x_forwarded_for = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? null;
+        $remote_addr = $_SERVER['REMOTE_ADDR'] ?? null;    
 
         if($http_client_ip) {
             $ip_address = $http_client_ip;        

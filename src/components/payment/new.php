@@ -14,18 +14,14 @@ if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'i
 }
 
 // Prevent undefined variable errors (with and without submit)
-\CMSApplication::$VAR['qpayment']['type'] = \CMSApplication::$VAR['type'];
-\CMSApplication::$VAR['qpayment']['method'] = isset(\CMSApplication::$VAR['qpayment']['method']) ? \CMSApplication::$VAR['qpayment']['method'] : null;
-\CMSApplication::$VAR['qpayment']['invoice_id'] = isset(\CMSApplication::$VAR['qpayment']['invoice_id']) ? \CMSApplication::$VAR['qpayment']['invoice_id'] : '';
-\CMSApplication::$VAR['qpayment']['invoice_id'] = isset(\CMSApplication::$VAR['invoice_id']) ? \CMSApplication::$VAR['invoice_id'] : \CMSApplication::$VAR['qpayment']['invoice_id'];
-\CMSApplication::$VAR['qpayment']['voucher_id'] = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : ''; // Do i need this? probably!
-\CMSApplication::$VAR['qpayment']['refund_id'] = isset(\CMSApplication::$VAR['qpayment']['refund_id']) ? \CMSApplication::$VAR['qpayment']['refund_id'] : '';
-\CMSApplication::$VAR['qpayment']['refund_id'] = isset(\CMSApplication::$VAR['refund_id']) ? \CMSApplication::$VAR['refund_id'] : \CMSApplication::$VAR['qpayment']['refund_id'];
-\CMSApplication::$VAR['qpayment']['expense_id'] = isset(\CMSApplication::$VAR['qpayment']['expense_id']) ? \CMSApplication::$VAR['qpayment']['expense_id'] : '';
-\CMSApplication::$VAR['qpayment']['expense_id'] = isset(\CMSApplication::$VAR['expense_id']) ? \CMSApplication::$VAR['expense_id'] : \CMSApplication::$VAR['qpayment']['expense_id'];
-\CMSApplication::$VAR['qpayment']['otherincome_id'] = isset(\CMSApplication::$VAR['qpayment']['otherincome_id']) ? \CMSApplication::$VAR['qpayment']['otherincome_id'] : '';
-\CMSApplication::$VAR['qpayment']['otherincome_id'] = isset(\CMSApplication::$VAR['otherincome_id']) ? \CMSApplication::$VAR['otherincome_id'] : \CMSApplication::$VAR['qpayment']['otherincome_id'];
-\CMSApplication::$VAR['qpayment']['name_on_card'] = isset(\CMSApplication::$VAR['qpayment']['name_on_card']) ? \CMSApplication::$VAR['qpayment']['name_on_card'] : null;
+\CMSApplication::$VAR['qpayment']['type']           = \CMSApplication::$VAR['type'];
+\CMSApplication::$VAR['qpayment']['method']         = \CMSApplication::$VAR['qpayment']['method'] ?? null;
+\CMSApplication::$VAR['qpayment']['invoice_id']     = \CMSApplication::$VAR['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'] ?? '';
+\CMSApplication::$VAR['qpayment']['voucher_id']     = $qpayment['voucher_id'] ?? ''; // Do i need this? probably!
+\CMSApplication::$VAR['qpayment']['refund_id']      = \CMSApplication::$VAR['refund_id'] ?? \CMSApplication::$VAR['qpayment']['refund_id'] ?? '';
+\CMSApplication::$VAR['qpayment']['expense_id']     = \CMSApplication::$VAR['expense_id'] ?? \CMSApplication::$VAR['qpayment']['expense_id'] ?? '';
+\CMSApplication::$VAR['qpayment']['otherincome_id'] = \CMSApplication::$VAR['otherincome_id'] ?? \CMSApplication::$VAR['qpayment']['otherincome_id'] ?? '';
+\CMSApplication::$VAR['qpayment']['name_on_card']   = \CMSApplication::$VAR['qpayment']['name_on_card'] ?? null;
 
 // Prevent direct access to this page, and validate requests
 if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') || $this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details')) {  

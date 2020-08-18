@@ -12,9 +12,9 @@ defined('_QWEXEC') or die;
 $this->app->components->user->deleteExpiredResetCodes();
 
 // Prevent undefined variable errors (temp)
-\CMSApplication::$VAR['reset_code'] = isset(\CMSApplication::$VAR['reset_code']) ? \CMSApplication::$VAR['reset_code'] : null;
+\CMSApplication::$VAR['reset_code'] = \CMSApplication::$VAR['reset_code'] ?? null;
 $this->app->smarty->assign('reset_code', \CMSApplication::$VAR['reset_code']);
-\CMSApplication::$VAR['token'] = isset(\CMSApplication::$VAR['token']) ? \CMSApplication::$VAR['token'] : null;
+\CMSApplication::$VAR['token'] = \CMSApplication::$VAR['token'] ?? null;
 $this->app->smarty->assign('token', \CMSApplication::$VAR['token']);
 
 ###########################################################

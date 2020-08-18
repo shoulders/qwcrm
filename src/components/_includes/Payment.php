@@ -1009,13 +1009,13 @@ class Payment extends Components {
 
         $additional_info = array();
 
-        // Build Array
-        $additional_info['bank_transfer_reference'] = $bank_transfer_reference ? $bank_transfer_reference : '';
-        $additional_info['card_type_key'] = $card_type_key ? $card_type_key : '';
-        $additional_info['name_on_card'] = $name_on_card ? $name_on_card : '';
-        $additional_info['cheque_number'] = $cheque_number ? $cheque_number : '';
-        $additional_info['direct_debit_reference'] = $direct_debit_reference ? $direct_debit_reference : '';
-        $additional_info['paypal_transaction_id'] = $paypal_transaction_id ? $paypal_transaction_id : '';
+        // Build Array (not all types have all fields)
+        $additional_info['bank_transfer_reference'] = $bank_transfer_reference ?: '';
+        $additional_info['card_type_key'] = $card_type_key ?: '';
+        $additional_info['name_on_card'] = $name_on_card ?: '';
+        $additional_info['cheque_number'] = $cheque_number ?: '';
+        $additional_info['direct_debit_reference'] = $direct_debit_reference ?: '';
+        $additional_info['paypal_transaction_id'] = $paypal_transaction_id ?: '';
 
         // Return the JSON data
         return json_encode($additional_info);

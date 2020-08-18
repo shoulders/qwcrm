@@ -9,9 +9,9 @@
 defined('_QWEXEC') or die;
 
 // If no schedule year/month/day set, use today's date
-\CMSApplication::$VAR['start_year'] = isset(\CMSApplication::$VAR['start_year']) ? \CMSApplication::$VAR['start_year'] : date('Y');
-\CMSApplication::$VAR['start_month'] = isset(\CMSApplication::$VAR['start_month']) ? \CMSApplication::$VAR['start_month'] : date('m');
-\CMSApplication::$VAR['start_day'] = isset(\CMSApplication::$VAR['start_day']) ? \CMSApplication::$VAR['start_day'] : date('d');
+\CMSApplication::$VAR['start_year'] = \CMSApplication::$VAR['start_year'] ?? date('Y');
+\CMSApplication::$VAR['start_month'] = \CMSApplication::$VAR['start_month'] ?? date('m');
+\CMSApplication::$VAR['start_day'] = \CMSApplication::$VAR['start_day'] ?? date('d');
 
 // Check if we have a employee_id and output is set to day
 if(isset(\CMSApplication::$VAR['ics_type']) && \CMSApplication::$VAR['ics_type'] == 'day' && !\CMSApplication::$VAR['employee_id']) {    

@@ -46,22 +46,19 @@ class Variables extends System {
         $this->app->smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
 
         // This assigns framework globals to smarty and also prevents undefined variable errors (mainly for the menu)
-        
-        // use ?: or an array and foreach
-        
-        isset(\CMSApplication::$VAR['user_id'])          ? $this->app->smarty->assign('user_id', \CMSApplication::$VAR['user_id'])               : $this->app->smarty->assign('user_id', null);
-        isset(\CMSApplication::$VAR['employee_id'])      ? $this->app->smarty->assign('employee_id', \CMSApplication::$VAR['employee_id'])       : $this->app->smarty->assign('employee_id', null);
-        isset(\CMSApplication::$VAR['client_id'])        ? $this->app->smarty->assign('client_id', \CMSApplication::$VAR['client_id'])           : $this->app->smarty->assign('client_id', null);
-        isset(\CMSApplication::$VAR['workorder_id'])     ? $this->app->smarty->assign('workorder_id', \CMSApplication::$VAR['workorder_id'])     : $this->app->smarty->assign('workorder_id', null);
-        isset(\CMSApplication::$VAR['schedule_id'])      ? $this->app->smarty->assign('schedule_id', \CMSApplication::$VAR['schedule_id'])       : $this->app->smarty->assign('schedule_id', null);
-        isset(\CMSApplication::$VAR['invoice_id'])       ? $this->app->smarty->assign('invoice_id', \CMSApplication::$VAR['invoice_id'])         : $this->app->smarty->assign('invoice_id', null);
-        isset(\CMSApplication::$VAR['voucher_id'])       ? $this->app->smarty->assign('voucher_id', \CMSApplication::$VAR['voucher_id'])         : $this->app->smarty->assign('voucher_id', null); 
-        isset(\CMSApplication::$VAR['payment_id'])       ? $this->app->smarty->assign('payment_id', \CMSApplication::$VAR['payment_id'])         : $this->app->smarty->assign('payment_id', null);
-        isset(\CMSApplication::$VAR['refund_id'])        ? $this->app->smarty->assign('refund_id', \CMSApplication::$VAR['refund_id'])           : $this->app->smarty->assign('refund_id', null);
-        isset(\CMSApplication::$VAR['expense_id'])       ? $this->app->smarty->assign('expense_id', \CMSApplication::$VAR['expense_id'])         : $this->app->smarty->assign('expense_id', null);    
-        isset(\CMSApplication::$VAR['otherincome_id'])   ? $this->app->smarty->assign('otherincome_id', \CMSApplication::$VAR['otherincome_id']) : $this->app->smarty->assign('otherincome_id', null);      
-        isset(\CMSApplication::$VAR['supplier_id'])      ? $this->app->smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'])       : $this->app->smarty->assign('supplier_id', null);
-        isset(\CMSApplication::$VAR['cronjob_id'])          ? $this->app->smarty->assign('cronjob_id', \CMSApplication::$VAR['cronjob_id'])               : $this->app->smarty->assign('cronjob_id', null);   
+        $this->app->smarty->assign('user_id', \CMSApplication::$VAR['user_id'] ?? null);
+        $this->app->smarty->assign('employee_id', \CMSApplication::$VAR['employee_id'] ?? null);
+        $this->app->smarty->assign('client_id', \CMSApplication::$VAR['client_id'] ?? null);
+        $this->app->smarty->assign('workorder_id', \CMSApplication::$VAR['workorder_id'] ?? null);
+        $this->app->smarty->assign('schedule_id', \CMSApplication::$VAR['schedule_id'] ?? null);
+        $this->app->smarty->assign('invoice_id', \CMSApplication::$VAR['invoice_id'] ?? null);
+        $this->app->smarty->assign('voucher_id', \CMSApplication::$VAR['voucher_id'] ?? null);
+        $this->app->smarty->assign('payment_id', \CMSApplication::$VAR['payment_id'] ?? null);
+        $this->app->smarty->assign('refund_id', \CMSApplication::$VAR['refund_id'] ?? null);
+        $this->app->smarty->assign('expense_id', \CMSApplication::$VAR['expense_id'] ?? null);
+        $this->app->smarty->assign('otherincome_id', \CMSApplication::$VAR['otherincome_id'] ?? null);
+        $this->app->smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'] ?? null);
+        $this->app->smarty->assign('cronjob_id', \CMSApplication::$VAR['cronjob_id'] ?? null);
 
         // Used throughout the site
         if(!defined('QWCRM_SETUP')) {

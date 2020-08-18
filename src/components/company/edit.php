@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['qform']['delete_logo'] = isset(\CMSApplication::$VAR['qform']['delete_logo']) ? \CMSApplication::$VAR['qform']['delete_logo'] : null;
+\CMSApplication::$VAR['qform']['delete_logo'] = \CMSApplication::$VAR['qform']['delete_logo'] ?? null;
 
 // Update Company details
 if(isset(\CMSApplication::$VAR['submit'])) {

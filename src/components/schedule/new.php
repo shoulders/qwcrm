@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-//\CMSApplication::$VAR['qform']['note'] = isset(\CMSApplication::$VAR['qform']['note']) ? \CMSApplication::$VAR['qform']['note'] : null; 
+//\CMSApplication::$VAR['qform']['note'] = \CMSApplication::$VAR['qform']['note'] ?? null; 
 
 // Check if we have an employee_id
 if(!isset(\CMSApplication::$VAR['employee_id']) || !\CMSApplication::$VAR['employee_id']) {

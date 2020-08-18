@@ -9,8 +9,8 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['qform']['labour_items'] = isset(\CMSApplication::$VAR['qform']['labour_items']) ? \CMSApplication::$VAR['qform']['labour_items'] : null;
-\CMSApplication::$VAR['qform']['parts_items'] = isset(\CMSApplication::$VAR['qform']['parts_items']) ? \CMSApplication::$VAR['qform']['parts_items'] : null;
+\CMSApplication::$VAR['qform']['labour_items'] = \CMSApplication::$VAR['qform']['labour_items'] ?? null;
+\CMSApplication::$VAR['qform']['parts_items'] = \CMSApplication::$VAR['qform']['parts_items'] ?? null;
 
 // Check if we have an invoice_id
 if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {

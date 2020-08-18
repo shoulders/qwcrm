@@ -40,7 +40,7 @@ class Setup extends Components {
         $this->app->user = new Joomla\CMS\User\User;
         
         // Prevent undefined variable errors && Get 'stage' from the submit button
-        \CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
+        \CMSApplication::$VAR['stage'] = \CMSApplication::$VAR['submit'] ?? null;
         $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
         $this->app->smarty->assign('setup_error_flag', self::$setup_error_flag);
         $this->app->smarty->assign('executed_sql_results', self::$executed_sql_results);

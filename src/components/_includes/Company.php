@@ -279,7 +279,7 @@ class Company extends Components {
         $this->updateVatRates($qform['vat_tax_codes']);
 
         // Prevent undefined variable errors
-        $qform['delete_logo'] = isset($qform['delete_logo']) ? $qform['delete_logo'] : null;   
+        $qform['delete_logo'] = $qform['delete_logo'] ?? null;
         
         // Delete logo if selected and no new logo is presented
         if($qform['delete_logo'] && !$_FILES['logo']['name']) {

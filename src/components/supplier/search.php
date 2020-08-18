@@ -9,11 +9,11 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;
-\CMSApplication::$VAR['search_category'] = isset(\CMSApplication::$VAR['search_category']) ? \CMSApplication::$VAR['search_category'] : null;
-\CMSApplication::$VAR['search_term'] = isset(\CMSApplication::$VAR['search_term']) ? \CMSApplication::$VAR['search_term'] : null;
-\CMSApplication::$VAR['filter_type'] = isset(\CMSApplication::$VAR['filter_type']) ? \CMSApplication::$VAR['filter_type'] : null;
-\CMSApplication::$VAR['filter_status'] = isset(\CMSApplication::$VAR['filter_status']) ? \CMSApplication::$VAR['filter_status'] : null;
+\CMSApplication::$VAR['page_no'] = \CMSApplication::$VAR['page_no'] ?? null;
+\CMSApplication::$VAR['search_category'] = \CMSApplication::$VAR['search_category'] ?? null;
+\CMSApplication::$VAR['search_term'] = \CMSApplication::$VAR['search_term'] ?? null;
+\CMSApplication::$VAR['filter_type'] = \CMSApplication::$VAR['filter_type'] ?? null;
+\CMSApplication::$VAR['filter_status'] = \CMSApplication::$VAR['filter_status'] ?? null;
 
 // If a search is submitted
 if(isset(\CMSApplication::$VAR['submit'])) {

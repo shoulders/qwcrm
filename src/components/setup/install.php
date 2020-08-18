@@ -15,11 +15,11 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('setup', 'install', 
 }
 
 // Prevent undefined variable errors && Get 'stage' from the submit button
-\CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
+\CMSApplication::$VAR['stage'] = \CMSApplication::$VAR['submit'] ?? null;
 $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
 
 // Get 'stage' from the submit button
-\CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
+\CMSApplication::$VAR['stage'] = \CMSApplication::$VAR['submit'] ?? null;
 
 // Delete Setup files Action
 if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && $this->app->system->security->checkPageAccessedViaQwcrm('setup', 'install')) {

@@ -103,10 +103,10 @@ defined('_QWEXEC') or die;
             foreach($items as $item) {
 
                 // Add in missing sales tax exempt option - This prevents undefined variable errors
-                $sales_tax_exempt = isset($item['sales_tax_exempt']) ? 1 : 0;
+                $sales_tax_exempt = $item['sales_tax_exempt'] ?? 0;
 
                 // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
-                $vat_tax_code = isset($item['vat_tax_code']) ? $item['vat_tax_code'] : $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
+                $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
 
                 // Calculate the correct tax rate based on tax system (and exemption status)
                 if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }

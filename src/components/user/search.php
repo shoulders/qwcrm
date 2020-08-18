@@ -9,12 +9,12 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;
-\CMSApplication::$VAR['search_category'] = isset(\CMSApplication::$VAR['search_category']) ? \CMSApplication::$VAR['search_category'] : null;
-\CMSApplication::$VAR['search_term'] = isset(\CMSApplication::$VAR['search_term']) ? \CMSApplication::$VAR['search_term'] : null;
-\CMSApplication::$VAR['filter_usergroup'] = isset(\CMSApplication::$VAR['filter_usergroup']) ? \CMSApplication::$VAR['filter_usergroup'] : null;
-\CMSApplication::$VAR['filter_usertype'] = isset(\CMSApplication::$VAR['filter_usertype']) ? \CMSApplication::$VAR['filter_usertype'] : null;
-\CMSApplication::$VAR['filter_status'] = isset(\CMSApplication::$VAR['filter_status']) ? \CMSApplication::$VAR['filter_status'] : null;
+\CMSApplication::$VAR['page_no'] = \CMSApplication::$VAR['page_no'] ?? null;
+\CMSApplication::$VAR['search_category'] = \CMSApplication::$VAR['search_category'] ?? null;
+\CMSApplication::$VAR['search_term'] = \CMSApplication::$VAR['search_term'] ?? null;
+\CMSApplication::$VAR['filter_usergroup'] = \CMSApplication::$VAR['filter_usergroup'] ?? null;
+\CMSApplication::$VAR['filter_usertype'] = \CMSApplication::$VAR['filter_usertype'] ?? null;
+\CMSApplication::$VAR['filter_status'] = \CMSApplication::$VAR['filter_status'] ?? null;
 
 // A workaround until i add a full type search, this keeps the logic intact
 \CMSApplication::$VAR['search_category'] = 'display_name';

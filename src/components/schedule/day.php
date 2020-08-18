@@ -9,13 +9,13 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['workorder_id'] = isset(\CMSApplication::$VAR['workorder_id']) ? \CMSApplication::$VAR['workorder_id'] : null;
-\CMSApplication::$VAR['employee_id']  = isset(\CMSApplication::$VAR['employee_id']) ? \CMSApplication::$VAR['employee_id'] : $this->app->user->login_user_id;
+\CMSApplication::$VAR['workorder_id'] = \CMSApplication::$VAR['workorder_id'] ?? null;
+\CMSApplication::$VAR['employee_id']  = \CMSApplication::$VAR['employee_id'] ?? $this->app->user->login_user_id;
 
 // If no schedule year/month/day set, use today's date
-\CMSApplication::$VAR['start_year']  = isset(\CMSApplication::$VAR['start_year']) ? \CMSApplication::$VAR['start_year'] : date('Y');
-\CMSApplication::$VAR['start_month'] = isset(\CMSApplication::$VAR['start_month']) ? \CMSApplication::$VAR['start_month'] : date('m');
-\CMSApplication::$VAR['start_day']   = isset(\CMSApplication::$VAR['start_day']) ? \CMSApplication::$VAR['start_day'] : date('d');
+\CMSApplication::$VAR['start_year']  = \CMSApplication::$VAR['start_year'] ?? date('Y');
+\CMSApplication::$VAR['start_month'] = \CMSApplication::$VAR['start_month'] ?? date('m');
+\CMSApplication::$VAR['start_day']   = \CMSApplication::$VAR['start_day'] ?? date('d');
 
 // Check the workorder status - We don't want to schedule/reschedule a workorder if it's closed
 if(\CMSApplication::$VAR['workorder_id']) { 

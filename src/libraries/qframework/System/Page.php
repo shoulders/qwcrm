@@ -51,9 +51,9 @@ class Page extends System {
         $rawHtml = false;       // Is the payload Raw HTML? This can be altered by the specified page controller (included file), if required (i.e. autosuggest)
         
         // Set the correct theme specification, either manually supplied or from the system
-        $component = isset($component) ? $component : ( isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null);
-        $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\CMSApplication::$VAR['page_tpl']) ? \CMSApplication::$VAR['page_tpl'] : null);
-        $themeVar = isset($themeVar) ? $themeVar : ( isset(\CMSApplication::$VAR['themeVar']) ? \CMSApplication::$VAR['themeVar'] : null);                       
+        $component = $component ?? \CMSApplication::$VAR['component'] ?? null;
+        $page_tpl = $page_tpl ?? \CMSApplication::$VAR['page_tpl'] ?? null;
+        $themeVar = $themeVar ?? \CMSApplication::$VAR['themeVar'] ?? null;                       
 
         // This is currently not used, and is only so i know where the page controller section is
         page_controller:

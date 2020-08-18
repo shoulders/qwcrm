@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 if($this->app->user->login_is_employee) {
 
     // Prevent undefined variable errors
-    \CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;
+    \CMSApplication::$VAR['page_no'] = \CMSApplication::$VAR['page_no'] ?? null;
 
     // Employee Workorders
     $this->app->smarty->assign('employee_workorders_assigned',          $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'assigned', $this->app->user->login_user_id)          );

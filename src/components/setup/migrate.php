@@ -17,7 +17,7 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('setup', 'migrate', 
 }
 
 // Prevent undefined variable errors && Get 'stage' from the submit button
-\CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
+\CMSApplication::$VAR['stage'] = \CMSApplication::$VAR['submit'] ?? null;
 $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
 
 ####################################

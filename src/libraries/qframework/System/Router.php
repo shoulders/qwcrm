@@ -19,8 +19,8 @@ class Router extends System {
     function pageController($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
         
         // Set routing variables locally for analysis, either manually supplied or from the system
-        $component = isset($component) ? $component : ( isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null);
-        $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\CMSApplication::$VAR['page_tpl']) ? \CMSApplication::$VAR['page_tpl'] : null);
+        $component = $component ?? \CMSApplication::$VAR['component'] ?? null;
+        $page_tpl = $page_tpl ?? \CMSApplication::$VAR['page_tpl'] ?? null;
 
         // Setup is in progress (install/migrate/upgrade), skip validations (because no database access etc..)
         if(

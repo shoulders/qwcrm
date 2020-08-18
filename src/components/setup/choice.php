@@ -15,7 +15,7 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('setup', 'choice', '
 }
 
 // Define the setup type for smarty - currently only used for 'upgrade'
-isset(\CMSApplication::$VAR['setup_type']) ? $this->app->smarty->assign('setup_type', \CMSApplication::$VAR['setup_type']) : $this->app->smarty->assign('setup_type', null);
+$this->app->smarty->assign('setup_type', \CMSApplication::$VAR['setup_type'] ?? null);
 
 // Create a Setup Object
 $qsetup = new Setup(\CMSApplication::$VAR);

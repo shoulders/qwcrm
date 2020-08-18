@@ -241,7 +241,7 @@ class Client extends Components {
                 $results = $rs->GetRowAssoc();
 
                 // Add these dynamically created fields
-                $results['display_name'] = $results['company_name'] ? $results['company_name'] : $results['first_name'].' '.$results['last_name'];
+                $results['display_name'] = $results['company_name'] ?: $results['first_name'].' '.$results['last_name'];
                 $results['full_name'] = $results['first_name'].' '.$results['last_name'];
 
                 return $results; 
@@ -251,7 +251,7 @@ class Client extends Components {
                 // Return the dynamically created 'display_name'
                 if($item == 'display_name') {
                     $results = $rs->GetRowAssoc();                
-                    return $results['company_name'] ? $results['company_name'] : $results['first_name'].' '.$results['last_name'];                               
+                    return $results['company_name'] ?: $results['first_name'].' '.$results['last_name'];                        
                 }
 
                 // Return the dynamically created 'full_name'

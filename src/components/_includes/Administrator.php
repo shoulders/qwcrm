@@ -139,15 +139,15 @@ class Administrator extends Components {
         foreach($permissions as $page_name => $page_permission) {
 
             // Prevent undefined variable errors
-            $page_permission['Administrator'] = isset($page_permission['Administrator']) ? $page_permission['Administrator'] : 0;
-            $page_permission['Manager'] = isset($page_permission['Manager']) ? $page_permission['Manager'] : 0;
-            $page_permission['Supervisor'] = isset($page_permission['Supervisor']) ? $page_permission['Supervisor'] : 0;
-            $page_permission['Technician'] = isset($page_permission['Technician']) ? $page_permission['Technician'] : 0;
-            $page_permission['Clerical'] = isset($page_permission['Clerical']) ? $page_permission['Clerical'] : 0;
-            $page_permission['Counter'] = isset($page_permission['Counter']) ? $page_permission['Counter'] : 0;
-            $page_permission['Client'] = isset($page_permission['Client']) ? $page_permission['Client'] : 0;
-            $page_permission['Guest'] = isset($page_permission['Guest']) ? $page_permission['Guest'] : 0;
-            $page_permission['Public'] = isset($page_permission['Public']) ? $page_permission['Public'] : 0;        
+            $page_permission['Administrator'] = $page_permission['Administrator'] ?? 0;
+            $page_permission['Manager'] = $page_permission['Manager'] ?? 0;
+            $page_permission['Supervisor'] = $page_permission['Supervisor'] ?? 0;
+            $page_permission['Technician'] = $page_permission['Technician'] ?? 0;
+            $page_permission['Clerical'] = $page_permission['Clerical'] ?? 0;
+            $page_permission['Counter'] = $page_permission['Counter'] ?? 0;
+            $page_permission['Client'] = $page_permission['Client'] ?? 0;
+            $page_permission['Guest'] = $page_permission['Guest'] ?? 0;
+            $page_permission['Public'] = $page_permission['Public'] ?? 0;        
 
             // Enforce Administrators always have access to everything
             $page_permission['Administrator'] = '1';
@@ -493,7 +493,7 @@ class Administrator extends Components {
         // Set the shared session configuration
         if (isset($new_config['shared_session']))
         {
-            $currentShared = isset($current_config['shared_session']) ? $current_config['shared_session'] : '0';
+            $currentShared = $current_config['shared_session'] ?? '0';
 
             // Has the user enabled shared sessions?
             if ($new_config['shared_session'] == 1 && $currentShared == 0)

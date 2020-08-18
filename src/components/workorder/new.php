@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['assign_to_employee'] = isset(\CMSApplication::$VAR['assign_to_employee']) ? \CMSApplication::$VAR['assign_to_employee'] : null;
+\CMSApplication::$VAR['assign_to_employee'] = \CMSApplication::$VAR['assign_to_employee'] ?? null;
 
 // Check if we have a client_id
 if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_id']) {

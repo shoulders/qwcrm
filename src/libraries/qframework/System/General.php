@@ -43,7 +43,7 @@ class General extends System {
          */
 
             // extract the qwcrm page reference from the url (if present)
-            //$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;   
+            //$referer = $_SERVER['HTTP_REFERER'] ?? null;   
             // preg_match('/^.*\?page=(.*)&.*/U', $referer, $page_string);
 
           /*  // compensate for home and login pages
@@ -205,8 +205,8 @@ class General extends System {
         }
 
         // Prevent undefined variable errors
-        \CMSApplication::$VAR['component'] = isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null;
-        \CMSApplication::$VAR['page_tpl']  = isset(\CMSApplication::$VAR['page_tpl'])  ? \CMSApplication::$VAR['page_tpl']  : null;
+        \CMSApplication::$VAR['component'] = \CMSApplication::$VAR['component'] ?? null;
+        \CMSApplication::$VAR['page_tpl']  = \CMSApplication::$VAR['page_tpl']  ?? null;
 
         // Installation is in progress
         if ($this->app->system->security->checkPageAccessedViaQwcrm('setup', 'install', 'refered-index_allowed-route_matched', \CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {

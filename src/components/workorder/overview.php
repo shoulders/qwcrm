@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;
+\CMSApplication::$VAR['page_no'] = \CMSApplication::$VAR['page_no'] ?? null;
 
 // Build the page
 $this->app->smarty->assign('overview_workorders_unassigned',        $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'unassigned')        );

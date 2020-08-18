@@ -9,9 +9,9 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['login_username'] = isset(\CMSApplication::$VAR['login_username']) ? \CMSApplication::$VAR['login_username'] : null;
-\CMSApplication::$VAR['login_pwd'] = isset(\CMSApplication::$VAR['login_pwd']) ? \CMSApplication::$VAR['login_pwd'] : null;
-\CMSApplication::$VAR['action'] = isset(\CMSApplication::$VAR['action']) ? \CMSApplication::$VAR['action'] : null;
+\CMSApplication::$VAR['login_username'] = \CMSApplication::$VAR['login_username'] ?? null;
+\CMSApplication::$VAR['login_pwd'] = \CMSApplication::$VAR['login_pwd'] ?? null;
+\CMSApplication::$VAR['action'] = \CMSApplication::$VAR['action'] ?? null;
 
 // Get variables in correct format for login()
 $credentials['username'] = \CMSApplication::$VAR['login_username'];
