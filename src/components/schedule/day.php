@@ -23,7 +23,7 @@ if(\CMSApplication::$VAR['workorder_id']) {
     // If the workorder is closed, remove the workorder_id preventing further schedule creation for this workorder_id
     if($this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'is_closed')) {        
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("Can not set a schedule for closed work orders - Work Order ID").' '.\CMSApplication::$VAR['workorder_id']);
-        unset(\CMSApplication::$VAR['workorder_id']);
+        \CMSApplication::$VAR['workorder_id'] = null;
     }
     
 }
