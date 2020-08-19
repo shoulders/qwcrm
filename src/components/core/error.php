@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-// Prevent undefined variable errors
+// Prevent undefined variable errors - are these checks needed here? if only ever from forceErrorPage()
 \CMSApplication::$VAR['error_component'] = \CMSApplication::$VAR['error_component'] ?? null;
 \CMSApplication::$VAR['error_page_tpl'] = \CMSApplication::$VAR['error_page_tpl'] ?? null;
 \CMSApplication::$VAR['error_type'] = \CMSApplication::$VAR['error_type'] ?? null;

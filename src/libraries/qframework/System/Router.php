@@ -415,12 +415,9 @@ class Router extends System {
                 FROM ".PRFX."user_usergroups
                 WHERE usergroup_id =".$this->app->db->qstr($user->login_usergroup_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
-        } else {
-            $usergroup_display_name = $rs->fields['display_name'];
-        } 
-
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        $usergroup_display_name = $rs->fields['display_name'];
+       
         // Build the page name for the ACL lookup
         $page_name = $component.':'.$page_tpl;
 
@@ -428,23 +425,19 @@ class Router extends System {
 
         $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$this->app->db->qstr($page_name);
 
-        if(!$rs = $this->app->db->execute($sql)) {        
-            $this->app->system->page->forceErrorPage('authentication', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $acl = $rs->fields['acl'];
+
+        // Add if guest (8) rules here if there are errors
+
+        if($acl != 1) {
+
+            return false;
+
         } else {
 
-            $acl = $rs->fields['acl'];
-
-            // Add if guest (8) rules here if there are errors
-
-            if($acl != 1) {
-
-                return false;
-
-            } else {
-
-                return true;
-
-            }
+            return true;
 
         }
 
@@ -465,21 +458,17 @@ class Router extends System {
         // Check to see if the page exists in the ACL
         $sql = "SELECT page FROM ".PRFX."user_acl_page WHERE page = ".$this->app->db->qstr($component.':'.$page_tpl);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($rs->RecordCount() == 1) {
+
+            return true;
+
         } else {
 
-            if($rs->RecordCount() == 1) {
+            return false;
 
-                return true;
-
-            } else {
-
-                return false;
-
-            }
-
-        }
+        }  
 
     }
 

@@ -47,7 +47,7 @@ class JSessionStorageDatabase extends JSessionStorage
              */
 
             $sql = "SELECT data FROM ".PRFX."session WHERE session_id = ".$db->qstr($id);
-            $rs = $db->execute($sql); 
+            $rs = $db->execute($sql);
             $result = (string) $rs->fields['data'];
 
             $result = str_replace('\0\0\0', chr(0) . '*' . chr(0), $result);
@@ -106,7 +106,7 @@ class JSessionStorageDatabase extends JSessionStorage
         }
         catch (RuntimeException $e)
         {
-                    return false;
+            return false;
         }
     }
 
@@ -143,7 +143,7 @@ class JSessionStorageDatabase extends JSessionStorage
         }
         catch (RuntimeException $e)
         {
-                    return false;
+            return false;
         }
     }
 

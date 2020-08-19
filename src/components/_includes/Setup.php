@@ -196,7 +196,7 @@ class Setup extends Components {
             // Get rule name for output
             preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);
 
-           // Perform the query
+            // Perform the query
             if(!$this->app->db->execute($sql)) {
 
                 // Set the setup global error flag
@@ -490,6 +490,15 @@ class Setup extends Components {
         
         if(!$rs = $this->app->db->execute($sql)) { 
             
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+
+            // Log message
+            $record = _gettext("Failed to get Database Column Comment");
+
+            // Log message to setup log            
+            $this->writeRecordToSetupLog('install', $record, $this->app->db->ErrorMsg(), $sql);
+            
             return false;      
             
         } else {
@@ -568,7 +577,27 @@ class Setup extends Components {
 
         $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$this->app->db->qstr($start_number);
 
-        $this->app->db->execute($sql);    
+        // Perform the query
+        if(!$this->app->db->execute($sql)) {
+
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+
+            // Log message
+            $record = _gettext("Error setting Work Order Start Number.");
+
+            // Log message to setup log            
+            $this->writeRecordToSetupLog('install', $record, $this->app->db->ErrorMsg(), $sql);
+
+        } else {
+
+            // Log message
+            $record = _gettext("Work Order Start Number set successfully");
+
+            // Log message to setup log            
+            $this->writeRecordToSetupLog('install', $record);
+
+        }   
 
         return;
 
@@ -582,8 +611,28 @@ class Setup extends Components {
 
         $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$this->app->db->qstr($start_number);
 
-        $this->app->db->execute($sql);   
+        // Perform the query
+        if(!$this->app->db->execute($sql)) {
 
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+
+            // Log message
+            $record = _gettext("Error setting Invoice Start Number.");
+
+            // Log message to setup log            
+            $this->writeRecordToSetupLog('install', $record, $this->app->db->ErrorMsg(), $sql);
+
+        } else {
+
+            // Log message
+            $record = _gettext("Invoice Start Number set successfully");
+
+            // Log message to setup log            
+            $this->writeRecordToSetupLog('install', $record);
+
+        }
+        
         return;
 
     }
@@ -966,10 +1015,8 @@ class Setup extends Components {
         }   
                       
     }    
-    
 
-
-       /** Insert **/
+    /** Insert **/
 
     #############################################################
     #   Create a config file from the appropriate setup file    #

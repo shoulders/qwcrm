@@ -79,9 +79,7 @@ class Administrator extends Components {
 
         $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
-        }
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         return $rs->GetArray(); 
 
@@ -154,9 +152,7 @@ class Administrator extends Components {
                     `Public`        =". $this->app->db->qstr( $page_permission['Public']           )."
                     WHERE `page`    =". $this->app->db->qstr( $page_name                           ).";";
 
-            if(!$this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
-            }                 
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}               
 
         }
 
@@ -201,9 +197,7 @@ class Administrator extends Components {
                     `Public`        =". $this->app->db->qstr( $page_permission['Public']         )."
                     WHERE `page`    =". $this->app->db->qstr( $page_name                         ).";";
 
-             if(!$this->app->db->execute($sql)) {
-                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
-            }               
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}              
 
         }
 
@@ -481,10 +475,7 @@ class Administrator extends Components {
             {
                 $sql = "TRUNCATE ".PRFX."session";                    
 
-                if(!$this->app->db->execute($sql)) {
-                    $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
-
-                }
+                if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
             }
         }
@@ -543,136 +534,127 @@ class Administrator extends Components {
 
         // Remove current permissions
         $sql = "TRUNCATE ".PRFX."user_acl_page";
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
-
-        } else {
-
-            // Insert default permissions 
-            $sql = "INSERT INTO `".PRFX."user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
-                    ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
-                    ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
-                    ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
-                    ('administrator:update', 1, 0, 0, 0, 0, 0, 0, 0, 0),
-                    ('client:delete', 1, 1, 1, 0, 1, 0, 0, 0, 0),
-                    ('client:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('client:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                    ('client:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('client:note_delete', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                    ('client:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                    ('client:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
-                    ('company:business_hours', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-                    ('company:edit', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-                    ('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('core:404', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('core:dashboard', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('core:home', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('core:maintenance', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('cronjob:details', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
-                    ('cronjob:edit', '1', '0', '0', '0', '0', '0', '0', '0', '0'),
-                    ('cronjob:overview', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
-                    ('cronjob:run', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
-                    ('cronjob:unlock', '1', '0', '0', '0', '0', '0', '0', '0', '0'),
-                    ('expense:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('expense:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('expense:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('expense:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('expense:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('expense:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('expense:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
-                    ('invoice:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),                    
-                    ('invoice:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('invoice:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                    ('invoice:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
-                    ('invoice:overview', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('invoice:prefill_items', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('invoice:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('invoice:search', 1, 1, 1, 0, 1, 1, 0, 0, 0),
-                    ('invoice:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('otherincome:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('otherincome:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('otherincome:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('otherincome:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('otherincome:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('otherincome:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('otherincome:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('payment:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
-                    ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
-                    ('payment:options', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-                    ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0), 
-                    ('payment:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('refund:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('refund:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('refund:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('refund:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('refund:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('refund:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('refund:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('report:basic_stats', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('report:financial', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('schedule:day', 1, 1, 1, 1, 0, 0, 0, 0, 0),
-                    ('schedule:delete', 1, 1, 1, 0, 0, 0, 0, 0, 0),
-                    ('schedule:details', 1, 1, 1, 1, 0, 0, 0, 0, 0),
-                    ('schedule:edit', 1, 1, 1, 1, 0, 0, 0, 0, 0),
-                    ('schedule:icalendar', 1, 1, 1, 1, 0, 0, 0, 0, 0),
-                    ('schedule:new', 1, 1, 1, 1, 0, 0, 0, 0, 0),
-                    ('schedule:search', 1, 1, 1, 1, 0, 0, 0, 0, 0),
-                    ('setup:choice', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('setup:install', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('setup:migrate', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('setup:upgrade', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('supplier:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('supplier:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('supplier:details', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                    ('supplier:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('supplier:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('supplier:search', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                    ('supplier:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('user:delete', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-                    ('user:details', 1, 1, 1, 0, 1, 0, 0, 0, 0),
-                    ('user:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('user:login', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                    ('user:new', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-                    ('user:reset', 0, 0, 0, 0, 0, 0, 0, 0, 1),
-                    ('user:search', 1, 1, 1, 0, 1, 0, 0, 0, 0),
-                    ('voucher:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('voucher:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('voucher:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('voucher:new', 1, 1, 0, 0, 1, 1, 0, 0, 0),
-                    ('voucher:print', 1, 1, 0, 0, 1, 1, 0, 0, 0),
-                    ('voucher:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                    ('voucher:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                    ('workorder:autosuggest_scope', 1, 1, 1, 1, 0, 1, 0, 0, 0),                
-                    ('workorder:delete', 1, 1, 1, 0, 0, 0, 0, 0, 0),
-                    ('workorder:details', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                    ('workorder:details_edit_comment', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                    ('workorder:details_edit_description', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                    ('workorder:details_edit_resolution', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                    ('workorder:new', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                    ('workorder:note_delete', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                    ('workorder:note_edit', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                    ('workorder:note_new', 1, 1, 1, 1, 0, 1, 0, 0, 0),                
-                    ('workorder:overview', 1, 1, 1, 0, 0, 0, 0, 0, 0),
-                    ('workorder:print', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                    ('workorder:search', 1, 1, 1, 0, 0, 0, 0, 0, 0),
-                    ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
-
-            if(!$this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
-
-            }
-
-        }
+        // Insert default permissions 
+        $sql = "INSERT INTO `".PRFX."user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
+                ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('administrator:update', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('client:delete', 1, 1, 1, 0, 1, 0, 0, 0, 0),
+                ('client:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('client:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('client:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('client:note_delete', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('client:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('client:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
+                ('company:business_hours', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+                ('company:edit', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+                ('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('core:404', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('core:dashboard', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('core:home', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('core:maintenance', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('cronjob:details', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
+                ('cronjob:edit', '1', '0', '0', '0', '0', '0', '0', '0', '0'),
+                ('cronjob:overview', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
+                ('cronjob:run', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
+                ('cronjob:unlock', '1', '0', '0', '0', '0', '0', '0', '0', '0'),
+                ('expense:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('expense:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('expense:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('expense:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('expense:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('expense:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('expense:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
+                ('invoice:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),                    
+                ('invoice:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('invoice:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('invoice:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
+                ('invoice:overview', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('invoice:prefill_items', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('invoice:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('invoice:search', 1, 1, 1, 0, 1, 1, 0, 0, 0),
+                ('invoice:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('otherincome:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('otherincome:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('otherincome:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('otherincome:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('otherincome:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('otherincome:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('otherincome:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('payment:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
+                ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
+                ('payment:options', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+                ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0), 
+                ('payment:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('refund:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('refund:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('refund:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('refund:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('refund:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('refund:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('refund:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('report:basic_stats', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('report:financial', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('schedule:day', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('schedule:delete', 1, 1, 1, 0, 0, 0, 0, 0, 0),
+                ('schedule:details', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('schedule:edit', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('schedule:icalendar', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('schedule:new', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('schedule:search', 1, 1, 1, 1, 0, 0, 0, 0, 0),
+                ('setup:choice', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('setup:install', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('setup:migrate', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('setup:upgrade', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('supplier:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('supplier:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('supplier:details', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('supplier:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('supplier:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('supplier:search', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('supplier:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('user:delete', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+                ('user:details', 1, 1, 1, 0, 1, 0, 0, 0, 0),
+                ('user:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('user:login', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('user:new', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+                ('user:reset', 0, 0, 0, 0, 0, 0, 0, 0, 1),
+                ('user:search', 1, 1, 1, 0, 1, 0, 0, 0, 0),
+                ('voucher:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('voucher:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('voucher:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('voucher:new', 1, 1, 0, 0, 1, 1, 0, 0, 0),
+                ('voucher:print', 1, 1, 0, 0, 1, 1, 0, 0, 0),
+                ('voucher:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('voucher:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('workorder:autosuggest_scope', 1, 1, 1, 1, 0, 1, 0, 0, 0),                
+                ('workorder:delete', 1, 1, 1, 0, 0, 0, 0, 0, 0),
+                ('workorder:details', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:details_edit_comment', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:details_edit_description', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:details_edit_resolution', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:new', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:note_delete', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:note_edit', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:note_new', 1, 1, 1, 1, 0, 1, 0, 0, 0),                
+                ('workorder:overview', 1, 1, 1, 0, 0, 0, 0, 0, 0),
+                ('workorder:print', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:search', 1, 1, 1, 0, 0, 0, 0, 0, 0),
+                ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
+        
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity        
         $this->app->system->general->writeRecordToActivityLog(_gettext("ACL permissions reset to default settings."));    
@@ -680,7 +662,5 @@ class Administrator extends Components {
         return;
 
     }
-
-
 
 }

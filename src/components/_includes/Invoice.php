@@ -52,31 +52,27 @@ defined('_QWEXEC') or die;
                 opened_on       =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime($timestamp)           ).",
                 is_closed       =". $this->app->db->qstr( 0                                    ); 
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the invoice record into the database."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Get invoice_id
-            $invoice_id = $this->app->db->Insert_ID();
+        // Get invoice_id
+        $invoice_id = $this->app->db->Insert_ID();
 
-            // Create a Workorder History Note  
-            $this->app->components->workorder->insertHistory($workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note  
+        $this->app->components->workorder->insertHistory($workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
-            // Log activity        
-            if($workorder_id) {            
-                $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
-            } else {            
-                $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Created with no Work Order").'.';
-            }        
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id, $invoice_id);
+        // Log activity        
+        if($workorder_id) {            
+            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
+        } else {            
+            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Created with no Work Order").'.';
+        }        
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id, $invoice_id);
 
-            // Update last active record    
-            $this->app->components->client->updateLastActive($client_id);
-            $this->app->components->workorder->updateLastActive($workorder_id);        
+        // Update last active record    
+        $this->app->components->client->updateLastActive($client_id);
+        $this->app->components->workorder->updateLastActive($workorder_id);        
 
-            return $invoice_id;
-
-        }
+        return $invoice_id;
 
     }
 
@@ -91,9 +87,7 @@ defined('_QWEXEC') or die;
         
         // Delete all items from the invoice to prevent duplication
         $sql = "DELETE FROM ".PRFX."invoice_$section WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice's items from the database."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Insert Items into database (if any)
         if($items) {
@@ -137,9 +131,7 @@ defined('_QWEXEC') or die;
             // Strips off last comma as this is a joined SQL statement
             $sql = substr($sql , 0, -1);
 
-            if(!$this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert item into the database."));
-            }
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
             return;
 
@@ -155,9 +147,7 @@ defined('_QWEXEC') or die;
         
         // Empty the invoice_prefill_items table
         $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the prefill items table."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         
         // Only insert items if there are some
         if($prefill_items) {
@@ -180,9 +170,7 @@ defined('_QWEXEC') or die;
             $sql = substr($sql , 0, -1);            
             
             // Execute the SQL
-            if(!$this->app->db->execute($sql)) {        
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill items into the database."));
-            }
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
             
         }
             
@@ -325,12 +313,9 @@ defined('_QWEXEC') or die;
             $start_record = (($page_no * $records_per_page) - $records_per_page);        
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Invoice records."));
-            } else {        
-                $total_results = $rs->RecordCount();            
-                $this->app->smarty->assign('total_results', $total_results);
-            } 
+            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
+            $total_results = $rs->RecordCount();            
+            $this->app->smarty->assign('total_results', $total_results);            
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
@@ -364,23 +349,19 @@ defined('_QWEXEC') or die;
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoice records."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $records = $rs->GetArray();   // do i need to add the check empty
+
+        if(empty($records)){
+
+            return false;
+
         } else {
 
-            $records = $rs->GetArray();   // do i need to add the check empty
+            return $records;
 
-            if(empty($records)){
-
-                return false;
-
-            } else {
-
-                return $records;
-
-            }
-
-        }
+        }        
 
     }
 
@@ -394,28 +375,26 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT * FROM ".PRFX."invoice_records WHERE invoice_id =".$this->app->db->qstr($invoice_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice details."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        // This makes sure there is a record to return to prevent errors (currently only needed for upgrade)
+        if(!$rs->recordCount()) {
+
+            return false;
+
         } else {
 
-            // This makes sure there is a record to return to prevent errors (currently only needed for upgrade)
-            if(!$rs->recordCount()) {
+            if($item === null){
 
-                return false;
+                return $rs->GetRowAssoc(); 
 
             } else {
 
-                if($item === null){
+                return $rs->fields[$item];   
 
-                    return $rs->GetRowAssoc(); 
-
-                } else {
-
-                    return $rs->fields[$item];   
-
-                } 
             }
-        }
+            
+        }        
 
     }
     
@@ -428,17 +407,13 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$this->app->db->qstr($invoice_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour items."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            if(!empty($rs)) {
+        if(!empty($rs)) {
 
-                return $rs->GetArray();
+            return $rs->GetArray();
 
-            }
-
-        }    
+        }
 
     }
 
@@ -450,21 +425,17 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$this->app->db->qstr($invoice_labour_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour item details."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($item === null){
+
+            return $rs->GetRowAssoc();
+
         } else {
 
-            if($item === null){
+            return $rs->fields[$item];   
 
-                return $rs->GetRowAssoc();
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
+        }        
 
     }
     
@@ -484,13 +455,9 @@ defined('_QWEXEC') or die;
                 FROM ".PRFX."invoice_labour
                 WHERE invoice_id=". $this->app->db->qstr($invoice_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice labour sub total."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetRowAssoc(); 
-
-        }    
+        return $rs->GetRowAssoc(); 
 
     }
 
@@ -502,17 +469,13 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$this->app->db->qstr( $invoice_id );
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts items."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            if(!empty($rs)) {
+        if(!empty($rs)) {
 
-                return $rs->GetArray();
+            return $rs->GetArray();
 
-            }
-
-        }    
+        }
 
     }
 
@@ -524,21 +487,17 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$this->app->db->qstr($invoice_parts_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts item details."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($item === null){
+
+            return $rs->GetRowAssoc(); 
+
         } else {
 
-            if($item === null){
+            return $rs->fields[$item];   
 
-                return $rs->GetRowAssoc(); 
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
+        } 
 
     }
     
@@ -558,13 +517,10 @@ defined('_QWEXEC') or die;
                 FROM ".PRFX."invoice_parts
                 WHERE invoice_id=". $this->app->db->qstr($invoice_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice parts sub total."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetRowAssoc(); 
-
-        }  
+        return $rs->GetRowAssoc();
+        
     }
 
     #######################################
@@ -584,17 +540,13 @@ defined('_QWEXEC') or die;
         // filter by status
         if($status) {$sql .= " AND active=".$this->app->db->qstr($status);}
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice prefill items for the selected status."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            if(!empty($rs)) {
+        if(!empty($rs)) {
 
-                return $rs->GetArray();
+            return $rs->GetArray();
 
-            }
-
-        }    
+        }
 
     }
 
@@ -611,13 +563,9 @@ defined('_QWEXEC') or die;
             $sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'in_dispute', 'overdue', 'collections', 'refunded', 'cancelled', 'deleted')";
         }
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice statuses."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();      
-
-        }    
+        return $rs->GetArray();   
 
     }
 
@@ -629,13 +577,9 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT display_name FROM ".PRFX."invoice_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice status display name."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['display_name'];
-
-        }    
+        return $rs->fields['display_name'];  
 
     }
     
@@ -670,29 +614,23 @@ defined('_QWEXEC') or die;
                 is_closed           =". $this->app->db->qstr( $qform['is_closed']       )."            
                 WHERE invoice_id    =". $this->app->db->qstr( $qform['invoice_id']      );
 
-        if(!$this->app->db->execute($sql)) {        
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the invoice."));
+        if (!$doNotLog) {
 
-        } else {
+            // Create a Workorder History Note  
+            $this->app->components->workorder->insertHistory($this->db, $qform['workorder_id'], _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
-            if (!$doNotLog) {
+            // Log activity        
+            $record = _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
+            $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
 
-                // Create a Workorder History Note  
-                $this->app->components->workorder->insertHistory($this->db, $qform['workorder_id'], _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
+            // Update last active record    
+            $this->app->components->client->updateLastActive($this->db, $qform['client_id']);
+            $this->app->components->workorder->updateLastActive($this->db, $qform['workorder_id']);
+            $this->updateLastActive($this->db, $qform['invoice_id']);        
 
-                // Log activity        
-                $record = _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
-                $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
-
-                // Update last active record    
-                $this->app->components->client->updateLastActive($this->db, $qform['client_id']);
-                $this->app->components->workorder->updateLastActive($this->db, $qform['workorder_id']);
-                $this->updateLastActive($this->db, $qform['invoice_id']);        
-
-            }
-
-        } 
+        }
 
         return true;
 
@@ -710,27 +648,21 @@ defined('_QWEXEC') or die;
                 unit_discount_rate  =". $this->app->db->qstr( $unit_discount_rate           )."               
                 WHERE invoice_id    =". $this->app->db->qstr( $invoice_id                   );
 
-        if(!$this->app->db->execute($sql)){        
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the invoice dates and discount rate."));
+        $invoice_details = $this->getRecord($invoice_id);
 
-        } else {
+        // Create a Workorder History Note  
+        $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
-            $invoice_details = $this->getRecord($invoice_id);
+        // Log activity        
+        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
+        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
-            // Create a Workorder History Note  
-            $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity        
-            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
-            $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-            // Update last active record    
-            $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'));
-            $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'));
-            $this->updateLastActive($invoice_id);
-
-        }
+        // Update last active record    
+        $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'));
+        $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'));
+        $this->updateLastActive($invoice_id);        
 
     }
 
@@ -761,39 +693,34 @@ defined('_QWEXEC') or die;
                 closed_on           =". $this->app->db->qstr( $closed_on       )."  
                 WHERE invoice_id    =". $this->app->db->qstr( $invoice_id      );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Invoice Status."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
-        } else {    
-
-            // Update invoice 'is_closed' boolean
-            if($new_status == 'paid' || $new_status == 'refunded' || $new_status == 'cancelled' || $new_status == 'deleted') {
-                $this->updateClosedStatus($invoice_id, 'closed');
-            } else {
-                $this->updateClosedStatus($invoice_id, 'open');
-            }
-
-            // Status updated message
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice status updated."));  
-
-            // For writing message to log file, get invoice status display name
-            $inv_status_diplay_name = _gettext($this->getStatusDisplayName($new_status));
-
-            // Create a Workorder History Note       
-            $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity        
-            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-            // Update last active record
-            $this->app->components->client->updateLastActive($invoice_details['client_id']);
-            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-            $this->updateLastActive($invoice_id);                
-
-            return true;
-
+        // Update invoice 'is_closed' boolean
+        if($new_status == 'paid' || $new_status == 'refunded' || $new_status == 'cancelled' || $new_status == 'deleted') {
+            $this->updateClosedStatus($invoice_id, 'closed');
+        } else {
+            $this->updateClosedStatus($invoice_id, 'open');
         }
+
+        // Status updated message
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice status updated."));  
+
+        // For writing message to log file, get invoice status display name
+        $inv_status_diplay_name = _gettext($this->getStatusDisplayName($new_status));
+
+        // Create a Workorder History Note       
+        $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+
+        // Log activity        
+        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+
+        // Update last active record
+        $this->app->components->client->updateLastActive($invoice_details['client_id']);
+        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+        $this->updateLastActive($invoice_id);                
+
+        return true;
 
     }
 
@@ -820,9 +747,7 @@ defined('_QWEXEC') or die;
                     WHERE invoice_id    =". $this->app->db->qstr( $invoice_id      );
         }    
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an invoice Closed status."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
 
@@ -838,9 +763,7 @@ defined('_QWEXEC') or die;
                 refund_id           =".$this->app->db->qstr($refund_id)."
                 WHERE invoice_id    =".$this->app->db->qstr($invoice_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add a Refund ID to the invoice."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
     
@@ -857,9 +780,7 @@ defined('_QWEXEC') or die;
                 last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
                 WHERE invoice_id=".$this->app->db->qstr($invoice_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an invoice last active time."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }    
         
@@ -993,35 +914,29 @@ defined('_QWEXEC') or die;
                 is_closed           = '1'            
                 WHERE invoice_id    =". $this->app->db->qstr( $invoice_id  );
 
-        if(!$this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), null, _gettext("Failed to delete the invoice."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Remove the invoice_if from the related Workorder record (if present)
-            $this->app->components->workorder->updateInvoiceId($invoice_details['workorder_id'], '');               
+        // Remove the invoice_if from the related Workorder record (if present)
+        $this->app->components->workorder->updateInvoiceId($invoice_details['workorder_id'], '');               
 
-            // Create a Workorder History Note  
-            $this->app->components->workorder->insertHistory($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note  
+        $this->app->components->workorder->insertHistory($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
-            // Log activity        
-            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+        // Log activity        
+        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
-            // Update workorder status
-            $this->app->components->workorder->updateStatus($invoice_details['workorder_id'], 'closed_without_invoice');        
+        // Update workorder status
+        $this->app->components->workorder->updateStatus($invoice_details['workorder_id'], 'closed_without_invoice');        
 
-            // Update last active record
-            $this->app->components->client->updateLastActive($invoice_details['client_id']);
-            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-            $this->updateLastActive($invoice_id);
+        // Update last active record
+        $this->app->components->client->updateLastActive($invoice_details['client_id']);
+        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+        $this->updateLastActive($invoice_id);
 
-            return true;
-
-        }
+        return true;
 
     }
-
-
 
     #############################################
     #   Delete an invoice's Labour Items (ALL)  #
@@ -1031,13 +946,9 @@ defined('_QWEXEC') or die;
 
         $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $this->app->db->qstr($invoice_id);
 
-        if(!$this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete all of an invoice's labour items."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return true;
-
-        }
+        return true;
 
     }
     
@@ -1049,13 +960,9 @@ defined('_QWEXEC') or die;
 
         $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $this->app->db->qstr($invoice_id);
 
-        if(!$this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete all of an invoice's parts items."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return true;
-
-        }
+        return true;
 
     }   
 
@@ -1490,35 +1397,31 @@ defined('_QWEXEC') or die;
                 balance             =". $this->app->db->qstr( $balance             )."
                 WHERE invoice_id    =". $this->app->db->qstr( $invoice_id          );
 
-        if(!$this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the invoice totals."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            /* Update Status - only change if there is a change in status*/        
+        /* Update Status - only change if there is a change in status*/        
 
-            // No invoiceable amount, set to pending (if not already)
-            if($unit_gross == 0 && $invoice_details['status'] != 'pending') {
-                $this->updateStatus($invoice_id, 'pending');
-            }
-
-            // Has invoiceable amount with no payments, set to unpaid (if not already)
-            elseif($unit_gross > 0 && $unit_gross == $balance && $invoice_details['status'] != 'unpaid') {
-                $this->updateStatus($invoice_id, 'unpaid');
-            }
-
-            // Has invoiceable amount with partially payment, set to partially paid (if not already)
-            elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $invoice_details['status'] != 'partially_paid') {            
-                $this->updateStatus($invoice_id, 'partially_paid');
-            }
-
-            // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
-            elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $invoice_details['status'] != 'paid') {            
-                $this->updateStatus($invoice_id, 'paid');
-            }        
-
-            return;        
-
+        // No invoiceable amount, set to pending (if not already)
+        if($unit_gross == 0 && $invoice_details['status'] != 'pending') {
+            $this->updateStatus($invoice_id, 'pending');
         }
+
+        // Has invoiceable amount with no payments, set to unpaid (if not already)
+        elseif($unit_gross > 0 && $unit_gross == $balance && $invoice_details['status'] != 'unpaid') {
+            $this->updateStatus($invoice_id, 'unpaid');
+        }
+
+        // Has invoiceable amount with partially payment, set to partially paid (if not already)
+        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $invoice_details['status'] != 'partially_paid') {            
+            $this->updateStatus($invoice_id, 'partially_paid');
+        }
+
+        // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
+        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $invoice_details['status'] != 'paid') {            
+            $this->updateStatus($invoice_id, 'paid');
+        }        
+
+        return;
 
     }
 
@@ -1555,9 +1458,8 @@ defined('_QWEXEC') or die;
 
                     $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
 
-                    if(!$this->app->db->execute($sql)) {
-                        $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the prefill items table."));
-                    }
+                    if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+                    
                 }
 
                 // Open CSV file            
@@ -1577,9 +1479,7 @@ defined('_QWEXEC') or die;
 
                     $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, unit_net, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
 
-                    if(!$this->app->db->execute($sql)) {
-                        $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the new prefill items into the database."));
-                    }
+                    if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
                     $row++;
 
@@ -1620,35 +1520,31 @@ defined('_QWEXEC') or die;
 
         $sql = "SELECT description, type, unit_net, active FROM ".PRFX."invoice_prefill_items";
 
-        if(!$rs = $this->app->db->execute($sql)) {        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get invoice prefill items from the database."));
-        } else {        
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-            $prefill_items = $rs->GetArray();
+        $prefill_items = $rs->GetArray();
 
-            // output headers so that the file is downloaded rather than displayed
-            header('Content-Type: text/csv; charset=utf-8');
-            header('Content-Disposition: attachment; filename=qwcrm_invoice_prefill_items.csv');
+        // output headers so that the file is downloaded rather than displayed
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=qwcrm_invoice_prefill_items.csv');
 
-            // create a file pointer connected to the output stream
-            $output_stream = fopen('php://output', 'w');
+        // create a file pointer connected to the output stream
+        $output_stream = fopen('php://output', 'w');
 
-            // output the column headings
-            fputcsv($output_stream, array(_gettext("Description"), _gettext("Type"), _gettext("Unit Net"), _gettext("Active")));
+        // output the column headings
+        fputcsv($output_stream, array(_gettext("Description"), _gettext("Type"), _gettext("Unit Net"), _gettext("Active")));
 
-            // loop over the rows, outputting them
-            foreach($prefill_items as $key => $value) {
-                $row = array($value['description'], $value['type'], $value['unit_net'], $value['active']);
-                fputcsv($output_stream, $row);            
-            }       
+        // loop over the rows, outputting them
+        foreach($prefill_items as $key => $value) {
+            $row = array($value['description'], $value['type'], $value['unit_net'], $value['active']);
+            fputcsv($output_stream, $row);            
+        }       
 
-            // close the csv file
-            fclose($output_stream);
+        // close the csv file
+        fclose($output_stream);
 
-            // Log activity        
-            $this->app->system->general->writeRecordToActivityLog(_gettext("Invoice Prefill Items were exported by").' '.$this->app->user->login_display_name.'.');
-
-        }    
+        // Log activity        
+        $this->app->system->general->writeRecordToActivityLog(_gettext("Invoice Prefill Items were exported by").' '.$this->app->user->login_display_name.'.');   
 
     }
 
@@ -1685,47 +1581,42 @@ defined('_QWEXEC') or die;
 
         }
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to assign a Work Order to an employee."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Assigned employee success message
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Assigned employee updated."));        
 
-            // Assigned employee success message
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Assigned employee updated."));        
+        // Get Logged in Employee's Display Name        
+        $logged_in_employee_display_name = $this->app->user->login_display_name;
 
-            // Get Logged in Employee's Display Name        
-            $logged_in_employee_display_name = $this->app->user->login_display_name;
+        // Get the currently assigned employee ID
+        $assigned_employee_id = $invoice_details['employee_id'];
 
-            // Get the currently assigned employee ID
-            $assigned_employee_id = $invoice_details['employee_id'];
-
-            // Get the Display Name of the currently Assigned Employee
-            if($assigned_employee_id == ''){
-                $assigned_employee_display_name = _gettext("Unassigned");            
-            } else {            
-                $assigned_employee_display_name = $this->app->components->user->getRecord($assigned_employee_id, 'display_name');
-            }
-
-            // Get the Display Name of the Target Employee        
-            $target_employee_display_name = $this->app->components->user->getRecord($target_employee_id, 'display_name');
-
-            // Creates a History record
-            $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
-
-            // Log activity        
-            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-            // Update last active record
-            $this->app->components->user->updateLastActive($invoice_details['employee_id']);
-            $this->app->components->user->updateLastActive($target_employee_id);
-            $this->app->components->client->updateLastActive($invoice_details['client_id']);
-            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-            $this->updateLastActive($invoice_id);
-
-            return true;
-
+        // Get the Display Name of the currently Assigned Employee
+        if($assigned_employee_id == ''){
+            $assigned_employee_display_name = _gettext("Unassigned");            
+        } else {            
+            $assigned_employee_display_name = $this->app->components->user->getRecord($assigned_employee_id, 'display_name');
         }
+
+        // Get the Display Name of the Target Employee        
+        $target_employee_display_name = $this->app->components->user->getRecord($target_employee_id, 'display_name');
+
+        // Creates a History record
+        $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
+
+        // Log activity        
+        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+
+        // Update last active record
+        $this->app->components->user->updateLastActive($invoice_details['employee_id']);
+        $this->app->components->user->updateLastActive($target_employee_id);
+        $this->app->components->client->updateLastActive($invoice_details['client_id']);
+        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+        $this->updateLastActive($invoice_id);
+
+        return true;
 
     }
 

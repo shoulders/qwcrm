@@ -380,15 +380,9 @@ class General extends System {
 
         $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-           return false;
-
-        } else {
-
-            return $rs->fields['database_version'];
-
-        }
+        return $rs->fields['database_version'];
 
     }
 
@@ -642,13 +636,9 @@ class General extends System {
 
         $sql = "SELECT * FROM ".PRFX."company_date_formats";
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();
-
-        }
+        return $rs->GetArray();
 
     }    
 

@@ -54,20 +54,16 @@ class MigrateMyitcrm extends Setup {
                 based               =". $this->app->db->qstr( $VAR['based']                                ).",  
                 notes               =". $this->app->db->qstr( $VAR['notes']                                );                 
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Get user_id
-            $user_id = $this->app->db->Insert_ID();
+        // Get user_id
+        $user_id = $this->app->db->Insert_ID();
 
-            // Log activity
-            $record = _gettext("Administrator Account").' '.$user_id.' ('.$this->getUserDetails($user_id, 'username').') '._gettext("for").' '.$this->getUserDetails($user_id, 'display_name').' '._gettext("created").'.';
-            $this->writeRecordToSetupLog('migrate', $record);
+        // Log activity
+        $record = _gettext("Administrator Account").' '.$user_id.' ('.$this->getUserDetails($user_id, 'username').') '._gettext("for").' '.$this->getUserDetails($user_id, 'display_name').' '._gettext("created").'.';
+        $this->writeRecordToSetupLog('migrate', $record);
 
-            return $user_id;
-
-        }
+        return $user_id;
 
     }
 
@@ -100,7 +96,7 @@ class MigrateMyitcrm extends Setup {
                );        
 
             // Any other lookup error
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+            $this->app->system->page->forceErrorPage('system', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("This is the first function loaded for the variable date_format."));        
 
         } else {
 
@@ -126,21 +122,17 @@ class MigrateMyitcrm extends Setup {
 
         $sql = "SELECT * FROM ".$this->app->config->get('myitcrm_prefix')."TABLE_COMPANY";
 
-        if(!$rs = $this->app->db->execute($sql)) {        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get MyITCRM company details."));        
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($item === null) {
+
+            return $rs->GetRowAssoc();            
+
         } else {
 
-            if($item === null) {
+            return $rs->fields[$item];   
 
-                return $rs->GetRowAssoc();            
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
+        }  
 
     }
 
@@ -199,29 +191,25 @@ class MigrateMyitcrm extends Setup {
 
         $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$this->app->db->qstr($user_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($item === null) {
+
+            return $rs->GetRowAssoc();
+
         } else {
 
-            if($item === null) {
+            if($item === null){
 
                 return $rs->GetRowAssoc();
 
             } else {
 
-                if($item === null){
-
-                    return $rs->GetRowAssoc();
-
-                } else {
-
-                    return $rs->fields[$item];   
-
-                } 
+                return $rs->fields[$item];   
 
             } 
 
-        }
+        }    
 
     }
 
@@ -289,19 +277,15 @@ class MigrateMyitcrm extends Setup {
                 email_msg_invoice       =". $this->app->db->qstr( $VAR['email_msg_invoice']                ).",
                 email_msg_workorder     =". $this->app->db->qstr( $VAR['email_msg_workorder']              );                          
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
-        } else {       
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-            // Assign success message
-            $this->app->smarty->assign('msg_success', _gettext("Company details updated."));
+        // Assign success message
+        $this->app->smarty->assign('msg_success', _gettext("Company details updated."));
 
-            // Log activity            
-            $this->writeRecordToSetupLog('migrate', _gettext("Company details updated."));
-            
-            return;
+        // Log activity            
+        $this->writeRecordToSetupLog('migrate', _gettext("Company details updated."));
 
-        }
+        return; 
 
     }
 
@@ -825,65 +809,60 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Work Orders."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        while(!$rs->EOF) {            
 
-            while(!$rs->EOF) {            
+            $myitcrm_record = $rs->GetRowAssoc(); 
 
-                $myitcrm_record = $rs->GetRowAssoc(); 
+            /* status and is_closed */
 
-                /* status and is_closed */
+            // WORK_ORDER_STATUS = 6 (closed), WORK_ORDER_CURRENT_STATUS = 6 (closed)
+            if($myitcrm_record['my_work_order_status'] == '6' && $myitcrm_record['my_work_order_current_status'] == '6') {                    
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'closed_without_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+            }
 
-                // WORK_ORDER_STATUS = 6 (closed), WORK_ORDER_CURRENT_STATUS = 6 (closed)
-                if($myitcrm_record['my_work_order_status'] == '6' && $myitcrm_record['my_work_order_current_status'] == '6') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'closed_without_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                }
+            // WORK_ORDER_STATUS = 6 (closed), WORK_ORDER_CURRENT_STATUS = 8 (payment made)
+            elseif($myitcrm_record['my_work_order_status'] == '6' && $myitcrm_record['my_work_order_current_status'] == '8') {                    
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'closed_with_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+            }
 
-                // WORK_ORDER_STATUS = 6 (closed), WORK_ORDER_CURRENT_STATUS = 8 (payment made)
-                elseif($myitcrm_record['my_work_order_status'] == '6' && $myitcrm_record['my_work_order_current_status'] == '8') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'closed_with_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                }
+            // WORK_ORDER_STATUS = 9 (pending), WORK_ORDER_CURRENT_STATUS = 7 (awaiting payment)
+            elseif($myitcrm_record['my_work_order_status'] == '9' && $myitcrm_record['my_work_order_current_status'] == '7') {                    
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'closed_with_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+            }
 
-                // WORK_ORDER_STATUS = 9 (pending), WORK_ORDER_CURRENT_STATUS = 7 (awaiting payment)
-                elseif($myitcrm_record['my_work_order_status'] == '9' && $myitcrm_record['my_work_order_current_status'] == '7') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'closed_with_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                }
+            // WORK_ORDER_STATUS = 10 (open), WORK_ORDER_CURRENT_STATUS = 1 (created)
+            elseif($myitcrm_record['my_work_order_status'] == '10' && $myitcrm_record['my_work_order_current_status'] == '1') {                    
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'unassigned', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+            }
 
-                // WORK_ORDER_STATUS = 10 (open), WORK_ORDER_CURRENT_STATUS = 1 (created)
-                elseif($myitcrm_record['my_work_order_status'] == '10' && $myitcrm_record['my_work_order_current_status'] == '1') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'unassigned', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                }
+            // WORK_ORDER_STATUS = 10 (open), WORK_ORDER_CURRENT_STATUS = 2 (assigned)
+            elseif($myitcrm_record['my_work_order_status'] == '10' && $myitcrm_record['my_work_order_current_status'] == '2') {                    
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'assigned', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+            }
 
-                // WORK_ORDER_STATUS = 10 (open), WORK_ORDER_CURRENT_STATUS = 2 (assigned)
-                elseif($myitcrm_record['my_work_order_status'] == '10' && $myitcrm_record['my_work_order_current_status'] == '2') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'assigned', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                }
+            // Uncaught records / default
+            else {                    
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'failed_to_migrate', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+            }
 
-                // Uncaught records / default
-                else {                    
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'status', 'failed_to_migrate', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
-                }
+            /* invoice_id */
 
-                /* invoice_id */
+            if($myitcrm_record['my_invoice_id'] != '') {
+                $this->updateRecordValue($qwcrm_prefix.'workorder', 'invoice_id', $myitcrm_record['my_invoice_id'], 'workorder_id', $myitcrm_record['qw_workorder_id']);                
+            }
 
-                if($myitcrm_record['my_invoice_id'] != '') {
-                    $this->updateRecordValue($qwcrm_prefix.'workorder', 'invoice_id', $myitcrm_record['my_invoice_id'], 'workorder_id', $myitcrm_record['qw_workorder_id']);                
-                }
+            // Advance the INSERT loop to the next record
+            $rs->MoveNext();           
 
-                // Advance the INSERT loop to the next record
-                $rs->MoveNext();           
-
-            }//EOF While loop
-
-        }
+        }//EOF While loop
 
         /* Final Stuff */
 
@@ -925,57 +904,52 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoices."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        while(!$rs->EOF) {            
 
-            while(!$rs->EOF) {            
+            $qwcrm_record = $rs->GetRowAssoc();
 
-                $qwcrm_record = $rs->GetRowAssoc();
+            /* net_amount */
+            $net_amount = $qwcrm_record['sub_total'] - $qwcrm_record['discount_amount'];
+            $this->updateRecordValue($qwcrm_prefix.'invoice', 'net_amount', $net_amount, 'invoice_id', $qwcrm_record['invoice_id']);            
 
-                /* net_amount */
-                $net_amount = $qwcrm_record['sub_total'] - $qwcrm_record['discount_amount'];
-                $this->updateRecordValue($qwcrm_prefix.'invoice', 'net_amount', $net_amount, 'invoice_id', $qwcrm_record['invoice_id']);            
+            /* status and is_closed*/
 
-                /* status and is_closed*/
+            // no amount on invoice
+            if($qwcrm_record['gross_amount'] == '0') {                    
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'pending', 'invoice_id', $qwcrm_record['invoice_id']);
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']); 
+            }
 
-                // no amount on invoice
-                if($qwcrm_record['gross_amount'] == '0') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'pending', 'invoice_id', $qwcrm_record['invoice_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']); 
-                }
+            // if unpaid
+            elseif($qwcrm_record['paid_amount'] == '0') {                    
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'unpaid', 'invoice_id', $qwcrm_record['invoice_id']);
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
+            }
 
-                // if unpaid
-                elseif($qwcrm_record['paid_amount'] == '0') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'unpaid', 'invoice_id', $qwcrm_record['invoice_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
-                }
+            // if there are partial payments
+            elseif($qwcrm_record['paid_amount'] < $qwcrm_record['gross_amount'] && $qwcrm_record['paid_amount'] != '0') {                    
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'partially_paid', 'invoice_id', $qwcrm_record['invoice_id']);
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
+            }
 
-                // if there are partial payments
-                elseif($qwcrm_record['paid_amount'] < $qwcrm_record['gross_amount'] && $qwcrm_record['paid_amount'] != '0') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'partially_paid', 'invoice_id', $qwcrm_record['invoice_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
-                }
+            // if fully paid
+            elseif($qwcrm_record['paid_amount'] == $qwcrm_record['gross_amount']) {                    
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'paid', 'invoice_id', $qwcrm_record['invoice_id']);
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '1', 'invoice_id', $qwcrm_record['invoice_id']);
+            }            
 
-                // if fully paid
-                elseif($qwcrm_record['paid_amount'] == $qwcrm_record['gross_amount']) {                    
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'paid', 'invoice_id', $qwcrm_record['invoice_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '1', 'invoice_id', $qwcrm_record['invoice_id']);
-                }            
+            // Uncaught records / default
+            else {                    
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'failed_to_migrate', 'invoice_id', $qwcrm_record['invoice_id']);
+                $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
+            }
 
-                // Uncaught records / default
-                else {                    
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'status', 'failed_to_migrate', 'invoice_id', $qwcrm_record['invoice_id']);
-                    $this->updateRecordValue($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
-                }
+            // Advance the INSERT loop to the next record
+            $rs->MoveNext();           
 
-                // Advance the INSERT loop to the next record
-                $rs->MoveNext();           
-
-            }//EOF While loop
-
-        }
+        }//EOF While loop
 
         /* Final Stuff */
 
@@ -1017,30 +991,25 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        while(!$rs->EOF) {            
 
-            while(!$rs->EOF) {            
+            $qwcrm_record = $rs->GetRowAssoc();
 
-                $qwcrm_record = $rs->GetRowAssoc();
+            /* is_redeemed */
 
-                /* is_redeemed */
+            // no amount on invoice
+            if($qwcrm_record['date_redeemed'] == '') {                    
+                $this->updateRecordValue($qwcrm_prefix.'giftcert', 'is_redeemed', '0', 'giftcert_id', $qwcrm_record['giftcert_id']);                               
+            } else {
+                $this->updateRecordValue($qwcrm_prefix.'giftcert', 'is_redeemed', '1', 'giftcert_id', $qwcrm_record['giftcert_id']);
+            }
 
-                // no amount on invoice
-                if($qwcrm_record['date_redeemed'] == '') {                    
-                    $this->updateRecordValue($qwcrm_prefix.'giftcert', 'is_redeemed', '0', 'giftcert_id', $qwcrm_record['giftcert_id']);                               
-                } else {
-                    $this->updateRecordValue($qwcrm_prefix.'giftcert', 'is_redeemed', '1', 'giftcert_id', $qwcrm_record['giftcert_id']);
-                }
+            // Advance the INSERT loop to the next record
+            $rs->MoveNext();           
 
-                // Advance the INSERT loop to the next record
-                $rs->MoveNext();           
-
-            }//EOF While loop
-
-        }
+        }//EOF While loop
 
         /* Final Stuff */
 
@@ -1092,24 +1061,19 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Schedules."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        while(!$rs->EOF) {            
 
-            while(!$rs->EOF) {            
+            $myitcrm_record = $rs->GetRowAssoc(); 
 
-                $myitcrm_record = $rs->GetRowAssoc(); 
+            /* customer_id */
+            $this->updateRecordValue($qwcrm_prefix.'schedule', 'customer_id', $myitcrm_record['my_customer_id'], 'schedule_id', $myitcrm_record['qw_schedule_id']);
 
-                /* customer_id */
-                $this->updateRecordValue($qwcrm_prefix.'schedule', 'customer_id', $myitcrm_record['my_customer_id'], 'schedule_id', $myitcrm_record['qw_schedule_id']);
+            // Advance the INSERT loop to the next record
+            $rs->MoveNext();           
 
-                // Advance the INSERT loop to the next record
-                $rs->MoveNext();           
-
-            }//EOF While loop
-
-        }
+        }//EOF While loop
 
         /* Final Stuff */
 
@@ -1151,24 +1115,19 @@ class MigrateMyitcrm extends Setup {
 
         /* Processs the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Users."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        while(!$rs->EOF) {            
 
-            while(!$rs->EOF) {            
+            $qwcrm_record = $rs->GetRowAssoc(); 
 
-                $qwcrm_record = $rs->GetRowAssoc(); 
+            // Sanitise user's usernames - remove all spaces
+            $this->updateRecordValue($qwcrm_prefix.'user', 'username', str_replace(' ', '.', $qwcrm_record['username']), 'user_id', $qwcrm_record['user_id']);            
 
-                // Sanitise user's usernames - remove all spaces
-                $this->updateRecordValue($qwcrm_prefix.'user', 'username', str_replace(' ', '.', $qwcrm_record['username']), 'user_id', $qwcrm_record['user_id']);            
+            // Advance the INSERT loop to the next record
+            $rs->MoveNext();           
 
-                // Advance the INSERT loop to the next record
-                $rs->MoveNext();           
-
-            }//EOF While loop
-
-        }
+        }//EOF While loop
 
         /* Final Stuff */
 
@@ -1208,7 +1167,7 @@ class MigrateMyitcrm extends Setup {
 
             if($rs->RecordCount() != 1) {
 
-                //output error message database is not 293
+                // output error message - database is not 293
                 return false;
 
             } else {
@@ -1230,29 +1189,24 @@ class MigrateMyitcrm extends Setup {
 
         $sql = "SELECT user_id FROM ".PRFX."user";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Loop through all users
+        while(!$rs->EOF) { 
 
-            // Loop through all users
-            while(!$rs->EOF) { 
+            // Reset User's password
+            $this->resetUserPassword($rs->fields['user_id']);
 
-                // Reset User's password
-                $this->resetUserPassword($rs->fields['user_id']);
+            // Advance the INSERT loop to the next record            
+            $rs->MoveNext();            
 
-                // Advance the INSERT loop to the next record            
-                $rs->MoveNext();            
+        }
 
-            }
+        // Log activity        
+        $this->writeRecordToSetupLog('migrate', _gettext("All User Account passwords have been reset."));            
 
-            // Log activity        
-            $this->writeRecordToSetupLog('migrate', _gettext("All User Account passwords have been reset."));            
-
-            return;
-
-        }      
-
+        return;
+        
     }
 
     #####################################
@@ -1271,17 +1225,12 @@ class MigrateMyitcrm extends Setup {
                 reset_count     =". $this->app->db->qstr( 0                                    )."
                 WHERE user_id   =". $this->app->db->qstr( $user_id                             );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Log activity 
+        // n/a
 
-            // Log activity 
-            // n/a
-
-            return;
-
-        }      
+        return;  
 
     }
 
@@ -1296,26 +1245,22 @@ class MigrateMyitcrm extends Setup {
 
         $sql = "SELECT username FROM ".PRFX."user WHERE username =". $this->app->db->qstr($username);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $result_count = $rs->RecordCount();
+
+        if($result_count >= 1) {
+
+            $this->app->smarty->assign('msg_danger', _gettext("The Username")." `".$username."` "._gettext("already exists! Please use a different one."));
+
+            return true;
+
         } else {
 
-            $result_count = $rs->RecordCount();
+            return false;
 
-            if($result_count >= 1) {
-
-                $this->app->smarty->assign('msg_danger', _gettext("The Username")." `".$username."` "._gettext("already exists! Please use a different one."));
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }        
-
-        } 
-
+        }        
+        
     } 
     
     ######################################################
@@ -1329,27 +1274,21 @@ class MigrateMyitcrm extends Setup {
 
         $sql = "SELECT email FROM ".PRFX."user WHERE email =". $this->app->db->qstr($email);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
+        $result_count = $rs->RecordCount();
+
+        if($result_count >= 1) {
+
+            $this->app->smarty->assign('msg_danger', _gettext("The email address has already been used. Please use a different one."));
+
+            return true;
 
         } else {
 
-            $result_count = $rs->RecordCount();
+            return false;
 
-            if($result_count >= 1) {
-
-                $this->app->smarty->assign('msg_danger', _gettext("The email address has already been used. Please use a different one."));
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }        
-
-        } 
+        }        
 
     }
 

@@ -43,40 +43,36 @@ class Schedule extends Components {
                 end_time        =". $this->app->db->qstr( $qform['end_time']         ).",            
                 note            =". $this->app->db->qstr( $qform['note']             );            
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Get work order details
-            $workorder_details = $this->app->components->workorder->getRecord($qform['workorder_id']);
+        // Get work order details
+        $workorder_details = $this->app->components->workorder->getRecord($qform['workorder_id']);
 
-            // Get the new Schedule ID
-            $schedule_id = $this->app->db->Insert_ID();
+        // Get the new Schedule ID
+        $schedule_id = $this->app->db->Insert_ID();
 
-            // Assign the work order to the scheduled employee (if not already)
-            if($qform['employee_id'] != $workorder_details['employee_id']) {
-                $this->app->components->workorder->assignToEmployee($qform['workorder_id'], $qform['employee_id']);
-            }
+        // Assign the work order to the scheduled employee (if not already)
+        if($qform['employee_id'] != $workorder_details['employee_id']) {
+            $this->app->components->workorder->assignToEmployee($qform['workorder_id'], $qform['employee_id']);
+        }
 
-            // Change the Workorders Status to scheduled (if not already)
-            if($workorder_details['status'] != 'scheduled') {
-                $this->app->components->workorder->updateStatus($qform['workorder_id'], 'scheduled');
-            }
+        // Change the Workorders Status to scheduled (if not already)
+        if($workorder_details['status'] != 'scheduled') {
+            $this->app->components->workorder->updateStatus($qform['workorder_id'], 'scheduled');
+        }
 
-            // Insert Work Order History Note
-            $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.');             
+        // Insert Work Order History Note
+        $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.');             
 
-            // Log activity 
-            $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
+        // Log activity 
+        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
 
-            // Update last active record
-            $this->app->components->workorder->updateLastActive($qform['workorder_id']);
-            $this->app->components->client->updateLastActive($qform['client_id']);
+        // Update last active record
+        $this->app->components->workorder->updateLastActive($qform['workorder_id']);
+        $this->app->components->client->updateLastActive($qform['client_id']);
 
-            return true;
-
-        }    
+        return true;
 
     }
 
@@ -167,12 +163,9 @@ class Schedule extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
-            } else {        
-                $total_results = $rs->RecordCount();            
-                $this->app->smarty->assign('total_results', $total_results);
-            }        
+            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}      
+            $total_results = $rs->RecordCount();            
+            $this->app->smarty->assign('total_results', $total_results);                   
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
@@ -206,23 +199,19 @@ class Schedule extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $records = $rs->GetArray();
+
+        if(empty($records)){
+
+            return false;
+
         } else {
 
-            $records = $rs->GetArray();
+            return $records;
 
-            if(empty($records)){
-
-                return false;
-
-            } else {
-
-                return $records;
-
-            }
-
-        }
+        }   
 
     }
 
@@ -235,21 +224,17 @@ class Schedule extends Components {
 
         $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$this->app->db->qstr($schedule_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
-        } else { 
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            if($item === null){
+        if($item === null){
 
-                return $rs->GetRowAssoc(); 
+            return $rs->GetRowAssoc(); 
 
-            } else {
+        } else {
 
-                return $rs->fields[$item];   
+            return $rs->fields[$item];   
 
-            } 
-
-        }
+        }   
 
     }
 
@@ -271,14 +256,9 @@ class Schedule extends Components {
                 ORDER BY start_time
                 ASC";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();  
-
-        }     
-
+        return $rs->GetArray();
     }
 
     /** Update Functions **/
@@ -302,24 +282,20 @@ class Schedule extends Components {
             note                =". $this->app->db->qstr( $qform['note']             )."
             WHERE schedule_id   =". $this->app->db->qstr( $qform['schedule_id']      );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
-        } else {       
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
 
-            // Insert Work Order History Note
-            $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');             
+        // Insert Work Order History Note
+        $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');             
 
-            // Log activity 
-            $record = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
+        // Log activity 
+        $record = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
 
-            // Update last active record
-            $this->app->components->workorder->updateLastActive($qform['workorder_id']);
-            $this->app->components->client->updateLastActive($qform['client_id']);        
+        // Update last active record
+        $this->app->components->workorder->updateLastActive($qform['workorder_id']);
+        $this->app->components->client->updateLastActive($qform['client_id']);        
 
-            return true;
-
-        }        
+        return true;
 
     }    
 
@@ -336,35 +312,30 @@ class Schedule extends Components {
 
         $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->app->db->qstr($schedule_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // If there are no schedules left for this workorder
+        if($this->app->components->report->countSchedules($schedule_details['workorder_id']) == 0) {
 
-            // If there are no schedules left for this workorder
-            if($this->app->components->report->countSchedules($schedule_details['workorder_id']) == 0) {
-
-                // if the workorder status is 'scheduled', change the status to 'assigned'
-                if($this->app->components->workorder->getRecord($schedule_details['workorder_id'], 'status') == 'scheduled') {
-                    $this->app->components->workorder->updateStatus($schedule_details['workorder_id'], 'assigned');
-                }
-
+            // if the workorder status is 'scheduled', change the status to 'assigned'
+            if($this->app->components->workorder->getRecord($schedule_details['workorder_id'], 'status') == 'scheduled') {
+                $this->app->components->workorder->updateStatus($schedule_details['workorder_id'], 'assigned');
             }
 
-            // Create a Workorder History Note        
-            $this->app->components->workorder->insertHistory($schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity        
-            $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $schedule_details['employee_id'], $schedule_details['client_id'], $schedule_details['workorder_id']);
-
-            // Update last active record
-            $this->app->components->workorder->updateLastActive($schedule_details['workorder_id']);
-            $this->app->components->client->updateLastActive($schedule_details['client_id']);
-
-            return true;
-
         }
+
+        // Create a Workorder History Note        
+        $this->app->components->workorder->insertHistory($schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
+
+        // Log activity        
+        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $schedule_details['employee_id'], $schedule_details['client_id'], $schedule_details['workorder_id']);
+
+        // Update last active record
+        $this->app->components->workorder->updateLastActive($schedule_details['workorder_id']);
+        $this->app->components->client->updateLastActive($schedule_details['client_id']);
+
+        return true;   
 
     }
     
@@ -415,9 +386,7 @@ class Schedule extends Components {
                 ORDER BY start_time
                 ASC";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
-        }   
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
 
         // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
         while (!$rs->EOF) {
@@ -800,9 +769,7 @@ class Schedule extends Components {
             ORDER BY ".PRFX."schedule_records.start_time
             ASC";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
-        }
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Add any scheduled events found into the $scheduleObject for any employee
         $scheduleObject = array();

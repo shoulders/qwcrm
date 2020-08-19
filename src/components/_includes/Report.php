@@ -86,13 +86,9 @@ class Report extends Components {
                 FROM ".PRFX."client_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of clients."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-           return $rs->fields['count']; 
-
-        }
+        return $rs->fields['count'];  
 
     }
 
@@ -169,14 +165,9 @@ class Report extends Components {
                 FROM ".PRFX."workorder_records
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Work Orders for the defined status."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-        } else {      
-
-            return  $rs->fields['count'];
-
-        }
+        return  $rs->fields['count'];
 
     }
 
@@ -246,14 +237,9 @@ class Report extends Components {
                 FROM ".PRFX."schedule_records
                 ".$whereTheseRecords;   
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-        } else {      
-
-            return  $rs->fields['count'];
-
-        }
+        return  $rs->fields['count'];
 
     }
 
@@ -413,13 +399,9 @@ class Report extends Components {
                 FROM ".PRFX."invoice_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of Invoices."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-           return $rs->fields['count']; 
-
-        }
+        return $rs->fields['count'];
 
     }
 
@@ -458,13 +440,9 @@ class Report extends Components {
                 FROM ".PRFX."invoice_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not sum the invoice values."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-           return $rs->fields['sum']; 
-
-        }    
+        return $rs->fields['sum'];    
 
     }
 
@@ -562,13 +540,9 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_labour.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected labour items."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['count']; 
-
-        }   
+        return $rs->fields['count'];   
 
     }
 
@@ -620,13 +594,9 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_labour.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['sum'];
-
-        }   
+        return $rs->fields['sum'];
 
     }
 
@@ -677,13 +647,9 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_parts.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected parts items."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['count']; 
-
-        }   
+        return $rs->fields['count'];  
 
     }
 
@@ -730,13 +696,9 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_parts.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['sum'];
-
-        }  
+        return $rs->fields['sum'];
 
     }
 
@@ -867,14 +829,9 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Vouchers."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-        } else {      
-
-            return $rs->fields['count'];
-
-        }
+        return $rs->fields['count'];
 
     }
 
@@ -928,13 +885,9 @@ class Report extends Components {
                 LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Vouchers."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['sum'];
-
-        }   
+        return $rs->fields['sum']; 
 
     }
 
@@ -1092,14 +1045,9 @@ class Report extends Components {
                 FROM ".PRFX."refund_records
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-        } else {      
-
-            return $rs->fields['count'];
-
-        }
+        return $rs->fields['count'];
 
     }
 
@@ -1147,13 +1095,9 @@ class Report extends Components {
                 FROM ".PRFX."refund_records
                 ".$whereTheseRecords;
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Refunds."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['sum'];
-
-        }   
+        return $rs->fields['sum']; 
 
     }
 
@@ -1293,14 +1237,9 @@ class Report extends Components {
                 FROM ".PRFX."expense_records
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count Expenses."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-        } else {      
-
-            return $rs->fields['count'];
-
-        }
+        return $rs->fields['count'];
 
     }
 
@@ -1343,13 +1282,9 @@ class Report extends Components {
                 FROM ".PRFX."expense_records
                 ".$whereTheseRecords; 
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['sum'];
-
-        }   
+        return $rs->fields['sum'];  
 
     }
 
@@ -1492,14 +1427,9 @@ class Report extends Components {
                 FROM ".PRFX."otherincome_records
                 ".$whereTheseRecords;    
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count other incomes."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}      
 
-        } else {      
-
-            return $rs->fields['count'];
-
-        }
+        return $rs->fields['count'];
 
     }
 
@@ -1542,13 +1472,9 @@ class Report extends Components {
                 FROM ".PRFX."otherincome_records
                 ".$whereTheseRecords; 
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected other incomes."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['sum'];
-
-        }   
+        return $rs->fields['sum']; 
 
     }
 
@@ -1725,13 +1651,9 @@ class Report extends Components {
                 FROM ".PRFX."payment_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of payments."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-           return $rs->fields['count']; 
-
-        }
+        return $rs->fields['count']; 
 
     }
 
@@ -1800,13 +1722,9 @@ class Report extends Components {
                 FROM ".PRFX."payment_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not sum the payment values."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-           return $rs->fields['sum']; 
-
-        }    
+        return $rs->fields['sum'];    
 
     }
 
@@ -1943,96 +1861,90 @@ class Report extends Components {
                 FROM ".PRFX."payment_records
                 ".$whereTheseRecords;                
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        
+        while(!$rs->EOF) {            
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
+            $prorata_record = null;
 
-        } else {
+            // Adjust for Cancelled payment records - By ignoring them
+            if($rs->fields['status'] == 'cancelled') { 
+                $rs->MoveNext(); 
+                continue;                
+            }
 
-            while(!$rs->EOF) {            
+            if($rs->fields['type'] == 'invoice') {
+                $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'invoice');
 
-                $prorata_record = null;
+                // Vouchers must be compensated for profit purposes
+                if($rs->fields['method'] == 'voucher') {
 
-                // Adjust for Cancelled payment records - By ignoring them
-                if($rs->fields['status'] == 'cancelled') { 
-                    $rs->MoveNext(); 
-                    continue;                
-                }
+                    $voucher_type = $this->app->components->voucher->getRecord($rs->fields['voucher_id'], 'type');
 
-                if($rs->fields['type'] == 'invoice') {
-                    $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'invoice');
-
-                    // Vouchers must be compensated for profit purposes
-                    if($rs->fields['method'] == 'voucher') {
-
-                        $voucher_type = $this->app->components->voucher->getRecord($rs->fields['voucher_id'], 'type');
-
-                        // Multi Purpose
-                        if($voucher_type == 'MPV') {
-                            $prorata_totals['invoice']['net'] += 0.00;
-                            $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
-                            $prorata_totals['invoice']['gross'] += 0.00;  
-
-                            /* Total the transaction amounts that have been paid for with MPV voucher (not currently used)
-                            $prorata_totals['voucher']['mpv']['net'] += $prorata_record['net'];
-                            $prorata_totals['voucher']['mpv']['tax'] += $prorata_record['tax'];
-                            $prorata_totals['voucher']['mpv']['gross'] += $prorata_record['gross'];*/                    
-
-                        }
-
-                        // Single Use
-                        if($voucher_type == 'single_use') {
-                            $prorata_totals['invoice']['net'] += 0.00;
-                            $prorata_totals['invoice']['tax'] += 0.00; 
-                            $prorata_totals['invoice']['gross'] += 0.00;
-
-                            /* Total the transaction amounts that have been paid for with MPV voucher (not currently used)
-                            $prorata_totals['voucher']['spv']['net'] += $prorata_record['voucher']['mpv']['net'];
-                            $prorata_totals['voucher']['spv']['tax'] += $prorata_record['voucher']['mpv']['tax']; 
-                            $prorata_totals['voucher']['spv']['gross'] += $prorata_record['voucher']['mpv']['gross'];*/
-                        }
-
-                    // Normal Payments    
-                    } else {   
-
-                        // Record main totals prorated)
-                        $prorata_totals['invoice']['net'] += $prorata_record['net'];
+                    // Multi Purpose
+                    if($voucher_type == 'MPV') {
+                        $prorata_totals['invoice']['net'] += 0.00;
                         $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
-                        $prorata_totals['invoice']['gross'] += $prorata_record['gross'];
+                        $prorata_totals['invoice']['gross'] += 0.00;  
+
+                        /* Total the transaction amounts that have been paid for with MPV voucher (not currently used)
+                        $prorata_totals['voucher']['mpv']['net'] += $prorata_record['net'];
+                        $prorata_totals['voucher']['mpv']['tax'] += $prorata_record['tax'];
+                        $prorata_totals['voucher']['mpv']['gross'] += $prorata_record['gross'];*/                    
 
                     }
 
+                    // Single Use
+                    if($voucher_type == 'single_use') {
+                        $prorata_totals['invoice']['net'] += 0.00;
+                        $prorata_totals['invoice']['tax'] += 0.00; 
+                        $prorata_totals['invoice']['gross'] += 0.00;
+
+                        /* Total the transaction amounts that have been paid for with MPV voucher (not currently used)
+                        $prorata_totals['voucher']['spv']['net'] += $prorata_record['voucher']['mpv']['net'];
+                        $prorata_totals['voucher']['spv']['tax'] += $prorata_record['voucher']['mpv']['tax']; 
+                        $prorata_totals['voucher']['spv']['gross'] += $prorata_record['voucher']['mpv']['gross'];*/
+                    }
+
+                // Normal Payments    
+                } else {   
+
+                    // Record main totals prorated)
+                    $prorata_totals['invoice']['net'] += $prorata_record['net'];
+                    $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
+                    $prorata_totals['invoice']['gross'] += $prorata_record['gross'];
+
                 }
-
-                if($rs->fields['type'] == 'refund') {
-                    $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'refund');
-                    $prorata_totals['refund']['net'] += $prorata_record['net'];
-                    $prorata_totals['refund']['tax'] += $prorata_record['tax']; 
-                    $prorata_totals['refund']['gross'] += $prorata_record['gross'];                
-                }   
-
-                if($rs->fields['type'] == 'expense') {
-                    $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'expense');
-                    $prorata_totals['expense']['net'] += $prorata_record['net'];
-                    $prorata_totals['expense']['tax'] += $prorata_record['tax']; 
-                    $prorata_totals['expense']['gross'] += $prorata_record['gross'];                
-                }      
-
-                if($rs->fields['type'] == 'otherincome') {
-                    $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'otherincome');
-                    $prorata_totals['otherincome']['net'] += $prorata_record['net'];
-                    $prorata_totals['otherincome']['tax'] += $prorata_record['tax']; 
-                    $prorata_totals['otherincome']['gross'] += $prorata_record['gross'];                
-                }            
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
 
             }
 
-            return $prorata_totals;
+            if($rs->fields['type'] == 'refund') {
+                $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'refund');
+                $prorata_totals['refund']['net'] += $prorata_record['net'];
+                $prorata_totals['refund']['tax'] += $prorata_record['tax']; 
+                $prorata_totals['refund']['gross'] += $prorata_record['gross'];                
+            }   
+
+            if($rs->fields['type'] == 'expense') {
+                $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'expense');
+                $prorata_totals['expense']['net'] += $prorata_record['net'];
+                $prorata_totals['expense']['tax'] += $prorata_record['tax']; 
+                $prorata_totals['expense']['gross'] += $prorata_record['gross'];                
+            }      
+
+            if($rs->fields['type'] == 'otherincome') {
+                $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'otherincome');
+                $prorata_totals['otherincome']['net'] += $prorata_record['net'];
+                $prorata_totals['otherincome']['tax'] += $prorata_record['tax']; 
+                $prorata_totals['otherincome']['gross'] += $prorata_record['gross'];                
+            }            
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return $prorata_totals;
 
     }
 
@@ -2089,13 +2001,9 @@ class Report extends Components {
         $sql = "SELECT COUNT(*) AS count
                 FROM ".PRFX."supplier_records";                           
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Could not count the number of suppliers."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-           return $rs->fields['count']; 
-
-        }
+        return $rs->fields['count']; 
 
     }
     

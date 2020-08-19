@@ -65,28 +65,23 @@ class Voucher extends Components {
                 unit_gross          =". ($unit_net + ($unit_net * ($unit_tax_rate/100)) )       .",
                 note                =". $this->app->db->qstr( $note                                        );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the Voucher into the database."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        $voucher_id = $this->app->db->Insert_ID();
 
-            $voucher_id = $this->app->db->Insert_ID();
+        // Recalculate the invoice totals and update them
+        $this->app->components->invoice->recalculateTotals($invoice_details['invoice_id']);
 
-            // Recalculate the invoice totals and update them
-            $this->app->components->invoice->recalculateTotals($invoice_details['invoice_id']);
+        // Log activity        
+        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';      
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id']);
 
-            // Log activity        
-            $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';      
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id']);
+        // Update last active record
+        $this->app->components->client->updateLastActive($invoice_details['client_id']);
+        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
+        $this->app->components->invoice->updateLastActive($invoice_details['invoice_id']);       
 
-            // Update last active record
-            $this->app->components->client->updateLastActive($invoice_details['client_id']);
-            $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-            $this->app->components->invoice->updateLastActive($invoice_details['invoice_id']);       
-
-            return $voucher_id ;
-
-        }
+        return $voucher_id;   
 
     }
 
@@ -191,12 +186,9 @@ class Voucher extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);        
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching Voucher records."));
-            } else {        
-                $total_results = $rs->RecordCount();            
-                $this->app->smarty->assign('total_results', $total_results);
-            }  
+            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
+            $total_results = $rs->RecordCount();            
+            $this->app->smarty->assign('total_results', $total_results);             
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
@@ -230,24 +222,19 @@ class Voucher extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Voucher records."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
 
-        } else {        
+        $records = $rs->GetArray();   // If I call this twice for this search, no results are shown on the TPL
 
-            $records = $rs->GetArray();   // If I call this twice for this search, no results are shown on the TPL
+        if(empty($records)){
 
-            if(empty($records)){
+            return false;
 
-                return false;
+        } else {
 
-            } else {
+            return $records;
 
-                return $records;
-
-            }
-
-        }
+        } 
 
     }
 
@@ -259,21 +246,17 @@ class Voucher extends Components {
 
         $sql = "SELECT * FROM ".PRFX."voucher_records WHERE voucher_id=".$this->app->db->qstr($voucher_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the Voucher details."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($item === null){
+
+            return $rs->GetRowAssoc();            
+
         } else {
 
-            if($item === null){
+            return $rs->fields[$item];   
 
-                return $rs->GetRowAssoc();            
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
+        } 
 
     }
 
@@ -285,9 +268,7 @@ class Voucher extends Components {
 
         $sql = "SELECT * FROM ".PRFX."voucher_records WHERE voucher_code=".$this->app->db->qstr($voucher_code);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the Voucher ID by the Voucher code."));
-        }
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         if($rs->fields['voucher_id'] != '') {
             return $rs->fields['voucher_id'];
@@ -310,13 +291,9 @@ class Voucher extends Components {
             $sql .= "\nWHERE status_key NOT IN ('redeemed', 'expired', 'refunded', 'cancelled', 'deleted')";
         }
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Voucher statuses."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();     
-
-        }    
+        return $rs->GetArray(); 
 
     }
 
@@ -328,13 +305,9 @@ class Voucher extends Components {
 
         $sql = "SELECT display_name FROM ".PRFX."voucher_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the voucher status display name."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['display_name'];
-
-        }    
+        return $rs->fields['display_name'];  
 
     }
 
@@ -346,14 +319,10 @@ class Voucher extends Components {
 
         $sql = "SELECT * FROM ".PRFX."voucher_types";
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Voucher types."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();     
-
-        }    
-
+        return $rs->GetArray();     
+ 
     }
 
     ##############################################
@@ -369,14 +338,10 @@ class Voucher extends Components {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id=". $this->app->db->qstr($invoice_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the invoice vouchers totals."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetRowAssoc(); 
-
-        }    
-
+        return $rs->GetRowAssoc(); 
+        
     }
     
     #####################################  // This gets the Voucher VAT Tax Code based on the company tax system or supplied tax_system
@@ -428,31 +393,26 @@ class Voucher extends Components {
                 note            =". $this->app->db->qstr( $note                                        )."
                 WHERE voucher_id =". $this->app->db->qstr($voucher_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher record in the database."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Make sure correct expiry status is set (unused/expired)
+        $this->checkVoucherIsExpired($voucher_id);
 
-            // Make sure correct expiry status is set (unused/expired)
-            $this->checkVoucherIsExpired($voucher_id);
+        $voucher_details = $this->getRecord($voucher_id);
 
-            $voucher_details = $this->getRecord($voucher_id);
+        // Recalculate the invoice totals and update them
+        $this->app->components->invoice->recalculateTotals($voucher_details['invoice_id']);
 
-            // Recalculate the invoice totals and update them
-            $this->app->components->invoice->recalculateTotals($voucher_details['invoice_id']);
+        // Log activity
+        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id']);
 
-            // Log activity
-            $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id']);
+        // Update last active record
+        $this->app->components->client->updateLastActive($voucher_details['client_id']);
+        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
+        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
 
-            // Update last active record
-            $this->app->components->client->updateLastActive($voucher_details['client_id']);
-            $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-            $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
-
-            return;
-
-        }
+        return;
 
     }
 
@@ -499,32 +459,27 @@ class Voucher extends Components {
                 blocked            =". $this->app->db->qstr( $blocked      )."
                 WHERE voucher_id   =". $this->app->db->qstr( $voucher_id   ); 
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Voucher Status."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
-        } else {    
+        // Status updated message
+        if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher status updated.")); }
 
-            // Status updated message
-            if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher status updated.")); }
+        // For writing message to log file, get voucher status display name
+        $voucher_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
-            // For writing message to log file, get voucher status display name
-            $voucher_status_display_name = _gettext($this->getStatusDisplayName($new_status));
+        // Create a Workorder History Note       
+        $this->app->components->workorder->insertHistory($voucher_details['workorder_id'], _gettext("Voucher Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
-            // Create a Workorder History Note       
-            $this->app->components->workorder->insertHistory($voucher_details['workorder_id'], _gettext("Voucher Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Log activity        
+        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_id);
 
-            // Log activity        
-            $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_id);
+        // Update last active record
+        $this->app->components->client->updateLastActive($voucher_details['client_id']);
+        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
+        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);                
 
-            // Update last active record
-            $this->app->components->client->updateLastActive($voucher_details['client_id']);
-            $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-            $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);                
-
-            return true;
-
-        }
+        return true;        
 
     }
 
@@ -544,23 +499,19 @@ class Voucher extends Components {
                 redeemed_invoice_id =". $this->app->db->qstr( $invoice_id                              )."            
                 WHERE voucher_id    =". $this->app->db->qstr( $voucher_id                              );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher as redeemed."));
-        } else {       
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-            // Change the voucher status to refunded (I do this here to maintain consistency)
-            $this->updateStatus($voucher_id, 'redeemed', true);
+        // Change the voucher status to refunded (I do this here to maintain consistency)
+        $this->updateStatus($voucher_id, 'redeemed', true);
 
-            // Log activity        
-            $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was redeemed by").' '.$this->app->components->client->getRecord($voucher_details['client_id'], 'display_name').'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $voucher_details['client_id'], null, $invoice_id);
+        // Log activity        
+        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was redeemed by").' '.$this->app->components->client->getRecord($voucher_details['client_id'], 'display_name').'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $voucher_details['client_id'], null, $invoice_id);
 
-            // Update last active record
-            $this->app->components->client->updateLastActive($voucher_details['client_id']);        
-            $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-            $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);        
-
-        }
+        // Update last active record
+        $this->app->components->client->updateLastActive($voucher_details['client_id']);        
+        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
+        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);        
 
     }
 
@@ -574,9 +525,7 @@ class Voucher extends Components {
                 refund_id            =".$this->app->db->qstr($refund_id)."
                 WHERE voucher_id     =".$this->app->db->qstr($voucher_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Invoice ID on the voucher."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
 
@@ -592,25 +541,19 @@ class Voucher extends Components {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
+            // Refund Voucher
+            $this->refundRecord($rs->fields['voucher_id'], $refund_id);
 
-            while(!$rs->EOF) {            
-
-                // Refund Voucher
-                $this->refundRecord($rs->fields['voucher_id'], $refund_id);
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
-            }
-
-            return;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return;
 
     }
     
@@ -624,25 +567,19 @@ class Voucher extends Components {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
+            // Refund Voucher
+            $this->revertRecordRefund($rs->fields['voucher_id']);
 
-            while(!$rs->EOF) {            
-
-                // Refund Voucher
-                $this->revertRecordRefund($rs->fields['voucher_id']);
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
-            }
-
-            return;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return;
 
     }
 
@@ -737,25 +674,19 @@ class Voucher extends Components {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
+            // Cancel Voucher
+            $this->cancelRecord($rs->fields['voucher_id']);
 
-            while(!$rs->EOF) {            
-
-                // Cancel Voucher
-                $this->cancelRecord($rs->fields['voucher_id']);
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
-            }
-
-            return;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return;
 
     }
     
@@ -805,25 +736,19 @@ class Voucher extends Components {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
+            // Refund Voucher
+            $this->deleteRecord($rs->fields['voucher_id']);
 
-            while(!$rs->EOF) {            
-
-                // Refund Voucher
-                $this->deleteRecord($rs->fields['voucher_id']);
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
-            }
-
-            return;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return;  
 
     }   
 
@@ -873,27 +798,21 @@ class Voucher extends Components {
                 note                =   ''
                 WHERE voucher_id =". $this->app->db->qstr($voucher_id);        
 
-            if(!$this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the Voucher."));
+            // Recalculate the invoice totals and update them
+            $this->app->components->invoice->recalculateTotals($voucher_details['invoice_id']);
 
-            } else {
+            // Log activity        
+            $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id']);
 
-                // Recalculate the invoice totals and update them
-                $this->app->components->invoice->recalculateTotals($voucher_details['invoice_id']);
+            // Update last active record
+            $this->app->components->client->updateLastActive($voucher_details['client_id']);
+            $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
+            $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
 
-                // Log activity        
-                $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-                $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id']);
-
-                // Update last active record
-                $this->app->components->client->updateLastActive($voucher_details['client_id']);
-                $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-                $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
-
-                return true;
-
-            }
+            return true;
 
         }
 
@@ -910,30 +829,24 @@ class Voucher extends Components {
         $sql = "SELECT voucher_id, status
                 FROM ".PRFX."voucher_records;";
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {
 
-        } else {
-
-            while(!$rs->EOF) {
-
-                // Skip checking vouchers with these statuses becasuse it is not required
-                if($rs->fields['status'] == 'redeemed' || $rs->fields['status'] == 'expired' || $rs->fields['status'] == 'refunded' || $rs->fields['status'] == 'cancelled' || $rs->fields['status'] == 'deleted') {
-                    $rs->MoveNext();
-                    continue;
-                }
-
-                $this->checkVoucherIsExpired($rs->fields['voucher_id']);
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
+            // Skip checking vouchers with these statuses becasuse it is not required
+            if($rs->fields['status'] == 'redeemed' || $rs->fields['status'] == 'expired' || $rs->fields['status'] == 'refunded' || $rs->fields['status'] == 'cancelled' || $rs->fields['status'] == 'deleted') {
+                $rs->MoveNext();
+                continue;
             }
 
-            return;
+            $this->checkVoucherIsExpired($rs->fields['voucher_id']);
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return;
 
     }
 
@@ -1613,30 +1526,24 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
+            //$voucher_details = $rs->GetRowAssoc();
 
-            while(!$rs->EOF) {            
-
-                //$voucher_details = $rs->GetRowAssoc();
-
-                // Check the Voucher to see if it can be refunded
-                if(!$this->checkSingleVoucherAllowsRefund($rs->fields['voucher_id'])) {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
-                    $state_flag = false;                
-                }
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
+            // Check the Voucher to see if it can be refunded
+            if(!$this->checkSingleVoucherAllowsRefund($rs->fields['voucher_id'])) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
+                $state_flag = false;                
             }
 
-            return $state_flag;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return $state_flag; 
 
     }
     
@@ -1652,28 +1559,22 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
-
-            while(!$rs->EOF) {            
-
-                // Check the Voucher to see if it can be cancelled
-                if(!$this->checkSingleVoucherAllowsRefundCancel($rs->fields['voucher_id'])) {  
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']); 
-                    $state_flag = false;
-                }
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
+            // Check the Voucher to see if it can be cancelled
+            if(!$this->checkSingleVoucherAllowsRefundCancel($rs->fields['voucher_id'])) {  
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']); 
+                $state_flag = false;
             }
 
-            return $state_flag;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return $state_flag;
 
     }
     
@@ -1689,28 +1590,22 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
-
-            while(!$rs->EOF) {            
-
-                // Check the Voucher to see if it can be refunded
-                if(!$this->checkSingleVoucherAllowsRefundDelete($rs->fields['voucher_id'])) {  
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
-                    $state_flag = false;
-                }
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
+            // Check the Voucher to see if it can be refunded
+            if(!$this->checkSingleVoucherAllowsRefundDelete($rs->fields['voucher_id'])) {  
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
+                $state_flag = false;
             }
 
-            return $state_flag;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return $state_flag;
 
     }    
     
@@ -1726,30 +1621,24 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
+            //$voucher_details = $rs->GetRowAssoc(); 
 
-            while(!$rs->EOF) {            
-
-                //$voucher_details = $rs->GetRowAssoc(); 
-
-                // Check the Voucher to see if it can be deleted
-                if(!$this->checkSingleVoucherAllowsCancel($rs->fields['voucher_id'])) {   
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']); 
-                    $state_flag = false;
-                }
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
+            // Check the Voucher to see if it can be deleted
+            if(!$this->checkSingleVoucherAllowsCancel($rs->fields['voucher_id'])) {   
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']); 
+                $state_flag = false;
             }
 
-            return $state_flag;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return $state_flag; 
 
     }
     
@@ -1765,28 +1654,22 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
-
-            while(!$rs->EOF) {            
-
-                // Check the Voucher to see if it can be deleted
-                if(!$this->checkSingleVoucherAllowsDelete($rs->fields['voucher_id'])) {     
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Voucher").': '.$rs->fields['voucher_id']);
-                    $state_flag = false;
-                }
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
+            // Check the Voucher to see if it can be deleted
+            if(!$this->checkSingleVoucherAllowsDelete($rs->fields['voucher_id'])) {     
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Voucher").': '.$rs->fields['voucher_id']);
+                $state_flag = false;
             }
 
-            return $state_flag;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
+
+        return $state_flag;
 
     }
     
@@ -1802,29 +1685,23 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id = ".$invoice_id;
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+        while(!$rs->EOF) {            
 
-        } else {
-
-            while(!$rs->EOF) {            
-
-                // Check the Voucher to see if it can be deleted
-                if(!$this->checkSingleVoucherAllowsEdit($rs->fields['voucher_id'])) {  
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Voucher").': '.$rs->fields['voucher_id']);
-                    $state_flag = false;
-                }
-
-                // Advance the loop to the next record
-                $rs->MoveNext();           
-
+            // Check the Voucher to see if it can be deleted
+            if(!$this->checkSingleVoucherAllowsEdit($rs->fields['voucher_id'])) {  
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Voucher").': '.$rs->fields['voucher_id']);
+                $state_flag = false;
             }
 
-            return $state_flag;
+            // Advance the loop to the next record
+            $rs->MoveNext();           
 
         }
 
+        return $state_flag;
+        
     }
     
     /** Other Functions **/

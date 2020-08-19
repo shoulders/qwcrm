@@ -40,27 +40,22 @@ class WorkOrder extends Components {
                 description     =". $this->app->db->qstr( $description                         ).",            
                 comment         =". $this->app->db->qstr( $comment                             );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the work order Record into the database."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Get the new Workorders ID
+        $workorder_id = $this->app->db->Insert_ID();
 
-            // Get the new Workorders ID
-            $workorder_id = $this->app->db->Insert_ID();
+        // Create a Workorder History Note            
+        $this->insertHistory($workorder_id, _gettext("Created by").' '.$this->app->user->login_display_name.'.');
 
-            // Create a Workorder History Note            
-            $this->insertHistory($workorder_id, _gettext("Created by").' '.$this->app->user->login_display_name.'.');
+        // Log activity        
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Created by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
-            // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Created by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
+        // Update last active record        
+        $this->app->components->client->updateLastActive($this->getRecord($workorder_id, 'client_id'));
 
-            // Update last active record        
-            $this->app->components->client->updateLastActive($this->getRecord($workorder_id, 'client_id'));
-
-            return $workorder_id;
-
-        }
+        return $workorder_id;     
 
     }
     
@@ -76,31 +71,26 @@ class WorkOrder extends Components {
                 date            =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
                 description     =". $this->app->db->qstr( $note                                );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert a work order note."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Get the new Note ID
+        $workorder_note_id = $this->app->db->Insert_ID();
 
-            // Get the new Note ID
-            $workorder_note_id = $this->app->db->Insert_ID();
+        // Get client id
+        $client_id = $this->getRecord($workorder_id, 'client_id');
 
-            // Get client id
-            $client_id = $this->getRecord($workorder_id, 'client_id');
+        // Create a Workorder History Note       
+        $this->insertHistory($workorder_id, _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added by").' '.$this->app->user->login_display_name.'.');
 
-            // Create a Workorder History Note       
-            $this->insertHistory($workorder_id, _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added by").' '.$this->app->user->login_display_name.'.');
+        // Log activity        
+        $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added to Work Order").' '.$workorder_id.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
-            // Log activity        
-            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added to Work Order").' '.$workorder_id.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
+        // Update last active record
+        $this->app->components->client->updateLastActive($client_id);
+        $this->updateLastActive($workorder_id);
 
-            // Update last active record
-            $this->app->components->client->updateLastActive($client_id);
-            $this->updateLastActive($workorder_id);
-
-            return true;
-
-        }
+        return true;
 
     }    
 
@@ -124,13 +114,9 @@ class WorkOrder extends Components {
                 date            =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
                 note            =". $this->app->db->qstr( $note                                );
 
-        if(!$this->app->db->execute($sql)) {        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert a work order history note."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return true;
-
-        }  
+        return true;
 
     }    
     
@@ -239,12 +225,9 @@ class WorkOrder extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching work orders."));
-            } else {        
-                $total_results = $rs->RecordCount();            
-                $this->app->smarty->assign('total_results', $total_results);
-            }        
+            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
+            $total_results = $rs->RecordCount();            
+            $this->app->smarty->assign('total_results', $total_results);
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
@@ -278,24 +261,20 @@ class WorkOrder extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching work orders."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $records = $rs->GetArray();   // do i need to add the check empty
+
+        if(empty($records)){
+
+            // This prevents undefined variable error when there are no search results
+            return false;
+
         } else {
 
-            $records = $rs->GetArray();   // do i need to add the check empty
+            return $records;
 
-            if(empty($records)){
-
-                // This prevents undefined variable error when there are no search results
-                return false;
-
-            } else {
-
-                return $records;
-
-            }
-
-        }
+        } 
 
     } 
     
@@ -313,19 +292,15 @@ class WorkOrder extends Components {
 
         $sql = "SELECT * FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qstr($workorder_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get work order details."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($item === null){
+
+            return $rs->GetRowAssoc(); 
+
         } else {
 
-            if($item === null){
-
-                return $rs->GetRowAssoc(); 
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
+            return $rs->fields[$item];   
 
         }
 
@@ -346,13 +321,9 @@ class WorkOrder extends Components {
                 WHERE workorder_id=".$this->app->db->qstr($workorder_id)."
                 AND ".PRFX."user_records.user_id = ".PRFX."workorder_notes.employee_id";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return notes for the work order."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray(); 
-
-        }
+        return $rs->GetArray(); 
 
     }    
    
@@ -366,21 +337,17 @@ class WorkOrder extends Components {
 
         $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qstr($workorder_note_id);    
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get a work order Note."));
-        } else { 
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            if($item === null){
+        if($item === null){
 
-                return $rs->GetRowAssoc(); 
+            return $rs->GetRowAssoc(); 
 
-            } else {
+        } else {
 
-                return $rs->fields[$item];   
+            return $rs->fields[$item];   
 
-            } 
-
-        }
+        } 
 
     }       
 
@@ -399,13 +366,9 @@ class WorkOrder extends Components {
                 AND ".PRFX."user_records.user_id = ".PRFX."workorder_history.employee_id
                 ORDER BY ".PRFX."workorder_history.history_id";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return history records for the work order."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();  
-
-        }
+        return $rs->GetArray();
 
     } 
     
@@ -436,13 +399,9 @@ class WorkOrder extends Components {
         
         }
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get work order statuses."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();
-
-        }    
+        return $rs->GetArray();
 
     }
 
@@ -454,13 +413,9 @@ class WorkOrder extends Components {
 
         $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the work order status display name."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['display_name'];
-
-        }    
+        return $rs->fields['display_name']; 
 
     }
 
@@ -503,34 +458,29 @@ class WorkOrder extends Components {
 
 
         // Get Workorder Scope Suggestions from the database      
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('ajax', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}        
+              
+        $record_count = $rs->RecordCount();           
 
-            //$this->app->system->page->force_error_page('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get a work order scopes list from the database."));
-            echo $this->app->db->ErrorMsg();
+        if($record_count) {
+
+            $autosuggest_items = $rs->GetArray(); 
+
+            // loop over the rows, outputting them to the page object in the required format
+            foreach($autosuggest_items as $key => $value) {
+                $pagePayload .= '<li onclick="fill(\''.$value['autoscope'].'\');">'.$value['autoscope'].'</li>';
+            } 
+
+            return $pagePayload;
 
         } else {
 
-            $record_count = $rs->RecordCount();           
-
-            if($record_count) {
-
-                $autosuggest_items = $rs->GetArray(); 
-
-                // loop over the rows, outputting them to the page object in the required format
-                foreach($autosuggest_items as $key => $value) {
-                    $pagePayload .= '<li onclick="fill(\''.$value['autoscope'].'\');">'.$value['autoscope'].'</li>';
-                } 
-
-                return $pagePayload;
-
-            } else {
-
-                // No records found - do nothing 
-                return;
-
-            }
+            // No records found - do nothing 
+            return;
 
         }
+
+        
 
     }  
 
@@ -547,27 +497,23 @@ class WorkOrder extends Components {
                 description         =".$this->app->db->qstr($description)."            
                 WHERE workorder_id  =".$this->app->db->qstr($workorder_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order scope and description."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Get Work Order Details
-            $workorder_details = $this->getRecord($workorder_id);
+        // Get Work Order Details
+        $workorder_details = $this->getRecord($workorder_id);
 
-            // Creates a History record        
-            $this->insertHistory($workorder_id, _gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.');
+        // Creates a History record        
+        $this->insertHistory($workorder_id, _gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.');
 
-            // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);        
+        // Log activity        
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);        
 
-            // Update last active record        
-            $this->app->components->client->updateLastActive($workorder_details['client_id']);
-            $this->updateLastActive($workorder_id);
+        // Update last active record        
+        $this->app->components->client->updateLastActive($workorder_details['client_id']);
+        $this->updateLastActive($workorder_id);
 
-            return true;
-
-        }
+        return true;
 
     }
 
@@ -581,27 +527,23 @@ class WorkOrder extends Components {
                 comment             =". $this->app->db->qstr($comment)."
                 WHERE workorder_id  =". $this->app->db->qstr($workorder_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Comment."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Get Work Order Details
-            $workorder_details = $this->getRecord($workorder_id);
+        // Get Work Order Details
+        $workorder_details = $this->getRecord($workorder_id);
 
-            // Create a Workorder History Note       
-            $this->insertHistory($workorder_id, _gettext("Comment updated by").' '.$this->app->user->login_display_name);
+        // Create a Workorder History Note       
+        $this->insertHistory($workorder_id, _gettext("Comment updated by").' '.$this->app->user->login_display_name);
 
-            // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+        // Log activity        
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
-            // Update last active record       
-            $this->app->components->client->updateLastActive($workorder_details['client_id']); 
-            $this->updateLastActive($workorder_id);
+        // Update last active record       
+        $this->app->components->client->updateLastActive($workorder_details['client_id']); 
+        $this->updateLastActive($workorder_id);
 
-            return true;
-
-        }
+        return true;
 
     }
 
@@ -615,27 +557,23 @@ class WorkOrder extends Components {
                 resolution          =". $this->app->db->qstr( $resolution      )."            
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order resolution."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Get Work Order Details
-            $workorder_details = $this->getRecord($workorder_id);
+        // Get Work Order Details
+        $workorder_details = $this->getRecord($workorder_id);
 
-            // Create a Workorder History Note       
-            $this->insertHistory($workorder_id, _gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note       
+        $this->insertHistory($workorder_id, _gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.');
 
-            // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+        // Log activity        
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
-            // Update last active record        
-            $this->app->components->client->updateLastActive($workorder_details['client_id']);
-            $this->updateLastActive($workorder_id);
+        // Update last active record        
+        $this->app->components->client->updateLastActive($workorder_details['client_id']);
+        $this->updateLastActive($workorder_id);
 
-            return true;
-
-        }
+        return true;
 
     }
     
@@ -650,25 +588,20 @@ class WorkOrder extends Components {
                 description             =". $this->app->db->qstr( $note                                )."
                 WHERE workorder_note_id =". $this->app->db->qstr( $workorder_note_id                   );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order note."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        $workorder_details = $this->getRecord($this->getNote($workorder_note_id, 'workorder_id'));
 
-            $workorder_details = $this->getRecord($this->getNote($workorder_note_id, 'workorder_id'));
+        // Create a Workorder History Note       
+        $this->insertHistory($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("updated by").' '.$this->app->user->login_display_name.'.');
 
-            // Create a Workorder History Note       
-            $this->insertHistory($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("updated by").' '.$this->app->user->login_display_name.'.');
+        // Log activity        
+        $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
 
-            // Log activity        
-            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
-
-            // Update last active record        
-            $this->app->components->client->updateLastActive($workorder_details['client_id']);
-            $this->updateLastActive($workorder_details['workorder_id']);
-
-        }
+        // Update last active record        
+        $this->app->components->client->updateLastActive($workorder_details['client_id']);
+        $this->updateLastActive($workorder_details['workorder_id']); 
 
     }
 
@@ -699,43 +632,38 @@ class WorkOrder extends Components {
                 closed_on           =". $this->app->db->qstr( $closed_on       )."  
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Status."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
-
-            // If there is no employee and status is not 'unassigned', set the current logged in user as the assigned employee
-            if($workorder_details['employee_id'] == '' && $new_status != 'unassigned') {
-                $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
-            }
-
-            // Update Workorder 'is_closed' boolean
-            if($new_status == 'closed_without_invoice' || $new_status == 'closed_with_invoice') {
-                $this->updateClosedStatus($workorder_id, 'close');
-            } else {
-                $this->updateClosedStatus($workorder_id, 'open');
-            }
-
-            // Status updated message
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Work order status updated."));        
-
-            // For writing message to log file, get work order status display name
-            $wo_status_display_name = _gettext($this->getStatusDisplayName($new_status));
-
-            // Create a Workorder History Note       
-            $this->insertHistory($workorder_id, _gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
-
-            // Update last active record        
-            $this->app->components->client->updateLastActive($this->getRecord($workorder_id, 'client_id'));
-            $this->updateLastActive($workorder_id);        
-
-            return true;
-
+        // If there is no employee and status is not 'unassigned', set the current logged in user as the assigned employee
+        if($workorder_details['employee_id'] == '' && $new_status != 'unassigned') {
+            $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
         }
+
+        // Update Workorder 'is_closed' boolean
+        if($new_status == 'closed_without_invoice' || $new_status == 'closed_with_invoice') {
+            $this->updateClosedStatus($workorder_id, 'close');
+        } else {
+            $this->updateClosedStatus($workorder_id, 'open');
+        }
+
+        // Status updated message
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Work order status updated."));        
+
+        // For writing message to log file, get work order status display name
+        $wo_status_display_name = _gettext($this->getStatusDisplayName($new_status));
+
+        // Create a Workorder History Note       
+        $this->insertHistory($workorder_id, _gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+
+        // Log activity        
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+
+        // Update last active record        
+        $this->app->components->client->updateLastActive($this->getRecord($workorder_id, 'client_id'));
+        $this->updateLastActive($workorder_id);        
+
+        return true;
 
     }
 
@@ -764,9 +692,7 @@ class WorkOrder extends Components {
 
         }
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order's Closed status."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
 
@@ -785,9 +711,7 @@ class WorkOrder extends Components {
                 invoice_id          =". $this->app->db->qstr( $invoice_id      )."
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Invoice ID."));
-        }    
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
 
     }
     
@@ -804,9 +728,7 @@ class WorkOrder extends Components {
                 last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
                 WHERE workorder_id=".$this->app->db->qstr($workorder_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a work order last active time."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }    
 
@@ -856,53 +778,28 @@ class WorkOrder extends Components {
             resolution          = ''
             WHERE workorder_id =". $this->app->db->qstr($workorder_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the Work Order").' '.$workorder_id.'.');
-
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        
         // Delete the workorder history
-        } else {        
+        $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+                
+        // Delete the workorder notes 
+        $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+                    
+        // Delete the workorder schedule events 
+        $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+                    
+        // Write the record to the activity log                    
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
-            $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+        // Update last active record
+        $this->app->components->client->updateLastActive($client_id);                    
 
-            if(!$this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the history notes for Work Order").' '.$workorder_id.'.');
-
-            // Delete the workorder notes    
-            } else {
-
-                $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_id=".$this->app->db->qstr($workorder_id);
-
-                if(!$this->app->db->execute($sql)) {
-                    $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the notes for Work Order").' '.$workorder_id.'.');
-
-
-                // Delete the workorder schedule events     
-                } else {
-
-                    $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$this->app->db->qstr($workorder_id);
-
-                    if(!$this->app->db->execute($sql)) {
-                        $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the schedules for Work Order").' '.$workorder_id.'.');
-
-                    // Log the workorder deletion
-                    } else {
-
-                        // Write the record to the activity log                    
-                        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
-                        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
-
-                        // Update last active record
-                        $this->app->components->client->updateLastActive($client_id);                    
-
-                        return true;
-
-                    }        
-
-                }
-
-            }
-
-        }
+        return true; 
 
     }
 
@@ -917,23 +814,18 @@ class WorkOrder extends Components {
 
         $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qstr( $workorder_note_id );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete a work order note."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
 
-        } else {        
+        // Create a Workorder History Note       
+        $this->insertHistory($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.');
 
-            // Create a Workorder History Note       
-            $this->insertHistory($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.');
+        // Log activity        
+        $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
 
-            // Log activity        
-            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
-
-            // Update last active record        
-            $this->app->components->client->updateLastActive($workorder_details['client_id']);
-            $this->updateLastActive($workorder_details['workorder_id']);
-
-        }
+        // Update last active record        
+        $this->app->components->client->updateLastActive($workorder_details['client_id']);
+        $this->updateLastActive($workorder_details['workorder_id']);  
 
     }    
 
@@ -955,35 +847,31 @@ class WorkOrder extends Components {
                 resolution          =". $this->app->db->qstr( $resolution                          )."
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to close a work order without an invoice."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Update Work Order Status - not needed
-            //$this->app->components->workorder->update_workorder_status($workorder_id, 'closed_without_invoice');
+        // Update Work Order Status - not needed
+        //$this->app->components->workorder->update_workorder_status($workorder_id, 'closed_without_invoice');
 
-            // Get client_id
-            $workorder_details = $this->getRecord($workorder_id);
+        // Get client_id
+        $workorder_details = $this->getRecord($workorder_id);
 
-            // If there is no employee assigned, set the current logged in user as the assigned employee
-            if(!$workorder_details['employee_id']) {
-                $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
-            }
-
-            // Create a History record
-            $this->insertHistory($workorder_id, _gettext("Closed without invoice by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
-
-            // Update last active record
-            $this->app->components->client->updateLastActive($workorder_details['client_id']);
-            $this->updateLastActive($workorder_id);        
-
-            return true;
-
+        // If there is no employee assigned, set the current logged in user as the assigned employee
+        if(!$workorder_details['employee_id']) {
+            $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
         }
+
+        // Create a History record
+        $this->insertHistory($workorder_id, _gettext("Closed without invoice by").' '.$this->app->user->login_display_name.'.');
+
+        // Log activity
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
+
+        // Update last active record
+        $this->app->components->client->updateLastActive($workorder_details['client_id']);
+        $this->updateLastActive($workorder_id);        
+
+        return true;
 
     }
 
@@ -1002,35 +890,31 @@ class WorkOrder extends Components {
                 resolution          =". $this->app->db->qstr( $resolution                          )."
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
 
-        if(!$this->app->db->execute($sql)){ 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to close a work order with an invoice."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Update Work Order Status - not needed
-            //$this->app->components->workorder->update_workorder_status($workorder_id, 'closed_with_invoice');
+        // Update Work Order Status - not needed
+        //$this->app->components->workorder->update_workorder_status($workorder_id, 'closed_with_invoice');
 
-            // Get workorder details
-            $workorder_details = $this->getRecord($workorder_id);
+        // Get workorder details
+        $workorder_details = $this->getRecord($workorder_id);
 
-            // If there is no employee assigned, set the current logged in user as the assigned employee
-            if(!$workorder_details['employee_id']) {
-                $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
-            }
+        // If there is no employee assigned, set the current logged in user as the assigned employee
+        if(!$workorder_details['employee_id']) {
+            $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
+        }
 
-            // Create a Workorder History Note       
-            $this->insertHistory($workorder_id, _gettext("Closed with invoice by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note       
+        $this->insertHistory($workorder_id, _gettext("Closed with invoice by").' '.$this->app->user->login_display_name.'.');
 
-            // Log activity
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
+        // Log activity
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
 
-            // Update last active record
-            $this->app->components->client->updateLastActive($workorder_details['client_id']);
-            $this->updateLastActive($workorder_id);   
+        // Update last active record
+        $this->app->components->client->updateLastActive($workorder_details['client_id']);
+        $this->updateLastActive($workorder_id);   
 
-            return true;
-
-        }      
+        return true;     
 
     }
 
@@ -1359,46 +1243,41 @@ class WorkOrder extends Components {
 
         }
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to assign a work order to an employee."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Assigned employee success message
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Assigned employee updated.")); 
 
-            // Assigned employee success message
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Assigned employee updated.")); 
+        // Get Logged in Employee's Display Name        
+        $logged_in_employee_display_name = $this->app->user->login_display_name;
 
-            // Get Logged in Employee's Display Name        
-            $logged_in_employee_display_name = $this->app->user->login_display_name;
+        // Get the currently assigned employee ID
+        $assigned_employee_id = $workorder_details['employee_id'];
 
-            // Get the currently assigned employee ID
-            $assigned_employee_id = $workorder_details['employee_id'];
-
-            // Get the Display Name of the currently Assigned Employee
-            if($assigned_employee_id == ''){
-                $assigned_employee_display_name = _gettext("Unassigned");            
-            } else {            
-                $assigned_employee_display_name = $this->app->components->user->getRecord($assigned_employee_id, 'display_name');
-            }
-
-            // Get the Display Name of the Target Employee        
-            $target_employee_display_name = $this->app->components->user->getRecord($target_employee_id, 'display_name');
-
-            // Creates a History record
-            $this->insertHistory($workorder_id, _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
-
-            // Log activity
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $workorder_details['client_id'], $workorder_id);
-
-            // Update last active record
-            $this->app->components->user->updateLastActive($workorder_details['employee_id']);
-            $this->app->components->user->updateLastActive($target_employee_id);
-            $this->app->components->client->updateLastActive($workorder_details['client_id']);
-            $this->updateLastActive($workorder_id);
-
-            return true;
-
+        // Get the Display Name of the currently Assigned Employee
+        if($assigned_employee_id == ''){
+            $assigned_employee_display_name = _gettext("Unassigned");            
+        } else {            
+            $assigned_employee_display_name = $this->app->components->user->getRecord($assigned_employee_id, 'display_name');
         }
+
+        // Get the Display Name of the Target Employee        
+        $target_employee_display_name = $this->app->components->user->getRecord($target_employee_id, 'display_name');
+
+        // Creates a History record
+        $this->insertHistory($workorder_id, _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
+
+        // Log activity
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $workorder_details['client_id'], $workorder_id);
+
+        // Update last active record
+        $this->app->components->user->updateLastActive($workorder_details['employee_id']);
+        $this->app->components->user->updateLastActive($target_employee_id);
+        $this->app->components->client->updateLastActive($workorder_details['client_id']);
+        $this->updateLastActive($workorder_id);
+
+        return true;
 
      }
 

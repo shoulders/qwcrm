@@ -24,8 +24,6 @@ class Company extends Components {
 
     /** Mandatory Code **/
 
-   
-
     /** Insert Functions **/
 
     /** Get Functions **/
@@ -71,24 +69,24 @@ class Company extends Components {
                         '</div>'
                    );
 
-                }        
+            } else {        
 
-            // Any other lookup error
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+                // Any other lookup error
+                $this->app->system->page->forceErrorPage('system', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("This is the first function loaded for the variable date_format."));
+            
+            }
+
+        }
+
+        if($item === null) {
+
+            return $rs->GetRowAssoc();            
 
         } else {
 
-            if($item === null) {
+            return $rs->fields[$item];   
 
-                return $rs->GetRowAssoc();            
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
+        }       
 
     }
 
@@ -100,13 +98,9 @@ class Company extends Components {
 
         $sql = "SELECT * FROM ".PRFX."company_tax_systems";
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();
-
-        }    
+        return $rs->GetArray();           
 
     }
 
@@ -136,13 +130,9 @@ class Company extends Components {
             $sql .= "\nAND standard = ".$this->app->db->qstr($system_tax_code);
         }
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();
-
-        }    
+        return $rs->GetArray();           
 
     }
     
@@ -156,13 +146,9 @@ class Company extends Components {
         $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
                 WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
-        } else {
-
-            return $rs->fields['rate'];
-
-        }    
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        
+        return $rs->fields['rate'];           
 
     }
 
@@ -193,13 +179,9 @@ class Company extends Components {
                 FROM ".PRFX."company_vat_tax_codes
                 WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
-        } else {       
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-            return $rs->fields['enabled'];
-
-        }   
+        return $rs->fields['enabled'];          
 
     }
 
@@ -330,22 +312,18 @@ class Company extends Components {
                 email_msg_workorder     =". $this->app->db->qstr( $qform['email_msg_workorder']              );                          
 
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
-        } else {       
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
-            // Refresh company logo
-            //$this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->get_company_details('logo'));
+        // Refresh company logo
+        //$this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->get_company_details('logo'));
 
-            // Assign success message
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
+        // Assign success message
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
 
-            // Log activity        
-            $this->app->system->general->writeRecordToActivityLog(_gettext("Company details updated."));
+        // Log activity        
+        $this->app->system->general->writeRecordToActivityLog(_gettext("Company details updated."));
 
-            return;
-
-        }
+        return;        
 
     }
 
@@ -361,19 +339,15 @@ class Company extends Components {
                 closing_hour    =". $this->app->db->qstr( $closingTime['Time_Hour']     ).",
                 closing_minute  =". $this->app->db->qstr( $closingTime['Time_Minute']   );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Assign success message
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Business hours have been updated."));
+        // Assign success message
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Business hours have been updated."));
 
-            // Log activity        
-            $this->app->system->general->writeRecordToActivityLog(_gettext("Business hours have been updated."));        
+        // Log activity        
+        $this->app->system->general->writeRecordToActivityLog(_gettext("Business hours have been updated."));        
 
-            return true;
-
-        }
+        return true;        
 
     }
 
@@ -383,34 +357,24 @@ class Company extends Components {
 
     public function updateVatRates($vat_rates) {
 
-        $error_flag = false;
-
         // Cycle through the submitted VAT rates and update the database
         foreach ($vat_rates as $tax_key => $rate) {
+            
             $sql =  "UPDATE ".PRFX."company_vat_tax_codes SET
                     rate = ".$this->app->db->qstr($rate)."
                     WHERE tax_key = ".$this->app->db->qstr($tax_key);
 
-            if(!$this->app->db->execute($sql)) {
-                $error_flag = true;            
-            }        
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+            
         }
+        
+        // Assign success message
+        //$this->app->system->variables->systemMessagesWrite('success', _gettext("VAT rates have been updated."));
 
-        if($error_flag) {
+        // Log activity        
+        //$this->app->system->general->write_record_to_activity_log(_gettext("VAT rates have been updated."));        
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
-            //return false;      
-
-        } else {
-            // Assign success message
-            //$this->app->system->variables->systemMessagesWrite('success', _gettext("VAT rates have been updated."));
-
-            // Log activity        
-            //$this->app->system->general->write_record_to_activity_log(_gettext("VAT rates have been updated."));        
-
-            return true;
-
-        }
+        return true;        
 
     }
 

@@ -46,29 +46,25 @@ class Expense extends Components {
                 items           =". $this->app->db->qstr( $qform['items']                   ).",
                 note            =". $this->app->db->qstr( $qform['note']                    );            
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            /* This code is not used because I removed 'invoice_id'
-             * Get related invoice details
-            $invoice_details = $this->app->components->invoice->get_invoice_details($qform['invoice_id']);
+        /* This code is not used because I removed 'invoice_id'
+         * Get related invoice details
+        $invoice_details = $this->app->components->invoice->get_invoice_details($qform['invoice_id']);
 
-            // Create a Workorder History Note
-            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$this->app->db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note
+        $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$this->app->db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
-            // Log activity        
-            $record = _gettext("Expense Record").' '.$this->app->db->Insert_ID().' '._gettext("created.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $qform['invoice_id']);
+        // Log activity        
+        $record = _gettext("Expense Record").' '.$this->app->db->Insert_ID().' '._gettext("created.");
+        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $qform['invoice_id']);
 
-            // Update last active record
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            $this->app->components->invoice->update_invoice_last_active($qform['invoice_id']);*/
+        // Update last active record
+        $this->app->components->client->update_client_last_active($invoice_details['client_id']);
+        $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
+        $this->app->components->invoice->update_invoice_last_active($qform['invoice_id']);*/
 
-            return $this->app->db->Insert_ID();
-
-        }
+        return $this->app->db->Insert_ID();        
 
     } 
 
@@ -120,12 +116,9 @@ class Expense extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the matching expense records."));
-            } else {        
-                $total_results = $rs->RecordCount();            
-                $this->app->smarty->assign('total_results', $total_results);
-            }        
+            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}      
+            $total_results = $rs->RecordCount();            
+            $this->app->smarty->assign('total_results', $total_results);                   
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
@@ -159,23 +152,17 @@ class Expense extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching expense records."));
+        $records = $rs->GetArray();   // do i need to add the check empty
+
+        if(empty($records)){
+
+            return false;
 
         } else {
 
-            $records = $rs->GetArray();   // do i need to add the check empty
-
-            if(empty($records)){
-
-                return false;
-
-            } else {
-
-                return $records;
-
-            }
+            return $records;
 
         }
 
@@ -189,21 +176,17 @@ class Expense extends Components {
 
         $sql = "SELECT * FROM ".PRFX."expense_records WHERE expense_id=".$this->app->db->qstr($expense_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the expense details."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($item === null){
+
+            return $rs->GetRowAssoc();            
+
         } else {
 
-            if($item === null){
+            return $rs->fields[$item];   
 
-                return $rs->GetRowAssoc();            
-
-            } else {
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
+        }        
 
     }
 
@@ -220,14 +203,10 @@ class Expense extends Components {
             $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
         }
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get Expense statuses."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();     
-
-        }    
-
+        return $rs->GetArray(); 
+        
     }
 
     ######################################
@@ -238,13 +217,9 @@ class Expense extends Components {
 
         $sql = "SELECT display_name FROM ".PRFX."expense_statuses WHERE status_key=".$this->app->db->qstr($status_key);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the expense status display name."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['display_name'];
-
-        }    
+        return $rs->fields['display_name'];  
 
     }
 
@@ -256,13 +231,9 @@ class Expense extends Components {
 
         $sql = "SELECT * FROM ".PRFX."expense_types";
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get expense types."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();
-
-        }    
+        return $rs->GetArray();           
 
     }
 
@@ -274,13 +245,9 @@ class Expense extends Components {
 
         $sql = "SELECT * FROM ".PRFX."expense_records ORDER BY expense_id DESC LIMIT 1";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last expense record ID."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['expense_id'];
-
-        }
+        return $rs->fields['expense_id'];
 
     }    
     
@@ -308,29 +275,25 @@ class Expense extends Components {
                 note                =". $this->app->db->qstr( $qform['note']                     )."
                 WHERE expense_id    =". $this->app->db->qstr( $qform['expense_id']               );                        
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            /* This code is not used because I removed 'invoice_id'
-             * Get related invoice details
-            $invoice_details = $this->app->components->invoice->get_invoice_details($qform['invoice_id']);
+        /* This code is not used because I removed 'invoice_id'
+         * Get related invoice details
+        $invoice_details = $this->app->components->invoice->get_invoice_details($qform['invoice_id']);
 
-            // Create a Workorder History Note
-            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("updated").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note
+        $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("updated").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
-            // Log activity
-            $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("updated.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $qform['invoice_id']);
+        // Log activity
+        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("updated.");
+        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $qform['invoice_id']);
 
-            // Update last active record
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            $this->app->components->invoice->update_invoice_last_active($qform['invoice_id']);*/ 
+        // Update last active record
+        $this->app->components->client->update_client_last_active($invoice_details['client_id']);
+        $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
+        $this->app->components->invoice->update_invoice_last_active($qform['invoice_id']);*/ 
 
-            return true;
-
-        }
+        return true;        
 
     } 
 
@@ -361,36 +324,31 @@ class Expense extends Components {
                 last_active        =". $this->app->db->qstr( $datetime     )."
                 WHERE expense_id   =". $this->app->db->qstr( $expense_id   );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Expense Status."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
 
-        } else {        
+        // Status updated message
+        if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense status updated.")); }
 
-            // Status updated message
-            if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense status updated.")); }
+        // For writing message to log file, get expense status display name
+        /*$expense_status_display_name = _gettext($this->get_expense_status_display_name($new_status));
 
-            // For writing message to log file, get expense status display name
-            /*$expense_status_display_name = _gettext($this->get_expense_status_display_name($new_status));
+        /* This code is not used because I removed 'invoice_id'
+         * Get related invoice details
+        $invoice_details = $this->app->components->invoice->get_invoice_details($expense_details['invoice_id']);
 
-            /* This code is not used because I removed 'invoice_id'
-             * Get related invoice details
-            $invoice_details = $this->app->components->invoice->get_invoice_details($expense_details['invoice_id']);
+        // Create a Workorder History Note (Not Used)      
+        $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
-            // Create a Workorder History Note (Not Used)      
-            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Log activity        
+        $record = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
 
-            // Log activity        
-            $record = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
+        // Update last active record (Not Used)
+        $this->app->components->client->update_client_last_active($invoice_details['client_id']);
+        $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
+        $this->app->components->invoice->update_invoice_last_active($expense_details['invoice_id']);*/
 
-            // Update last active record (Not Used)
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            $this->app->components->invoice->update_invoice_last_active($expense_details['invoice_id']);*/
-
-            return true;
-
-        }
+        return true;        
 
     }
 
@@ -473,29 +431,25 @@ class Expense extends Components {
                 note                = ''
                 WHERE expense_id    =". $this->app->db->qstr($expense_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            /* Create a Workorder History Note  
-            $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');*/
+        /* Create a Workorder History Note  
+        $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');*/
 
-            // Log activity        
-            $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        // Log activity        
+        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
-            /* Log activity        
-            $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
-            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+        /* Log activity        
+        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
+        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
-            // Update last active record
-            $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-            $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-            //$this->app->components->invoice->update_invoice_last_active($invoice_id);*/
+        // Update last active record
+        $this->app->components->client->update_client_last_active($invoice_details['client_id']);
+        $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
+        //$this->app->components->invoice->update_invoice_last_active($invoice_id);*/
 
-            return true;
-
-        } 
+        return true;        
 
     }
     
@@ -750,32 +704,27 @@ class Expense extends Components {
                 balance             =". $this->app->db->qstr( $balance    )."
                 WHERE expense_id    =". $this->app->db->qstr( $expense_id );
 
-        if(!$this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the expense totals."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            /* Update Status - only change if there is a change in status */        
+        /* Update Status - only change if there is a change in status */        
 
-            // Balance = Gross Amount (i.e no payments)
-            if($unit_gross > 0 && $unit_gross == $balance && $expense_details['status'] != 'unpaid') {
-                $this->updateStatus($expense_id, 'unpaid');
-            }
-
-            // Balance < Gross Amount (i.e some payments)
-            elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $expense_details['status'] != 'partially_paid') {            
-                $this->updateStatus($expense_id, 'partially_paid');
-            }
-
-            // Balance = 0.00 (i.e has payments and is all paid)
-            elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $expense_details['status'] != 'paid') {            
-                $this->updateStatus($expense_id, 'paid');
-            }        
-
-            return;        
-
+        // Balance = Gross Amount (i.e no payments)
+        if($unit_gross > 0 && $unit_gross == $balance && $expense_details['status'] != 'unpaid') {
+            $this->updateStatus($expense_id, 'unpaid');
         }
 
-    }
+        // Balance < Gross Amount (i.e some payments)
+        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $expense_details['status'] != 'partially_paid') {            
+            $this->updateStatus($expense_id, 'partially_paid');
+        }
 
+        // Balance = 0.00 (i.e has payments and is all paid)
+        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $expense_details['status'] != 'paid') {            
+            $this->updateStatus($expense_id, 'paid');
+        }        
+
+        return;        
+
+    }
 
 }

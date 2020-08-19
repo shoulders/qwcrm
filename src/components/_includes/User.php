@@ -58,28 +58,24 @@ class User extends Components {
                 based               =". $this->app->db->qstr( $qform['based']                                ).",  
                 note                =". $this->app->db->qstr( $qform['note']                                 );                     
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        // Get user_id
+        $user_id = $this->app->db->Insert_ID();
+
+        // Update last active record        
+        $this->app->components->client->updateLastActive($qform['client_id']);        
+
+        // Log activity
+        if($qform['client_id']) {
+            $user_type = _gettext("Client");
         } else {
+            $user_type = _gettext("Employee");
+        }        
+        $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
+        $this->app->system->general->writeRecordToActivityLog($record, $user_id);
 
-            // Get user_id
-            $user_id = $this->app->db->Insert_ID();
-
-            // Update last active record        
-            $this->app->components->client->updateLastActive($qform['client_id']);        
-
-            // Log activity
-            if($qform['client_id']) {
-                $user_type = _gettext("Client");
-            } else {
-                $user_type = _gettext("Employee");
-            }        
-            $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $user_id);
-
-            return $user_id;
-
-        }
+        return $user_id; 
 
     }
     
@@ -159,12 +155,9 @@ class User extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);        
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching user records."));
-            } else {        
-                $total_results = $rs->RecordCount();            
-                $this->app->smarty->assign('total_results', $total_results);
-            }  
+            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
+            $total_results = $rs->RecordCount();            
+            $this->app->smarty->assign('total_results', $total_results); 
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
@@ -198,22 +191,17 @@ class User extends Components {
 
         /* Return the records */
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to return the matching user records."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
 
-        } else {        
+        $records = $rs->GetArray();   // If I call this twice for this search, no results are shown on the TPL
 
-            $records = $rs->GetArray();   // If I call this twice for this search, no results are shown on the TPL
+        if(empty($records)){
 
-            if(empty($records)){
+            return false;
 
-                return false;
+        } else {
 
-            } else {
-
-                return $records;
-
-            }
+            return $records;
 
         }
 
@@ -232,40 +220,36 @@ class User extends Components {
 
         $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id =".$this->app->db->qstr($user_id);
 
-        if(!$rs = $this->app->db->execute($sql)){        
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($item === null) {
+
+            $results = $rs->GetRowAssoc();
+
+            // Add these dynamically created fields           
+            $results['display_name'] = $results['first_name'].' '.$results['last_name'];
+            $results['full_name'] = $results['first_name'].' '.$results['last_name'];
+
+            return $results;
+
         } else {
 
-            if($item === null) {
-
+            // Return the dynamically created 'display_name'
+            if($item == 'display_name') {
                 $results = $rs->GetRowAssoc();
+                return $results['first_name'].' '.$results['last_name'];
+            }
 
-                // Add these dynamically created fields           
-                $results['display_name'] = $results['first_name'].' '.$results['last_name'];
-                $results['full_name'] = $results['first_name'].' '.$results['last_name'];
+            // Return the dynamically created 'full_name'
+            if($item == 'full_name') {
+                $results = $rs->GetRowAssoc();
+                return $results['first_name'].' '.$results['last_name'];
+            }
 
-                return $results;
+            return $rs->fields[$item];   
 
-            } else {
-
-                // Return the dynamically created 'display_name'
-                if($item == 'display_name') {
-                    $results = $rs->GetRowAssoc();
-                    return $results['first_name'].' '.$results['last_name'];
-                }
-
-                // Return the dynamically created 'full_name'
-                if($item == 'full_name') {
-                    $results = $rs->GetRowAssoc();
-                    return $results['first_name'].' '.$results['last_name'];
-                }
-
-                return $rs->fields[$item];   
-
-            } 
-
-        }
-
+        } 
+        
     }
 
     #########################################
@@ -285,14 +269,10 @@ class User extends Components {
 
         $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username =".$this->app->db->qstr($username);
 
-        if(!$rs = $this->app->db->execute($sql)){
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their username."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['user_id'];
-
-        }
-
+        return $rs->fields['user_id'];
+        
     }
 
     #########################################
@@ -303,23 +283,19 @@ class User extends Components {
 
         $sql = "SELECT user_id FROM ".PRFX."user_records WHERE email =".$this->app->db->qstr($email);
 
-        if(!$rs = $this->app->db->execute($sql)){
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their email."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $result_count = $rs->RecordCount();
+
+        if($result_count != 1) {
+
+            return false;
+
         } else {
 
-            $result_count = $rs->RecordCount();
+            return $rs->fields['user_id'];
 
-            if($result_count != 1) {
-
-                return false;
-
-            } else {
-
-                return $rs->fields['user_id'];
-
-            }
-
-        }
+        }  
 
     }
 
@@ -336,13 +312,9 @@ class User extends Components {
         if($user_type === 'clients')   {$sql .= " WHERE user_type='2'";}    
         if($user_type === 'other')     {$sql .= " WHERE user_type='3'";}
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the usergroups."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();
-
-        }
+        return $rs->GetArray();
 
     }
 
@@ -363,13 +335,9 @@ class User extends Components {
         if($user_type === 'clients')   {$sql .= " AND is_employee='0'";}
         if($user_type === 'employees') {$sql .= " AND is_employee='1'";}
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the active users."));
-        } else {    
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->GetArray();    
-
-        }
+        return $rs->GetArray();
 
     }
 
@@ -381,13 +349,9 @@ class User extends Components {
 
         $sql = "SELECT * FROM ".PRFX."user_locations";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the user locations."));
-        } else {    
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
-            return $rs->GetArray();    
-
-        }
+        return $rs->GetArray();    
 
     }
 
@@ -422,26 +386,22 @@ class User extends Components {
                 note                =". $this->app->db->qstr( $qform['note']                                 )."
                 WHERE user_id= ".$this->app->db->qstr($qform['user_id']);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Reset user password if required
-            if($qform['password']) {
-                $this->resetPassword($qform['user_id'], $qform['password']);
-            }
-
-            // Update last active record
-            $this->updateLastActive($qform['user_id']);
-            $this->app->components->client->updateLastActive($this->getRecord($qform['user_id'], 'client_id'));        
-
-            // Log activity        
-            $record = _gettext("User Account").' '.$qform['user_id'].' ('.$this->getRecord($qform['user_id'], 'display_name').') '._gettext("updated.");
-            $this->app->system->general->writeRecordToActivityLog($record, $qform['user_id']);
-
-            return true;
-
+        // Reset user password if required
+        if($qform['password']) {
+            $this->resetPassword($qform['user_id'], $qform['password']);
         }
+
+        // Update last active record
+        $this->updateLastActive($qform['user_id']);
+        $this->app->components->client->updateLastActive($this->getRecord($qform['user_id'], 'client_id'));        
+
+        // Log activity        
+        $record = _gettext("User Account").' '.$qform['user_id'].' ('.$this->getRecord($qform['user_id'], 'display_name').') '._gettext("updated.");
+        $this->app->system->general->writeRecordToActivityLog($record, $qform['user_id']);
+
+        return true; 
 
     }
 
@@ -456,9 +416,7 @@ class User extends Components {
 
         $sql = "UPDATE ".PRFX."user_records SET last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )." WHERE user_id=".$this->app->db->qstr($user_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
     
@@ -484,9 +442,7 @@ class User extends Components {
 
         // Delete User account
         $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$this->app->db->qstr($user_id);    
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the user from the database."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity        
         $record = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
@@ -512,25 +468,21 @@ class User extends Components {
 
         $sql = "SELECT username FROM ".PRFX."user_records WHERE username =". $this->app->db->qstr($username);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $result_count = $rs->RecordCount();
+
+        if($result_count >= 1) {
+
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
+
+            return true;
+
         } else {
 
-            $result_count = $rs->RecordCount();
+            return false;
 
-            if($result_count >= 1) {
-
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }        
-
-        } 
+        }        
 
     }
 
@@ -545,25 +497,19 @@ class User extends Components {
 
         $sql = "SELECT email FROM ".PRFX."user_records WHERE email =". $this->app->db->qstr($email);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
+        $result_count = $rs->RecordCount();
+
+        if($result_count >= 1) {
+
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The email address has already been used. Please use a different one."));
+
+            return true;
 
         } else {
 
-            $result_count = $rs->RecordCount();
-
-            if($result_count >= 1) {
-
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The email address has already been used. Please use a different one."));
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }        
+            return false;
 
         } 
 
@@ -577,25 +523,21 @@ class User extends Components {
 
         $sql = "SELECT user_id FROM ".PRFX."user_records WHERE client_id =". $this->app->db->qstr($client_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check if the client already has a login."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $result_count = $rs->RecordCount();
+
+        if($result_count >= 1) {
+
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client already has a login."));           
+
+            return true;
+
         } else {
 
-            $result_count = $rs->RecordCount();
+            return false;
 
-            if($result_count >= 1) {
-
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client already has a login."));           
-
-                return true;
-
-            } else {
-
-                return false;
-
-            }        
-
-        }     
+        }    
 
     }    
 
@@ -620,9 +562,7 @@ class User extends Components {
         if($user_details['usergroup'] == '1') {
 
             $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";    
-            if(!$rs = $this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
-            }  
+            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
             if($rs->fields['count'] <= 1 ) {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."));        
                 $state_flag = false;
@@ -631,9 +571,7 @@ class User extends Components {
 
         // Check if user has created any workorders
         $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$this->app->db->qstr($user_id);    
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
-        }  
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."));        
             $state_flag = false;
@@ -641,9 +579,7 @@ class User extends Components {
 
         // Check if user has any assigned workorders
         $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$this->app->db->qstr($user_id);    
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
-        }  
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."));
             $state_flag = false;
@@ -651,9 +587,7 @@ class User extends Components {
 
         // Check if user has any invoices
         $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$this->app->db->qstr($user_id);    
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
-        }    
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}    
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."));
             $state_flag = false;
@@ -661,9 +595,7 @@ class User extends Components {
 
         // Check if user is assigned to any Vouchers
         $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$this->app->db->qstr($user_id);
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to count the user's Vouchers in the database."));
-        }  
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has Vouchers."));
             $state_flag = false;
@@ -702,14 +634,10 @@ class User extends Components {
                 FROM ".PRFX."user_records
                 WHERE active=1 AND is_employee=1";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Get ADODB to build the form using the loaded dataset
-            return $rs->GetMenu2('assign_user', $assigned_user_id, false);
-
-        }
+        // Get ADODB to build the form using the loaded dataset
+        return $rs->GetMenu2('assign_user', $assigned_user_id, false);
 
     }
 
@@ -729,22 +657,17 @@ class User extends Components {
                 reset_count     =". $this->app->db->qstr( 0                                    )."
                 WHERE user_id   =". $this->app->db->qstr( $user_id                             );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Log activity        
+        $record = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("password has been reset.");
+        $this->app->system->general->writeRecordToActivityLog($record, $user_id);
 
-            // Log activity        
-            $record = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("password has been reset.");
-            $this->app->system->general->writeRecordToActivityLog($record, $user_id);
+        // Update last active record
+        $this->updateLastActive($user_id);
+        $this->app->components->client->updateLastActive($this->getRecord($user_id, 'client_id'));
 
-            // Update last active record
-            $this->updateLastActive($user_id);
-            $this->app->components->client->updateLastActive($this->getRecord($user_id, 'client_id'));
-
-            return;
-
-        }      
+        return;         
 
     }
 
@@ -878,28 +801,20 @@ class User extends Components {
 
             // Sessions
             $sql = "TRUNCATE ".PRFX."session";
-            if(!$this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
-            }
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
             // Remember Me
             $sql = "TRUNCATE ".PRFX."user_keys";
-            if(!$this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
-            }
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Delete all sessions except the currently logged in user 
         } else {
 
             $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$this->app->db->qstr($this->app->user->login_user_id);
-            if(!$this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
-            }
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
             $sql = "DELETE FROM ".PRFX."user_keys WHERE userid <> ".$this->app->db->qstr($this->app->user->login_user_id);
-            if(!$this->app->db->execute($sql)) {
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
-            }
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         }
 
@@ -1041,13 +956,9 @@ class User extends Components {
                 reset_code_expiry_time  =". $this->app->db->qstr( $reset_code_expiry_time  )."            
                 WHERE token             =". $this->app->db->qstr( $token                   );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
-        } else{
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $reset_code;
-
-        }    
+        return $reset_code;
 
     }
 
@@ -1060,12 +971,10 @@ class User extends Components {
         // check for previous tokens for this user and delete them
         $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$this->app->db->qstr($user_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
-        } else {        
-            $result_count = $rs->RecordCount();       
-        } 
-
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
+        
+        $result_count = $rs->RecordCount();       
+         
         // Delete any reset tokens for this user
         if($result_count >= 1) {
 
@@ -1082,9 +991,7 @@ class User extends Components {
                 expiry_time     =". $this->app->db->qstr( $expiry_time ).",   
                 token           =". $this->app->db->qstr( $token       );                     
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user reset token into the database."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Return the token
         return $token;    
@@ -1099,13 +1006,9 @@ class User extends Components {
 
         $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$this->app->db->qstr($reset_code);
 
-        if(!$rs = $this->app->db->execute($sql)){
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by secret code."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            return $rs->fields['user_id'];
-
-        }
+        return $rs->fields['user_id'];
 
     }
 
@@ -1118,34 +1021,29 @@ class User extends Components {
         // check for previous tokens for this user and delete them
         $sql = "SELECT * FROM ".PRFX."user_reset WHERE token =".$this->app->db->qstr($token);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Check there is only 1 record
-            if($rs->RecordCount() != 1) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token does not exist."));
-                return false;
-            }
-
-            // check if user is blocked        
-            if(!$this->getRecord($rs->fields['user_id'], 'active')){
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The user is blocked."));
-                return false;
-            }
-
-            // Check not expired
-            if($rs->fields['expiry_time'] < time()){
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token has expired."));
-                return false;
-            }
-
-            // All checked passed
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Token accepted."));
-            return true;
-
-
+        // Check there is only 1 record
+        if($rs->RecordCount() != 1) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token does not exist."));
+            return false;
         }
+
+        // check if user is blocked        
+        if(!$this->getRecord($rs->fields['user_id'], 'active')){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The user is blocked."));
+            return false;
+        }
+
+        // Check not expired
+        if($rs->fields['expiry_time'] < time()){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token has expired."));
+            return false;
+        }
+
+        // All checked passed
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Token accepted."));
+        return true;     
 
     }
 
@@ -1158,28 +1056,23 @@ class User extends Components {
        // Check for previous tokens for this user and delete them
         $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code =".$this->app->db->qstr($reset_code);
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));
-        } else {
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Check there is only 1 record
-            if($rs->RecordCount() != 1) {            
-                $this->app->system->variables->systemMessagesWrite('danger', 'The reset code does not exist.');
-                return false;
-            }
-
-            // Check not expired
-            if($rs->fields['reset_code_expiry_time'] < time()){
-                $this->app->system->variables->systemMessagesWrite('danger', 'The reset code has expired.');
-                return false;
-            }
-
-            // All checked passed
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Reset code accepted."));        
-            return true;
-
-
+        // Check there is only 1 record
+        if($rs->RecordCount() != 1) {            
+            $this->app->system->variables->systemMessagesWrite('danger', 'The reset code does not exist.');
+            return false;
         }
+
+        // Check not expired
+        if($rs->fields['reset_code_expiry_time'] < time()){
+            $this->app->system->variables->systemMessagesWrite('danger', 'The reset code has expired.');
+            return false;
+        }
+
+        // All checked passed
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Reset code accepted."));        
+        return true; 
 
     }
 
@@ -1191,9 +1084,7 @@ class User extends Components {
 
         $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$this->app->db->qstr($user_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
 
@@ -1205,9 +1096,7 @@ class User extends Components {
 
         $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$this->app->db->qstr( time() );
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
 
@@ -1222,14 +1111,7 @@ class User extends Components {
                 reset_count     = reset_count + 1
                 WHERE user_id   =". $this->app->db->qstr($user_id);
 
-        if(!$this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
-
-        } else{
-
-            return;
-
-        }
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
      }
      
@@ -1242,30 +1124,24 @@ class User extends Components {
 
         $sql = "SELECT user_id FROM ".PRFX."user_records";
 
-        if(!$rs = $this->app->db->execute($sql)) {
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        } else {
+        // Loop through all users
+        while(!$rs->EOF) { 
 
-            // Loop through all users
-            while(!$rs->EOF) { 
+            // Reset User's password
+            $this->resetPassword($rs->fields['user_id']);
 
-                // Reset User's password
-                $this->resetPassword($rs->fields['user_id']);
+            // Advance the INSERT loop to the next record            
+            $rs->MoveNext();            
 
-                // Advance the INSERT loop to the next record            
-                $rs->MoveNext();            
+        }
 
-            }
+        // Log activity        
+        $this->app->system->general->writeRecordToActivityLog(_gettext("All User Account passwords have been reset."));
 
-            // Log activity        
-            $this->app->system->general->writeRecordToActivityLog(_gettext("All User Account passwords have been reset."));
-
-            return;
-
-        }      
+        return;
 
     }
 
-    
 }
