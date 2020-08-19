@@ -52,7 +52,7 @@ class Client extends Components {
                 country         =". $this->app->db->qstr( $qform['country']          ).",
                 note            =". $this->app->db->qstr( $qform['note']             );          
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));
         } else {
 
@@ -80,7 +80,7 @@ class Client extends Components {
                 date        =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
                 note        =". $this->app->db->qstr( $note                                );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the client note into the database."));
 
         } else {
@@ -185,8 +185,7 @@ class Client extends Components {
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
 
             // add the restriction on to the SQL
-            $sql .= $limitTheseRecords;
-            $rs = '';
+            $sql .= $limitTheseRecords;            
 
         } else {
 
@@ -371,7 +370,7 @@ class Client extends Components {
                 note            =". $this->app->db->qstr( $qform['note']             )."
                 WHERE client_id  =". $this->app->db->qstr( $qform['client_id']       );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Client's details."));
         } else {
 
@@ -399,7 +398,7 @@ class Client extends Components {
                 note                    =". $this->app->db->qstr( $note                                )."
                 WHERE client_note_id    =". $this->app->db->qstr( $client_note_id                      );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the client note."));
 
         } else {
@@ -431,7 +430,7 @@ class Client extends Components {
                 last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
                 WHERE client_id=".$this->app->db->qstr($client_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Client's last active time."));
         }
 
@@ -459,13 +458,13 @@ class Client extends Components {
 
         // Delete any Client user accounts
         $sql = "DELETE FROM ".PRFX."user_records WHERE client_id=".$this->app->db->qstr($client_id);    
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the client's users from the database."));
         }
 
         // Delete Client
         $sql = "DELETE FROM ".PRFX."client_records WHERE client_id=".$this->app->db->qstr($client_id);    
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the client from the database."));
         }
 
@@ -489,7 +488,7 @@ class Client extends Components {
 
         $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$this->app->db->qstr($client_note_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the client note."));
 
         } else {        

@@ -48,7 +48,7 @@ class Refund extends Components {
                 opened_on        =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                ).",                        
                 note             =". $this->app->db->qstr( $qform['note']                    );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
         } else {
 
@@ -314,7 +314,7 @@ class Refund extends Components {
                 note             =". $this->app->db->qstr( $qform['note']                       )."
                 WHERE refund_id  =". $this->app->db->qstr( $qform['refund_id']                  );                        
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
         } else {
 
@@ -368,7 +368,7 @@ class Refund extends Components {
                 last_active        =". $this->app->db->qstr( $datetime     )." 
                 WHERE refund_id    =". $this->app->db->qstr( $refund_id    );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an refund Status."));
 
         } else {    
@@ -496,7 +496,7 @@ class Refund extends Components {
                 note                = ''
                 WHERE refund_id    =". $this->app->db->qstr($refund_details['refund_id']);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
         } else {
 
@@ -763,7 +763,7 @@ class Refund extends Components {
                 balance             =". $this->app->db->qstr( $balance   )."
                 WHERE refund_id     =". $this->app->db->qstr( $refund_id );
 
-        if(!$rs = $this->app->db->execute($sql)){        
+        if(!$this->app->db->execute($sql)){        
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the refund totals."));
         } else {
 

@@ -108,9 +108,7 @@ class Report extends Components {
 
         // Common
         if($record_set) {
-
             $stats['count_open'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'open', $employee_id, $client_id);
-
         }
 
         // Current

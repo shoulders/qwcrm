@@ -51,7 +51,7 @@ class Supplier extends Components {
                 description    =". $this->app->db->qstr( $qform['description']   ).", 
                 note           =". $this->app->db->qstr( $qform['note']          );            
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
         } else {
 
@@ -333,7 +333,7 @@ class Supplier extends Components {
                 note           =". $this->app->db->qstr( $qform['note']          )."
                 WHERE supplier_id = ". $this->app->db->qstr( $qform['supplier_id'] );                        
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
         } else {
 
@@ -374,7 +374,7 @@ class Supplier extends Components {
                 last_active        =". $this->app->db->qstr( $datetime     )." 
                 WHERE supplier_id  =". $this->app->db->qstr( $supplier_id  );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an supplier Status."));
 
         } else {    
@@ -439,7 +439,7 @@ class Supplier extends Components {
 
         $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qstr($supplier_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
         } else {
 

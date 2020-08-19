@@ -47,10 +47,8 @@ class PlgAuthenticationJoomla //extends JPlugin
         }
 
         // Get a database object - Load the relevant user record form the database
-        $sql = "SELECT user_id, password FROM ".PRFX."user_records WHERE username = ".$this->db->qstr($credentials['username']);        
-
-        $rs = $this->db->execute($sql);
-        //$result = $rs->GetRowAssoc();
+        $sql = "SELECT user_id, password FROM ".PRFX."user_records WHERE username = ".$this->db->qstr($credentials['username']);
+        $rs = $this->db->execute($sql);        
         
         // if there is a record, set it
         if($rs->RecordCount() == 1) {

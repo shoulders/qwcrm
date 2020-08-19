@@ -58,7 +58,7 @@ class User extends Components {
                 based               =". $this->app->db->qstr( $qform['based']                                ).",  
                 note                =". $this->app->db->qstr( $qform['note']                                 );                     
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
         } else {
 
@@ -188,7 +188,6 @@ class User extends Components {
 
             // add the restriction on to the SQL
             $sql .= $limitTheseRecords;
-            $rs = '';
 
         } else {
 
@@ -423,7 +422,7 @@ class User extends Components {
                 note                =". $this->app->db->qstr( $qform['note']                                 )."
                 WHERE user_id= ".$this->app->db->qstr($qform['user_id']);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
         } else {
 
@@ -457,7 +456,7 @@ class User extends Components {
 
         $sql = "UPDATE ".PRFX."user_records SET last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )." WHERE user_id=".$this->app->db->qstr($user_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
         }
 
@@ -485,7 +484,7 @@ class User extends Components {
 
         // Delete User account
         $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$this->app->db->qstr($user_id);    
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the user from the database."));
         }
 
@@ -730,7 +729,7 @@ class User extends Components {
                 reset_count     =". $this->app->db->qstr( 0                                    )."
                 WHERE user_id   =". $this->app->db->qstr( $user_id                             );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
 
         } else {
@@ -879,13 +878,13 @@ class User extends Components {
 
             // Sessions
             $sql = "TRUNCATE ".PRFX."session";
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
             }
 
             // Remember Me
             $sql = "TRUNCATE ".PRFX."user_keys";
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
             }
 
@@ -893,12 +892,12 @@ class User extends Components {
         } else {
 
             $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$this->app->db->qstr($this->app->user->login_user_id);
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
             }
 
             $sql = "DELETE FROM ".PRFX."user_keys WHERE userid <> ".$this->app->db->qstr($this->app->user->login_user_id);
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
             }
 
@@ -1042,7 +1041,7 @@ class User extends Components {
                 reset_code_expiry_time  =". $this->app->db->qstr( $reset_code_expiry_time  )."            
                 WHERE token             =". $this->app->db->qstr( $token                   );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
         } else{
 
@@ -1192,7 +1191,7 @@ class User extends Components {
 
         $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$this->app->db->qstr($user_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
         }
 
@@ -1206,7 +1205,7 @@ class User extends Components {
 
         $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$this->app->db->qstr( time() );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
         }
 
@@ -1223,7 +1222,7 @@ class User extends Components {
                 reset_count     = reset_count + 1
                 WHERE user_id   =". $this->app->db->qstr($user_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
 
         } else{

@@ -220,7 +220,6 @@ class Voucher extends Components {
 
             // add the restriction on to the SQL
             $sql .= $limitTheseRecords;
-            $rs = '';
 
         } else {
 
@@ -500,7 +499,7 @@ class Voucher extends Components {
                 blocked            =". $this->app->db->qstr( $blocked      )."
                 WHERE voucher_id   =". $this->app->db->qstr( $voucher_id   ); 
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Voucher Status."));
 
         } else {    
@@ -545,7 +544,7 @@ class Voucher extends Components {
                 redeemed_invoice_id =". $this->app->db->qstr( $invoice_id                              )."            
                 WHERE voucher_id    =". $this->app->db->qstr( $voucher_id                              );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher as redeemed."));
         } else {       
 
@@ -575,7 +574,7 @@ class Voucher extends Components {
                 refund_id            =".$this->app->db->qstr($refund_id)."
                 WHERE voucher_id     =".$this->app->db->qstr($voucher_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an Invoice ID on the voucher."));
         }
 

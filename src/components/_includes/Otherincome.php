@@ -48,7 +48,7 @@ class OtherIncome extends Components {
                 items            =". $this->app->db->qstr( $qform['items']                   ).",
                 note             =". $this->app->db->qstr( $qform['note']                    );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the otherincome record into the database."));
         } else {
 
@@ -296,7 +296,7 @@ class OtherIncome extends Components {
                 note             =". $this->app->db->qstr( $qform['note']                    )."
                 WHERE otherincome_id  =". $this->app->db->qstr( $qform['otherincome_id']     );                        
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the otherincome details."));
         } else {
 
@@ -337,7 +337,7 @@ class OtherIncome extends Components {
                 last_active        =". $this->app->db->qstr( $datetime     )." 
                 WHERE otherincome_id =". $this->app->db->qstr( $otherincome_id );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update an otherincome Status."));
 
         } else {    
@@ -413,7 +413,7 @@ class OtherIncome extends Components {
             note                = ''
             WHERE otherincome_id =". $this->app->db->qstr($otherincome_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the otherincome records."));
         } else {
 
@@ -680,7 +680,7 @@ class OtherIncome extends Components {
                 balance                 =". $this->app->db->qstr( $balance        )."
                 WHERE otherincome_id    =". $this->app->db->qstr( $otherincome_id );
 
-        if(!$rs = $this->app->db->execute($sql)){        
+        if(!$this->app->db->execute($sql)){        
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to recalculate the otherincome totals."));
         } else {
 

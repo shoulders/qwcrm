@@ -65,7 +65,7 @@ class Setup extends Components {
             $sql .=  "\nWHERE $where_column ".$where_record_not_flag."=".$this->app->db->qstr($where_record);
         }
 
-        if(!$rs = $this->app->db->execute($sql)) { 
+        if(!$this->app->db->execute($sql)) { 
 
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -127,7 +127,7 @@ class Setup extends Components {
 
         }
 
-        if(!$rs = $this->app->db->execute($sql)) { 
+        if(!$this->app->db->execute($sql)) { 
 
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -932,7 +932,7 @@ class Setup extends Components {
         // Loop through all of the labour records
         $sql = "UPDATE `".PRFX.$table."` SET `".$columnB."` = `".$columnA."`";          
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;

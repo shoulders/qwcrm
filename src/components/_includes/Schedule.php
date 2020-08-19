@@ -43,7 +43,7 @@ class Schedule extends Components {
                 end_time        =". $this->app->db->qstr( $qform['end_time']         ).",            
                 note            =". $this->app->db->qstr( $qform['note']             );            
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
         } else {
 
@@ -302,7 +302,7 @@ class Schedule extends Components {
             note                =". $this->app->db->qstr( $qform['note']             )."
             WHERE schedule_id   =". $this->app->db->qstr( $qform['schedule_id']      );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
         } else {       
 
@@ -336,7 +336,7 @@ class Schedule extends Components {
 
         $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->app->db->qstr($schedule_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
 
         } else {

@@ -223,7 +223,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Create a temp column for the new DATE values
         $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATE NOT NULL AFTER `".$column_timestamp."`";        
-        if(!$rs = $this->app->db->execute($sql)) { 
+        if(!$this->app->db->execute($sql)) { 
                         
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -278,7 +278,7 @@ class Upgrade3_1_0 extends Setup {
 
                 // Update the temporary column record
                 $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_date."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
-                if(!$temp_rs = $this->app->db->execute($sql)) { 
+                if(!$this->app->db->execute($sql)) { 
                                         
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -307,7 +307,7 @@ class Upgrade3_1_0 extends Setup {
                 
             // Remove the orginal timestamp column
             $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
-            if(!$rs = $this->app->db->execute($sql)) { 
+            if(!$this->app->db->execute($sql)) { 
                                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -331,7 +331,7 @@ class Upgrade3_1_0 extends Setup {
 
             // Rename temporary column (temp_xxx) to the original column name
             $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATE NOT NULL ".$column_comment;
-            if(!$rs = $this->app->db->execute($sql)) { 
+            if(!$this->app->db->execute($sql)) { 
                                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -408,7 +408,7 @@ class Upgrade3_1_0 extends Setup {
         
         // Create a new temp column for the new DATETIME values
         $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATETIME NOT NULL AFTER `".$column_timestamp."`";        
-        if(!$rs = $this->app->db->execute($sql)) { 
+        if(!$this->app->db->execute($sql)) { 
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -462,7 +462,7 @@ class Upgrade3_1_0 extends Setup {
 
                 // Update the temporary column record
                 $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_datetime."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
-                if(!$temp_rs = $this->app->db->execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -488,7 +488,7 @@ class Upgrade3_1_0 extends Setup {
                 
             // Remove the orginal timestamp column
             $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -509,7 +509,7 @@ class Upgrade3_1_0 extends Setup {
 
             // Rename temporary column (temp_xxx) to the original column name
             $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATETIME NOT NULL ".$column_comment;
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -701,7 +701,7 @@ class Upgrade3_1_0 extends Setup {
                 
                 
                 // Run the SQL
-                if(!$temp_rs = $this->app->db->execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -837,7 +837,7 @@ class Upgrade3_1_0 extends Setup {
                     WHERE `invoice_labour_id`  = ".$rs->fields['invoice_labour_id'];                
 
                 // Run the SQL
-                if(!$temp_rs = $this->app->db->execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
 
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -973,7 +973,7 @@ class Upgrade3_1_0 extends Setup {
                     WHERE `invoice_parts_id` = ".$rs->fields['invoice_parts_id'];               
                 
                 // Run the SQL
-                if(!$temp_rs = $this->app->db->execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -1138,7 +1138,7 @@ class Upgrade3_1_0 extends Setup {
                         WHERE `payment_id` = ".$rs->fields['payment_id'];                
                 
                 // Run the SQL
-                if(!$temp_rs = $this->app->db->execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -1259,7 +1259,7 @@ class Upgrade3_1_0 extends Setup {
                     note            = ".$this->app->db->qstr('<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
-                if(!$temp_rs = $this->app->db->execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -1293,7 +1293,7 @@ class Upgrade3_1_0 extends Setup {
             $sql = "ALTER TABLE `".PRFX."expense_records` DROP `payment_method`;";
             
             // Run the SQL
-            if(!$temp_rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -1409,7 +1409,7 @@ class Upgrade3_1_0 extends Setup {
                     note            = ".$this->app->db->qstr('<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
-                if(!$temp_rs = $this->app->db->execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -1443,7 +1443,7 @@ class Upgrade3_1_0 extends Setup {
             $sql = "ALTER TABLE `".PRFX."otherincome_records` DROP `payment_method`;";
             
             // Run the SQL
-            if(!$temp_rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;

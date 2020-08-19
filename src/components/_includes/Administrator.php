@@ -18,16 +18,6 @@
  * Other Functions - All other functions not covered above
  */
 
-/**
- * Method to get the PHP info
- *
- * @return  string  PHP info
- *
- * @since   1.6
- * 
- * From {Joomla}administrator/components/com_admin/models/sysinfo.php - it strips dodgy formatting
- */
-
 defined('_QWEXEC') or die;
 
 /* Insert */
@@ -164,7 +154,7 @@ class Administrator extends Components {
                     `Public`        =". $this->app->db->qstr( $page_permission['Public']           )."
                     WHERE `page`    =". $this->app->db->qstr( $page_name                           ).";";
 
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
             }                 
 
@@ -211,7 +201,7 @@ class Administrator extends Components {
                     `Public`        =". $this->app->db->qstr( $page_permission['Public']         )."
                     WHERE `page`    =". $this->app->db->qstr( $page_name                         ).";";
 
-             if(!$rs = $this->app->db->execute($sql)) {
+             if(!$this->app->db->execute($sql)) {
                  $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
             }               
 
@@ -293,6 +283,15 @@ class Administrator extends Components {
      *
      * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
      * @license     GNU General Public License version 2 or later; see LICENSE.txt
+     */
+    /**
+     * Method to get the PHP info
+     *
+     * @return  string  PHP info
+     *
+     * @since   1.6
+     * 
+     * From {Joomla}administrator/components/com_admin/models/sysinfo.php - it strips dodgy formatting
      */
     public function getPhpInfo()
     {
@@ -482,7 +481,7 @@ class Administrator extends Components {
             {
                 $sql = "TRUNCATE ".PRFX."session";                    
 
-                if(!$rs = $this->app->db->execute($sql)) {
+                if(!$this->app->db->execute($sql)) {
                     $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
 
                 }
@@ -545,7 +544,7 @@ class Administrator extends Components {
         // Remove current permissions
         $sql = "TRUNCATE ".PRFX."user_acl_page";
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
         } else {
@@ -668,7 +667,7 @@ class Administrator extends Components {
                     ('workorder:search', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                     ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
             }

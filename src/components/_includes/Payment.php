@@ -60,7 +60,7 @@ class Payment extends Components {
                 additional_info = ".$this->app->db->qstr( $qpayment['additional_info']             ).",
                 note            = ".$this->app->db->qstr( $qpayment['note']                        );
 
-        if(!$rs = $this->app->db->execute($sql)){        
+        if(!$this->app->db->execute($sql)){        
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
 
         } else {
@@ -519,7 +519,7 @@ class Payment extends Components {
                 note            = ".$this->app->db->qstr( $qpayment['note']                     )."
                 WHERE payment_id =". $this->app->db->qstr( $qpayment['payment_id']              );
 
-        if(!$rs = $this->app->db->execute($sql)){        
+        if(!$this->app->db->execute($sql)){        
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
 
         } else {
@@ -559,7 +559,7 @@ class Payment extends Components {
                 invoice_cheque_msg          =". $this->app->db->qstr( $qform['invoice_cheque_msg']           ).",
                 invoice_footer_msg          =". $this->app->db->qstr( $qform['invoice_footer_msg']           );            
 
-        if(!$rs = $this->app->db->execute($sql)){        
+        if(!$this->app->db->execute($sql)){        
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
         } else {
 
@@ -593,7 +593,7 @@ class Payment extends Components {
                     enabled                 = ". $this->app->db->qstr($payment_method['enabled'])."   
                     WHERE method_key = ". $this->app->db->qstr($payment_method['method_key']); 
 
-            if(!$rs = $this->app->db->execute($sql)) {
+            if(!$this->app->db->execute($sql)) {
                 $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
             }
 
@@ -626,7 +626,7 @@ class Payment extends Components {
                 last_active          =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
                 WHERE payment_id     =". $this->app->db->qstr( $payment_id      );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
 
         } else {        
@@ -718,7 +718,7 @@ class Payment extends Components {
                 note            = ''
                 WHERE payment_id =". $this->app->db->qstr( $payment_id );    
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
         } else {
 

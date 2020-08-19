@@ -54,7 +54,7 @@ class MigrateMyitcrm extends Setup {
                 based               =". $this->app->db->qstr( $VAR['based']                                ).",  
                 notes               =". $this->app->db->qstr( $VAR['notes']                                );                 
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
         } else {
 
@@ -289,7 +289,7 @@ class MigrateMyitcrm extends Setup {
                 email_msg_invoice       =". $this->app->db->qstr( $VAR['email_msg_invoice']                ).",
                 email_msg_workorder     =". $this->app->db->qstr( $VAR['email_msg_workorder']              );                          
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         } else {       
 
@@ -1271,7 +1271,7 @@ class MigrateMyitcrm extends Setup {
                 reset_count     =". $this->app->db->qstr( 0                                    )."
                 WHERE user_id   =". $this->app->db->qstr( $user_id                             );
 
-        if(!$rs = $this->app->db->execute($sql)) {
+        if(!$this->app->db->execute($sql)) {
             $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
 
         } else {
@@ -1433,4 +1433,3 @@ class MigrateMyitcrm extends Setup {
     }   
 
 }
-
