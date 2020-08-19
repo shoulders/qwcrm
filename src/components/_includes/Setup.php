@@ -167,7 +167,7 @@ class Setup extends Components {
 
     ############################################
     #   Execute SQL File (preg_match method)   # // this imports a phpMyAdmin .sql exported file (loads all the SQL file into memory)
-    ############################################
+    ############################################ // This is used to install the initial database from SQL file, only
 
     // https://stackoverflow.com/questions/19751354/how-to-import-sql-file-in-mysql-database-using-php
 
@@ -263,7 +263,7 @@ class Setup extends Components {
 
     ############################################
     #   Execute SQL File (line by line)        #  //  file() loads line by line, good for large imports (loads all the SQL file into memory)
-    ############################################
+    ############################################  // this is used for the upgrade SQL files, only
 
     // https://stackoverflow.com/questions/19751354/how-to-import-sql-file-in-mysql-database-using-php
 
