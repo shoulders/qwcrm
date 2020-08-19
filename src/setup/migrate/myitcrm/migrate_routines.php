@@ -1363,7 +1363,7 @@ class MigrateMyitcrm extends Setup {
                 echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
                  */   
 
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), '', _gettext("Failed to update logo because the submitted file was invalid."));
+                $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Failed to update logo because the submitted file was invalid."));
 
             }
 

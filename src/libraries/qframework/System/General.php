@@ -616,7 +616,7 @@ class General extends System {
 
         // Write log entry  
         if(!$fp = fopen(ERROR_LOG, 'a')) {        
-            $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__.'()', '', '', _gettext("Could not open the Error Log to save the record."));
+            $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Error Log to save the record."));
         }
 
         fwrite($fp, $log_entry);

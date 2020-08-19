@@ -600,7 +600,7 @@ class Page extends System {
     #           force_error_page               #
     ############################################
 
-    function forceErrorPage($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg = null) { 
+    function forceErrorPage($error_type, $error_location, $error_php_function, $error_database = null, $error_sql_query = null, $error_msg = null) { 
 
         // Get routing variables
         $routing_variables = $this->app->system->router->getRoutingVariablesFromUrl($_SERVER['REQUEST_URI']);

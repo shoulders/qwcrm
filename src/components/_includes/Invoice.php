@@ -1431,74 +1431,104 @@ defined('_QWEXEC') or die;
 
     public function uploadPrefillItemsCsv($empty_prefill_items_table) {
 
+        $error_flag = false;
+        
         // Allowed extensions
-        $allowedExts = array('csv');
-
+        $allowedExt = array('csv');
+        
+        // Allowed mime types
+        $allowedMime = array('text/csv', 'application/vnd.ms-excel'); // 'text/plain' seems a bit dangerous to have enabled
+        
+        // Max Allowed Size (bytes) (2097152 = 2MB)
+        $maxAllowedSize = 2097152;
+        
+        // Check there is an uploaded file
+        if($_FILES['invoice_prefill_csv']['size'] = 0) {            
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("There was no csv uploaded.")); 
+        }
+        
+        // Check for file submission errors
+        if ($_FILES['invoice_prefill_csv']['error'] > 0 ) {
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Files submission error with Return Code").': ' . $_FILES['invoice_prefill_csv']['error'] . '<br />');
+        } 
+        
         // Get file extension
         $filename_info = pathinfo($_FILES['invoice_prefill_csv']['name']);
-        $extension = $filename_info['extension'];
+        $fileExtension = $filename_info['extension'];
+        
+        // Validate the uploaded file is an allowed file type
+        if (!in_array($fileExtension, $allowedExt)) {
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new csv because it does not have an allowed file extension."));
+        }
+        
+        // Validate the uploaded file is allowed mime type
+        if (!in_array($_FILES['invoice_prefill_csv']['type'], $allowedMime)) {          
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new csv because it does not have an allowed mime type."));            
+        }
+        
+        // Validate the uploaded file is not to big
+        if ($_FILES['invoice_prefill_csv']['size'] > $maxAllowedSize) {
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it is too large.").' '._gettext("The maximum size is ").' '.($maxAllowedSize/1024/1024).'MB');
+        }
+        
+        
+        // If no errors
+        if(!$error_flag) {
+            
+            // Empty Current Invoice Rates Table (if set)
+            if($empty_prefill_items_table) {
 
-        // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
-        if ((($_FILES['invoice_prefill_csv']['type'] == 'text/csv'))            
-                || ($_FILES['invoice_prefill_csv']['type'] == 'application/vnd.ms-excel')     // CSV files created by excel - i might remove this
-                    //|| ($_FILES['invoice_prefill_csv']['type'] == 'text/plain')             // this seems a bit dangerous   
-                && ($_FILES['invoice_prefill_csv']['size'] > 0)   
-                && ($_FILES['invoice_prefill_csv']['size'] < 2048000)
-                && in_array($extension, $allowedExts)) {
+                $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
 
-            // Check for file submission errors and echo them
-            if ($_FILES['invoice_prefill_csv']['error'] > 0 ) {
-                echo _gettext("Return Code").': ' . $_FILES['invoice_prefill_csv']['error'] . '<br />';                
-
-            // If no errors then proceed to processing the data
-            } else {        
-
-                // Empty Current Invoice Rates Table (if set)
-                if($empty_prefill_items_table) {
-
-                    $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
-
-                    if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-                    
-                }
-
-                // Open CSV file            
-                $handle = fopen($_FILES['invoice_prefill_csv']['tmp_name'], 'r');
-
-                // Row counter to allow for header line
-                $row = 1;
-
-                // Read CSV data and insert into database            
-                while (($data = fgetcsv($handle)) !== FALSE) {
-
-                    // Skip the first line with the column names
-                    if($row == 1) {                    
-                        $row++;
-                        continue;               
-                    }
-
-                    $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, unit_net, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
-
-                    if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-                    $row++;
-
-                }
-
-                // Close CSV file
-                fclose($handle);
-
-                // Delete CSV file - not sure this is needed becaus eit is temp
-                unlink($_FILES['invoice_prefill_csv']['tmp_name']);
-
-                // Log activity        
-                $this->app->system->general->writeRecordToActivityLog(_gettext("Invoice Prefill Items were uploaded via csv by").' '.$this->app->user->login_display_name.'.'); 
+                if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
             }
 
-        // If file is invalid then load the error page  
-        } else {
+            // Open CSV file            
+            $handle = fopen($_FILES['invoice_prefill_csv']['tmp_name'], 'r');
 
+            // Row counter to allow for header line
+            $row = 1;
+
+            // Read CSV data and insert into database            
+            while (($data = fgetcsv($handle)) !== FALSE) {
+
+                // Skip the first line with the column names
+                if($row == 1) {                    
+                    $row++;
+                    continue;               
+                }
+
+                $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, unit_net, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
+
+                if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+                $row++;
+
+            }
+
+            // Close CSV file
+            fclose($handle);
+
+            // Delete CSV file - not sure this is needed becaus eit is temp
+            unlink($_FILES['invoice_prefill_csv']['tmp_name']);
+            
+            // Success Message
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("The invoice prefill items were sucessfully updated."));
+
+            // Log activity        
+            $this->app->system->general->writeRecordToActivityLog(_gettext("Invoice Prefill Items were uploaded via csv by").' '.$this->app->user->login_display_name.'.');
+            
+            return true;
+
+            
+        } else {
+            
             /*
             echo "Upload: "    . $_FILES['invoice_prefill_csv']['name']           . '<br />';
             echo "Type: "      . $_FILES['invoice_prefill_csv']['type']           . '<br />';
@@ -1506,9 +1536,13 @@ defined('_QWEXEC') or die;
             echo "Temp file: " . $_FILES['invoice_prefill_csv']['tmp_name']       . '<br />';
             echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
              */
-            $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update the invoice labour rates because the submitted file was invalid."));
-
-        }     
+            
+            //$this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Failed to update the invoice prefill items because the submitted file was invalid."));
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("The invoice prefill items have not been changed."));
+            
+            return false;
+            
+        }    
 
     }
 

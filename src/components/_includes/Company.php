@@ -269,8 +269,7 @@ class Company extends Components {
         }
 
         // A new logo is supplied, delete old and upload new
-        if($_FILES['logo']['name']) {
-            $this->deleteLogo();
+        if($_FILES['logo']['name']) {            
             $new_logo_filepath = $this->uploadLogo();
         }
 
@@ -438,45 +437,68 @@ class Company extends Components {
     ##########################
 
     public function uploadLogo() {
+        
+        $error_flag = false;
+        
+        // Allowed extensions
+        $allowedExt = array('png', 'jpg', 'jpeg', 'gif');
+        
+        // Allowed mime types
+        $allowedMime = array('image/gif', 'image/jpeg', 'image/jpg', 'image/pjpeg', 'image/x-png', 'image/png');
+        
+        // Max Allowed Size (bytes) (2097152 = 2MB)
+        $maxAllowedSize = 2097152;
+        
+        // Check there is an uplaoded file
+        if($_FILES['logo']['size'] = 0) {            
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("There was no logo uploaded.")); 
+        }
 
-        $chicken = $_FILES;
-        // Logo - Only process if there is an image uploaded
-        if($_FILES['logo']['size'] > 0) {
+        // Check for file submission errors
+        if ($_FILES['logo']['error'] > 0 ) {
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Files submission error with Return Code").': ' . $_FILES['logo']['error'] . '<br />');
+        }   
 
-            // Allowed extensions
-            $allowedExts = array('png', 'jpg', 'jpeg', 'gif');
+        // Get file extension
+        $filename_info = pathinfo($_FILES['logo']['name']);
+        $fileExtension = $filename_info['extension'];
 
-            // Get file extension
-            $filename_info = pathinfo($_FILES['logo']['name']);
-            $extension = $filename_info['extension'];
+        // Validate the uploaded file is an allowed file type
+        if (!in_array($fileExtension, $allowedExt)) {
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it does not have an allowed file extension."));
+        }
 
-            // Rename Logo Filename to logo.xxx (keeps original image extension)
-            $new_logo_filename = 'logo.' . $extension;       
+        // Validate the uploaded file is allowed mime type
+        if (!in_array($_FILES['logo']['type'], $allowedMime)) {          
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it does not have an allowed mime type."));            
+        }       
+        
+        // Validate the uploaded file is not to big
+        if ($_FILES['logo']['size'] > $maxAllowedSize) {
+            $error_flag = true;
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it is too large.").' '._gettext("The maximum size is ").' '.($maxAllowedSize/1024/1024).'MB');
+        }
+                    
+        // If no errors
+        if(!$error_flag) {                
+                    
+            // Delete old logo
+            $this->deleteLogo();
 
-            // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
-            if ((($_FILES['logo']['type'] == 'image/gif')
-                    || ($_FILES['logo']['type'] == 'image/jpeg')
-                    || ($_FILES['logo']['type'] == 'image/jpg')
-                    || ($_FILES['logo']['type'] == 'image/pjpeg')
-                    || ($_FILES['logo']['type'] == 'image/x-png')
-                    || ($_FILES['logo']['type'] == 'image/png'))
-                    && ($_FILES['logo']['size'] < 2048000)
-                    && in_array($extension, $allowedExts)) {
+            // New Logo Filename logo.xxx (keeps original image extension)
+            $new_logo_filename = 'logo.' . $fileExtension;  
 
-                // Check for file submission errors and echo them
-                if ($_FILES['logo']['error'] > 0 ) {
-                    echo _gettext("Return Code").': ' . $_FILES['logo']['error'] . '<br />';                
+            // Move the file from the PHP temporary storage to the logo location
+            move_uploaded_file($_FILES['logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);
 
-                // If no errors then move the file from the PHP temporary storage to the logo location
-                } else {
-                    move_uploaded_file($_FILES['logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);              
-                }
-
-                // return the filename with a random query to allow for caching issues
-                return $new_logo_filename . '?' . strtolower(\Joomla\CMS\User\UserHelper::genRandomPassword(3));
-
-            // If file is invalid then load the error page  
-            } else {
+            // Return the filename with a random query to bypass caching issues
+            return $new_logo_filename . '?' . strtolower(\Joomla\CMS\User\UserHelper::genRandomPassword(3));
+                    
+        } else {
 
                 /*
                 echo "Upload: "    . $_FILES['company_logo']['name']           . '<br />';
@@ -486,12 +508,16 @@ class Company extends Components {
                 echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
                  */   
 
-                $this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
+                //$this->app->system->variables->systemMessagesWrite('danger', _gettext("Failed to update logo because the submitted file was invalid."));                    
+                $this->app->system->variables->systemMessagesWrite('warning', _gettext("The logo has not been changed."));
+                
+                // Return the orginal logo storage string
+                return $this->app->components->company->getRecord('logo');
 
             }
 
         }
 
-    }
+    
 
 }

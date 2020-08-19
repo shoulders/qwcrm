@@ -17,8 +17,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     // Submit data to the database
     $this->app->components->company->updateRecord(\CMSApplication::$VAR['qform']);    
     
-    // Reload Company options and display a success message
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
+    // Reload Company options
     $this->app->system->page->forcePage('company', 'edit');
     
 }
