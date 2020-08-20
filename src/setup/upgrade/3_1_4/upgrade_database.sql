@@ -56,3 +56,16 @@ INSERT INTO `#__cronjob_system` (`last_run_time`, `last_run_status`, `locked`) V
 ('0000-00-00 00:00:00', 0, 0);
 
 ALTER TABLE `#__cronjob_system` ADD PRIMARY KEY (`last_run_time`);
+
+--
+-- Convert sub_total -> subtotal
+--
+
+ALTER TABLE `#__invoice_labour` CHANGE `sub_total_net` `subtotal_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_labour` CHANGE `sub_total_tax` `subtotal_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_labour` CHANGE `sub_total_gross` `subtotal_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_parts` CHANGE `sub_total_net` `subtotal_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_parts` CHANGE `sub_total_tax` `subtotal_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_parts` CHANGE `sub_total_gross` `subtotal_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+
+

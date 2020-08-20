@@ -697,8 +697,8 @@ class Expense extends Components {
 
         $expense_details            = $this->getRecord($expense_id);    
         $unit_gross                 = $expense_details['unit_gross'];   
-        $payments_sub_total         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'expense', null, null, null, null, null, $expense_id);
-        $balance                    = $unit_gross - $payments_sub_total;
+        $payments_subtotal         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'expense', null, null, null, null, null, $expense_id);
+        $balance                    = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."expense_records SET
                 balance             =". $this->app->db->qstr( $balance    )."
@@ -714,12 +714,12 @@ class Expense extends Components {
         }
 
         // Balance < Gross Amount (i.e some payments)
-        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $expense_details['status'] != 'partially_paid') {            
+        elseif($unit_gross > 0 && $payments_subtotal > 0 && $payments_subtotal < $unit_gross && $expense_details['status'] != 'partially_paid') {            
             $this->updateStatus($expense_id, 'partially_paid');
         }
 
         // Balance = 0.00 (i.e has payments and is all paid)
-        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $expense_details['status'] != 'paid') {            
+        elseif($unit_gross > 0 && $unit_gross == $payments_subtotal && $expense_details['status'] != 'paid') {            
             $this->updateStatus($expense_id, 'paid');
         }        
 

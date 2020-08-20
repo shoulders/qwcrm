@@ -398,9 +398,9 @@ CREATE TABLE `#__invoice_labour` (
   `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -422,9 +422,9 @@ CREATE TABLE `#__invoice_parts` (
   `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

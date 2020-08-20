@@ -329,16 +329,16 @@ class Report extends Components {
 
             $stats['labour_count_items'] = $this->countLabourItems($start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);             // Total Different Items
             $stats['labour_sum_items'] = $this->sumLabourItems('unit_qty', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);        // Total Items
-            $stats['labour_sum_sub_total_net'] = $this->sumLabourItems('sub_total_net', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);   // Total net amount for labour               
-            $stats['labour_sum_sub_total_tax'] = $this->sumLabourItems('sub_total_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
-            $stats['labour_sum_sub_total_gross'] = $this->sumLabourItems('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
+            $stats['labour_sum_subtotal_net'] = $this->sumLabourItems('subtotal_net', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);   // Total net amount for labour               
+            $stats['labour_sum_subtotal_tax'] = $this->sumLabourItems('subtotal_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
+            $stats['labour_sum_subtotal_gross'] = $this->sumLabourItems('subtotal_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
 
             // Adjust for Cancelled records  
             $stats['labour_count_items'] -= $this->countLabourItems($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['labour_sum_items'] -= $this->sumLabourItems('unit_qty', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['labour_sum_sub_total_net'] -= $this->sumLabourItems('sub_total_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['labour_sum_sub_total_tax'] -= $this->sumLabourItems('sub_total_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['labour_sum_sub_total_gross'] -= $this->sumLabourItems('sub_total_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);        
+            $stats['labour_sum_subtotal_net'] -= $this->sumLabourItems('subtotal_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+            $stats['labour_sum_subtotal_tax'] -= $this->sumLabourItems('subtotal_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+            $stats['labour_sum_subtotal_gross'] -= $this->sumLabourItems('subtotal_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);        
 
         }
 
@@ -347,16 +347,16 @@ class Report extends Components {
 
             $stats['parts_count_items'] = $this->countPartsItems($start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);              // Total Different Items
             $stats['parts_sum_items'] = $this->sumPartsItems('unit_qty', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);         // Total Items
-            $stats['parts_sum_sub_total_net'] = $this->sumPartsItems('sub_total_net', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);    // Total net amount for labour
-            $stats['parts_sum_sub_total_tax'] = $this->sumPartsItems('sub_total_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
-            $stats['parts_sum_sub_total_gross'] = $this->sumPartsItems('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
+            $stats['parts_sum_subtotal_net'] = $this->sumPartsItems('subtotal_net', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);    // Total net amount for labour
+            $stats['parts_sum_subtotal_tax'] = $this->sumPartsItems('subtotal_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
+            $stats['parts_sum_subtotal_gross'] = $this->sumPartsItems('subtotal_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
 
             // Adjust for Cancelled records  
             $stats['parts_count_items'] -= $this->countPartsItems($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['parts_sum_items'] -= $this->sumPartsItems('unit_qty', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['parts_sum_sub_total_net'] -= $this->sumPartsItems('sub_total_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['parts_sum_sub_total_tax'] -= $this->sumPartsItems('sub_total_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['parts_sum_sub_total_gross'] -= $this->sumPartsItems('sub_total_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+            $stats['parts_sum_subtotal_net'] -= $this->sumPartsItems('subtotal_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+            $stats['parts_sum_subtotal_tax'] -= $this->sumPartsItems('subtotal_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+            $stats['parts_sum_subtotal_gross'] -= $this->sumPartsItems('subtotal_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
 
         }   
 

@@ -237,16 +237,16 @@
                                                                     {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
                                                                             <td><b>{t}Net{/t}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_sub_total_net|string_format:"%.2f"}</b></font></td>
+                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_sub_total_tax|string_format:"%.2f"}</b></font></td>
+                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_subtotal_tax|string_format:"%.2f"}</b></font></td>
                                                                         </tr>                                                                        
                                                                     {/if}
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_sub_total_gross|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_subtotal_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -265,16 +265,16 @@
                                                                     {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
                                                                             <td><b>{t}Net{/t}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_sub_total_net|string_format:"%.2f"}</b></font></td>
+                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_sub_total_tax|string_format:"%.2f"}</b></font></td>
+                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_subtotal_tax|string_format:"%.2f"}</b></font></td>
                                                                         </tr>                                                                        
                                                                     {/if}
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_sub_total_gross|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_subtotal_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>    
@@ -311,11 +311,11 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Labour{/t} {t}[N]{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_sub_total_net|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Parts{/t} {t}[N]{/t}</b></font></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_sub_total_net|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Vouchers{/t} {t}[N]{/t}</b></td>

@@ -332,9 +332,9 @@ class Voucher extends Components {
     public function getInvoiceVouchersSubtotals($invoice_id) {
 
         $sql = "SELECT
-                SUM(unit_net) AS sub_total_net,
-                SUM(unit_tax) AS sub_total_tax,
-                SUM(unit_gross) AS sub_total_gross            
+                SUM(unit_net) AS subtotal_net,
+                SUM(unit_tax) AS subtotal_tax,
+                SUM(unit_gross) AS subtotal_gross            
                 FROM ".PRFX."voucher_records
                 WHERE invoice_id=". $this->app->db->qstr($invoice_id);
 

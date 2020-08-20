@@ -92,7 +92,7 @@ defined('_QWEXEC') or die;
         // Insert Items into database (if any)
         if($items) {
 
-            $sql = "INSERT INTO `".PRFX."invoice_$section` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
+            $sql = "INSERT INTO `".PRFX."invoice_$section` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
 
             foreach($items as $item) {
 
@@ -122,9 +122,9 @@ defined('_QWEXEC') or die;
                         $this->app->db->qstr( $unit_tax_rate                    ).",".
                         $this->app->db->qstr( $item_totals['unit_tax']          ).",".
                         $this->app->db->qstr( $item_totals['unit_gross']        ).",".                    
-                        $this->app->db->qstr( $item_totals['sub_total_net']     ).",".
-                        $this->app->db->qstr( $item_totals['sub_total_tax']     ).",".
-                        $this->app->db->qstr( $item_totals['sub_total_gross']   )."),";
+                        $this->app->db->qstr( $item_totals['subtotal_net']     ).",".
+                        $this->app->db->qstr( $item_totals['subtotal_tax']     ).",".
+                        $this->app->db->qstr( $item_totals['subtotal_gross']   )."),";
 
             }
 
@@ -449,9 +449,9 @@ defined('_QWEXEC') or die;
         // NB: i dont think i need the aliases
 
         $sql = "SELECT
-                SUM(sub_total_net) AS sub_total_net,
-                SUM(sub_total_tax) AS sub_total_tax,
-                SUM(sub_total_gross) AS sub_total_gross
+                SUM(subtotal_net) AS subtotal_net,
+                SUM(subtotal_tax) AS subtotal_tax,
+                SUM(subtotal_gross) AS subtotal_gross
                 FROM ".PRFX."invoice_labour
                 WHERE invoice_id=". $this->app->db->qstr($invoice_id);
 
@@ -511,9 +511,9 @@ defined('_QWEXEC') or die;
         // NB: i dont think i need the aliases
 
         $sql = "SELECT
-                SUM(sub_total_net) AS sub_total_net,
-                SUM(sub_total_tax) AS sub_total_tax,
-                SUM(sub_total_gross) AS sub_total_gross
+                SUM(subtotal_net) AS subtotal_net,
+                SUM(subtotal_tax) AS subtotal_tax,
+                SUM(subtotal_gross) AS subtotal_gross
                 FROM ".PRFX."invoice_parts
                 WHERE invoice_id=". $this->app->db->qstr($invoice_id);
 
@@ -1342,27 +1342,27 @@ defined('_QWEXEC') or die;
         if($tax_system == 'no_tax') {        
             $item_totals['unit_tax'] = 0.00;
             $item_totals['unit_gross'] = $unit_net;
-            $item_totals['sub_total_net'] = $unit_net * $unit_qty;
-            $item_totals['sub_total_tax'] = 0.00;
-            $item_totals['sub_total_gross'] = $item_totals['sub_total_net'];
+            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
+            $item_totals['subtotal_tax'] = 0.00;
+            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'];
         }
 
         // Sales Tax Calculations
         if($tax_system == 'sales_tax_cash') {        
             $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
             $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
-            $item_totals['sub_total_net'] = $unit_net * $unit_qty;
-            $item_totals['sub_total_tax'] = $item_totals['sub_total_net'] * ($unit_tax_rate / 100);
-            $item_totals['sub_total_gross'] = $item_totals['sub_total_net'] + $item_totals['sub_total_tax'];
+            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
+            $item_totals['subtotal_tax'] = $item_totals['subtotal_net'] * ($unit_tax_rate / 100);
+            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'] + $item_totals['subtotal_tax'];
         }
 
         // VAT Calculations
         if(preg_match('/^vat_/', $tax_system)) {        
             $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
             $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
-            $item_totals['sub_total_net'] = $unit_net * $unit_qty;
-            $item_totals['sub_total_tax'] = $item_totals['sub_total_net'] * ($unit_tax_rate / 100);
-            $item_totals['sub_total_gross'] = $item_totals['sub_total_net'] + $item_totals['sub_total_tax'];
+            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
+            $item_totals['subtotal_tax'] = $item_totals['subtotal_net'] * ($unit_tax_rate / 100);
+            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'] + $item_totals['subtotal_tax'];
         }
 
         return $item_totals;
@@ -1377,23 +1377,23 @@ defined('_QWEXEC') or die;
 
         $invoice_details            = $this->getRecord($invoice_id);    
 
-        $labour_items_sub_totals    = $this->getLabourItemsSubtotals($invoice_id); 
-        $parts_items_sub_totals     = $this->getPartsItemsSubtotals($invoice_id);   
-        $voucher_sub_totals         = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);
+        $labour_items_subtotals    = $this->getLabourItemsSubtotals($invoice_id); 
+        $parts_items_subtotals     = $this->getPartsItemsSubtotals($invoice_id);   
+        $voucher_subtotals         = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);
 
-        $unit_discount              = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net']) * ($invoice_details['unit_discount_rate'] / 100);          // Divide by 100; turns 17.5 in to 0.17575
-        $unit_net                   = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net']) - $unit_discount;   // Vouchers are not discounted on purpose
-        $unit_tax                   = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
+        $unit_discount              = ($labour_items_subtotals['subtotal_net'] + $parts_items_subtotals['subtotal_net']) * ($invoice_details['unit_discount_rate'] / 100);          // Divide by 100; turns 17.5 in to 0.17575
+        $unit_net                   = ($labour_items_subtotals['subtotal_net'] + $parts_items_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net']) - $unit_discount;   // Vouchers are not discounted on purpose
+        $unit_tax                   = $labour_items_subtotals['subtotal_tax'] + $parts_items_subtotals['subtotal_tax'] + $voucher_subtotals['subtotal_tax'];
         $unit_gross                 = $unit_net + $unit_tax;    
-        $payments_sub_total         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
-        $balance                    = $unit_gross - $payments_sub_total;
+        $payments_subtotal         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
+        $balance                    = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."invoice_records SET            
                 unit_discount       =". $this->app->db->qstr( $unit_discount       ).",
                 unit_net            =". $this->app->db->qstr( $unit_net            ).",
                 unit_tax            =". $this->app->db->qstr( $unit_tax            ).",
                 unit_gross          =". $this->app->db->qstr( $unit_gross          ).",
-                unit_paid           =". $this->app->db->qstr( $payments_sub_total  ).",
+                unit_paid           =". $this->app->db->qstr( $payments_subtotal  ).",
                 balance             =". $this->app->db->qstr( $balance             )."
                 WHERE invoice_id    =". $this->app->db->qstr( $invoice_id          );
 
@@ -1412,12 +1412,12 @@ defined('_QWEXEC') or die;
         }
 
         // Has invoiceable amount with partially payment, set to partially paid (if not already)
-        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $invoice_details['status'] != 'partially_paid') {            
+        elseif($unit_gross > 0 && $payments_subtotal > 0 && $payments_subtotal < $unit_gross && $invoice_details['status'] != 'partially_paid') {            
             $this->updateStatus($invoice_id, 'partially_paid');
         }
 
         // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
-        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $invoice_details['status'] != 'paid') {            
+        elseif($unit_gross > 0 && $unit_gross == $payments_subtotal && $invoice_details['status'] != 'paid') {            
             $this->updateStatus($invoice_id, 'paid');
         }        
 
