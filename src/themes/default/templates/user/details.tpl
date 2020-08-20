@@ -12,7 +12,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}User Details for{/t} {$user_details.display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                        
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}USER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}USER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         <a href="index.php?component=user&page_tpl=edit&user_id={$user_details.user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit user details{/t}');" onMouseOut="hideddrivetip();"></a>
                     </td>
                 </tr>

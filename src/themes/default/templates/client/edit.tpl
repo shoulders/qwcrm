@@ -15,7 +15,7 @@
                 <tr>
                     <td class="menuhead2" width="680">&nbsp;{t}Edit{/t} - {$client_details.display_name}</td>
                     <td class="menuhead2" width="20" align="right" valign="middle">
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}CLIENT_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}CLIENT_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}CLIENT_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}CLIENT_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>                
                 <tr>

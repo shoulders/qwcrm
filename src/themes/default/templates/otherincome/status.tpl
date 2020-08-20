@@ -13,7 +13,7 @@
                     <td class="menuhead2" width="80%">{t}Status{/t} {t}for{/t} <a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$otherincome_id}">{t}Otherincome{/t} {$otherincome_id}</a></td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}OTHERINCOME_STATUS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}OTHERINCOME_STATUS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}OTHERINCOME_STATUS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}OTHERINCOME_STATUS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>  

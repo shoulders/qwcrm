@@ -26,7 +26,7 @@
                             <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Client Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />                                                        
                         </a>                        
                         <a href="" target="new">
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}WORKORDER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}WORKORDER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">                                                        
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t escape=js}WORKORDER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}WORKORDER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">                                                        
                         </a>
                     </td>
                 </tr>

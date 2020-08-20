@@ -14,7 +14,7 @@
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a href="index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_id}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit{/t}</a>&nbsp;
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}OTHERINCOME_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}OTHERINCOME_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}OTHERINCOME_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}OTHERINCOME_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
