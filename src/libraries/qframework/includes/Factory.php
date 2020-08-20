@@ -447,11 +447,13 @@ abstract class Factory {
         /* Configure Smarty */
 
         // Smarty Class Variables - https://www.smarty.net/docs/en/api.variables.tpl
-
         $smarty->template_dir           = THEME_TEMPLATE_DIR;
         $smarty->cache_dir              = SMARTY_CACHE_DIR;
         $smarty->compile_dir            = SMARTY_COMPILE_DIR;
         $smarty->force_compile          = $config->get('smarty_force_compile');
+        
+        // Custom Plugin Directory
+        $smarty->addPluginsDir(LIBRARIES_DIR.'/custom/smarty/plugins/');
 
         // Enable caching
         if($config->get('smarty_caching') == '1') { $smarty->caching = Smarty::CACHING_LIFETIME_CURRENT;}
@@ -465,11 +467,11 @@ abstract class Factory {
 
         // Debugging    
         $smarty->debugging_ctrl         = $config->get('smarty_debugging_ctrl');
-        //$smarty->debugging            = $config->get('smarty_debugging');                                 // Does not work with fetch()
+        //$smarty->debugging            = $config->get('smarty_debugging');                               // Does not work with fetch()
         //$smarty->debugging_ctrl       = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';      // Restrict debugging URL to work only on localhost
         //$smarty->debug_tpl            = LIBRARIES_DIR.'smarty/debug.tpl';                               // By default it is in the Smarty directory
 
-        // Other Settings
+        // Other Settings/functions
         //$smarty->load_filter('output','trimwhitespace');  // removes all whitespace from output. useful to get smaller page payloads (minify?)
         //$smarty->error_unassigned = true;                 // to enable notices.
         //$smarty->error_reporting = E_ALL | E_STRICT;      // Uses standard PHP error levels.
