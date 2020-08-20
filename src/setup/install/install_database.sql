@@ -260,8 +260,8 @@ CREATE TABLE `#__cronjob_records` (
   `minute` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `hour` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `day` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `month` varchar(26) COLLATE utf8_unicode_ci NOT NULL,
-  `weekday` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
+  `month` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `weekday` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `command` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -24,7 +24,7 @@
             $("#hour").val(settings[1]);
             $("#day").val(settings[2]);
             $("#month").val(settings[3]);
-            $("#weekday").val(settings[4]);
+            $("#weekday").val(settings[4]);            
             
             // Refresh other dynamic content
             refreshPage();
@@ -64,7 +64,7 @@
             let hour = $("#hour").val();
             let day = $("#day").val();
             let month = $("#month").val();
-            let weekday = $("#weekday").val();
+            let weekday = $("#weekday").val();            
             let commonOptions = minute + ' ' + hour + ' ' + day + ' ' + month + ' ' + weekday;
             $("#common_options").val(commonOptions);            
         });
@@ -86,7 +86,7 @@
         $("#hour").val(defaultSettings.hour);
         $("#day").val(defaultSettings.day);
         $("#month").val(defaultSettings.month);
-        $("#weekday").val(defaultSettings.weekday);
+        $("#weekday").val(defaultSettings.weekday);        
         
         // Refresh dynamic content
         refreshPage();
@@ -191,7 +191,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Minute{/t}</b></td>
-                                                            <td><input id="minute" name="qform[minute]" class="setting olotd5" value="{$cronjob_details.minute}" type="text" maxlength="50" required onkeydown="return onlyCron(event);"></td>
+                                                            <td><input id="minute" name="qform[minute]" class="setting olotd5" value="{$cronjob_details.minute}" type="text" maxlength="50" required onkeydown="return onlyCronjobMinHourDay(event);"></td>
                                                             <td>
                                                                 <select id="minute_options" class="options">
                                                                     <option value="--" disabled>-- {t}Common Settings{/t} --</option>
@@ -267,7 +267,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Hour{/t}</b></td>
-                                                            <td><input id="hour" name="qform[hour]" class="setting olotd5" value="{$cronjob_details.hour}" type="text" maxlength="50" required onkeydown="return onlyCron(event);"></td>
+                                                            <td><input id="hour" name="qform[hour]" class="setting olotd5" value="{$cronjob_details.hour}" type="text" maxlength="50" required onkeydown="return onlyCronjobMinHourDay(event);"></td>
                                                             <td>
                                                                 <select id="hour_options" class="options">
                                                                     <option value="--" disabled>-- {t}Common Settings{/t} --</option>
@@ -307,7 +307,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Day{/t}</b></td>                                            
-                                                            <td><input id="day" name="qform[day]" class="setting olotd5" value="{$cronjob_details.day}" type="text" maxlength="50" required onkeydown="return onlyCron(event);"></td>
+                                                            <td><input id="day" name="qform[day]" class="setting olotd5" value="{$cronjob_details.day}" type="text" maxlength="50" required onkeydown="return onlyCronjobMinHourDay(event);"></td>
                                                             <td>
                                                                 <select id="day_options" class="options">
                                                                     <option value="--" disabled>-- {t}Common Settings{/t} --</option>
@@ -351,7 +351,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Month{/t}</b></td>
-                                                            <td><input id="month" name="qform[month]" class="setting olotd5" value="{$cronjob_details.month}" type="text" maxlength="26" required onkeydown="return onlyCron(event);"></td>
+                                                            <td><input id="month" name="qform[month]" class="setting olotd5" value="{$cronjob_details.month}" type="text" maxlength="26" required onkeydown="return onlyCronjobMonthWeekday(event);"></td>
                                                             <td>
                                                                 <select id="month_options" class="options">
                                                                     <option value="--" disabled>-- {t}Common Settings{/t} --</option>
@@ -377,7 +377,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Weekday{/t}</b></td>
-                                                            <td><input id="weekday" name="qform[weekday]" class="setting olotd5" value="{$cronjob_details.weekday}" type="text" maxlength="13" required onkeydown="return onlyCron(event);"></td>
+                                                            <td><input id="weekday" name="qform[weekday]" class="setting olotd5" value="{$cronjob_details.weekday}" type="text" maxlength="13" required onkeydown="return onlyCronjobMonthWeekday(event);"></td>
                                                             <td>
                                                                 <select id="weekday_options" class="options">
                                                                     <option value="--" disabled>-- {t}Common Settings{/t} --</option>
@@ -396,7 +396,7 @@
                                                                     <option value="6">{t}Saturday{/t} (6)</option>
                                                                 </select>
                                                             </td>
-                                                        </tr>
+                                                        </tr>                                                        
                                                         <tr>
                                                             <td align="right"><b>{t}Command{/t}</b></td>
                                                             <td colspan="2" class="menutd">{$cronjob_details.command|regex_replace:"/\{|\}|\"/":""|regex_replace:"/,/":" , "}</td>                                                                                     

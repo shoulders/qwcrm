@@ -25,11 +25,11 @@ if(!isset(\CMSApplication::$VAR['unlock_type']) && (\CMSApplication::$VAR['unloc
 } 
 
 
-// Unlock Cronjob System
+// Unlock Cron System
 if(\CMSApplication::$VAR['unlock_type'] === 'system') {
     
     // Update system locked status
-    updateSystemLockedStatus(false);
+    $this->app->components->cronjob->updateSystemLockedStatus(false);
     
     // Success Message
     $this->app->system->variables->systemMessagesWrite('success', _gettext("Cronjob system").' '._gettext("has been unlocked."));

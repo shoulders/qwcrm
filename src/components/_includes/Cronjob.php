@@ -252,7 +252,7 @@ class Cronjob extends Components {
     private function runCronjobs($silent = true) {
         
         $state_flag = true;
-        $newLastRunTime = $this->app->system->general->mysqlDatetime();
+        $currentTime = $this->app->system->general->mysqlDatetime();
         $cronjob_system_details = $this->getSystem();        
         
         // If Cronjob system is turned off
@@ -260,8 +260,7 @@ class Cronjob extends Components {
             if(!$silent) {
                 $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob System is disabled and cannot been run."));                
             }            
-            $state_flag = false;
-            return $state_flag;
+            return false;
         }
         
         // If the cronjob system is locked
@@ -269,8 +268,7 @@ class Cronjob extends Components {
             if(!$silent) {
                 $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob System is locked and cannot been run."));                
             }            
-            $state_flag = false;
-            return $state_flag;
+            return false;
         }
         
         // Lock the cronjob system while we run the cronjobs
@@ -291,7 +289,7 @@ class Cronjob extends Components {
         }
         
         // Update system cronjobs last_run_time
-        $this->updateSystemLastRunTime($newLastRunTime);
+        $this->updateSystemLastRunTime($currentTime);
         
         // Update the last run status in the database
         $this->updateSystemLastRunStatus($state_flag);
@@ -321,9 +319,8 @@ class Cronjob extends Components {
     
     private function runCronjob($cronjob_id, $silent = true) {
                 
-        $state_flag = true;
-        $newLastRunTime = $this->app->system->general->mysqlDatetime();
-        $cronjob_details = $this->getRecord($cronjob_id);
+        $currentTime = $this->app->system->general->mysqlDatetime();
+        $cronjob_details = $this->getRecord($cronjob_id);        
         
         // Is the cronjob enabled
         if(!$cronjob_details['active']) {
@@ -331,46 +328,48 @@ class Cronjob extends Components {
                 $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cron").' '.$cronjob_id.' '._gettext("is disabled and has not been run."));                
             }
             
-            // Disabled single cronjobs should not fail the cron system
-            if(defined(CRONJOB_SYSTEM_ACTIVE)) {
-                $state_flag = true;
+            // Disabled single cronjobs should not fail the cron system, but fail manually run disabled cronjobs
+            if(defined('CRONJOB_SYSTEM_ACTIVE')) {
+                return true;
             } else {
-                $state_flag = false;
+                return false;
             }
-            
-            return $state_flag;
+
         }
         
         // If the cronjob is locked
         if($cronjob_details['locked']) {
             if(!$silent) {
-                $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cron").' '.$cronjob_id.' '._gettext("is locked and cannot been run."));                
+                $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob").' '.$cronjob_id.' '._gettext("is locked and cannot been run."));                
             }            
-            $state_flag = false;
-            return $state_flag;
+            return false;
         }
             
         // Skip this if the cronjob has been run manually (i.e. when `pseudo_allowed` is not enabled and `pseudo` is the cron system)
-        if(defined(CRONJOB_SYSTEM_ACTIVE)) {
+        if(defined('CRONJOB_SYSTEM_ACTIVE')) {
             
             // Is the cronjob allowed for pseudo cron
             if(!$cronjob_details['pseudo_allowed']) {
                 if(!$silent) {
-                    $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cron").' '.$cronjob_id.' '._gettext("is not allowed for Pseudo Cronjob system execution."));                
+                    $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob").' '.$cronjob_id.' '._gettext("is not allowed for Pseudo Cronjob system execution."));                
                 }
-                $state_flag = false;
-                return $state_flag;
+                return false;                
             }
             
-        }
+            // If cronjob is not due, return true (This check will not fail the cron system)
+            $cronParser = Cron\CronExpression::factory($cronjob_details['minute'].' '.$cronjob_details['hour'].' '.$cronjob_details['day']. ' '.$cronjob_details['month'].' '.$cronjob_details['weekday']);
+            $nextRunDate = $cronParser->getNextRunDate($cronjob_details['last_run_time'])->format('Y-m-d H:i:s');
+            if($nextRunDate > $currentTime) {
+                return true;
+            }
+            
+        }        
         
         // Lock the cronjob system while we run the cronjobs
         $this->updateRecordLockedStatus($cronjob_id, true);
         
-        // Get Cronjob Command    
-        $cronjobCommand = json_decode($cronjob_details['command'], true);
-        
-        // Prepare the variables
+        // Get Cronjob Command
+        $cronjobCommand = json_decode($cronjob_details['command'], true);        
         $cronjobClass = $cronjobCommand['class'];
         $cronjobFunction = $cronjobCommand['function'];
         
@@ -379,7 +378,8 @@ class Cronjob extends Components {
             // true/passed
             if(!$silent) {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("Cron").' '.$cronjob_id.' '._gettext("has been run successfully."));                
-            }            
+            }
+            $state_flag = true;
         } else {
             // false/failed
             if(!$silent) {
@@ -389,7 +389,7 @@ class Cronjob extends Components {
         }
               
         // Update cronjob last_run_time
-        $this->updateRecordLastRunTime($cronjob_id, $newLastRunTime);
+        $this->updateRecordLastRunTime($cronjob_id, $currentTime);
         
         // Update the cronjob last_run_status
         $this->updateRecordLastRunStatus($cronjob_id, $state_flag);

@@ -20,7 +20,7 @@
         <td class="olohead">{t}Hour{/t}</td>
         <td class="olohead">{t}Day{/t}</td>
         <td class="olohead">{t}Month{/t}</td>
-        <td class="olohead">{t}Weekday{/t}</td>     
+        <td class="olohead">{t}Weekday{/t}</td>        
         <td class="olohead">{t}Command{/t}</td>
         <td class="olohead">{t}Actions{/t}</td>
     </tr>
@@ -39,7 +39,7 @@
             <td class="olotd4" nowrap>{$display_cronjobs[r].hour}</td>
             <td class="olotd4" nowrap>{$display_cronjobs[r].day}</td>
             <td class="olotd4" nowrap>{$display_cronjobs[r].month}</td>
-            <td class="olotd4" nowrap>{$display_cronjobs[r].weekday}</td> 
+            <td class="olotd4" nowrap>{$display_cronjobs[r].weekday}</td>            
             <td class="olotd4" nowrap>{$display_cronjobs[r].command|regex_replace:"/\{|\}|\"/":""|regex_replace:"/,/":" , "}</td>
                      
             <td class="olotd4" nowrap>

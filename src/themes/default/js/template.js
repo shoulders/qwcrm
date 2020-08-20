@@ -162,10 +162,16 @@ function onlyFilePath(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/\\:_.", false);
 }
 
-// Cron
-function onlyCron(e) {
-    return keyRestriction(e, "0123456789*/:,", false);
+// Cronjob (Minute/Hour/Day)
+function onlyCronjobMinHourDay(e) {
+    return keyRestriction(e, "0123456789-*?/,", false);
 }
+
+// Cronjon (Month/Weekday)
+function onlyCronjobMonthWeekday(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-*?/,", false);
+}
+
 /* Escape Strings for parsing - is this needed?
 function escapeRegExp(string){
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
