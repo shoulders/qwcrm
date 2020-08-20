@@ -317,7 +317,7 @@ class Cronjob extends Components {
     #  Run a single cronjob  #
     ##########################
     
-    private function runCronjob($cronjob_id, $silent = true) {
+    public function runCronjob($cronjob_id, $silent = true) {
                 
         $currentTime = $this->app->system->general->mysqlDatetime();
         $cronjob_details = $this->getRecord($cronjob_id);        
