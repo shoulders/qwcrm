@@ -187,8 +187,8 @@
                         <td align="right"><b>{t}Send Mail{/t}:</b></td>
                         <td>
                             <select class="olotd5" name="qform[email_online]">                                                                    
-                                <option value="0" {if $qwcrm_config.email_online == '0' } selected{/if}>No</option>
-                                <option value="1" {if $qwcrm_config.email_online == '1' } selected{/if}>Yes</option>                                                                    
+                                <option value="0" {if $qwcrm_config.email_online == '0'} selected{/if}>No</option>
+                                <option value="1" {if $qwcrm_config.email_online == '1'} selected{/if}>Yes</option>                                                                    
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Send Mail{/t}</strong></div><hr><div>{t escape=js}Select Yes to turn on mail sending, select No to turn off mail sending. Warning: It is advised to put the site offline when disabling the mail function!{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -197,9 +197,9 @@
                         <td align="right"><b>{t}Mailer{/t}:</b></td>
                         <td>
                             <select class="olotd5" name="qform[email_mailer]">
-                                <option value="phpmail" {if $qwcrm_config.email_mailer != '' } selected{/if}>{t}PHP Mail{/t}</option>
-                                <option value="sendmail" {if $qwcrm_config.email_mailer == 'sendmail' } selected{/if}>Sendmail</option>
-                                <option value="smtp" {if $qwcrm_config.email_mailer == 'smtp' } selected{/if}>SMTP</option>                                                                    
+                                <option value="phpmail" {if $qwcrm_config.email_mailer == 'phpmail'} selected{/if}>{t}PHP Mail{/t}</option>
+                                <option value="sendmail" {if $qwcrm_config.email_mailer == 'sendmail'} selected{/if}>Sendmail</option>
+                                <option value="smtp" {if $qwcrm_config.email_mailer == 'smtp'} selected{/if}>SMTP</option>                                                                    
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Mailer{/t}</strong></div><hr><div>{t escape=js}Select which mailer for the delivery of site email. Sendmail only works on Linux/UNIX.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
