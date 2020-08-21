@@ -83,7 +83,7 @@ $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VA
 $paymentType = new $typeClassName;
 
 // Is the payment allowed
-$paymentType->check_payment_allowed();
+$paymentType->checkPaymentAllowed();
 
 // If the form is submitted
 if(isset(\CMSApplication::$VAR['submit'])) {  
@@ -97,8 +97,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Prep/validate the data
     if(Payment::$payment_valid) {
-        $paymentType->pre_process();
-        $paymentMethod->pre_process();
+        $paymentType->preProcess();
+        $paymentMethod->preProcess();
     }
 
     // Process the payment
@@ -108,13 +108,13 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     }
 
     // Now do final things like set messages and build buttons        
-    $paymentMethod->post_process();
-    $paymentType->post_process();
+    $paymentMethod->postProcess();
+    $paymentType->postProcess();
 
 }
 
 // Build the buttons
-$paymentType->build_buttons();
+$paymentType->buildButtons();
       
 // Build the page
 $this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'])  );

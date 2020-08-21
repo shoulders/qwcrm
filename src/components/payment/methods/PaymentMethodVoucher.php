@@ -30,7 +30,7 @@ class PaymentMethodVoucher {
     }
     
     // Pre-Processing
-    public function pre_process() {
+    public function preProcess() {
         
         // Make sure the Voucher is valid and then pass the amount to the next process
         if(!$this->app->components->voucher->checkRecordAllowsRedeem($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'])) {
@@ -68,7 +68,7 @@ class PaymentMethodVoucher {
     }
     
     // Post-Processing 
-    public function post_process() { 
+    public function postProcess() { 
         
         // Set success/failure message
         if(!Payment::$payment_processed) {

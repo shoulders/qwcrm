@@ -32,7 +32,7 @@ class PaymentTypeExpense {
     }    
     
     // Pre-Processing
-    public function pre_process() {
+    public function preProcess() {
         
         // Add required variables
         $this->VAR['qpayment']['client_id'] = '';
@@ -74,7 +74,7 @@ class PaymentTypeExpense {
     }
     
     // Post-Processing 
-    public function post_process() {   
+    public function postProcess() {   
         
         /* If the balance has been cleared, redirect to the record details page
         if($this->expense_details['balance'] == 0) {
@@ -87,7 +87,7 @@ class PaymentTypeExpense {
     }
     
     // Build Buttons
-    public function build_buttons() {
+    public function buildButtons() {
         
         // Submit
         if($this->expense_details['balance'] > 0) {
@@ -180,7 +180,7 @@ class PaymentTypeExpense {
     }
     
     // Check Payment is allowed
-    public function check_payment_allowed() {
+    public function checkPaymentAllowed() {
         
         $state_flag = true;
         

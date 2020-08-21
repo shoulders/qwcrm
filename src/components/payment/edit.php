@@ -38,7 +38,7 @@ $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VA
 $paymentType = new $typeClassName;
 
 // Prep/validate the data        
-$paymentType->pre_process();
+$paymentType->preProcess();
 
 // If the form is submitted
 if(isset(\CMSApplication::$VAR['submit'])) {            

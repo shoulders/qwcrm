@@ -22,7 +22,7 @@ class PaymentMethodCheque {
     }
     
     // Pre-Processing
-    public function pre_process() {
+    public function preProcess() {
 
             return true;
             
@@ -44,7 +44,7 @@ class PaymentMethodCheque {
     }
     
     // Post-Processing 
-    public function post_process() { 
+    public function postProcess() { 
         
         // Set success/failure message
         if(!Payment::$payment_processed) {

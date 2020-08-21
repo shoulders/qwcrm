@@ -32,7 +32,7 @@ class PaymentTypeOtherincome {
     }
     
     // Pre-Processing
-    public function pre_process() {
+    public function preProcess() {
         
         // Add required variables
         $this->VAR['qpayment']['client_id'] = '';
@@ -74,7 +74,7 @@ class PaymentTypeOtherincome {
     }
     
     // Post-Processing 
-    public function post_process() {   
+    public function postProcess() {   
         
         // If the balance has been cleared, redirect to the record details page
         if($this->otherincome_details['balance'] == 0) {
@@ -87,7 +87,7 @@ class PaymentTypeOtherincome {
     }
     
     // Build Buttons
-    public function build_buttons() {
+    public function buildButtons() {
         
         // Submit
         if($this->otherincome_details['balance'] > 0) {
@@ -180,7 +180,7 @@ class PaymentTypeOtherincome {
     }
     
     // Check Payment is allowed
-    public function check_payment_allowed() {
+    public function checkPaymentAllowed() {
         
         $state_flag = true;
         
