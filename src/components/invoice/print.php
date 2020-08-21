@@ -131,7 +131,25 @@ if(\CMSApplication::$VAR['print_content'] == 'invoice')
         }        
         // End all other processing
         die();        
-    }    
+    }
+    
+    // Download PDF Invoice
+    if (\CMSApplication::$VAR['print_type'] == 'download_pdf')
+    {        
+        // Get Print Invoice as HTML into a variable
+        $pdf_template = $this->app->smarty->fetch('invoice/printing/print_invoice.tpl');
+        
+        // Log activity
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been dowloaded as a PDF.");
+        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+        
+        // Output PDF in brower
+        $this->app->system->pdf->mpdfOutputFile($pdf_filename, $pdf_template);
+        
+        // End all other processing
+        die();        
+    }   
+    
 }
 
 // Client Envelope Print Routine

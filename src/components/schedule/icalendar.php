@@ -78,5 +78,5 @@ header('Content-Disposition: attachment; filename=' . $ics_filename);
 // Output the .ics file
 echo $ics_content;
 
-// No furhter processing required
+// No further processing required
 die();
