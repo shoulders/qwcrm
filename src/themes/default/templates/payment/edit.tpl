@@ -118,7 +118,7 @@
                                                     <tr>
                                                         <td align="right"><b>{t}Payment Method{/t}</b></td>
                                                         <td>
-                                                            {section name=s loop=$payment_methods}    
+                                                            {section name=s loop=$payment_methods}
                                                                 {if $payment_details.method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}
                                                             {/section}                                                            
                                                         </td>

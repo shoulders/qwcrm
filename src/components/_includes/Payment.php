@@ -275,27 +275,35 @@ class Payment extends Components {
 
     }
 
-    ################################################
-    #   Get get Payment Methods                    #
-    ################################################
+    ################################################  // default = returns all methods
+    #   Get get Payment Methods                    #  // can restrict returned methods by direction, status
+    ################################################  // invalidTypes() are specific payment methods that are not allowed for this payment type
 
-    public function getMethods($direction = null, $status = null) {
+    public function getMethods($direction = null, $activeOnly = false, $invalidMethods = array()) {
+        
+        // Default Action
+        $sql = "SELECT * FROM ".PRFX."payment_methods
+                WHERE ".PRFX."payment_methods.id\n"; 
 
-        $sql = "SELECT *
-                FROM ".PRFX."payment_methods";
-
-        // If the send direction is specified
+        // If the method direction is specified
         if($direction == 'send') {
-            $sql .= "\nWHERE send = '1'";
-
-        // If the receive direction is specified    
+            $sql .= "\nAND send = '1'";           
         } elseif($direction == 'receive') {        
-            $sql .= "\nWHERE receive = '1'";        
+            $sql .= "\nAND receive = '1'";        
         }
 
         // Only return methods that are enabled
-        if($direction && $status == 'enabled') { 
+        if($activeOnly) { 
             $sql .= "\nAND enabled = '1'";        
+        }
+        
+        // Restrict Payment Methods to those that are not excluded by the Payment Type
+        if($invalidMethods) {
+            $notTheseMethods = '';
+            foreach($invalidMethods as $invalidMethod) {
+                $notTheseMethods .= "'$invalidMethod', ";
+            }        
+            $sql .= "\nAND method_key NOT IN (".rtrim($notTheseMethods, ', ').")";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}

@@ -25,7 +25,7 @@ class PaymentTypeExpense {
         Payment::$record_balance = $this->expense_details['balance'];
         
         // Assign Type specific template variables  
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', 'enabled'));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, array()));
         $this->app->smarty->assign('expense_details', $this->expense_details);
         $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses());   
         

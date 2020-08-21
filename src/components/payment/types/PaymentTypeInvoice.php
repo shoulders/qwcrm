@@ -26,7 +26,7 @@ class PaymentTypeInvoice {
                        
         // Assign Type specific template variables        
         $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->invoice_details['client_id']));
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', 'enabled'));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, array()));
         $this->app->smarty->assign('invoice_details', $this->invoice_details);
         $this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->getStatuses());        
         

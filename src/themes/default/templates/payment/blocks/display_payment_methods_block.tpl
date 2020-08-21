@@ -55,8 +55,8 @@
         </tr>
 
         <!-- Select Payment Method -->
-        {if $record_balance != 0}
-            {if $payment_methods}
+        {if $record_balance}
+            {if $payment_active_methods}
                 <tr>
                     <td>
                         <p>{t}Select Payment Method{/t}</p>
@@ -76,7 +76,7 @@
         {/if}
 
         <!-- Payment Methods -->
-        {if $record_balance != 0}
+        {if $record_balance}
             <tr>
                 <td>
 

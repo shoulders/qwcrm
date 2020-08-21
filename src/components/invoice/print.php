@@ -25,7 +25,7 @@ $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$
 $client_details = $this->app->components->client->getRecord($invoice_details['client_id']);
 
 // Only show payment instruction if bank_transfer|cheque|PayPal is enabled, these are the only valid instructions you can put on an invoice
-$payment_methods = $this->app->components->payment->getMethods('receive', 'enabled');
+$payment_methods = $this->app->components->payment->getMethods('receive', true);
 $display_payment_instructions = false;
 foreach ($payment_methods as $key => $value) {
     if(
