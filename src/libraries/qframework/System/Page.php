@@ -614,8 +614,9 @@ class Page extends System {
         \CMSApplication::$VAR['error_database']      = $error_database ;
         \CMSApplication::$VAR['error_sql_query']     = $this->app->system->general->prepareErrorData('error_sql_query', $error_sql_query);
         \CMSApplication::$VAR['error_msg']           = $error_msg;
-
-        \CMSApplication::$VAR['error_enable_override'] = 'override'; // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
+        
+        // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
+        \CMSApplication::$VAR['error_enable_override'] = 'override';
 
         // raw_output mode is very basic, error logging still works, bootloops are prevented, page building and compression are skipped
         if($this->app->config->get('error_page_raw_output')) {
@@ -623,13 +624,13 @@ class Page extends System {
             // Error page main content and processing logic
             require(COMPONENTS_DIR.'core/error.php');
 
-            // Output the error page
+            // Output the error page (this variable is in the required file)
             die($pagePayload);
             
         // This will show errors within the template as normal - but occassionaly can cause boot loops during development
         } else {  
 
-            // Load Error Page (normally) and output
+            // Load Error Page (normally) and output (no page reload required)
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("An error has occured while accessing the database."));
             die($this->app->system->page->loadPage('get_payload', 'core', 'error'));
 
