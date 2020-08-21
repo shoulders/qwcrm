@@ -24,4 +24,5 @@ if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expens
 $this->app->components->expense->cancelRecord(\CMSApplication::$VAR['expense_id']);
 
 // Load the expense search page
-$this->app->system->page->forcePage('expense', 'search', 'msg_success='._gettext("Expense cancelled successfully."));
+$this->app->system->variables->systemMessagesWrite('success', _gettext("Expense cancelled successfully."));
+$this->app->system->page->forcePage('expense', 'search');

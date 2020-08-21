@@ -27,4 +27,5 @@ $workorder_id = $this->app->components->workorder->getNote(\CMSApplication::$VAR
 $this->app->components->workorder->deleteNote(\CMSApplication::$VAR['workorder_note_id']);
 
 // Reload the workorder details page
-$this->app->system->page->forcePage('workorder', 'details&workorder_id='.$workorder_id, 'msg_success='._gettext("The note has been deleted."));
+$this->app->system->variables->systemMessagesWrite('success', _gettext("The note has been deleted."));
+$this->app->system->page->forcePage('workorder', 'details&workorder_id='.$workorder_id);

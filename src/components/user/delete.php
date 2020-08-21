@@ -29,6 +29,7 @@ if(!$this->app->components->user->deleteRecord(\CMSApplication::$VAR['user_id'])
 } else {
     
     // load the user search page
-    $this->app->system->page->forcePage('user', 'search', 'msg_success='._gettext("User record deleted."));   
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("User record deleted."));
+    $this->app->system->page->forcePage('user', 'search');   
     
 }

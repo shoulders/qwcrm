@@ -20,8 +20,9 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     // update the supplier record
     $this->app->components->supplier->updateRecord(\CMSApplication::$VAR['qform']);
     
-    // load the supplier details apge
-    $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id'], 'msg_success='._gettext("Supplier updated successfully."));     
+    // load the supplier details page
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier updated successfully."));
+    $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);     
     
 } else {
     

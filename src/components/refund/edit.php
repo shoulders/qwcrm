@@ -22,7 +22,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->components->refund->recalculateTotals(\CMSApplication::$VAR['refund_id']);
     
     // load details page
-    $this->app->system->page->forcePage('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id'], 'msg_success='._gettext("Refund updated successfully.")); 
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("Refund updated successfully."));
+    $this->app->system->page->forcePage('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id']); 
 } else {
     
     // Check if refund can be edited

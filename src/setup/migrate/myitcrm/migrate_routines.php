@@ -280,7 +280,7 @@ class MigrateMyitcrm extends Setup {
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
         // Assign success message
-        $this->app->smarty->assign('msg_success', _gettext("Company details updated."));
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
 
         // Log activity            
         $this->writeRecordToSetupLog('migrate', _gettext("Company details updated."));

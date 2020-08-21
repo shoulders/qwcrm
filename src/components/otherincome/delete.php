@@ -24,4 +24,5 @@ if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['ot
 $this->app->components->otherincome->deleteRecord(\CMSApplication::$VAR['otherincome_id']);
 
 // Load the otherincome search page
-$this->app->system->page->forcePage('otherincome', 'search', 'msg_success='._gettext("Otherincome deleted successfully."));
+$this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome deleted successfully."));
+$this->app->system->page->forcePage('otherincome', 'search');

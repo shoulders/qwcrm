@@ -882,7 +882,7 @@ class Setup extends Components {
                     $record .= _gettext("This stage will upgrade QWcrm to version").' '.$targetVersion.'<br>';
                     $record .= _gettext("If there are more upgrade stages to perform, they will start immediately after this one.");
                     $this->writeRecordToSetupLog('upgrade', $record);
-                    $this->app->smarty->assign('msg_success', $record);
+                    $this->app->system->variables->systemMessagesWrite('success', $record);
                     break;
                 }
            
@@ -1031,29 +1031,8 @@ class Setup extends Components {
         }
 
     }
-
-
-    ############################################
-    #         Submit config settings           #  // not currently used
-    ############################################
-
-    public function submitQwcrmConfigSettings($VAR) {
-
-        // clear uneeded variables
-        unset($VAR['page']);
-        unset($VAR['submit']);
-        unset($VAR['stage']);
-        unset($VAR['themeVar']);    
-        unset($VAR['component']);
-        unset($VAR['page_tpl']);
-        unset($VAR['msg_success']);
-        unset($VAR['msg_danger']);   
-
-        $this->app->components->administrator->updateQwcrmConfigSettingsFile($VAR);
-
-    }
     
-        /** Delete Functions **/
+    /** Delete Functions **/
     
     ############################################
     #   Delete Setup Directory                 #

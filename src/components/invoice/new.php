@@ -35,5 +35,6 @@ if((isset(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['invoice_typ
     $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 }    
   
-// Fallback Error Control 
-$this->app->system->page->forcePage('workorder', 'search', 'msg_danger='._gettext("You cannot create an invoice by the method you just tried, report to admins."));
+// Fallback Error Control
+$this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot create an invoice by the method you just tried, report to admins."));
+$this->app->system->page->forcePage('workorder', 'search');

@@ -38,12 +38,14 @@ if (isset(\CMSApplication::$VAR['submit'])) {
         if (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
 
             // Load the new payment page for expense
-             $this->app->system->page->forcePage('payment', 'new&type=refund&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
+             $this->app->system->page->forcePage('payment', 'new&type=refund&refund_id='.$refund_id);
 
         } else {
 
             // load refund details page
-            $this->app->system->page->forcePage('refund', 'details&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
+            $this->app->system->page->forcePage('refund', 'details&refund_id='.$refund_id);
         }    
 
  // Load refund page with the invoice refund details

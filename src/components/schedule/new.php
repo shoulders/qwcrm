@@ -54,10 +54,12 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         $start_day             = date('d', $this->app->system->general->dateToTimestamp(\CMSApplication::$VAR['qform']['start_date'])  );
     
         // Load the schedule day with the newly submitted schedule item
-        $this->app->system->page->forcePage('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id'].'&msg_success='._gettext("Schedule Successfully Created"));
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Schedule Successfully Created"));
+        $this->app->system->page->forcePage('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id']);
         
         // Load the updated schedule details page
-        //$this->app->system->page->force_page('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id'], 'msg_success='.gettext("Schedule Successfully Updated."));
+        // $this->app->system->variables->systemMessagesWrite('success', gettext("Schedule Successfully Updated."));
+        //$this->app->system->page->force_page('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id']);
         
     }
 

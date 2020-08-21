@@ -19,7 +19,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         
         $this->app->components->expense->updateRecord(\CMSApplication::$VAR['qform']);
         $this->app->components->expense->recalculateTotals(\CMSApplication::$VAR['qform']['expense_id']);
-        $this->app->system->page->forcePage('expense', 'details&expense_id='.\CMSApplication::$VAR['qform']['expense_id'], 'msg_success='._gettext("Expense updated successfully.")); 
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense updated successfully."));
+        $this->app->system->page->forcePage('expense', 'details&expense_id='.\CMSApplication::$VAR['qform']['expense_id']); 
 
 } else {
     

@@ -22,7 +22,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->components->otherincome->recalculateTotals(\CMSApplication::$VAR['qform']['otherincome_id']);
     
     // load details page
-    $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id'], 'msg_success='._gettext("Otherincome updated successfully.")); 
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome updated successfully."));
+    $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id']); 
 } else {  
 
     // Check if payment can be edited

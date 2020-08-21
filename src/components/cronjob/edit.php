@@ -21,7 +21,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->components->cronjob->updateRecord(\CMSApplication::$VAR['qform']);    
     
     // Load details page
-    $this->app->system->page->forcePage('cronjob', 'details&cronjob_id='.\CMSApplication::$VAR['qform']['cronjob_id'], 'msg_success='._gettext("Cronjob updated successfully."));
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("Cronjob updated successfully."));
+    $this->app->system->page->forcePage('cronjob', 'details&cronjob_id='.\CMSApplication::$VAR['qform']['cronjob_id']);
     
 } else {  
     

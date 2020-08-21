@@ -33,7 +33,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $voucher_id = $this->app->components->voucher->insertRecord(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['type'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['note']);
 
     // Load the attached invoice Details page
-    $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id'], 'msg_success'._gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
+    $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
 
 }
     

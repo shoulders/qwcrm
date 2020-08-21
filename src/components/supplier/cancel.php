@@ -24,4 +24,5 @@ if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['suppl
 $this->app->components->supplier->cancelRecord(\CMSApplication::$VAR['supplier_id']);
 
 // Load the supplier search page
-$this->app->system->page->forcePage('supplier', 'search', 'msg_success='._gettext("Supplier cancelled successfully."));
+$this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier cancelled successfully."));
+$this->app->system->page->forcePage('supplier', 'search');
