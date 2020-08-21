@@ -19,9 +19,9 @@
         {/if}
         <td class="olohead">{t}Gross{/t}</td>
         <td class="olohead">{t}Balance{/t}</td>
-        <td class="olohead">{t}Status{/t}</td>
-        <td class="olohead">{t}Note{/t}</td>
+        <td class="olohead">{t}Status{/t}</td>        
         <td class="olohead">{t}Items{/t}</td>
+        <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=e loop=$display_expenses}
@@ -46,13 +46,13 @@
                {section name=s loop=$expense_statuses}    
                    {if $display_expenses[e].status == $expense_statuses[s].status_key}{t}{$expense_statuses[s].display_name}{/t}{/if}        
                {/section} 
-            </td> 
+            </td>            
+            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_expenses[e].items|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();"></td>
             <td class="olotd4" nowrap>
                 {if $display_expenses[e].note != ''}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_expenses[e].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
-            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_expenses[e].items|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();"></td>
             <td class="olotd4" nowrap>
                 <a href="index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
