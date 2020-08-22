@@ -77,9 +77,8 @@
                 {if $display_vouchers[g].status != 'deleted'}
                     <a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers[g].voucher_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                     <a href="index.php?component=voucher&page_tpl=edit&voucher_id={$display_vouchers[g].voucher_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                    <a href="index.php?component=voucher&page_tpl=print&voucher_id={$display_vouchers[g].voucher_id}&print_content=voucher&print_type=htmlBrowser&themeVar=print" target="_blank"> 
-                        <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Voucher{/t}');" onMouseOut="hideddrivetip();">
-                    </a>
+                    <a href="index.php?component=voucher&page_tpl=print&voucher_id={$display_vouchers[g].voucher_id}&commContent=voucher&commType=htmlBrowser&themeVar=print" target="_blank"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Voucher{/t}');" onMouseOut="hideddrivetip();"></a>
+                    <a><img src="{$theme_images_dir}icons/16x16/gift.gif" border="0" onMouseOver="ddrivetip('{t}Email the Voucher to the client{/t}');" onMouseOut="hideddrivetip();" onclick="return confirm('Are you sure you want to email this voucher to the client?') && $.ajax( { url:'index.php?component=voucher&page_tpl=email&voucher_id={$display_vouchers[g].voucher_id}&commContent=voucher&commType=pdfEmail&themeVar=print', success: function(data) { $('body').append(data); } } );"></a>
                 {/if}
             </td>
         </tr>

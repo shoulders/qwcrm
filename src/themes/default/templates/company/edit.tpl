@@ -370,7 +370,7 @@
                                                                             <input type="hidden" name="qform[email_msg_workorder]" value="">
                                                                             {*<table cellpadding="5" cellspacing="0">
                                                                                 <tr>
-                                                                                    <td class="menuhead">{t}Workorder Message{/t}:</td>
+                                                                                    <td class="menuhead">{t}Workorder Email Message{/t}:</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>                                                                
@@ -402,15 +402,16 @@
                                                                         <td>
                                                                             <table cellpadding="5" cellspacing="0">
                                                                                 <tr>
-                                                                                    <td class="menuhead">{t}Invoice Message{/t}:</td>
+                                                                                    <td class="menuhead">{t}Invoice Email Message{/t}:</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>                                                                
                                                                                         <strong>Placeholders</strong><br>
-                                                                                        {literal}{client_display_name}{/literal} = {t}Company or Client's name (automatic){/t}<br>
+                                                                                        {literal}{company_name}{/literal} = {t}This company's name{/t}<br>
+                                                                                        {literal}{client_display_name}{/literal} = {t}Client's company name or contact name (automatic){/t}<br>
                                                                                         {literal}{client_first_name}{/literal} = {t}Client's/Contact's first name{/t}<br> 
                                                                                         {literal}{client_last_name}{/literal} = {t}Client's/Contact's last name{/t}<br> 
-                                                                                        {literal}{client_credit_terms}{/literal} = {t}Client's credit terms{/t} 
+                                                                                        {literal}{client_credit_terms}{/literal} = {t}Client's credit terms{/t}
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
@@ -426,7 +427,39 @@
                                                                                 </tr>*}
                                                                             </table>                                                        
                                                                         </td>
-                                                                    </tr>                                                                                
+                                                                    </tr>
+                                                                    
+                                                                    <!-- Voucher -->
+
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table cellpadding="5" cellspacing="0">
+                                                                                <tr>
+                                                                                    <td class="menuhead">{t}Voucher Email Message{/t}:</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>                                                                
+                                                                                        <strong>Placeholders</strong><br>
+                                                                                        {literal}{company_name}{/literal} = {t}This company's name{/t}<br>
+                                                                                        {literal}{client_display_name}{/literal} = {t}Client's company name or contact name (automatic){/t}<br>
+                                                                                        {literal}{client_first_name}{/literal} = {t}Client's/Contact's first name{/t}<br> 
+                                                                                        {literal}{client_last_name}{/literal} = {t}Client's/Contact's last name{/t}<br>                                                                                        
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td><textarea cols="80" rows="15" class="olotd5" name="qform[email_msg_voucher]">{$company_details.email_msg_voucher}</textarea></td>
+                                                                                </tr>
+                                                                                {*<tr>
+                                                                                    <td align="left"><b>{t}Enabled{/t}:</b>
+                                                                                        <select name="qform[email_msg_voucher_active]">                                                                    
+                                                                                            <option value="1" {if $company_details.email_msg_voucher_active == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                                            <option value="0" {if $company_details.email_msg_voucher_active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                                        </select>
+                                                                                    </td>
+                                                                                </tr>*}
+                                                                            </table>                                                        
+                                                                        </td>
+                                                                    </tr> 
 
                                                                 </table>
                                                             </td>

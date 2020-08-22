@@ -65,12 +65,12 @@
         
         <tr>
             <td style="text-align:center">
-                {$barcode}
+                <div>{$voucher_barcode}</div>
                 {$voucher_details.voucher_code}<br>
                 <strong>{t}Valid Until{/t} {$voucher_details.expiry_date|date_format:$date_format}</strong>
             </td>
         </tr>
-    </table>
+    </table>           
                                 
 </body>
 </html>

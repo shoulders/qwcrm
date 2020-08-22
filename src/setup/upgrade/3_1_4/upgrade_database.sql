@@ -17,11 +17,11 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'invoice:delete
 --
 
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES 
-('cronjob:details', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
-('cronjob:edit', '1', '0', '0', '0', '0', '0', '0', '0', '0'),
-('cronjob:overview', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
-('cronjob:run', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
-('cronjob:unlock', '1', '0', '0', '0', '0', '0', '0', '0', '0');
+('cronjob:details', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+('cronjob:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
+('cronjob:overview', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+('cronjob:run', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+('cronjob:unlock', 1, 0, 0, 0, 0, 0, 0, 0, 0);
 
 CREATE TABLE `#__cronjob_records` (
   `cronjob_id` int(11) NOT NULL,
@@ -69,3 +69,18 @@ ALTER TABLE `#__invoice_parts` CHANGE `sub_total_tax` `subtotal_tax` DECIMAL(10,
 ALTER TABLE `#__invoice_parts` CHANGE `sub_total_gross` `subtotal_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 
 
+--
+-- Add Email permissions
+-- 
+
+INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES 
+('invoice:email', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('voucher:email', 1, 1, 0, 1, 1, 1, 0, 0, 0);
+
+--
+-- Add Email Voucher Message
+--
+
+ALTER TABLE `#__company_record` ADD `email_msg_voucher` TEXT NOT NULL AFTER `email_msg_workorder`;
+UPDATE `#__company_record` SET `email_msg_voucher` = '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>';
+ALTER TABLE `#__company_record` CHANGE `email_msg_workorder` `email_msg_workorder` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `email_signature_active`; 

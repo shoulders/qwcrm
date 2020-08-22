@@ -18,11 +18,11 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
 if
 (
     !isset(\CMSApplication::$VAR['commContent'], \CMSApplication::$VAR['commType']) &&
-    !in_array(\CMSApplication::$VAR['commContent'], array('invoice', 'client_envelope')) ||
-    !in_array(\CMSApplication::$VAR['commType'], array('htmlBrowser', 'pdfBrowser', 'pdfDownload'))
+    !in_array(\CMSApplication::$VAR['commContent'], array('invoice')) ||
+    !in_array(\CMSApplication::$VAR['commType'], array('pdfEmail'))
 )
 {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The print request is not valid."));
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The email request is not valid."));
     $this->app->system->page->forcePage('invoice', 'search');
 }
 
@@ -75,39 +75,16 @@ $this->app->smarty->assign('invoice_statuses',                 $this->app->compo
 if(\CMSApplication::$VAR['commContent'] == 'invoice')
 {    
     $templateFile = 'invoice/printing/print_invoice.tpl';
-    $filename = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'];
-    
-    // Print HTML Invoice
-    if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
-    {        
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as html.");       
+    $filename = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'];     
+        
+    // Email PDF Invoice
+    if(\CMSApplication::$VAR['commType'] == 'pdfEmail')
+    {  
+        $emailSubject = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'];
+        $emailBody = $this->app->system->email->getEmailMessageBody('invoice', $client_details['client_id']);
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");       
     }
-    
-    // Print PDF Invoice
-    if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
-    {        
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as a PDF.");
-    } 
-    
-    // Download PDF Invoice
-    if (\CMSApplication::$VAR['commType'] == 'pdfDownload')
-    {        
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been dowloaded as a PDF.");      
-    } 
-    
-}
-
-// Client Envelope Print Routine
-if(\CMSApplication::$VAR['commContent'] == 'client_envelope')
-{    
-    $templateFile = 'invoice/printing/print_client_envelope.tpl';
-    $filename = _gettext("Invoice Envelope").' '.\CMSApplication::$VAR['invoice_id'];
-    
-    // Print HTML Client Envelope
-    if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
-    {        
-        $record = _gettext("Invoice Envelope").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
-    }    
+  
 }
 
 // Log activity

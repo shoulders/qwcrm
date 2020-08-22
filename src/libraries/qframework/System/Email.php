@@ -305,20 +305,35 @@ class Email extends System {
     #  Get email message body                #
     ##########################################
 
-    function getEmailMessageBody($message_name, $client_details) {
+    function getEmailMessageBody($message_name, $client_id) {
 
+        // Correct the name
+        $message_name = 'email_msg_'.$message_name;
+        
+        $company_details = $this->app->components->company->getRecord();
+        $client_details = $this->app->components->client->getRecord($client_id);
+        
         // get the message from the database
-        $message = $this->app->components->company->getRecord($message_name);
+        if(!$message = $this->app->components->company->getRecord($message_name)) {
+            $message = _gettext("There is no email template associated with this action.");
+        }
 
         // Process placeholders
-        if($message_name == 'email_msg_invoice') {        
+        if($message_name == 'email_msg_invoice') {
+            $this->replacePlaceholder($message, '{company_name}', $company_details['company_name']);
             $this->replacePlaceholder($message, '{client_display_name}', $client_details['display_name']);
             $this->replacePlaceholder($message, '{client_first_name}', $client_details['first_name']);
-            $this->replacePlaceholder($message, '{client_last_name}', $client_details['last_name']);
+            $this->replacePlaceholder($message, '{client_last_name}', $client_details['last_name']); 
             $this->replacePlaceholder($message, '{client_credit_terms}', $client_details['credit_terms']);
         }
         if($message_name == 'email_msg_workorder') {
             // not currently used
+        }
+        if($message_name == 'email_msg_voucher') {
+            $this->replacePlaceholder($message, '{company_name}', $company_details['company_name']);
+            $this->replacePlaceholder($message, '{client_display_name}', $client_details['display_name']);
+            $this->replacePlaceholder($message, '{client_first_name}', $client_details['first_name']);
+            $this->replacePlaceholder($message, '{client_last_name}', $client_details['last_name']);
         }
 
         // return the process email

@@ -308,7 +308,8 @@ class Company extends Components {
                 email_signature         =". $this->app->db->qstr( $qform['email_signature']                  ).",
                 email_signature_active  =". $this->app->db->qstr( $qform['email_signature_active']           ).",
                 email_msg_invoice       =". $this->app->db->qstr( $qform['email_msg_invoice']                ).",
-                email_msg_workorder     =". $this->app->db->qstr( $qform['email_msg_workorder']              );                          
+                email_msg_workorder     =". $this->app->db->qstr( $qform['email_msg_workorder']              ).",   
+                email_msg_voucher       =". $this->app->db->qstr( $qform['email_msg_voucher']                );                          
 
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
