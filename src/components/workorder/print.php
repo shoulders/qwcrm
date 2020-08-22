@@ -8,12 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-// Check if we have a workorder_id
-if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    $this->app->system->page->forcePage('workorder', 'search');
-}
-
 // Check the request is valid
 if
 (
@@ -26,19 +20,45 @@ if
     $this->app->system->page->forcePage('workorder', 'search');
 }
 
-// Get Record Details
-$workorder_details  = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id']);
-$client_details   = $this->app->components->client->getRecord($workorder_details['client_id']);
+// Printing Blank media is set
+if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMedia'] === 'true')
+{
+    \CMSApplication::$VAR['workorder_id'] = null;
+    $client_details = null;
+    $workorder_details  = null;    
+    $this->app->smarty->assign('date_format',          '');    
+    $this->app->smarty->assign('company_details',      null);
+    $this->app->smarty->assign('employee_details',     null);
+    $this->app->smarty->assign('client_details',       null);
+    $this->app->smarty->assign('workorder_details',    null);
+    $this->app->smarty->assign('client_types',         null);
+    $this->app->smarty->assign('workorder_statuses',   null);
+    $this->app->smarty->assign('workorder_notes',      null);
+    $this->app->smarty->assign('workorder_schedules',  null);
+    
+} else {
 
-/// Assign Variables
-$this->app->smarty->assign('company_details',      $this->app->components->company->getRecord()                                        );
-$this->app->smarty->assign('employee_details',     $this->app->components->user->getRecord($workorder_details['employee_id'])          );
-$this->app->smarty->assign('client_details',       $client_details                                              );
-$this->app->smarty->assign('workorder_details',    $workorder_details                                           );
-$this->app->smarty->assign('client_types',         $this->app->components->client->getTypes()                                           );
-$this->app->smarty->assign('workorder_statuses',   $this->app->components->workorder->getStatuses()                                     );
-$this->app->smarty->assign('workorder_notes',      $this->app->components->workorder->getNotes(\CMSApplication::$VAR['workorder_id'])                );
-$this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->getRecords('schedule_id', 'DESC', false, null, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
+    // Check if we have a workorder_id
+    if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
+        $this->app->system->page->forcePage('workorder', 'search');
+    }
+    
+    // Get Record Details
+    $client_details = $this->app->components->client->getRecord($workorder_details['client_id']);
+    $workorder_details  = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id']);    
+
+    // Assign Variables
+    $this->app->smarty->assign('company_details',      $this->app->components->company->getRecord()                                        );
+    $this->app->smarty->assign('employee_details',     $this->app->components->user->getRecord($workorder_details['employee_id'])          );
+    $this->app->smarty->assign('client_details',       $client_details                                              );
+    $this->app->smarty->assign('workorder_details',    $workorder_details                                           );
+    $this->app->smarty->assign('client_types',         $this->app->components->client->getTypes()                                           );
+    $this->app->smarty->assign('workorder_statuses',   $this->app->components->workorder->getStatuses()                                     );
+    $this->app->smarty->assign('workorder_notes',      $this->app->components->workorder->getNotes(\CMSApplication::$VAR['workorder_id'])                );
+    $this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->getRecords('schedule_id', 'DESC', false, null, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
+
+}
 
 // Technician Workorder Slip Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'technician_workorder_slip')
