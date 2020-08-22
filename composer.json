@@ -3,14 +3,14 @@
         "vendor-dir": "src/libraries/vendor"
     },
     "require": {
-        "phpmyadmin/motranslator": "^3.3",
+        "phpmyadmin/motranslator": "^5.0",
         "smarty/smarty": "^3.1",
-        "mpdf/mpdf": "^7.0",
+        "mpdf/mpdf": "^8.0",
         "adodb/adodb-php": "^5.20",
-        "swiftmailer/swiftmailer": "^5.4",
+        "swiftmailer/swiftmailer": "^6.0",
         "google/recaptcha": "^1.1",
-        "picqer/php-barcode-generator": "^0.2.2",
+        "picqer/php-barcode-generator": "^2.0",
         "filp/whoops": "^2.2",
-        "dragonmantank/cron-expression": "v3.0.0"
+        "dragonmantank/cron-expression": "^3.0.0"
     }
 }
