@@ -297,7 +297,7 @@ class Email extends System {
             $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
         }
 
-        return;
+        return true;
 
     }
 
