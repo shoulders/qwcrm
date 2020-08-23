@@ -114,7 +114,7 @@ if(!defined('QWCRM_SETUP')) {
 ################################################
 
 // Send optional Headers
-if((!isset($VAR['themeVar']) || $VAR['themeVar'] !== 'wrapperOff') || isset(\CMSApplication::$VAR['rawHtml'])) { 
+if(!isset($VAR['themeVar']) || $VAR['themeVar'] !== \CMSApplication::$VAR['rawHtml']) { 
 
     // Compress page payload and send compression headers
     if (\Factory::getConfig()->get('gzip')) {

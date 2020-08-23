@@ -18,7 +18,7 @@ if(isset(\CMSApplication::$VAR['posted_scope_string']) && strlen(\CMSApplication
 }
 
 // This page should be treated as RAW HTML
-\CMSApplication::$VAR['rawHtml'] = true;
+\CMSApplication::$VAR['themeVar'] = 'rawHtml';
 
 // Skip page logging
 if(!defined('SKIP_LOGGING')) {

@@ -41,36 +41,28 @@ class Page extends System {
 
     }
 
-    ############################
-    #  Build the page content  #    // All variables should be passed by \CMSApplication::$VAR because it is its own scope
-    ############################     // $themeVar = 'printPreview' = removes menu and header and footer sections (not mandatory html stuff) for printing content
-                                     // $themeVar = 'wrapperOff' = drops ALL headers and footers (html and user bits) - php controller has built all required variables
+    ############################  // All variables should be passed by \CMSApplication::$VAR because it is its own scope
+    #  Build the page content  #  // $themeVar = 'printPreview' = removes menu and header and footer sections (not mandatory html stuff) for printing content
+    ############################  // $themeVar = 'rawHtml' use fir things like workorder:autosuggest_scope functions              
 
     public function getPageContent($page_controller, $component = null, $page_tpl = null, $themeVar = null) {    
         
-        $pagePayload = '';      // Local store for page content
-        \CMSApplication::$VAR['rawHtml'] = null;       // Is the payload Raw HTML? This can be altered by the specified page controller (included file), if required (i.e. autosuggest)
+        // This is currently not used, and is only so i know where the page controller section is
+        page_controller:
+            
+        // Local store for page content
+        $pagePayload = '';
+
+        // Fetch the specified Page Controller (required template can set 'rawHtml' and builds/fetches all required variables for the templates and processes)
+        require($page_controller);      
         
         // Set the correct theme specification, either manually supplied or from the system
         $component = $component ?? \CMSApplication::$VAR['component'] ?? null;
         $page_tpl = $page_tpl ?? \CMSApplication::$VAR['page_tpl'] ?? null;
-        $themeVar = $themeVar ?? \CMSApplication::$VAR['themeVar'] ?? null;                       
-
-        // This is currently not used, and is only so i know where the page controller section is
-        page_controller:
-
-        // Fetch the specified Page Controller (also sets $rawHtml if required by the template) (build all required variables for the templates and processes)
-        require($page_controller);         
+        $themeVar = $themeVar ?? \CMSApplication::$VAR['themeVar'] ?? null;  
         
-        // If themeVar is set to wrapperOff mode or Raw HTML: Skip adding Header, Footer and Debug sections to the page  
-        // Raw mode is used for such things as workorder autosuggest_scope
-        if ($themeVar === 'wrapperOff' || \CMSApplication::$VAR['rawHtml']) {        
-
-            // If Raw HTML dont load a non-existent template or raw complete templates
-            if (!\CMSApplication::$VAR['rawHtml']) {
-                $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
-            }
-
+        // If themeVar is set to Raw HTML: Skip adding Header, Footer and Debug sections to the page        
+        if ($themeVar === 'rawHtml') {
             goto page_parse_payload;
         }
         
