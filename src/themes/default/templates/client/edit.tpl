@@ -57,7 +57,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><input name="qform[unit_discount_rate]" class="olotd5" size="4" value="{$client_details.unit_discount_rate|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
+                                                                            <td><input name="qform[discount_rate]" class="olotd5" size="4" value="{$client_details.discount_rate|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
                                                                         </tr>                                                                                  
                                                                     </table>
                                                                 </td>

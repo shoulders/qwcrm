@@ -84,3 +84,9 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ALTER TABLE `#__company_record` ADD `email_msg_voucher` TEXT NOT NULL AFTER `email_msg_workorder`;
 UPDATE `#__company_record` SET `email_msg_voucher` = '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>';
 ALTER TABLE `#__company_record` CHANGE `email_msg_workorder` `email_msg_workorder` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `email_signature_active`; 
+
+--
+-- Tidy up client_records
+--
+
+ALTER TABLE `#__client_records` CHANGE `unit_discount_rate` `discount_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00'; 

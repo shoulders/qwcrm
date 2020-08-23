@@ -58,7 +58,7 @@ CREATE TABLE `#__client_records` (
   `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `credit_terms` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_discount_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `discount_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `active` int(1) NOT NULL DEFAULT '0',
   `primary_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,

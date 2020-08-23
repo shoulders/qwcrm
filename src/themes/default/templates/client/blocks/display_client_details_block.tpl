@@ -44,7 +44,7 @@
                                             <td class="menutd"><b>{t}Credit Terms{/t}</b></td>
                                             <td class="menutd">{$client_details.credit_terms}</td>
                                             <td class="menutd"><b>{t}Discount{/t}</b></td>
-                                            <td class="menutd">{$client_details.unit_discount_rate}%</td>
+                                            <td class="menutd">{$client_details.discount_rate}%</td>
                                         </tr>
                                         </tr>
                                         <tr class="row2">
