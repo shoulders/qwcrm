@@ -75,8 +75,5 @@ if(isset(\CMSApplication::$VAR['ics_type']) && \CMSApplication::$VAR['ics_type']
 header('Content-type: text/calendar; charset=utf-8');
 header('Content-Disposition: attachment; filename=' . $ics_filename);
 
-// Output the .ics file
-echo $ics_content;
-
-// No further processing required
-die();
+// Output the .ics file (no further processing)
+die($ics_content);
