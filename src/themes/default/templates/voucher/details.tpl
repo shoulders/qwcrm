@@ -160,8 +160,8 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="button" onclick="window.open('index.php?component=voucher&page_tpl=print&voucher_id={$voucher_details.voucher_id}&commContent=voucher&commType=htmlBrowser&themeVar=print');">{t}Print HTML{/t}</button>
-                        <button type="button" onclick="confirm('Are you sure you want to email this voucher to the client?') && $.ajax( { url:'index.php?component=voucher&page_tpl=email&voucher_id={$voucher_details.voucher_id}&commContent=voucher&commType=pdfEmail&themeVar=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email Voucher{/t}</button>
+                        <button type="button" onclick="window.open('index.php?component=voucher&page_tpl=print&voucher_id={$voucher_details.voucher_id}&commContent=voucher&commType=htmlBrowser');">{t}Print HTML{/t}</button>
+                        <button type="button" onclick="confirm('Are you sure you want to email this voucher to the client?') && $.ajax( { url:'index.php?component=voucher&page_tpl=email&voucher_id={$voucher_details.voucher_id}&commContent=voucher&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email Voucher{/t}</button>
                     </td>
                 </tr>
             </table>

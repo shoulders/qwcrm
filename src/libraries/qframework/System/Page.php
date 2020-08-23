@@ -23,7 +23,7 @@ class Page extends System {
             $pageController = $this->app->system->router->pageController($mode, $component, $page_tpl, $themeVar);
 
             // Return the page as a variable
-            return $this->getPageContent($pageController, $mode, $component, $page_tpl, $themeVar);
+            return $this->getPageContent($pageController, $component, $page_tpl, $themeVar);
         }
 
         // Normal Behaviour, set the routing, get the page, load the page into the browser
@@ -33,7 +33,7 @@ class Page extends System {
             \CMSApplication::$VAR['page_controller'] = $this->app->system->router->pageController();
 
             // Build the page
-            \CMSApplication::$BuildPage = $this->getPageContent(\CMSApplication::$VAR['page_controller'], $mode);
+            \CMSApplication::$BuildPage = $this->getPageContent(\CMSApplication::$VAR['page_controller']);
 
             return;
 
@@ -43,12 +43,13 @@ class Page extends System {
 
     ############################
     #  Build the page content  #    // All variables should be passed by \CMSApplication::$VAR because it is its own scope
-    ############################
+    ############################     // $themeVar = 'printPreview' = removes menu and header and footer sections (not mandatory html stuff) for printing content
+                                     // $themeVar = 'wrapperOff' = drops ALL headers and footers (html and user bits) - php controller has built all required variables
 
-    public function getPageContent($page_controller, $mode = null, $component = null, $page_tpl = null, $themeVar = null) {    
+    public function getPageContent($page_controller, $component = null, $page_tpl = null, $themeVar = null) {    
         
         $pagePayload = '';      // Local store for page content
-        $rawHtml = false;       // Is the payload Raw HTML? This can be altered by the specified page controller (included file), if required (i.e. autosuggest)
+        \CMSApplication::$VAR['rawHtml'] = null;       // Is the payload Raw HTML? This can be altered by the specified page controller (included file), if required (i.e. autosuggest)
         
         // Set the correct theme specification, either manually supplied or from the system
         $component = $component ?? \CMSApplication::$VAR['component'] ?? null;
@@ -58,14 +59,15 @@ class Page extends System {
         // This is currently not used, and is only so i know where the page controller section is
         page_controller:
 
-        // Fetch the specified Page Controller
+        // Fetch the specified Page Controller (also sets $rawHtml if required by the template) (build all required variables for the templates and processes)
         require($page_controller);         
         
-        // If themeVar is set to Print mode or Raw HTML is enables, Skip adding Header, Footer and Debug sections to the page        
-        if ((isset($themeVar) && $themeVar === 'print') || $rawHtml) {        
+        // If themeVar is set to wrapperOff mode or Raw HTML: Skip adding Header, Footer and Debug sections to the page  
+        // Raw mode is used for such things as workorder autosuggest_scope
+        if ($themeVar === 'wrapperOff' || \CMSApplication::$VAR['rawHtml']) {        
 
-            // If Raw HTMl dont load a non-existent template
-            if (!$rawHtml) {
+            // If Raw HTML dont load a non-existent template or raw complete templates
+            if (!\CMSApplication::$VAR['rawHtml']) {
                 $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
             }
 
@@ -79,7 +81,7 @@ class Page extends System {
         $this->setPageHeaderAndMetaData($component, $page_tpl);
 
         // Fetch Header Block
-        if(!isset($themeVar) || $themeVar != 'off') {     
+        if($themeVar != 'printPreview') {     
             require(COMPONENTS_DIR.'core/blocks/theme_header_block.php');
             $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_header_block.tpl');
         } else {
@@ -89,27 +91,22 @@ class Page extends System {
         }
 
         // Fetch Header Legacy Template Code and Menu Block - Must be logged in, Clients, Guests and Public users will not see the menu
-        if((!isset($themeVar) || $themeVar != 'off') && $this->app->user->login_token && $this->app->user->login_usergroup_id <= 6) {       
+        if($themeVar != 'printPreview' && $this->app->user->login_token && $this->app->user->login_usergroup_id <= 6) {            
             $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
-
-            // is the menu disabled
-            if(!isset($themeVar) || $themeVar != 'menu_off') {
-                require(COMPONENTS_DIR.'core/blocks/theme_menu_block.php');
-                $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_menu_block.tpl');
-            }
-
+            require(COMPONENTS_DIR.'core/blocks/theme_menu_block.php');
+            $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_menu_block.tpl');
         }  
 
         // Fetch the specified Page Template
         $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
 
         // Fetch Footer Legacy Template code Block (closes content table)
-        if((!isset($themeVar) || $themeVar != 'off') && $this->app->user->login_token && $this->app->user->login_usergroup_id <= 6) {
+        if($themeVar != 'printPreview' && $this->app->user->login_token && $this->app->user->login_usergroup_id <= 6) {
             $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
         }
 
         // Fetch the Footer Block
-        if(!isset($themeVar) || $themeVar != 'off'){        
+        if($themeVar != 'printPreview'){        
             require(COMPONENTS_DIR.'core/blocks/theme_footer_block.php'); 
             $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_footer_block.tpl');
         }    
@@ -118,10 +115,10 @@ class Page extends System {
         if(!defined('QWCRM_SETUP') && $this->app->config->get('qwcrm_debug')){
             require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');
             $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl'); /////////////////// This TPL needs sorting  
-            $pagePayload .= "\r\n</body>\r\n</html>";
-        } else {
-            $pagePayload .= "\r\n</body>\r\n</html>";
         }
+        
+        // Close HTML
+        $pagePayload .= "\r\n</body>\r\n</html>";        
 
         page_parse_payload:
 

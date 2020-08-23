@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-if(isset(\CMSApplication::$VAR['submit'])) {
+if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])) {
 
     // Get the company VAT Flat Rate
     $vat_flat_rate = $this->app->components->company->getRecord('vat_flat_rate');
@@ -51,8 +51,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     // Otherincomes
     $otherincome_stats = $this->app->components->report->getOtherincomesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     $this->app->smarty->assign('otherincome_stats', $otherincome_stats);    
-    
-    
+        
     /* Profit and Turnover Calculations */
     
     // Holding array for prorta totals (prorata'ed where needed)     

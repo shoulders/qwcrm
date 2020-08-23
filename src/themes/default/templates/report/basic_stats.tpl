@@ -62,7 +62,12 @@
                                 <td>
                                     {include file='workorder/blocks/display_workorder_historic_stats_block.tpl' workorder_stats=$employee_workorder_historic_stats block_title=_gettext("Work Order Historic Stats")|cat:" ($login_display_name)"}                                            
                                 </td>
-                            </tr>                            
+                            </tr>
+
+                            <!-- Buttons -->
+                            <tr>
+                                <td><button onclick="printThisPage();">{t}Print this report{/t}</button></td>
+                            </tr>
                             
                         </table>
                     </td>

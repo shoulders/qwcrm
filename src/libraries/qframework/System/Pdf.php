@@ -80,11 +80,9 @@ class Pdf extends System {
         catch (\Mpdf\MpdfException $e)
         {               
             // Process the exception, log, print etc.
-            $message = $e->getMessage();
-            
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The PDF template has failed to build successfully."));
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is most likely an issue with the printing template."). ' <strong>`'.\CMSApplication::$VAR['component'].':'.\CMSApplication::$VAR['page_tpl'].':'.\CMSApplication::$VAR['commContent'].'`</strong>');
-            $this->app->system->variables->systemMessagesWrite('danger', $message);
+            $this->app->system->variables->systemMessagesWrite('danger', $e->getMessage());
             
             // Set process to failed
             $this->success = false;
@@ -111,8 +109,7 @@ class Pdf extends System {
             
             catch (\Mpdf\MpdfException $e)
             {               
-                // Process the exception, log, print etc.
-                
+                // Process the exception, log, print etc.                
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The PDF has failed to generate successfully."));
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is most likely an issue with the printing template."). ' <strong>`'.\CMSApplication::$VAR['component'].':'.\CMSApplication::$VAR['page_tpl'].':'.\CMSApplication::$VAR['commContent'].'`</strong>');
                 $this->app->system->variables->systemMessagesWrite('danger', $e->getMessage());
@@ -153,8 +150,7 @@ class Pdf extends System {
             
             catch (\Mpdf\MpdfException $e)
             {               
-                // Process the exception, log, print etc.
-                
+                // Process the exception, log, print etc.                
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The PDF has failed to generate successfully."));
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is most likely an issue with the printing template."). ' <strong>`'.\CMSApplication::$VAR['component'].':'.\CMSApplication::$VAR['page_tpl'].':'.\CMSApplication::$VAR['commContent'].'`</strong>');
                 $this->app->system->variables->systemMessagesWrite('danger', $e->getMessage());

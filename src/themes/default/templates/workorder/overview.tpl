@@ -81,9 +81,9 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" onclick="window.open('index.php?component=workorder&page_tpl=print&commContent=technician_workorder_slip&commType=htmlBrowser&blankMedia=true&themeVar=print');">{t}Print{/t} {t}Blank{/t} {t}Technician Work Order Slip{/t}</button><br>                                                  
-                                                <button type="button" onclick="window.open('index.php?component=workorder&page_tpl=print&commContent=technician_job_sheet&commType=htmlBrowser&blankMedia=true&themeVar=print');">{t}Print{/t} {t}Blank{/t} {t}Technician Job Sheet{/t}</button><br>
-                                                <button type="button" onclick="window.open('index.php?component=workorder&page_tpl=print&commContent=client_workorder_slip&commType=htmlBrowser&blankMedia=true&themeVar=print');">{t}Print{/t} {t}Blank{/t} {t}Client Work Order Slip{/t}</button><br>
+                                                <button type="button" onclick="window.open('index.php?component=workorder&page_tpl=print&commContent=technician_workorder_slip&commType=htmlBrowser&blankMedia=true');">{t}Print{/t} {t}Blank{/t} {t}Technician Work Order Slip{/t}</button><br>                                                  
+                                                <button type="button" onclick="window.open('index.php?component=workorder&page_tpl=print&commContent=technician_job_sheet&commType=htmlBrowser&blankMedia=true');">{t}Print{/t} {t}Blank{/t} {t}Technician Job Sheet{/t}</button><br>
+                                                <button type="button" onclick="window.open('index.php?component=workorder&page_tpl=print&commContent=client_workorder_slip&commType=htmlBrowser&blankMedia=true');">{t}Print{/t} {t}Blank{/t} {t}Client Work Order Slip{/t}</button><br>
                                             </td>                                            
                                         </tr>
                                     </table>

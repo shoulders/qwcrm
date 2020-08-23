@@ -360,3 +360,25 @@ function searchbarEbaySearch() {
     window.open(url, '_blank');
     
 }
+
+// Print the current page without the wrapper (i.e. content only) - optional go straight to print
+function printThisPage(printPreview = false) { 
+    
+    // Process the URL to allow for different formats
+    let url = window.location.href;
+    if(url.includes('?')) {
+        url += '&';
+    } else {
+        url += '?';
+    }
+    url += 'themeVar=printPreview';
+    
+    // Handle the printing
+    let printWindow = window.open(url);    
+    printWindow.focus();
+    if(!printPreview) {
+        printWindow.print();        
+        printWindow.onafterprint = function(){ printWindow.close(); };    
+    }
+    
+}

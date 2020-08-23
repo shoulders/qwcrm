@@ -57,7 +57,7 @@
             <td class="olotd4" align="center" nowrap>
                 <a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
                 <a href="index.php?component=schedule&page_tpl=edit&schedule_id={$display_schedules[s].schedule_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                <a href="index.php?component=schedule&page_tpl=icalendar&schedule_id={$display_schedules[s].schedule_id}&themeVar=print" target="_blank"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Export{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?component=schedule&page_tpl=icalendar&schedule_id={$display_schedules[s].schedule_id}&themeVar=wrapperOff" target="_blank"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Export{/t}');" onMouseOut="hideddrivetip();"></a>
                 <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$display_schedules[s].schedule_id}" onclick="return confirm('{t}Are you Sure you want to delete this Schedule?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete{/t}</b>');" onMouseOut="hideddrivetip();"></a>                 
             </td>            
 

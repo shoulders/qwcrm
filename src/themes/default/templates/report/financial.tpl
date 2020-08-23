@@ -25,7 +25,7 @@
                     <td class="menutd2" colspan="2">
                         
                         <!-- Date Range -->
-                        <form action="index.php?component=report&page_tpl=financial" method="post" name="stats_report" id="stats_report">
+                        <form action="index.php?component=report&page_tpl=financial" method="get" name="stats_report" id="stats_report">
                             
                             <table width="730px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
                                 <tr>
@@ -75,7 +75,10 @@
                                                         
                             <!-- Submit Button -->
                             <br />
-                            <div style="width: 65%; text-align: center;"><button type="submit" name="submit" value="submit">{t}Submit{/t}</button></div>
+                            <div style="width: 65%; text-align: center;">
+                                <button type="submit">{t}Submit{/t}</button>
+                                {if $enable_report_section}<button onclick="printThisPage();">{t}Print this report{/t}</button>{/if}
+                            </div>
                             <br />
                             
                         </form>                

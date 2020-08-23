@@ -28,7 +28,8 @@ class Communication extends System {
     private $emailSubject = null;
     private $emailBody = null;
 
-    public function performAction($action, $templateFile, $logMessage = null, $filename = null, $client_details = null, $emailSubject = null, $emailBody = null)
+    // this might need renaming - This loads a user configarble template (ie invoice) and they are a complete page
+    public function performAction($action, $templateFile = null, $logMessage = null, $filename = null, $client_details = null, $emailSubject = null, $emailBody = null)
     {
         // Load Class Variables
         $this->templatePayload = $this->app->smarty->fetch($templateFile);   
@@ -72,13 +73,13 @@ class Communication extends System {
     // Output PDF in browser
     private function pdfBrowser()
     {
-        $this->app->system->pdf->mpdfOutputBrowser($this->filename, $this->templatePayload);        
+        $this->app->system->pdf->mpdfOutputBrowser($this->filename.'.pdf', $this->templatePayload);        
     }
     
     // Output PDF as a downloadable file
     private function pdfDownload()
     {
-        $this->app->system->pdf->mpdfOutputDownload($this->filename, $this->templatePayload);
+        $this->app->system->pdf->mpdfOutputDownload($this->filename.'.pdf', $this->templatePayload);
     }    
     
     // Email PDF as an attachment
@@ -108,5 +109,5 @@ class Communication extends System {
             die(_gettext("Failed to Email asset."));
         }
     }
-        
+    
 }

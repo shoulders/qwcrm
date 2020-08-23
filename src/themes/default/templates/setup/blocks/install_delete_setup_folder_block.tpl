@@ -42,7 +42,7 @@
                                                                                 </p>
 
                                                                                 <!-- Delete Setup folder Button -->       
-                                                                                <button id="delete_setup_folder_button" type="button" style="display: block; margin: auto auto;" onclick="$.ajax( { url:'index.php?component=setup&page_tpl=install&action=delete_setup_folder&themeVar=off', success: function(data) { $('body').append(data); } } );">{t}Delete Setup Folder{/t}</button>
+                                                                                <button id="delete_setup_folder_button" type="button" style="display: block; margin: auto auto;" onclick="$.ajax( { url:'index.php?component=setup&page_tpl=install&action=delete_setup_folder&themeVar=printPreview', success: function(data) { $('body').append(data); } } );">{t}Delete Setup Folder{/t}</button>
                                                                                 
                                                                             </div>
                                                                             

@@ -312,7 +312,7 @@
                     <tr>
                         <td align="right">&nbsp;</td>
                         <td>                                                                                                                   
-                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&send_test_mail=true&themeVar=print', success: function(data) { $('body').append(data); } } );">{t}Send Test Mail{/t}</button>
+                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&send_test_mail=true', success: function(data) { $('body').append(data); } } );">{t}Send Test Mail{/t}</button>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Send Test Mail{/t}</strong></div><hr><div>{t escape=js}You must save your changes before using this as the test uses the saved settings not those on the page.<br><br>The email will be sent to the logged in user\'s email address{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -697,7 +697,7 @@
                     <tr>
                         <td align="right">&nbsp;</td>
                         <td>                                                                                                                   
-                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&clear_smarty_compile=true&themeVar=print', success: function(data) { $('body').append(data); } } );">{t}Clear Smarty Compile{/t}</button>
+                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&clear_smarty_compile=true', success: function(data) { $('body').append(data); } } );">{t}Clear Smarty Compile{/t}</button>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Clear Smarty Compile{/t}</strong></div><hr><div>{t escape=js}This clears all of the Smarty compiled template files.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -755,7 +755,7 @@
                     <tr>
                         <td align="right"><span style="color: blue">*</span></td>
                         <td>                                                                                                                   
-                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&clear_smarty_cache=true&themeVar=print', success: function(data) { $('body').append(data); } } );" disabled>{t}Clear Smarty Cache{/t}</button>
+                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&clear_smarty_cache=true', success: function(data) { $('body').append(data); } } );" disabled>{t}Clear Smarty Cache{/t}</button>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Clear Smarty Cache{/t}</strong></div><hr><div>{t escape=js}This clears the Smarty cache.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>

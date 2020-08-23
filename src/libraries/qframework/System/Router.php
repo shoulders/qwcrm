@@ -39,7 +39,7 @@ class Router extends System {
             // Set to the maintenance page    
             $component   = 'core';
             $page_tpl    = 'maintenance';        
-            $themeVar     = 'off';   
+            $themeVar    = 'printPreview';   
 
             goto page_controller_acl_check;
 
@@ -51,7 +51,7 @@ class Router extends System {
             // Set the error page    
             $component   = 'core';
             $page_tpl    = '404';        
-            $themeVar     = 'off'; 
+            $themeVar    = 'printPreview'; 
 
             goto page_controller_acl_check;
 
@@ -76,7 +76,7 @@ class Router extends System {
             // Set to the 404 error page       
             $component   = 'core';
             $page_tpl    = '404';            
-            $themeVar     = 'off';
+            $themeVar    = 'printPreview';
 
             goto page_controller_acl_check;
 
@@ -113,7 +113,7 @@ class Router extends System {
             // Set to the 403 error page 
             $component   = 'core';
             $page_tpl    = '403';        
-            $themeVar     = 'off';
+            $themeVar    = 'printPreview';
 
         }
 
