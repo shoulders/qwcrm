@@ -32,7 +32,7 @@
             <td class="olotd4" nowrap>{$display_otherincomes[r].date|date_format:$date_format}</td>                                                                
             <td class="olotd4" nowrap>
                 {section name=s loop=$otherincome_types}    
-                    {if $display_otherincomes[r].item_type == $otherincome_types[s].type_key}{t}{$otherincome_types[s].display_name}{/t}{/if}        
+                    {if $display_otherincomes[r].item == $otherincome_types[s].type_key}{t}{$otherincome_types[s].display_name}{/t}{/if}        
                 {/section}   
             </td>                                                                
              {if '/^vat_/'|preg_match:$qw_tax_system} 

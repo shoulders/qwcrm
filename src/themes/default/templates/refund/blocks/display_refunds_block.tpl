@@ -33,7 +33,7 @@
             <td class="olotd4" nowrap>{$display_refunds[r].date|date_format:$date_format}</td>                                                                
             <td class="olotd4" nowrap>
                 {section name=s loop=$refund_types}    
-                    {if $display_refunds[r].item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
+                    {if $display_refunds[r].item == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                 {/section}   
             </td>                                                                
             {if $qw_tax_system != 'no_tax'}

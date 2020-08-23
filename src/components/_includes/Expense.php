@@ -35,7 +35,7 @@ class Expense extends Components {
                 payee           =". $this->app->db->qstr( $qform['payee']                   ).",
                 date            =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 tax_system      =". $this->app->db->qstr( QW_TAX_SYSTEM                   ).",              
-                item_type       =". $this->app->db->qstr( $qform['item_type']               ).",
+                item       =". $this->app->db->qstr( $qform['item']               ).",
                 unit_net        =". $this->app->db->qstr( $qform['unit_net']                ).",
                 vat_tax_code    =". $this->app->db->qstr( $qform['vat_tax_code']            ).",
                 unit_tax_rate   =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
@@ -76,7 +76,7 @@ class Expense extends Components {
     #         Display expenses                          #
     #####################################################
 
-    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item = null, $status = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -94,7 +94,7 @@ class Expense extends Components {
         /* Filter the Records */  
 
         // Restrict by Item Type
-        if($item_type) { $whereTheseRecords .= " AND ".PRFX."expense_records.item_type= ".$this->app->db->qstr($item_type);}
+        if($item) { $whereTheseRecords .= " AND ".PRFX."expense_records.item= ".$this->app->db->qstr($item);}
 
         // Restrict by status
         if($status) {$whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->app->db->qstr($status);} 
@@ -264,7 +264,7 @@ class Expense extends Components {
                 employee_id         =". $this->app->db->qstr( $this->app->user->login_user_id ).",
                 payee               =". $this->app->db->qstr( $qform['payee']                    ).",            
                 date                =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",            
-                item_type           =". $this->app->db->qstr( $qform['item_type']                ).",
+                item           =". $this->app->db->qstr( $qform['item']                ).",
                 unit_net            =". $this->app->db->qstr( $qform['unit_net']                 ).",
                 vat_tax_code        =". $this->app->db->qstr( $qform['vat_tax_code']             ).",
                 unit_tax_rate       =". $this->app->db->qstr( $qform['unit_tax_rate']            ).",
@@ -416,7 +416,7 @@ class Expense extends Components {
                 payee               = '',           
                 date                = '0000-00-00', 
                 tax_system          = '',  
-                item_type           = '',
+                item           = '',
                 unit_net            = '',
                 vat_tax_code        = '',
                 unit_tax_rate       = '0.00',

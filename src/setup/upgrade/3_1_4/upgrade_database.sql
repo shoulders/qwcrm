@@ -89,4 +89,12 @@ ALTER TABLE `#__company_record` CHANGE `email_msg_workorder` `email_msg_workorde
 -- Tidy up client_records
 --
 
-ALTER TABLE `#__client_records` CHANGE `unit_discount_rate` `discount_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00'; 
+ALTER TABLE `#__client_records` CHANGE `unit_discount_rate` `discount_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
+
+--
+-- Standardise some database type fields
+--
+
+ALTER TABLE `#__expense_records` CHANGE `item_type` `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__otherincome_records` CHANGE `item_type` `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL; 
+ALTER TABLE `#__refund_records` CHANGE `item_type` `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;

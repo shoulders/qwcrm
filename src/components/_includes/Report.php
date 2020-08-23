@@ -1004,7 +1004,7 @@ class Report extends Components {
     #     Count Refunds                     #
     #########################################
 
-    public function countRefunds($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
+    public function countRefunds($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
@@ -1023,8 +1023,8 @@ class Report extends Components {
         }
 
         // Filter by Item Type
-        if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$this->app->db->qstr($item_type);
+        if($item) {
+            $whereTheseRecords .= " AND ".PRFX."refund_records.item=".$this->app->db->qstr($item);
         }
 
         // Restrict by Status
@@ -1055,7 +1055,7 @@ class Report extends Components {
     #  Sum selected value of refunds          #
     ###########################################
 
-    public function sumRefunds($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
+    public function sumRefunds($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
@@ -1074,8 +1074,8 @@ class Report extends Components {
         }
 
         // Filter by Item Type
-        if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$this->app->db->qstr($item_type);
+        if($item) {
+            $whereTheseRecords .= " AND ".PRFX."refund_records.item=".$this->app->db->qstr($item);
         }
 
         // Restrict by Status
@@ -1196,7 +1196,7 @@ class Report extends Components {
     #     Count Expenses                    #
     #########################################
 
-    public function countExpenses($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $invoice_id = null) {
+    public function countExpenses($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item = null, $status = null, $employee_id = null, $invoice_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
@@ -1215,8 +1215,8 @@ class Report extends Components {
         }    
 
         // Filter by Item Type
-        if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$this->app->db->qstr($item_type);
+        if($item) {
+            $whereTheseRecords .= " AND ".PRFX."expense_records.item=".$this->app->db->qstr($item);
         }
 
         // Restrict by Status
@@ -1247,7 +1247,7 @@ class Report extends Components {
     #  Sum selected value of expenses #
     ###################################
 
-    public function sumExpenses($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
+    public function sumExpenses($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item = null, $status = null, $employee_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
@@ -1266,8 +1266,8 @@ class Report extends Components {
         }      
 
         // Filter by Item Type
-        if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$this->app->db->qstr($item_type);
+        if($item) {
+            $whereTheseRecords .= " AND ".PRFX."expense_records.item=".$this->app->db->qstr($item);
         }
 
         // Restrict by Status
@@ -1391,7 +1391,7 @@ class Report extends Components {
     #     Count Other Incomes               #
     #########################################
 
-    public function countOtherincomes($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
+    public function countOtherincomes($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item = null, $status = null, $employee_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";  
@@ -1410,8 +1410,8 @@ class Report extends Components {
         }
 
         // Filter by Item Type
-        if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$this->app->db->qstr($item_type);
+        if($item) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.item=".$this->app->db->qstr($item);
         }
 
         // Restrict by Status
@@ -1437,7 +1437,7 @@ class Report extends Components {
     #  Sum selected value of Other Incomes  #
     #########################################
 
-    public function sumOtherincomes($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
+    public function sumOtherincomes($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item = null, $status = null, $employee_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";  
@@ -1456,8 +1456,8 @@ class Report extends Components {
         }
 
         // Filter by Item Type
-        if($item_type) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$this->app->db->qstr($item_type);
+        if($item) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.item=".$this->app->db->qstr($item);
         }
 
         // Restrict by Status

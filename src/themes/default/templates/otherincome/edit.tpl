@@ -119,9 +119,9 @@
                                                         <tr>
                                                             <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select id="item_type" name="qform[item_type]" class="olotd5"> 
+                                                                <select id="item" name="qform[item]" class="olotd5"> 
                                                                     {section name=s loop=$otherincome_types}    
-                                                                        <option value="{$otherincome_types[s].type_key}"{if $otherincome_details.item_type == $otherincome_types[s].type_key} selected{/if}>{t}{$otherincome_types[s].display_name}{/t}</option>
+                                                                        <option value="{$otherincome_types[s].type_key}"{if $otherincome_details.item == $otherincome_types[s].type_key} selected{/if}>{t}{$otherincome_types[s].display_name}{/t}</option>
                                                                     {/section}    
                                                                 </select>
                                                             </td>

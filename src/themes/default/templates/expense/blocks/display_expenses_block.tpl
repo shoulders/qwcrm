@@ -32,7 +32,7 @@
             <td class="olotd4" nowrap>{$display_expenses[e].date|date_format:$date_format}</td>                                                            
             <td class="olotd4" nowrap>
                 {section name=s loop=$expense_types}    
-                    {if $display_expenses[e].item_type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
+                    {if $display_expenses[e].item == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
                 {/section} 
             </td>
             {if '/^vat_/'|preg_match:$qw_tax_system} 

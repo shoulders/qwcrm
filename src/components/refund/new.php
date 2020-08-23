@@ -17,7 +17,7 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('refund', 'new') && 
 }
 
 // Check if we have a refund type and is valid
-if(!isset(\CMSApplication::$VAR['item_type']) || !\CMSApplication::$VAR['item_type'] && (\CMSApplication::$VAR['item_type'] == 'invoice' || \CMSApplication::$VAR['item_type'] == 'cash_purchase')) {
+if(!isset(\CMSApplication::$VAR['item']) || !\CMSApplication::$VAR['item'] && (\CMSApplication::$VAR['item'] == 'invoice' || \CMSApplication::$VAR['item'] == 'cash_purchase')) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund Type."));
     $this->app->system->page->forcePage('refund', 'search');
 }
@@ -65,9 +65,9 @@ if (isset(\CMSApplication::$VAR['submit'])) {
     $refund_details['invoice_id'] = $invoice_details['invoice_id'];
     $refund_details['date'] = date('Y-m-d');
     $refund_details['tax_system'] = $invoice_details['tax_system'];    
-    $refund_details['item_type'] = \CMSApplication::$VAR['item_type'];    
+    $refund_details['item'] = \CMSApplication::$VAR['item'];    
     $refund_details['unit_net'] = $invoice_details['unit_net'];
-    if(preg_match('/^vat_/', $invoice_details['tax_system']) && \CMSApplication::$VAR['item_type'] == 'invoice') {
+    if(preg_match('/^vat_/', $invoice_details['tax_system']) && \CMSApplication::$VAR['item'] == 'invoice') {
         $refund_details['vat_tax_code'] = 'TVM';
     } else {
         $refund_details['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']);

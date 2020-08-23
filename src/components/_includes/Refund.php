@@ -37,7 +37,7 @@ class Refund extends Components {
                 invoice_id       =". $this->app->db->qstr( $qform['invoice_id']              ).",                        
                 date             =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 tax_system       =". $this->app->db->qstr( $qform['tax_system']              ).",
-                item_type        =". $this->app->db->qstr( $qform['item_type']               ).",             
+                item        =". $this->app->db->qstr( $qform['item']               ).",             
                 unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).", 
                 vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).", 
                 unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
@@ -74,7 +74,7 @@ class Refund extends Components {
     #     Display refunds       #
     #############################
 
-    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -96,7 +96,7 @@ class Refund extends Components {
         /* Filter the Records */  
 
         // Restrict by Type
-        if($item_type) { $whereTheseRecords .= " AND ".PRFX."refund_records.item_type= ".$this->app->db->qstr($item_type);}
+        if($item) { $whereTheseRecords .= " AND ".PRFX."refund_records.item= ".$this->app->db->qstr($item);}
 
         // Restrict by Status
         if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qstr($status);}
@@ -442,7 +442,7 @@ class Refund extends Components {
                 invoice_id          = '',
                 date                = '0000-00-00', 
                 tax_system          = '',  
-                item_type           = '',             
+                item           = '',             
                 unit_net            = '',
                 vat_tax_code        = '',
                 unit_tax_rate       = '0.00',

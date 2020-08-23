@@ -15,6 +15,13 @@ if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['vouche
 }
 
 $voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']);
+
+// if the voucher is deleted return to the search page
+if($voucher_details['status'] === 'deleted') {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been deleted and can no longer be accessed."));
+    $this->app->system->page->forcePage('voucher', 'search');
+}
+
 $redeemed_client_display_name = $voucher_details['redeemed_client_id'] ? $this->app->components->client->getRecord($voucher_details['redeemed_client_id'], 'display_name') : null;
 
 // Build the page

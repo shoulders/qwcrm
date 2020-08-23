@@ -82,7 +82,7 @@
                                 <td class="olotd4" align="center" width="33%" height="150"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_refund}
-                                        <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to refund this invoice?{/t}')) window.location.href='index.php?component=refund&page_tpl=new&item_type=invoice&invoice_id={$invoice_id}';">{t}Refund{/t}</button>                                        
+                                        <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to refund this invoice?{/t}')) window.location.href='index.php?component=refund&page_tpl=new&item=invoice&invoice_id={$invoice_id}';">{t}Refund{/t}</button>                                        
                                     {else}
                                         {t}This invoice cannot be refunded. You can only refund the invoice if it is paid and is not cancelled or deleted.{/t}
                                     {/if}                                        
