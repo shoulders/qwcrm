@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['unlock_type']) && (\CMSApplication::$VAR['unloc
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No valid unlock command supplied."));
     
     // Return to the page this cron was run from
-    $this->app->system->page->forcePage($_SERVER['HTTP_REFERER'], null, null, 'get');
+    $this->app->system->page->forcePage($_SERVER['HTTP_REFERER']);
 } 
 
 
@@ -53,4 +53,4 @@ if(\CMSApplication::$VAR['unlock_type'] === 'cronjob') {
 }
 
 // Return to the page this cron was run from
-$this->app->system->page->forcePage($_SERVER['HTTP_REFERER'], null, null, 'get');
+$this->app->system->page->forcePage($_SERVER['HTTP_REFERER']);

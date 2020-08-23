@@ -23,4 +23,4 @@ if(!isset(\CMSApplication::$VAR['cronjob_id']) || !\CMSApplication::$VAR['cronjo
 $this->app->components->cronjob->runCronjob(\CMSApplication::$VAR['cronjob_id'], false);
 
 // Return to the page this cron was run from
-$this->app->system->page->forcePage($_SERVER['HTTP_REFERER'], null, null, 'get');
+$this->app->system->page->forcePage($_SERVER['HTTP_REFERER']);
