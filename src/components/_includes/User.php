@@ -766,7 +766,8 @@ class User extends Components {
             // Reload Homepage with message (default)
 
             // only $_GET will work because the session store is destroyed (this is good behaviour)
-            $this->app->system->page->forcePage('index.php', null, 'msg_success='._gettext("Logout successful."), 'get');
+            //$this->app->system->page->forcePage('index.php', null, 'msg_success='._gettext("Logout successful."), 'get');
+            $this->app->system->page->forcePage('index.php');
 
         }
 
