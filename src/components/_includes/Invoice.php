@@ -185,7 +185,7 @@ defined('_QWEXEC') or die;
     #     Display Invoices                  #
     #########################################
 
-    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = 0, $page_no = null, $search_category = 'invoice_id', $search_term = null, $status = null, $employee_id = null, $client_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'invoice_id', $search_term = null, $status = null, $employee_id = null, $client_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;

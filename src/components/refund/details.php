@@ -18,7 +18,7 @@ if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes()                                                                                 );
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()                                                             ); 
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses()                                                                              );
-$this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', false, null, null, null, null, 'refund', null, null, null, null, null, \CMSApplication::$VAR['refund_id']));
+$this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, 'refund', null, null, null, null, null, \CMSApplication::$VAR['refund_id']));
 
 // Build the page
 $refund_details = $this->app->components->refund->getRecord(\CMSApplication::$VAR['refund_id']);

@@ -64,7 +64,7 @@ class OtherIncome extends Components {
     #  Display otherincomes       #
     ###############################
 
-    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = 'otherincome_id', $search_term = null, $type = null, $status = null) {
+    public function getRecords($order_by, $direction, $records_per_page = null, $use_pages = false, $page_no = null, $search_category = 'otherincome_id', $search_term = null, $type = null, $status = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;    

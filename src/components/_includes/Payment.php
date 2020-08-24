@@ -88,7 +88,7 @@ class Payment extends Components {
     #  Display all payments the given status            #
     #####################################################
 
-    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = 0, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;

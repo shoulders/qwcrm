@@ -35,4 +35,4 @@ $this->app->smarty->assign('filter_type',          \CMSApplication::$VAR['filter
 $this->app->smarty->assign('filter_status',        \CMSApplication::$VAR['filter_status']                                                                                               );
 $this->app->smarty->assign('supplier_statuses',    $this->app->components->supplier->getStatuses()   );
 $this->app->smarty->assign('supplier_types',       $this->app->components->supplier->getTypes()                                                                                                );
-$this->app->smarty->assign('display_suppliers',    $this->app->components->supplier->getRecords('supplier_id', 'DESC', true, 25, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'])   );
+$this->app->smarty->assign('display_suppliers',    $this->app->components->supplier->getRecords('supplier_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'])   );

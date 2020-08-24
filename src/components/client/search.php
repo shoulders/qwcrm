@@ -34,6 +34,6 @@ $this->app->smarty->assign('search_term',          \CMSApplication::$VAR['search
 $this->app->smarty->assign('filter_status',        \CMSApplication::$VAR['filter_status']                                                                                                               );
 $this->app->smarty->assign('filter_type',          \CMSApplication::$VAR['filter_type']                                                                                                                 );
 $this->app->smarty->assign('client_types',       $this->app->components->client->getTypes()                                                                                                                    );
-$this->app->smarty->assign('display_clients',    $this->app->components->client->getRecords('client_id', 'DESC', true, 25, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_status'])   );
+$this->app->smarty->assign('display_clients',    $this->app->components->client->getRecords('client_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_status'])   );
 
 $chicken = 55;

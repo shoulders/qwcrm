@@ -15,12 +15,12 @@ if($this->app->user->login_is_employee) {
     \CMSApplication::$VAR['page_no'] = \CMSApplication::$VAR['page_no'] ?? null;
 
     // Employee Workorders
-    $this->app->smarty->assign('employee_workorders_assigned',          $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'assigned', $this->app->user->login_user_id)          );
-    $this->app->smarty->assign('employee_workorders_waiting_for_parts', $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'waiting_for_parts', $this->app->user->login_user_id) );
-    $this->app->smarty->assign('employee_workorders_scheduled',         $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'scheduled', $this->app->user->login_user_id)         );
-    $this->app->smarty->assign('employee_workorders_with_client',       $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'with_client', $this->app->user->login_user_id)       );
-    $this->app->smarty->assign('employee_workorders_on_hold',           $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'on_hold', $this->app->user->login_user_id)           );
-    $this->app->smarty->assign('employee_workorders_management',        $this->app->components->workorder->getRecords('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'management', $this->app->user->login_user_id)        );
+    $this->app->smarty->assign('employee_workorders_assigned',          $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'assigned', $this->app->user->login_user_id)          );
+    $this->app->smarty->assign('employee_workorders_waiting_for_parts', $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'waiting_for_parts', $this->app->user->login_user_id) );
+    $this->app->smarty->assign('employee_workorders_scheduled',         $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'scheduled', $this->app->user->login_user_id)         );
+    $this->app->smarty->assign('employee_workorders_with_client',       $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'with_client', $this->app->user->login_user_id)       );
+    $this->app->smarty->assign('employee_workorders_on_hold',           $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'on_hold', $this->app->user->login_user_id)           );
+    $this->app->smarty->assign('employee_workorders_management',        $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'management', $this->app->user->login_user_id)        );
 
     // Misc
     $this->app->smarty->assign('welcome_msg', $this->app->components->core->getWelcomeMsg());

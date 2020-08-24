@@ -59,7 +59,7 @@ $this->app->smarty->assign('default_vat_tax_code',     $this->app->components->c
 // Invoice Items
 $this->app->smarty->assign('labour_items_json',        json_encode($this->app->components->invoice->getLabourItems(\CMSApplication::$VAR['invoice_id']))                                                  );
 $this->app->smarty->assign('parts_items_json',         json_encode($this->app->components->invoice->getPartsItems(\CMSApplication::$VAR['invoice_id']))                                                   );
-$this->app->smarty->assign('display_vouchers',         $this->app->components->voucher->getRecords('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
+$this->app->smarty->assign('display_vouchers',         $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
 
 // Sub Totals
 $this->app->smarty->assign('labour_items_subtotals',  $this->app->components->invoice->getLabourItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );

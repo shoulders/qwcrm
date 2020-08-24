@@ -32,4 +32,4 @@ $this->app->smarty->assign('search_category',    \CMSApplication::$VAR['search_c
 $this->app->smarty->assign('search_term',        \CMSApplication::$VAR['search_term']                                                                               );
 $this->app->smarty->assign('filter_status',      \CMSApplication::$VAR['filter_status']                                                                             );
 $this->app->smarty->assign('workorder_statuses', $this->app->components->workorder->getStatuses()                                                                          );
-$this->app->smarty->assign('display_workorders', $this->app->components->workorder->getRecords('workorder_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status']));
+$this->app->smarty->assign('display_workorders', $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status']));

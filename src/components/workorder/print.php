@@ -56,7 +56,7 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
     $this->app->smarty->assign('client_types',         $this->app->components->client->getTypes()                                           );
     $this->app->smarty->assign('workorder_statuses',   $this->app->components->workorder->getStatuses()                                     );
     $this->app->smarty->assign('workorder_notes',      $this->app->components->workorder->getNotes(\CMSApplication::$VAR['workorder_id'])                );
-    $this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->getRecords('schedule_id', 'DESC', false, null, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
+    $this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->getRecords('schedule_id', 'DESC', 0, false, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
 
 }
 

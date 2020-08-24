@@ -22,7 +22,7 @@ $this->app->smarty->assign('employee_details',     $this->app->components->user-
 $this->app->smarty->assign('client_details',       $client_details                                                                          );
 $this->app->smarty->assign('workorder_statuses',   $this->app->components->workorder->getStatuses()                                                                 );
 $this->app->smarty->assign('workorder_details',    $workorder_details                                                                       );
-$this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->getRecords('schedule_id', 'DESC', false, null, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
+$this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->getRecords('schedule_id', 'DESC', 0, false, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
 $this->app->smarty->assign('workorder_notes',      $this->app->components->workorder->getNotes(\CMSApplication::$VAR['workorder_id'])                                            ); 
 $this->app->smarty->assign('workorder_history',    $this->app->components->workorder->getHistory(\CMSApplication::$VAR['workorder_id'])                                          );
 $this->app->smarty->assign('selected_date',        $this->app->system->general->timestampToCalendarFormat( time() )                                                   );
