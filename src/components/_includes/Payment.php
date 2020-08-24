@@ -88,18 +88,14 @@ class Payment extends Components {
     #  Display all payments the given status            #
     #####################################################
 
-    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = 0, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
 
-        // Process certain variables - This prevents undefined variable errors
-        $records_per_page = $records_per_page ?: '25';
-        $page_no = $page_no ?: '1';
-        $search_category = $search_category ?: 'payment_id';
-        $havingTheseRecords = '';
-
-        /* Records Search */
-
+        // This is needed because of how page numbering works
+        $page_no = $page_no ?: 1;
+        
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
+        $havingTheseRecords = '';
 
         // Restrict results by search category (client) and search term
         if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
@@ -109,8 +105,6 @@ class Payment extends Components {
 
         // Restrict results by search category and search term
         elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
-
-        /* Filter the Records */
 
         // Restrict by Type
         if($type) {   
@@ -154,8 +148,7 @@ class Payment extends Components {
         // Restrict by Otherincome
         if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qstr($otherincome_id);}             
 
-        /* The SQL code */
-
+        // The SQL code
         $sql =  "SELECT
                 ".PRFX."payment_records.*,
                 IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,
@@ -171,65 +164,56 @@ class Payment extends Components {
                 ORDER BY ".PRFX."payment_records.".$order_by."
                 ".$direction;           
 
-        /* Restrict by pages */
-
+        // Get the total number of records in the database for the given search           
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}        
+        $total_results = $rs->RecordCount();            
+            
+        // Restrict by pages
         if($use_pages) {
 
             // Get Start Record
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
-            // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}        
-            $total_results = $rs->RecordCount();            
-            $this->app->smarty->assign('total_results', $total_results);                    
-
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $this->app->smarty->assign('total_pages', $total_pages);
-
-            // Set the page number
-            $this->app->smarty->assign('page_no', $page_no);
-
+            
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $this->app->smarty->assign('previous_page_no', $previous_page_no);          
-
+      
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $this->app->smarty->assign('next_page_no', $next_page_no);
-
+     
             // Only return the given page's records
-            $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
+            $sql .= " LIMIT ".$start_record.", ".$records_per_page;
 
-            // add the restriction on to the SQL
-            $sql .= $limitTheseRecords;
+        // Restrict by number of records   
+        } elseif($records_per_page) {
 
-        } else {
+            // Only return the first x number of records
+            $sql .= " LIMIT 0, ".$records_per_page;
 
-            // This make the drop down menu look correct
-            $this->app->smarty->assign('total_pages', 1);
+            // Show restricted records message if required
+            $restricted_records = $total_results > $records_per_page ? true : false;
 
-        }
+        }    
 
-        /* Return the records */
-
+        // Get the records        
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        $records = $rs->GetArray();   // do i need to add the check empty
+        // Return the data        
+        return array(
+                'records' => $rs->GetArray(),
+                'total_results' => $total_results,
+                'total_pages' => $total_pages ?? 1,             // This make the drop down menu look correct on search tpl with use_pages off
+                'page_no' => $page_no,
+                'previous_page_no' => $previous_page_no ?? null,
+                'next_page_no' => $next_page_no ?? null,                    
+                'restricted_records' => $restricted_records ?? false,
+                );
 
-        if(empty($records)){
-
-            return false;
-
-        } else {
-
-            return $records;
-
-        } 
-
-    }
+    }  
     
     #############################
     #  Get payment details      #

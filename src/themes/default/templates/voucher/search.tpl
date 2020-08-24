@@ -82,31 +82,31 @@
                                                             
                                                             <!-- Left Side Buttons -->
                                                             <td>
-                                                                {if $previous_page_no && $display_vouchers}
+                                                                {if $display_vouchers.previous_page_no && $display_vouchers.records}
                                                                     <a href="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                    <a href="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                    <a href="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_vouchers.previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>                                                   
                                                     
                                                             <!-- Dropdown Menu -->
                                                             <td>                                                                    
                                                                 <select id="changeThisPage" onChange="changePage();">
-                                                                    {section name=page loop=$total_pages start=1}
-                                                                        <option value="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
+                                                                    {section name=page loop=$display_vouchers.total_pages start=1}
+                                                                        <option value="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $display_vouchers.page_no == $smarty.section.page.index } Selected {/if}>
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_vouchers.total_pages} 
                                                                         </option>
                                                                     {/section}
-                                                                    <option value="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
-                                                                        {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
+                                                                    <option value="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_vouchers.total_pages}" {if $display_vouchers.page_no == $display_vouchers.total_pages} selected {/if}>
+                                                                        {t}Page{/t} {$display_vouchers.total_pages} {t}of{/t} {$display_vouchers.total_pages}
                                                                     </option>
                                                                 </select>
                                                             </td>
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                {if $next_page_no && $display_vouchers}
-                                                                    <a href="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                    <a href="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                {if $display_vouchers.next_page_no && $display_vouchers.records}
+                                                                    <a href="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_vouchers.next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=voucher&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_vouchers.total_pages}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
                                                             </td>                                                                                             
                                                     
@@ -116,7 +116,7 @@
                                                             <!-- Page Number Display -->
                                                             <td></td>
                                                             <td>
-                                                                <p style="text-align: center;">{$total_results} {t}records found.{/t}</p>
+                                                                <p style="text-align: center;">{$display_vouchers.total_results} {t}records found.{/t}</p>
                                                             </td>
                                                             
                                                         </tr>                                                    

@@ -25,22 +25,21 @@ class Cronjob extends Components {
                 WHERE ".PRFX."cronjob_records.cronjob_id\n
                 GROUP BY ".PRFX."cronjob_records.".$order_by."
                 ORDER BY ".PRFX."cronjob_records.".$order_by."
-                ".$direction;      
-
-        // Return the records
+                ".$direction;
+        
+        // Get the records
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        $records = $rs->GetArray();
-
-        if(empty($records)){
-
-            return false;
-
-        } else {
-
-            return $records;
-
-        }
+        // Return the data (not all setting below are relevant because this is a cut down getRecords())      
+        return array(
+                'records' => $rs->GetArray(),
+                'total_results' => null,
+                'total_pages' => null,             // This make the drop down menu look correct on search tpl with use_pages off
+                'page_no' => null,
+                'previous_page_no' => null,
+                'next_page_no' => null,                    
+                'restricted_records' => false,
+                );
 
     }   
 

@@ -97,18 +97,14 @@ class Client extends Components {
     #   Display Clients                 #
     #####################################
 
-    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
+    public function getRecords($order_by, $direction, $use_pages = false, $records_per_page = 0, $page_no = null, $search_category = 'client_id', $search_term = null, $type = null, $status = null) {
 
-        // Process certain variables - This prevents undefined variable errors
-        $records_per_page = $records_per_page ?: '25';
-        $page_no = $page_no ?: '1';   
-        $search_category = $search_category ?: 'client_id';
-        $havingTheseRecords = '';
-
-        /* Records Search */
+        // This is needed because of how page numbering works
+        $page_no = $page_no ?: 1;
 
         // Default Action    
-        $whereTheseRecords = " WHERE ".PRFX."client_records.client_id\n";    
+        $whereTheseRecords = " WHERE ".PRFX."client_records.client_id\n";
+        $havingTheseRecords = '';
 
         // Search category (display_name) and search term
         if($search_category == 'display_name') { $havingTheseRecords .= " HAVING display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%'); }
@@ -119,16 +115,13 @@ class Client extends Components {
         // Search category with search term
         elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."client_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');}     
 
-        /* Filter the Records */     
-
         // Restrict by Type
         if($type) {$whereTheseRecords .= " AND ".PRFX."client_records.type= ".$this->app->db->qstr($type);}    
 
         // Restrict by Status (is null because using boolean/integer)
         if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."client_records.active=".$this->app->db->qstr($status);}
 
-        /* The SQL code */    
-
+        // The SQL code
         $sql = "SELECT        
             ".PRFX."client_records.*,    
             IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS display_name,
@@ -142,64 +135,55 @@ class Client extends Components {
             ORDER BY ".PRFX."client_records.".$order_by."
             ".$direction; 
 
-        /* Restrict by pages */
-
+        
+        // Get the total number of records in the database for the given search      
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
+        $total_results = $rs->RecordCount();            
+            
+        // Restrict by pages
         if($use_pages) {
 
             // Get the start Record
-            $start_record = (($page_no * $records_per_page) - $records_per_page);        
-
-            // Figure out the total number of records in the database for the given search        
-            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
-            $total_results = $rs->RecordCount();            
-            $this->app->smarty->assign('total_results', $total_results);             
+            $start_record = (($page_no * $records_per_page) - $records_per_page);                       
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $this->app->smarty->assign('total_pages', $total_pages);
-
-            // Set the page number
-            $this->app->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
-            $previous_page_no = ($page_no - 1);        
-            $this->app->smarty->assign('previous_page_no', $previous_page_no);          
+            $previous_page_no = ($page_no - 1);            
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $this->app->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
-            $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
+            $sql .= " LIMIT ".$start_record.", ".$records_per_page;
 
-            // add the restriction on to the SQL
-            $sql .= $limitTheseRecords;            
+        // Restrict by number of records   
+        } elseif($records_per_page) {
 
-        } else {
+            // Only return the first x number of records
+            $sql .= " LIMIT 0, ".$records_per_page;
 
-            // This make the drop down menu look correct
-            $this->app->smarty->assign('total_pages', 1);
+            // Show restricted records message if required
+            $restricted_records = $total_results > $records_per_page ? true : false;
 
         }
 
-        /* Return the records */
-
+        // Get the records
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         
-        $records = $rs->GetArray();   // If I call this twice for this search, no results are shown on the TPL
-        
-        if(empty($records)){
-            
-            return false;
-            
-        } else {
-            
-            return $records;
-            
-        }
-        
+        // Return the data              
+        return array(
+                'records' => $rs->GetArray(),
+                'total_results' => $total_results,
+                'total_pages' => $total_pages ?? 1,             // This make the drop down menu look correct on search tpl with use_pages off
+                'page_no' => $page_no,
+                'previous_page_no' => $previous_page_no ?? null,
+                'next_page_no' => $next_page_no ?? null,                    
+                'restricted_records' => $restricted_records ?? false,
+                );
 
     }
     

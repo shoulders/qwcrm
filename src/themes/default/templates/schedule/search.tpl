@@ -64,31 +64,31 @@
                                                             
                                                             <!-- Left Side Buttons -->                                                            
                                                             <td>  
-                                                                {if $previous_page_no && $display_schedules} 
+                                                                {if $display_schedules.previous_page_no && $display_schedules.records} 
                                                                     <a href="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                    <a href="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                    <a href="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_schedules.previous_page_no}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>
                                                     
                                                             <!-- Dropdown Menu -->
                                                             <td>                                                                    
                                                                 <select id="changeThisPage" onChange="changePage();">
-                                                                    {section name=page loop=$total_pages start=1}
-                                                                        <option value="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_status}&filter_status={$filter_status}{/if}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
+                                                                    {section name=page loop=$display_schedules.total_pages start=1}
+                                                                        <option value="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_status}&filter_status={$filter_status}{/if}" {if $display_schedules.page_no == $smarty.section.page.index } Selected {/if}>
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_schedules.total_pages} 
                                                                         </option>
                                                                     {/section}
-                                                                    <option value="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}" {if $page_no == $total_pages} selected {/if}>
-                                                                        {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
+                                                                    <option value="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_schedules.total_pages}{if $filter_status}&filter_status={$filter_status}{/if}" {if $display_schedules.page_no == $display_schedules.total_pages} selected {/if}>
+                                                                        {t}Page{/t} {$display_schedules.total_pages} {t}of{/t} {$display_schedules.total_pages}
                                                                     </option>
                                                                 </select>
                                                             </td>
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                {if $next_page_no && $display_schedules}
-                                                                    <a href="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                    <a href="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                {if $display_schedules.next_page_no && $display_schedules.records}
+                                                                    <a href="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_schedules.next_page_no}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=schedule&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_schedules.total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
                                                             </td>                                                                                             
                                                     
@@ -98,7 +98,7 @@
                                                             <!-- Page Number Display -->
                                                             <td></td>
                                                             <td>
-                                                                <p style="text-align: center;">{$total_results} {t}records found.{/t}</p>
+                                                                <p style="text-align: center;">{$display_schedules.total_results} {t}records found.{/t}</p>
                                                             </td>
                                                             
                                                         </tr>                                                    

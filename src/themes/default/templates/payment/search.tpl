@@ -104,31 +104,31 @@
                                                             
                                                             <!-- Left Side Buttons -->                                                            
                                                             <td>  
-                                                                {if $previous_page_no && $display_payments} 
+                                                                {if $display_payments.previous_page_no && $display_payments.records} 
                                                                     <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_payments.previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>
                                                     
                                                             <!-- Dropdown Menu -->
                                                             <td>                                                                    
                                                                 <select id="changeThisPage" onChange="changePage();">
-                                                                    {section name=page loop=$total_pages start=1}
-                                                                        <option value="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}" {if $page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
+                                                                    {section name=page loop=$display_payments.total_pages start=1}
+                                                                        <option value="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}" {if $display_payments.page_no == $smarty.section.page.index } Selected {/if}>
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_payments.total_pages} 
                                                                         </option>
                                                                     {/section}
-                                                                    <option value="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}" {if $page_no == $total_pages} selected {/if}>
-                                                                        {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
+                                                                    <option value="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_payments.total_pages}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}" {if $display_payments.page_no == $display_payments.total_pages} selected {/if}>
+                                                                        {t}Page{/t} {$display_payments.total_pages} {t}of{/t} {$display_payments.total_pages}
                                                                     </option>
                                                                 </select>
                                                             </td>
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                {if $next_page_no && $display_payments}
-                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                {if $display_payments.next_page_no && $display_payments.records}
+                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_payments.next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_payments.total_pages}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
                                                             </td>                                                                                             
                                                     
@@ -138,7 +138,7 @@
                                                             <!-- Page Number Display -->
                                                             <td></td>
                                                             <td>
-                                                                <p style="text-align: center;">{$total_results} {t}records found.{/t}</p>
+                                                                <p style="text-align: center;">{$display_payments.total_results} {t}records found.{/t}</p>
                                                             </td>
                                                             
                                                         </tr>                                                    

@@ -44,7 +44,7 @@
                             </tr>
                             <tr>
                                 <td align="right"><b>{t}Cronjob{/t} {t}System{/t} {t}Last Run Status{/t}:</b></td>
-                                <td colspan="2">{if $cronjob_system_details.last_run_status == 1}{t}Success{/t}{else}{t}Failed{/t}{/if}</td>
+                                <td colspan="2">{if $cronjob_system_details.last_run_status}{t}Success{/t}{else}{t}Failed{/t}{/if}</td>
                             </tr>
                             <tr>
                                 <td align="right"><b>{t}Cronjob{/t} {t}System{/t} {t}Locked{/t}:</b></td>
