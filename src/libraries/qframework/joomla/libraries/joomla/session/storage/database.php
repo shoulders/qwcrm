@@ -48,8 +48,10 @@ class JSessionStorageDatabase extends JSessionStorage
 
             $sql = "SELECT data FROM ".PRFX."session WHERE session_id = ".$db->qstr($id);
             $rs = $db->execute($sql);
-            $result = (string) $rs->fields['data'];
-
+            $result = "";
+            if (isset($fields['data'])){
+                $result = (string) $rs->fields['data'];
+            }
             $result = str_replace('\0\0\0', chr(0) . '*' . chr(0), $result);
 
             return $result;
