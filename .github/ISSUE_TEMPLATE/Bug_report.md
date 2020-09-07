@@ -25,8 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **System information (please complete the following information)**
 
-Joomla version: 
-Kunena version:
+QWcrm version: 
 Php version:
 Database version:
 
