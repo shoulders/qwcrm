@@ -18,4 +18,4 @@ After the confirmation we will work on the fix asap.
 
 ## Bug Bounty
 
-Sorry, we have no bug bounty rewards for the reports. All our donations are going to the server costs. But you name will be added to the version doc.
+Sorry, we have no bug bounty rewards for the reports. All our donations are going to the server costs.
