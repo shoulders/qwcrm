@@ -332,7 +332,7 @@ class Administrator extends Components {
         }
 
         // If no response return with error message
-        if(!$curl_response || $curl_error) {         
+        if(!$curl_response) {         
             $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
             $this->app->smarty->assign('update_response', 'no_response');
             return;        
