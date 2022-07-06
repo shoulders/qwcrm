@@ -18,7 +18,7 @@
                 </div>
 
                 <!-- Clients -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Clients{/t}</span>
                     <a href="index.php?component=client&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
                     <a href="index.php?component=client&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
@@ -30,7 +30,7 @@
                 </div>
                 
                 <!-- Work Orders -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Work Orders{/t}</span>
                     
                     <!-- Single Work Orders -->
@@ -56,7 +56,7 @@
                 </div>
                     
                 <!-- Schedules -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Schedules{/t}</span>
                     
                     <a href="index.php?component=schedule&page_tpl=day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Daily{/t}</a>
@@ -65,7 +65,7 @@
                 </div>
 
                 <!-- Invoices -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Invoices{/t}</span>
                     <a href="index.php?component=invoice&page_tpl=overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>
                     {if $client_id}                        
@@ -85,7 +85,7 @@
                 </div>
                 
                 <!-- Vouchers -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Vouchers{/t}</span>
                     <a href="index.php?component=voucher&page_tpl=search"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
                     {if $voucher_id}
@@ -96,7 +96,7 @@
                 </div>                   
                 
                 <!-- Finance -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Finance{/t}</span>
                     
                     <!-- Stats -->                        
@@ -112,7 +112,7 @@
                 </div>                    
 
                 <!-- Expenses -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Expenses{/t}</span>
                     <a href="index.php?component=expense&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
                     <a href="index.php?component=expense&page_tpl=search">
@@ -132,7 +132,7 @@
                 </div>
                 
                 <!-- Refunds -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Refunds{/t}</span>                        
                     {*<a href="index.php?component=refund&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>*}
                     <a href="index.php?component=refund&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
@@ -150,7 +150,7 @@
                 </div>   
                 
                 <!-- Other Income -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Other Income{/t}</span>                        
                     <a href="index.php?component=otherincome&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
                     <a href="index.php?component=otherincome&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
@@ -168,14 +168,14 @@
                 </div>
 
                 <!-- Company -->
-                    <div class="menugroup">
-                        <span>{t}Company{/t}</span>                        
-                        <a href="index.php?component=company&page_tpl=edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>                        
-                        <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>
-                    </div>
+                <div class="menugroup collapsed">
+                    <span>{t}Company{/t}</span>                        
+                    <a href="index.php?component=company&page_tpl=edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>                        
+                    <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>
+                </div>
                     
                 <!-- Supplier -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Suppliers{/t}</span> 
                     <a href="index.php?component=supplier&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
                     <a href="index.php?component=supplier&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
@@ -193,32 +193,32 @@
                 </div>                 
 
                 <!-- Administration -->
-                    <div class="menugroup">
-                        <span>{t}Administration{/t}</span>
-                        
-                        <!-- Users -->
-                        <a href="index.php?component=user&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search Users{/t}</a>
-                        <a href="index.php?component=user&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New Employee{/t}</a>
-                        {if $user_id}
-                            <a href="index.php?component=user&page_tpl=edit&user_id={$user_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit User{/t}</a>
-                            <a href="index.php?component=user&page_tpl=delete&user_id={$user_id}" onclick="return confirm('{t}Are you sure you want to delete this user?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete User{/t}</a>
-                        {/if}
-                        <a href="index.php?component=administrator&page_tpl=acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {t}Permissions{/t}</a>
-                        
-                        <!-- Cronjob -->
-                        <a href="index.php?component=cronjob&page_tpl=overview"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Cron{/t} {t}Overview{/t}</a>
-                        {if $cronjob_id}
-                            <a href="index.php?component=cronjob&page_tpl=edit&cronjob_id={$cronjob_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t} {t}Cron{/t}</a>
-                        {/if}                        
-                        <!-- Administrator -->
-                        <a href="index.php?component=administrator&page_tpl=phpinfo"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHP Info{/t}</a>
-                        <a href="index.php?component=administrator&page_tpl=update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Update{/t}</a>
-                        <a href="index.php?component=administrator&page_tpl=config"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Config{/t}</a>
-                        
-                    </div>
+                <div class="menugroup collapsed">
+                    <span>{t}Administration{/t}</span>
+
+                    <!-- Users -->
+                    <a href="index.php?component=user&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search Users{/t}</a>
+                    <a href="index.php?component=user&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New Employee{/t}</a>
+                    {if $user_id}
+                        <a href="index.php?component=user&page_tpl=edit&user_id={$user_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit User{/t}</a>
+                        <a href="index.php?component=user&page_tpl=delete&user_id={$user_id}" onclick="return confirm('{t}Are you sure you want to delete this user?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete User{/t}</a>
+                    {/if}
+                    <a href="index.php?component=administrator&page_tpl=acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {t}Permissions{/t}</a>
+
+                    <!-- Cronjob -->
+                    <a href="index.php?component=cronjob&page_tpl=overview"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Cron{/t} {t}Overview{/t}</a>
+                    {if $cronjob_id}
+                        <a href="index.php?component=cronjob&page_tpl=edit&cronjob_id={$cronjob_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t} {t}Cron{/t}</a>
+                    {/if}                        
+                    <!-- Administrator -->
+                    <a href="index.php?component=administrator&page_tpl=phpinfo"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHP Info{/t}</a>
+                    <a href="index.php?component=administrator&page_tpl=update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Update{/t}</a>
+                    <a href="index.php?component=administrator&page_tpl=config"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Config{/t}</a>
+
+                </div>
 
                 <!-- Help -->
-                <div class="menugroup">
+                <div class="menugroup collapsed">
                     <span>{t}Help{/t}</span>
                     <a href="index.php?component=help&page_tpl=about"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}About{/t}</a>
                     <a href="index.php?component=help&page_tpl=attribution"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Attribution{/t}</a>
