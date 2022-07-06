@@ -71,10 +71,10 @@
                                             {/if}
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Item Type{/t}</b></td>
+                                            <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd">              
                                                 {section name=s loop=$refund_types}
-                                                    {if $refund_details.item == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
+                                                    {if $refund_details.type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
                                             {if $refund_details.tax_system != 'no_tax'}

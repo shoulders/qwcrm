@@ -42,14 +42,14 @@ class Payment extends Components {
     public function insertRecord($qpayment) {
 
         $sql = "INSERT INTO ".PRFX."payment_records SET            
-                employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id       ).",
-                client_id       = ".$this->app->db->qstr( $qpayment['client_id']                   ).",
-                workorder_id    = ".$this->app->db->qstr( $qpayment['workorder_id']                ).",
-                invoice_id      = ".$this->app->db->qstr( $qpayment['invoice_id']                  ).",
-                voucher_id      = ".$this->app->db->qstr( $qpayment['voucher_id']                  ).",               
-                refund_id       = ".$this->app->db->qstr( $qpayment['refund_id']                   ).", 
-                expense_id      = ".$this->app->db->qstr( $qpayment['expense_id']                  ).", 
-                otherincome_id  = ".$this->app->db->qstr( $qpayment['otherincome_id']              ).",
+                employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id          ).",
+                client_id       = ".$this->app->db->qstr( $qpayment['client_id'] ?: null           ).",
+                workorder_id    = ".$this->app->db->qstr( $qpayment['workorder_id'] ?: null        ).",
+                invoice_id      = ".$this->app->db->qstr( $qpayment['invoice_id'] ?: null          ).",
+                voucher_id      = ".$this->app->db->qstr( $qpayment['voucher_id'] ?: null          ).",               
+                refund_id       = ".$this->app->db->qstr( $qpayment['refund_id'] ?: null           ).", 
+                expense_id      = ".$this->app->db->qstr( $qpayment['expense_id'] ?: null          ).", 
+                otherincome_id  = ".$this->app->db->qstr( $qpayment['otherincome_id'] ?: null      ).",
                 date            = ".$this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qpayment['date'])    ).",
                 tax_system      = ".$this->app->db->qstr( QW_TAX_SYSTEM                            ).",   
                 type            = ".$this->app->db->qstr( $qpayment['type']                        ).",
@@ -624,24 +624,24 @@ class Payment extends Components {
         $payment_details = $this->getRecord($payment_id);
 
         $sql = "UPDATE ".PRFX."payment_records SET        
-                employee_id     = '',
-                client_id       = '',
-                workorder_id    = '',
-                invoice_id      = '',
-                voucher_id      = '',
-                refund_id       = '',
-                expense_id      = '',
-                otherincome_id  = '',
-                date            = '0000-00-00',
+                employee_id     = NULL,
+                client_id       = NULL,
+                workorder_id    = NULL,
+                invoice_id      = NULL,
+                voucher_id      = NULL,
+                refund_id       = NULL,
+                expense_id      = NULL,
+                otherincome_id  = NULL,
+                date            = NULL,
                 tax_system      = '',
                 type            = '',
                 method          = '',
                 status          = 'deleted',
-                amount          = '0.00',
+                amount          = 0.00,
                 additional_info = '',
-                last_active         = '0000-00-00 00:00:00',
+                last_active     = NULL,
                 note            = ''
-                WHERE payment_id =". $this->app->db->qstr( $payment_id );    
+                WHERE payment_id = ". $payment_id;
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

@@ -37,7 +37,7 @@
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Name{/t}</option>
                                                                         <option value="refund_id"{if $search_category == 'refund_id'} selected{/if}>{t}Refund ID{/t}</option>                                                                        
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>                                                                        
-                                                                        <option value="item"{if $search_category == 'item'} selected{/if}>{t}Item Type{/t}</option>                                                                        
+                                                                        <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>                                                                        
                                                                         {if !'/^vat_/'|preg_match:$qw_tax_system}
                                                                             <option value="unit_net"{if $search_category == 'unit_net'} selected{/if}>{t}Net{/t}</option>                                                                        
                                                                             <option value="unit_tax"{if $search_category == 'unit_tax'} selected{/if}>{t}Tax{/t}</option>

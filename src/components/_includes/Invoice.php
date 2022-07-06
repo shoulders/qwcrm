@@ -42,7 +42,7 @@ defined('_QWEXEC') or die;
         $sql = "INSERT INTO ".PRFX."invoice_records SET     
                 employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
                 client_id       =". $this->app->db->qstr( $client_id                           ).",
-                workorder_id    =". $this->app->db->qstr( $workorder_id                        ).",
+                workorder_id    =". $this->app->db->qstr( $workorder_id ?: null                   ).",
                 date            =". $this->app->db->qstr( $this->app->system->general->mysqlDate($timestamp)               ).",
                 due_date        =". $this->app->db->qstr( $this->app->system->general->mysqlDate($timestamp)               ).",            
                 unit_discount_rate   =". $this->app->db->qstr( $unit_discount_rate             ).",
@@ -89,27 +89,29 @@ defined('_QWEXEC') or die;
         $sql = "DELETE FROM ".PRFX."invoice_$section WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Insert Items into database (if any)
+        // Insert Items/Rows into database (if any)
         if($items) {
 
-            $sql = "INSERT INTO `".PRFX."invoice_$section` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
+            $sql = "INSERT INTO `".PRFX."invoice_$section` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
 
             foreach($items as $item) {
 
-                // Add in missing sales tax exempt option - This prevents undefined variable errors
-                $sales_tax_exempt = $item['sales_tax_exempt'] ?? 0;
+                // Correct Sales Tax Exempt indicator
+                $sales_tax_exempt = isset($item['sales_tax_exempt']) ? 1 : 0;
 
-                // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
-                $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']); 
+                // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes)
+                $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']);
+                
+                /* All this is done in the TPL
+                    // Calculate the correct tax rate based on tax system (and exemption status)
+                    if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+                    elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+                    elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($item['vat_tax_code']); }
+                    else { $unit_tax_rate = 0.00; }                
 
-                // Calculate the correct tax rate based on tax system (and exemption status)
-                if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-                elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
-                elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($item['vat_tax_code']); }
-                else { $unit_tax_rate = 0.00; }
-
-                // Build item totals based on selected TAX system
-                $item_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $item['unit_qty'], $item['unit_net'], $unit_tax_rate);
+                    // Build item totals based on selected TAX system
+                    $item_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $item['unit_qty'], $item['unit_net'], $unit_tax_rate);
+                */
 
                 $sql .="(".
                         $this->app->db->qstr( $invoice_id                       ).",".                    
@@ -117,14 +119,15 @@ defined('_QWEXEC') or die;
                         $this->app->db->qstr( $item['description']              ).",".                    
                         $this->app->db->qstr( $item['unit_qty']                 ).",".
                         $this->app->db->qstr( $item['unit_net']                 ).",".
+                        $this->app->db->qstr( $item['unit_discount']            ).",".
                         $this->app->db->qstr( $sales_tax_exempt                 ).",".
                         $this->app->db->qstr( $vat_tax_code                     ).",".
-                        $this->app->db->qstr( $unit_tax_rate                    ).",".
-                        $this->app->db->qstr( $item_totals['unit_tax']          ).",".
-                        $this->app->db->qstr( $item_totals['unit_gross']        ).",".                    
-                        $this->app->db->qstr( $item_totals['subtotal_net']     ).",".
-                        $this->app->db->qstr( $item_totals['subtotal_tax']     ).",".
-                        $this->app->db->qstr( $item_totals['subtotal_gross']   )."),";
+                        $this->app->db->qstr( $item['unit_tax_rate']            ).",".
+                        $this->app->db->qstr( $item['unit_tax']                 ).",".
+                        $this->app->db->qstr( $item['unit_gross']               ).",".                    
+                        $this->app->db->qstr( $item['subtotal_net']             ).",".
+                        $this->app->db->qstr( $item['subtotal_tax']             ).",".
+                        $this->app->db->qstr( $item['subtotal_gross']           )."),";
 
             }
 
@@ -399,7 +402,7 @@ defined('_QWEXEC') or die;
     }
 
     #######################################
-    #   Get invoice labour item details   #
+    #   Get invoice labour item details   #  // not used anywhere
     #######################################
 
     public function getLabourItem($invoice_labour_id, $item = null) {
@@ -430,6 +433,7 @@ defined('_QWEXEC') or die;
         // NB: i dont think i need the aliases
 
         $sql = "SELECT
+                SUM(unit_discount * unit_qty) AS subtotal_discount,
                 SUM(subtotal_net) AS subtotal_net,
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
@@ -461,7 +465,7 @@ defined('_QWEXEC') or die;
     }
 
     #######################################
-    #   Get invoice parts item details    #
+    #   Get invoice parts item details    # // not used anywhere
     #######################################
 
     public function getPartsItem($invoice_parts_id, $item = null) {
@@ -492,6 +496,7 @@ defined('_QWEXEC') or die;
         // NB: i dont think i need the aliases
 
         $sql = "SELECT
+                SUM(unit_discount * unit_qty) AS subtotal_discount,
                 SUM(subtotal_net) AS subtotal_net,
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
@@ -568,6 +573,42 @@ defined('_QWEXEC') or die;
     /** Update Functions **/
     
     #####################################
+    #   Update Invoice                  #  // Update the totals for the invoice (calculations are done onpage)
+    #####################################
+
+    public function updateRecord($qform) {
+
+        $sql = "UPDATE ".PRFX."invoice_records SET
+                date                =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])     ).",
+                due_date            =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['due_date']) ).",
+                unit_discount_rate  =". $this->app->db->qstr( $qform['unit_discount_rate']  ).",               
+                unit_discount       =". $this->app->db->qstr( $qform['unit_discount']   ).",                    
+                unit_net            =". $this->app->db->qstr( $qform['unit_net']            ).",
+                unit_tax            =". $this->app->db->qstr( $qform['unit_tax']            ).",
+                unit_gross          =". $this->app->db->qstr( $qform['unit_gross']          )."                    
+                WHERE invoice_id    =". $this->app->db->qstr( $qform['invoice_id']          );
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+  
+        $invoice_details = $this->getRecord($qform['invoice_id']);
+
+        // Create a Workorder History Note  
+        $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
+
+        // Log activity        
+        $record = _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
+        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+
+        // Update last active record    
+        $this->app->components->client->updateLastActive($this->getRecord($invoice_details['invoice_id'], 'client_id'));
+        $this->app->components->workorder->updateLastActive($this->getRecord($invoice_details['invoice_id'], 'workorder_id'));
+        $this->updateLastActive($invoice_details['invoice_id']);  
+        
+        return;
+
+    }  
+    
+    /*#####################################
     #     update invoice (full)         #  // not currently used
     #####################################
 
@@ -615,9 +656,9 @@ defined('_QWEXEC') or die;
 
         return true;
 
-    }    
+    }   */ 
 
-    ####################################
+    /*####################################
     #   update invoice static values   #  // This is used when a user updates an invoice before any payments
     ####################################
 
@@ -645,7 +686,7 @@ defined('_QWEXEC') or die;
         $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'));
         $this->updateLastActive($invoice_id);        
 
-    }
+    }*/
 
     ############################
     # Update Invoice Status    #
@@ -741,7 +782,7 @@ defined('_QWEXEC') or die;
     public function updateRefundId($invoice_id, $refund_id) {
 
         $sql = "UPDATE ".PRFX."invoice_records SET
-                refund_id           =".$this->app->db->qstr($refund_id)."
+                refund_id           =".$this->app->db->qstr($refund_id ?: null)."
                 WHERE invoice_id    =".$this->app->db->qstr($invoice_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -874,25 +915,25 @@ defined('_QWEXEC') or die;
 
         // Build the data to replace the invoice record (some stuff has just been updated with $this->update_invoice_status())
         $sql = "UPDATE ".PRFX."invoice_records SET        
-                employee_id         = '', 
-                client_id           = '',
-                workorder_id        = '',               
-                date                = '0000-00-00',    
-                due_date            = '0000-00-00', 
+                employee_id         = NULL,
+                client_id           = NULL,
+                workorder_id        = NULL,               
+                date                = NULL,    
+                due_date            = NULL, 
                 tax_system          = '',  
-                unit_discount_rate  = '0.00',                         
-                unit_discount       = '0.00', 
-                unit_net            = '0.00', 
-                sales_tax_rate      = '0.00', 
-                unit_tax            = '0.00',             
-                unit_gross          = '0.00',  
-                unit_paid           = '0.00', 
-                balance             = '0.00',
+                unit_discount_rate  = 0.00,                         
+                unit_discount       = 0.00, 
+                unit_net            = 0.00, 
+                sales_tax_rate      = 0.00, 
+                unit_tax            = 0.00,             
+                unit_gross          = 0.00,  
+                unit_paid           = 0.00, 
+                balance             = 0.00,
                 status              = 'deleted',
-                opened_on           = '0000-00-00 00:00:00',
-                closed_on           = '0000-00-00 00:00:00',
-                last_active         = '0000-00-00 00:00:00',            
-                is_closed           = '1'            
+                opened_on           = NULL,
+                closed_on           = NULL,
+                last_active         = NULL,            
+                is_closed           = 1            
                 WHERE invoice_id    =". $this->app->db->qstr( $invoice_id  );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -1313,9 +1354,11 @@ defined('_QWEXEC') or die;
 
     ################################################  // sales tax and VAT are the same
     #   calculate an Invoice Item Sub Totals       #  // The exact dane totals calculation is done for all, just the inputs are different
-    ################################################
+    ################################################  // might njot be needed anymore
+                                                      // this is used in 3.1.0 upgrade
+                                                      // this should be removed or remmend out
 
-    public function calculateItemsSubtotals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
+    /*public function calculateItemsSubtotals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
 
         $item_totals = array();
 
@@ -1348,57 +1391,44 @@ defined('_QWEXEC') or die;
 
         return $item_totals;
 
-    }
+    }*/
 
-    #####################################  // A lot of these calculations are done in the invoice:edit tpl - this is still required for when payments are made becasue of the balance field
-    #   Recalculate Invoice Totals      #   ///  re-check these calcuclations as they are wrong (not much though) i should account for vouchers as if they had tax allow for development later.
-    #####################################  // Vouchers are not discounted
+    #####################################  // Most calculations are done on the invoice:edit tpl but this is still required for when payments are made because of the balance field
+    #   Recalculate Invoice Totals      #  
+    #####################################  // Vouchers are not discounted on purpose
 
     public function recalculateTotals($invoice_id) {
 
-        $invoice_details            = $this->getRecord($invoice_id);    
-
-        $labour_items_subtotals    = $this->getLabourItemsSubtotals($invoice_id); 
-        $parts_items_subtotals     = $this->getPartsItemsSubtotals($invoice_id);   
-        $voucher_subtotals         = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);
-
-        $unit_discount              = ($labour_items_subtotals['subtotal_net'] + $parts_items_subtotals['subtotal_net']) * ($invoice_details['unit_discount_rate'] / 100);          // Divide by 100; turns 17.5 in to 0.17575
-        $unit_net                   = ($labour_items_subtotals['subtotal_net'] + $parts_items_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net']) - $unit_discount;   // Vouchers are not discounted on purpose
-        $unit_tax                   = $labour_items_subtotals['subtotal_tax'] + $parts_items_subtotals['subtotal_tax'] + $voucher_subtotals['subtotal_tax'];
-        $unit_gross                 = $unit_net + $unit_tax;    
+        $invoice_details            = $this->getRecord($invoice_id);         
         $payments_subtotal         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
-        $balance                    = $unit_gross - $payments_subtotal;
+        $balance                   = $invoice_details['unit_gross'] - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."invoice_records SET            
-                unit_discount       =". $this->app->db->qstr( $unit_discount       ).",
-                unit_net            =". $this->app->db->qstr( $unit_net            ).",
-                unit_tax            =". $this->app->db->qstr( $unit_tax            ).",
-                unit_gross          =". $this->app->db->qstr( $unit_gross          ).",
                 unit_paid           =". $this->app->db->qstr( $payments_subtotal  ).",
-                balance             =". $this->app->db->qstr( $balance             )."
-                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id          );
+                balance             =". $this->app->db->qstr( $balance            )."
+                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id         );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        /* Update Status - only change if there is a change in status*/        
+        /* Update Status - only change if there is a change in status */    
 
         // No invoiceable amount, set to pending (if not already)
-        if($unit_gross == 0 && $invoice_details['status'] != 'pending') {
+        if($invoice_details['unit_gross'] == 0 && $invoice_details['status'] != 'pending') {
             $this->updateStatus($invoice_id, 'pending');
         }
 
         // Has invoiceable amount with no payments, set to unpaid (if not already)
-        elseif($unit_gross > 0 && $unit_gross == $balance && $invoice_details['status'] != 'unpaid') {
+        elseif($invoice_details['unit_gross'] > 0 && $invoice_details['unit_gross'] == $balance && $invoice_details['status'] != 'unpaid') {
             $this->updateStatus($invoice_id, 'unpaid');
         }
 
         // Has invoiceable amount with partially payment, set to partially paid (if not already)
-        elseif($unit_gross > 0 && $payments_subtotal > 0 && $payments_subtotal < $unit_gross && $invoice_details['status'] != 'partially_paid') {            
+        elseif($invoice_details['unit_gross'] > 0 && $payments_subtotal > 0 && $payments_subtotal < $invoice_details['unit_gross'] && $invoice_details['status'] != 'partially_paid') {            
             $this->updateStatus($invoice_id, 'partially_paid');
         }
 
         // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
-        elseif($unit_gross > 0 && $unit_gross == $payments_subtotal && $invoice_details['status'] != 'paid') {            
+        elseif($invoice_details['unit_gross'] > 0 && $invoice_details['unit_gross'] == $payments_subtotal && $invoice_details['status'] != 'paid') {            
             $this->updateStatus($invoice_id, 'paid');
         }        
 
@@ -1655,6 +1685,6 @@ defined('_QWEXEC') or die;
 
         return $state_flag; 
 
-    }
+    }  
     
 }

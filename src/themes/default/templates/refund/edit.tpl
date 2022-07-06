@@ -63,10 +63,10 @@
                                                             <td colspan="3">{if $refund_details.invoice_id}<a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a>{else}{t}n/a{/t}{/if}</td>                                                            
                                                         </tr>                                                        
                                                         <tr>
-                                                            <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                            <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>                                                                 
                                                                 {section name=s loop=$refund_types}    
-                                                                    {if $refund_details.item == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                
+                                                                    {if $refund_details.type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                
                                                                 {/section}                                                                
                                                             </td>
                                                         </tr>

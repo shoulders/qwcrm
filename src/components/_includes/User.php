@@ -33,7 +33,7 @@ class User extends Components {
     public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."user_records SET
-                client_id           =". $this->app->db->qstr( $qform['client_id']                            ).", 
+                client_id           =". $this->app->db->qstr( $qform['client_id'] ?: null                    ).", 
                 username            =". $this->app->db->qstr( $qform['username']                             ).",
                 password            =". $this->app->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($qform['password'])  ).",
                 email               =". $this->app->db->qstr( $qform['email']                                ).",
@@ -129,8 +129,7 @@ class User extends Components {
         $sql = "SELECT
                 ".PRFX."user_records.*,
                 CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS display_name,
-                CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS full_name,
-                ".PRFX."user_usergroups.display_name
+                CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS full_name                
 
                 FROM ".PRFX."user_records
                 LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user_records.usergroup = ".PRFX."user_usergroups.usergroup_id)

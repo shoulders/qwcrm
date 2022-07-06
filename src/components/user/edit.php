@@ -19,7 +19,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Check if the username or email have been used (the extra vareiable is to ignore the users current username and email to prevent submission errors when only updating other values)
     if (
-            $this->app->components->user->checkUserUsernameExists(\CMSApplication::$VAR['qform']['username'], $this->app->components->user->getRecord(\CMSApplication::$VAR['qform']['user_id'], 'username')) ||
+            $this->app->components->user->checkUsernameExists(\CMSApplication::$VAR['qform']['username'], $this->app->components->user->getRecord(\CMSApplication::$VAR['qform']['user_id'], 'username')) ||
             $this->app->components->user->checkEmailExists(\CMSApplication::$VAR['qform']['email'], $this->app->components->user->getRecord(\CMSApplication::$VAR['qform']['user_id'], 'email'))
         ) {
 

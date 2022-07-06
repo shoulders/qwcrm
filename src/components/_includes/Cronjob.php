@@ -147,7 +147,7 @@ class Cronjob extends Components {
     #   Update record Locked status  #       # true/false ///////////////////////// not currently used
     ##################################
 
-    public function updateRecordLockedStatus($cronjob_id, $status) {
+    public function updateRecordLockedStatus($cronjob_id, int $status) {
 
         $sql = "UPDATE ".PRFX."cronjob_records SET
                 locked=".$this->app->db->qstr($status)."
@@ -327,7 +327,7 @@ class Cronjob extends Components {
                 $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cron").' '.$cronjob_id.' '._gettext("is disabled and has not been run."));                
             }
             
-            // Disabled single cronjobs should not fail the cron system, but fail manually run disabled cronjobs
+            // Disabled single cronjobs should not fail the cron system, but manually run disabled cronjobs should fail
             if(defined('CRONJOB_SYSTEM_ACTIVE')) {
                 return true;
             } else {

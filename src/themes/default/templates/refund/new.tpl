@@ -72,12 +72,12 @@
                                                                             </td>
                                                                         </tr>                                                                        
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
                                                                                 {section name=s loop=$refund_types}    
-                                                                                    {if $refund_details.item == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                        
+                                                                                    {if $refund_details.type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                        
                                                                                 {/section}
-                                                                                <input id="item" name="qform[item]" class="olotd5" size="5" value="{$refund_details.item}" type="hidden">                                                                                
+                                                                                <input id="type" name="qform[type]" class="olotd5" size="5" value="{$refund_details.type}" type="hidden">                                                                                
                                                                             </td>
                                                                         </tr>
                                                                         <tr>

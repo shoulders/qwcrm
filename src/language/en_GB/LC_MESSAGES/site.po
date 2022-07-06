@@ -1505,7 +1505,7 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:636
 msgid ""
-"This on it's own gives basic infomration such as the page and module names "
+"This on it's own gives basic information such as the page and module names "
 "aswell as their load time. QWcrm Debug needs to be enabled to access the "
 "rest of the debugging options."
 msgstr ""

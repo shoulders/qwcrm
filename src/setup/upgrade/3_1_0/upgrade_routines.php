@@ -1082,7 +1082,7 @@ class Upgrade3_1_0 extends Setup {
                 $paypal_transaction_id = '';
                 $voucher_id = '';
                                 
-                /* Parse out the infomration from payment notes (3.0.0 and MyITCRM) */
+                /* Parse out the information from payment notes (3.0.0 and MyITCRM) */
                 
                 // Bank Transfer
                 if(preg_match('/Deposit ID#: (.*)([ ]{2}|,)/U', $rs->fields['note'], $matches)) {

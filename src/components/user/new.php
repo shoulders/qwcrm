@@ -33,7 +33,7 @@ if(isset(\CMSApplication::$VAR['client_id']) && \CMSApplication::$VAR['client_id
 if(isset(\CMSApplication::$VAR['submit'])) { 
             
     // Insert the record - if the username or email have not been used
-    if ($this->app->components->user->checkUserUsernameExists(\CMSApplication::$VAR['qform']['username']) || $this->app->components->user->checkEmailExists(\CMSApplication::$VAR['qform']['email'])) {     
+    if ($this->app->components->user->checkUsernameExists(\CMSApplication::$VAR['qform']['username']) || $this->app->components->user->checkEmailExists(\CMSApplication::$VAR['qform']['email'])) {     
         
         // send the posted data back to smarty
         $user_details = \CMSApplication::$VAR['qform'];

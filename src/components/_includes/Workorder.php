@@ -602,15 +602,15 @@ class WorkOrder extends Components {
         }
 
         // Set the appropriate employee_id
-        $employee_id = ($new_status == 'unassigned') ? '' : $workorder_details['employee_id'];
+        $employee_id = ($new_status == 'unassigned') ? null : $workorder_details['employee_id'];
 
         // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : '0000-00-00 00:00:00';
+        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : null;
 
         $sql = "UPDATE ".PRFX."workorder_records SET   
-                employee_id         =". $this->app->db->qstr( $employee_id     ).",
+                employee_id         =". $this->app->db->qstr( $employee_id ?: null   ).",
                 status              =". $this->app->db->qstr( $new_status      ).",
-                closed_on           =". $this->app->db->qstr( $closed_on       )."  
+                closed_on           =". $this->app->db->qstr( $closed_on ?: null )."  
                 WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -657,10 +657,10 @@ class WorkOrder extends Components {
         if($new_closed_status == 'open') {
 
             $sql = "UPDATE ".PRFX."workorder_records SET
-                    closed_by           ='',
-                    closed_on           ='0000-00-00 00:00:00',
-                    is_closed           =". $this->app->db->qstr( 0                                    )."
-                    WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
+                    closed_by           = NULL,
+                    closed_on           = NULL,
+                    is_closed           = 0
+                    WHERE workorder_id  = ".$workorder_id;
 
         }
 
@@ -743,16 +743,16 @@ class WorkOrder extends Components {
         // Delete the workorder primary record
         //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qstr($workorder_id); (this use to delete the whole record)
         $sql = "UPDATE ".PRFX."workorder_records SET
-            employee_id         = '',
-            client_id           = '',   
-            invoice_id          = '',
-            created_by          = '',
-            closed_by           = '',
+            employee_id         = NULL,
+            client_id           = NULL,   
+            invoice_id          = NULL,
+            created_by          = NULL,
+            closed_by           = NULL,
             status              = 'deleted',
-            opened_on           = '0000-00-00 00:00:00',
-            closed_on           = '0000-00-00 00:00:00',
-            last_active         = '0000-00-00 00:00:00',        
-            is_closed           = '1',
+            opened_on           = NULL,
+            closed_on           = NULL,
+            last_active         = NULL,        
+            is_closed           = 1,
             scope               = '',
             description         = '',
             comment             = '',

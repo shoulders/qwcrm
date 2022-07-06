@@ -259,9 +259,9 @@
                         <td align="center"><b>{t}Schedule{/t}</b></td>
                     </tr><tr>
                         <td>
-                            {section name=e loop=$workorder_schedules}
-                                <b>{t}Start Time{/t}:</b> {$workorder_schedules[e].start_time|date_format:"$date_format %R"}<br>
-                                <b>{t}End Time{/t}:</b> {$workorder_schedules[e].end_time|date_format:"$date_format %R"}<br>
+                            {section name=e loop=$workorder_schedules.records}
+                                <b>{t}Start Time{/t}:</b> {$workorder_schedules.records[e].start_time|date_format:"$date_format %R"}<br>
+                                <b>{t}End Time{/t}:</b> {$workorder_schedules.records[e].end_time|date_format:"$date_format %R"}<br>
                                 <b>{t}Note{/t}:</b><br>
                                 <div>{$workorder_schedules[e].note}</div>
                             {sectionelse}

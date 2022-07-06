@@ -22,7 +22,7 @@ defined('_QWEXEC') or die;
 
 class Refund extends Components {
     
-        /** Insert Functions **/
+    /** Insert Functions **/
 
     ##########################################
     #      Insert Refund                     #
@@ -33,11 +33,11 @@ class Refund extends Components {
         $sql = "INSERT INTO ".PRFX."refund_records SET
                 employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
                 client_id        =". $this->app->db->qstr( $qform['client_id']               ).",
-                workorder_id     =". $this->app->db->qstr( $qform['workorder_id']            ).",
+                workorder_id     =". $this->app->db->qstr( $qform['workorder_id'] ?: null    ).",
                 invoice_id       =". $this->app->db->qstr( $qform['invoice_id']              ).",                        
                 date             =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 tax_system       =". $this->app->db->qstr( $qform['tax_system']              ).",
-                item        =". $this->app->db->qstr( $qform['item']               ).",             
+                type             =". $this->app->db->qstr( $qform['type']                    ).",             
                 unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).", 
                 vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).", 
                 unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
@@ -74,7 +74,7 @@ class Refund extends Components {
     #     Display refunds       #
     #############################
 
-    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'refund_id', $search_term = null, $item = null, $status = null, $employee_id = null, $client_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'refund_id', $search_term = null, $type = null, $status = null, $employee_id = null, $client_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;   
@@ -90,7 +90,7 @@ class Refund extends Components {
         elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
 
         // Restrict by Type
-        if($item) { $whereTheseRecords .= " AND ".PRFX."refund_records.item= ".$this->app->db->qstr($item);}
+        if($type) { $whereTheseRecords .= " AND ".PRFX."refund_records.type= ".$this->app->db->qstr($type);}
 
         // Restrict by Status
         if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qstr($status);}
@@ -370,7 +370,7 @@ class Refund extends Components {
         $this->app->components->invoice->updateStatus($refund_details['invoice_id'], 'paid');
 
         // Remove the refund ID from the invoice
-        $this->app->components->invoice->updateRefundId($refund_details['invoice_id'], '');
+        $this->app->components->invoice->updateRefundId($refund_details['invoice_id'], null);
 
         // Revert attached vouchers status back to paid
         $this->app->components->voucher->revertRefundedInvoiceVouchers($refund_details['invoice_id']);
@@ -414,29 +414,29 @@ class Refund extends Components {
         $this->app->components->invoice->updateStatus($refund_details['invoice_id'], 'paid');
 
         // Remove the refund ID from the invoice
-        $this->app->components->invoice->updateRefundId($refund_details['invoice_id'], '');
+        $this->app->components->invoice->updateRefundId($refund_details['invoice_id'], null);
 
         // Revert attached vouchers status back to paid
         $this->app->components->voucher->revertRefundedInvoiceVouchers($refund_details['invoice_id']);
 
         $sql = "UPDATE ".PRFX."refund_records SET
-                employee_id         = '',
-                client_id           = '',
-                workorder_id        = '',
-                invoice_id          = '',
-                date                = '0000-00-00', 
+                employee_id         = NULL,
+                client_id           = NULL,
+                workorder_id        = NULL,
+                invoice_id          = NULL,
+                date                = NULL, 
                 tax_system          = '',  
-                item           = '',             
-                unit_net            = '',
+                type                = '',             
+                unit_net            = 0.00,
                 vat_tax_code        = '',
-                unit_tax_rate       = '0.00',
-                unit_tax            = '0.00',
-                unit_gross          = '0.00',
-                balance             = '0.00',
+                unit_tax_rate       = 0.00,
+                unit_tax            = 0.00,
+                unit_gross          = 0.00,
+                balance             = 0.00,
                 status              = 'deleted', 
-                last_active         = '0000-00-00 00:00:00',
-                opened_on           = '0000-00-00 00:00:00',
-                closed_on           = '0000-00-00 00:00:00',
+                last_active         = NULL,
+                opened_on           = NULL,
+                closed_on           = NULL,
                 note                = ''
                 WHERE refund_id    =". $this->app->db->qstr($refund_details['refund_id']);
 

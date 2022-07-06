@@ -310,7 +310,7 @@ if(\CMSApplication::$VAR['stage'] == 'administrator_account') {
     if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'administrator_account') {
                 
         // Check if the username or email have been used (the extra variable is to ignore the users current username and email to prevent submission errors when only updating other values)
-        if ($MigrateMyitcrm->checkUserUsernameExists(\CMSApplication::$VAR['username']) || $MigrateMyitcrm->checkUserEmailExists(\CMSApplication::$VAR['email'])) {     
+        if ($MigrateMyitcrm->checkUsernameExists(\CMSApplication::$VAR['username']) || $MigrateMyitcrm->checkUserEmailExists(\CMSApplication::$VAR['email'])) {     
 
             // send the posted data back to smarty
             $user_details = \CMSApplication::$VAR;

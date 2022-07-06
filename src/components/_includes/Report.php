@@ -1724,7 +1724,7 @@ class Report extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->fields['sum'];    
+        return $rs->fields['sum'] ?: 0.00;    
 
     }
 

@@ -127,7 +127,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select id="item" name="qform[item]" class="olotd5" required>
+                                                                                <select id="type" name="qform[type]" class="olotd5" required>
                                                                                    <option selected hidden disabled></option>
                                                                                    {section name=s loop=$expense_types}    
                                                                                         <option value="{$expense_types[s].type_key}">{t}{$expense_types[s].display_name}{/t}</option>

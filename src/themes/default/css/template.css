@@ -809,7 +809,6 @@ div.sdmenu div a:hover {
     border-color: #c6c8ca;
 }
 
-
 /* Misc */
 
 /* Make Readonly Fields Grey like disabled ones - taken from firefox */
@@ -818,5 +817,14 @@ input[readonly] {
     background-color: -internal-light-dark-color(rgb(255, 255, 255), rgb(59, 59, 59));*/
     background-color: #f0f0f0;
     opacity: 0.7;
-    border-color: rgba(118, 118, 118, 0.3);
+    border-color: rgba(118, 118, 118, 0.3);    
+}
+
+/* disguise readonly input boxes as text - not currently used */
+input[readonly].disguised-as-text {
+    border: none; /* Removes the default border */
+    outline: none; /* Removes the border when the input is clicked */
+    background-color: transparent;
+    margin: 0px;    
+    padding: 0px;
 }

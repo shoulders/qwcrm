@@ -35,8 +35,11 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], 'parts', \CMSApplication::$VAR['qform']['parts_items']);
     
     // update and recalculate the invoice
-    $this->app->components->invoice->updateStaticValues(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['date'], \CMSApplication::$VAR['qform']['due_date'], \CMSApplication::$VAR['qform']['unit_discount_rate']);    
+    $this->app->components->invoice->updateRecord(\CMSApplication::$VAR['qform']);
     $this->app->components->invoice->recalculateTotals(\CMSApplication::$VAR['qform']['invoice_id']);
+    
+    //$this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);  
+    
     
 }
     

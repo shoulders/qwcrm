@@ -74,7 +74,7 @@
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
                                             <td class="menutd">              
                                                 {section name=s loop=$otherincome_types}
-                                                    {if $otherincome_details.item == $otherincome_types[s].type_key}{t}{$otherincome_types[s].display_name}{/t}{/if}        
+                                                    {if $otherincome_details.type == $otherincome_types[s].type_key}{t}{$otherincome_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
                                             {if '/^vat_/'|preg_match:$otherincome_details.tax_system}

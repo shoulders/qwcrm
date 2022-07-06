@@ -31,17 +31,17 @@ class Expense extends Components {
     public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."expense_records SET
-                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id ).",
+                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
                 payee           =". $this->app->db->qstr( $qform['payee']                   ).",
                 date            =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
-                tax_system      =". $this->app->db->qstr( QW_TAX_SYSTEM                   ).",              
-                item       =". $this->app->db->qstr( $qform['item']               ).",
+                tax_system      =". $this->app->db->qstr( QW_TAX_SYSTEM                     ).",              
+                type            =". $this->app->db->qstr( $qform['type']                    ).",
                 unit_net        =". $this->app->db->qstr( $qform['unit_net']                ).",
                 vat_tax_code    =". $this->app->db->qstr( $qform['vat_tax_code']            ).",
                 unit_tax_rate   =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
                 unit_tax        =". $this->app->db->qstr( $qform['unit_tax']                ).",
                 unit_gross      =". $this->app->db->qstr( $qform['unit_gross'  ]            ).",
-                status          =". $this->app->db->qstr( 'unpaid'                        ).",            
+                status          =". $this->app->db->qstr( 'unpaid'                          ).",            
                 opened_on       =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                ).",              
                 items           =". $this->app->db->qstr( $qform['items']                   ).",
                 note            =". $this->app->db->qstr( $qform['note']                    );            
@@ -248,7 +248,7 @@ class Expense extends Components {
                 employee_id         =". $this->app->db->qstr( $this->app->user->login_user_id ).",
                 payee               =". $this->app->db->qstr( $qform['payee']                    ).",            
                 date                =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",            
-                item           =". $this->app->db->qstr( $qform['item']                ).",
+                type                =". $this->app->db->qstr( $qform['type']                     ).",
                 unit_net            =". $this->app->db->qstr( $qform['unit_net']                 ).",
                 vat_tax_code        =". $this->app->db->qstr( $qform['vat_tax_code']             ).",
                 unit_tax_rate       =". $this->app->db->qstr( $qform['unit_tax_rate']            ).",
@@ -396,21 +396,21 @@ class Expense extends Components {
         $this->updateStatus($expense_id, 'deleted');  
 
         $sql = "UPDATE ".PRFX."expense_records SET
-                employee_id         = '',
+                employee_id         = NULL,
                 payee               = '',           
-                date                = '0000-00-00', 
+                date                = NULL, 
                 tax_system          = '',  
-                item           = '',
-                unit_net            = '',
+                type                = '',
+                unit_net            = 0.00,
                 vat_tax_code        = '',
-                unit_tax_rate       = '0.00',
-                unit_tax            = '0.00',
-                unit_gross          = '0.00',
-                balance             = '0.00',
+                unit_tax_rate       = 0.00,
+                unit_tax            = 0.00,
+                unit_gross          = 0.00,
+                balance             = 0.00,
                 status              = 'deleted', 
-                opened_on           = '0000-00-00 00:00:00',
-                closed_on           = '0000-00-00 00:00:00',
-                last_active         = '0000-00-00 00:00:00',
+                opened_on           = NULL,
+                closed_on           = NULL,
+                last_active         = NULL,
                 items               = '',
                 note                = ''
                 WHERE expense_id    =". $this->app->db->qstr($expense_id);

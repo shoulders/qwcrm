@@ -44,9 +44,9 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
         $this->app->system->page->forcePage('workorder', 'search');
     }
     
-    // Get Record Details
+    // Get Record Details    
+    $workorder_details  = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id']);
     $client_details = $this->app->components->client->getRecord($workorder_details['client_id']);
-    $workorder_details  = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id']);    
 
     // Assign Variables
     $this->app->smarty->assign('company_details',      $this->app->components->company->getRecord()                                        );

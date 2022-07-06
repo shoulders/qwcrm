@@ -1238,7 +1238,7 @@ class MigrateMyitcrm extends Setup {
     #    Check if username already exists           #
     #################################################
 
-    public function checkUserUsernameExists($username, $current_username = null) {
+    public function checkUsernameExists($username, $current_username = null) {
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_username != null && $username === $current_username) {return false;}

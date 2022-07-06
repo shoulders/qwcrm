@@ -633,7 +633,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_debug == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_debug == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}QWcrm Debug{/t}</strong></div><hr><div>{t escape=js}This on it\'s own gives basic infomration such as the page and module names aswell as their load time. QWcrm Debug needs to be enabled to access the rest of the debugging options.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}QWcrm Debug{/t}</strong></div><hr><div>{t escape=js}This on it\'s own gives basic information such as the page and module names aswell as their load time. QWcrm Debug needs to be enabled to access the rest of the debugging options.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     <tr>

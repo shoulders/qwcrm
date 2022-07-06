@@ -38,4 +38,4 @@ $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VA
 $paymentType = new $typeClassName;
 
 // Run the type specific cancel routines
-$paymentType->cancelRecord();
+$paymentType->cancel();
