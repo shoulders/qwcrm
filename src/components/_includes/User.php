@@ -39,7 +39,7 @@ class User extends Components {
                 email               =". $this->app->db->qstr( $qform['email']                                ).",
                 usergroup           =". $this->app->db->qstr( $qform['usergroup']                            ).",
                 active              =". $this->app->db->qstr( $qform['active']                               ).",
-                register_date       =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()  ).",   
+                register_date       =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()   ).",   
                 require_reset       =". $this->app->db->qstr( $qform['require_reset']                        ).",
                 is_employee         =". $this->app->db->qstr( $qform['is_employee']                          ).", 
                 first_name          =". $this->app->db->qstr( $qform['first_name']                           ).",
