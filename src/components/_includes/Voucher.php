@@ -1701,7 +1701,7 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
         $voucher_code = '';
 
         for($i=0; $i < 16; $i++) {
-            $voucher_code .= $acceptedChars{mt_rand(0, $max_offset)};
+            $voucher_code .= $acceptedChars[mt_rand(0, $max_offset)];
         }
 
         return $voucher_code;

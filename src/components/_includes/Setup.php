@@ -461,7 +461,7 @@ class Setup extends Components {
         $prefix = '';
 
         for($i=0; $i < 4; $i++) {
-            $prefix .= $acceptedChars{mt_rand(0, $max_offset)};
+            $prefix .= $acceptedChars[mt_rand(0, $max_offset)];
         }
 
         $prefix .= '_';    
