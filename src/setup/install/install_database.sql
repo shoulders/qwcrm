@@ -6,15 +6,16 @@
  */
 
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2018 at 04:55 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.21
+-- Generation Time: Jul 08, 2022 at 04:47 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -34,9 +35,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `#__client_notes` (
-  `client_note_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `client_note_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED NOT NULL,
+  `client_id` int(10) UNSIGNED NOT NULL,
   `date` datetime NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -48,28 +49,28 @@ CREATE TABLE `#__client_notes` (
 --
 
 CREATE TABLE `#__client_records` (
-  `client_id` int(10) NOT NULL,
+  `client_id` int(10) UNSIGNED NOT NULL,
   `opened_on` datetime NOT NULL,
-  `closed_on` datetime NOT NULL,
-  `last_active` datetime NOT NULL,
-  `company_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `credit_terms` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `discount_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `active` int(1) NOT NULL DEFAULT '0',
-  `primary_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `mobile_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `fax` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `address` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `state` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `company_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `first_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `credit_terms` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `discount_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `active` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `primary_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `mobile_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `fax` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `city` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `state` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `zip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `country` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `note` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -79,10 +80,10 @@ CREATE TABLE `#__client_records` (
 --
 
 CREATE TABLE `#__client_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__client_types`
@@ -102,10 +103,10 @@ INSERT INTO `#__client_types` (`id`, `type_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__company_date_formats` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `date_format_key` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `date_format_key` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__company_date_formats`
@@ -125,46 +126,46 @@ INSERT INTO `#__company_date_formats` (`id`, `date_format_key`, `display_name`) 
 --
 
 CREATE TABLE `#__company_record` (
-  `company_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `logo` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `address` text COLLATE utf8_unicode_ci NOT NULL,
-  `city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `state` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `primary_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `mobile_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `fax` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `company_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `vat_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_flat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `company_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logo` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `state` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zip` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `primary_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `mobile_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `fax` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `website` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `company_number` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `vat_number` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `vat_flat_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
   `year_start` date NOT NULL,
   `year_end` date NOT NULL,
-  `welcome_msg` text COLLATE utf8_unicode_ci NOT NULL,
-  `currency_symbol` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `currency_code` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
-  `date_format` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `opening_hour` int(2) NOT NULL DEFAULT '9',
-  `opening_minute` int(2) NOT NULL DEFAULT '0',
-  `closing_hour` int(2) NOT NULL DEFAULT '17',
-  `closing_minute` int(2) NOT NULL DEFAULT '0',
-  `email_signature` text COLLATE utf8_unicode_ci NOT NULL,
-  `email_signature_active` int(1) NOT NULL,  
-  `email_msg_workorder` text COLLATE utf8_unicode_ci NOT NULL,
-  `email_msg_invoice` text COLLATE utf8_unicode_ci NOT NULL,
-  `email_msg_voucher` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `welcome_msg` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `currency_symbol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency_code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date_format` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opening_hour` int(2) UNSIGNED NOT NULL DEFAULT 9,
+  `opening_minute` int(2) UNSIGNED NOT NULL DEFAULT 0,
+  `closing_hour` int(2) UNSIGNED NOT NULL DEFAULT 17,
+  `closing_minute` int(2) UNSIGNED NOT NULL DEFAULT 0,
+  `email_signature` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email_signature_active` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `email_msg_workorder` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email_msg_invoice` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email_msg_voucher` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__company_record`
 --
 
 INSERT INTO `#__company_record` (`company_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_system`, `sales_tax_rate`, `vat_number`, `vat_flat_rate`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', 'qw-logo.png', '', '', '', '', '', '', '', '', '', '', '', 'no_tax', '0.00', '', '0.00', '0000-00-00', '0000-00-00', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '&pound;', 'GBP', '%Y-%m-%d', 10, 0, 17, 0, '<p>{company_logo}</p>\r\n<p><strong>{company_name}</strong></p>\r\n<p><strong>Address:</strong> <br />{company_address}</p>\r\n<p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>', 1, '<p>There is currently no message here for Work Orders.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is an invoice for the recent work at carried out by {company_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>');
+('', 'qw-logo.png', '', '', '', '', '', '', '', '', '', '', '', 'no_tax', '0.00', '', '0.00', NULL, NULL, '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '&pound;', 'GBP', '%Y-%m-%d', 10, 0, 17, 0, '<p>{company_logo}</p>\r\n<p><strong>{company_name}</strong></p>\r\n<p><strong>Address:</strong> <br />{company_address}</p>\r\n<p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>', 1, '<p>There is currently no message here for Work Orders.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is an invoice for the recent work at carried out by {company_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>');
 
 -- --------------------------------------------------------
 
@@ -173,10 +174,10 @@ INSERT INTO `#__company_record` (`company_name`, `logo`, `address`, `city`, `sta
 --
 
 CREATE TABLE `#__company_tax_systems` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__company_tax_systems`
@@ -197,16 +198,16 @@ INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__company_vat_tax_codes` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `tax_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `tax_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rate` decimal(4,2) NOT NULL,
-  `hidden` int(1) NOT NULL DEFAULT '0',
-  `editable` int(1) NOT NULL DEFAULT '0',
-  `system_tax_code` int(1) NOT NULL DEFAULT '0' COMMENT 'Is not a standard VAT code',
-  `enabled` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `hidden` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `editable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `system_tax_code` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Is not a standard VAT code',
+  `enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__company_vat_tax_codes`
@@ -271,7 +272,7 @@ CREATE TABLE `#__cronjob_records` (
 --
 
 INSERT INTO `#__cronjob_records` (`cronjob_id`, `name`, `description`, `active`, `pseudo_allowed`, `default_settings`, `last_run_time`, `last_run_status`, `locked`, `minute`, `hour`, `day`, `month`, `weekday`, `command`) VALUES
-(1, 'Test Cron', '<p>This cronjob is designed to check the basic functionality of the cronjob system. When enabled it will send an email every 15 minutes from QWcrm to the configured company email address. You can also run the cronjob manually to test immediately.</p>', 0, 1, '{\"active\":\"0\",\"pseudo_allowed\":\"1\",\"minute\":\"*\\/15\",\"hour\":\"*\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', '0000-00-00 00:00:00', 1, 0, '*/15', '*', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobTest\"}');
+(1, 'Test Cron', '<p>This cronjob is designed to check the basic functionality of the cronjob system. When enabled it will send an email every 15 minutes from QWcrm to the configured company email address. You can also run the cronjob manually to test immediately.</p>', 0, 1, '{\"active\":\"0\",\"pseudo_allowed\":\"1\",\"minute\":\"*\\/15\",\"hour\":\"*\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '*/15', '*', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobTest\"}');
 
 -- --------------------------------------------------------
 
@@ -290,7 +291,7 @@ CREATE TABLE `#__cronjob_system` (
 --
 
 INSERT INTO `#__cronjob_system` (`last_run_time`, `last_run_status`, `locked`) VALUES
-('0000-00-00 00:00:00', 0, 0);
+(NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -299,25 +300,25 @@ INSERT INTO `#__cronjob_system` (`last_run_time`, `last_run_status`, `locked`) V
 --
 
 CREATE TABLE `#__expense_records` (
-  `expense_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,  
-  `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',  
-  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `opened_on` datetime NOT NULL,
-  `closed_on` datetime NOT NULL,
-  `last_active` datetime NOT NULL,
-  `items` text COLLATE utf8_unicode_ci NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `expense_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `payee` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` date DEFAULT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opened_on` datetime DEFAULT NULL,
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `items` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -326,10 +327,10 @@ CREATE TABLE `#__expense_records` (
 --
 
 CREATE TABLE `#__expense_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__expense_statuses`
@@ -349,10 +350,10 @@ INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__expense_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__expense_types`
@@ -388,21 +389,22 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__invoice_labour` (
-  `invoice_labour_id` int(10) NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0',
-  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
-  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `subtotal_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `invoice_labour_id` int(10) UNSIGNED NOT NULL,
+  `invoice_id` int(10) UNSIGNED NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- --------------------------------------------------------
@@ -412,21 +414,22 @@ CREATE TABLE `#__invoice_labour` (
 --
 
 CREATE TABLE `#__invoice_parts` (
-  `invoice_parts_id` int(10) NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0',
-  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `subtotal_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `invoice_parts_id` int(10) UNSIGNED NOT NULL,
+  `invoice_id` int(10) UNSIGNED NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -435,12 +438,12 @@ CREATE TABLE `#__invoice_parts` (
 --
 
 CREATE TABLE `#__invoice_prefill_items` (
-  `invoice_prefill_id` int(10) NOT NULL,
-  `description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `active` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `invoice_prefill_id` int(10) UNSIGNED NOT NULL,
+  `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `active` tinyint(1) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__invoice_prefill_items`
@@ -465,28 +468,28 @@ INSERT INTO `#__invoice_prefill_items` (`invoice_prefill_id`, `description`, `ty
 --
 
 CREATE TABLE `#__invoice_records` (
-  `invoice_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `refund_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `due_date` date NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_discount_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_discount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_paid` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `opened_on` datetime NOT NULL,
-  `closed_on` datetime NOT NULL,
-  `last_active` datetime NOT NULL,
-  `is_closed` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `invoice_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL,
+  `workorder_id` int(10) UNSIGNED DEFAULT NULL,
+  `refund_id` int(10) UNSIGNED DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_discount_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_paid` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opened_on` datetime DEFAULT NULL,
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -495,10 +498,10 @@ CREATE TABLE `#__invoice_records` (
 --
 
 CREATE TABLE `#__invoice_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__invoice_statuses`
@@ -523,25 +526,25 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__otherincome_records` (
-  `otherincome_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `opened_on` datetime NOT NULL,
-  `closed_on` datetime NOT NULL,
-  `last_active` datetime NOT NULL,
-  `items` text COLLATE utf8_unicode_ci NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `otherincome_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `payee` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` date DEFAULT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opened_on` datetime DEFAULT NULL,
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `items` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -550,10 +553,10 @@ CREATE TABLE `#__otherincome_records` (
 --
 
 CREATE TABLE `#__otherincome_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__otherincome_statuses`
@@ -573,10 +576,10 @@ INSERT INTO `#__otherincome_statuses` (`id`, `status_key`, `display_name`) VALUE
 --
 
 CREATE TABLE `#__otherincome_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__otherincome_types`
@@ -597,10 +600,10 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__payment_additional_info_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__payment_additional_info_types`
@@ -621,11 +624,11 @@ INSERT INTO `#__payment_additional_info_types` (`id`, `type_key`, `display_name`
 --
 
 CREATE TABLE `#__payment_card_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `active` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `active` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__payment_card_types`
@@ -645,15 +648,15 @@ INSERT INTO `#__payment_card_types` (`id`, `type_key`, `display_name`, `active`)
 --
 
 CREATE TABLE `#__payment_methods` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `method_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `send` int(1) NOT NULL DEFAULT '0',
-  `receive` int(1) NOT NULL DEFAULT '0',
-  `send_protected` int(1) NOT NULL DEFAULT '1' COMMENT 'send cannot be changed',
-  `receive_protected` int(1) NOT NULL DEFAULT '1' COMMENT 'receive cannot be changed',
-  `enabled` int(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `method_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `send` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `receive` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `send_protected` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT 'send cannot be changed',
+  `receive_protected` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT 'receive cannot be changed',
+  `enabled` tinyint(1) UNSIGNED DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__payment_methods`
@@ -676,16 +679,16 @@ INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `r
 --
 
 CREATE TABLE `#__payment_options` (
-  `bank_account_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_account_number` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_sort_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_iban` varchar(34) COLLATE utf8_unicode_ci NOT NULL,
-  `paypal_email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_bank_transfer_msg` text COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_cheque_msg` text COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_footer_msg` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `bank_account_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bank_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bank_account_number` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bank_sort_code` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bank_iban` varchar(34) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `paypal_email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `invoice_bank_transfer_msg` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `invoice_cheque_msg` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `invoice_footer_msg` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__payment_options`
@@ -701,25 +704,25 @@ INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_accoun
 --
 
 CREATE TABLE `#__payment_records` (
-  `payment_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `voucher_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `refund_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `expense_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `otherincome_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `last_active` datetime NOT NULL,
-  `additional_info` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,  
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `payment_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL,
+  `workorder_id` int(10) UNSIGNED DEFAULT NULL,
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL,
+  `voucher_id` int(10) UNSIGNED DEFAULT NULL,
+  `refund_id` int(10) UNSIGNED DEFAULT NULL,
+  `expense_id` int(10) UNSIGNED DEFAULT NULL,
+  `otherincome_id` int(10) UNSIGNED DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `method` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `last_active` datetime DEFAULT NULL,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -728,10 +731,10 @@ CREATE TABLE `#__payment_records` (
 --
 
 CREATE TABLE `#__payment_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__payment_statuses`
@@ -749,10 +752,10 @@ INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__payment_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__payment_types`
@@ -771,26 +774,26 @@ INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__refund_records` (
-  `refund_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',    
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',  
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `opened_on` datetime NOT NULL,
-  `closed_on` datetime NOT NULL,
-  `last_active` datetime NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `refund_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL,
+  `workorder_id` int(10) UNSIGNED DEFAULT NULL,
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opened_on` datetime DEFAULT NULL,
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -799,10 +802,10 @@ CREATE TABLE `#__refund_records` (
 --
 
 CREATE TABLE `#__refund_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__refund_statuses`
@@ -822,10 +825,10 @@ INSERT INTO `#__refund_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__refund_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__refund_types`
@@ -842,10 +845,10 @@ INSERT INTO `#__refund_types` (`id`, `type_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__schedule_records` (
-  `schedule_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `schedule_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED NOT NULL,
+  `client_id` int(10) UNSIGNED NOT NULL,
+  `workorder_id` int(10) UNSIGNED NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
@@ -858,14 +861,14 @@ CREATE TABLE `#__schedule_records` (
 --
 
 CREATE TABLE `#__session` (
-  `session_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `session_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `clientid` tinyint(3) UNSIGNED DEFAULT NULL,
-  `guest` tinyint(4) UNSIGNED DEFAULT '1',
-  `time` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `userid` int(11) DEFAULT '0',
-  `username` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `guest` tinyint(4) UNSIGNED DEFAULT 1,
+  `time` varchar(14) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `data` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `userid` int(11) DEFAULT 0,
+  `username` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -874,29 +877,29 @@ CREATE TABLE `#__session` (
 --
 
 CREATE TABLE `#__supplier_records` (
-  `supplier_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `company_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `primary_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `mobile_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `fax` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `address` text COLLATE utf8_unicode_ci NOT NULL,
-  `city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `state` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `supplier_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED NOT NULL,
+  `company_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `primary_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mobile_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fax` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `state` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zip` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime NOT NULL,
-  `closed_on` datetime NOT NULL,
-  `last_active` datetime NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -905,10 +908,10 @@ CREATE TABLE `#__supplier_records` (
 --
 
 CREATE TABLE `#__supplier_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__supplier_statuses`
@@ -925,10 +928,10 @@ INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__supplier_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__supplier_types`
@@ -962,17 +965,17 @@ INSERT INTO `#__supplier_types` (`id`, `type_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__user_acl_page` (
-  `page` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `Administrator` int(1) NOT NULL DEFAULT '1',
-  `Manager` int(1) NOT NULL DEFAULT '0',
-  `Supervisor` int(1) NOT NULL DEFAULT '0',
-  `Technician` int(1) NOT NULL DEFAULT '0',
-  `Clerical` int(1) NOT NULL DEFAULT '0',
-  `Counter` int(1) NOT NULL DEFAULT '0',
-  `Client` int(1) NOT NULL DEFAULT '0',
-  `Guest` int(1) NOT NULL DEFAULT '0',
-  `Public` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `page` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Administrator` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
+  `Manager` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `Supervisor` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `Technician` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `Clerical` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `Counter` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `Client` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `Guest` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `Public` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__user_acl_page`
@@ -1104,12 +1107,12 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 
 CREATE TABLE `#__user_keys` (
   `id` int(10) UNSIGNED NOT NULL,
-  `user_id` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `series` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `time` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uastring` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `user_id` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `series` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `time` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uastring` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1118,10 +1121,10 @@ CREATE TABLE `#__user_keys` (
 --
 
 CREATE TABLE `#__user_locations` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `location_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `location_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__user_locations`
@@ -1139,35 +1142,35 @@ INSERT INTO `#__user_locations` (`id`, `location_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__user_records` (
-  `user_id` int(10) NOT NULL,
-  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `username` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `usergroup` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `active` int(1) NOT NULL DEFAULT '0',
-  `last_active` datetime NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL,
+  `username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usergroup` int(10) UNSIGNED NOT NULL,
+  `active` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `last_active` datetime DEFAULT NULL,
   `register_date` datetime NOT NULL,
-  `require_reset` int(1) NOT NULL DEFAULT '0' COMMENT 'Require user to reset password on next login',
-  `last_reset_time` datetime NOT NULL COMMENT 'Date of last password reset',
-  `reset_count` int(10) NOT NULL DEFAULT '0' COMMENT 'Count of password resets since last_reset_time',
-  `is_employee` int(1) NOT NULL DEFAULT '0',
-  `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `work_primary_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `work_mobile_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `work_fax` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `home_primary_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `home_mobile_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `home_email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `home_address` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `home_city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `home_state` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `home_zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `home_country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `based` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `require_reset` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Require user to reset password on next login',
+  `last_reset_time` datetime DEFAULT NULL COMMENT 'Date of last password reset',
+  `reset_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Count of password resets since last_reset_time',
+  `is_employee` tinyint(1) NOT NULL DEFAULT 0,
+  `first_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `work_primary_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `work_mobile_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `work_fax` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `home_primary_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `home_mobile_phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `home_email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `home_address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `home_city` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `home_state` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `home_zip` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `home_country` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `based` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1176,12 +1179,12 @@ CREATE TABLE `#__user_records` (
 --
 
 CREATE TABLE `#__user_reset` (
-  `user_id` int(10) NOT NULL,
-  `expiry_time` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `reset_code` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `reset_code_expiry_time` varchar(20) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `expiry_time` int(20) UNSIGNED NOT NULL DEFAULT 0,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reset_code` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `reset_code_expiry_time` int(20) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1190,10 +1193,10 @@ CREATE TABLE `#__user_reset` (
 --
 
 CREATE TABLE `#__user_usergroups` (
-  `usergroup_id` int(4) NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `user_type` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `usergroup_id` int(10) UNSIGNED NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `user_type` tinyint(1) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__user_usergroups`
@@ -1217,8 +1220,8 @@ INSERT INTO `#__user_usergroups` (`usergroup_id`, `display_name`, `user_type`) V
 --
 
 CREATE TABLE `#__version` (
-  `database_version` varchar(10) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `database_version` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__version`
@@ -1234,33 +1237,33 @@ INSERT INTO `#__version` (`database_version`) VALUES
 --
 
 CREATE TABLE `#__voucher_records` (
-  `voucher_id` int(10) NOT NULL,
-  `voucher_code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `employee_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `payment_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `refund_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `redeemed_client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `redeemed_invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `expiry_date` date NOT NULL,
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `opened_on` datetime NOT NULL,
-  `redeemed_on` datetime NOT NULL,
-  `closed_on` datetime NOT NULL,
-  `last_active` datetime NOT NULL,
-  `blocked` int(1) NOT NULL DEFAULT '0',
-  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sales_tax_exempt` int(1) NOT NULL DEFAULT '0',
-  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `voucher_id` int(10) UNSIGNED NOT NULL,
+  `voucher_code` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL,
+  `workorder_id` int(10) UNSIGNED DEFAULT NULL,
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL,
+  `payment_id` int(10) UNSIGNED DEFAULT NULL,
+  `refund_id` int(10) UNSIGNED DEFAULT NULL,
+  `redeemed_client_id` int(10) UNSIGNED DEFAULT NULL,
+  `redeemed_invoice_id` int(10) UNSIGNED DEFAULT NULL,
+  `expiry_date` date DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opened_on` datetime DEFAULT NULL,
+  `redeemed_on` datetime DEFAULT NULL,
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `blocked` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1269,10 +1272,10 @@ CREATE TABLE `#__voucher_records` (
 --
 
 CREATE TABLE `#__voucher_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__voucher_statuses`
@@ -1294,10 +1297,10 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__voucher_types` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__voucher_types`
@@ -1314,12 +1317,12 @@ INSERT INTO `#__voucher_types` (`id`, `type_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__workorder_history` (
-  `history_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `history_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED NOT NULL,
+  `workorder_id` int(10) UNSIGNED NOT NULL,
   `date` datetime NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1328,12 +1331,12 @@ CREATE TABLE `#__workorder_history` (
 --
 
 CREATE TABLE `#__workorder_notes` (
-  `workorder_note_id` int(10) NOT NULL,
-  `employee_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `workorder_note_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED NOT NULL,
+  `workorder_id` int(10) UNSIGNED NOT NULL,
   `date` datetime NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1342,22 +1345,22 @@ CREATE TABLE `#__workorder_notes` (
 --
 
 CREATE TABLE `#__workorder_records` (
-  `workorder_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `created_by` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `closed_by` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `opened_on` datetime NOT NULL,
-  `closed_on` datetime NOT NULL,
-  `last_active` datetime NOT NULL,
-  `is_closed` int(1) NOT NULL,
-  `scope` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `comment` text COLLATE utf8_unicode_ci NOT NULL,
-  `resolution` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `workorder_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL,
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL,
+  `created_by` int(10) UNSIGNED DEFAULT NULL,
+  `closed_by` int(10) UNSIGNED DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opened_on` datetime DEFAULT NULL,
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `scope` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `resolution` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1366,10 +1369,10 @@ CREATE TABLE `#__workorder_records` (
 --
 
 CREATE TABLE `#__workorder_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__workorder_statuses`
@@ -1656,13 +1659,13 @@ ALTER TABLE `#__voucher_records`
 --
 -- Indexes for table `#__voucher_types`
 --
-ALTER TABLE `#__voucher_types`
+ALTER TABLE `#__voucher_statuses`
   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__voucher_statuses`
 --
-ALTER TABLE `#__voucher_statuses`
+ALTER TABLE `#__voucher_types`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1697,97 +1700,117 @@ ALTER TABLE `#__workorder_statuses`
 -- AUTO_INCREMENT for table `#__client_notes`
 --
 ALTER TABLE `#__client_notes`
-  MODIFY `client_note_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `client_note_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__client_records`
 --
 ALTER TABLE `#__client_records`
-  MODIFY `client_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `client_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__expense_records`
 --
 ALTER TABLE `#__expense_records`
-  MODIFY `expense_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `expense_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__invoice_labour`
 --
 ALTER TABLE `#__invoice_labour`
-  MODIFY `invoice_labour_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `invoice_labour_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__invoice_parts`
 --
 ALTER TABLE `#__invoice_parts`
-  MODIFY `invoice_parts_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `invoice_parts_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__invoice_prefill_items`
 --
 ALTER TABLE `#__invoice_prefill_items`
-  MODIFY `invoice_prefill_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `invoice_prefill_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__invoice_records`
 --
 ALTER TABLE `#__invoice_records`
-  MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `invoice_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__otherincome_records`
 --
 ALTER TABLE `#__otherincome_records`
-  MODIFY `otherincome_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `otherincome_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__payment_records`
 --
 ALTER TABLE `#__payment_records`
-  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__refund_records`
 --
 ALTER TABLE `#__refund_records`
-  MODIFY `refund_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `refund_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__schedule_records`
 --
 ALTER TABLE `#__schedule_records`
-  MODIFY `schedule_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `schedule_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__supplier_records`
 --
 ALTER TABLE `#__supplier_records`
-  MODIFY `supplier_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `supplier_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__user_keys`
 --
 ALTER TABLE `#__user_keys`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__user_records`
 --
 ALTER TABLE `#__user_records`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__user_usergroups`
 --
 ALTER TABLE `#__user_usergroups`
-  MODIFY `usergroup_id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `usergroup_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__voucher_records`
 --
 ALTER TABLE `#__voucher_records`
-  MODIFY `voucher_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `voucher_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__workorder_history`
 --
 ALTER TABLE `#__workorder_history`
-  MODIFY `history_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `history_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__workorder_notes`
 --
 ALTER TABLE `#__workorder_notes`
-  MODIFY `workorder_note_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `workorder_note_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `#__workorder_records`
 --
 ALTER TABLE `#__workorder_records`
-  MODIFY `workorder_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `workorder_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
