@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  Session
  *
- * @copyright   Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved.
+ * @copyright   (C) 2007 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -18,15 +18,15 @@ defined('JPATH_PLATFORM') or die;
  */
 class JSessionStorageNone extends JSessionStorage
 {
-    /**
-     * Register the functions of this class with PHP's session handler
-     *
-     * @return  void
-     *
-     * @since   1.7.0
-     */
-    public function register()
-    {
-        // Default session handler is `files`
-    }
+	/**
+	 * Register the functions of this class with PHP's session handler
+	 *
+	 * @return  void
+	 *
+	 * @since   1.7.0
+	 */
+	public function register()
+	{
+		// Default session handler is `files`
+	}
 }

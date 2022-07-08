@@ -4,7 +4,7 @@
     },
     "require": {
         "phpmyadmin/motranslator": "^5.0",
-        "smarty/smarty": "^3.1",
+        "smarty/smarty": "^4.0",
         "mpdf/mpdf": "^8.0",
         "adodb/adodb-php": "^5.20",
         "swiftmailer/swiftmailer": "^6.0",

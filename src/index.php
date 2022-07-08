@@ -15,7 +15,7 @@ $startTime = microtime(1);
 $startMem = memory_get_usage();
 
 // Define and check QWcrm Minimum PHP version
-define('QWCRM_MINIMUM_PHP', '7.2.0');
+define('QWCRM_MINIMUM_PHP', '7.4.0');
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run. Your current version is '.PHP_VERSION);
 }
