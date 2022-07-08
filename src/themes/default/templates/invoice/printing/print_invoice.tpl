@@ -59,7 +59,7 @@
                                         {/section}<br>
                                         <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format}<br>
                                         <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
-                                        <b>{t}Work Order{/t} - </b>{if !$workorder_details}{t}n/a{/t}{else}{$invoice_details.workorder_id}{/if}<br>
+                                        <b>{t}Work Order{/t} - </b>{if $invoice_details.workorder_id}{$invoice_details.workorder_id}{else}{t}n/a{/t}{/if}<br>
                                         <b>{t}Employee{/t} - </b>{$employee_display_name}<br>                                                                            
                                     </td>
                                 </tr>
@@ -130,7 +130,7 @@
         <br>
 
         <!-- Workorder Row -->
-        {if $workorder_details.scope}    
+        {if $invoice_details.workorder_id}    
             <table width="675" border="0" cellpadding="3" cellspacing="0">
                 <tr>
                     <td><b>{t}Work Order{/t} {t}Description{/t}</b></td>
@@ -143,13 +143,13 @@
             </table>
         {/if}
   
-        <!-- Invoice To Box
+        {*<!-- Invoice To Box -->
         <table width="675" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
             <tr>
                 <td align="center" class="olotd5" style="font-size: 20px;">{t}Invoice{/t} - {$client_details.display_name}</td>
             </tr>
         </table>
-        <br> -->
+        <br>*}
 
         <!-- Items Table Section -->
 

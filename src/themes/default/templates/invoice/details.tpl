@@ -49,7 +49,7 @@
                                             
                                             <td>{$invoice_id}</td>
                                             <td>
-                                                {if {$invoice_details.workorder_id} > 0}
+                                                {if $invoice_details.workorder_id}
                                                     <a href="index.php?component=workorder&page_tpl=details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a>
                                                 {else}
                                                     {t}n/a{/t}
@@ -79,7 +79,7 @@
                                             
                                             <!-- Scope -->
                                             <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
-                                            <td colspan="8">{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
+                                            <td colspan="8">{if $invoice_details.workorder_id}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
                                             
                                         </tr>
                                         <tr>
