@@ -687,8 +687,6 @@ abstract class UserHelper
 		 * distribution is even, and randomize the start shift so it's not
 		 * predictable.
 		 */
-		/*
-		// This is PHP 7 only. the JCrpyt function returns after failing		
 		$random = \JCrypt::genRandomBytes($length + 1);
 		$shift = ord($random[0]);
 
@@ -697,16 +695,9 @@ abstract class UserHelper
 			$makepass .= $salt[($shift + ord($random[$i])) % $base];
 			$shift += ord($random[$i]);
 		}
-		*/
 
-		// This is a workaround
-		for ($i = 1; $i <= $length; ++$i)
-		{
-			$makepass .= $salt[rand(0, strlen($salt)-1)];
-		}
-                
-        return $makepass;
-    }
+		return $makepass;
+	}
 
 	/**
 	 * Converts to allowed 64 characters for APRMD5 passwords.
