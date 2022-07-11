@@ -256,6 +256,8 @@ defined('_QWEXEC') or die;
             ".PRFX."user_records.work_mobile_phone AS employee_work_mobile_phone,
             ".PRFX."user_records.home_mobile_phone AS employee_home_mobile_phone,
 
+            ".PRFX."workorder_records.scope,
+                
             labour.labour_items,
             parts.parts_items
 
@@ -293,6 +295,7 @@ defined('_QWEXEC') or die;
 
             LEFT JOIN ".PRFX."client_records ON ".PRFX."invoice_records.client_id = ".PRFX."client_records.client_id         
             LEFT JOIN ".PRFX."user_records ON ".PRFX."invoice_records.employee_id = ".PRFX."user_records.user_id
+            LEFT JOIN ".PRFX."workorder_records ON ".PRFX."invoice_records.workorder_id = ".PRFX."workorder_records.workorder_id
 
             ".$whereTheseRecords."
             GROUP BY ".PRFX."invoice_records.".$order_by."
