@@ -54,7 +54,7 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
         
     /* Profit and Turnover Calculations */
     
-    // Holding array for prorta totals (prorata'ed where needed)     
+    // Holding array for prorata totals (prorata'ed where needed)     
     $profit_totals = array(
                         "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), 
                         //"voucher" => array("spv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), "mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)),  (not currently used)
