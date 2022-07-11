@@ -46,24 +46,24 @@ class Voucher extends Components {
         else { $unit_tax_rate = 0.00; }
 
         $sql = "INSERT INTO ".PRFX."voucher_records SET 
-                voucher_code        =". $this->app->db->qstr( $this->generateVoucherCode()                      ).",  
-                employee_id         =". $this->app->db->qstr( $this->app->user->login_user_id           ).",
-                client_id           =". $this->app->db->qstr( $invoice_details['client_id']                ).",
-                workorder_id        =". $this->app->db->qstr( $invoice_details['workorder_id']             ).",
-                invoice_id          =". $this->app->db->qstr( $invoice_details['invoice_id']               ).",
-                expiry_date         =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($expiry_date).' 23:59:59' ).",
-                status              =". $this->app->db->qstr( 'unused'                                     ).",
-                opened_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                             ).",
-                blocked             =". $this->app->db->qstr( '0'                                          ).",
-                tax_system          =". $this->app->db->qstr( $invoice_details['tax_system']               ).",    
-                type                =". $this->app->db->qstr( $type                                        ).",
+                voucher_code        =". $this->app->db->qStr( $this->generateVoucherCode()                      ).",  
+                employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id           ).",
+                client_id           =". $this->app->db->qStr( $invoice_details['client_id']                ).",
+                workorder_id        =". $this->app->db->qStr( $invoice_details['workorder_id']             ).",
+                invoice_id          =". $this->app->db->qStr( $invoice_details['invoice_id']               ).",
+                expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($expiry_date).' 23:59:59' ).",
+                status              =". $this->app->db->qStr( 'unused'                                     ).",
+                opened_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                             ).",
+                blocked             =". $this->app->db->qStr( '0'                                          ).",
+                tax_system          =". $this->app->db->qStr( $invoice_details['tax_system']               ).",    
+                type                =". $this->app->db->qStr( $type                                        ).",
                 unit_net            =". $unit_net                                               .",
                 sales_tax_exempt    =". $sales_tax_exempt                                       .",
-                vat_tax_code        =". $this->app->db->qstr( $vat_tax_code                                ).",
+                vat_tax_code        =". $this->app->db->qStr( $vat_tax_code                                ).",
                 unit_tax_rate       =". $unit_tax_rate                                          .", 
                 unit_tax            =". $unit_net * ($unit_tax_rate/100)                        .",
                 unit_gross          =". ($unit_net + ($unit_net * ($unit_tax_rate/100)) )       .",
-                note                =". $this->app->db->qstr( $note                                        );
+                note                =". $this->app->db->qStr( $note                                        );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -101,16 +101,16 @@ class Voucher extends Components {
         $havingTheseRecords = '';
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category (redeemed client) and search term
-        elseif($search_category == 'redeemed_client_display_name') {$havingTheseRecords .= " HAVING redeemed_client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        elseif($search_category == 'redeemed_client_display_name') {$havingTheseRecords .= " HAVING redeemed_client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."voucher_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');}  
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."voucher_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}  
 
         // Restrict by Status
         if($status) {
@@ -128,29 +128,29 @@ class Voucher extends Components {
             // Return Vouchers for the given status
             } else {
 
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.status= ".$this->app->db->qstr($status);
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.status= ".$this->app->db->qStr($status);
 
             }
 
         }    
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.employee_id=".$this->app->db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.employee_id=".$this->app->db->qStr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->app->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->app->db->qStr($client_id);}
 
         // Restrict by Workorder
-        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.workorder_id=".$this->app->db->qstr($workorder_id);}
+        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.workorder_id=".$this->app->db->qStr($workorder_id);}
 
         // Restrict by Invoice
-        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->app->db->qstr($invoice_id);}
+        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->app->db->qStr($invoice_id);}
 
         // Restrict by Redeemed Client
-        if($redeemed_client_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id=".$this->app->db->qstr($redeemed_client_id);}
+        if($redeemed_client_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id=".$this->app->db->qStr($redeemed_client_id);}
 
         // Restrict by Redeemed Invoice
-        if($redeemed_invoice_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_invoice_id=".$this->app->db->qstr($redeemed_invoice_id);}
+        if($redeemed_invoice_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_invoice_id=".$this->app->db->qStr($redeemed_invoice_id);}
 
         // The SQL code
         $sql = "SELECT
@@ -228,7 +228,7 @@ class Voucher extends Components {
 
     public function getRecord($voucher_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."voucher_records WHERE voucher_id=".$this->app->db->qstr($voucher_id);
+        $sql = "SELECT * FROM ".PRFX."voucher_records WHERE voucher_id=".$this->app->db->qStr($voucher_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -250,7 +250,7 @@ class Voucher extends Components {
 
     public function getIdByVoucherCode($voucher_code) {
 
-        $sql = "SELECT * FROM ".PRFX."voucher_records WHERE voucher_code=".$this->app->db->qstr($voucher_code);
+        $sql = "SELECT * FROM ".PRFX."voucher_records WHERE voucher_code=".$this->app->db->qStr($voucher_code);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -287,7 +287,7 @@ class Voucher extends Components {
 
     public function getStatusDisplayName($status_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."voucher_statuses WHERE status_key=".$this->app->db->qstr($status_key);
+        $sql = "SELECT display_name FROM ".PRFX."voucher_statuses WHERE status_key=".$this->app->db->qStr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -320,7 +320,7 @@ class Voucher extends Components {
                 SUM(unit_tax) AS subtotal_tax,
                 SUM(unit_gross) AS subtotal_gross            
                 FROM ".PRFX."voucher_records
-                WHERE invoice_id=". $this->app->db->qstr($invoice_id);
+                WHERE invoice_id=". $this->app->db->qStr($invoice_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -368,14 +368,14 @@ class Voucher extends Components {
         $unit_tax = $unit_net * ($unit_tax_rate/100);    
 
         $sql = "UPDATE ".PRFX."voucher_records SET     
-                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id           ).",
-                expiry_date     =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($expiry_date).' 23:59:59' ).",            
+                employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id           ).",
+                expiry_date     =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($expiry_date).' 23:59:59' ).",            
                 unit_net        =". $unit_net                                                .",
                 unit_tax        =". $unit_tax                                                .",
                 unit_gross      =". ($unit_net + $unit_tax)                                  .",
-                last_active     =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                             ).",  
-                note            =". $this->app->db->qstr( $note                                        )."
-                WHERE voucher_id =". $this->app->db->qstr($voucher_id);
+                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                             ).",  
+                note            =". $this->app->db->qStr( $note                                        )."
+                WHERE voucher_id =". $this->app->db->qStr($voucher_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -436,12 +436,12 @@ class Voucher extends Components {
         }
 
         $sql = "UPDATE ".PRFX."voucher_records SET
-                status             =". $this->app->db->qstr( $new_status   ).",
-                redeemed_on        =". $this->app->db->qstr( $redeemed_on  ).",   
-                closed_on          =". $this->app->db->qstr( $closed_on    ).",
-                last_active        =". $this->app->db->qstr( $datetime     ).",
-                blocked            =". $this->app->db->qstr( $blocked      )."
-                WHERE voucher_id   =". $this->app->db->qstr( $voucher_id   ); 
+                status             =". $this->app->db->qStr( $new_status   ).",
+                redeemed_on        =". $this->app->db->qStr( $redeemed_on  ).",   
+                closed_on          =". $this->app->db->qStr( $closed_on    ).",
+                last_active        =". $this->app->db->qStr( $datetime     ).",
+                blocked            =". $this->app->db->qStr( $blocked      )."
+                WHERE voucher_id   =". $this->app->db->qStr( $voucher_id   ); 
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
@@ -477,11 +477,11 @@ class Voucher extends Components {
 
         // some information has already been applied (as below) using $this->update_voucher_status() earlier in the process
         $sql = "UPDATE ".PRFX."voucher_records SET
-                employee_id         =". $this->app->db->qstr( $this->app->user->login_user_id       ).",
-                payment_id          =". $this->app->db->qstr( $payment_id                              ).",
-                redeemed_client_id  =". $this->app->db->qstr( $voucher_details['client_id']            ).",   
-                redeemed_invoice_id =". $this->app->db->qstr( $invoice_id                              )."            
-                WHERE voucher_id    =". $this->app->db->qstr( $voucher_id                              );
+                employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id       ).",
+                payment_id          =". $this->app->db->qStr( $payment_id                              ).",
+                redeemed_client_id  =". $this->app->db->qStr( $voucher_details['client_id']            ).",   
+                redeemed_invoice_id =". $this->app->db->qStr( $invoice_id                              )."            
+                WHERE voucher_id    =". $this->app->db->qStr( $voucher_id                              );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
@@ -506,8 +506,8 @@ class Voucher extends Components {
     public function updateRefundId($voucher_id, $refund_id) {
 
         $sql = "UPDATE ".PRFX."voucher_records SET
-                refund_id            =".$this->app->db->qstr($refund_id)."
-                WHERE voucher_id     =".$this->app->db->qstr($voucher_id);
+                refund_id            =".$this->app->db->qStr($refund_id)."
+                WHERE voucher_id     =".$this->app->db->qStr($voucher_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -756,7 +756,7 @@ class Voucher extends Components {
             $this->updateStatus($voucher_id, 'deleted', true);
 
             $sql = "UPDATE ".PRFX."voucher_records SET
-                voucher_code       =". $this->app->db->qstr( $voucher_details['voucher_code']   ).",
+                voucher_code       =". $this->app->db->qStr( $voucher_details['voucher_code']   ).",
                 employee_id         =   NULL,
                 client_id           =   NULL,
                 workorder_id        =   NULL,
@@ -780,7 +780,7 @@ class Voucher extends Components {
                 unit_tax            =   0.00,
                 unit_gross          =   0.00,
                 note                =   ''
-                WHERE voucher_id =". $this->app->db->qstr($voucher_id);        
+                WHERE voucher_id =". $this->app->db->qStr($voucher_id);        
 
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

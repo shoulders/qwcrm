@@ -110,7 +110,7 @@ class PlgUserJoomla // extends JPlugin
 			->delete($this->db->quoteName('#__session'))
 			->where($this->db->quoteName('userid') . ' = ' . (int) $user['id']);
 		*/
-		$sql = "DELETE FROM ".PRFX."session WHERE userid = ". $this->db->qstr((int) $user['id']);
+		$sql = "DELETE FROM ".PRFX."session WHERE userid = ". $this->db->qStr((int) $user['id']);
 
 		try
 		{
@@ -302,7 +302,7 @@ class PlgUserJoomla // extends JPlugin
 			->delete('#__session')
 			->where($this->db->quoteName('session_id') . ' = ' . $this->db->quoteBinary($oldSessionId));
 		*/
-		$sql = "DELETE FROM ".PRFX."session WHERE session_id = " . $this->db->qstr($oldSessionId);
+		$sql = "DELETE FROM ".PRFX."session WHERE session_id = " . $this->db->qStr($oldSessionId);
 
 		try
 		{
@@ -382,7 +382,7 @@ class PlgUserJoomla // extends JPlugin
 			if (!$sharedSessions)
 			{
 				//$query->where($this->db->quoteName('client_id') . ' = ' . (int) $options['clientid']);
-				$sql .= "\nAND " . $this->db->qstr('clientid') . " = " . (int) $options['clientid'];
+				$sql .= "\nAND " . $this->db->qStr('clientid') . " = " . (int) $options['clientid'];
 			}
 
 			try

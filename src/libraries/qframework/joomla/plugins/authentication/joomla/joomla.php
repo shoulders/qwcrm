@@ -59,7 +59,7 @@ class PlgAuthenticationJoomla //extends JPlugin
 		$db->setQuery($query);
 		$result = $db->loadObject();
 		*/
-		$sql = "SELECT user_id, password FROM ".PRFX."user_records WHERE username = ".$this->db->qstr($credentials['username']);
+		$sql = "SELECT user_id, password FROM ".PRFX."user_records WHERE username = ".$this->db->qStr($credentials['username']);
 		$rs = $this->db->execute($sql);        
         
 		// if there is a record, set it

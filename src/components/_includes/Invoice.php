@@ -40,17 +40,17 @@ defined('_QWEXEC') or die;
         $sales_tax_rate = ($tax_system == 'sales_tax_cash') ? $sales_tax_rate = $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
 
         $sql = "INSERT INTO ".PRFX."invoice_records SET     
-                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                client_id       =". $this->app->db->qstr( $client_id                           ).",
-                workorder_id    =". $this->app->db->qstr( $workorder_id ?: null                   ).",
-                date            =". $this->app->db->qstr( $this->app->system->general->mysqlDate($timestamp)               ).",
-                due_date        =". $this->app->db->qstr( $this->app->system->general->mysqlDate($timestamp)               ).",            
-                unit_discount_rate   =". $this->app->db->qstr( $unit_discount_rate             ).",
-                tax_system      =". $this->app->db->qstr( $tax_system                          ).",
-                sales_tax_rate  =". $this->app->db->qstr( $sales_tax_rate                      ).",            
-                status          =". $this->app->db->qstr( 'pending'                            ).",
-                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime($timestamp)           ).",
-                is_closed       =". $this->app->db->qstr( 0                                    ); 
+                employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
+                client_id       =". $this->app->db->qStr( $client_id                           ).",
+                workorder_id    =". $this->app->db->qStr( $workorder_id ?: null                   ).",
+                date            =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",
+                due_date        =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",            
+                unit_discount_rate   =". $this->app->db->qStr( $unit_discount_rate             ).",
+                tax_system      =". $this->app->db->qStr( $tax_system                          ).",
+                sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",            
+                status          =". $this->app->db->qStr( 'pending'                            ).",
+                opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)           ).",
+                is_closed       =". $this->app->db->qStr( 0                                    ); 
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -86,7 +86,7 @@ defined('_QWEXEC') or die;
         $invoice_details = $this->getRecord($invoice_id);
         
         // Delete all items from the invoice to prevent duplication
-        $sql = "DELETE FROM ".PRFX."invoice_$section WHERE invoice_id=".$this->app->db->qstr($invoice_id);    
+        $sql = "DELETE FROM ".PRFX."invoice_$section WHERE invoice_id=".$this->app->db->qStr($invoice_id);    
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Insert Items/Rows into database (if any)
@@ -114,20 +114,20 @@ defined('_QWEXEC') or die;
                 */
 
                 $sql .="(".
-                        $this->app->db->qstr( $invoice_id                       ).",".                    
-                        $this->app->db->qstr( $invoice_details['tax_system']    ).",".                    
-                        $this->app->db->qstr( $item['description']              ).",".                    
-                        $this->app->db->qstr( $item['unit_qty']                 ).",".
-                        $this->app->db->qstr( $item['unit_net']                 ).",".
-                        $this->app->db->qstr( $item['unit_discount']            ).",".
-                        $this->app->db->qstr( $sales_tax_exempt                 ).",".
-                        $this->app->db->qstr( $vat_tax_code                     ).",".
-                        $this->app->db->qstr( $item['unit_tax_rate']            ).",".
-                        $this->app->db->qstr( $item['unit_tax']                 ).",".
-                        $this->app->db->qstr( $item['unit_gross']               ).",".                    
-                        $this->app->db->qstr( $item['subtotal_net']             ).",".
-                        $this->app->db->qstr( $item['subtotal_tax']             ).",".
-                        $this->app->db->qstr( $item['subtotal_gross']           )."),";
+                        $this->app->db->qStr( $invoice_id                       ).",".                    
+                        $this->app->db->qStr( $invoice_details['tax_system']    ).",".                    
+                        $this->app->db->qStr( $item['description']              ).",".                    
+                        $this->app->db->qStr( $item['unit_qty']                 ).",".
+                        $this->app->db->qStr( $item['unit_net']                 ).",".
+                        $this->app->db->qStr( $item['unit_discount']            ).",".
+                        $this->app->db->qStr( $sales_tax_exempt                 ).",".
+                        $this->app->db->qStr( $vat_tax_code                     ).",".
+                        $this->app->db->qStr( $item['unit_tax_rate']            ).",".
+                        $this->app->db->qStr( $item['unit_tax']                 ).",".
+                        $this->app->db->qStr( $item['unit_gross']               ).",".                    
+                        $this->app->db->qStr( $item['subtotal_net']             ).",".
+                        $this->app->db->qStr( $item['subtotal_tax']             ).",".
+                        $this->app->db->qStr( $item['subtotal_gross']           )."),";
 
             }
 
@@ -163,10 +163,10 @@ defined('_QWEXEC') or die;
                 if(!isset($prefill_item['active'])) { $prefill_item['active'] = '0'; }
             
                 $sql .="(".
-                    $this->app->db->qstr( $prefill_item['description'] ).",".                    
-                    $this->app->db->qstr( $prefill_item['type']        ).",".                    
-                    $this->app->db->qstr( $prefill_item['unit_net']    ).",".                    
-                    $this->app->db->qstr( $prefill_item['active']      )."),";
+                    $this->app->db->qStr( $prefill_item['description'] ).",".                    
+                    $this->app->db->qStr( $prefill_item['type']        ).",".                    
+                    $this->app->db->qStr( $prefill_item['unit_net']    ).",".                    
+                    $this->app->db->qStr( $prefill_item['active']      )."),";
             }
 
             // Strips off last comma as this is a joined SQL statement
@@ -198,19 +198,19 @@ defined('_QWEXEC') or die;
         $havingTheseRecords = '';
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category (labour items / labour descriptions) and search term
-        elseif($search_category == 'labour_items') {$whereTheseRecords .= " AND labour.labour_items LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
+        elseif($search_category == 'labour_items') {$whereTheseRecords .= " AND labour.labour_items LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
 
         // Restrict results by search category (parts items / parts descriptions) and search term
-        elseif($search_category == 'parts_items') {$whereTheseRecords .= " AND parts.parts_items LIKE ".$this->app->db->qstr('%'.$search_term.'%');}    
+        elseif($search_category == 'parts_items') {$whereTheseRecords .= " AND parts.parts_items LIKE ".$this->app->db->qStr('%'.$search_term.'%');}    
 
         // Restrict results by search category and search term
-        elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict by Status
         if($status) {
@@ -228,17 +228,17 @@ defined('_QWEXEC') or die;
             // Return Invoices for the given status
             } else {
 
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qstr($status);
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qStr($status);
 
             }
 
         }
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qstr($employee_id);}        
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qStr($employee_id);}        
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qStr($client_id);}
 
         // The SQL code
         $sql = "SELECT        
@@ -360,7 +360,7 @@ defined('_QWEXEC') or die;
 
     public function getRecord($invoice_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."invoice_records WHERE invoice_id =".$this->app->db->qstr($invoice_id);
+        $sql = "SELECT * FROM ".PRFX."invoice_records WHERE invoice_id =".$this->app->db->qStr($invoice_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -392,7 +392,7 @@ defined('_QWEXEC') or die;
 
     public function getLabourItems($invoice_id) {
 
-        $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$this->app->db->qstr($invoice_id);
+        $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$this->app->db->qStr($invoice_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -410,7 +410,7 @@ defined('_QWEXEC') or die;
 
     public function getLabourItem($invoice_labour_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$this->app->db->qstr($invoice_labour_id);
+        $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$this->app->db->qStr($invoice_labour_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -441,7 +441,7 @@ defined('_QWEXEC') or die;
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
                 FROM ".PRFX."invoice_labour
-                WHERE invoice_id=". $this->app->db->qstr($invoice_id);
+                WHERE invoice_id=". $this->app->db->qStr($invoice_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -455,7 +455,7 @@ defined('_QWEXEC') or die;
 
     public function getPartsItems($invoice_id) {
 
-        $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$this->app->db->qstr( $invoice_id );
+        $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$this->app->db->qStr( $invoice_id );
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -473,7 +473,7 @@ defined('_QWEXEC') or die;
 
     public function getPartsItem($invoice_parts_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$this->app->db->qstr($invoice_parts_id);
+        $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$this->app->db->qStr($invoice_parts_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -504,7 +504,7 @@ defined('_QWEXEC') or die;
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
                 FROM ".PRFX."invoice_parts
-                WHERE invoice_id=". $this->app->db->qstr($invoice_id);
+                WHERE invoice_id=". $this->app->db->qStr($invoice_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -524,10 +524,10 @@ defined('_QWEXEC') or die;
         $sql .= " WHERE invoice_prefill_id >= 1";
 
         // filter by type
-        if($type) { $sql .= " AND type=".$this->app->db->qstr($type);}    
+        if($type) { $sql .= " AND type=".$this->app->db->qStr($type);}    
 
         // filter by status
-        if($status) {$sql .= " AND active=".$this->app->db->qstr($status);}
+        if($status) {$sql .= " AND active=".$this->app->db->qStr($status);}
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -564,7 +564,7 @@ defined('_QWEXEC') or die;
 
     public function getStatusDisplayName($status_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."invoice_statuses WHERE status_key=".$this->app->db->qstr($status_key);
+        $sql = "SELECT display_name FROM ".PRFX."invoice_statuses WHERE status_key=".$this->app->db->qStr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -582,14 +582,14 @@ defined('_QWEXEC') or die;
     public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."invoice_records SET
-                date                =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])     ).",
-                due_date            =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['due_date']) ).",
-                unit_discount_rate  =". $this->app->db->qstr( $qform['unit_discount_rate']  ).",               
-                unit_discount       =". $this->app->db->qstr( $qform['unit_discount']   ).",                    
-                unit_net            =". $this->app->db->qstr( $qform['unit_net']            ).",
-                unit_tax            =". $this->app->db->qstr( $qform['unit_tax']            ).",
-                unit_gross          =". $this->app->db->qstr( $qform['unit_gross']          )."                    
-                WHERE invoice_id    =". $this->app->db->qstr( $qform['invoice_id']          );
+                date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])     ).",
+                due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['due_date']) ).",
+                unit_discount_rate  =". $this->app->db->qStr( $qform['unit_discount_rate']  ).",               
+                unit_discount       =". $this->app->db->qStr( $qform['unit_discount']   ).",                    
+                unit_net            =". $this->app->db->qStr( $qform['unit_net']            ).",
+                unit_tax            =". $this->app->db->qStr( $qform['unit_tax']            ).",
+                unit_gross          =". $this->app->db->qStr( $qform['unit_gross']          )."                    
+                WHERE invoice_id    =". $this->app->db->qStr( $qform['invoice_id']          );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
   
@@ -618,26 +618,26 @@ defined('_QWEXEC') or die;
     public function updateRecordFull($qform, $doNotLog = false) {
 
         $sql = "UPDATE ".PRFX."invoice_records SET     
-                employee_id         =". $this->app->db->qstr( $qform['employee_id']     ).", 
-                client_id           =". $this->app->db->qstr( $qform['client_id']       ).",
-                workorder_id        =". $this->app->db->qstr( $qform['workorder_id']    ).",               
-                date                =". $this->app->db->qstr( $qform['date']            ).",
-                due_date            =". $this->app->db->qstr( $qform['due_date']        ).", 
-                tax_system          =". $this->app->db->qstr( $qform['tax_system']      ).", 
-                unit_discount_rate  =". $this->app->db->qstr( $qform['unit_discount_rate']   ).",                            
-                unit_discount       =". $this->app->db->qstr( $qform['unit_discount'] ).",   
-                unit_net            =". $this->app->db->qstr( $qform['unit_net']      ).",
-                sales_tax_rate      =". $this->app->db->qstr( $qform['sales_tax_rate']  ).",
-                unit_tax            =". $this->app->db->qstr( $qform['unit_tax']      ).",             
-                unit_gross          =". $this->app->db->qstr( $qform['unit_gross']    ).", 
-                unit_paid           =". $this->app->db->qstr( $qform['unit_paid']     ).",
-                balance             =". $this->app->db->qstr( $qform['balance']         ).",
-                opened_on           =". $this->app->db->qstr( $qform['opened_on']       ).",
-                closed_on           =". $this->app->db->qstr( $qform['closed_on']       ).",
-                last_active         =". $this->app->db->qstr( $qform['last_active']     ).",
-                status              =". $this->app->db->qstr( $qform['status']          ).",
-                is_closed           =". $this->app->db->qstr( $qform['is_closed']       )."            
-                WHERE invoice_id    =". $this->app->db->qstr( $qform['invoice_id']      );
+                employee_id         =". $this->app->db->qStr( $qform['employee_id']     ).", 
+                client_id           =". $this->app->db->qStr( $qform['client_id']       ).",
+                workorder_id        =". $this->app->db->qStr( $qform['workorder_id']    ).",               
+                date                =". $this->app->db->qStr( $qform['date']            ).",
+                due_date            =". $this->app->db->qStr( $qform['due_date']        ).", 
+                tax_system          =". $this->app->db->qStr( $qform['tax_system']      ).", 
+                unit_discount_rate  =". $this->app->db->qStr( $qform['unit_discount_rate']   ).",                            
+                unit_discount       =". $this->app->db->qStr( $qform['unit_discount'] ).",   
+                unit_net            =". $this->app->db->qStr( $qform['unit_net']      ).",
+                sales_tax_rate      =". $this->app->db->qStr( $qform['sales_tax_rate']  ).",
+                unit_tax            =". $this->app->db->qStr( $qform['unit_tax']      ).",             
+                unit_gross          =". $this->app->db->qStr( $qform['unit_gross']    ).", 
+                unit_paid           =". $this->app->db->qStr( $qform['unit_paid']     ).",
+                balance             =". $this->app->db->qStr( $qform['balance']         ).",
+                opened_on           =". $this->app->db->qStr( $qform['opened_on']       ).",
+                closed_on           =". $this->app->db->qStr( $qform['closed_on']       ).",
+                last_active         =". $this->app->db->qStr( $qform['last_active']     ).",
+                status              =". $this->app->db->qStr( $qform['status']          ).",
+                is_closed           =". $this->app->db->qStr( $qform['is_closed']       )."            
+                WHERE invoice_id    =". $this->app->db->qStr( $qform['invoice_id']      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -668,10 +668,10 @@ defined('_QWEXEC') or die;
     public function updateStaticValues($invoice_id, $date, $due_date, $unit_discount_rate) {
 
         $sql = "UPDATE ".PRFX."invoice_records SET
-                date                =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($date)     ).",
-                due_date            =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($due_date) ).",
-                unit_discount_rate  =". $this->app->db->qstr( $unit_discount_rate           )."               
-                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id                   );
+                date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($date)     ).",
+                due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($due_date) ).",
+                unit_discount_rate  =". $this->app->db->qStr( $unit_discount_rate           )."               
+                WHERE invoice_id    =". $this->app->db->qStr( $invoice_id                   );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -713,10 +713,10 @@ defined('_QWEXEC') or die;
         $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."invoice_records SET   
-                employee_id         =". $this->app->db->qstr( $employee_id     ).",
-                status              =". $this->app->db->qstr( $new_status      ).",
-                closed_on           =". $this->app->db->qstr( $closed_on       )."  
-                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id      );
+                employee_id         =". $this->app->db->qStr( $employee_id     ).",
+                status              =". $this->app->db->qStr( $new_status      ).",
+                closed_on           =". $this->app->db->qStr( $closed_on       )."  
+                WHERE invoice_id    =". $this->app->db->qStr( $invoice_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
@@ -759,17 +759,17 @@ defined('_QWEXEC') or die;
 
             $sql = "UPDATE ".PRFX."invoice_records SET
                     closed_on           = '0000-00-00 00:00:00',
-                    is_closed           =". $this->app->db->qstr( 0                )."
-                    WHERE invoice_id    =". $this->app->db->qstr( $invoice_id      );
+                    is_closed           =". $this->app->db->qStr( 0                )."
+                    WHERE invoice_id    =". $this->app->db->qStr( $invoice_id      );
 
         }
 
         if($new_closed_status == 'closed') {
 
             $sql = "UPDATE ".PRFX."invoice_records SET
-                    closed_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime() ).",
-                    is_closed           =". $this->app->db->qstr( 1                )."
-                    WHERE invoice_id    =". $this->app->db->qstr( $invoice_id      );
+                    closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() ).",
+                    is_closed           =". $this->app->db->qStr( 1                )."
+                    WHERE invoice_id    =". $this->app->db->qStr( $invoice_id      );
         }    
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -785,8 +785,8 @@ defined('_QWEXEC') or die;
     public function updateRefundId($invoice_id, $refund_id) {
 
         $sql = "UPDATE ".PRFX."invoice_records SET
-                refund_id           =".$this->app->db->qstr($refund_id ?: null)."
-                WHERE invoice_id    =".$this->app->db->qstr($invoice_id);
+                refund_id           =".$this->app->db->qStr($refund_id ?: null)."
+                WHERE invoice_id    =".$this->app->db->qStr($invoice_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -802,8 +802,8 @@ defined('_QWEXEC') or die;
         if(!$invoice_id) { return; }
 
         $sql = "UPDATE ".PRFX."invoice_records SET
-                last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
-                WHERE invoice_id=".$this->app->db->qstr($invoice_id);
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                WHERE invoice_id=".$this->app->db->qStr($invoice_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -937,7 +937,7 @@ defined('_QWEXEC') or die;
                 closed_on           = NULL,
                 last_active         = NULL,            
                 is_closed           = 1            
-                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id  );
+                WHERE invoice_id    =". $this->app->db->qStr( $invoice_id  );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -969,7 +969,7 @@ defined('_QWEXEC') or die;
 
     public function deleteLabourItems($invoice_id) {
 
-        $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $this->app->db->qstr($invoice_id);
+        $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $this->app->db->qStr($invoice_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -983,7 +983,7 @@ defined('_QWEXEC') or die;
 
     public function deletePartsItems($invoice_id) {
 
-        $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $this->app->db->qstr($invoice_id);
+        $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $this->app->db->qStr($invoice_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -1407,9 +1407,9 @@ defined('_QWEXEC') or die;
         $balance                   = $invoice_details['unit_gross'] - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."invoice_records SET            
-                unit_paid           =". $this->app->db->qstr( $payments_subtotal  ).",
-                balance             =". $this->app->db->qstr( $balance            )."
-                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id         );
+                unit_paid           =". $this->app->db->qStr( $payments_subtotal  ).",
+                balance             =". $this->app->db->qStr( $balance            )."
+                WHERE invoice_id    =". $this->app->db->qStr( $invoice_id         );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -1616,16 +1616,16 @@ defined('_QWEXEC') or die;
         if($invoice_details['status'] == 'unassigned') {
 
             $sql = "UPDATE ".PRFX."invoice_records SET
-                    employee_id         =". $this->app->db->qstr( $target_employee_id  ).",
-                    status              =". $this->app->db->qstr( 'assigned'           )."
-                    WHERE invoice_id    =". $this->app->db->qstr( $invoice_id          );
+                    employee_id         =". $this->app->db->qStr( $target_employee_id  ).",
+                    status              =". $this->app->db->qStr( 'assigned'           )."
+                    WHERE invoice_id    =". $this->app->db->qStr( $invoice_id          );
 
         // Keep the same invoice status    
         } else {    
 
             $sql = "UPDATE ".PRFX."invoice_records SET
-                    employee_id         =". $this->app->db->qstr( $target_employee_id  )."            
-                    WHERE invoice_id    =". $this->app->db->qstr( $invoice_id          );
+                    employee_id         =". $this->app->db->qStr( $target_employee_id  )."            
+                    WHERE invoice_id    =". $this->app->db->qStr( $invoice_id          );
 
         }
 

@@ -31,25 +31,25 @@ class Supplier extends Components {
     public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."supplier_records SET       
-                employee_id    =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                company_name   =". $this->app->db->qstr( $qform['company_name']  ).",
-                first_name     =". $this->app->db->qstr( $qform['first_name']    ).",
-                last_name      =". $this->app->db->qstr( $qform['last_name']     ).",
-                website        =". $this->app->db->qstr( $this->app->system->general->processInputtedUrl($qform['website'])).",
-                email          =". $this->app->db->qstr( $qform['email']         ).",
-                type           =". $this->app->db->qstr( $qform['type']          ).",
-                primary_phone  =". $this->app->db->qstr( $qform['primary_phone'] ).",
-                mobile_phone   =". $this->app->db->qstr( $qform['mobile_phone']  ).",
-                fax            =". $this->app->db->qstr( $qform['fax']           ).",
-                address        =". $this->app->db->qstr( $qform['address']       ).",
-                city           =". $this->app->db->qstr( $qform['city']          ).",
-                state          =". $this->app->db->qstr( $qform['state']         ).",
-                zip            =". $this->app->db->qstr( $qform['zip']           ).",
-                country        =". $this->app->db->qstr( $qform['country']       ).",
-                status         =". $this->app->db->qstr( 'valid'               ).",
-                opened_on      =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()      ).", 
-                description    =". $this->app->db->qstr( $qform['description']   ).", 
-                note           =". $this->app->db->qstr( $qform['note']          );            
+                employee_id    =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                company_name   =". $this->app->db->qStr( $qform['company_name']  ).",
+                first_name     =". $this->app->db->qStr( $qform['first_name']    ).",
+                last_name      =". $this->app->db->qStr( $qform['last_name']     ).",
+                website        =". $this->app->db->qStr( $this->app->system->general->processInputtedUrl($qform['website'])).",
+                email          =". $this->app->db->qStr( $qform['email']         ).",
+                type           =". $this->app->db->qStr( $qform['type']          ).",
+                primary_phone  =". $this->app->db->qStr( $qform['primary_phone'] ).",
+                mobile_phone   =". $this->app->db->qStr( $qform['mobile_phone']  ).",
+                fax            =". $this->app->db->qStr( $qform['fax']           ).",
+                address        =". $this->app->db->qStr( $qform['address']       ).",
+                city           =". $this->app->db->qStr( $qform['city']          ).",
+                state          =". $this->app->db->qStr( $qform['state']         ).",
+                zip            =". $this->app->db->qStr( $qform['zip']           ).",
+                country        =". $this->app->db->qStr( $qform['country']       ).",
+                status         =". $this->app->db->qStr( 'valid'               ).",
+                opened_on      =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()      ).", 
+                description    =". $this->app->db->qStr( $qform['description']   ).", 
+                note           =". $this->app->db->qStr( $qform['note']          );            
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -77,19 +77,19 @@ class Supplier extends Components {
         $havingTheseRecords = '';
 
         // Search category (display_name) and search term
-        if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Search category (full_name) and search term
-        elseif($search_category == 'full_name') {$havingTheseRecords .= " HAVING full_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        elseif($search_category == 'full_name') {$havingTheseRecords .= " HAVING full_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict by Type
-        if($type) { $whereTheseRecords .= " AND ".PRFX."supplier_records.type= ".$this->app->db->qstr($type);}
+        if($type) { $whereTheseRecords .= " AND ".PRFX."supplier_records.type= ".$this->app->db->qStr($type);}
 
         // Restrict by status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."supplier_records.status= ".$this->app->db->qstr($status);} 
+        if($status) {$whereTheseRecords .= " AND ".PRFX."supplier_records.status= ".$this->app->db->qStr($status);} 
 
         // The SQL code
         $sql =  "SELECT
@@ -161,7 +161,7 @@ class Supplier extends Components {
 
     public function getRecord($supplier_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qstr($supplier_id);
+        $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -220,7 +220,7 @@ class Supplier extends Components {
 
     public function getStatusDisplayName($status_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."supplier_statuses WHERE status_key=".$this->app->db->qstr($status_key);
+        $sql = "SELECT display_name FROM ".PRFX."supplier_statuses WHERE status_key=".$this->app->db->qStr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -266,25 +266,25 @@ class Supplier extends Components {
     public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."supplier_records SET
-                employee_id    =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                company_name   =". $this->app->db->qstr( $qform['company_name']  ).",
-                first_name     =". $this->app->db->qstr( $qform['first_name']    ).",
-                last_name      =". $this->app->db->qstr( $qform['last_name']     ).",
-                website        =". $this->app->db->qstr( $this->app->system->general->processInputtedUrl($qform['website'])).",
-                email          =". $this->app->db->qstr( $qform['email']         ).",
-                type           =". $this->app->db->qstr( $qform['type']          ).",
-                primary_phone  =". $this->app->db->qstr( $qform['primary_phone'] ).",
-                mobile_phone   =". $this->app->db->qstr( $qform['mobile_phone']  ).",
-                fax            =". $this->app->db->qstr( $qform['fax']           ).",
-                address        =". $this->app->db->qstr( $qform['address']       ).",
-                city           =". $this->app->db->qstr( $qform['city']          ).",
-                state          =". $this->app->db->qstr( $qform['state']         ).",
-                zip            =". $this->app->db->qstr( $qform['zip']           ).",
-                country        =". $this->app->db->qstr( $qform['country']       ).",
-                last_active    =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()      ).",
-                description    =". $this->app->db->qstr( $qform['description']   ).", 
-                note           =". $this->app->db->qstr( $qform['note']          )."
-                WHERE supplier_id = ". $this->app->db->qstr( $qform['supplier_id'] );                        
+                employee_id    =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                company_name   =". $this->app->db->qStr( $qform['company_name']  ).",
+                first_name     =". $this->app->db->qStr( $qform['first_name']    ).",
+                last_name      =". $this->app->db->qStr( $qform['last_name']     ).",
+                website        =". $this->app->db->qStr( $this->app->system->general->processInputtedUrl($qform['website'])).",
+                email          =". $this->app->db->qStr( $qform['email']         ).",
+                type           =". $this->app->db->qStr( $qform['type']          ).",
+                primary_phone  =". $this->app->db->qStr( $qform['primary_phone'] ).",
+                mobile_phone   =". $this->app->db->qStr( $qform['mobile_phone']  ).",
+                fax            =". $this->app->db->qStr( $qform['fax']           ).",
+                address        =". $this->app->db->qStr( $qform['address']       ).",
+                city           =". $this->app->db->qStr( $qform['city']          ).",
+                state          =". $this->app->db->qStr( $qform['state']         ).",
+                zip            =". $this->app->db->qStr( $qform['zip']           ).",
+                country        =". $this->app->db->qStr( $qform['country']       ).",
+                last_active    =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()      ).",
+                description    =". $this->app->db->qStr( $qform['description']   ).", 
+                note           =". $this->app->db->qStr( $qform['note']          )."
+                WHERE supplier_id = ". $this->app->db->qStr( $qform['supplier_id'] );                        
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -318,10 +318,10 @@ class Supplier extends Components {
         $closed_on = ($new_status == 'closed') ? $datetime : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."supplier_records SET
-                status             =". $this->app->db->qstr( $new_status   )."
-                closed_on          =". $this->app->db->qstr( $closed_on    )." 
-                last_active        =". $this->app->db->qstr( $datetime     )." 
-                WHERE supplier_id  =". $this->app->db->qstr( $supplier_id  );
+                status             =". $this->app->db->qStr( $new_status   )."
+                closed_on          =". $this->app->db->qStr( $closed_on    )." 
+                last_active        =". $this->app->db->qStr( $datetime     )." 
+                WHERE supplier_id  =". $this->app->db->qStr( $supplier_id  );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
@@ -381,7 +381,7 @@ class Supplier extends Components {
             return false;
         }
 
-        $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qstr($supplier_id);
+        $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

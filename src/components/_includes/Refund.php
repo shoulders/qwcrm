@@ -31,22 +31,22 @@ class Refund extends Components {
     public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."refund_records SET
-                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                client_id        =". $this->app->db->qstr( $qform['client_id']               ).",
-                workorder_id     =". $this->app->db->qstr( $qform['workorder_id'] ?: null    ).",
-                invoice_id       =". $this->app->db->qstr( $qform['invoice_id']              ).",                        
-                date             =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
-                tax_system       =". $this->app->db->qstr( $qform['tax_system']              ).",
-                type             =". $this->app->db->qstr( $qform['type']                    ).",             
-                unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).", 
-                vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).", 
-                unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
-                unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
-                unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
-                balance          =". $this->app->db->qstr( $qform['unit_gross']              ).",
-                status           =". $this->app->db->qstr( 'unpaid'                        ).",   
-                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                ).",                        
-                note             =". $this->app->db->qstr( $qform['note']                    );
+                employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                client_id        =". $this->app->db->qStr( $qform['client_id']               ).",
+                workorder_id     =". $this->app->db->qStr( $qform['workorder_id'] ?: null    ).",
+                invoice_id       =". $this->app->db->qStr( $qform['invoice_id']              ).",                        
+                date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
+                tax_system       =". $this->app->db->qStr( $qform['tax_system']              ).",
+                type             =". $this->app->db->qStr( $qform['type']                    ).",             
+                unit_net         =". $this->app->db->qStr( $qform['unit_net']                ).", 
+                vat_tax_code     =". $this->app->db->qStr( $qform['vat_tax_code']            ).", 
+                unit_tax_rate    =". $this->app->db->qStr( $qform['unit_tax_rate']           ).",
+                unit_tax         =". $this->app->db->qStr( $qform['unit_tax']                ).",
+                unit_gross       =". $this->app->db->qStr( $qform['unit_gross']              ).",
+                balance          =". $this->app->db->qStr( $qform['unit_gross']              ).",
+                status           =". $this->app->db->qStr( 'unpaid'                        ).",   
+                opened_on        =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                ).",                        
+                note             =". $this->app->db->qStr( $qform['note']                    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -84,22 +84,22 @@ class Refund extends Components {
         $havingTheseRecords = '';
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category (employee) and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
 
         // Restrict by Type
-        if($type) { $whereTheseRecords .= " AND ".PRFX."refund_records.type= ".$this->app->db->qstr($type);}
+        if($type) { $whereTheseRecords .= " AND ".PRFX."refund_records.type= ".$this->app->db->qStr($type);}
 
         // Restrict by Status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qstr($status);}
+        if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qStr($status);}
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$this->app->db->qstr($employee_id);}        
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$this->app->db->qStr($employee_id);}        
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$this->app->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$this->app->db->qStr($client_id);}
 
         // The SQL code
         $sql =  "SELECT
@@ -175,7 +175,7 @@ class Refund extends Components {
 
     public function getRecord($refund_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$this->app->db->qstr($refund_id);
+        $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$this->app->db->qStr($refund_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -216,7 +216,7 @@ class Refund extends Components {
 
     public function getStatusDisplayName($status_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."refund_statuses WHERE status_key=".$this->app->db->qstr($status_key);
+        $sql = "SELECT display_name FROM ".PRFX."refund_statuses WHERE status_key=".$this->app->db->qStr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -261,11 +261,11 @@ class Refund extends Components {
     public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."refund_records SET
-                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                date             =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])   ).",            
-                last_active      =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                   ).",
-                note             =". $this->app->db->qstr( $qform['note']                       )."
-                WHERE refund_id  =". $this->app->db->qstr( $qform['refund_id']                  );                        
+                employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])   ).",            
+                last_active      =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                   ).",
+                note             =". $this->app->db->qStr( $qform['note']                       )."
+                WHERE refund_id  =". $this->app->db->qStr( $qform['refund_id']                  );                        
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -312,10 +312,10 @@ class Refund extends Components {
         $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."refund_records SET
-                status             =". $this->app->db->qstr( $new_status   ).",
-                closed_on          =". $this->app->db->qstr( $closed_on    ).",
-                last_active        =". $this->app->db->qstr( $datetime     )." 
-                WHERE refund_id    =". $this->app->db->qstr( $refund_id    );
+                status             =". $this->app->db->qStr( $new_status   ).",
+                closed_on          =". $this->app->db->qStr( $closed_on    ).",
+                last_active        =". $this->app->db->qStr( $datetime     )." 
+                WHERE refund_id    =". $this->app->db->qStr( $refund_id    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
@@ -438,7 +438,7 @@ class Refund extends Components {
                 opened_on           = NULL,
                 closed_on           = NULL,
                 note                = ''
-                WHERE refund_id    =". $this->app->db->qstr($refund_details['refund_id']);
+                WHERE refund_id    =". $this->app->db->qStr($refund_details['refund_id']);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -700,8 +700,8 @@ class Refund extends Components {
         $balance                    = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."refund_records SET
-                balance             =". $this->app->db->qstr( $balance   )."
-                WHERE refund_id     =". $this->app->db->qstr( $refund_id );
+                balance             =". $this->app->db->qStr( $balance   )."
+                WHERE refund_id     =". $this->app->db->qStr( $refund_id );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

@@ -117,17 +117,17 @@ class Company extends Components {
 
         // Restrict by hidden status
         if(!is_null($hidden_status)) {
-            $sql .= "\nAND hidden = ".$this->app->db->qstr($hidden_status);
+            $sql .= "\nAND hidden = ".$this->app->db->qStr($hidden_status);
         }
 
         // Restrict by editable status
         if(!is_null($editable_status)) {
-            $sql .= "\nAND editable = ".$this->app->db->qstr($editable_status);
+            $sql .= "\nAND editable = ".$this->app->db->qStr($editable_status);
         }
 
         // Restrict by tax code type
         if(!is_null($system_tax_code)) {
-            $sql .= "\nAND standard = ".$this->app->db->qstr($system_tax_code);
+            $sql .= "\nAND standard = ".$this->app->db->qStr($system_tax_code);
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -144,7 +144,7 @@ class Company extends Components {
     public function getVatRate($vat_tax_code) {
 
         $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
-                WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
+                WHERE tax_key = ".$this->app->db->qStr($vat_tax_code);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         
@@ -177,7 +177,7 @@ class Company extends Components {
 
         $sql = "SELECT enabled
                 FROM ".PRFX."company_vat_tax_codes
-                WHERE tax_key = ".$this->app->db->qstr($vat_tax_code);
+                WHERE tax_key = ".$this->app->db->qStr($vat_tax_code);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
@@ -274,42 +274,42 @@ class Company extends Components {
         }
 
         $sql .= "UPDATE ".PRFX."company_record SET
-                company_name            =". $this->app->db->qstr( $qform['company_name']                     ).",";
+                company_name            =". $this->app->db->qStr( $qform['company_name']                     ).",";
 
         if($qform['delete_logo']) {
             $sql .="logo                =''                                                     ,";
         }
 
         if(!empty($_FILES['logo']['name'])) {
-            $sql .="logo                =". $this->app->db->qstr( $new_logo_filepath                       ).",";
+            $sql .="logo                =". $this->app->db->qStr( $new_logo_filepath                       ).",";
         }
 
-        $sql .="address                 =". $this->app->db->qstr( $qform['address']                          ).",
-                city                    =". $this->app->db->qstr( $qform['city']                             ).",
-                state                   =". $this->app->db->qstr( $qform['state']                            ).",
-                zip                     =". $this->app->db->qstr( $qform['zip']                              ).",
-                country                 =". $this->app->db->qstr( $qform['country']                          ).",
-                primary_phone           =". $this->app->db->qstr( $qform['primary_phone']                    ).",
-                mobile_phone            =". $this->app->db->qstr( $qform['mobile_phone']                     ).",
-                fax                     =". $this->app->db->qstr( $qform['fax']                              ).",
-                email                   =". $this->app->db->qstr( $qform['email']                            ).",    
-                website                 =". $this->app->db->qstr( $this->app->system->general->processInputtedUrl($qform['website'])    ).",
-                company_number          =". $this->app->db->qstr( $qform['company_number']                   ).",                                        
-                tax_system              =". $this->app->db->qstr( $qform['tax_system']                       ).",
-                sales_tax_rate          =". $this->app->db->qstr( $qform['sales_tax_rate']                   ).",
-                vat_number              =". $this->app->db->qstr( $qform['vat_number']                       ).",
-                vat_flat_rate           =". $this->app->db->qstr( $qform['vat_flat_rate']                    ).",   
-                year_start              =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['year_start'])   ).",
-                year_end                =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['year_end'])     ).",
-                welcome_msg             =". $this->app->db->qstr( $qform['welcome_msg']                      ).",
-                currency_symbol         =". $this->app->db->qstr( htmlentities($qform['currency_symbol'])    ).",
-                currency_code           =". $this->app->db->qstr( $qform['currency_code']                    ).",
-                date_format             =". $this->app->db->qstr( $qform['date_format']                      ).",            
-                email_signature         =". $this->app->db->qstr( $qform['email_signature']                  ).",
-                email_signature_active  =". $this->app->db->qstr( $qform['email_signature_active']           ).",
-                email_msg_invoice       =". $this->app->db->qstr( $qform['email_msg_invoice']                ).",
-                email_msg_workorder     =". $this->app->db->qstr( $qform['email_msg_workorder']              ).",   
-                email_msg_voucher       =". $this->app->db->qstr( $qform['email_msg_voucher']                );                          
+        $sql .="address                 =". $this->app->db->qStr( $qform['address']                          ).",
+                city                    =". $this->app->db->qStr( $qform['city']                             ).",
+                state                   =". $this->app->db->qStr( $qform['state']                            ).",
+                zip                     =". $this->app->db->qStr( $qform['zip']                              ).",
+                country                 =". $this->app->db->qStr( $qform['country']                          ).",
+                primary_phone           =". $this->app->db->qStr( $qform['primary_phone']                    ).",
+                mobile_phone            =". $this->app->db->qStr( $qform['mobile_phone']                     ).",
+                fax                     =". $this->app->db->qStr( $qform['fax']                              ).",
+                email                   =". $this->app->db->qStr( $qform['email']                            ).",    
+                website                 =". $this->app->db->qStr( $this->app->system->general->processInputtedUrl($qform['website'])    ).",
+                company_number          =". $this->app->db->qStr( $qform['company_number']                   ).",                                        
+                tax_system              =". $this->app->db->qStr( $qform['tax_system']                       ).",
+                sales_tax_rate          =". $this->app->db->qStr( $qform['sales_tax_rate']                   ).",
+                vat_number              =". $this->app->db->qStr( $qform['vat_number']                       ).",
+                vat_flat_rate           =". $this->app->db->qStr( $qform['vat_flat_rate']                    ).",   
+                year_start              =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['year_start'])   ).",
+                year_end                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['year_end'])     ).",
+                welcome_msg             =". $this->app->db->qStr( $qform['welcome_msg']                      ).",
+                currency_symbol         =". $this->app->db->qStr( htmlentities($qform['currency_symbol'])    ).",
+                currency_code           =". $this->app->db->qStr( $qform['currency_code']                    ).",
+                date_format             =". $this->app->db->qStr( $qform['date_format']                      ).",            
+                email_signature         =". $this->app->db->qStr( $qform['email_signature']                  ).",
+                email_signature_active  =". $this->app->db->qStr( $qform['email_signature_active']           ).",
+                email_msg_invoice       =". $this->app->db->qStr( $qform['email_msg_invoice']                ).",
+                email_msg_workorder     =". $this->app->db->qStr( $qform['email_msg_workorder']              ).",   
+                email_msg_voucher       =". $this->app->db->qStr( $qform['email_msg_voucher']                );                          
 
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
@@ -334,10 +334,10 @@ class Company extends Components {
     public function updateOpeningHours($openingTime, $closingTime) {
 
         $sql = "UPDATE ".PRFX."company_record SET
-                opening_hour    =". $this->app->db->qstr( $openingTime['Time_Hour']     ).",
-                opening_minute  =". $this->app->db->qstr( $openingTime['Time_Minute']   ).",
-                closing_hour    =". $this->app->db->qstr( $closingTime['Time_Hour']     ).",
-                closing_minute  =". $this->app->db->qstr( $closingTime['Time_Minute']   );
+                opening_hour    =". $this->app->db->qStr( $openingTime['Time_Hour']     ).",
+                opening_minute  =". $this->app->db->qStr( $openingTime['Time_Minute']   ).",
+                closing_hour    =". $this->app->db->qStr( $closingTime['Time_Hour']     ).",
+                closing_minute  =". $this->app->db->qStr( $closingTime['Time_Minute']   );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -361,8 +361,8 @@ class Company extends Components {
         foreach ($vat_rates as $tax_key => $rate) {
             
             $sql =  "UPDATE ".PRFX."company_vat_tax_codes SET
-                    rate = ".$this->app->db->qstr($rate)."
-                    WHERE tax_key = ".$this->app->db->qstr($tax_key);
+                    rate = ".$this->app->db->qStr($rate)."
+                    WHERE tax_key = ".$this->app->db->qStr($tax_key);
 
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
             

@@ -36,12 +36,12 @@ class Schedule extends Components {
 
         // Insert schedule item into the database
         $sql = "INSERT INTO ".PRFX."schedule_records SET
-                employee_id     =". $this->app->db->qstr( $qform['employee_id']      ).",
-                client_id       =". $this->app->db->qstr( $qform['client_id']        ).",   
-                workorder_id    =". $this->app->db->qstr( $qform['workorder_id']     ).",
-                start_time      =". $this->app->db->qstr( $qform['start_time']       ).",
-                end_time        =". $this->app->db->qstr( $qform['end_time']         ).",            
-                note            =". $this->app->db->qstr( $qform['note']             );            
+                employee_id     =". $this->app->db->qStr( $qform['employee_id']      ).",
+                client_id       =". $this->app->db->qStr( $qform['client_id']        ).",   
+                workorder_id    =". $this->app->db->qStr( $qform['workorder_id']     ).",
+                start_time      =". $this->app->db->qStr( $qform['start_time']       ).",
+                end_time        =". $this->app->db->qStr( $qform['end_time']         ).",            
+                note            =". $this->app->db->qStr( $qform['note']             );            
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -92,13 +92,13 @@ class Schedule extends Components {
         $havingTheseRecords = '';
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}     
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}     
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
 
         // Restrict by Status
         if($status) {
@@ -116,20 +116,20 @@ class Schedule extends Components {
             // Return schedules for the given status
             } else {
 
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.status= ".$this->app->db->qstr($status);
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.status= ".$this->app->db->qStr($status);
 
             }
 
         }        
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.user_id=".$this->app->db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.user_id=".$this->app->db->qStr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.client_id=".$this->app->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.client_id=".$this->app->db->qStr($client_id);}
 
         // Restrict by Work Order
-        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->app->db->qstr($workorder_id);}    
+        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->app->db->qStr($workorder_id);}    
 
         // The SQL code
         $sql =  "SELECT
@@ -206,7 +206,7 @@ class Schedule extends Components {
 
     public function getRecord($schedule_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$this->app->db->qstr($schedule_id);
+        $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$this->app->db->qStr($schedule_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -235,8 +235,8 @@ class Schedule extends Components {
         // Look in the database for a scheduled events for the current schedule day (within business hours)
         $sql = "SELECT schedule_id
                 FROM ".PRFX."schedule_records       
-                WHERE start_time >= ".$this->app->db->qstr($company_day_start)." AND start_time <= ".$this->app->db->qstr($company_day_end)."
-                AND employee_id =".$this->app->db->qstr($employee_id)."
+                WHERE start_time >= ".$this->app->db->qStr($company_day_start)." AND start_time <= ".$this->app->db->qStr($company_day_end)."
+                AND employee_id =".$this->app->db->qStr($employee_id)."
                 ORDER BY start_time
                 ASC";
 
@@ -257,14 +257,14 @@ class Schedule extends Components {
         if(!$this->checkRecordTimesValid($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }        
 
         $sql = "UPDATE ".PRFX."schedule_records SET
-            schedule_id         =". $this->app->db->qstr( $qform['schedule_id']      ).",
-            employee_id         =". $this->app->db->qstr( $qform['employee_id']      ).",
-            client_id           =". $this->app->db->qstr( $qform['client_id']        ).",
-            workorder_id        =". $this->app->db->qstr( $qform['workorder_id']     ).",   
-            start_time          =". $this->app->db->qstr( $qform['start_time']       ).",
-            end_time            =". $this->app->db->qstr( $qform['end_time']         ).",                
-            note                =". $this->app->db->qstr( $qform['note']             )."
-            WHERE schedule_id   =". $this->app->db->qstr( $qform['schedule_id']      );
+            schedule_id         =". $this->app->db->qStr( $qform['schedule_id']      ).",
+            employee_id         =". $this->app->db->qStr( $qform['employee_id']      ).",
+            client_id           =". $this->app->db->qStr( $qform['client_id']        ).",
+            workorder_id        =". $this->app->db->qStr( $qform['workorder_id']     ).",   
+            start_time          =". $this->app->db->qStr( $qform['start_time']       ).",
+            end_time            =". $this->app->db->qStr( $qform['end_time']         ).",                
+            note                =". $this->app->db->qStr( $qform['note']             )."
+            WHERE schedule_id   =". $this->app->db->qStr( $qform['schedule_id']      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
 
@@ -294,7 +294,7 @@ class Schedule extends Components {
         // Get schedule details before deleting
         $schedule_details = $this->getRecord($schedule_id);
 
-        $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->app->db->qstr($schedule_id);
+        $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->app->db->qStr($schedule_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -364,9 +364,9 @@ class Schedule extends Components {
         $sql = "SELECT
                 schedule_id, start_time, end_time
                 FROM ".PRFX."schedule_records
-                WHERE start_time >= ".$this->app->db->qstr($company_day_start)."
-                AND end_time <=".$this->app->db->qstr($company_day_end)."
-                AND employee_id =".$this->app->db->qstr($employee_id)."
+                WHERE start_time >= ".$this->app->db->qStr($company_day_start)."
+                AND end_time <=".$this->app->db->qStr($company_day_end)."
+                AND employee_id =".$this->app->db->qStr($employee_id)."
                 ORDER BY start_time
                 ASC";
 
@@ -747,9 +747,9 @@ class Schedule extends Components {
             LEFT JOIN ".PRFX."workorder_records ON ".PRFX."schedule_records.workorder_id = ".PRFX."workorder_records.workorder_id
             LEFT JOIN ".PRFX."client_records ON ".PRFX."schedule_records.client_id = ".PRFX."client_records.client_id
 
-            WHERE ".PRFX."schedule_records.start_time >= ".$this->app->db->qstr($company_day_start)."
-            AND ".PRFX."schedule_records.start_time <= ".$this->app->db->qstr($company_day_end)."
-            AND ".PRFX."schedule_records.employee_id =".$this->app->db->qstr($employee_id)."
+            WHERE ".PRFX."schedule_records.start_time >= ".$this->app->db->qStr($company_day_start)."
+            AND ".PRFX."schedule_records.start_time <= ".$this->app->db->qStr($company_day_end)."
+            AND ".PRFX."schedule_records.employee_id =".$this->app->db->qStr($employee_id)."
             ORDER BY ".PRFX."schedule_records.start_time
             ASC";
 

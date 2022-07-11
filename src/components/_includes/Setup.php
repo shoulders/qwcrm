@@ -59,10 +59,10 @@ class Setup extends Components {
     public function updateRecordValue($select_table, $select_column, $record_new_value, $where_column = null, $where_record = null, $where_record_not_flag = null) {
 
         $sql = "UPDATE $select_table SET
-                $select_column =". $this->app->db->qstr($record_new_value);
+                $select_column =". $this->app->db->qStr($record_new_value);
 
         if($where_column) {    
-            $sql .=  "\nWHERE $where_column ".$where_record_not_flag."=".$this->app->db->qstr($where_record);
+            $sql .=  "\nWHERE $where_column ".$where_record_not_flag."=".$this->app->db->qStr($where_record);
         }
 
         if(!$this->app->db->execute($sql)) { 
@@ -117,13 +117,13 @@ class Setup extends Components {
         if($current_value === '*') {
 
             $sql = "UPDATE $table SET
-                    $column         =". $this->app->db->qstr( $new_value       );
+                    $column         =". $this->app->db->qStr( $new_value       );
 
         } else {
 
             $sql = "UPDATE $table SET
-                    $column         =". $this->app->db->qstr( $new_value       )."                      
-                    WHERE $column   =". $this->app->db->qstr( $current_value   );
+                    $column         =". $this->app->db->qStr( $new_value       )."                      
+                    WHERE $column   =". $this->app->db->qStr( $current_value   );
 
         }
 
@@ -575,7 +575,7 @@ class Setup extends Components {
 
     public function setWorkorderStartNumber($start_number) {
 
-        $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$this->app->db->qstr($start_number);
+        $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$this->app->db->qStr($start_number);
 
         // Perform the query
         if(!$this->app->db->execute($sql)) {
@@ -609,7 +609,7 @@ class Setup extends Components {
 
     public function setInvoiceStartNumber($start_number) {
 
-        $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$this->app->db->qstr($start_number);
+        $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$this->app->db->qStr($start_number);
 
         // Perform the query
         if(!$this->app->db->execute($sql)) {
@@ -722,7 +722,7 @@ class Setup extends Components {
                             if($myitcrm_record_val === null) { $myitcrm_record_val = ''; }
 
                             //$values_sql .= "'$myitcrm_record_val', ";
-                            $values_sql .= $this->app->db->qstr($myitcrm_record_val).', ';
+                            $values_sql .= $this->app->db->qStr($myitcrm_record_val).', ';
                             break;
 
                         }    

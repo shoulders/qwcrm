@@ -49,7 +49,7 @@ class Cronjob extends Components {
 
     public function getRecord($cronjob_id, $item = null) {        
 
-        $sql = "SELECT * FROM ".PRFX."cronjob_records WHERE cronjob_id=".$this->app->db->qstr($cronjob_id);
+        $sql = "SELECT * FROM ".PRFX."cronjob_records WHERE cronjob_id=".$this->app->db->qStr($cronjob_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -97,13 +97,13 @@ class Cronjob extends Components {
         
         $sql = "UPDATE ".PRFX."cronjob_records SET
                 
-                active              =". $this->app->db->qstr( $qform['active']              ).",
-                pseudo_allowed      =". $this->app->db->qstr( $qform['pseudo_allowed']      ).",            
-                minute              =". $this->app->db->qstr( $qform['minute']              ).",            
-                hour                =". $this->app->db->qstr( $qform['hour']                ).",
-                day                 =". $this->app->db->qstr( $qform['day']                 ).",
-                month               =". $this->app->db->qstr( $qform['month']               ).",
-                weekday             =". $this->app->db->qstr( $qform['weekday']             );                        
+                active              =". $this->app->db->qStr( $qform['active']              ).",
+                pseudo_allowed      =". $this->app->db->qStr( $qform['pseudo_allowed']      ).",            
+                minute              =". $this->app->db->qStr( $qform['minute']              ).",            
+                hour                =". $this->app->db->qStr( $qform['hour']                ).",
+                day                 =". $this->app->db->qStr( $qform['day']                 ).",
+                month               =". $this->app->db->qStr( $qform['month']               ).",
+                weekday             =". $this->app->db->qStr( $qform['weekday']             );                        
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -122,8 +122,8 @@ class Cronjob extends Components {
     private function updateRecordLastRunTime($cronjob_id, $lastRunTime) {
 
         $sql = "UPDATE ".PRFX."cronjob_records SET
-                last_run_time=".$this->app->db->qstr($lastRunTime)."
-                WHERE cronjob_id=".$this->app->db->qstr($cronjob_id);
+                last_run_time=".$this->app->db->qStr($lastRunTime)."
+                WHERE cronjob_id=".$this->app->db->qStr($cronjob_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -136,8 +136,8 @@ class Cronjob extends Components {
     private function updateRecordLastRunStatus($cronjob_id, $status) {
 
         $sql = "UPDATE ".PRFX."cronjob_records SET
-                last_run_status=".$this->app->db->qstr($status)."
-                WHERE cronjob_id=".$this->app->db->qstr($cronjob_id);
+                last_run_status=".$this->app->db->qStr($status)."
+                WHERE cronjob_id=".$this->app->db->qStr($cronjob_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -150,8 +150,8 @@ class Cronjob extends Components {
     public function updateRecordLockedStatus($cronjob_id, int $status) {
 
         $sql = "UPDATE ".PRFX."cronjob_records SET
-                locked=".$this->app->db->qstr($status)."
-                WHERE cronjob_id=".$this->app->db->qstr($cronjob_id);
+                locked=".$this->app->db->qStr($status)."
+                WHERE cronjob_id=".$this->app->db->qStr($cronjob_id);
                 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -164,7 +164,7 @@ class Cronjob extends Components {
     private function updateSystemLastRunTime($lastRunTime) {
 
         $sql = "UPDATE ".PRFX."cronjob_system SET
-                last_run_time=".$this->app->db->qstr($lastRunTime);
+                last_run_time=".$this->app->db->qStr($lastRunTime);
                 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -177,7 +177,7 @@ class Cronjob extends Components {
     private function updateSystemLastRunStatus($status) {
 
         $sql = "UPDATE ".PRFX."cronjob_system SET
-                last_run_status=".$this->app->db->qstr($status);
+                last_run_status=".$this->app->db->qStr($status);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -189,7 +189,7 @@ class Cronjob extends Components {
     public function updateSystemLockedStatus($status) {
 
         $sql = "UPDATE ".PRFX."cronjob_system SET
-                locked=".$this->app->db->qstr($status);
+                locked=".$this->app->db->qStr($status);
                 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

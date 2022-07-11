@@ -42,23 +42,23 @@ class Payment extends Components {
     public function insertRecord($qpayment) {
 
         $sql = "INSERT INTO ".PRFX."payment_records SET            
-                employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id          ).",
-                client_id       = ".$this->app->db->qstr( $qpayment['client_id'] ?: null           ).",
-                workorder_id    = ".$this->app->db->qstr( $qpayment['workorder_id'] ?: null        ).",
-                invoice_id      = ".$this->app->db->qstr( $qpayment['invoice_id'] ?: null          ).",
-                voucher_id      = ".$this->app->db->qstr( $qpayment['voucher_id'] ?: null          ).",               
-                refund_id       = ".$this->app->db->qstr( $qpayment['refund_id'] ?: null           ).", 
-                expense_id      = ".$this->app->db->qstr( $qpayment['expense_id'] ?: null          ).", 
-                otherincome_id  = ".$this->app->db->qstr( $qpayment['otherincome_id'] ?: null      ).",
-                date            = ".$this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qpayment['date'])    ).",
-                tax_system      = ".$this->app->db->qstr( QW_TAX_SYSTEM                            ).",   
-                type            = ".$this->app->db->qstr( $qpayment['type']                        ).",
-                method          = ".$this->app->db->qstr( $qpayment['method']                      ).",
+                employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id          ).",
+                client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?: null           ).",
+                workorder_id    = ".$this->app->db->qStr( $qpayment['workorder_id'] ?: null        ).",
+                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?: null          ).",
+                voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?: null          ).",               
+                refund_id       = ".$this->app->db->qStr( $qpayment['refund_id'] ?: null           ).", 
+                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?: null          ).", 
+                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",
+                date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date'])    ).",
+                tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",   
+                type            = ".$this->app->db->qStr( $qpayment['type']                        ).",
+                method          = ".$this->app->db->qStr( $qpayment['method']                      ).",
                 status          = 'valid',
-                amount          = ".$this->app->db->qstr( $qpayment['amount']                      ).",
-                last_active     =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                         ).",
-                additional_info = ".$this->app->db->qstr( $qpayment['additional_info']             ).",
-                note            = ".$this->app->db->qstr( $qpayment['note']                        );
+                amount          = ".$this->app->db->qStr( $qpayment['amount']                      ).",
+                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                         ).",
+                additional_info = ".$this->app->db->qStr( $qpayment['additional_info']             ).",
+                note            = ".$this->app->db->qStr( $qpayment['note']                        );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -98,13 +98,13 @@ class Payment extends Components {
         $havingTheseRecords = '';
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
        // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}     
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}     
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
 
         // Restrict by Type
         if($type) {   
@@ -119,34 +119,34 @@ class Payment extends Components {
 
             // Return records for the given type
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qstr($type);            
+                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);            
             }
 
         }
 
         // Restrict by method
-        if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qstr($method);}
+        if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qStr($method);}
 
         // Restrict by status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qstr($status);}   
+        if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);}   
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->app->db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->app->db->qStr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);}
 
         // Restrict by Invoice
-        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qstr($invoice_id);}    
+        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qStr($invoice_id);}    
 
         // Restrict by Refund
-        if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->app->db->qstr($refund_id);} 
+        if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->app->db->qStr($refund_id);} 
 
         // Restrict by Expense
-        if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qstr($expense_id);} 
+        if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qStr($expense_id);} 
 
         // Restrict by Otherincome
-        if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qstr($otherincome_id);}             
+        if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qStr($otherincome_id);}             
 
         // The SQL code
         $sql =  "SELECT
@@ -221,7 +221,7 @@ class Payment extends Components {
 
     public function getRecord($payment_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$this->app->db->qstr($payment_id);
+        $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$this->app->db->qStr($payment_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -410,7 +410,7 @@ class Payment extends Components {
 
     public function getCardDisplayNameFromKey($type_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$this->app->db->qstr($type_key);
+        $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$this->app->db->qStr($type_key);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -453,12 +453,12 @@ class Payment extends Components {
     public function updateRecord($qpayment) {    
 
         $sql = "UPDATE ".PRFX."payment_records SET        
-                employee_id     = ".$this->app->db->qstr( $this->app->user->login_user_id    ).",
-                date            = ".$this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qpayment['date']) ).",
-                amount          = ".$this->app->db->qstr( $qpayment['amount']                   ).",
-                last_active     =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                      ).",
-                note            = ".$this->app->db->qstr( $qpayment['note']                     )."
-                WHERE payment_id =". $this->app->db->qstr( $qpayment['payment_id']              );
+                employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id    ).",
+                date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date']) ).",
+                amount          = ".$this->app->db->qStr( $qpayment['amount']                   ).",
+                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                      ).",
+                note            = ".$this->app->db->qStr( $qpayment['note']                     )."
+                WHERE payment_id =". $this->app->db->qStr( $qpayment['payment_id']              );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -485,15 +485,15 @@ class Payment extends Components {
     public function updateOptions($qform) {
 
         $sql = "UPDATE ".PRFX."payment_options SET            
-                bank_account_name           =". $this->app->db->qstr( $qform['bank_account_name']            ).",
-                bank_name                   =". $this->app->db->qstr( $qform['bank_name']                    ).",
-                bank_account_number         =". $this->app->db->qstr( $qform['bank_account_number']          ).",
-                bank_sort_code              =". $this->app->db->qstr( $qform['bank_sort_code']               ).",
-                bank_iban                   =". $this->app->db->qstr( $qform['bank_iban']                    ).",
-                paypal_email                =". $this->app->db->qstr( $qform['paypal_email']                 ).",        
-                invoice_bank_transfer_msg   =". $this->app->db->qstr( $qform['invoice_bank_transfer_msg']    ).",
-                invoice_cheque_msg          =". $this->app->db->qstr( $qform['invoice_cheque_msg']           ).",
-                invoice_footer_msg          =". $this->app->db->qstr( $qform['invoice_footer_msg']           );            
+                bank_account_name           =". $this->app->db->qStr( $qform['bank_account_name']            ).",
+                bank_name                   =". $this->app->db->qStr( $qform['bank_name']                    ).",
+                bank_account_number         =". $this->app->db->qStr( $qform['bank_account_number']          ).",
+                bank_sort_code              =". $this->app->db->qStr( $qform['bank_sort_code']               ).",
+                bank_iban                   =". $this->app->db->qStr( $qform['bank_iban']                    ).",
+                paypal_email                =". $this->app->db->qStr( $qform['paypal_email']                 ).",        
+                invoice_bank_transfer_msg   =". $this->app->db->qStr( $qform['invoice_bank_transfer_msg']    ).",
+                invoice_cheque_msg          =". $this->app->db->qStr( $qform['invoice_cheque_msg']           ).",
+                invoice_footer_msg          =". $this->app->db->qStr( $qform['invoice_footer_msg']           );            
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -520,10 +520,10 @@ class Payment extends Components {
 
             $sql = "UPDATE ".PRFX."payment_methods
                     SET
-                    send                    = ". $this->app->db->qstr($payment_method['send']).",
-                    receive                 = ". $this->app->db->qstr($payment_method['receive']).",
-                    enabled                 = ". $this->app->db->qstr($payment_method['enabled'])."   
-                    WHERE method_key = ". $this->app->db->qstr($payment_method['method_key']); 
+                    send                    = ". $this->app->db->qStr($payment_method['send']).",
+                    receive                 = ". $this->app->db->qStr($payment_method['receive']).",
+                    enabled                 = ". $this->app->db->qStr($payment_method['enabled'])."   
+                    WHERE method_key = ". $this->app->db->qStr($payment_method['method_key']); 
 
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -552,9 +552,9 @@ class Payment extends Components {
         }    
 
         $sql = "UPDATE ".PRFX."payment_records SET
-                status               =". $this->app->db->qstr( $new_status      ).",
-                last_active          =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
-                WHERE payment_id     =". $this->app->db->qstr( $payment_id      );
+                status               =". $this->app->db->qStr( $new_status      ).",
+                last_active          =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                WHERE payment_id     =". $this->app->db->qStr( $payment_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
 
@@ -708,7 +708,7 @@ class Payment extends Components {
 
         $sql = "SELECT *
                 FROM ".PRFX."payment_methods
-                WHERE method_key=".$this->app->db->qstr($method);
+                WHERE method_key=".$this->app->db->qStr($method);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

@@ -31,14 +31,14 @@ class WorkOrder extends Components {
     public function insertRecord($client_id, $scope, $description, $comment) {
 
         $sql = "INSERT INTO ".PRFX."workorder_records SET            
-                client_id       =". $this->app->db->qstr( $client_id                           ).",
-                created_by      =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                status          =". $this->app->db->qstr( 'unassigned'                         ).",
-                opened_on       =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",            
-                is_closed       =". $this->app->db->qstr( 0                                    ).",            
-                scope           =". $this->app->db->qstr( $scope                               ).",
-                description     =". $this->app->db->qstr( $description                         ).",            
-                comment         =". $this->app->db->qstr( $comment                             );
+                client_id       =". $this->app->db->qStr( $client_id                           ).",
+                created_by      =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
+                status          =". $this->app->db->qStr( 'unassigned'                         ).",
+                opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",            
+                is_closed       =". $this->app->db->qStr( 0                                    ).",            
+                scope           =". $this->app->db->qStr( $scope                               ).",
+                description     =". $this->app->db->qStr( $description                         ).",            
+                comment         =". $this->app->db->qStr( $comment                             );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -66,10 +66,10 @@ class WorkOrder extends Components {
     public function insertNote($workorder_id, $note) {
 
         $sql = "INSERT INTO ".PRFX."workorder_notes SET                        
-                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                workorder_id    =". $this->app->db->qstr( $workorder_id                        ).", 
-                date            =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
-                description     =". $this->app->db->qstr( $note                                );
+                employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
+                workorder_id    =". $this->app->db->qStr( $workorder_id                        ).", 
+                date            =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",
+                description     =". $this->app->db->qStr( $note                                );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -109,10 +109,10 @@ class WorkOrder extends Components {
         if($workorder_id == null) { return; }
 
         $sql = "INSERT INTO ".PRFX."workorder_history SET            
-                employee_id     =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                workorder_id    =". $this->app->db->qstr( $workorder_id                        ).",
-                date            =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
-                note            =". $this->app->db->qstr( $note                                );
+                employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
+                workorder_id    =". $this->app->db->qStr( $workorder_id                        ).",
+                date            =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",
+                note            =". $this->app->db->qStr( $note                                );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -136,13 +136,13 @@ class WorkOrder extends Components {
         $havingTheseRecords = '';
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
        // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');}
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict by Status
         if($status) {
@@ -160,17 +160,17 @@ class WorkOrder extends Components {
             // Return Workorders for the given status
             } else {
 
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->app->db->qstr($status);
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->app->db->qStr($status);
 
             }
 
         }        
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user_records.user_id=".$this->app->db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user_records.user_id=".$this->app->db->qStr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."client_records.client_id=".$this->app->db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."client_records.client_id=".$this->app->db->qStr($client_id);}
 
         // The SQL code
         $sql =  "SELECT            
@@ -271,7 +271,7 @@ class WorkOrder extends Components {
             return;        
         }
 
-        $sql = "SELECT * FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+        $sql = "SELECT * FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qStr($workorder_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -299,7 +299,7 @@ class WorkOrder extends Components {
                 FROM
                 ".PRFX."workorder_notes,
                 ".PRFX."user_records
-                WHERE workorder_id=".$this->app->db->qstr($workorder_id)."
+                WHERE workorder_id=".$this->app->db->qStr($workorder_id)."
                 AND ".PRFX."user_records.user_id = ".PRFX."workorder_notes.employee_id";
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -316,7 +316,7 @@ class WorkOrder extends Components {
 
         $this->db = \Factory::getDbo();
 
-        $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qstr($workorder_note_id);    
+        $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qStr($workorder_note_id);    
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -343,7 +343,7 @@ class WorkOrder extends Components {
                 CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
                 FROM ".PRFX."workorder_history
                 LEFT JOIN ".PRFX."user_records ON ".PRFX."workorder_history.employee_id = ".PRFX."user_records.user_id
-                WHERE ".PRFX."workorder_history.workorder_id=".$this->app->db->qstr($workorder_id)." 
+                WHERE ".PRFX."workorder_history.workorder_id=".$this->app->db->qStr($workorder_id)." 
                 AND ".PRFX."user_records.user_id = ".PRFX."workorder_history.employee_id
                 ORDER BY ".PRFX."workorder_history.history_id";
 
@@ -392,7 +392,7 @@ class WorkOrder extends Components {
 
     public function getStatusDisplayName($status_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$this->app->db->qstr($status_key);
+        $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$this->app->db->qStr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -434,7 +434,7 @@ class WorkOrder extends Components {
                 DISTINCT (CAST(scope AS CHAR CHARACTER SET utf8) COLLATE utf8_bin) AS autoscope
                 FROM ".PRFX."workorder_records
                 WHERE scope
-                LIKE ".$this->app->db->qstr('%'.$scope_string.'%')."
+                LIKE ".$this->app->db->qStr('%'.$scope_string.'%')."
                 LIMIT 10";    
 
 
@@ -474,9 +474,9 @@ class WorkOrder extends Components {
     public function updateScopeDescription($workorder_id, $scope, $description) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET           
-                scope               =".$this->app->db->qstr($scope).",
-                description         =".$this->app->db->qstr($description)."            
-                WHERE workorder_id  =".$this->app->db->qstr($workorder_id);
+                scope               =".$this->app->db->qStr($scope).",
+                description         =".$this->app->db->qStr($description)."            
+                WHERE workorder_id  =".$this->app->db->qStr($workorder_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -505,8 +505,8 @@ class WorkOrder extends Components {
     public function updateComment($workorder_id, $comment) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET            
-                comment             =". $this->app->db->qstr($comment)."
-                WHERE workorder_id  =". $this->app->db->qstr($workorder_id);
+                comment             =". $this->app->db->qStr($comment)."
+                WHERE workorder_id  =". $this->app->db->qStr($workorder_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -535,8 +535,8 @@ class WorkOrder extends Components {
     public function updateResolution($workorder_id, $resolution) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET                        
-                resolution          =". $this->app->db->qstr( $resolution      )."            
-                WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
+                resolution          =". $this->app->db->qStr( $resolution      )."            
+                WHERE workorder_id  =". $this->app->db->qStr( $workorder_id    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -565,9 +565,9 @@ class WorkOrder extends Components {
     public function updateNote($workorder_note_id, $note) {
 
         $sql = "UPDATE ".PRFX."workorder_notes SET
-                employee_id             =". $this->app->db->qstr( $this->app->user->login_user_id   ).",            
-                description             =". $this->app->db->qstr( $note                                )."
-                WHERE workorder_note_id =". $this->app->db->qstr( $workorder_note_id                   );
+                employee_id             =". $this->app->db->qStr( $this->app->user->login_user_id   ).",            
+                description             =". $this->app->db->qStr( $note                                )."
+                WHERE workorder_note_id =". $this->app->db->qStr( $workorder_note_id                   );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -608,10 +608,10 @@ class WorkOrder extends Components {
         $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : null;
 
         $sql = "UPDATE ".PRFX."workorder_records SET   
-                employee_id         =". $this->app->db->qstr( $employee_id ?: null   ).",
-                status              =". $this->app->db->qstr( $new_status      ).",
-                closed_on           =". $this->app->db->qstr( $closed_on ?: null )."  
-                WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
+                employee_id         =". $this->app->db->qStr( $employee_id ?: null   ).",
+                status              =". $this->app->db->qStr( $new_status      ).",
+                closed_on           =". $this->app->db->qStr( $closed_on ?: null )."  
+                WHERE workorder_id  =". $this->app->db->qStr( $workorder_id    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -666,10 +666,10 @@ class WorkOrder extends Components {
 
         if($new_closed_status == 'close') {        
             $sql = "UPDATE ".PRFX."workorder_records SET
-                    closed_by           =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                    closed_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
-                    is_closed           =". $this->app->db->qstr( 1                                    )."
-                    WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
+                    closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
+                    closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",
+                    is_closed           =". $this->app->db->qStr( 1                                    )."
+                    WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
 
         }
 
@@ -689,8 +689,8 @@ class WorkOrder extends Components {
         if(!$workorder_id) { return; }
 
         $sql = "UPDATE ".PRFX."workorder_records SET
-                invoice_id          =". $this->app->db->qstr( $invoice_id      )."
-                WHERE workorder_id  =". $this->app->db->qstr( $workorder_id    );
+                invoice_id          =". $this->app->db->qStr( $invoice_id      )."
+                WHERE workorder_id  =". $this->app->db->qStr( $workorder_id    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
 
@@ -706,8 +706,8 @@ class WorkOrder extends Components {
         if(!$workorder_id) { return; }
 
         $sql = "UPDATE ".PRFX."workorder_records SET
-                last_active=".$this->app->db->qstr( $this->app->system->general->mysqlDatetime() )."
-                WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                WHERE workorder_id=".$this->app->db->qStr($workorder_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -741,7 +741,7 @@ class WorkOrder extends Components {
         $this->app->components->workorder->updateStatus($workorder_id, 'deleted'); 
 
         // Delete the workorder primary record
-        //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qstr($workorder_id); (this use to delete the whole record)
+        //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qStr($workorder_id); (this use to delete the whole record)
         $sql = "UPDATE ".PRFX."workorder_records SET
             employee_id         = NULL,
             client_id           = NULL,   
@@ -757,20 +757,20 @@ class WorkOrder extends Components {
             description         = '',
             comment             = '',
             resolution          = ''
-            WHERE workorder_id =". $this->app->db->qstr($workorder_id);
+            WHERE workorder_id =". $this->app->db->qStr($workorder_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         
         // Delete the workorder history
-        $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+        $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$this->app->db->qStr($workorder_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
                 
         // Delete the workorder notes 
-        $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+        $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_id=".$this->app->db->qStr($workorder_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
                     
         // Delete the workorder schedule events 
-        $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$this->app->db->qstr($workorder_id);
+        $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$this->app->db->qStr($workorder_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
                     
         // Write the record to the activity log                    
@@ -793,7 +793,7 @@ class WorkOrder extends Components {
         // Get workorder details before any deleting
         $workorder_details = $this->getRecord($this->getNote($workorder_note_id, 'workorder_id'));
 
-        $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qstr( $workorder_note_id );
+        $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qStr( $workorder_note_id );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
 
@@ -821,12 +821,12 @@ class WorkOrder extends Components {
 
         // Insert resolution and close information
         $sql = "UPDATE ".PRFX."workorder_records SET
-                closed_by           =". $this->app->db->qstr( $this->app->user->login_user_id   ).",                        
-                status              =". $this->app->db->qstr( 'closed_without_invoice'             ).",
-                closed_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",
-                is_closed           =". $this->app->db->qstr( 1                                    ).",
-                resolution          =". $this->app->db->qstr( $resolution                          )."
-                WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
+                closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",                        
+                status              =". $this->app->db->qStr( 'closed_without_invoice'             ).",
+                closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",
+                is_closed           =". $this->app->db->qStr( 1                                    ).",
+                resolution          =". $this->app->db->qStr( $resolution                          )."
+                WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -864,12 +864,12 @@ class WorkOrder extends Components {
 
         // Insert resolution and close information
         $sql = "UPDATE ".PRFX."workorder_records SET
-                closed_by           =". $this->app->db->qstr( $this->app->user->login_user_id   ).",
-                status              =". $this->app->db->qstr( 'closed_with_invoice'                ).",
-                closed_on          =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                     ).",            
-                is_closed           =". $this->app->db->qstr( 1                                    ).",
-                resolution          =". $this->app->db->qstr( $resolution                          )."
-                WHERE workorder_id  =". $this->app->db->qstr( $workorder_id                        );
+                closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
+                status              =". $this->app->db->qStr( 'closed_with_invoice'                ).",
+                closed_on          =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",            
+                is_closed           =". $this->app->db->qStr( 1                                    ).",
+                resolution          =". $this->app->db->qStr( $resolution                          )."
+                WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -1211,16 +1211,16 @@ class WorkOrder extends Components {
         if($workorder_details['status'] == 'unassigned') {
 
             $sql = "UPDATE ".PRFX."workorder_records SET
-                    employee_id         =". $this->app->db->qstr( $target_employee_id  ).",
-                    status              =". $this->app->db->qstr( 'assigned'           )."
-                    WHERE workorder_id  =". $this->app->db->qstr( $workorder_id        );
+                    employee_id         =". $this->app->db->qStr( $target_employee_id  ).",
+                    status              =". $this->app->db->qStr( 'assigned'           )."
+                    WHERE workorder_id  =". $this->app->db->qStr( $workorder_id        );
 
         // Keep the same workorder status    
         } else {    
 
             $sql = "UPDATE ".PRFX."workorder_records SET
-                    employee_id         =". $this->app->db->qstr( $target_employee_id  )."            
-                    WHERE workorder_id  =". $this->app->db->qstr( $workorder_id        );
+                    employee_id         =". $this->app->db->qStr( $target_employee_id  )."            
+                    WHERE workorder_id  =". $this->app->db->qStr( $workorder_id        );
 
         }
 

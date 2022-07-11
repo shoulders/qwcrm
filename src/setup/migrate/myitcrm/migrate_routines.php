@@ -28,31 +28,31 @@ class MigrateMyitcrm extends Setup {
     public function insertUser($VAR) {
 
         $sql = "INSERT INTO ".PRFX."user SET
-                customer_id         =". $this->app->db->qstr( $VAR['customer_id']                          ).", 
-                username            =". $this->app->db->qstr( $VAR['username']                             ).",
-                password            =". $this->app->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($VAR['password'])  ).",
-                email               =". $this->app->db->qstr( $VAR['email']                                ).",
-                usergroup           =". $this->app->db->qstr( $VAR['usergroup']                            ).",
-                active              =". $this->app->db->qstr( $VAR['active']                               ).",
-                register_date       =". $this->app->db->qstr( time()                                       ).",   
-                require_reset       =". $this->app->db->qstr( $VAR['require_reset']                        ).",
-                is_employee         =". $this->app->db->qstr( $VAR['is_employee']                          ).",              
-                display_name        =". $this->app->db->qstr( $VAR['display_name']                         ).",
-                first_name          =". $this->app->db->qstr( $VAR['first_name']                           ).",
-                last_name           =". $this->app->db->qstr( $VAR['last_name']                            ).",
-                work_primary_phone  =". $this->app->db->qstr( $VAR['work_primary_phone']                   ).",
-                work_mobile_phone   =". $this->app->db->qstr( $VAR['work_mobile_phone']                    ).",
-                work_fax            =". $this->app->db->qstr( $VAR['work_fax']                             ).",                    
-                home_primary_phone  =". $this->app->db->qstr( $VAR['home_primary_phone']                   ).",
-                home_mobile_phone   =". $this->app->db->qstr( $VAR['home_mobile_phone']                    ).",
-                home_email          =". $this->app->db->qstr( $VAR['home_email']                           ).",
-                home_address        =". $this->app->db->qstr( $VAR['home_address']                         ).",
-                home_city           =". $this->app->db->qstr( $VAR['home_city']                            ).",  
-                home_state          =". $this->app->db->qstr( $VAR['home_state']                           ).",
-                home_zip            =". $this->app->db->qstr( $VAR['home_zip']                             ).",
-                home_country        =". $this->app->db->qstr( $VAR['home_country']                         ).", 
-                based               =". $this->app->db->qstr( $VAR['based']                                ).",  
-                notes               =". $this->app->db->qstr( $VAR['notes']                                );                 
+                customer_id         =". $this->app->db->qStr( $VAR['customer_id']                          ).", 
+                username            =". $this->app->db->qStr( $VAR['username']                             ).",
+                password            =". $this->app->db->qStr( \Joomla\CMS\User\UserHelper::hashPassword($VAR['password'])  ).",
+                email               =". $this->app->db->qStr( $VAR['email']                                ).",
+                usergroup           =". $this->app->db->qStr( $VAR['usergroup']                            ).",
+                active              =". $this->app->db->qStr( $VAR['active']                               ).",
+                register_date       =". $this->app->db->qStr( time()                                       ).",   
+                require_reset       =". $this->app->db->qStr( $VAR['require_reset']                        ).",
+                is_employee         =". $this->app->db->qStr( $VAR['is_employee']                          ).",              
+                display_name        =". $this->app->db->qStr( $VAR['display_name']                         ).",
+                first_name          =". $this->app->db->qStr( $VAR['first_name']                           ).",
+                last_name           =". $this->app->db->qStr( $VAR['last_name']                            ).",
+                work_primary_phone  =". $this->app->db->qStr( $VAR['work_primary_phone']                   ).",
+                work_mobile_phone   =". $this->app->db->qStr( $VAR['work_mobile_phone']                    ).",
+                work_fax            =". $this->app->db->qStr( $VAR['work_fax']                             ).",                    
+                home_primary_phone  =". $this->app->db->qStr( $VAR['home_primary_phone']                   ).",
+                home_mobile_phone   =". $this->app->db->qStr( $VAR['home_mobile_phone']                    ).",
+                home_email          =". $this->app->db->qStr( $VAR['home_email']                           ).",
+                home_address        =". $this->app->db->qStr( $VAR['home_address']                         ).",
+                home_city           =". $this->app->db->qStr( $VAR['home_city']                            ).",  
+                home_state          =". $this->app->db->qStr( $VAR['home_state']                           ).",
+                home_zip            =". $this->app->db->qStr( $VAR['home_zip']                             ).",
+                home_country        =". $this->app->db->qStr( $VAR['home_country']                         ).", 
+                based               =". $this->app->db->qStr( $VAR['based']                                ).",  
+                notes               =". $this->app->db->qStr( $VAR['notes']                                );                 
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -189,7 +189,7 @@ class MigrateMyitcrm extends Setup {
             return;        
         }
 
-        $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$this->app->db->qstr($user_id);
+        $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$this->app->db->qStr($user_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -238,44 +238,44 @@ class MigrateMyitcrm extends Setup {
         }
     
         $sql .= "UPDATE ".PRFX."company SET
-                display_name            =". $this->app->db->qstr( $VAR['display_name']                     ).",";
+                display_name            =". $this->app->db->qStr( $VAR['display_name']                     ).",";
                     
         if($VAR['delete_logo']) {
             $sql .="logo                =''                                                     ,";
         }
 
         if(!empty($_FILES['logo']['name'])) {
-            $sql .="logo                =". $this->app->db->qstr( $new_logo_filepath                       ).",";
+            $sql .="logo                =". $this->app->db->qStr( $new_logo_filepath                       ).",";
         }
         
         /*if(isset($VAR['logo']) && is_string($VAR['logo'])) {
-            $sql .="logo                =". $this->app->db->qstr( $VAR['logo']                             ).",";
+            $sql .="logo                =". $this->app->db->qStr( $VAR['logo']                             ).",";
         }*/
 
-        $sql .="address                 =". $this->app->db->qstr( $VAR['address']                          ).",
-                city                    =". $this->app->db->qstr( $VAR['city']                             ).",
-                state                   =". $this->app->db->qstr( $VAR['state']                            ).",
-                zip                     =". $this->app->db->qstr( $VAR['zip']                              ).",
-                country                 =". $this->app->db->qstr( $VAR['country']                          ).",
-                primary_phone           =". $this->app->db->qstr( $VAR['primary_phone']                    ).",
-                mobile_phone            =". $this->app->db->qstr( $VAR['mobile_phone']                     ).",
-                fax                     =". $this->app->db->qstr( $VAR['fax']                              ).",
-                email                   =". $this->app->db->qstr( $VAR['email']                            ).",    
-                website                 =". $this->app->db->qstr( $this->app->system->general->processInputtedUrl($VAR['website'])    ).",
-                company_number          =". $this->app->db->qstr( $VAR['company_number']                   ).",                                        
-                tax_type                =". $this->app->db->qstr( $VAR['tax_type']                         ).",
-                tax_rate                =". $this->app->db->qstr( $VAR['tax_rate']                         ).",
-                vat_number              =". $this->app->db->qstr( $VAR['vat_number']                       ).",
-                year_start              =". $this->app->db->qstr( $this->app->system->general->dateToTimestamp($VAR['year_start'])    ).",
-                year_end                =". $this->app->db->qstr( $this->app->system->general->dateToTimestamp($VAR['year_end'])      ).",
-                welcome_msg             =". $this->app->db->qstr( $VAR['welcome_msg']                      ).",
-                currency_symbol         =". $this->app->db->qstr( htmlentities($VAR['currency_symbol'])    ).",
-                currency_code           =". $this->app->db->qstr( $VAR['currency_code']                    ).",
-                date_format             =". $this->app->db->qstr( $VAR['date_format']                      ).",
-                email_signature         =". $this->app->db->qstr( $VAR['email_signature']                  ).",
-                email_signature_active  =". $this->app->db->qstr( $VAR['email_signature_active']           ).",
-                email_msg_invoice       =". $this->app->db->qstr( $VAR['email_msg_invoice']                ).",
-                email_msg_workorder     =". $this->app->db->qstr( $VAR['email_msg_workorder']              );                          
+        $sql .="address                 =". $this->app->db->qStr( $VAR['address']                          ).",
+                city                    =". $this->app->db->qStr( $VAR['city']                             ).",
+                state                   =". $this->app->db->qStr( $VAR['state']                            ).",
+                zip                     =". $this->app->db->qStr( $VAR['zip']                              ).",
+                country                 =". $this->app->db->qStr( $VAR['country']                          ).",
+                primary_phone           =". $this->app->db->qStr( $VAR['primary_phone']                    ).",
+                mobile_phone            =". $this->app->db->qStr( $VAR['mobile_phone']                     ).",
+                fax                     =". $this->app->db->qStr( $VAR['fax']                              ).",
+                email                   =". $this->app->db->qStr( $VAR['email']                            ).",    
+                website                 =". $this->app->db->qStr( $this->app->system->general->processInputtedUrl($VAR['website'])    ).",
+                company_number          =". $this->app->db->qStr( $VAR['company_number']                   ).",                                        
+                tax_type                =". $this->app->db->qStr( $VAR['tax_type']                         ).",
+                tax_rate                =". $this->app->db->qStr( $VAR['tax_rate']                         ).",
+                vat_number              =". $this->app->db->qStr( $VAR['vat_number']                       ).",
+                year_start              =". $this->app->db->qStr( $this->app->system->general->dateToTimestamp($VAR['year_start'])    ).",
+                year_end                =". $this->app->db->qStr( $this->app->system->general->dateToTimestamp($VAR['year_end'])      ).",
+                welcome_msg             =". $this->app->db->qStr( $VAR['welcome_msg']                      ).",
+                currency_symbol         =". $this->app->db->qStr( htmlentities($VAR['currency_symbol'])    ).",
+                currency_code           =". $this->app->db->qStr( $VAR['currency_code']                    ).",
+                date_format             =". $this->app->db->qStr( $VAR['date_format']                      ).",
+                email_signature         =". $this->app->db->qStr( $VAR['email_signature']                  ).",
+                email_signature_active  =". $this->app->db->qStr( $VAR['email_signature_active']           ).",
+                email_msg_invoice       =". $this->app->db->qStr( $VAR['email_msg_invoice']                ).",
+                email_msg_workorder     =". $this->app->db->qStr( $VAR['email_msg_workorder']              );                          
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
@@ -1219,11 +1219,11 @@ class MigrateMyitcrm extends Setup {
         if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
 
         $sql = "UPDATE ".PRFX."user SET
-                password        =". $this->app->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
-                require_reset   =". $this->app->db->qstr( 0                                    ).",   
-                last_reset_time =". $this->app->db->qstr( time()                               ).",
-                reset_count     =". $this->app->db->qstr( 0                                    )."
-                WHERE user_id   =". $this->app->db->qstr( $user_id                             );
+                password        =". $this->app->db->qStr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
+                require_reset   =". $this->app->db->qStr( 0                                    ).",   
+                last_reset_time =". $this->app->db->qStr( time()                               ).",
+                reset_count     =". $this->app->db->qStr( 0                                    )."
+                WHERE user_id   =". $this->app->db->qStr( $user_id                             );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -1243,7 +1243,7 @@ class MigrateMyitcrm extends Setup {
         // This prevents self-checking of the current username of the record being edited
         if ($current_username != null && $username === $current_username) {return false;}
 
-        $sql = "SELECT username FROM ".PRFX."user WHERE username =". $this->app->db->qstr($username);
+        $sql = "SELECT username FROM ".PRFX."user WHERE username =". $this->app->db->qStr($username);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -1272,7 +1272,7 @@ class MigrateMyitcrm extends Setup {
         // This prevents self-checking of the current username of the record being edited
         if ($current_email != null && $email === $current_email) {return false;}
 
-        $sql = "SELECT email FROM ".PRFX."user WHERE email =". $this->app->db->qstr($email);
+        $sql = "SELECT email FROM ".PRFX."user WHERE email =". $this->app->db->qStr($email);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

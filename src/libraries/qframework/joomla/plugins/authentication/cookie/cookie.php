@@ -147,7 +147,7 @@ class PlgAuthenticationCookie //extends JPlugin
 			->where($this->db->quoteName('uastring') . ' = ' . $this->db->quote($cookieName))
 			->order($this->db->quoteName('time') . ' DESC');
 		*/
-		$sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series)." AND uastring = ".$this->db->qstr($cookieName)." ORDER BY time DESC";
+		$sql = "SELECT user_id, token, series, time FROM ".PRFX."user_keys WHERE series = ".$this->db->qStr($series)." AND uastring = ".$this->db->qStr($cookieName)." ORDER BY time DESC";
 		
 		try
 		{
@@ -185,7 +185,7 @@ class PlgAuthenticationCookie //extends JPlugin
 				->delete('#__user_keys')
 				->where($this->db->quoteName('user_id') . ' = ' . $this->db->quote($results[0]->user_id));
 			*/
-			$sql = "DELETE FROM ".PRFX."user_keys WHERE user_id = ".$this->db->qstr($results[0]['user_id']);
+			$sql = "DELETE FROM ".PRFX."user_keys WHERE user_id = ".$this->db->qStr($results[0]['user_id']);
 						
 			try
 			{
@@ -220,7 +220,7 @@ class PlgAuthenticationCookie //extends JPlugin
 			->where($this->db->quoteName('username') . ' = ' . $this->db->quote($results[0]->user_id))
 			->where($this->db->quoteName('requireReset') . ' = 0');
 		*/
-		$sql = "SELECT user_id, username, password FROM ".PRFX."user_records WHERE username = ".$this->db->qstr($results[0]['user_id'])." AND require_reset = 0";
+		$sql = "SELECT user_id, username, password FROM ".PRFX."user_records WHERE username = ".$this->db->qStr($results[0]['user_id'])." AND require_reset = 0";
 
 		try
 		{
@@ -324,7 +324,7 @@ class PlgAuthenticationCookie //extends JPlugin
 					->where($this->db->quoteName('series') . ' = ' . $this->db->quote($series));
 				*/
 				$series = \Joomla\CMS\User\UserHelper::genRandomPassword(20);
-				$sql = "SELECT series FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series);
+				$sql = "SELECT series FROM ".PRFX."user_keys WHERE series = ".$this->db->qStr($series);
 
 				try
 				{
@@ -410,9 +410,9 @@ class PlgAuthenticationCookie //extends JPlugin
 				->where($this->db->quoteName('series') . ' = ' . $this->db->quote($series))
 				->where($this->db->quoteName('uastring') . ' = ' . $this->db->quote($cookieName));
 			*/
-			$where = "user_id = ".$this->db->qstr($options['user']->username)."
-			AND series = ".$this->db->qstr($series)." 
-			AND uastring = ".$this->db->qstr($cookieName);
+			$where = "user_id = ".$this->db->qStr($options['user']->username)."
+			AND series = ".$this->db->qStr($series)." 
+			AND uastring = ".$this->db->qStr($cookieName);
 		}
 
 		// Get hashed token
@@ -485,7 +485,7 @@ class PlgAuthenticationCookie //extends JPlugin
 			->delete('#__user_keys')
 			->where($this->db->quoteName('series') . ' = ' . $this->db->quote($series));
 		*/
-		$sql = "DELETE FROM ".PRFX."user_keys WHERE series = ".$this->db->qstr($series);
+		$sql = "DELETE FROM ".PRFX."user_keys WHERE series = ".$this->db->qStr($series);
 
 		try
 		{

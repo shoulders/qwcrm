@@ -1059,7 +1059,7 @@ class Session implements \IteratorAggregate
         //$session = JFactory::getSession(); using $this
         $user   = \Factory::getUser();      // this gets the user from the session
 
-        $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
+        $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qStr( $this->getId() );        
         $rs     = $db->execute($sql);    
 
         // If the session record doesn't exist initialise it.
@@ -1084,7 +1084,7 @@ class Session implements \IteratorAggregate
                 $record['username']    = $user->username;*/                
                                 
                 $sql = "INSERT INTO ".PRFX."session SET     
-                        session_id      =". $db->qstr( $this->getId()               ).",
+                        session_id      =". $db->qStr( $this->getId()               ).",
                         clientid        =". (int) \CMSApplication::getClientId()    .",                        
                         time            =". time()                                  ; 
                 
@@ -1106,20 +1106,20 @@ class Session implements \IteratorAggregate
                  */              
                 
                 $sql = "INSERT INTO ".PRFX."session SET  
-                        session_id      =". $db->qstr( $this->getId()                   ).",
+                        session_id      =". $db->qStr( $this->getId()                   ).",
                         clientid        =". (int) \CMSApplication::getClientId()        .", 
                         guest           =". (int) $user->guest                          .",
                         time            =". (int) $this->get('session.timer.start')     .",
                         userid          =". (int) $user->id                             .",
-                        username        =". $db->qstr( $user->username                  );
+                        username        =". $db->qStr( $user->username                  );
                 
                 /*$sql = "UPDATE ".PRFX."session SET                          
                         clientid        =". (int) \Factory::getClientId()              .", 
                         guest           =". (int) $user->guest                          .",
                         time            =". (int) $this->get('session.timer.start')     .",
                         userid          =". (int) $user->id                             .",
-                        username        =". $db->qstr( $user->username                  )."
-                        WHERE session_id =". $db->qstr( $this->getId()                  );*/
+                        username        =". $db->qStr( $user->username                  )."
+                        WHERE session_id =". $db->qStr( $this->getId()                  );*/
                  
             }
 

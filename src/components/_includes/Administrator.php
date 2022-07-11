@@ -141,16 +141,16 @@ class Administrator extends Components {
             $page_permission['Administrator'] = '1';
 
             $sql = "UPDATE `".PRFX."user_acl_page` SET
-                    `Administrator` =". $this->app->db->qstr( $page_permission['Administrator']    ).",
-                    `Manager`       =". $this->app->db->qstr( $page_permission['Manager']          ).",
-                    `Supervisor`    =". $this->app->db->qstr( $page_permission['Supervisor']       ).",
-                    `Technician`    =". $this->app->db->qstr( $page_permission['Technician']       ).",
-                    `Clerical`      =". $this->app->db->qstr( $page_permission['Clerical']         ).",
-                    `Counter`       =". $this->app->db->qstr( $page_permission['Counter']          ).",
-                    `Client`        =". $this->app->db->qstr( $page_permission['Client']           ).",
-                    `Guest`         =". $this->app->db->qstr( $page_permission['Guest']            ).",
-                    `Public`        =". $this->app->db->qstr( $page_permission['Public']           )."
-                    WHERE `page`    =". $this->app->db->qstr( $page_name                           ).";";
+                    `Administrator` =". $this->app->db->qStr( $page_permission['Administrator']    ).",
+                    `Manager`       =". $this->app->db->qStr( $page_permission['Manager']          ).",
+                    `Supervisor`    =". $this->app->db->qStr( $page_permission['Supervisor']       ).",
+                    `Technician`    =". $this->app->db->qStr( $page_permission['Technician']       ).",
+                    `Clerical`      =". $this->app->db->qStr( $page_permission['Clerical']         ).",
+                    `Counter`       =". $this->app->db->qStr( $page_permission['Counter']          ).",
+                    `Client`        =". $this->app->db->qStr( $page_permission['Client']           ).",
+                    `Guest`         =". $this->app->db->qStr( $page_permission['Guest']            ).",
+                    `Public`        =". $this->app->db->qStr( $page_permission['Public']           )."
+                    WHERE `page`    =". $this->app->db->qStr( $page_name                           ).";";
 
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}               
 
@@ -186,16 +186,16 @@ class Administrator extends Components {
         foreach($mandatory_permissions as $page_name => $page_permission) {
 
             $sql = "UPDATE `".PRFX."user_acl_page` SET
-                    `Administrator` =". $this->app->db->qstr( $page_permission['Administrator']  ).",
-                    `Manager`       =". $this->app->db->qstr( $page_permission['Manager']        ).",
-                    `Supervisor`    =". $this->app->db->qstr( $page_permission['Supervisor']     ).",
-                    `Technician`    =". $this->app->db->qstr( $page_permission['Technician']     ).",
-                    `Clerical`      =". $this->app->db->qstr( $page_permission['Clerical']       ).",
-                    `Counter`       =". $this->app->db->qstr( $page_permission['Counter']        ).",
-                    `Client`        =". $this->app->db->qstr( $page_permission['Client']         ).",
-                    `Guest`         =". $this->app->db->qstr( $page_permission['Guest']          ).",
-                    `Public`        =". $this->app->db->qstr( $page_permission['Public']         )."
-                    WHERE `page`    =". $this->app->db->qstr( $page_name                         ).";";
+                    `Administrator` =". $this->app->db->qStr( $page_permission['Administrator']  ).",
+                    `Manager`       =". $this->app->db->qStr( $page_permission['Manager']        ).",
+                    `Supervisor`    =". $this->app->db->qStr( $page_permission['Supervisor']     ).",
+                    `Technician`    =". $this->app->db->qStr( $page_permission['Technician']     ).",
+                    `Clerical`      =". $this->app->db->qStr( $page_permission['Clerical']       ).",
+                    `Counter`       =". $this->app->db->qStr( $page_permission['Counter']        ).",
+                    `Client`        =". $this->app->db->qStr( $page_permission['Client']         ).",
+                    `Guest`         =". $this->app->db->qStr( $page_permission['Guest']          ).",
+                    `Public`        =". $this->app->db->qStr( $page_permission['Public']         )."
+                    WHERE `page`    =". $this->app->db->qStr( $page_name                         ).";";
 
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}              
 

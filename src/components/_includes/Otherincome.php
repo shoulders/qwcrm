@@ -33,20 +33,20 @@ class OtherIncome extends Components {
     public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."otherincome_records SET
-                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                payee            =". $this->app->db->qstr( $qform['payee']                   ).",
-                date             =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
-                tax_system       =". $this->app->db->qstr( QW_TAX_SYSTEM                     ).",            
-                type             =". $this->app->db->qstr( $qform['type']                    ).",            
-                unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).",
-                vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).",
-                unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
-                unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
-                unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
-                status           =". $this->app->db->qstr( 'unpaid'                        ).",            
-                opened_on        =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                ).",            
-                items            =". $this->app->db->qstr( $qform['items']                   ).",
-                note             =". $this->app->db->qstr( $qform['note']                    );
+                employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                payee            =". $this->app->db->qStr( $qform['payee']                   ).",
+                date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
+                tax_system       =". $this->app->db->qStr( QW_TAX_SYSTEM                     ).",            
+                type             =". $this->app->db->qStr( $qform['type']                    ).",            
+                unit_net         =". $this->app->db->qStr( $qform['unit_net']                ).",
+                vat_tax_code     =". $this->app->db->qStr( $qform['vat_tax_code']            ).",
+                unit_tax_rate    =". $this->app->db->qStr( $qform['unit_tax_rate']           ).",
+                unit_tax         =". $this->app->db->qStr( $qform['unit_tax']                ).",
+                unit_gross       =". $this->app->db->qStr( $qform['unit_gross']              ).",
+                status           =". $this->app->db->qStr( 'unpaid'                        ).",            
+                opened_on        =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                ).",            
+                items            =". $this->app->db->qStr( $qform['items']                   ).",
+                note             =". $this->app->db->qStr( $qform['note']                    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -73,13 +73,13 @@ class OtherIncome extends Components {
         $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";
 
         // Restrict results by search category and search term
-        if($search_term) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.$search_category LIKE ".$this->app->db->qstr('%'.$search_term.'%');} 
+        if($search_term) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
 
         // Restrict by Type
-        if($type) { $whereTheseRecords .= " AND ".PRFX."otherincome_records.type= ".$this->app->db->qstr($type);}
+        if($type) { $whereTheseRecords .= " AND ".PRFX."otherincome_records.type= ".$this->app->db->qStr($type);}
 
         // Restrict by status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qstr($status);} 
+        if($status) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qStr($status);} 
 
         // The SQL code
         $sql =  "SELECT * 
@@ -144,7 +144,7 @@ class OtherIncome extends Components {
 
     public function getRecord($otherincome_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."otherincome_records WHERE otherincome_id=".$this->app->db->qstr($otherincome_id);
+        $sql = "SELECT * FROM ".PRFX."otherincome_records WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -185,7 +185,7 @@ class OtherIncome extends Components {
 
     public function getStatusDisplayName($status_key) {
 
-        $sql = "SELECT display_name FROM ".PRFX."otherincome_statuses WHERE status_key=".$this->app->db->qstr($status_key);
+        $sql = "SELECT display_name FROM ".PRFX."otherincome_statuses WHERE status_key=".$this->app->db->qStr($status_key);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -232,19 +232,19 @@ class OtherIncome extends Components {
     public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
-                employee_id      =". $this->app->db->qstr( $this->app->user->login_user_id ).",
-                payee            =". $this->app->db->qstr( $qform['payee']                   ).",
-                date             =". $this->app->db->qstr( $this->app->system->general->dateToMysqlDate($qform['date'])).",            
-                type             =". $this->app->db->qstr( $qform['type']               ).",            
-                unit_net         =". $this->app->db->qstr( $qform['unit_net']                ).",
-                vat_tax_code     =". $this->app->db->qstr( $qform['vat_tax_code']            ).",
-                unit_tax_rate    =". $this->app->db->qstr( $qform['unit_tax_rate']           ).",
-                unit_tax         =". $this->app->db->qstr( $qform['unit_tax']                ).",
-                unit_gross       =". $this->app->db->qstr( $qform['unit_gross']              ).",
-                last_active      =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime()                ).",
-                items            =". $this->app->db->qstr( $qform['items']                   ).",
-                note             =". $this->app->db->qstr( $qform['note']                    )."
-                WHERE otherincome_id  =". $this->app->db->qstr( $qform['otherincome_id']     );                        
+                employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                payee            =". $this->app->db->qStr( $qform['payee']                   ).",
+                date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",            
+                type             =". $this->app->db->qStr( $qform['type']               ).",            
+                unit_net         =". $this->app->db->qStr( $qform['unit_net']                ).",
+                vat_tax_code     =". $this->app->db->qStr( $qform['vat_tax_code']            ).",
+                unit_tax_rate    =". $this->app->db->qStr( $qform['unit_tax_rate']           ).",
+                unit_tax         =". $this->app->db->qStr( $qform['unit_tax']                ).",
+                unit_gross       =". $this->app->db->qStr( $qform['unit_gross']              ).",
+                last_active      =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                ).",
+                items            =". $this->app->db->qStr( $qform['items']                   ).",
+                note             =". $this->app->db->qStr( $qform['note']                    )."
+                WHERE otherincome_id  =". $this->app->db->qStr( $qform['otherincome_id']     );                        
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -278,10 +278,10 @@ class OtherIncome extends Components {
         $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
-                status             =". $this->app->db->qstr( $new_status   ).",
-                closed_on          =". $this->app->db->qstr( $closed_on    ).",
-                last_active        =". $this->app->db->qstr( $datetime     )." 
-                WHERE otherincome_id =". $this->app->db->qstr( $otherincome_id );
+                status             =". $this->app->db->qStr( $new_status   ).",
+                closed_on          =". $this->app->db->qStr( $closed_on    ).",
+                last_active        =". $this->app->db->qStr( $datetime     )." 
+                WHERE otherincome_id =". $this->app->db->qStr( $otherincome_id );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
@@ -352,7 +352,7 @@ class OtherIncome extends Components {
             last_active         = NULL,
             items               = '',
             note                = ''
-            WHERE otherincome_id =". $this->app->db->qstr($otherincome_id);
+            WHERE otherincome_id =". $this->app->db->qStr($otherincome_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -614,8 +614,8 @@ class OtherIncome extends Components {
         $balance                        = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
-                balance                 =". $this->app->db->qstr( $balance        )."
-                WHERE otherincome_id    =". $this->app->db->qstr( $otherincome_id );
+                balance                 =". $this->app->db->qStr( $balance        )."
+                WHERE otherincome_id    =". $this->app->db->qStr( $otherincome_id );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

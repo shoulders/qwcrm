@@ -691,11 +691,11 @@ class Upgrade3_1_0 extends Setup {
                 
                 $sql = "UPDATE `".PRFX."voucher_records` SET
                         `invoice_id` = '0', 
-                        `redeemed_client_id` = ".$this->app->db->qstr($redeemed_client_id).",                        
-                        `status` = ".$this->app->db->qstr($status).",
-                        `opened_on` = ".$this->app->db->qstr($opened_on).",
-                        `closed_on` = ".$this->app->db->qstr($closed_on).",
-                        `last_active` = ".$this->app->db->qstr($last_active).",
+                        `redeemed_client_id` = ".$this->app->db->qStr($redeemed_client_id).",                        
+                        `status` = ".$this->app->db->qStr($status).",
+                        `opened_on` = ".$this->app->db->qStr($opened_on).",
+                        `closed_on` = ".$this->app->db->qStr($closed_on).",
+                        `last_active` = ".$this->app->db->qStr($last_active).",
                         `blocked` = ".$blocked."
                         WHERE `voucher_id` = ".$rs->fields['voucher_id'];
                 
@@ -822,12 +822,12 @@ class Upgrade3_1_0 extends Setup {
 
                 $sql = "UPDATE `".PRFX."invoice_labour` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
-                    `tax_system`        = ".$this->app->db->qstr($invoice_details['tax_system']).",
-                    `description`       = ".$this->app->db->qstr($rs->fields['description']).",
+                    `tax_system`        = ".$this->app->db->qStr($invoice_details['tax_system']).",
+                    `description`       = ".$this->app->db->qStr($rs->fields['description']).",
                     `unit_qty`          = ".$rs->fields['unit_qty'].",
                     `unit_net`          = ".$rs->fields['unit_net'].",
                     `sales_tax_exempt`  = ".$sales_tax_exempt.",
-                    `vat_tax_code`      = ".$this->app->db->qstr($vat_tax_code).",                        
+                    `vat_tax_code`      = ".$this->app->db->qStr($vat_tax_code).",                        
                     `unit_tax_rate`     = ".$unit_tax_rate.",                       
                     `unit_tax`          = ".$item_totals['unit_tax'].",
                     `unit_gross`        = ".$item_totals['unit_gross'].",                        
@@ -958,12 +958,12 @@ class Upgrade3_1_0 extends Setup {
 
                 $sql = "UPDATE `".PRFX."invoice_parts` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
-                    `tax_system`        = ".$this->app->db->qstr($invoice_details['tax_system']).",
-                    `description`       = ".$this->app->db->qstr($rs->fields['description']).",
+                    `tax_system`        = ".$this->app->db->qStr($invoice_details['tax_system']).",
+                    `description`       = ".$this->app->db->qStr($rs->fields['description']).",
                     `unit_qty`          = ".$rs->fields['unit_qty'].",
                     `unit_net`          = ".$rs->fields['unit_net'].",
                     `sales_tax_exempt`  = ".$sales_tax_exempt.",
-                    `vat_tax_code`      = ".$this->app->db->qstr($vat_tax_code).",                        
+                    `vat_tax_code`      = ".$this->app->db->qStr($vat_tax_code).",                        
                     `unit_tax_rate`     = ".$unit_tax_rate.",                       
                     `unit_tax`          = ".$item_totals['unit_tax'].",
                     `unit_gross`        = ".$item_totals['unit_gross'].",                        
@@ -1133,8 +1133,8 @@ class Upgrade3_1_0 extends Setup {
                 
                 // Build SQL                
                 $sql = "UPDATE `".PRFX."payment_records` SET
-                        `voucher_id` = ".$this->app->db->qstr($voucher_id).",                        
-                        `additional_info` = ". $this->app->db->qstr(json_encode($additional_info))."
+                        `voucher_id` = ".$this->app->db->qStr($voucher_id).",                        
+                        `additional_info` = ". $this->app->db->qStr(json_encode($additional_info))."
                         WHERE `payment_id` = ".$rs->fields['payment_id'];                
                 
                 // Run the SQL
@@ -1240,23 +1240,23 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
                 
                 $sql = "INSERT INTO ".PRFX."payment_records SET            
-                    employee_id     = ".$this->app->db->qstr($rs->fields['employee_id']                   ).",
+                    employee_id     = ".$this->app->db->qStr($rs->fields['employee_id']                   ).",
                     client_id       = '',
                     workorder_id    = '',
                     invoice_id      = '',
                     voucher_id      = '',
                     refund_id       = '',
-                    expense_id      = ".$this->app->db->qstr($rs->fields['expense_id']                    ).",
+                    expense_id      = ".$this->app->db->qStr($rs->fields['expense_id']                    ).",
                     otherincome_id  = '',
-                    date            = ".$this->app->db->qstr($rs->fields['date']                          ).",
-                    tax_system      = ".$this->app->db->qstr($rs->fields['tax_system']                    ).",
+                    date            = ".$this->app->db->qStr($rs->fields['date']                          ).",
+                    tax_system      = ".$this->app->db->qStr($rs->fields['tax_system']                    ).",
                     type            = 'expense',
-                    method          = ".$this->app->db->qstr($rs->fields['payment_method']                ).",
+                    method          = ".$this->app->db->qStr($rs->fields['payment_method']                ).",
                     status          = 'valid',
-                    amount          = ".$this->app->db->qstr($rs->fields['unit_gross']                    ).",
-                    last_active     = ".$this->app->db->qstr($rs->fields['date']                          ).",
-                    additional_info = ".$this->app->db->qstr($this->app->components->payment->buildAdditionalInfoJson()                 ).",
-                    note            = ".$this->app->db->qstr('<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>');               
+                    amount          = ".$this->app->db->qStr($rs->fields['unit_gross']                    ).",
+                    last_active     = ".$this->app->db->qStr($rs->fields['date']                          ).",
+                    additional_info = ".$this->app->db->qStr($this->app->components->payment->buildAdditionalInfoJson()                 ).",
+                    note            = ".$this->app->db->qStr('<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
                 if(!$this->app->db->execute($sql)) {
@@ -1390,23 +1390,23 @@ class Upgrade3_1_0 extends Setup {
             while(!$rs->EOF) { 
                 
                 $sql = "INSERT INTO ".PRFX."payment_records SET            
-                    employee_id     = ".$this->app->db->qstr($rs->fields['employee_id']                   ).",
+                    employee_id     = ".$this->app->db->qStr($rs->fields['employee_id']                   ).",
                     client_id       = '',
                     workorder_id    = '',
                     invoice_id      = '',
                     voucher_id      = '',
                     refund_id       = '',
                     expense_id      = '',
-                    otherincome_id  = ".$this->app->db->qstr($rs->fields['otherincome_id']                ).",
-                    date            = ".$this->app->db->qstr($rs->fields['date']                          ).",
-                    tax_system      = ".$this->app->db->qstr($rs->fields['tax_system']                    ).",
+                    otherincome_id  = ".$this->app->db->qStr($rs->fields['otherincome_id']                ).",
+                    date            = ".$this->app->db->qStr($rs->fields['date']                          ).",
+                    tax_system      = ".$this->app->db->qStr($rs->fields['tax_system']                    ).",
                     type            = 'otherincome',
-                    method          = ".$this->app->db->qstr($rs->fields['payment_method']                ).",
+                    method          = ".$this->app->db->qStr($rs->fields['payment_method']                ).",
                     status          = 'valid',
-                    amount          = ".$this->app->db->qstr($rs->fields['unit_gross']                    ).",
-                    last_active     = ".$this->app->db->qstr($rs->fields['date']                          ).",
-                    additional_info = ".$this->app->db->qstr($this->app->components->payment->buildAdditionalInfoJson()                 ).",
-                    note            = ".$this->app->db->qstr('<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>');               
+                    amount          = ".$this->app->db->qStr($rs->fields['unit_gross']                    ).",
+                    last_active     = ".$this->app->db->qStr($rs->fields['date']                          ).",
+                    additional_info = ".$this->app->db->qStr($this->app->components->payment->buildAdditionalInfoJson()                 ).",
+                    note            = ".$this->app->db->qStr('<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
                 if(!$this->app->db->execute($sql)) {

@@ -530,7 +530,7 @@ class User //extends \JObject
 		*/
         
 		$db = \Factory::getDbo();        
-		$sql = "UPDATE ".PRFX."user_records SET last_active = ".\Factory::getApplication()->system->general->mysqlDatetime()." WHERE user_id = " . $db->qstr($this->id);
+		$sql = "UPDATE ".PRFX."user_records SET last_active = ".\Factory::getApplication()->system->general->mysqlDatetime()." WHERE user_id = " . $db->qStr($this->id);
 		$db->execute($sql);
 
 		return;
@@ -917,7 +917,7 @@ class User //extends \JObject
         
             $db = \Factory::getDbo();
 
-            $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id = " . $db->qstr($id);        
+            $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id = " . $db->qStr($id);        
 
             if(!$rs = $db->execute($sql)){
 

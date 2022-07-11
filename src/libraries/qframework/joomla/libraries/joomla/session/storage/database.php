@@ -46,7 +46,7 @@ class JSessionStorageDatabase extends JSessionStorage
 			$result = (string) $db->loadResult();
 			*/
 
-            $sql = "SELECT data FROM ".PRFX."session WHERE session_id = ".$db->qstr($id);
+            $sql = "SELECT data FROM ".PRFX."session WHERE session_id = ".$db->qStr($id);
             $rs = $db->execute($sql);
             
             (string) $result = $rs->fields['data'] ?? '';
@@ -93,9 +93,9 @@ class JSessionStorageDatabase extends JSessionStorage
             */
             
 			$sql = "UPDATE ".PRFX."session SET
-			        data = ". $db->qstr( $data  ).",
+			        data = ". $db->qStr( $data  ).",
                     time = ". time()."
-                    WHERE session_id = ".$db->qstr($id);
+                    WHERE session_id = ".$db->qStr($id);
             $db->execute($sql);
 
 			/*
@@ -139,7 +139,7 @@ class JSessionStorageDatabase extends JSessionStorage
             */
 
             // Remove a session from the database.
-            $sql = "DELETE FROM ".PRFX."session WHERE session_id = ".$db->qstr($id);
+            $sql = "DELETE FROM ".PRFX."session WHERE session_id = ".$db->qStr($id);
             return (boolean) $db->execute($sql);
         }
         catch (RuntimeException $e)
@@ -179,7 +179,7 @@ class JSessionStorageDatabase extends JSessionStorage
             */
             
             // Remove expired sessions from the database.
-            $sql = "DELETE FROM ".PRFX."session WHERE time = ".$db->qstr((int) $past);
+            $sql = "DELETE FROM ".PRFX."session WHERE time = ".$db->qStr((int) $past);
 
             return (boolean) $db->execute($sql);
         }

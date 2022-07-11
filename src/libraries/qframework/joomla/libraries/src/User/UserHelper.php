@@ -298,7 +298,7 @@ abstract class UserHelper
 		return $db->loadResult();
 		*/
 
-		$sql = "SELECT user_id FROM ".PRFX."user_records WHERE username = ".$db->qstr($username);
+		$sql = "SELECT user_id FROM ".PRFX."user_records WHERE username = ".$db->qStr($username);
 		$rs = $db->execute($sql);   
     
 		return $rs->fields['user_id'];  

@@ -413,7 +413,7 @@ class Router extends System {
         // Get user's Group Name by login_usergroup_id
         $sql = "SELECT ".PRFX."user_usergroups.display_name
                 FROM ".PRFX."user_usergroups
-                WHERE usergroup_id =".$this->app->db->qstr($user->login_usergroup_id);
+                WHERE usergroup_id =".$this->app->db->qStr($user->login_usergroup_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         $usergroup_display_name = $rs->fields['display_name'];
@@ -423,7 +423,7 @@ class Router extends System {
 
         /* Check Page to see if we have access */
 
-        $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$this->app->db->qstr($page_name);
+        $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$this->app->db->qStr($page_name);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -456,7 +456,7 @@ class Router extends System {
         if (!file_exists(COMPONENTS_DIR.$component.'/'.$page_tpl.'.php')) { return false;  }
 
         // Check to see if the page exists in the ACL
-        $sql = "SELECT page FROM ".PRFX."user_acl_page WHERE page = ".$this->app->db->qstr($component.':'.$page_tpl);
+        $sql = "SELECT page FROM ".PRFX."user_acl_page WHERE page = ".$this->app->db->qStr($component.':'.$page_tpl);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
