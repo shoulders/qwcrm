@@ -103,7 +103,7 @@ class Pdf extends System {
         {
             try
             {
-                // Output the PDF to the browser (.pdf has been added downstream)
+                // Output the PDF to the browser (.pdf extension is automatically added)
                 $this->mpdf->Output($pdf_filename, 'I');
             }
             
@@ -144,7 +144,7 @@ class Pdf extends System {
         {
             try
             {
-                // Output the PDF to the browser (.pdf has been added downstream)
+                // Output the PDF to the browser (.pdf extension is automatically added)
                 $this->mpdf->Output($pdf_filename, 'D');
             }
             

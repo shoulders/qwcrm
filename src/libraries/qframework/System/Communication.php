@@ -73,13 +73,13 @@ class Communication extends System {
     // Output PDF in browser
     private function pdfBrowser()
     {
-        $this->app->system->pdf->mpdfOutputBrowser($this->filename.'.pdf', $this->templatePayload);        
+        $this->app->system->pdf->mpdfOutputBrowser($this->filename, $this->templatePayload);        
     }
     
     // Output PDF as a downloadable file
     private function pdfDownload()
     {
-        $this->app->system->pdf->mpdfOutputDownload($this->filename.'.pdf', $this->templatePayload);
+        $this->app->system->pdf->mpdfOutputDownload($this->filename, $this->templatePayload);
     }    
     
     // Email PDF as an attachment
@@ -94,7 +94,7 @@ class Communication extends System {
             // Build the PDF Attachment
             $attachments = array();
             $attachment['data'] = $pdf_as_string;
-            $attachment['filename'] = $this->filename.'.pdf';
+            $attachment['filename'] = $this->filename;
             $attachment['contentType'] = 'application/pdf';
             $attachments[] = $attachment;
         
