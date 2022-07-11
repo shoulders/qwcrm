@@ -66,6 +66,11 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 // If new schedule form is intially loaded, load schedule item from the database and assign
 } else {
     
+    // Add 1 hour on to a start_time (if possible)
+    $end_time = explode(':',\CMSApplication::$VAR['start_time']);
+    $end_time[0] = ($end_time[0] + 1) > 23 ? 23 : ($end_time[0] + 1);
+    $end_time = (string) $end_time[0].':'.(string)$end_time[1];
+    
     // Build the page
     $schedule_details = array();
     $schedule_details['client_id']      = \CMSApplication::$VAR['client_id'];
@@ -74,7 +79,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $schedule_details['start_date']     = $this->app->system->general->convertYearMonthDayToDate(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']);
     $schedule_details['start_time']     = \CMSApplication::$VAR['start_time'];
     $schedule_details['end_date']       = $this->app->system->general->convertYearMonthDayToDate(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']);
-    $schedule_details['end_time']       = \CMSApplication::$VAR['start_time'];
+    $schedule_details['end_time']       = $end_time;
     $schedule_details['note']           = null;    
     $this->app->smarty->assign('schedule_details', $schedule_details);
     
