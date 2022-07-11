@@ -44,27 +44,25 @@ function smarty_modifier_adinfodisplay($string)
     $html = '';
     foreach ($additional_info as $key => $value) {
         
+        // Make sure there is a value
+        if(!$value) {continue;}
+        
+        // Apply modifications as required
         if($key == 'card_type_key') {
-            
-            if($value) {
-                $html .= '<strong>'._gettext("$adNames[$key]").':</strong> '._gettext("$cardNames[$value]").'<br>';
-                $contentFlag = true;
-            }            
-            
-        } else {
-            
-            if($value) {
-                $html .= '<strong>'._gettext("$adNames[$key]").':</strong> '.$value.'<br>';
-                $contentFlag = true;
-            }
-            
-        }
+            $html .= '<strong>'._gettext("$adNames[$key]").':</strong> '._gettext("$cardNames[$value]").'<br>';
+            $contentFlag = true;            
+        } elseif ($key == 'paypal_transaction_id') {                       
+            $html .= '<strong>'._gettext("$adNames[$key]").':</strong> <a href="https://www.paypal.com/myaccount/transaction/details/'.$value.'">'.$value.'</a><br>';
+            $contentFlag = true;            
+        } else {                        
+            $html .= '<strong>'._gettext("$adNames[$key]").':</strong> '.$value.'<br>';
+            $contentFlag = true;  
+        }   
        
     }  
     rtrim($html, '<br>');   // Remove the last <br> if present
-    $html .= '';   
     
-    // If no additional info return false
+    // If there is no additional info, return false
     if(!$contentFlag) {
         $html = false;
     }    
