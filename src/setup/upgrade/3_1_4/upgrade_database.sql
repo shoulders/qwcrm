@@ -682,11 +682,14 @@ ALTER TABLE `#__workorder_statuses` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf
 --
 
 ALTER TABLE `#__invoice_labour` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
-ALTER TABLE `#__invoice_parts` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`; 
+ALTER TABLE `#__invoice_parts` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
 
 --
--- Add VAT only_gross functionality
+-- Remove T9 VAT code from the user space
 --
 
-ALTER TABLE `#__company_vat_tax_codes` ADD `only_gross` `only_gross` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Only the gross amount should be entered'; 
-UPDATE `#__company_vat_tax_codes` SET `only_gross` = '1' WHERE `#__company_vat_tax_codes`.`id` = 10;
+UPDATE `#__company_vat_tax_codes` SET `hidden` = '1' WHERE `#__company_vat_tax_codes`.`id` = 10;
+ALTER TABLE `#__expense_records` DROP `vat_tax_code`;
+ALTER TABLE `#__expense_records` DROP `unit_tax_rate`;
+ALTER TABLE `#__otherincome_records` DROP `vat_tax_code`;
+ALTER TABLE `#__otherincome_records` DROP `unit_tax_rate`;

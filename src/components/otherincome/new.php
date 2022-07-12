@@ -39,5 +39,3 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
 // Build the page
 $this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->getTypes());
-$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(false));
-$this->app->smarty->assign('default_vat_tax_code', $this->app->components->company->getDefaultVatTaxCode());

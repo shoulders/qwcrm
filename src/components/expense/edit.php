@@ -33,7 +33,6 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     // Build the page       
     $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses()            );
     $this->app->smarty->assign('expense_types', $this->app->components->expense->getTypes());
-    $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(false));
     $this->app->smarty->assign('expense_details', $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']));
     
 }

@@ -76,24 +76,7 @@
                                                         <tr{if !'/^vat_/'|preg_match:$otherincome_details.tax_system} hidden{/if}>
                                                             <td align="right"><b>{t}Net{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td><input id="unit_net" name="qform[unit_net]" class="olotd5" style="border-width: medium;" size="10" value="{$otherincome_details.unit_net}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_net');"></td>
-                                                        </tr> 
-                                                        <tr{if !'/^vat_/'|preg_match:$otherincome_details.tax_system} hidden{/if}>
-                                                            <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
-                                                            <td>
-                                                                <select id="vat_tax_code" name="qform[vat_tax_code]" class="olotd5">
-                                                                    {if !'/^vat_/'|preg_match:$qw_tax_system}
-                                                                        <option value="TNA" data-rate="0.00"{if $default_vat_tax_code == 'TNA'} selected{/if} data-only_gross="0">{t}TNA{/t}</option>
-                                                                    {/if}
-                                                                    {section name=s loop=$vat_tax_codes}    
-                                                                        <option value="{$vat_tax_codes[s].tax_key}" data-rate="{$vat_tax_codes[s].rate}"{if $otherincome_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if} data-only_gross="{$vat_tax_codes[s].only_gross}">{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%</option>
-                                                                    {/section} 
-                                                                </select>                                                            
-                                                            </td>
-                                                        </tr>
-                                                        <tr{if !'/^vat_/'|preg_match:$otherincome_details.tax_system} hidden{/if}>
-                                                            <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                                            <td><input id="unit_tax_rate" name="qform[unit_tax_rate]" class="olotd5" size="4" value="{$otherincome_details.unit_tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax_rate');" readonly/><b>%</b></td>
-                                                        </tr>
+                                                        </tr>                                                        
                                                         <tr{if !'/^vat_/'|preg_match:$otherincome_details.tax_system} hidden{/if}>
                                                             <td align="right"><b>{t}VAT{/t}</b></td>
                                                             <td><input id="unit_tax" name="qform[unit_tax]" class="olotd5" size="10" value="{$otherincome_details.unit_tax}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax');"/></td>

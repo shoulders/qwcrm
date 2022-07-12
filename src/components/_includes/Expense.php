@@ -36,9 +36,7 @@ class Expense extends Components {
                 date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                     ).",              
                 type            =". $this->app->db->qStr( $qform['type']                    ).",
-                unit_net        =". $this->app->db->qStr( $qform['unit_net']                ).",
-                vat_tax_code    =". $this->app->db->qStr( $qform['vat_tax_code']            ).",
-                unit_tax_rate   =". $this->app->db->qStr( $qform['unit_tax_rate']           ).",
+                unit_net        =". $this->app->db->qStr( $qform['unit_net']                ).",                
                 unit_tax        =". $this->app->db->qStr( $qform['unit_tax']                ).",
                 unit_gross      =". $this->app->db->qStr( $qform['unit_gross'  ]            ).",
                 status          =". $this->app->db->qStr( 'unpaid'                          ).",            
@@ -249,9 +247,7 @@ class Expense extends Components {
                 payee               =". $this->app->db->qStr( $qform['payee']                    ).",            
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",            
                 type                =". $this->app->db->qStr( $qform['type']                     ).",
-                unit_net            =". $this->app->db->qStr( $qform['unit_net']                 ).",
-                vat_tax_code        =". $this->app->db->qStr( $qform['vat_tax_code']             ).",
-                unit_tax_rate       =". $this->app->db->qStr( $qform['unit_tax_rate']            ).",
+                unit_net            =". $this->app->db->qStr( $qform['unit_net']                 ).",                
                 unit_tax            =". $this->app->db->qStr( $qform['unit_tax']                 ).",
                 unit_gross          =". $this->app->db->qStr( $qform['unit_gross']               ).",
                 last_active         =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                 ).",
@@ -401,9 +397,7 @@ class Expense extends Components {
                 date                = NULL, 
                 tax_system          = '',  
                 type                = '',
-                unit_net            = 0.00,
-                vat_tax_code        = '',
-                unit_tax_rate       = 0.00,
+                unit_net            = 0.00,                
                 unit_tax            = 0.00,
                 unit_gross          = 0.00,
                 balance             = 0.00,
@@ -659,12 +653,6 @@ class Expense extends Components {
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
             $state_flag = false;        
-        }   
-
-        // The current record VAT code is enabled
-        if(!$this->app->components->company->getVatTaxCodeStatus($expense_details['vat_tax_code'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it's current VAT Tax Code is not enabled."));
-            $state_flag = false; 
         }
 
         return $state_flag;    

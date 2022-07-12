@@ -38,7 +38,5 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 } else {
     
     // Build the page
-    $this->app->smarty->assign('expense_types', $this->app->components->expense->getTypes());    
-    $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(false));   
-    $this->app->smarty->assign('default_vat_tax_code', $this->app->components->company->getDefaultVatTaxCode());
+    $this->app->smarty->assign('expense_types', $this->app->components->expense->getTypes());
 }

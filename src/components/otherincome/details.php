@@ -23,5 +23,4 @@ $this->app->smarty->assign('display_payments',         $this->app->components->p
 // Build the page
 $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->getStatuses());
 $this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->getTypes());
-$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes() );
 $this->app->smarty->assign('otherincome_details', $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id']));
