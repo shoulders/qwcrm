@@ -33,8 +33,8 @@ tinymce.init( {
     branding: false,
     menubar: false,    
     toolbar: [       
-        'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | blockquote hr charmap insertdatetime | help',
-        'bullist numlist | table | link unlink | cut copy paste | removeformat | preview code fullscreen '                     
+        'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | blockquote hr charmap insertdatetime',
+        'bullist numlist | table | link unlink | cut copy paste | removeformat | preview code fullscreen | print | help'
     ],    
     schema: 'html5-strict',    
     invalid_elements: 'iframe,script,style,applet,body,bgsound,base,basefont,frame,frameset,head,html,id,ilayer,layer,link,meta,name,title,xml',
@@ -42,7 +42,7 @@ tinymce.init( {
     contextmenu: 'cut copy paste | link',    
     insertdatetime_formats: ['{$date_format}', '%H:%M:%S', '%I:%M:%S %p'],    
     plugins: [
-        'advlist autolink charmap code contextmenu fullscreen help hr insertdatetime link lists paste preview table textcolor visualchars'
+        'advlist autolink charmap code contextmenu fullscreen help hr insertdatetime link lists paste preview table textcolor visualchars print'
     ]    
 
 } );
