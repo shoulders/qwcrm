@@ -66,7 +66,7 @@
                                 <b>{t}Contact{/t}: </b>{$client_details.first_name} {$client_details.last_name}<br />
                                 <b>{t}Phone{/t}: </b>{$client_details.primary_phone}<br>
                                 <b>{t}Mobile{/t}: </b>{$client_details.mobile_phone}<br>
-                                <b>{t}Fax{/t}: </b>{$client_details.primary_phone}<br>                                
+                                <b>{t}Fax{/t}: </b>{$client_details.fax}<br>                                
                                 <b>{t}Email{/t}: </b>{$client_details.email}<br>                            
                             </p>
                             <p>
@@ -95,7 +95,7 @@
                                 {$company_details.country}
                             </p>
                             <p>
-                                <b>{t}Phone{/t}: </b>{$employee_details.work_primary_phone}<br>                        
+                                <b>{t}Phone{/t}: </b>{$company_details.primary_phone}<br>                        
                                 <b>{t}Mobile{/t}: </b>{$company_details.mobile_phone}<br>
                                 <b>{t}Fax{/t}: </b>{$company_details.fax}<br>
                                 <b>{t}Website{/t}: </b>{$company_details.website|regex_replace:"/^https?:\/\//":""}<br>   

@@ -23,7 +23,7 @@ if
 // Printing Blank media is set
 if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMedia'] === 'true')
 {
-    \CMSApplication::$VAR['workorder_id'] = null;
+    /*\CMSApplication::$VAR['workorder_id'] = null;
     $client_details = null;
     $workorder_details  = null;    
     $this->app->smarty->assign('date_format',          '');    
@@ -34,7 +34,63 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
     $this->app->smarty->assign('client_types',         null);
     $this->app->smarty->assign('workorder_statuses',   null);
     $this->app->smarty->assign('workorder_notes',      null);
-    $this->app->smarty->assign('workorder_schedules',  null);
+    $this->app->smarty->assign('workorder_schedules',  null);**/
+    
+    $workorder_details = array(
+                            'workorder_id' => null,
+                            'scope' => '',
+                            'description' => '',
+                            'comment' => '',
+                            'closed_on' => '',
+                            'display_name' => '',
+                            'resolution' => '',
+                            'opened_on' => '',
+                            'status' => '',
+                            'last_active' => ''
+                            );
+    $client_details = array(
+                            'display_name' => '',
+                            'address' => '',
+                            'city' => '',
+                            'state' => '',
+                            'zip' => '',
+                            'country' => '',
+                            'first_name' => '',
+                            'last_name' => '',
+                            'primary_phone' => '',
+                            'mobile_phone' => '',
+                            'fax' => '',
+                            'email' => ''
+                            );
+    $company_details = array(
+                            'company_name' => '',
+                            'address' => '',
+                            'city' => '',
+                            'state' => '',
+                            'zip' => '',
+                            'country' => '',
+                            'primary_phone' => '',
+                            'mobile_phone' => '',
+                            'fax' => '',
+                            'website' => '',
+                            'email' => ''
+                            );
+    $employee_details = array(
+                            'display_name' => ''
+                            );
+    
+    \CMSApplication::$VAR['workorder_id'] = '';
+    $this->app->smarty->assign('date_format',          '');    
+    $this->app->smarty->assign('company_details',      $company_details);
+    $this->app->smarty->assign('employee_details',     $employee_details);
+    $this->app->smarty->assign('client_details',       $client_details);
+    $this->app->smarty->assign('workorder_details',    array());
+    $this->app->smarty->assign('client_types',         array());
+    $this->app->smarty->assign('workorder_details',   $workorder_details);        
+    $this->app->smarty->assign('workorder_statuses',   array());
+    $this->app->smarty->assign('workorder_notes',      array());
+    $this->app->smarty->assign('workorder_schedules',  array());
+    
     
 } else {
 
@@ -117,8 +173,10 @@ if(\CMSApplication::$VAR['commContent'] == 'technician_job_sheet')
     }
 }
 
-// Log activity
-$this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+// Log activity - Not if printing blank pages
+if(isset(\CMSApplication::$VAR['blankMedia']) && !\CMSApplication::$VAR['blankMedia']) {
+    $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+}
 
 // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
 $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename ?? null, $client_details ?? null, $emailSubject ?? null, $emailBody ?? null);
