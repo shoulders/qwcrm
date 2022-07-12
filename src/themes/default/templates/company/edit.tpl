@@ -269,7 +269,7 @@
                                                                     </tr>
                                                                     {section name=r loop=$vat_tax_codes}
                                                                         <tr class="vat_tax_codes">
-                                                                            <td align="right"><b>{t}{$vat_tax_codes[r].display_name}{/t}:</b></td>
+                                                                            <td align="right"><b>{t}{$vat_tax_codes[r].display_name}{/t} ({$vat_tax_codes[r].tax_key}):</b></td>
                                                                             <td>
                                                                                 <input name="qform[vat_tax_codes][{$vat_tax_codes[r].tax_key}]" class="olotd5" size="6" value="{$vat_tax_codes[r].rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" {if !$vat_tax_codes[r].editable} disabled{/if}/>%
                                                                             </td>

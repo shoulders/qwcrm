@@ -12,64 +12,7 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-<script>    
-        
-    $(document).ready(function() {
-
-        // Bind an action to the VAT Tax Code dropdown to update the totals on change
-        $('#vat_tax_code').change(function() {            
-            var selected = $(this).find('option:selected');
-            var tcVatRate = selected.data('rate');            
-            $('#unit_tax_rate').val(tcVatRate);
-            calculateTotals('vat_tax_code');
-        } );
-
-        {if !'/^vat_/'|preg_match:$otherincome_details.tax_system}
-
-            // Non-VAT Auto Calculations - Automatically populate Net with the Gross figure
-            $('#edit_otherincome').submit(function( event ) {                   
-
-                // Get input field values
-                var unit_gross  = Number(document.getElementById('unit_gross').value);
-
-                // Set the new unit_gross input value
-                document.getElementById('unit_net').value = unit_gross.toFixed(2);
-
-            } );
-
-        {/if}
-
-    } );     
-
-    // VAT Auto Calculations - Automatically calculate totals
-    function calculateTotals(fieldName) {
-
-        // Get input field values
-        var unit_net  = Number(document.getElementById('unit_net').value);
-        var unit_tax_rate    = Number(document.getElementById('unit_tax_rate').value);
-        var unit_tax  = Number(document.getElementById('unit_tax').value);
-
-        // Calculations        
-        var auto_unit_tax = (unit_net * (unit_tax_rate/100));        
-        if(fieldName !== 'unit_tax') {
-            var auto_unit_gross = (unit_net + auto_unit_tax);
-        } else {            
-            var auto_unit_gross = (unit_net + unit_tax);
-        }
-
-        // Set the new unit_tax input value if not editing the unit_tax input field
-        if(fieldName !== 'unit_tax') {
-            document.getElementById('unit_tax').value = auto_unit_tax.toFixed(2);
-        }
-
-        {if '/^vat_/'|preg_match:$otherincome_details.tax_system}
-            // Set the new unit_gross input value
-            document.getElementById('unit_gross').value = auto_unit_gross.toFixed(2);
-        {/if}
-
-    }
-
-</script>
+<script>{include file="`$theme_js_dir_finc`components/expense_other.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -93,7 +36,7 @@
                                             <td>                                          
                                                 <table width="100%" cellpadding="2" cellspacing="2" border="0">  
                                                     
-                                                    <form action="index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_id}" method="post" name="edit_otherincome" id="edit_otherincome" autocomplete="off">                                                        
+                                                    <form action="index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_id}" method="post" name="edit_otherincome" id="edit_otherincome" autocomplete="off" class="amend_values">                                                        
                                                         <tr>
                                                             <td align="right"><b>{t}Other Income ID{/t}</b></td>
                                                             <td colspan="3">{$otherincome_id}</td>
@@ -139,10 +82,10 @@
                                                             <td>
                                                                 <select id="vat_tax_code" name="qform[vat_tax_code]" class="olotd5">
                                                                     {if !'/^vat_/'|preg_match:$qw_tax_system}
-                                                                        <option value="TNA" data-rate="0.00"{if $default_vat_tax_code == 'TNA'} selected{/if}>{t}TNA{/t}</option>
+                                                                        <option value="TNA" data-rate="0.00"{if $default_vat_tax_code == 'TNA'} selected{/if} data-only_gross="0">{t}TNA{/t}</option>
                                                                     {/if}
                                                                     {section name=s loop=$vat_tax_codes}    
-                                                                        <option value="{$vat_tax_codes[s].tax_key}" data-rate="{$vat_tax_codes[s].rate}"{if $otherincome_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if}>{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%</option>
+                                                                        <option value="{$vat_tax_codes[s].tax_key}" data-rate="{$vat_tax_codes[s].rate}"{if $otherincome_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if} data-only_gross="{$vat_tax_codes[s].only_gross}">{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%</option>
                                                                     {/section} 
                                                                 </select>                                                            
                                                             </td>

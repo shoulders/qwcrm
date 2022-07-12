@@ -112,20 +112,20 @@ class Company extends Components {
 
         $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
 
-        // Restrict by enabled status
+        // Restrict by enabled status - only return enabled records
         $sql .= "\nWHERE enabled = 1";
 
-        // Restrict by hidden status
+        // Restrict by hidden status - hidden codes are system codes only, hidden statuses are only needed for displaying data
         if(!is_null($hidden_status)) {
             $sql .= "\nAND hidden = ".$this->app->db->qStr($hidden_status);
         }
 
-        // Restrict by editable status
+        // Restrict by editable status - only some of the VAT codes are editable
         if(!is_null($editable_status)) {
             $sql .= "\nAND editable = ".$this->app->db->qStr($editable_status);
         }
 
-        // Restrict by tax code type
+        // Restrict by tax code type - this would only bring back one record
         if(!is_null($system_tax_code)) {
             $sql .= "\nAND standard = ".$this->app->db->qStr($system_tax_code);
         }
