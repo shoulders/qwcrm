@@ -33,11 +33,8 @@ defined('_QWEXEC') or die;
         // Unify Dates and Times
         $timestamp = time();
 
-        // Get invoice tax type
-        $tax_system = QW_TAX_SYSTEM;
-
-        // Sales Tax Rate based on Tax Type
-        $sales_tax_rate = ($tax_system == 'sales_tax_cash') ? $sales_tax_rate = $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
+        // If QWcrm Tax system is set to Sales Tax, then set the rate
+        $sales_tax_rate = (QW_TAX_SYSTEM === 'sales_tax_cash') ? $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
 
         $sql = "INSERT INTO ".PRFX."invoice_records SET     
                 employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
@@ -46,7 +43,7 @@ defined('_QWEXEC') or die;
                 date            =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",
                 due_date        =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",            
                 unit_discount_rate   =". $this->app->db->qStr( $unit_discount_rate             ).",
-                tax_system      =". $this->app->db->qStr( $tax_system                          ).",
+                tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                          ).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",            
                 status          =". $this->app->db->qStr( 'pending'                            ).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)           ).",

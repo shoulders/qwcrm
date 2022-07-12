@@ -29,7 +29,7 @@ if(isset(\CMSApplication::$VAR['workorder_id']) && \CMSApplication::$VAR['workor
 if((isset(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['invoice_type']) && \CMSApplication::$VAR['client_id'] && \CMSApplication::$VAR['invoice_type'] == 'invoice-only')) {
     
     // Create the invoice and return the new invoice_id
-    \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id'], '', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'discount_rate'));
+    \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id'], null, $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'discount_rate'));
 
     // Load the newly created invoice edit page
     $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
