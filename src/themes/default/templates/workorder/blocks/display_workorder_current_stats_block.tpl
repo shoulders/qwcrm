@@ -10,6 +10,9 @@
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr class="olotd4">
         <td class="row2"><b>{t}Open{/t}</b></td>
+        {if !isset($hide_unassigned)}
+            <td class="row2"><b>{t}Unassigned{/t}</b></td>
+        {/if}
         <td class="row2"><b>{t}Assigned{/t}</b></td>
         <td class="row2"><b>{t}Waiting for Parts{/t}</b></td>
         <td class="row2"><b>{t}Scheduled{/t}</b></td>
@@ -19,6 +22,9 @@
     </tr>
     <tr class="olotd4">
         <td>{$workorder_stats.count_open}</td>
+        {if !isset($hide_unassigned)}
+            <td>{$workorder_stats.count_unassigned}</td>
+        {/if}
         <td>{$workorder_stats.count_assigned}</td>
         <td>{$workorder_stats.count_waiting_for_parts}</td>
         <td>{$workorder_stats.count_scheduled}</td>

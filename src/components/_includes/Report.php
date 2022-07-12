@@ -101,15 +101,11 @@ class Report extends Components {
     public function getWorkordersStats($record_set, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
 
         $stats = array();
-
-        // Common
-        if($record_set) {
-            $stats['count_open'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'open', $employee_id, $client_id);
-        }
-
+        
         // Current
         if($record_set == 'current' || $record_set == 'all') {        
 
+            $stats['count_open'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'open', $employee_id, $client_id);
             $stats['count_unassigned'] = $this->countWorkorders($start_date, $end_date, 'opened_on','unassigned', $employee_id, $client_id);
             $stats['count_assigned'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'assigned', $employee_id, $client_id);
             $stats['count_waiting_for_parts'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'waiting_for_parts',$employee_id, $client_id);
@@ -123,9 +119,8 @@ class Report extends Components {
         }
 
         // Historic
-        if($record_set == 'historic' || $record_set == 'all') {        
-
-            $stats['count_open'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'open', $employee_id, $client_id);
+        if($record_set == 'historic' || $record_set == 'all') {
+            
             $stats['count_opened'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'opened', $employee_id, $client_id);         
             $stats['count_closed'] = $this->countWorkorders($start_date, $end_date, 'closed_on', 'closed', $employee_id, $client_id);
             $stats['count_deleted'] = $this->countWorkorders(null, null, null, 'deleted', $employee_id, $client_id);   // Only used on basic stats
@@ -194,25 +189,31 @@ class Report extends Components {
     }
 
     #######################################
-    #  Build workorder Status filter SQL  #
-    #######################################
+    #  Build workorder Status filter SQL  # // build a filter on whether or not the workorder is open or closed
+    ####################################### // you can filter by a particular status aswell, not sure if i have used that
 
-    public function workorderBuildFilterByStatus($status = null) {
+    public function workorderBuildFilterByStatus($status = null) {   //handle deleted workorders here
 
         $whereTheseRecords = '';
 
         if($status) {   
             if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on = '0000-00-00 00:00:00'";                  
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";                  
             } elseif($status == 'opened') {            
                 // Do nothing                 
             } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on != '0000-00-00 00:00:00'"; 
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NOT NULL"; 
             } else {            
                 $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->app->db->qStr($status);            
             }
         }
 
+        // Remove Deleted Records from the results unless the status is 'deleted'
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.status != 'deleted'";
+        }
+        
         return $whereTheseRecords;
 
     }
@@ -261,12 +262,9 @@ class Report extends Components {
             $stats['count_pending'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'pending', $employee_id, $client_id);  
             $stats['count_unpaid'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'unpaid', $employee_id, $client_id); 
             $stats['count_partially_paid'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'partially_paid', $employee_id, $client_id);  
-            $stats['count_paid'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'paid', $employee_id, $client_id);   
             $stats['count_in_dispute'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'in_dispute', $employee_id, $client_id);  
             $stats['count_overdue'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'overdue', $employee_id, $client_id);
-            $stats['count_collections'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'collections', $employee_id, $client_id);  
-            $stats['count_refunded'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'refunded', $employee_id, $client_id);
-            $stats['count_cancelled'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'cancelled', $employee_id, $client_id);
+            $stats['count_collections'] = $this->countInvoices($start_date, $end_date, 'date', $tax_system, 'collections', $employee_id, $client_id);            
 
         }
 
@@ -279,8 +277,6 @@ class Report extends Components {
             $stats['count_closed_paid'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'paid', $employee_id, $client_id);
             $stats['count_closed_refunded'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'refunded', $employee_id, $client_id);
             $stats['count_closed_cancelled'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
-
-            // Only used on basic stats
             $stats['count_closed_deleted'] = $this->countInvoices($start_date, $end_date, null, $tax_system, 'deleted', $employee_id, $client_id);
             $stats['invoiced_total'] = $this->sumInvoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);
             $stats['received_monies'] = $this->sumInvoices('unit_paid', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);
@@ -482,16 +478,22 @@ class Report extends Components {
 
         if($status) {   
             if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on = '0000-00-00 00:00:00'";                  
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";                 
             } elseif($status == 'opened') {            
                 // Do nothing                 
             } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on != '0000-00-00 00:00:00'"; 
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
             } elseif($status == 'discounted') {            
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";                    
             } else {            
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qStr($status);            
             }
+        }
+        
+        // Remove Deleted Records from the results unless the status is 'deleted'
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'deleted'";
         }
 
         return $whereTheseRecords;

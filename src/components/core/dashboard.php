@@ -26,7 +26,10 @@ if($this->app->user->login_is_employee) {
     $this->app->smarty->assign('welcome_msg', $this->app->components->core->getWelcomeMsg());
     $this->app->smarty->assign('employee_workorder_stats', $this->app->components->report->getWorkordersStats('current', null, null, $this->app->user->login_user_id));
     $this->app->smarty->assign('workorder_statuses', $this->app->components->workorder->getStatuses());
-
+    
+    // Hide unassigned stats
+    $this->app->smarty->assign('hide_unassigned', true);
+    
     // Assign the correct version of this page
     $this->app->smarty->assign('page_version', 'employee');
 
