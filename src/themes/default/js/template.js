@@ -362,23 +362,43 @@ function searchbarEbaySearch() {
 }
 
 // Print the current page without the wrapper (i.e. content only) - optional go straight to print
-function printThisPage(printPreview = false) { 
+function printThisPage(printPreview = false, url = null) { 
     
-    // Process the URL to allow for different formats
-    let url = window.location.href;
-    if(url.includes('?')) {
-        url += '&';
-    } else {
-        url += '?';
-    }
-    url += 'themeVar=printPreview';
-    
-    // Handle the printing
-    let printWindow = window.open(url);    
-    printWindow.focus();
-    if(!printPreview) {
-        printWindow.print();        
-        printWindow.onafterprint = function(){ printWindow.close(); };    
+    // If there is no supplied URL use the current page
+    if(!url)
+    {
+        // Process the URL to allow presense of query
+        url = window.location.href;
+        if(url.includes('?')) {
+            url += '&';
+        } else {
+            url += '?';
+        }
+        url += 'themeVar=printPreview';
     }
     
+    // Open the page in a new window
+    let printWindow = window.open(url);
+    
+    // Bring up the browser print dialogue and close page when done - I have to call .print() twice for some reason
+    if(printPreview) {
+        
+        // This is needed to close child window with Chrome
+        printWindow.onafterprint = function(){ printWindow.close(); };
+        
+        // This timeout is needed to allow page to load
+        setTimeout(() => {
+            
+            // This is needed to close child window with Firefox          
+            printWindow.onfocus = () => {                
+                printWindow.close();                
+            };
+            
+            // Open print dialogue
+            printWindow.print();            
+            
+        }, 500);
+
+    }
+   
 }

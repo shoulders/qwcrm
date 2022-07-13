@@ -23,19 +23,6 @@ if
 // Printing Blank media is set
 if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMedia'] === 'true')
 {
-    /*\CMSApplication::$VAR['workorder_id'] = null;
-    $client_details = null;
-    $workorder_details  = null;    
-    $this->app->smarty->assign('date_format',          '');    
-    $this->app->smarty->assign('company_details',      null);
-    $this->app->smarty->assign('employee_details',     null);
-    $this->app->smarty->assign('client_details',       null);
-    $this->app->smarty->assign('workorder_details',    null);
-    $this->app->smarty->assign('client_types',         null);
-    $this->app->smarty->assign('workorder_statuses',   null);
-    $this->app->smarty->assign('workorder_notes',      null);
-    $this->app->smarty->assign('workorder_schedules',  null);**/
-    
     $workorder_details = array(
                             'workorder_id' => null,
                             'scope' => '',
@@ -48,6 +35,7 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
                             'status' => '',
                             'last_active' => ''
                             );
+    
     $client_details = array(
                             'display_name' => '',
                             'address' => '',
@@ -62,6 +50,7 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
                             'fax' => '',
                             'email' => ''
                             );
+    
     $company_details = array(
                             'company_name' => '',
                             'address' => '',
@@ -75,6 +64,7 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
                             'website' => '',
                             'email' => ''
                             );
+    
     $employee_details = array(
                             'display_name' => ''
                             );
@@ -86,7 +76,7 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
     $this->app->smarty->assign('client_details',       $client_details);
     $this->app->smarty->assign('workorder_details',    array());
     $this->app->smarty->assign('client_types',         array());
-    $this->app->smarty->assign('workorder_details',   $workorder_details);        
+    $this->app->smarty->assign('workorder_details',    $workorder_details);        
     $this->app->smarty->assign('workorder_statuses',   array());
     $this->app->smarty->assign('workorder_notes',      array());
     $this->app->smarty->assign('workorder_schedules',  array());
