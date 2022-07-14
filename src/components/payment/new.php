@@ -69,10 +69,15 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
 // Build button array
 $this->app->components->payment->prepareButtonsHolder();
 
-// Set name on card to company name (if appropriate)
+// Autofill the name on the card
 if(!\CMSApplication::$VAR['qpayment']['name_on_card'] && (\CMSApplication::$VAR['qpayment']['type'] == 'refund' || \CMSApplication::$VAR['qpayment']['type'] == 'expense'))
 {
     \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
+}
+elseif (!\CMSApplication::$VAR['qpayment']['name_on_card'] && (\CMSApplication::$VAR['qpayment']['type'] == 'invoice'))
+{
+    $client_id = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id'], 'client_id');    
+    \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->client->getRecord($client_id, 'display_name');
 }
 
 // Set Action Type
