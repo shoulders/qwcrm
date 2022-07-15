@@ -31,11 +31,11 @@
                                     <table>
                                         
                                         <!-- Search Bar -->
-                                        <tr>
+                                        {*<tr>
                                             <td>
                                                 {include file='core/blocks/theme_searchbar_block.tpl'}
                                             </td>
-                                        </tr> 
+                                        </tr>*}
                                         
                                         <!-- Welcome Message -->
                                         {if $welcome_msg}
