@@ -120,7 +120,7 @@ class PaymentTypeInvoice {
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
         
-        // Add New Record
+        // Add New Record        
         Payment::$buttons['addNewRecord']['allowed'] = false;
         Payment::$buttons['addNewRecord']['url'] = null; 
         Payment::$buttons['addNewRecord']['title'] = null;

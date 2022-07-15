@@ -113,9 +113,11 @@ class PaymentTypeExpense {
         }
         
         // Add New Record
-        Payment::$buttons['addNewRecord']['allowed'] = true;
-        Payment::$buttons['addNewRecord']['url'] = 'index.php?component=expense&page_tpl=new';
-        Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Expense Record");
+        if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new')) {
+            Payment::$buttons['addNewRecord']['allowed'] = true;
+            Payment::$buttons['addNewRecord']['url'] = 'index.php?component=expense&page_tpl=new';
+            Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Expense Record");
+        }
         
     }   
     

@@ -117,7 +117,7 @@ class PaymentTypeRefund {
         // Add New Record
         Payment::$buttons['addNewRecord']['allowed'] = false;
         Payment::$buttons['addNewRecord']['url'] = null;        
-        Payment::$buttons['addNewRecord']['title'] = null;
+        Payment::$buttons['addNewRecord']['title'] = null;        
         
     } 
     
