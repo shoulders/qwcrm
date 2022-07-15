@@ -1037,11 +1037,11 @@ defined('_QWEXEC') or die;
             return false;        
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
             return false;        
-        }
+        }*/
 
         // Does the invoice have any Vouchers preventing changing the invoice status
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceEdit($invoice_id)) {
@@ -1094,17 +1094,17 @@ defined('_QWEXEC') or die;
             return false;        
         }    
 
-        // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if(!$this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be refunded because the invoice has no payments."));
             return false;        
-        }
+        }*/
 
-        // Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
             return false;
-        }
+        }*/
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefund($invoice_id)) {
@@ -1164,17 +1164,17 @@ defined('_QWEXEC') or die;
             return false;        
         }    
 
-        // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice has payments."));
             return false;        
-        }
+        }*/
 
-        // Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
             return false;
-        }
+        }*/
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceCancel($invoice_id)) {
@@ -1239,11 +1239,11 @@ defined('_QWEXEC') or die;
             $state_flag = false;       
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."));
             $state_flag = false;       
-        }
+        }*/
 
         /*
         // Has Labour (these will get deleted anyway)
@@ -1259,11 +1259,11 @@ defined('_QWEXEC') or die;
         }
         */
 
-        // Has Refunds (should not be needed)
+        /* Has Refunds (should not be needed)
         if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been refunded."));
             return false;
-        }
+        }*/
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceDelete($invoice_id)) {
@@ -1328,11 +1328,11 @@ defined('_QWEXEC') or die;
             $state_flag = false;       
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
             $state_flag = false;       
-        }
+        }*/
 
         // Does the invoice have any Vouchers preventing changing the invoice status
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceEdit($invoice_id)) {

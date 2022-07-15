@@ -390,11 +390,11 @@ class OtherIncome extends Components {
             $state_flag = false;        
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;    
 
@@ -435,11 +435,11 @@ class OtherIncome extends Components {
             $state_flag = false;        
         }    
 
-        // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if(!$this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be refunded because the otherincome has no payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;
 
@@ -480,11 +480,11 @@ class OtherIncome extends Components {
             $state_flag = false;        
         }    
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;
 
@@ -525,11 +525,11 @@ class OtherIncome extends Components {
             $state_flag = false;        
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;
 
@@ -576,11 +576,11 @@ class OtherIncome extends Components {
             $state_flag = false;        
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has payments."));
             $state_flag = false;        
-        }
+        }*/
 
         // The current record VAT code is enabled
         if(!$this->app->components->company->getVatTaxCodeStatus($otherincome_details['vat_tax_code'])) {

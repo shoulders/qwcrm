@@ -463,11 +463,11 @@ class Expense extends Components {
             $state_flag = false;        
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;    
 
@@ -508,11 +508,11 @@ class Expense extends Components {
             $state_flag = false;        
         }    
 
-        // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if(!$this->app->components->report->countPayments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be refunded because the expense has no payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;
 
@@ -553,11 +553,11 @@ class Expense extends Components {
             $state_flag = false;        
         }    
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;
 
@@ -598,11 +598,11 @@ class Expense extends Components {
             $state_flag = false;        
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;
 
@@ -649,11 +649,11 @@ class Expense extends Components {
             $state_flag = false;        
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
             $state_flag = false;        
-        }
+        }*/
 
         return $state_flag;    
 

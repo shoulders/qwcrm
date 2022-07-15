@@ -504,11 +504,11 @@ class Refund extends Components {
             $state_flag = false;       
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments."));
             $state_flag = false;       
-        }
+        }*/
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefund($refund_details ['invoice_id'])) {
@@ -549,11 +549,11 @@ class Refund extends Components {
             $state_flag = false;       
         }    
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be cancelled because the refund has payments."));
             $state_flag = false;       
-        }
+        }*/
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefundCancel($refund_details['invoice_id'])) {
@@ -600,11 +600,11 @@ class Refund extends Components {
             $state_flag = false;       
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments."));
             $state_flag = false;       
-        }
+        }*/
 
         // Does the invoice status allow it to have its refund deleted (including vouchers)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefundDelete($refund_details['invoice_id'])) {
@@ -663,11 +663,11 @@ class Refund extends Components {
             $state_flag = false;       
         }
 
-        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments."));
             $state_flag = false;       
-        }
+        }*/
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefund($refund_details['invoice_id'])) {
