@@ -433,11 +433,12 @@ class Page extends System {
                 // If variables are in an array convert into an encoded string
                 if($variables && is_array($variables)) {
 
-                    // Remove routing variables here to prevent 'Double Bubble' (might not be needed)
+                    // Remove routing variables here to prevent 'Double Bubble'
                     unset($variables['component']);
-                    unset($variables['page_tpl']); 
+                    unset($variables['page_tpl']);
+                    unset($variables['page_controller']);
 
-                    $variables = http_build_query($variables);            
+                    $variables = http_build_query($variables);
                 }
 
             }
