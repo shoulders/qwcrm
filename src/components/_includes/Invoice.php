@@ -1013,11 +1013,11 @@ defined('_QWEXEC') or die;
             return false;        
         }
 
-        // Is partially refunded (not currently used)
+        /* Is partially refunded (not currently used)
         if($invoice_details['status'] == 'partially_refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
             return false;        
-        }
+        }*/
 
         // Is refunded
         if($invoice_details['status'] == 'refunded') {
@@ -1070,11 +1070,11 @@ defined('_QWEXEC') or die;
             return false;
         }
 
-        // Is partially refunded (not currently used)
+        /* Is partially refunded (not currently used)
         if($invoice_details['status'] == 'partially_refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
             return false;        
-        }
+        }*/
 
         // Is refunded
         if($invoice_details['status'] == 'refunded') {
@@ -1139,11 +1139,11 @@ defined('_QWEXEC') or die;
             return false;
         }
 
-        // Is partially refunded (not currently used)
+        /* Is partially refunded (not currently used)
         if($invoice_details['status'] == 'partially_refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
             return false;        
-        }
+        }*/
 
 
         // Is refunded
@@ -1215,11 +1215,11 @@ defined('_QWEXEC') or die;
             $state_flag = false;       
         }
 
-        // Is partially refunded (not currently used)
+        /* Is partially refunded (not currently used)
         if($invoice_details['status'] == 'partially_refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
             $state_flag = false;       
-        }     
+        }*/ 
 
         // Is refunded
         if($invoice_details['status'] == 'refunded') {
@@ -1304,11 +1304,11 @@ defined('_QWEXEC') or die;
             $state_flag = false;       
         }
 
-        // Is partially refunded (not currently used)
+        /* Is partially refunded (not currently used)
         if($invoice_details['status'] == 'partially_refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been partially refunded."));
             $state_flag = false;       
-        }
+        }*/
 
         // Is refunded
         if($invoice_details['status'] == 'refunded') {
