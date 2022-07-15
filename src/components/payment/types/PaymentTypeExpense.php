@@ -184,13 +184,12 @@ class PaymentTypeExpense {
         
         $state_flag = true;
         
-        // Is on a different tax system
+        /* Is on a different tax system
         if($this->expense_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot receive a payment because it is on a different tax system."));
             $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
-            //$state_flag = false;
-            
-        }
+            //$state_flag = false;           
+        }*/
         
         return $state_flag;
        
