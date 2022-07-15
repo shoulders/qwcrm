@@ -38,11 +38,7 @@
                                                                         <option value="refund_id"{if $search_category == 'refund_id'} selected{/if}>{t}Refund ID{/t}</option>                                                                        
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>                                                                        
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>                                                                        
-                                                                        {if !'/^vat_/'|preg_match:$qw_tax_system}
-                                                                            <option value="unit_net"{if $search_category == 'unit_net'} selected{/if}>{t}Net{/t}</option>                                                                        
-                                                                            <option value="unit_tax"{if $search_category == 'unit_tax'} selected{/if}>{t}Tax{/t}</option>
-                                                                        {/if}
-                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>                                                                        
+                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>                                                                        
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>
                                                                     </select>
                                                                    <br />

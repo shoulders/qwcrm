@@ -36,10 +36,7 @@
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
                                                                         <option value="expense_id"{if $search_category == 'expense_id'} selected{/if}>{t}Expense ID{/t}</option>                                                                        
-                                                                        {if '/^vat_/'|preg_match:$qw_tax_system}
-                                                                            <option value="unit_net"{if $search_category == 'unit_net'} selected{/if}>{t}Net{/t}</option>                                                                            
-                                                                        {/if}
-                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>                                                                        
+                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>                                                                        
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>                                                                        
                                                                     </select>
