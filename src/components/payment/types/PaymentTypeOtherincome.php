@@ -22,7 +22,7 @@ class PaymentTypeOtherincome {
         $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']);
         
         // Set intial record balance
-        Payment::$record_balance = $this->otherincome_details['balance'];
+        Payment::$record_balance = (float) $this->otherincome_details['balance'];
         
         // Assign Type specific template variables  
         $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, array('voucher')));
@@ -40,7 +40,7 @@ class PaymentTypeOtherincome {
         
         // Validate payment_amount (New Payments)
         if(Payment::$action === 'new') {
-            Payment::$record_balance = $this->otherincome_details['balance'];
+            Payment::$record_balance = (float) $this->otherincome_details['balance'];
             if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
                 Payment::$payment_valid = false;
             }
@@ -48,7 +48,7 @@ class PaymentTypeOtherincome {
         
         // Validate payment_amount (Payment Update)
         if(Payment::$action === 'update') {
-            Payment::$record_balance = ($this->otherincome_details['balance'] + Payment::$payment_details['amount']);
+            Payment::$record_balance = ((float) $this->otherincome_details['balance'] + (float) Payment::$payment_details['amount']);
             if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, Payment::$payment_details['amount'])) {
                 Payment::$payment_valid = false;
             }
@@ -67,7 +67,7 @@ class PaymentTypeOtherincome {
         // Refresh the record data        
         $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']);
         $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
-        Payment::$record_balance = $this->otherincome_details['balance'];
+        Payment::$record_balance = (float) $this->otherincome_details['balance'];
         
         return;
         

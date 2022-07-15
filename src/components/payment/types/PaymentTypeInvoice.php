@@ -22,7 +22,7 @@ class PaymentTypeInvoice {
         $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']);
         
         // Set intial record balance
-        Payment::$record_balance = $this->invoice_details['balance'];
+        Payment::$record_balance = (float) $this->invoice_details['balance'];
                        
         // Assign Type specific template variables        
         $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->invoice_details['client_id']));
@@ -41,7 +41,7 @@ class PaymentTypeInvoice {
         
         // Validate payment_amount (New Payments)
         if(Payment::$action === 'new') {
-            //Payment::$record_balance = $this->invoice_details['balance'];  // this is not needed
+            //Payment::$record_balance = (float) $this->invoice_details['balance'];  // this is not needed
             if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
                 Payment::$payment_valid = false;
             }
@@ -49,7 +49,7 @@ class PaymentTypeInvoice {
         
         // Validate payment_amount (Payment Update)
         if(Payment::$action === 'update') {
-            Payment::$record_balance = ($this->invoice_details['balance'] + Payment::$payment_details['amount']);
+            Payment::$record_balance = ((float) $this->invoice_details['balance'] + (float) Payment::$payment_details['amount']);
             if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, Payment::$payment_details['amount'])) {
                 Payment::$payment_valid = false;
             }
@@ -68,7 +68,7 @@ class PaymentTypeInvoice {
         // Refresh the record data        
         $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']);
         $this->app->smarty->assign('invoice_details', $this->invoice_details);
-        Payment::$record_balance = $this->invoice_details['balance'];
+        Payment::$record_balance = (float) $this->invoice_details['balance'];
         
         return;
        

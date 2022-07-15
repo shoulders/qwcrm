@@ -22,7 +22,7 @@ class PaymentTypeRefund {
         $this->refund_details = $this->app->components->refund->getRecord($this->VAR['qpayment']['refund_id']);
         
         // Set intial record balance
-        Payment::$record_balance = $this->refund_details['balance'];
+        Payment::$record_balance = (float) $this->refund_details['balance'];
         
         // Assign Type specific template variables
         $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->refund_details['client_id']));
@@ -42,7 +42,7 @@ class PaymentTypeRefund {
         
         // Validate payment_amount (New Payments)
         if(Payment::$action === 'new') {
-            Payment::$record_balance = $this->refund_details['balance'];
+            Payment::$record_balance = (float) $this->refund_details['balance'];
             if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
                 Payment::$payment_valid = false;
             }
@@ -50,7 +50,7 @@ class PaymentTypeRefund {
         
         // Validate payment_amount (Payment Update)
         if(Payment::$action === 'update') {
-            Payment::$record_balance = ($this->refund_details['balance'] + Payment::$payment_details['amount']);
+            Payment::$record_balance = ((float) $this->refund_details['balance'] + (float) Payment::$payment_details['amount']);
             if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, Payment::$payment_details['amount'])) {
                 Payment::$payment_valid = false;
             }
@@ -69,7 +69,7 @@ class PaymentTypeRefund {
         // Refresh the record data        
         $this->refund_details = $this->app->components->refund->getRecord($this->VAR['qpayment']['refund_id']);
         $this->app->smarty->assign('refund_details', $this->refund_details);
-        Payment::$record_balance = $this->refund_details['balance'];
+        Payment::$record_balance = (float) $this->refund_details['balance'];
         
         return;
         
