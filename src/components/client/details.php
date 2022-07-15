@@ -29,7 +29,7 @@ $this->app->smarty->assign('workorders_open',          $this->app->components->w
 $this->app->smarty->assign('workorders_closed',        $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'closed', null, \CMSApplication::$VAR['client_id'])       );
 $this->app->smarty->assign('workorder_stats',          $this->app->components->report->getWorkordersStats('all', null, null, null, \CMSApplication::$VAR['client_id'])  );
 
-$this->app->smarty->assign('display_schedules',        $this->app->components->schedule->getRecords('schedule_id', 'DESC', false, null, null, null, null, null, null, \CMSApplication::$VAR['client_id'])  );
+$this->app->smarty->assign('display_schedules',        $this->app->components->schedule->getRecords('schedule_id', 'DESC', 25, null, null, null, null, null, null, \CMSApplication::$VAR['client_id'])  );
 
 $this->app->smarty->assign('invoice_statuses',         $this->app->components->invoice->getStatuses()                                                                                             );
 $this->app->smarty->assign('invoices_open',            $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'open', null, \CMSApplication::$VAR['client_id'])           );
