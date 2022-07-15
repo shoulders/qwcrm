@@ -904,11 +904,11 @@ class Report extends Components {
         if($status) {
 
             if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on = '0000-00-00 00:00:00'";
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NULL";
             } elseif($status == 'opened') {            
                 // Do nothing                 
             } elseif($status == 'closed') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on != '0000-00-00 00:00:00'";
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NOT NULL";
             } elseif($status == 'claimed' && $client_id) {
                 $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
                 $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id = ".$this->app->db->qStr($client_id);
@@ -1137,11 +1137,11 @@ class Report extends Components {
 
         if($status) {   
             if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on = '0000-00-00 00:00:00'";                  
+                $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on IS NULL";                  
             } elseif($status == 'opened') {            
                 // Do nothing                 
             } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on != '0000-00-00 00:00:00'"; 
+                $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on IS NOT NULL"; 
             } else {            
                 $whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qStr($status);            
             }
@@ -1325,11 +1325,11 @@ class Report extends Components {
 
         if($status) {   
             if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on = '0000-00-00 00:00:00'";                  
+                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on = IS NULL";                  
             } elseif($status == 'opened') {            
                 // Do nothing                 
             } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on != '0000-00-00 00:00:00'"; 
+                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NOT NULL"; 
             } else {            
                 $whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->app->db->qStr($status);            
             }
@@ -1514,11 +1514,11 @@ class Report extends Components {
 
         if($status) {   
             if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on = '0000-00-00 00:00:00'";                  
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NULL";                  
             } elseif($status == 'opened') {            
                 // Do nothing                 
             } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on != '0000-00-00 00:00:00'"; 
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NOT NULL"; 
             } else {            
                 $whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qStr($status);            
             }

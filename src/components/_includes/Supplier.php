@@ -315,7 +315,7 @@ class Supplier extends Components {
         $datetime = $this->app->system->general->mysqlDatetime();
 
         // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $datetime : '0000-00-00 00:00:00';
+        $closed_on = ($new_status == 'closed') ? $datetime : null;
 
         $sql = "UPDATE ".PRFX."supplier_records SET
                 status             =". $this->app->db->qStr( $new_status   )."

@@ -814,7 +814,7 @@ class General extends System {
        // If there is no timestamp return an empty MySQL DATE
         if($timestamp == '') {
 
-            return '0000-00-00';
+            return null;
 
         } else {        
 
@@ -833,7 +833,7 @@ class General extends System {
         // If there is no timestamp return an empty MySQL DATETIME
         if(!$timestamp) {
 
-            return '0000-00-00 00:00:00';
+            return null;
 
         } else {
 

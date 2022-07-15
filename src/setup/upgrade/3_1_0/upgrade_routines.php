@@ -457,8 +457,13 @@ class Upgrade3_1_0 extends Setup {
             // Loop through all records and 
             while(!$rs->EOF) { 
 
-                // Convert the timestamp into the correct MySQL DATETIME
-                $mysql_datetime = $this->app->system->general->timestampMysqlDatetime($rs->fields[$column_timestamp]);
+                // If there is no timestamp set an empty MySQL DATE
+                if(!$rs->fields[$column_timestamp]) {
+                    $mysql_datetime = '0000-00-00 00:00:00';
+                } else {                    
+                    // Convert the timestamp into the correct MySQL DATETIME
+                    $mysql_datetime = $this->app->system->general->timestampMysqlDatetime($rs->fields[$column_timestamp]);
+                }
 
                 // Update the temporary column record
                 $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_datetime."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";

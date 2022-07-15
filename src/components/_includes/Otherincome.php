@@ -271,7 +271,7 @@ class OtherIncome extends Components {
         $datetime = $this->app->system->general->mysqlDatetime();
 
         // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
+        $closed_on = ($new_status == 'paid') ? $datetime : null;
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
                 status             =". $this->app->db->qStr( $new_status   ).",

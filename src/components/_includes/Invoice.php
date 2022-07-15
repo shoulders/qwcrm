@@ -707,7 +707,7 @@ defined('_QWEXEC') or die;
         $employee_id = ($new_status == 'unassigned') ? '' : $invoice_details['employee_id'];
 
         // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : '0000-00-00 00:00:00';
+        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : null;
 
         $sql = "UPDATE ".PRFX."invoice_records SET   
                 employee_id         =". $this->app->db->qStr( $employee_id     ).",
@@ -755,7 +755,7 @@ defined('_QWEXEC') or die;
         if($new_closed_status == 'open') {
 
             $sql = "UPDATE ".PRFX."invoice_records SET
-                    closed_on           = '0000-00-00 00:00:00',
+                    closed_on           = NULL,
                     is_closed           =". $this->app->db->qStr( 0                )."
                     WHERE invoice_id    =". $this->app->db->qStr( $invoice_id      );
 

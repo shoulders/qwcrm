@@ -419,13 +419,13 @@ class Voucher extends Components {
         }  
 
         // Set appropriate redeemed_on datetime for the new status
-        $redeemed_on = ($new_status == 'redeemed') ? $datetime : '0000-00-00 00:00:00';
+        $redeemed_on = ($new_status == 'redeemed') ? $datetime : null;
 
         // Update voucher 'closed_on' boolean for the new status
         if($new_status == 'redeemed' ||  $new_status == 'expired' || $new_status == 'refunded' || $new_status == 'cancelled') {
             $closed_on = $datetime;
         } else {
-            $closed_on = '0000-00-00 00:00:00';
+            $closed_on = null;
         }
 
         // Update voucher 'blocked' boolean for the new status
