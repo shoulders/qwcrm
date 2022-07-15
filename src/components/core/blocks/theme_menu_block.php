@@ -9,6 +9,6 @@
 defined('_QWEXEC') or die;
  
 /* Get Workorder Status if we have a workorder_id - not currently used
-if(\CMSApplication::$VAR['workorder_id'] != '') {
+if(\CMSApplication::$VAR['workorder_id']) {
     $this->app->smarty->assign('menu_workorder_is_closed', menu_get_single_workorder_is_closed(\CMSApplication::$VAR['workorder_id']));
 }*/

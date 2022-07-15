@@ -704,7 +704,7 @@ defined('_QWEXEC') or die;
         }    
 
         // Set the appropriate employee_id
-        $employee_id = ($new_status == 'unassigned') ? '' : $invoice_details['employee_id'];
+        $employee_id = ($new_status == 'unassigned') ? null : $invoice_details['employee_id'];
 
         // Set the appropriate closed_on date
         $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : null;
@@ -938,8 +938,8 @@ defined('_QWEXEC') or die;
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Remove the invoice_if from the related Workorder record (if present)
-        $this->app->components->workorder->updateInvoiceId($invoice_details['workorder_id'], '');               
+        // Remove the invoice_id from the related Workorder record (if present)
+        $this->app->components->workorder->updateInvoiceId($invoice_details['workorder_id'], null);               
 
         // Create a Workorder History Note  
         $this->app->components->workorder->insertHistory($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
@@ -1638,7 +1638,7 @@ defined('_QWEXEC') or die;
         $assigned_employee_id = $invoice_details['employee_id'];
 
         // Get the Display Name of the currently Assigned Employee
-        if($assigned_employee_id == ''){
+        if($assigned_employee_id == null){
             $assigned_employee_display_name = _gettext("Unassigned");            
         } else {            
             $assigned_employee_display_name = $this->app->components->user->getRecord($assigned_employee_id, 'display_name');

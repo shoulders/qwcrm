@@ -69,7 +69,7 @@
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_vouchers.records[g].redeemed_client_id}">{$display_vouchers.records[g].redeemed_client_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_vouchers.records[g].redeemed_invoice_id}">{$display_vouchers.records[g].redeemed_invoice_id}</a></td>
             <td class="olotd4" nowrap>
-                {if $display_vouchers.records[g].note != ''}
+                {if $display_vouchers.records[g].note}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_vouchers.records[g].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>

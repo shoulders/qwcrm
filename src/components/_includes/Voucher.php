@@ -254,7 +254,7 @@ class Voucher extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if($rs->fields['voucher_id'] != '') {
+        if($rs->fields['voucher_id']) {
             return $rs->fields['voucher_id'];
         } else {
             return false;
@@ -626,7 +626,7 @@ class Voucher extends Components {
         $this->updateStatus($voucher_id, 'paid', true);
 
         // Update the voucher with the new refund_id
-        $this->updateRefundId($voucher_id, '');  
+        $this->updateRefundId($voucher_id, null);  
 
         // Get voucher details
         $voucher_details = $this->getRecord($voucher_id);    

@@ -58,7 +58,7 @@
                                                                 <td>
                                                                     <b>{t}Filter By Status{/t}</b><br>
                                                                     <select class="olotd5" id="filter_status" name="filter_status">
-                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>
                                                                         <option value="active"{if $filter_status == 'active'} selected{/if}>{t}Active{/t}</option> 
                                                                         <option value="blocked"{if $filter_status == 'blocked'} selected{/if}>{t}Blocked{/t}</option>

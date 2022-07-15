@@ -48,7 +48,7 @@
                    {if $display_refunds.records[r].status == $refund_statuses[s].status_key}{t}{$refund_statuses[s].display_name}{/t}{/if}        
                {/section} 
             </td> 
-            <td class="olotd4" nowrap>{if $display_refunds.records[r].note != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_refunds.records[r].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}</td>            
+            <td class="olotd4" nowrap>{if $display_refunds.records[r].note}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_refunds.records[r].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}</td>            
             <td class="olotd4" nowrap>
                 <a href="index.php?component=refund&page_tpl=details&refund_id={$display_refunds.records[r].refund_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Refund Details{/t}');" onMouseOut="hideddrivetip();">

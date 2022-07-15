@@ -52,7 +52,7 @@
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_change_employee}
                                         <!-- If the employee is assigned to this workorder and it is not closed, or no one is assigned, or the user is an admin - show a dropdown list and update button, else show the assigned employee details instead -->
-                                        {if ($assigned_employee_id == $login_user_id && $workorder_status != 6) || $assigned_employee_id == '' || $login_usergroup_id <= 3}
+                                        {if ($assigned_employee_id == $login_user_id && $workorder_status != 6) || $assigned_employee_id == null || $login_usergroup_id <= 3}
                                             <p>&nbsp;</p>  
                                             <form method="post" action="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}">
                                                 <select class="olotd4" name="target_employee_id">

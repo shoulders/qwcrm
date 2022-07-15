@@ -73,7 +73,7 @@
                                                                 <td>
                                                                     <b>{t}Filter By Method{/t}</b><br>
                                                                     <select class="olotd5" id="filter_method" name="filter_method">
-                                                                        <option value=""{if $filter_method == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option value=""{if !$filter_method} selected{/if}>{t}None{/t}</option>
                                                                         {section name=m loop=$payment_methods}    
                                                                             <option value="{$payment_methods[m].method_key}"{if $filter_method == $payment_methods[m].method_key} selected{/if}>{t}{$payment_methods[m].display_name}{/t}</option>        
                                                                         {/section}                                                                        

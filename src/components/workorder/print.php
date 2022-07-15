@@ -69,7 +69,7 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
                             'display_name' => ''
                             );
     
-    \CMSApplication::$VAR['workorder_id'] = '';
+    \CMSApplication::$VAR['workorder_id'] = null;
     $this->app->smarty->assign('date_format',          '');    
     $this->app->smarty->assign('company_details',      $company_details);
     $this->app->smarty->assign('employee_details',     $employee_details);

@@ -45,7 +45,7 @@
                                                                 <td>
                                                                     <b>{t}Filter By Usergroup{/t}</b><br>
                                                                     <select class="olotd5" id="filter_usergroup" name="filter_usergroup">
-                                                                        <option value=""{if $filter_usergroup == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option value=""{if !$filter_usergroup} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>                                                                        
                                                                         {section name=g loop=$usergroups}   
                                                                             <option value="{$usergroups[g].usergroup_id}"{if $filter_usergroup == $usergroups[g].usergroup_id} selected{/if}>{t}{$usergroups[g].display_name}{/t}</option>        
@@ -67,9 +67,9 @@
                                                                 <td>
                                                                     <b>{t}Filter By Status{/t}</b><br>
                                                                     <select class="olotd5" id="filter_status" name="filter_status">
-                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option> 
-                                                                        <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
-                                                                        <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
+                                                                        <option value=""{if $filter_status === ''} selected{/if}>{t}None{/t}</option> 
+                                                                        <option value="0"{if $filter_status === '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                        <option value="1"{if $filter_status === '1'} selected{/if}>{t}Active{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             </tr>

@@ -1236,7 +1236,7 @@ class WorkOrder extends Components {
         $assigned_employee_id = $workorder_details['employee_id'];
 
         // Get the Display Name of the currently Assigned Employee
-        if($assigned_employee_id == ''){
+        if(!$assigned_employee_id){
             $assigned_employee_display_name = _gettext("Unassigned");            
         } else {            
             $assigned_employee_display_name = $this->app->components->user->getRecord($assigned_employee_id, 'display_name');

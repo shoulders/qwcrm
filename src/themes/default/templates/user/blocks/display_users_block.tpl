@@ -44,7 +44,7 @@
             </td> 
             <td class="olotd4"><a href="mailto: {$display_users.records[u].email}"><font class="blueLink">{$display_users.records[u].email}</font></a></td>
             <td class="olotd4" nowrap>
-                {if $display_users.records[u].note != ''}
+                {if $display_users.records[u].note}
                      <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_users.records[u].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                  {/if}
             </td>

@@ -59,7 +59,7 @@
         </td>
         <td class="menutd"><b>{t}Client{/t}</b></td>
         <td class="menutd">
-            {if $user_details.client_id == ''}
+            {if !$user_details.client_id}
                 {t}n/a{/t}
             {else}                
                 <a href="index.php?component=client&page_tpl=details&client_id={$user_details.client_id}">{$client_display_name}</a>

@@ -156,7 +156,7 @@
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
                     <td>                        
-                        {if $workorder_details.closed_by != ''}
+                        {if $workorder_details.closed_by}
                             <p>
                                 <b>{t}Closed by{/t}: </b>{$employee_details.display_name}<br>
                                 <b>{t}Date{/t}: </b>{$workorder_details.closed_on|date_format:$date_format}<br>

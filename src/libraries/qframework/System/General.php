@@ -812,7 +812,7 @@ class General extends System {
     function timestampMysqlDate($timestamp) {       
 
        // If there is no timestamp return an empty MySQL DATE
-        if($timestamp == '') {
+        if(!$timestamp) {
 
             return null;
 
