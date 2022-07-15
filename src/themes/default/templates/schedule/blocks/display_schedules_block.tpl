@@ -65,7 +65,7 @@
     {/section}   
     {if $display_schedules.restricted_records}
         <tr>
-            <td colspan="9">{t}Not all records are shown.{/t} {t}Click{/t} <a href="index.php?component=schedule&page_tpl=search">{t}here{/t}</a> {t}to see all records.{/t}</td>
+            <td colspan="9">{t}Not all records are shown here.{/t} {t}Click{/t} <a href="index.php?component=schedule&page_tpl=search">{t}here{/t}</a> {t}to see all records.{/t}</td>
         </tr>
     {/if}
     {if !$display_schedules.records}

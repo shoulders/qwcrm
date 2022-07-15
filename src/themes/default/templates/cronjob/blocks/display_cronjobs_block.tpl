@@ -57,7 +57,7 @@
     {/section}
     {if $display_cronjobs.restricted_records}
         <tr>
-            <td colspan="13">{t}Not all records are shown.{/t} {t}Click{/t} <a href="index.php?component=cronjob&page_tpl=overview">{t}here{/t}</a> {t}to see all records.{/t}</td>
+            <td colspan="13">{t}Not all records are shown here.{/t} {t}Click{/t} <a href="index.php?component=cronjob&page_tpl=overview">{t}here{/t}</a> {t}to see all records.{/t}</td>
         </tr>
     {/if}
     {if !$display_cronjobs.records}

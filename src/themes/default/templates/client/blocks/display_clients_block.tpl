@@ -44,7 +44,7 @@
     {/section}    
     {if $display_clients.restricted_records}
         <tr>
-            <td colspan="8">{t}Not all records are shown.{/t} {t}Click{/t} <a href="index.php?component=client&page_tpl=search">{t}here{/t}</a> {t}to see all records.{/t}</td>
+            <td colspan="8">{t}Not all records are shown here.{/t} {t}Click{/t} <a href="index.php?component=client&page_tpl=search">{t}here{/t}</a> {t}to see all records.{/t}</td>
         </tr>
     {/if}
     {if !$display_clients.records}

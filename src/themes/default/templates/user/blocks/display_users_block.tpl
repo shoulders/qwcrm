@@ -56,7 +56,7 @@
     {/section}
     {if $display_users.restricted_records}
         <tr>
-            <td colspan="10">{t}Not all records are shown.{/t} {t}Click{/t} <a href="index.php?component=user&page_tpl=search">{t}here{/t}</a> {t}to see all records.{/t}</td>
+            <td colspan="10">{t}Not all records are shown here.{/t} {t}Click{/t} <a href="index.php?component=user&page_tpl=search">{t}here{/t}</a> {t}to see all records.{/t}</td>
         </tr>
     {/if}
     {if !$display_users.records}
