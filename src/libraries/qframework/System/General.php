@@ -241,7 +241,7 @@ class General extends System {
             return;
 
         /* Redirect to choice page (optional)
-        elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !$this->app->system->security->check_page_accessed_via_qwcrm() && !isset(\CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {        
+        elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !$this->app->system->security->checkPageAccessedViaQwcrm() && !isset(\CMSApplication::$VAR['component'], \CMSApplication::$VAR['page_tpl'])) {        
 
             force_page('setup', 'choice');
 
