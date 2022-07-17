@@ -289,14 +289,6 @@ class Report extends Components {
             $stats['sum_unit_paid'] = $this->sumInvoices('unit_paid', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);       
             $stats['sum_balance'] = $this->sumInvoices('balance', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);   
             
-            /* Totals - Adjusted for Cancelled records - this is now handled by the filter status - remove this when checked
-            $stats['sum_unit_net'] -= $this->sumInvoices('unit_net', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_discount'] -= $this->sumInvoices('unit_discount', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_tax'] -= $this->sumInvoices('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);        
-            $stats['sum_unit_gross'] -= $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_paid'] -= $this->sumInvoices('unit_paid', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['sum_balance'] -= $this->sumInvoices('balance', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);*/           
-
             // Sums by Status - Only used on Client Tab        
             $stats['sum_pending_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id);
             $stats['sum_unpaid_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $client_id);
@@ -324,13 +316,6 @@ class Report extends Components {
             $stats['labour_sum_subtotal_tax'] = $this->sumLabourItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
             $stats['labour_sum_subtotal_gross'] = $this->sumLabourItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
 
-            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
-            $stats['labour_count_items'] -= $this->countLabourItems('closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['labour_sum_items'] -= $this->sumLabourItems('unit_qty', 'closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['labour_sum_subtotal_net'] -= $this->sumLabourItems('subtotal_net', 'closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['labour_sum_subtotal_tax'] -= $this->sumLabourItems('subtotal_tax', 'closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['labour_sum_subtotal_gross'] -= $this->sumLabourItems('subtotal_gross', 'closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);        
-            */
         }
 
         // Parts
@@ -342,13 +327,6 @@ class Report extends Components {
             $stats['parts_sum_subtotal_tax'] = $this->sumPartsItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
             $stats['parts_sum_subtotal_gross'] = $this->sumPartsItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
 
-            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked 
-            $stats['parts_count_items'] -= $this->countPartsItems('closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['parts_sum_items'] -= $this->sumPartsItems('unit_qty', 'closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['parts_sum_subtotal_net'] -= $this->sumPartsItems('subtotal_net', 'closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['parts_sum_subtotal_tax'] -= $this->sumPartsItems('subtotal_tax', 'closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            $stats['parts_sum_subtotal_gross'] -= $this->sumPartsItems('subtotal_gross', 'closed_on', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $client_id);
-            */
         }   
 
         return $stats;
@@ -767,15 +745,6 @@ class Report extends Components {
             $stats['sum_opened_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'opened', $employee_id, $client_id);
             $stats['sum_closed_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'closed', $employee_id, $client_id);
             $stats['sum_claimed_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
-
-            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked 
-            $stats['count_items'] -= $this->countVouchers('closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);    
-            $stats['sum_unit_net'] -= $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_tax'] -= $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_gross'] -= $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);            
-            //$stats['sum_voucher_spv_unit_gross'] -= $this->sum_vouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, 'SPV', 'cancelled', $employee_id, $client_id);        
-            //$stats['sum_voucher_mpv_unit_gross'] -= $this->sum_vouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, 'MPV', 'cancelled', $employee_id, $client_id);        
-            */
             
         }
 
@@ -999,13 +968,6 @@ class Report extends Components {
             $stats['sum_unit_gross'] = $this->sumRefunds('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);                   
             $stats['sum_balance'] = $this->sumRefunds('balance', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
 
-            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked 
-            $stats['count_items'] -= $this->countRefunds('closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_net'] -= $this->sumRefunds('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_tax'] -= $this->sumRefunds('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);           
-            $stats['sum_unit_gross'] -= $this->sumRefunds('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-            $stats['sum_balance'] -= $this->sumRefunds('balance', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);        
-            */
         }     
 
         return $stats;
@@ -1205,13 +1167,6 @@ class Report extends Components {
             $stats['sum_unit_gross'] = $this->sumExpenses('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
             $stats['sum_balance'] = $this->sumExpenses('balance', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
 
-            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
-            $stats['count_items'] -= $this->countExpenses('closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-            $stats['sum_unit_net'] -= $this->sumExpenses('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-            $stats['sum_unit_tax'] -= $this->sumExpenses('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);       
-            $stats['sum_unit_gross'] -= $this->sumExpenses('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-            $stats['sum_balance'] -= $this->sumExpenses('balance', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);   
-            */
         }        
 
         return $stats;
@@ -1409,14 +1364,7 @@ class Report extends Components {
             $stats['sum_unit_tax'] = $this->sumOtherincomes('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);       
             $stats['sum_unit_gross'] = $this->sumOtherincomes('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
             $stats['sum_balance'] = $this->sumOtherincomes('balance', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
-
-            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
-            $stats['count_items'] -= $this->countOtherincomes('closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-            $stats['sum_unit_net'] -= $this->sumOtherincomes('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-            $stats['sum_unit_tax'] -= $this->sumOtherincomes('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);       
-            $stats['sum_unit_gross'] -= $this->sumOtherincomes('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-            $stats['sum_balance'] -= $this->sumOtherincomes('balance', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);        
-            */
+            
         }     
 
         return $stats;
@@ -1597,11 +1545,7 @@ class Report extends Components {
             $stats['count_otherincome'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['count_sent'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['count_received'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-
-            /* Remove vouchers from payments - now handled in the type filter - remove when checked
-            $stats['count_invoice'] -= $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['count_received'] -= $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            */            
+           
         }  
 
         // Revenue
@@ -1613,19 +1557,6 @@ class Report extends Components {
             $stats['sum_sent'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_received'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
 
-            /* Remove vouchers from payments - now handled in the type filter - remove when checked
-            $stats['sum_invoice'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_received'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            */
-
-            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
-            $stats['sum_invoice'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, 'cancelled', 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_refund'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, 'cancelled', 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_expense'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, 'cancelled', 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_otherincome'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, 'cancelled', 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_sent'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, 'cancelled', 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_received'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, 'cancelled', 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            */
         } 
 
         return $stats;
@@ -1936,12 +1867,6 @@ class Report extends Components {
         while(!$rs->EOF) {            
 
             $prorata_record = null;
-
-            /* Adjust for Cancelled payment records - By ignoring them - this ans deleted are now handled in the SQL/filterstatrus
-            if($rs->fields['status'] == 'cancelled') { 
-                $rs->MoveNext(); 
-                continue;                
-            }*/
 
             if($rs->fields['type'] == 'invoice') {
                 $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'invoice');
