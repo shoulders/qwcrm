@@ -817,7 +817,7 @@ class Voucher extends Components {
 
         while(!$rs->EOF) {
 
-            // Skip checking vouchers with these statuses becasuse it is not required
+            // Skip checking vouchers with these statuses because it is not required
             if($rs->fields['status'] == 'redeemed' || $rs->fields['status'] == 'expired' || $rs->fields['status'] == 'refunded' || $rs->fields['status'] == 'cancelled' || $rs->fields['status'] == 'deleted') {
                 $rs->MoveNext();
                 continue;
@@ -834,29 +834,39 @@ class Voucher extends Components {
 
     }
 
-    #################################################
-    #   Check to see if the voucher is expired      #  // This does a live check to see if the voucher is expired and tagged as such
-    #################################################
+    ################################################# // This does a live check to see if the voucher is expired
+    #   Check to see if the voucher is expired      # // This function will update the voucher status as required
+    ################################################# // This will update the voucher for the purposes of tax and profit if newly expired
 
     public function checkVoucherIsExpired($voucher_id) {
 
         $expired_status = false;
 
         $voucher_details = $this->getRecord($voucher_id);
+        
+        // If already expired
+        if($voucher_details['status'] == 'expired')
+        {
+            $expired_status = true;            
+        }
 
-        // If the voucher is expired 
-        if (time() > strtotime($voucher_details['expiry_date'].' 23:59:59')) {
-
-            // If the status is not 'expired', update the status silenty (only from unused)
+        // Has the voucher just expired and needs to be updated
+        elseif (time() > strtotime($voucher_details['expiry_date'].' 23:59:59'))
+        {            
+            $expired_status = true;
+            
+            // Update the status (silenty)
             if ($voucher_details['status'] == 'unused' || $voucher_details['status'] == 'suspended') {
                 $this->updateStatus($voucher_id, 'expired', true);      
-            }
+            }            
 
-            $expired_status = true;
+            // Process the Voucher for the purposes of Tax
+            $this->processNewlyExpiredVoucher($voucher_details['voucher_id']);            
 
         }
 
-        // If the voucher has status of 'expired' but the date has been changed to a valid one
+        /* I have made it so expired vouchers cannot be modified because they have been applied for the purpose of TAX and Profit
+         * If the voucher has status of 'expired' but the date has been changed to a valid one
         if (time() <= strtotime($voucher_details['expiry_date'].' 23:59:59')) {
 
             //  If the status has not been updated, update the status silenty (only from expired)
@@ -866,13 +876,12 @@ class Voucher extends Components {
 
             $expired_status = false;
 
-        }
+        }*/
 
-        // Return the Expiry state
-        return $expired_status;    
+        // Returned the expired status
+        return $expired_status;
 
     }
-
     
  ////////////////////////////////////////////////////////   
       
@@ -1073,7 +1082,7 @@ class Voucher extends Components {
             $state_flag = false;        
         }   
 
-        // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
+        // Is Expired - If not marked as expired, this does a live check for expiry because expiry is not always upto date
         if($voucher_details['status'] == 'expired' || $this->checkVoucherIsExpired($voucher_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has been expired."));
             $state_flag = false;        
@@ -1706,6 +1715,61 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
 
         return $voucher_code;
 
-    }    
+    }
+    
+    ###########################################################
+    #  Process the newly expired voucher for tax              # // This does nothing at the minute, but is an excellent placeholder for voucher tax processing
+    ########################################################### // should this be moved below checkVoucherIsExpired() to make reading easier?
+    
+    private function processNewlyExpiredVoucher($voucher_id)
+    {
+        // need to filter by these  'VAT/Sales/VAT'
+        $voucher_details = $this->getRecord($voucher_id);
+        
+        // Is the Voucher expired - this should not be needed but I feel better
+        if($voucher_details['status'] != 'expired') { return; }        
+            
+        // Is the voucher a SPV
+        if($voucher_details['type'] == 'SPV')
+        {
+            // No Tax system - No processing is required
+            if($voucher_details['tax_system'] == 'no_tax') { return; }
+            
+            // Sales Tax system - I assume no tax is applicable
+            if($voucher_details['tax_system'] == 'sales_tax_cash') { return; }
+
+            // Any of the VAT TAX systems
+            if(preg_match('/^vat_/', $voucher_details['tax_system']))
+            {
+                // This has already been processed at the point of sale.
+                // In the case of a single-purpose voucher there is sufficient information (in terms of the place of supply and the tax treatment of the supply)
+                // to tax the underlying goods or services when the voucher is issued.
+                return;  
+            }            
+            
+        }
+        
+        // Is the voucher a MPV
+        if($voucher_details['type'] == 'MPV')
+        {
+            // No Tax system - No processing is required
+            if($voucher_details['tax_system'] == 'no_tax') { return; }
+            
+            // Sales Tax system - I assume no tax is applicable
+            if($voucher_details['tax_system'] == 'sales_tax_cash') { return; }
+        
+            // Any of the VAT TAX systems
+            if(preg_match('/^vat_/', $voucher_details['tax_system']))
+            {
+                // In the case of a multi-purpose voucher it is not possible (at the time the voucher is issued or transferred) to know this information,
+                // and thus the underlying goods or services are only taxed when the voucher is redeemed.
+                return;
+            }
+            
+        }
+        
+        return;
+        
+    }
     
 }
