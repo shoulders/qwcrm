@@ -1,4 +1,4 @@
-<!-- display_invoice_revenue_stats_block.tpl -->
+<!-- display_voucher_revenue_stats_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
