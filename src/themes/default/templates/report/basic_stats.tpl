@@ -69,6 +69,13 @@
                                 </td>
                             </tr> 
                             
+                            <!-- Voucher Stats (Global) -->
+                            <tr>
+                                <td>
+                                    {include file='voucher/blocks/display_voucher_revenue_stats_block.tpl' voucher_stats=$global_voucher_revenue_stats block_title=_gettext("Voucher Revenue Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                            
+                                </td>
+                            </tr>
+                            
                             <!-- Payment Stats (Global) -->
                             <tr>
                                 <td>

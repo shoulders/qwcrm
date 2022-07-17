@@ -24,5 +24,8 @@ $this->app->smarty->assign('global_invoice_current_stats', $this->app->component
 $this->app->smarty->assign('global_invoice_historic_stats', $this->app->components->report->getInvoicesStats('historic'));
 $this->app->smarty->assign('global_invoice_revenue_stats', $this->app->components->report->getInvoicesStats('revenue'));
 
+// Global Voucher Stats
+$this->app->smarty->assign('global_voucher_revenue_stats', $this->app->components->report->getVouchersStats('revenue'));
+
 // Global Payment Stats
 $this->app->smarty->assign('global_payment_revenue_stats', $this->app->components->report->getPaymentsStats('revenue'));

@@ -748,6 +748,9 @@ class Report extends Components {
             $stats['sum_expired_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
             $stats['sum_expired_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
             $stats['sum_expired_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
+            $stats['sum_cancelled_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+            $stats['sum_cancelled_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+            $stats['sum_cancelled_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
 
             // Used for VAT Flate Rate calculations (not currently used)
             //$stats['sum_voucher_spv_unit_gross'] = $this->sum_vouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, 'SPV', null, $employee_id, $client_id);
@@ -1595,10 +1598,10 @@ class Report extends Components {
             $stats['count_sent'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['count_received'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
 
-            // Remove vouchers from payments
+            /* Remove vouchers from payments - now handled in the type filter - remove when checked
             $stats['count_invoice'] -= $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['count_received'] -= $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-
+            */            
         }  
 
         // Revenue
@@ -1610,9 +1613,10 @@ class Report extends Components {
             $stats['sum_sent'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_received'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
 
-            // Remove vouchers from payments
+            /* Remove vouchers from payments - now handled in the type filter - remove when checked
             $stats['sum_invoice'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_received'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+            */
 
             /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
             $stats['sum_invoice'] -= $this->sumPayments('date', $start_date, $end_date, $tax_system, 'cancelled', 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
@@ -1833,6 +1837,12 @@ class Report extends Components {
         // Return records for the given type
         } elseif($type) {            
             $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);            
+        }
+        
+        // Remove `voucher` records from the results, unless you are looking up voucher records, vouchers are not real payments and are accounted for elsewhere
+        if($type !== 'voucher')
+        {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type != 'voucher'";
         }
 
         return $whereTheseRecords;

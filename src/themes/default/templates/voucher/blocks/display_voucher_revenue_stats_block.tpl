@@ -10,12 +10,12 @@
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr class="olotd4">
         <td class="row2"><b>{t}Invoiced Total{/t} ({t}Excl.{/t} {t}Cancelled{/t})</b></td>
+        <td class="row2"><b>{t}Expired{/t}</b></td>
         <td class="row2"><b>{t}Cancelled{/t}</b></td>
-        <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>
     </tr>
     <tr class="olotd4">
-        <td><font color="green">{$currency_sym}{$invoice_stats.sum_unit_gross|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="green">{$currency_sym}{$invoice_stats.sum_cancelled_gross|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="cc0000">{$currency_sym}{$invoice_stats.sum_balance|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="green">{$currency_sym}{$voucher_stats.sum_unit_gross|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="green">{$currency_sym}{$voucher_stats.sum_expired_gross|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="cc0000">{$currency_sym}{$voucher_stats.sum_cancelled_gross|string_format:"%.2f"}</font> [G]</td>
     </tr>
 </table>
