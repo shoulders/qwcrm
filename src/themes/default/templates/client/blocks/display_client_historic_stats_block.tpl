@@ -10,13 +10,13 @@
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     
     <tr class="olotd4">
-        <td class="row2"><b>{t}New This Month{/t}</b></td>
-        <td class="row2"><b>{t}New This Year{/t}</b></td>
-        <td class="row2"><b>{t}Total{/t}</b></td>
+        <td class="row2"><b>{t}New This Calendar Month{/t}</b></td>
+        <td class="row2"><b>{t}New This Financial Year{/t}</b></td>
+        <td class="row2"><b>{t}Total{/t} {t}Clients{/t}</b></td>
     </tr>
     <tr class="olotd4">
-        <td>{$client_stats.count_month}</td>
-        <td>{$client_stats.count_year}</td>
+        <td>{$client_stats.count_new_month}</td>
+        <td>{$client_stats.count_new_year}</td>
         <td>{$client_stats.count_total}</td>
     </tr>
 </table>

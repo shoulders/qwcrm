@@ -151,15 +151,15 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Paid{/t}:</b></td>
-                                                                        <td><font color="red"><b> {$invoice_stats.count_closed_paid}</b></font></td>
+                                                                        <td><font color="red"><b> {$invoice_stats.count_paid}</b></font></td>
                                                                     </tr>                                                                     
                                                                     <tr>
                                                                         <td><b>{t}Refunded{/t}:</b></td>
-                                                                        <td><font color="red"><b> {$invoice_stats.count_closed_refunded}</b></font></td>
+                                                                        <td><font color="red"><b> {$invoice_stats.count_refunded}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Cancelled{/t}:</b></td>
-                                                                        <td><font color="red"><b> {$invoice_stats.count_closed_cancelled}</b></font></td>
+                                                                        <td><font color="red"><b> {$invoice_stats.count_cancelled}</b></font></td>
                                                                     </tr>                                                                    
                                                                 </table>
                                                             </td>

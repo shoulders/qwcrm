@@ -33,7 +33,7 @@ class Report extends Components {
         $stats = array();
 
         // Basic
-        if($record_set == 'basic' || $record_set == 'all') {   
+        if($record_set == 'current' || $record_set == 'all') {   
 
             $stats['count_new'] = $this->countClients($start_date, $end_date);
 
@@ -53,8 +53,8 @@ class Report extends Components {
             $date_year_start    = $this->app->components->company->getRecord('year_start');
             $date_year_end      = $this->app->components->company->getRecord('year_end');
 
-            $stats['count_month'] = $this->countClients($date_month_start, $date_month_end);
-            $stats['count_year']  = $this->countClients($date_year_start, $date_year_end);
+            $stats['count_new_month'] = $this->countClients($date_month_start, $date_month_end);
+            $stats['count_new_year']  = $this->countClients($date_year_start, $date_year_end);
             $stats['count_total'] = $this->countClients();
 
         }  
@@ -113,9 +113,6 @@ class Report extends Components {
             $stats['count_with_client'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'with_client', $employee_id, $client_id);
             $stats['count_on_hold'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'on_hold', $employee_id, $client_id);
             $stats['count_management'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'management', $employee_id, $client_id);
-            $stats['count_closed_without_invoice'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'closed_without_invoice', $employee_id, $client_id);
-            $stats['count_closed_with_invoice'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'closed_with_invoice', $employee_id, $client_id);
-
         }
 
         // Historic
@@ -123,6 +120,8 @@ class Report extends Components {
             
             $stats['count_opened'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'opened', $employee_id, $client_id);         
             $stats['count_closed'] = $this->countWorkorders($start_date, $end_date, 'closed_on', 'closed', $employee_id, $client_id);
+            $stats['count_closed_without_invoice'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'closed_without_invoice', $employee_id, $client_id);
+            $stats['count_closed_with_invoice'] = $this->countWorkorders($start_date, $end_date, 'opened_on', 'closed_with_invoice', $employee_id, $client_id);
             $stats['count_deleted'] = $this->countWorkorders(null, null, null, 'deleted', $employee_id, $client_id);   // Only used on basic stats
 
         }    
@@ -195,20 +194,18 @@ class Report extends Components {
     public function workorderBuildFilterByStatus($status = null) {   //handle deleted workorders here
 
         $whereTheseRecords = '';
+         
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";                  
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NOT NULL"; 
+        } elseif($status) {            
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->app->db->qStr($status);            
+        }        
 
-        if($status) {   
-            if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";                  
-            } elseif($status == 'opened') {            
-                // Do nothing                 
-            } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NOT NULL"; 
-            } else {            
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->app->db->qStr($status);            
-            }
-        }
-
-        // Remove Deleted Records from the results unless the status is 'deleted'
+        // Remove Deleted Records from the results, unless the status is 'deleted'
         if($status !== 'deleted')
         {
             $whereTheseRecords .= " AND ".PRFX."workorder_records.status != 'deleted'";
@@ -273,28 +270,34 @@ class Report extends Components {
 
             $stats['count_opened'] = $this->countInvoices($start_date, $end_date, 'opened_on', $tax_system, 'opened', $employee_id, $client_id);
             $stats['count_closed'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'closed', $employee_id, $client_id);
+            $stats['count_paid'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'paid', $employee_id, $client_id);
+            $stats['count_refunded'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'refunded', $employee_id, $client_id);
+            $stats['count_cancelled'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
+            $stats['count_deleted'] = $this->countInvoices($start_date, $end_date, null, $tax_system, 'deleted', $employee_id, $client_id);
             $stats['count_closed_discounted'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'discounted', $employee_id, $client_id);
-            $stats['count_closed_paid'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'paid', $employee_id, $client_id);
-            $stats['count_closed_refunded'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'refunded', $employee_id, $client_id);
-            $stats['count_closed_cancelled'] = $this->countInvoices($start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['count_closed_deleted'] = $this->countInvoices($start_date, $end_date, null, $tax_system, 'deleted', $employee_id, $client_id);
-            $stats['invoiced_total'] = $this->sumInvoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);
-            $stats['received_monies'] = $this->sumInvoices('unit_paid', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);
-            $stats['balance'] = $this->sumInvoices('balance', $start_date, $end_date, 'date', $tax_system, 'open', $employee_id, $client_id);
-
+            
         }       
 
         // Revenue
-        if($record_set == 'revenue' || $record_set == 'all') {       
-
-            $stats['sum_unit_discount'] = $this->sumInvoices('unit_discount', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);        
+        if($record_set == 'revenue' || $record_set == 'all') {
+            
+            // Totals
             $stats['sum_unit_net'] = $this->sumInvoices('unit_net', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);
+            $stats['sum_unit_discount'] = $this->sumInvoices('unit_discount', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);
             $stats['sum_unit_tax'] = $this->sumInvoices('unit_tax', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);        
             $stats['sum_unit_gross'] = $this->sumInvoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);           
             $stats['sum_unit_paid'] = $this->sumInvoices('unit_paid', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);       
-            $stats['sum_balance'] = $this->sumInvoices('balance', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);       
+            $stats['sum_balance'] = $this->sumInvoices('balance', $start_date, $end_date, 'date', $tax_system, null, $employee_id, $client_id);   
+            
+            /* Totals - Adjusted for Cancelled records - this is now handled by the filter status - remove this when checked
+            $stats['sum_unit_net'] -= $this->sumInvoices('unit_net', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
+            $stats['sum_unit_discount'] -= $this->sumInvoices('unit_discount', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
+            $stats['sum_unit_tax'] -= $this->sumInvoices('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);        
+            $stats['sum_unit_gross'] -= $this->sumInvoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
+            $stats['sum_unit_paid'] -= $this->sumInvoices('unit_paid', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
+            $stats['sum_balance'] -= $this->sumInvoices('balance', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);*/           
 
-            // Only used on Client Tab        
+            // Sums by Status - Only used on Client Tab        
             $stats['sum_pending_gross'] = $this->sumInvoices('unit_gross', $start_date, $end_date, 'date', $tax_system, 'pending', $employee_id, $client_id);
             $stats['sum_unpaid_gross'] = $this->sumInvoices('unit_gross', $start_date, $end_date, 'date', $tax_system, 'unpaid', $employee_id, $client_id);
             $stats['sum_partially_paid_gross'] = $this->sumInvoices('unit_gross', $start_date, $end_date, 'date', $tax_system, 'partially_paid', $employee_id, $client_id);
@@ -310,17 +313,9 @@ class Report extends Components {
             $stats['sum_closed_gross'] = $this->sumInvoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, 'closed', $employee_id, $client_id);
             $stats['sum_closed_discounted_gross'] = $this->sumInvoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
 
-            // Adjust for Cancelled records    
-            $stats['sum_unit_discount'] -= $this->sumInvoices('unit_discount', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id); 
-            $stats['sum_unit_net'] -= $this->sumInvoices('unit_net', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_tax'] -= $this->sumInvoices('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);        
-            $stats['sum_unit_gross'] -= $this->sumInvoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['sum_unit_paid'] -= $this->sumInvoices('unit_paid', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['sum_balance'] -= $this->sumInvoices('balance', $start_date, $end_date, 'closed_on', $tax_system, 'cancelled', $employee_id, $client_id);
-
         }
 
-        // Labour
+        // Labour -----------------
         if($record_set == 'labour' || $record_set == 'all') {        
 
             $stats['labour_count_items'] = $this->countLabourItems($start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);             // Total Different Items
@@ -329,13 +324,13 @@ class Report extends Components {
             $stats['labour_sum_subtotal_tax'] = $this->sumLabourItems('subtotal_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
             $stats['labour_sum_subtotal_gross'] = $this->sumLabourItems('subtotal_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
 
-            // Adjust for Cancelled records  
+            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
             $stats['labour_count_items'] -= $this->countLabourItems($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['labour_sum_items'] -= $this->sumLabourItems('unit_qty', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['labour_sum_subtotal_net'] -= $this->sumLabourItems('subtotal_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['labour_sum_subtotal_tax'] -= $this->sumLabourItems('subtotal_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['labour_sum_subtotal_gross'] -= $this->sumLabourItems('subtotal_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);        
-
+            */
         }
 
         // Parts
@@ -347,13 +342,13 @@ class Report extends Components {
             $stats['parts_sum_subtotal_tax'] = $this->sumPartsItems('subtotal_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
             $stats['parts_sum_subtotal_gross'] = $this->sumPartsItems('subtotal_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
 
-            // Adjust for Cancelled records  
+            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked 
             $stats['parts_count_items'] -= $this->countPartsItems($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['parts_sum_items'] -= $this->sumPartsItems('unit_qty', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['parts_sum_subtotal_net'] -= $this->sumPartsItems('subtotal_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['parts_sum_subtotal_tax'] -= $this->sumPartsItems('subtotal_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
             $stats['parts_sum_subtotal_gross'] -= $this->sumPartsItems('subtotal_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
-
+            */
         }   
 
         return $stats;
@@ -476,21 +471,25 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        if($status) {   
-            if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";                 
-            } elseif($status == 'opened') {            
-                // Do nothing                 
-            } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
-            } elseif($status == 'discounted') {            
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";                    
-            } else {            
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qStr($status);            
-            }
+        // Restrict the records
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";                 
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
+        } elseif($status == 'discounted') {            
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";                    
+        } elseif($status) {            
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qStr($status);            
         }
+                
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'cancelled'";
+        }        
         
-        // Remove Deleted Records from the results unless the status is 'deleted'
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
         if($status !== 'deleted')
         {
             $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'deleted'";
@@ -720,26 +719,26 @@ class Report extends Components {
             $stats['count_open'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'open', $employee_id, $client_id);
             $stats['count_unused'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'unused', $employee_id, $client_id);
             $stats['count_redeemed'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
-            $stats['count_suspended'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'suspended', $employee_id, $client_id);           
-            $stats['count_expired'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
-            $stats['count_refunded'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'refunded', $employee_id, $client_id);
-            $stats['count_cancelled'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);                                
+            $stats['count_suspended'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'suspended', $employee_id, $client_id);                                            
 
         }
 
         // Historic
         if($record_set == 'historic' || $record_set == 'all') {       
 
+            $stats['count_items'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
             $stats['count_opened'] = $this->countVouchers($start_date, $end_date, 'opened_on', $tax_system, null, null, 'opened', $employee_id, $client_id);
             $stats['count_closed'] = $this->countVouchers($start_date, $end_date, 'closed_on', $tax_system, null, null, 'closed', $employee_id, $client_id);            
-            $stats['count_claimed'] = $this->countVouchers($start_date, $end_date, 'closed_on', $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else  
+            $stats['count_claimed'] = $this->countVouchers($start_date, $end_date, 'closed_on', $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else on their account 
+            $stats['count_expired'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
+            $stats['count_refunded'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'refunded', $employee_id, $client_id);
+            $stats['count_cancelled'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
 
         }  
 
         // Revenue
-        if($record_set == 'revenue' || $record_set == 'all') {       
-
-            $stats['count_items'] = $this->countVouchers($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);    
+        if($record_set == 'revenue' || $record_set == 'all') {
+             
             $stats['sum_unit_net'] = $this->sumVouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
             $stats['sum_unit_tax'] = $this->sumVouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
             $stats['sum_unit_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);        
@@ -756,9 +755,9 @@ class Report extends Components {
 
             // Only used on Client Tab        
             $stats['sum_unused_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'unused', $employee_id, $client_id);
-            //$stats['sum_redeemed_gross'] = $this->sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+            //$stats['sum_redeemed_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
             $stats['sum_suspended_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'suspended', $employee_id, $client_id);         
-            //$stats['sum_expired_gross'] = $this->sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
+            //$stats['sum_expired_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
             $stats['sum_refunded_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'refunded', $employee_id, $client_id);
             $stats['sum_cancelled_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id); 
             $stats['sum_open_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'open', $employee_id, $client_id);
@@ -766,14 +765,15 @@ class Report extends Components {
             $stats['sum_closed_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'closed', $employee_id, $client_id);
             $stats['sum_claimed_gross'] = $this->sumVouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
 
-            // Adjust for Cancelled records  
+            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked 
             $stats['count_items'] -= $this->countVouchers($start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);    
             $stats['sum_unit_net'] -= $this->sumVouchers('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
             $stats['sum_unit_tax'] -= $this->sumVouchers('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
             $stats['sum_unit_gross'] -= $this->sumVouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);            
             //$stats['sum_voucher_spv_unit_gross'] -= $this->sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'SPV', 'cancelled', $employee_id, $client_id);        
             //$stats['sum_voucher_mpv_unit_gross'] -= $this->sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'MPV', 'cancelled', $employee_id, $client_id);        
-
+            */
+            
         }
 
         return $stats;
@@ -901,21 +901,28 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        if($status) {
-
-            if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NULL";
-            } elseif($status == 'opened') {            
-                // Do nothing                 
-            } elseif($status == 'closed') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NOT NULL";
-            } elseif($status == 'claimed' && $client_id) {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id = ".$this->app->db->qStr($client_id);
-            } else {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.status = ".$this->app->db->qStr($status);                       
-            }
-
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NULL";
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NOT NULL";
+        } elseif($status == 'claimed' && $client_id) {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id = ".$this->app->db->qStr($client_id);
+        } elseif($status) {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.status = ".$this->app->db->qStr($status);                       
+        }
+        
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.status != 'cancelled'";
+        }        
+        
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.status != 'deleted'";
         }
 
         return $whereTheseRecords;
@@ -966,36 +973,36 @@ class Report extends Components {
         if($record_set == 'current' || $record_set == 'all') {
 
             $stats['count_unpaid'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'unpaid', $employee_id, $client_id);
-            $stats['count_partially_paid'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id, $client_id);
-            $stats['count_paid'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'paid', $employee_id, $client_id);          
-            $stats['count_cancelled'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);       
+            $stats['count_partially_paid'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id, $client_id);                  
 
         }
 
         // Historic
         if($record_set == 'historic' || $record_set == 'all') {          
 
+            $stats['count_items'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
             $stats['count_opened'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'opened', $employee_id, $client_id);
-            $stats['count_closed'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'closed', $employee_id, $client_id); 
+            $stats['count_closed'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'closed', $employee_id, $client_id);
+            $stats['count_paid'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'paid', $employee_id, $client_id);          
+            $stats['count_cancelled'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
 
         }  
 
         // Revenue
-        if($record_set == 'revenue' || $record_set == 'all') {       
-
-            $stats['count_items'] = $this->countRefunds($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
+        if($record_set == 'revenue' || $record_set == 'all') {
+            
             $stats['sum_unit_net'] = $this->sumRefunds('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
             $stats['sum_unit_tax'] = $this->sumRefunds('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);           
             $stats['sum_unit_gross'] = $this->sumRefunds('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);                   
             $stats['sum_balance'] = $this->sumRefunds('balance', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
 
-            // Adjust for Cancelled records  
+            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked 
             $stats['count_items'] -= $this->countRefunds($start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
             $stats['sum_unit_net'] -= $this->sumRefunds('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
             $stats['sum_unit_tax'] -= $this->sumRefunds('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);           
             $stats['sum_unit_gross'] -= $this->sumRefunds('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
             $stats['sum_balance'] -= $this->sumRefunds('balance', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);        
-
+            */
         }     
 
         return $stats;
@@ -1134,19 +1141,28 @@ class Report extends Components {
     public function refundBuildFilterByStatus($status = null) {
 
         $whereTheseRecords = '';
-
-        if($status) {   
-            if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on IS NULL";                  
-            } elseif($status == 'opened') {            
-                // Do nothing                 
-            } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on IS NOT NULL"; 
-            } else {            
-                $whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qStr($status);            
-            }
+        
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on IS NULL";                  
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on IS NOT NULL"; 
+        } elseif($status) {            
+            $whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$this->app->db->qStr($status);            
         }
-
+        
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."refund_records.status != 'cancelled'";
+        }        
+        
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."refund_records.status != 'deleted'";
+        }
+        
         return $whereTheseRecords;
 
     }
@@ -1165,28 +1181,34 @@ class Report extends Components {
         if($record_set == 'current' || $record_set == 'all') {    
 
             $stats['count_unpaid'] = $this->countExpenses($start_date, $end_date, 'date', $tax_system, null, null, 'unpaid', $employee_id);
-            $stats['count_partially_paid'] = $this->countExpenses($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id);
+            $stats['count_partially_paid'] = $this->countExpenses($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id);            
+
+        }
+        
+        // Historic
+        if($record_set == 'historic' || $record_set == 'all') {    
+
+            $stats['count_items'] = $this->countExpenses($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
             $stats['count_paid'] = $this->countExpenses($start_date, $end_date, 'date', $tax_system, null, null, 'paid', $employee_id);            
             $stats['count_cancelled'] = $this->countExpenses($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id); 
 
         }
 
         // Revenue
-        if($record_set == 'revenue' || $record_set == 'all') {            
-
-            $stats['count_items'] = $this->countExpenses($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
+        if($record_set == 'revenue' || $record_set == 'all') {
+            
             $stats['sum_unit_net'] = $this->sumExpenses('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
             $stats['sum_unit_tax'] = $this->sumExpenses('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);       
             $stats['sum_unit_gross'] = $this->sumExpenses('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);                   
             $stats['sum_balance'] = $this->sumExpenses('balance', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
 
-            // Adjust for Cancelled records  
+            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
             $stats['count_items'] -= $this->countExpenses($start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
             $stats['sum_unit_net'] -= $this->sumExpenses('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
             $stats['sum_unit_tax'] -= $this->sumExpenses('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);       
             $stats['sum_unit_gross'] -= $this->sumExpenses('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
             $stats['sum_balance'] -= $this->sumExpenses('balance', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);   
-
+            */
         }        
 
         return $stats;
@@ -1323,18 +1345,27 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        if($status) {   
-            if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on = IS NULL";                  
-            } elseif($status == 'opened') {            
-                // Do nothing                 
-            } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NOT NULL"; 
-            } else {            
-                $whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->app->db->qStr($status);            
-            }
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on = IS NULL";                  
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NOT NULL"; 
+        } elseif($status) {            
+            $whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->app->db->qStr($status);            
         }
-
+        
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."expense_records.status != 'cancelled'";
+        }        
+        
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."expense_records.status != 'deleted'";
+        }
+        
         return $whereTheseRecords;
 
     }
@@ -1353,36 +1384,36 @@ class Report extends Components {
         if($record_set == 'current' || $record_set == 'all') {    
 
             $stats['count_unpaid'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'unpaid', $employee_id);
-            $stats['count_partially_paid'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id);
-            $stats['count_paid'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'paid', $employee_id);            
-            $stats['count_cancelled'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
+            $stats['count_partially_paid'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id);            
 
         }
 
         // Historic
         if($record_set == 'historic' || $record_set == 'all') {            
 
+            $stats['count_items'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
             $stats['count_opened'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'opened', $employee_id);
             $stats['count_closed'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'closed', $employee_id);
+            $stats['count_paid'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'paid', $employee_id);            
+            $stats['count_cancelled'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);            
 
         }  
 
         // Revenue
         if($record_set == 'revenue' || $record_set == 'all') {            
 
-            $stats['count_items'] = $this->countOtherincomes($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
             $stats['sum_unit_net'] = $this->sumOtherincomes('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
             $stats['sum_unit_tax'] = $this->sumOtherincomes('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);       
             $stats['sum_unit_gross'] = $this->sumOtherincomes('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);                   
             $stats['sum_balance'] = $this->sumOtherincomes('balance', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
 
-            // Adjust for Cancelled records  
+            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
             $stats['count_items'] -= $this->countOtherincomes($start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
             $stats['sum_unit_net'] -= $this->sumOtherincomes('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
             $stats['sum_unit_tax'] -= $this->sumOtherincomes('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);       
             $stats['sum_unit_gross'] -= $this->sumOtherincomes('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
             $stats['sum_balance'] -= $this->sumOtherincomes('balance', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);        
-
+            */
         }     
 
         return $stats;
@@ -1511,19 +1542,28 @@ class Report extends Components {
     public function otherincomeBuildFilterByStatus($status = null) {
 
         $whereTheseRecords = '';
-
-        if($status) {   
-            if($status == 'open') {            
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NULL";                  
-            } elseif($status == 'opened') {            
-                // Do nothing                 
-            } elseif($status == 'closed') {            
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NOT NULL"; 
-            } else {            
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qStr($status);            
-            }
+         
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NULL";                  
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NOT NULL"; 
+        } elseif($status) {            
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qStr($status);            
         }
-
+        
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.status != 'cancelled'";
+        }        
+        
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.status != 'deleted'";
+        }        
+        
         return $whereTheseRecords;
 
     }
@@ -1574,14 +1614,14 @@ class Report extends Components {
             $stats['sum_invoice'] -= $this->sumPayments($start_date, $end_date, 'date', $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_received'] -= $this->sumPayments($start_date, $end_date, 'date', $tax_system, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
 
-            // Adjust for Cancelled records  
+            /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked  
             $stats['sum_invoice'] -= $this->sumPayments($start_date, $end_date, 'date', $tax_system, 'cancelled', 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_refund'] -= $this->sumPayments($start_date, $end_date, 'date', $tax_system, 'cancelled', 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_expense'] -= $this->sumPayments($start_date, $end_date, 'date', $tax_system, 'cancelled', 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_otherincome'] -= $this->sumPayments($start_date, $end_date, 'date', $tax_system, 'cancelled', 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_sent'] -= $this->sumPayments($start_date, $end_date, 'date', $tax_system, 'cancelled', 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             $stats['sum_received'] -= $this->sumPayments($start_date, $end_date, 'date', $tax_system, 'cancelled', 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-
+            */
         } 
 
         return $stats;
@@ -1606,9 +1646,7 @@ class Report extends Components {
         }
 
         // Restrict by Status
-        if($status) {   
-            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);  
-        }
+        $whereTheseRecords .= $this->paymentBuildFilterByStatus($status);
 
         // Restrict by Type
         $whereTheseRecords .= $this->paymentBuildFilterByType($type); 
@@ -1677,9 +1715,7 @@ class Report extends Components {
         }
 
         // Restrict by Status
-        if($status) {   
-            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);  
-        }
+        $whereTheseRecords .= $this->paymentBuildFilterByStatus($status);
 
         // Restrict by Type
         $whereTheseRecords .= $this->paymentBuildFilterByType($type);    
@@ -1749,31 +1785,54 @@ class Report extends Components {
         return $whereTheseRecords;
 
     }
+    
+    #####################################
+    #  Build payment Status filter SQL  #
+    #####################################
+
+    public function paymentBuildFilterByStatus($status = null) {
+
+        $whereTheseRecords = '';
+
+        // Restrict the records
+        if($status) {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);            
+        }
+                
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled') {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.status != 'cancelled'";
+        }        
+        
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.status != 'deleted'";
+        }
+
+        return $whereTheseRecords;
+
+    }
 
     #####################################
-    #  Build payment type filter SQL    #
+    #  Build payment type filter SQL    # // Restrict by Type    
     #####################################
 
     public function paymentBuildFilterByType($type = null) {
 
         $whereTheseRecords = '';
 
-        // Restrict by Type
-        if($type) {   
+        // All received monies
+        if($type == 'received') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome')";
 
-            // All received monies
-            if($type == 'received') {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome')";
+        // All sent monies
+        } elseif($type == 'sent') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'refund')";        
 
-            // All sent monies
-            } elseif($type == 'sent') {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'refund')";        
-
-            // Return records for the given type
-            } else {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);            
-            }
-
+        // Return records for the given type
+        } elseif($type) {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);            
         }
 
         return $whereTheseRecords;
@@ -1784,13 +1843,14 @@ class Report extends Components {
     #  Calulate the revenue and tax liability for a ALL payments against their parent record     #  // I dont use most of these filters at the minute (only start_date, end_date and tax_system)
     ##############################################################################################
 
-    // This is for calculating real 'NET, TAX and GROSS'.
+    // This is for calculating TAX liability from invoices and is aware of partially paid invoices.
     // By taking each payment and breaking them down into 'NET, TAX and GROSS' by prorata'ing them against their parent transaction.
     // Vouchers are not real money and should therefore not contribute anything to the the NET and GROSS totals, however:
-    // MPV vouchers have their TAX liability accounted for at the point of redemption, so does add TAX to the totals,
-    // SPV has already had the TAX taken at the point of sale so does not suffer this fate.
+    // MPV (multi purpose vouchers i.e. phone top up) vouchers have their TAX liability accounted for at the point of redemption, so does add TAX to the totals,
+    // SPV (single purpose voucher i.e. gift card) has already had the TAX taken at the point of sale so does not suffer this fate.
     // 'voucher' allows me to pass up the tree how much of vouchers SPV/MPV (in their NET/TAX/GROSS) have actually been paid (it is prorated aswell). This is separate to revenue totals and used upstream.
 
+    // Does this function need all of these variables, start_date, end_date and tax_system should be enough?
     public function revenuePaymentsProratedAgainstRecords($start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
 
         // Holding array for prorata totals // I could use a blank array here??? but it is a good reference
@@ -1816,9 +1876,7 @@ class Report extends Components {
         }
 
         // Restrict by Status
-        if($status) {   
-            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);  
-        }
+        $whereTheseRecords .= $this->paymentBuildFilterByStatus($status);
 
         // Restrict by Type
         $whereTheseRecords .= $this->paymentBuildFilterByType($type);    
@@ -1869,11 +1927,11 @@ class Report extends Components {
 
             $prorata_record = null;
 
-            // Adjust for Cancelled payment records - By ignoring them
+            /* Adjust for Cancelled payment records - By ignoring them - this ans deleted are now handled in the SQL/filterstatrus
             if($rs->fields['status'] == 'cancelled') { 
                 $rs->MoveNext(); 
                 continue;                
-            }
+            }*/
 
             if($rs->fields['type'] == 'invoice') {
                 $prorata_record = $this->revenuePaymentProratedAgainstRecord($rs->fields['payment_id'], 'invoice');
@@ -1883,7 +1941,7 @@ class Report extends Components {
 
                     $voucher_type = $this->app->components->voucher->getRecord($rs->fields['voucher_id'], 'type');
 
-                    // Multi Purpose
+                    // Multi Purpose Voucher
                     if($voucher_type == 'MPV') {
                         $prorata_totals['invoice']['net'] += 0.00;
                         $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
@@ -1896,8 +1954,8 @@ class Report extends Components {
 
                     }
 
-                    // Single Use
-                    if($voucher_type == 'single_use') {
+                    // Single Purpose Voucher
+                    if($voucher_type == 'SPV') {
                         $prorata_totals['invoice']['net'] += 0.00;
                         $prorata_totals['invoice']['tax'] += 0.00; 
                         $prorata_totals['invoice']['gross'] += 0.00;

@@ -19,39 +19,8 @@
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="2">
-                        <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">                            
-                            
-                            <!-- Work Order Stats -->
-                            <tr>
-                                <td>
-                                    {include file='workorder/blocks/display_workorder_current_stats_block.tpl' workorder_stats=$global_workorder_current_stats block_title=_gettext("Work Order Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"} 
-                                </td>
-                            </tr>                            
-                            <tr>
-                                <td>
-                                    {include file='workorder/blocks/display_workorder_historic_stats_block.tpl' workorder_stats=$global_workorder_historic_stats block_title=_gettext("Work Order Historic Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                             
-                                </td>
-                            </tr>                      
-                            
-                            <!-- Invoice Stats -->
-                            <tr>
-                                <td>
-                                    {include file='invoice/blocks/display_invoice_current_stats_block.tpl' invoice_stats=$global_invoice_current_stats block_title=_gettext("Invoice Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                            
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    {include file='invoice/blocks/display_invoice_historic_stats_block.tpl' invoice_stats=$global_invoice_historic_stats block_title=_gettext("Invoice Historic Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                              
-                                </td>
-                            </tr>                                                        
-                            
-                            <!-- Client Stats -->
-                            <tr>
-                                <td>
-                                    {include file='client/blocks/display_client_historic_stats_block.tpl' client_stats=$global_client_historic_stats block_title=_gettext("Client Historic Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                             
-                                </td>
-                            </tr>
-                            
+                        <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">
+                                                          
                             <!-- Employee Stats (Logged in user) -->
                             <tr>
                                 <td>
@@ -63,6 +32,50 @@
                                     {include file='workorder/blocks/display_workorder_historic_stats_block.tpl' workorder_stats=$employee_workorder_historic_stats block_title=_gettext("Work Order Historic Stats")|cat:" ($login_display_name)"}                                            
                                 </td>
                             </tr>
+                            
+                            <!-- Client Stats (Global) -->
+                            <tr>
+                                <td>
+                                    {include file='client/blocks/display_client_historic_stats_block.tpl' client_stats=$global_client_historic_stats block_title=_gettext("Client Historic Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                             
+                                </td>
+                            </tr>                            
+                            
+                            <!-- Work Order Stats (Global) -->
+                            <tr>
+                                <td>
+                                    {include file='workorder/blocks/display_workorder_current_stats_block.tpl' workorder_stats=$global_workorder_current_stats block_title=_gettext("Work Order Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"} 
+                                </td>
+                            </tr>                            
+                            <tr>
+                                <td>
+                                    {include file='workorder/blocks/display_workorder_historic_stats_block.tpl' workorder_stats=$global_workorder_historic_stats block_title=_gettext("Work Order Historic Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                             
+                                </td>
+                            </tr>                      
+                            
+                            <!-- Invoice Stats (Global) -->
+                            <tr>
+                                <td>
+                                    {include file='invoice/blocks/display_invoice_current_stats_block.tpl' invoice_stats=$global_invoice_current_stats block_title=_gettext("Invoice Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                            
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {include file='invoice/blocks/display_invoice_historic_stats_block.tpl' invoice_stats=$global_invoice_historic_stats block_title=_gettext("Invoice Historic Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                              
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {include file='invoice/blocks/display_invoice_revenue_stats_block.tpl' invoice_stats=$global_invoice_revenue_stats block_title=_gettext("Invoice Revenue Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                              
+                                </td>
+                            </tr> 
+                            
+                            <!-- Payment Stats (Global) -->
+                            <tr>
+                                <td>
+                                    {include file='payment/blocks/display_payment_revenue_stats_block.tpl' payment_stats=$global_payment_revenue_stats block_title=_gettext("Payment Revenue Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                            
+                                </td>
+                            </tr>
+
 
                             <!-- Buttons -->
                             <tr>

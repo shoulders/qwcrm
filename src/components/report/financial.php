@@ -23,7 +23,7 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     $end_date   = $this->app->system->general->dateToMysqlDate(\CMSApplication::$VAR['end_date']);    
     
     // Clients
-    $this->app->smarty->assign('client_stats', $this->app->components->report->getClientsStats('basic', $start_date, $end_date));      
+    $this->app->smarty->assign('client_stats', $this->app->components->report->getClientsStats('current', $start_date, $end_date));      
     
     // Workorders
     $this->app->smarty->assign('workorder_stats', $this->app->components->report->getWorkordersStats('historic', $start_date, $end_date));
@@ -45,7 +45,7 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     $this->app->smarty->assign('refund_stats', $refund_stats);   
         
     // Expense    
-    $expense_stats = $this->app->components->report->getExpensesStats('revenue', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $expense_stats = $this->app->components->report->getExpensesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     $this->app->smarty->assign('expense_stats', $expense_stats);    
     
     // Otherincomes
