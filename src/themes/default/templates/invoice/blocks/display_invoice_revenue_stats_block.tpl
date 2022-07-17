@@ -15,7 +15,7 @@
     </tr>
     <tr class="olotd4">
         <td><font color="green">{$currency_sym}{$invoice_stats.sum_unit_gross|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="green">{$currency_sym}{$invoice_stats.sum_cancelled_gross|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="green">{$currency_sym}{$invoice_stats.sum_cancelled_unit_gross|string_format:"%.2f"}</font> [G]</td>
         <td><font color="cc0000">{$currency_sym}{$invoice_stats.sum_balance|string_format:"%.2f"}</font> [G]</td>
     </tr>
 </table>

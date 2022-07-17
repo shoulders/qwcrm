@@ -298,20 +298,20 @@ class Report extends Components {
             $stats['sum_balance'] -= $this->sumInvoices('balance', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);*/           
 
             // Sums by Status - Only used on Client Tab        
-            $stats['sum_pending_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id);
-            $stats['sum_unpaid_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $client_id);
-            $stats['sum_partially_paid_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $client_id);
-            $stats['sum_paid_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $client_id);
-            $stats['sum_in_dispute_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'in_dipute', $employee_id, $client_id);
-            $stats['sum_overdue_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'overdue', $employee_id, $client_id);
-            $stats['sum_collections_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'collections', $employee_id, $client_id);
-            $stats['sum_refunded_gross'] = $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'refunded', $employee_id, $client_id);
-            $stats['sum_cancelled_gross'] = $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);        
-            $stats['sum_open_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id);
-            $stats['sum_discounted_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
-            $stats['sum_opened_gross'] = $this->sumInvoices('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $client_id);
-            $stats['sum_closed_gross'] = $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $client_id);
-            $stats['sum_closed_discounted_gross'] = $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
+            $stats['sum_pending_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id);
+            $stats['sum_unpaid_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $client_id);
+            $stats['sum_partially_paid_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $client_id);
+            $stats['sum_paid_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $client_id);
+            $stats['sum_in_dispute_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'in_dipute', $employee_id, $client_id);
+            $stats['sum_overdue_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'overdue', $employee_id, $client_id);
+            $stats['sum_collections_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'collections', $employee_id, $client_id);
+            $stats['sum_refunded_unit_gross'] = $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'refunded', $employee_id, $client_id);
+            $stats['sum_cancelled_unit_gross'] = $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);        
+            $stats['sum_open_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id);
+            $stats['sum_discounted_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
+            $stats['sum_opened_unit_gross'] = $this->sumInvoices('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $client_id);
+            $stats['sum_closed_unit_gross'] = $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $client_id);
+            $stats['sum_closed_discounted_unit_gross'] = $this->sumInvoices('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
 
         }
 
@@ -742,31 +742,31 @@ class Report extends Components {
             $stats['sum_unit_net'] = $this->sumVouchers('unit_net', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
             $stats['sum_unit_tax'] = $this->sumVouchers('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
             $stats['sum_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);        
-            $stats['sum_redeemed_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
-            $stats['sum_redeemed_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
-            $stats['sum_redeemed_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);         
-            $stats['sum_expired_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
-            $stats['sum_expired_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
-            $stats['sum_expired_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
-            $stats['sum_cancelled_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-            $stats['sum_cancelled_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-            $stats['sum_cancelled_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+            $stats['sum_redeemed_unit_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+            $stats['sum_redeemed_unit_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+            $stats['sum_redeemed_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);         
+            $stats['sum_expired_unit_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
+            $stats['sum_expired_unit_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
+            $stats['sum_expired_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
+            $stats['sum_cancelled_unit_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+            $stats['sum_cancelled_unit_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+            $stats['sum_cancelled_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
 
             // Used for VAT Flate Rate calculations (not currently used)
             //$stats['sum_voucher_spv_unit_gross'] = $this->sum_vouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, 'SPV', null, $employee_id, $client_id);
             //$stats['sum_voucher_mpv_unit_gross'] = $this->sum_vouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, 'MPV', null, $employee_id, $client_id);
 
             // Only used on Client Tab        
-            $stats['sum_unused_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'unused', $employee_id, $client_id);
-            //$stats['sum_redeemed_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
-            $stats['sum_suspended_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'suspended', $employee_id, $client_id);         
-            //$stats['sum_expired_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
-            $stats['sum_refunded_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'refunded', $employee_id, $client_id);
-            $stats['sum_cancelled_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id); 
-            $stats['sum_open_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'open', $employee_id, $client_id);
-            $stats['sum_opened_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'opened', $employee_id, $client_id);
-            $stats['sum_closed_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'closed', $employee_id, $client_id);
-            $stats['sum_claimed_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
+            $stats['sum_unused_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'unused', $employee_id, $client_id);
+            //$stats['sum_redeemed_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+            $stats['sum_suspended_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'suspended', $employee_id, $client_id);         
+            //$stats['sum_expired_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
+            $stats['sum_refunded_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'refunded', $employee_id, $client_id);
+            $stats['sum_cancelled_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id); 
+            $stats['sum_open_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'open', $employee_id, $client_id);
+            $stats['sum_opened_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'opened', $employee_id, $client_id);
+            $stats['sum_closed_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'closed', $employee_id, $client_id);
+            $stats['sum_claimed_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
 
             /* Adjust for Cancelled records - this is now handled by the filter status - remove this when checked 
             $stats['count_items'] -= $this->countVouchers('closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);    

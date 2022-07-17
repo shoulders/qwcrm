@@ -586,15 +586,15 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_net|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_unit_net|string_format:"%.2f"}</b></font></td>
                                                                     </tr>   
                                                                     <tr>
                                                                         <td><b>{t}Tax{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_tax|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_unit_tax|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_gross|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_unit_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>  
                                                                     <tr>
                                                                         <td><hr></td>
@@ -604,15 +604,15 @@
                                                                     </tr>                                                                    
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_net|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unit_net|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Tax{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_tax|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unit_tax|string_format:"%.2f"}</b></font></td>
                                                                     </tr>   
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_gross|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unit_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
