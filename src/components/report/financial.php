@@ -232,7 +232,7 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     
 } else {
     
-    // Prevent undefined variable errors
+    // Set the report section to hidden - Prevents undefined variable error
     $this->app->smarty->assign('enable_report_section', false);
     
     // Load company finacial year dates

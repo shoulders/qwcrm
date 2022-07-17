@@ -769,7 +769,7 @@
                                                                                     <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your tax liability.{/t}</p>
                                                                                 {/if}
                                                                                 {if $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
-                                                                                    <p><b>{t}NB{/t}:</b> {t}Vouchers are accounted for VAT Flat Rate when they are purchased. Vouchers used for purchasing are not included in turnover. MPV vouchers also have their normal VAT liability accounted for at the point of redemption.{/t}</p>
+                                                                                    <p><b>{t}NB{/t}:</b> {t}Vouchers are accounted for VAT Flat Rate when they are purchased. Vouchers used for purchasing are not included in turnover. MPV vouchers have their normal VAT liability accounted for at the point of redemption.{/t}</p>
                                                                                 {/if}
                                                                             </td>                                                                        
                                                                         </tr>
