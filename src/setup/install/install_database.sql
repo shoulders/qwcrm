@@ -145,6 +145,7 @@ CREATE TABLE `#__company_record` (
   `vat_flat_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
   `year_start` date NOT NULL,
   `year_end` date NOT NULL,
+  `voucher_expiry_offset` INT(5) UNSIGNED NOT NULL; 
   `welcome_msg` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `currency_symbol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `currency_code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -165,7 +166,7 @@ CREATE TABLE `#__company_record` (
 --
 
 INSERT INTO `#__company_record` (`company_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_system`, `sales_tax_rate`, `vat_number`, `vat_flat_rate`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', 'qw-logo.png', '', '', '', '', '', '', '', '', '', '', '', 'no_tax', '0.00', '', '0.00', NULL, NULL, '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '&pound;', 'GBP', '%Y-%m-%d', 10, 0, 17, 0, '<p>{company_logo}</p>\r\n<p><strong>{company_name}</strong></p>\r\n<p><strong>Address:</strong> <br />{company_address}</p>\r\n<p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>', 1, '<p>There is currently no message here for Work Orders.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is an invoice for the recent work at carried out by {company_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>');
+('', 'qw-logo.png', '', '', '', '', '', '', '', '', '', '', '', 'no_tax', '0.00', '', '0.00', NULL, NULL, 1827,'<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '&pound;', 'GBP', '%Y-%m-%d', 10, 0, 17, 0, '<p>{company_logo}</p>\r\n<p><strong>{company_name}</strong></p>\r\n<p><strong>Address:</strong> <br />{company_address}</p>\r\n<p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>', 1, '<p>There is currently no message here for Work Orders.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is an invoice for the recent work at carried out by {company_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>');
 
 -- --------------------------------------------------------
 

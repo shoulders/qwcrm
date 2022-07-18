@@ -244,7 +244,14 @@
                                                                                                 } );                                                        
                                                                                             </script>                                                    
                                                                                         </td>
-                                                                                    </tr>                                                                                    
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td align="right"><b>{t}Voucher Expiry Offset{/t}:</b> <span style="color: #ff0000">*</span></td>
+                                                                                        <td>
+                                                                                            <input name="qform[voucher_expiry_offset]" class="olotd5" value="{$company_details.voucher_expiry_offset}" type="text" maxlength="5" required onkeydown="return onlyNumber(event);">
+                                                                                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Voucher Expiry Offset{/t}</strong></div><hr><div>{t escape=js}This is the number of days added to todays date to generate the vouchers default expiry date. This date can be changed.{/t}<br><br>In the UK/EU, Gift vouchers must have no expiry date or be valid for at least 5 years.</div>');" onMouseOut="hideddrivetip();">
+                                                                                        </td>
+                                                                                    </tr>
                                                                                     <tr>
                                                                                         <td>
                                                                                             <input type="hidden" name="welcome_msg" value="{$company_details.welcome_msg}">                                                                                                                                                                       

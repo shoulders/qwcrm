@@ -693,3 +693,9 @@ ALTER TABLE `#__expense_records` DROP `vat_tax_code`;
 ALTER TABLE `#__expense_records` DROP `unit_tax_rate`;
 ALTER TABLE `#__otherincome_records` DROP `vat_tax_code`;
 ALTER TABLE `#__otherincome_records` DROP `unit_tax_rate`;
+
+--
+-- Add Voucher Expiry Offset
+--
+
+ALTER TABLE `#__company_record` ADD `voucher_expiry_offset` INT(5) UNSIGNED NOT NULL DEFAULT '1827' AFTER `year_end`;

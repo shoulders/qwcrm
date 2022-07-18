@@ -37,8 +37,14 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
 
 }
+
+// Generate the Voucher expiry date
+$dateObject = new DateTime();    
+$dateObject->modify('+'.$this->app->components->company->getRecord('voucher_expiry_offset').' days');
+$voucher_expiry_date = $dateObject->format('Y-m-d');
     
 // Build the page
 $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'client_id')));
 $this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
 $this->app->smarty->assign('voucher_tax_system', $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'tax_system'));
+$this->app->smarty->assign('voucher_expiry_date', $voucher_expiry_date);

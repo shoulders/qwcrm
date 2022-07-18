@@ -301,6 +301,7 @@ class Company extends Components {
                 vat_flat_rate           =". $this->app->db->qStr( $qform['vat_flat_rate']                    ).",   
                 year_start              =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['year_start'])   ).",
                 year_end                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['year_end'])     ).",
+                voucher_expiry_offset   =". $this->app->db->qStr( $qform['voucher_expiry_offset']            ).",  
                 welcome_msg             =". $this->app->db->qStr( $qform['welcome_msg']                      ).",
                 currency_symbol         =". $this->app->db->qStr( htmlentities($qform['currency_symbol'])    ).",
                 currency_code           =". $this->app->db->qStr( $qform['currency_code']                    ).",
