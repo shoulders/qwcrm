@@ -1697,6 +1697,33 @@ public function checkInvoiceAllowsVoucherChange($invoice_id) {
         
     }
     
+    ############################################
+    #  Check Voucher Expiry is valid           #
+    ############################################
+    function checkVoucherExpiryIsValid($expiry_date)
+    {
+        // Get the expiry date - Converted in to 0000-00-00, a format that will prevent incorrect calculations
+        $expiry_date = new DateTime($this->app->system->general->dateToMysqlDate($expiry_date));
+        
+        // Get today's date
+        $todays_date = new DateTime("now");
+        
+        // Expiry is in the past
+        if($expiry_date < $todays_date) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expiry date is invalid because it is in the past."));
+            return false;
+        }
+        
+        /* Expiry is today
+        if($expiry_date = $todays_date) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expiry date is invalid because it is today's date."));
+            return false;
+        }*/
+        
+        return true;
+        
+    }
+    
     /** Other Functions **/
 
     ############################################
