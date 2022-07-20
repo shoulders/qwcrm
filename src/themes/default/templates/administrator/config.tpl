@@ -29,7 +29,7 @@
     function cronjobConfigureOnscreen() {
         let cronjobSystem = $('#cronjob_system').val();
         let cronjobPseudoInterval = $('#pseudo_interval_row');
-        let cronjobServerSettings = $('#server_cron_settings_row');        
+        let cronjobServerSettings = $('#server_cronjob_settings_row');   
         if(cronjobSystem === '0') {
             cronjobPseudoInterval.hide('fast');
             cronjobServerSettings.hide('fast');
