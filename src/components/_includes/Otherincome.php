@@ -365,7 +365,7 @@ class OtherIncome extends Components {
     #  Check if the otherincome status is allowed to be changed  #  // not currently used
     ##############################################################
 
-     public function checkRecordAllowsChange($otherincome_id) {
+     public function checkRecordAllowsStatusChange($otherincome_id) {
 
         $state_flag = true;
 

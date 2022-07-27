@@ -57,7 +57,7 @@ if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['email
 
             // Load the enter_token page
             $stage = 'enter_token';
-            //$this->app->system->page->force_page('user', 'reset', 'layout=confirm', 'get'); // Using $this->app->system->page->force_page() keeps the URLs the same (from stege 1 and direct from email)
+            //$this->app->system->page->forcePage('user', 'reset', 'layout=confirm', 'get'); // Using $this->app->system->page->forcePage() keeps the URLs the same (from stege 1 and direct from email)
 
         }
 

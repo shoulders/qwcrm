@@ -25,17 +25,21 @@ class Payment extends Components {
     // Used for Payment Types and Methods
     public static $action = '';
     public static $buttons = array();
-    public static $payment_details = array();
+    public static $payment_details = array();    
     public static $payment_valid = true;
-    public static $payment_processed = false;
+    public static $payment_successful = false;
     public static $record_balance = null;
-    //public static $paymentType = null;      // not currently used here
-    //public static $paymentMtehod = null;    // not currently used here
-
+    public $paymentType = null;
+    public $paymentMethod = null;
+     
+    public function __construct()
+    {
+        parent::__construct();        
+    }
 
     /** Insert Functions **/
 
-    ############################
+    ############################  // as you can see not all variables are submitted
     #   Insert Payment         #
     ############################
 
@@ -52,8 +56,8 @@ class Payment extends Components {
                 otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",
                 date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date'])    ).",
                 tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",   
-                type            = ".$this->app->db->qStr( $qpayment['type']                        ).",
-                method          = ".$this->app->db->qStr( $qpayment['method']                      ).",
+                type            = ".$this->app->db->qStr( $qpayment['type']        ).",
+                method          = ".$this->app->db->qStr( $qpayment['method']      ).",
                 status          = 'valid',
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                      ).",
                 last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                         ).",
@@ -66,16 +70,16 @@ class Payment extends Components {
         $payment_id = $this->app->db->Insert_ID();
 
         // Create a Workorder History Note       
-        $this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
+        $this->app->components->workorder->insertHistory(Payment::$payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
 
         // Log activity        
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], Payment::$payment_details['workorder_id'], Payment::$payment_details['invoice_id']);
 
         // Update last active record    
-        $this->app->components->client->updateLastActive($qpayment['client_id']);
-        $this->app->components->workorder->updateLastActive($qpayment['workorder_id']);
-        $this->app->components->invoice->updateLastActive($qpayment['invoice_id']);
+        $this->app->components->client->updateLastActive(Payment::$payment_details['client_id']);
+        $this->app->components->workorder->updateLastActive(Payment::$payment_details['workorder_id']);
+        $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id']);
 
         // Return the payment_id
         return $payment_id;    
@@ -687,7 +691,7 @@ class Payment extends Components {
 
         }
 
-        // Is the payment larger than the outstanding invoice balance, this is not allowed
+        // Is the payment larger than the outstanding balance, this is not allowed
         if($payment_amount > $record_balance){
 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
@@ -705,6 +709,9 @@ class Payment extends Components {
     ####################################################
 
     public function checkMethodActive($method, $direction = null) {
+        
+        // If payment is deleted it's method is null, always return disabled for both directions
+        if(!$method) { return false; }
 
         $sql = "SELECT *
                 FROM ".PRFX."payment_methods
@@ -712,6 +719,9 @@ class Payment extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
+        // If no direction specified, retrun method active status
+        if(!$direction) { return $rs->fields['enabled']; }
+        
         // If module is disabled, always return disabled for both directions
         if(!$rs->fields['enabled']) { return false; }
 
@@ -722,22 +732,22 @@ class Payment extends Components {
         if($direction == 'receive') { return $rs->fields['receive']; }
 
         // Fallback behaviour
-        return true;
+        return false;
 
     }
 
     ##########################################################
-    #  Check if the payment status is allowed to be changed  #  // not currently used
-    ##########################################################
+    #  Check if the payment status is allowed to be changed  #  // used on payment:status
+    ##########################################################  // This feature is not implemented, but present
 
-     public function checkRecordAllowsChange($payment_id) {
+     public function checkRecordAllowsStatusChange($payment_id) {
 
         $state_flag = false; // Disable the ability to manually change status for now
 
         // Get the payment details
         $payment_details = $this->getRecord($payment_id);
 
-        // Is the current payment method active, if not you cannot change status
+        // Is the current payment method is not active, if not you cannot change status
         if(!$this->checkMethodActive($payment_details['method'], 'receive')) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because it's current payment method is not available."));
             $state_flag = false;       
@@ -759,8 +769,8 @@ class Payment extends Components {
 
      }
 
-    ###############################################################
-    #   Check to see if the payment can be refunded (by status)   #  // not currently used - i DONT think i will use this , you cant refund a payment?
+    /*###############################################################
+    #   Check to see if the payment can be refunded               #  // not currently used - i DONT think i will use this , you cant refund a payment?
     ###############################################################
 
     public function checkRecordAllowsRefund($payment_id) {
@@ -802,8 +812,47 @@ class Payment extends Components {
 
         return $state_flag;
 
-    }
+    }*/
 
+    ##########################################################
+    #  Check if the payment status allows editing            #
+    ##########################################################
+
+     public function checkRecordAllowsEdit($payment_id) {
+
+        $state_flag = true;
+
+        // Get the payment details
+        $payment_details = $this->getRecord($payment_id);
+
+        // Is on a different tax system
+        if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it is on a different Tax system."));
+            $state_flag = false;       
+        }
+
+        // Is Cancelled
+        if($payment_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been cancelled."));
+            $state_flag = false;       
+        }
+
+        // Is Deleted
+        if($payment_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."));
+            $state_flag = false;       
+        }
+
+        // Is this an invoice payment and parent invoice has been refunded
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
+            $state_flag = false; 
+        }
+
+        return $state_flag; 
+
+    }    
+    
     ###############################################################
     #   Check to see if the payment can be cancelled              #
     ###############################################################
@@ -814,6 +863,12 @@ class Payment extends Components {
 
         // Get the payment details
         $payment_details = $this->getRecord($payment_id);
+        
+        // Is on a different tax system
+        if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because it is on a different Tax system."));
+            $state_flag = false;       
+        }
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
@@ -847,6 +902,12 @@ class Payment extends Components {
 
         // Get the payment details
         $payment_details = $this->getRecord($payment_id);
+        
+        // Is on a different tax system
+        if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be deleted because it is on a different Tax system."));
+            $state_flag = false;       
+        }
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
@@ -870,50 +931,6 @@ class Payment extends Components {
 
     }
 
-    ##########################################################
-    #  Check if the payment status allows editing            #
-    ##########################################################
-
-     public function checkRecordAllowsEdit($payment_id) {
-
-        $state_flag = true;
-
-        // Get the payment details
-        $payment_details = $this->getRecord($payment_id);
-
-        // Is on a different tax system
-        if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it is on a different Tax system."));
-            $state_flag = false;       
-        }
-
-        /* Is the current payment method active, if not you cannot change status
-        if(!$this->check_payment_method_is_active($payment_details['method'], 'receive')) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be edited because it's current payment method is not available."));
-            $state_flag = false;       
-        }*/
-
-        // Is Cancelled
-        if($payment_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been cancelled."));
-            $state_flag = false;       
-        }
-
-        // Is Deleted
-        if($payment_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."));
-            $state_flag = false;       
-        }
-
-        // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
-            $state_flag = false; 
-        }
-
-        return $state_flag; 
-
-    }    
 
     /** Other Functions **/
 
@@ -937,11 +954,9 @@ class Payment extends Components {
         return json_encode($additional_info);
 
     }
-
-
     
-    // Build the buttons array for payment buttons (currently only used for new payments)
-    function prepareButtonsHolder() {
+    // Build the buttons array for payment buttons (currently only used for new payments) this prevents undefined variable errors
+    public function prepareButtonsHolder() {
         
         Payment::$buttons = array(
             'submit' => array('allowed' => false, 'url' => null, 'title' => null),
@@ -952,17 +967,66 @@ class Payment extends Components {
         
     }
     
-    // Build qpayment array - Set the various payment type IDs in to qpayment
-    function buildQpaymentArray() {
+    // Build the enviroment for for making payments - The relevant Type and Class
+    public function buildPaymentEnvironment($action)
+    {
+        // Set Action Type
+        Payment::$action = $action;
         
-        \CMSApplication::$VAR['qpayment']['payment_id'] = Payment::$payment_details['payment_id'];
-        \CMSApplication::$VAR['qpayment']['type'] = Payment::$payment_details['type'];
-        \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];
-        \CMSApplication::$VAR['qpayment']['voucher_id'] = Payment::$payment_details['voucher_id'];
-        \CMSApplication::$VAR['qpayment']['refund_id'] = Payment::$payment_details['refund_id'];
-        \CMSApplication::$VAR['qpayment']['expense_id'] = Payment::$payment_details['expense_id'];
-        \CMSApplication::$VAR['qpayment']['otherincome_id'] = Payment::$payment_details['otherincome_id'];
+        // For all actions that are not new
+        if($action !== 'new')
+        {
+            // Set Payment details
+            Payment::$payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);
+
+            // Set Payment IDs into [qpayment]
+            \CMSApplication::$VAR['qpayment']['payment_id'] = Payment::$payment_details['payment_id'];
+            \CMSApplication::$VAR['qpayment']['type'] = Payment::$payment_details['type'];
+            \CMSApplication::$VAR['qpayment']['method'] = Payment::$payment_details['method'];
+            \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];
+            \CMSApplication::$VAR['qpayment']['voucher_id'] = Payment::$payment_details['voucher_id'];
+            \CMSApplication::$VAR['qpayment']['refund_id'] = Payment::$payment_details['refund_id'];
+            \CMSApplication::$VAR['qpayment']['expense_id'] = Payment::$payment_details['expense_id'];
+            \CMSApplication::$VAR['qpayment']['otherincome_id'] = Payment::$payment_details['otherincome_id'];
+        }
+
+        // Load the Type and Method classes (files only, no store)
+        \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/types/'); 
+        \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/methods/'); 
+
+        // Set the payment type class (Capitalise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
+        $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['type']));
+        $this->paymentType = new $typeClassName;        
         
+    }
+    
+    // Process the payment
+    public function processPayment()
+    {
+        // Set the payment method class (Capitalise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
+        $methodClassName = 'PaymentMethod'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['method']));
+        $this->paymentMethod = new $methodClassName;
+        
+        // Prep/Validate the data
+        $this->paymentType->preProcess();      // Need to validate payment against Type first
+        $this->paymentMethod->preProcess();    // now need to check if the payment method is valid
+
+        // Process the payment                  
+        if(Payment::$payment_valid)
+        {                 
+            $this->paymentMethod->process();  // Insert/edit/cancel/delete database operations
+            $this->paymentType->process();    // Recalcualtion of type records
+        }
+
+        // Final things like set messages and redirects based on results
+        $this->paymentMethod->postProcess();  // Messages
+        $this->paymentType->postProcess();    // Messages and redirects
+        
+        // Refresh the payment details (used for page reloads) - if a new insert fails, then there will be no payment_id
+        if(Payment::$payment_details['payment_id'] ?? false)
+        {
+            Payment::$payment_details = $this->app->components->payment->getRecord(Payment::$payment_details['payment_id']); 
+        }
     }
     
     

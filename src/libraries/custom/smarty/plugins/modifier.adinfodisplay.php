@@ -60,7 +60,8 @@ function smarty_modifier_adinfodisplay($string)
         }   
        
     }  
-    rtrim($html, '<br>');   // Remove the last <br> if present
+    
+    $html = rtrim($html, '<br>');   // Remove the last <br> if present
     
     // If there is no additional info, return false
     if(!$contentFlag) {

@@ -467,7 +467,7 @@ class Refund extends Components {
     #  Check if the refund status is allowed to be changed   #  // not currently used (from refund:status), manual change
     ##########################################################
 
-     public function checkRecordAllowsChange($refund_id) {
+     public function checkRecordAllowsStatusChange($refund_id) {
 
         $state_flag = true;
 

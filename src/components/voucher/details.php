@@ -22,11 +22,8 @@ if($voucher_details['status'] === 'deleted') {
     $this->app->system->page->forcePage('voucher', 'search');
 }
 
-$redeemed_client_display_name = $voucher_details['redeemed_client_id'] ? $this->app->components->client->getRecord($voucher_details['redeemed_client_id'], 'display_name') : null;
-
 // Build the page
 $this->app->smarty->assign('client_details',               $this->app->components->client->getRecord($voucher_details['client_id'])                          );
-$this->app->smarty->assign('redeemed_client_display_name', $redeemed_client_display_name                                               );
 $this->app->smarty->assign('employee_display_name',        $this->app->components->user->getRecord($voucher_details['employee_id'], 'display_name')          );
 $this->app->smarty->assign('voucher_statuses',            $this->app->components->voucher->getStatuses()                                                     );
 $this->app->smarty->assign('voucher_types',               $this->app->components->voucher->getTypes()                                                     );

@@ -12,7 +12,7 @@
 <script>{include file="../`$theme_js_dir_finc`jscal2/language.js"}</script>
 <script>
     
-    // If the page is reloaded by the system we need to enable the select payment method
+    // If the page is reloaded by the system we need to select the last payment method used
     {if $payment_method}
         $(document).ready(function() {
             selectPaymentMethod();
@@ -92,8 +92,8 @@
                                         <tr class="olotd4">
                                             <td class="row2"></td>
                                             <td class="row2"><b>{t}Date{/t}</b></td>
-                                            <td class="row2"><b>{t}Transfer Reference{/t}:</b></td>
-                                            <td class="row2"><b>{t}Amount{/t}:</b></td>
+                                            <td class="row2"><b>{t}Transfer Reference{/t}</b></td>
+                                            <td class="row2"><b>{t}Amount{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td></td>
@@ -172,7 +172,7 @@
                                         <tr class="olotd4">
                                             <td class="row2"></td>
                                             <td class="row2"><b>{t}Date{/t}</b></td>
-                                            <td class="row2"><b>{t}Cheque Number{/t}:</b></td>
+                                            <td class="row2"><b>{t}Cheque Number{/t}</b></td>
                                             <td class="row2"><b>{t}Amount{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
@@ -213,9 +213,9 @@
                                         <tr class="olotd4">
                                             <td class="row2"></td>
                                             <td class="row2"><b>{t}Date{/t}</b></td>
-                                            <td class="row2"><b>{t}type{/t}:</b></td>
-                                            <td class="row2"><b>{t}Name on Card{/t}:</b></td>                        
-                                            <td class="row2"><b>{t}Amount{/t}:</b></td>
+                                            <td class="row2"><b>{t}type{/t}</b></td>
+                                            <td class="row2"><b>{t}Name on Card{/t}</b></td>                        
+                                            <td class="row2"><b>{t}Amount{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td></td>
@@ -263,8 +263,8 @@
                                         <tr class="olotd4">
                                             <td class="row2"></td>
                                             <td class="row2"><b>{t}Date{/t}</b></td>
-                                            <td class="row2"><b>{t}DD Reference{/t}:</b></td>
-                                            <td class="row2"><b>{t}Amount{/t}:</b></td>
+                                            <td class="row2"><b>{t}DD Reference{/t}</b></td>
+                                            <td class="row2"><b>{t}Amount{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td></td>
@@ -305,6 +305,7 @@
                                             <td class="row2"></td>
                                             <td class="row2"><b>{t}Date{/t}</b></td>
                                             <td class="row2"><b>{t}Voucher Code{/t}</b></td>
+                                            <td class="row2"><b>{t}Amount{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td></td>
@@ -319,11 +320,13 @@
                                                     } );                                                        
                                                 </script>                                                    
                                             </td>
-                                            <td><input name="qpayment[voucher_code]" class="paymentInput olotd5" type="text" maxlength="16" required onkeydown="return onlyVoucherCode(event);" disabled></td> 
+                                            <td><input name="qpayment[voucher_code]" class="paymentInput olotd5" size="32" value="{$voucher_code}" type="text" maxlength="16" required onkeydown="return onlyVoucherCode(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
                                             <td colspan="2"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td></td>
                                         </tr>                    
                                     </table>
                                 </td>
@@ -382,8 +385,8 @@
                                         <tr class="olotd4">
                                             <td class="row2"></td>
                                             <td class="row2"><b>{t}Date{/t}</b></td> 
-                                            <td class="row2"><b>{t}Transaction ID{/t}:</b></td>
-                                            <td class="row2"><b>{t}Amount{/t}:</b></td>
+                                            <td class="row2"><b>{t}Transaction ID{/t}</b></td>
+                                            <td class="row2"><b>{t}Amount{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
                                             <td></td>

@@ -100,13 +100,13 @@ class WorkOrder extends Components {
 
     public function insertHistory($workorder_id = null, $note = '') {
 
+        // This prevents errors from such public functions as email.php where a workorder_id is not always present - not currently used
+        if($workorder_id == null) { return; }
+        
         $this->db = \Factory::getDbo();
 
         // If Work Order History Notes are not enabled, exit
-        if($this->app->config->get('workorder_history_notes') != true) { return; }    
-
-        // This prevents errors from such public functions as email.php where a workorder_id is not always present - not currently used
-        if($workorder_id == null) { return; }
+        if($this->app->config->get('workorder_history_notes') != true) { return; }        
 
         $sql = "INSERT INTO ".PRFX."workorder_history SET            
                 employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
@@ -907,7 +907,7 @@ class WorkOrder extends Components {
     #  Check if the workorder status is allowed to be changed  #
     ############################################################
 
-     public function checkRecordAllowsChange($workorder_id) {
+     public function checkRecordAllowsStatusChange($workorder_id) {
 
         $state_flag = true;
 

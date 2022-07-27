@@ -25,7 +25,6 @@ if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this Voucher because its status does not allow it."));
     $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 }
-
        
 // if information submitted
 if(isset(\CMSApplication::$VAR['submit'])) {
@@ -33,8 +32,8 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     // Check the expiry date is valid, if not reload the page wiht an error message
     if($this->app->components->voucher->checkVoucherExpiryIsValid(\CMSApplication::$VAR['qform']['expiry_date']))
     {
-        // Create a new Voucher
-        $this->app->components->voucher->updateRecord(\CMSApplication::$VAR['qform']['voucher_id'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['note']);
+        // Update Voucher
+        $this->app->components->voucher->updateRecord(\CMSApplication::$VAR['qform']['voucher_id'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['note']);
 
         // Load the new Voucher's Details page
         $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['qform']['voucher_id']);    
@@ -54,6 +53,6 @@ $this->app->smarty->assign('client_details', $this->app->components->client->get
 $this->app->smarty->assign('voucher_statuses', $this->app->components->voucher->getStatuses());
 $this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
 
-// Compensate for the page being relaoded after an error with the expiry date
+// Compensate for the page being reloaded after an error with the expiry date
 if(isset($voucher_expiry_date)) {$voucher_details['expiry_date'] = $voucher_expiry_date;}
 $this->app->smarty->assign('voucher_details', $voucher_details);

@@ -48,7 +48,7 @@ class Expense extends Components {
 
         /* This code is not used because I removed 'invoice_id'
          * Get related invoice details
-        $invoice_details = $this->app->components->invoice->get_invoice_details($qform['invoice_id']);
+        $invoice_details = $this->app->components->invoice->getRecord($qform['invoice_id']);
 
         // Create a Workorder History Note
         $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$this->app->db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
@@ -259,7 +259,7 @@ class Expense extends Components {
 
         /* This code is not used because I removed 'invoice_id'
          * Get related invoice details
-        $invoice_details = $this->app->components->invoice->get_invoice_details($qform['invoice_id']);
+        $invoice_details = $this->app->components->invoice->getRecord($qform['invoice_id']);
 
         // Create a Workorder History Note
         $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("updated").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
@@ -314,7 +314,7 @@ class Expense extends Components {
 
         /* This code is not used because I removed 'invoice_id'
          * Get related invoice details
-        $invoice_details = $this->app->components->invoice->get_invoice_details($expense_details['invoice_id']);
+        $invoice_details = $this->app->components->invoice->getRecord($expense_details['invoice_id']);
 
         // Create a Workorder History Note (Not Used)      
         $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
@@ -349,7 +349,7 @@ class Expense extends Components {
         $expense_details = $this->getRecord($expense_id);
 
         // Get related invoice details
-        //$invoice_details = $this->app->components->invoice->get_invoice_details($expense_details['invoice_id']);
+        //$invoice_details = $this->app->components->invoice->getRecord($expense_details['invoice_id']);
 
         // Change the expense status to cancelled (I do this here to maintain consistency)
         $this->updateStatus($expense_id, 'cancelled');      
@@ -386,7 +386,7 @@ class Expense extends Components {
         $invoice_id = $this->get_expense_details($expense_id, 'invoice_id');
 
         // Get related invoice details before deleting the record
-        $invoice_details = $this->app->components->invoice->get_invoice_details($invoice_id);*/
+        $invoice_details = $this->app->components->invoice->getRecord($invoice_id);*/
 
         // Change the expense status to deleted (I do this here to maintain consistency)
         $this->updateStatus($expense_id, 'deleted');  
@@ -438,7 +438,7 @@ class Expense extends Components {
     #  Check if the expense status is allowed to be changed  #  // not currently used
     ##########################################################
 
-     public function checkRecordAllowsChange($expense_id) {
+     public function checkRecordAllowsStatusChange($expense_id) {
 
         $state_flag = true;
 

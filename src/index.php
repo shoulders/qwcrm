@@ -90,7 +90,7 @@ if(!defined('QWCRM_SETUP')) {
     $app->system->variables->smartySetUserVariables();
 }
 
-// Build and Load the page into memmory
+// Build and Load the page into memory
 $app->system->page->loadPage('set_controller');
 
 ################################################

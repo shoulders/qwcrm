@@ -44,7 +44,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         \CMSApplication::$start_month           = date('m', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
         \CMSApplication::$start_day             = date('d', $this->app->system->general->date_to_timestamp(\CMSApplication::$VAR['qform']['start_date'])  );
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Schedule Successfully Updated."));
-        $this->app->system->page->force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id']);
+        $this->app->system->page->forcePage('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\CMSApplication::$VAR['qform']['employee_id'].'&workorder_id='.\CMSApplication::$VAR['qform']['workorder_id']);
         */
         
         // Load the updated schedule details page

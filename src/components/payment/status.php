@@ -21,7 +21,7 @@ if(isset(\CMSApplication::$VAR['change_status'])){
 }
 
 // Build the page with the current status from the database
-$this->app->smarty->assign('allowed_to_change_status',        $this->app->components->payment->checkRecordAllowsChange(\CMSApplication::$VAR['payment_id'])      );
+$this->app->smarty->assign('allowed_to_change_status',        $this->app->components->payment->checkRecordAllowsStatusChange(\CMSApplication::$VAR['payment_id'])      );
 $this->app->smarty->assign('payment_status',                  $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id'], 'status')             );
 $this->app->smarty->assign('payment_statuses',                $this->app->components->payment->getStatuses() );
 $this->app->smarty->assign('allowed_to_cancel',               $this->app->components->payment->checkRecordAllowsCancel(\CMSApplication::$VAR['payment_id'])   );

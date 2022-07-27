@@ -8,58 +8,57 @@
 
 defined('_QWEXEC') or die;
 
-class PaymentMethodBanktransfer {
-    
-    private $app = null;
-    private $VAR = null;
-    private $smarty = null;
-    
-    public function __construct() {
+class PaymentMethodBanktransfer extends PaymentMethod
+{    
+    public function __construct()
+    {       
+        parent::__construct();
         
         // Set class variables
-        $this->app = \Factory::getApplication();
-        $this->VAR = &\CMSApplication::$VAR;        
-        
+        Payment::$payment_details['method'] = 'bank_transfer';
     }
     
     // Pre-Processing
-    public function preProcess() {
-
-            return true;
-            
+    public function preProcess()
+    {
+        parent::preProcess();
+        return;            
     }
 
     // Processing
-    public function process() {
+    public function process()
+    {        
+        parent::process();
         
-        // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson($this->VAR['qpayment']['bank_transfer_reference']);     
-        
-        // Insert the payment with the calculated information
-        if($this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
-            Payment::$payment_processed = true;            
+        if(Payment::$action === 'new')
+        { 
+            // Build additional_info column
+            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson($this->VAR['qpayment']['bank_transfer_reference']);     
+
+            // Insert the payment with the calculated information
+            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
+                Payment::$payment_successful = true;            
+            }
         }
         
-        return;
-        
+        return;        
     }
     
     // Post-Processing 
-    public function postProcess() { 
+    public function postProcess()
+    {        
+        parent::postProcess();
         
         // Set success/failure message
-        if(!Payment::$payment_processed) {
-        
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Bank Transfer payment was not successful."));
-        
-        } else {            
-            
+        if(Payment::$payment_successful)
+        {
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Bank Transfer payment added successfully."));
-
+        }
+        else
+        {            
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Bank Transfer payment was not successful."));
         }
         
-        return;
-       
-    }  
-
+        return;       
+    }
 }

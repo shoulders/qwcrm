@@ -187,10 +187,13 @@ _gettext("Multi Purpose (MPV)");
 _gettext("Single Purpose (SPV)");
 
 /* Voucher Statuses */
-_gettext("Unused");
-_gettext("Redeemed");
+_gettext("Unpaid");
+_gettext("Partially Paid");
+_gettext("Paid Unused");
+_gettext("Partially Redeemed");
+_gettext("Fully Redeemed");
 _gettext("Suspended");
-_gettext("Expired");
+_gettext("Expired Unused");
 _gettext("Refunded");
 _gettext("Cancelled");
 _gettext("Deleted");

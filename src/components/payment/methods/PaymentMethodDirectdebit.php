@@ -8,57 +8,58 @@
 
 defined('_QWEXEC') or die;
 
-class PaymentMethodDirectdebit {
-    
-    private $app = null;
-    private $VAR = null;    
-    
-    public function __construct() {
+class PaymentMethodDirectdebit extends PaymentMethod
+{    
+    public function __construct()
+    {        
+        parent::__constuct();
         
         // Set class variables
-        $this->app = \Factory::getApplication();
-        $this->VAR = &\CMSApplication::$VAR;
-                
+        Payment::$payment_details['method'] = 'direct_debit';
     }
     
     // Pre-Processing
-    public function preProcess() {
-
-            return true;
-            
+    public function preProcess()
+    {
+        parent::preProcess();
+        return;            
     }
 
     // Processing
-    public function process() {
+    public function process()
+    {
+        parent::process();
         
-        // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, null, null, null, $this->VAR['qpayment']['direct_debit_reference']);   
-        
-        // Insert the payment with the calculated information
-        if($this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
-            Payment::$payment_processed = true;            
+        if(Payment::$action === 'new')
+        { 
+            // Build additional_info column
+            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, null, null, null, $this->VAR['qpayment']['direct_debit_reference']);   
+
+            // Insert the payment with the calculated information
+            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
+                Payment::$payment_successful = true;            
+            }
         }
         
-        return;
-        
+        return;        
     }
     
     // Post-Processing 
-    public function postProcess() { 
+    public function postProcess()
+    { 
+        parent::postProcess();
         
         // Set success/failure message
-        if(!Payment::$payment_processed) {
-        
+        if(Payment::$payment_successful)
+        {
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Direct Debit payment added successfully."));        
+        }
+        else
+        {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Direct Debit payment was not successful."));
-        
-        } else {            
-            
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Direct Debit payment added successfully."));
-
         }
         
-        return;
-       
+        return;       
     }  
 
 }

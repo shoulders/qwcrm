@@ -695,7 +695,36 @@ ALTER TABLE `#__otherincome_records` DROP `vat_tax_code`;
 ALTER TABLE `#__otherincome_records` DROP `unit_tax_rate`;
 
 --
--- Add Voucher Expiry Offset
+-- Upgrade Voucher system
 --
 
 ALTER TABLE `#__company_record` ADD `voucher_expiry_offset` INT(5) UNSIGNED NOT NULL DEFAULT '1827' AFTER `year_end`;
+TRUNCATE TABLE `#__voucher_statuses`;
+INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid_unused', 'Paid Unused'),
+(4, 'partially_redeemed', 'Partially Redeemed'),
+(5, 'fully_redeemed', 'Fully Redeemed'),
+(6, 'suspended', 'Suspended'),
+(7, 'expired_unused', 'Expired Unused'),
+(8, 'refunded', 'Refunded'),
+(9, 'cancelled', 'Cancelled'),
+(10, 'deleted', 'Deleted');
+ALTER TABLE `#__voucher_records` CHANGE `balance` `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+UPDATE `#__voucher_records` SET `type` = 'mpv' WHERE `type` = 'MPV';
+UPDATE `#__voucher_records` SET `type` = 'spv' WHERE `type` = 'SPV';
+UPDATE `#__voucher_records` SET `balance` = `unit_gross` WHERE `status` != 'redeemed';
+UPDATE `#__voucher_records` SET `status` = 'expired_unused' WHERE `status` = 'expired';
+UPDATE `#__voucher_records` SET `status` = 'paid_unused' WHERE `status` = 'unused';
+UPDATE `#__voucher_records` SET `status` = 'fully_redeemed' WHERE `status` = 'redeemed';
+ALTER TABLE `#__voucher_records` DROP `payment_id`;
+ALTER TABLE `#__voucher_records` DROP `redeemed_on`;
+ALTER TABLE `#__voucher_records` DROP `redeemed_client_id`;
+ALTER TABLE `#__voucher_records` DROP `redeemed_invoice_id`;
+
+--
+-- Misc
+--
+
+ALTER TABLE `#__invoice_records` CHANGE `unit_discount` `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`; 

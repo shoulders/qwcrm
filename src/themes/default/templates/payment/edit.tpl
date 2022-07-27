@@ -90,7 +90,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Parent Record Balance{/t}</b></td>
-                                                        <td>{$currency_sym}{$record_balance|string_format:"%.2f"} ({t}As if this payment has not been applied{/t})</td>
+                                                        <td>{$currency_sym}{$parent_record_balance|string_format:"%.2f"} ({t}As if this payment has not been applied{/t})</td>
                                                         
                                                     </tr>
                                                     <tr>

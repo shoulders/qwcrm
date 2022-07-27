@@ -12,12 +12,11 @@
         <td class="olohead">{t}Employee{/t}</td>
         <td class="olohead">{t}WO ID{/t}</td>
         <td class="olohead">{t}Inv ID{/t}</td>
-        <td class="olohead">{t}Payment ID{/t}</td>
+        {*<td class="olohead">{t}Payment ID{/t}</td>*}
         <td class="olohead">{t}Code{/t}</td>
         <td class="olohead">{t}Client{/t}</td>
         <td class="olohead">{t}Opened{/t}</td>
         <td class="olohead">{t}Expires{/t}</td>
-        <td class="olohead">{t}Date Redeemed{/t}</td> 
         <td class="olohead">{t}Closed{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Blocked{/t}</td>   
@@ -25,10 +24,10 @@
             <td class="olohead" nowrap>{t}Net{/t}</td>
             <td class="olohead"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
         {/if}        
-        <td class="olohead">{t}Gross{/t}</td>        
+        <td class="olohead">{t}Gross{/t}</td>     
+        <td class="olohead">{t}Balance{/t}</td>
         <td class="olohead">{t}Refund ID{/t}</td>
-        <td class="olohead">{t}Redeemed By{/t}</td>
-        <td class="olohead">{t}Redeemed Invoice{/t}</td>
+        <td class="olohead">{t}Redemptions{/t}</td>
         <td class="olohead">{t}Note{/t}</td>        
         <td class="olohead">{t}Action{/t}</td>
     </tr>
@@ -38,12 +37,10 @@
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_vouchers.records[g].employee_id}">{$display_vouchers.records[g].employee_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_vouchers.records[g].workorder_id}">{$display_vouchers.records[g].workorder_id}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_vouchers.records[g].invoice_id}">{$display_vouchers.records[g].invoice_id}</a></td>            
-            <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_vouchers.records[g].payment_id}">{$display_vouchers.records[g].payment_id}</a></td>            
             <td class="olotd4">{$display_vouchers.records[g].voucher_code}</td>
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_vouchers.records[g].client_id}">{$display_vouchers.records[g].client_display_name}</a></td>
             <td class="olotd4">{$display_vouchers.records[g].opened_on|date_format:$date_format}</td>
             <td class="olotd4">{$display_vouchers.records[g].expiry_date|date_format:$date_format}</td>
-            <td class="olotd4">{$display_vouchers.records[g].redeemed_on|date_format:$date_format}</td>
             <td class="olotd4">{$display_vouchers.records[g].closed_on|date_format:$date_format}</td>
             <td class="olotd4">
                 {section name=s loop=$voucher_statuses}    
@@ -64,10 +61,14 @@
                 <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_net}</td>
                 <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_tax}</td>
             {/if}
-            <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_gross}</td>            
+            <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_gross}</td>      
+            <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].balance}</td>
             <td class="olotd4">{if $display_vouchers.records}<a href="index.php?component=refund&page_tpl=details&refund_id={$display_vouchers.records[g].refund_id}">{$display_vouchers.records[g].refund_id}</a>{else}&nbsp;{/if}</td>
-            <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_vouchers.records[g].redeemed_client_id}">{$display_vouchers.records[g].redeemed_client_display_name}</a></td>
-            <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_vouchers.records[g].redeemed_invoice_id}">{$display_vouchers.records[g].redeemed_invoice_id}</a></td>
+            <td class="olotd4" nowrap>
+                {if $display_vouchers.records[g].redemptions}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Voucher Redemptions{/t}</strong></div><hr><div>{$display_vouchers.records[g].redemptions|redemptions|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {/if}
+            </td>
             <td class="olotd4" nowrap>
                 {if $display_vouchers.records[g].note}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_vouchers.records[g].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">

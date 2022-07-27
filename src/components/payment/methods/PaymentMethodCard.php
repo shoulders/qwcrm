@@ -8,58 +8,57 @@
 
 defined('_QWEXEC') or die;
 
-class PaymentMethodCard {
-    
-    private $app = null;
-    private $VAR = null;
-    private $smarty = null;
-    
-    public function __construct() {
+class PaymentMethodCard extends PaymentMethod
+{    
+    public function __construct()
+    {        
+        parent::__construct();
         
         // Set class variables
-        $this->app = \Factory::getApplication();
-        $this->VAR = &\CMSApplication::$VAR;
-                
+        Payment::$payment_details['method'] = 'card';
     }
     
     // Pre-Processing
-    public function preProcess() {
-
-            return true;
-            
+    public function preProcess()
+    {
+        parent::preProcess();
+        return;            
     }
 
     // Processing
-    public function process() {
+    public function process()
+    {        
+        parent::process();
         
-        // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, $this->VAR['qpayment']['card_type_key'], $this->VAR['qpayment']['name_on_card']);  
-        
-        // Insert the payment with the calculated information
-        if($this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
-            Payment::$payment_processed = true;            
+        if(Payment::$action === 'new')
+        {
+            // Build additional_info column
+            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, $this->VAR['qpayment']['card_type_key'], $this->VAR['qpayment']['name_on_card']);  
+
+            // Insert the payment with the calculated information
+            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
+                Payment::$payment_successful = true;            
+            }
         }
         
-        return;
-        
+        return;        
     }
     
     // Post-Processing 
-    public function postProcess() { 
+    public function postProcess()
+    {        
+        parent::postProcess();
         
         // Set success/failure message
-        if(!Payment::$payment_processed) {
-        
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Card payment was not successful."));
-        
-        } else {            
-            
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Card payment added successfully."));
-
+        if(Payment::$payment_successful)
+        {
+           $this->app->system->variables->systemMessagesWrite('success', _gettext("Card payment added successfully."));        
+        }
+        else
+        {            
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Card payment was not successful.")); 
         }
         
-        return;
-       
+        return;       
     } 
-
 }

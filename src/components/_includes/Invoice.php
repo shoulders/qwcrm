@@ -54,7 +54,7 @@ defined('_QWEXEC') or die;
         // Get invoice_id
         $invoice_id = $this->app->db->Insert_ID();
 
-        // Create a Workorder History Note  
+        // Create a Workorder History Note
         $this->app->components->workorder->insertHistory($workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
@@ -429,12 +429,14 @@ defined('_QWEXEC') or die;
 
     public function getLabourItemsSubtotals($invoice_id) {
 
-        // I could use $this->app->components->report->sum_labour_items() 
+        // I could use $this->app->components->report->sumLabourItems() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
+        // $labour_items_subtotals = $this->app->components->report->getInvoicesStats('labour', null, null, null, null, null, $invoice_id);        
 
+        // the first line is wrong and also on parts
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
-                SUM(subtotal_net) AS subtotal_net,
+                SUM(subtotal_net) AS subtotal_net,                
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
                 FROM ".PRFX."invoice_labour
@@ -492,12 +494,13 @@ defined('_QWEXEC') or die;
 
     public function getPartsItemsSubtotals($invoice_id) {
 
-        // I could use $this->app->components->report->sum_parts_items()
+        // I could use $this->app->components->report->sumPartsItems() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
+        // $parts_subtotals = $this->app->components->report->getInvoicesStats('parts', null, null, null, null, null, $invoice_id);
 
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
-                SUM(subtotal_net) AS subtotal_net,
+                SUM(subtotal_net) AS subtotal_net,                
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
                 FROM ".PRFX."invoice_parts
@@ -724,6 +727,9 @@ defined('_QWEXEC') or die;
             $this->updateClosedStatus($invoice_id, 'open');
         }
 
+        // Process invoice Vouchers and their status
+        $this->app->components->voucher->updateInvoiceVouchersStatuses($invoice_id, $new_status);
+        
         // Status updated message
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice status updated."));  
 
@@ -740,7 +746,7 @@ defined('_QWEXEC') or die;
         // Update last active record
         $this->app->components->client->updateLastActive($invoice_details['client_id']);
         $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-        $this->updateLastActive($invoice_id);                
+        $this->updateLastActive($invoice_id);             
 
         return true;
 
@@ -826,8 +832,8 @@ defined('_QWEXEC') or die;
         // Insert refund record and return refund_id
         $refund_id = $this->app->components->refund->insertRecord($refund_details);
 
-        // Refund any Vouchers
-        $this->app->components->voucher->refundInvoiceVouchers($refund_details['invoice_id'], $refund_id);
+        // Refund any Vouchers - handled in updateInvoiceVouchersStatuses()
+        //$this->app->components->voucher->refundInvoiceVouchers($refund_details['invoice_id'], $refund_id);
 
         // Update the invoice with the new refund_id
         $this->updateRefundId($refund_details['invoice_id'], $refund_id);    
@@ -865,8 +871,8 @@ defined('_QWEXEC') or die;
         // Get invoice details
         $invoice_details = $this->getRecord($invoice_id);  
 
-        // Cancel any Vouchers
-        $this->app->components->voucher->cancelInvoiceVouchers($invoice_id);
+        // Cancel any Vouchers - handled in updateInvoiceVouchersStatuses()
+        //$this->app->components->voucher->cancelInvoiceVouchers($invoice_id);
 
         // Change the invoice status to cancelled (I do this here to maintain consistency)
         $this->updateStatus($invoice_id, 'cancelled');      
@@ -903,14 +909,14 @@ defined('_QWEXEC') or die;
         // Get invoice details
         $invoice_details = $this->getRecord($invoice_id);
 
-        // Delete any Vouchers
-        $this->app->components->voucher->deleteInvoiceVouchers($invoice_id);  
+        // Delete any Vouchers - handled in updateInvoiceVouchersStatuses()
+        //$this->app->components->voucher->deleteInvoiceVouchers($invoice_id);  
 
         // Delete parts and labour
         $this->deleteLabourItems($invoice_id);
         $this->deletePartsItems($invoice_id);
 
-        // Change the invoice status to deleted (I do this here to maintain log consistency)
+        // Change the invoice status to deleted - This triggers certain routines such as voucher deletion
         $this->updateStatus($invoice_id, 'deleted'); 
 
         // Build the data to replace the invoice record (some stuff has just been updated with $this->update_invoice_status())
@@ -945,11 +951,19 @@ defined('_QWEXEC') or die;
         $this->app->components->workorder->insertHistory($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $record = _gettext("Invoice").' '.$invoice_details['invoice_id'].' ';
+        if($invoice_details['workorder_id'])
+        {
+            $record .= _gettext("for Work Order").' '.$invoice_details['workorder_id'].' ';
+        }
+        $record .= _gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update workorder status
-        $this->app->components->workorder->updateStatus($invoice_details['workorder_id'], 'closed_without_invoice');        
+        if($invoice_details['workorder_id'])
+        {
+            $this->app->components->workorder->updateStatus($invoice_details['workorder_id'], 'closed_without_invoice');        
+        }
 
         // Update last active record
         $this->app->components->client->updateLastActive($invoice_details['client_id']);
@@ -994,12 +1008,18 @@ defined('_QWEXEC') or die;
     #  Check if the invoice status is allowed to be changed  #
     ##########################################################
 
-     public function checkRecordAllowsChange($invoice_id) {
+     public function checkRecordAllowsStatusChange($invoice_id) {
 
         $state_flag = true; 
 
         // Get the invoice details
         $invoice_details = $this->getRecord($invoice_id);
+        
+        // Is on a different tax system
+        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it is on a different Tax system."));
+            $state_flag = false;       
+        }
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
@@ -1054,7 +1074,7 @@ defined('_QWEXEC') or die;
      }
 
     ###############################################################
-    #   Check to see if the invoice can be refunded (by status)   #
+    #   Check to see if the invoice can be refunded               #
     ###############################################################
 
     public function checkRecordAllowsRefund($invoice_id) {
@@ -1063,6 +1083,12 @@ defined('_QWEXEC') or die;
 
         // Get the invoice details
         $invoice_details = $this->getRecord($invoice_id);
+        
+        // Is on a different tax system
+        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because it is on a different Tax system."));
+            $state_flag = false;       
+        }
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
@@ -1126,6 +1152,12 @@ defined('_QWEXEC') or die;
 
         // Get the invoice details
         $invoice_details = $this->getRecord($invoice_id);
+        
+        // Is on a different tax system
+        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it is on a different Tax system."));
+            $state_flag = false;       
+        }
 
         // Does not have a balance
         if($invoice_details['balance'] == 0) {
@@ -1196,6 +1228,12 @@ defined('_QWEXEC') or die;
 
         // Get the invoice details
         $invoice_details = $this->getRecord($invoice_id);
+        
+        // Is on a different tax system
+        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it is on a different Tax system."));
+            $state_flag = false;       
+        }
 
         // Is closed
         if($invoice_details['is_closed'] == true) {
@@ -1357,6 +1395,7 @@ defined('_QWEXEC') or die;
     ################################################  // might njot be needed anymore
                                                       // this is used in 3.1.0 upgrade
                                                       // this should be removed or remmend out
+                                                      // these dont take into account individual rows
 
     /*public function calculateItemsSubtotals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
 
@@ -1394,23 +1433,37 @@ defined('_QWEXEC') or die;
     }*/
 
     #####################################  // Most calculations are done on the invoice:edit tpl but this is still required for when payments are made because of the balance field
-    #   Recalculate Invoice Totals      #  
+    #   Recalculate Invoice Totals      #  // Vouchers cannot be accounted for update voucher and insert voucher
     #####################################  // Vouchers are not discounted on purpose
+                                           // this works for all tax systems because tax specific calculations are done on a per row basis in invoice:edit TPL
 
     public function recalculateTotals($invoice_id) {
-
-        $invoice_details            = $this->getRecord($invoice_id);         
-        $payments_subtotal         = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
-        $balance                   = $invoice_details['unit_gross'] - $payments_subtotal;
+        
+        $labour_subtotals       = $this->getLabourItemsSubtotals($invoice_id);
+        $parts_subtotals        = $this->getPartsItemsSubtotals($invoice_id);        
+        $voucher_subtotals      = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);        
+        $payments_subtotal      = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
+        
+        $unit_discount          = $labour_subtotals['subtotal_discount'] + $parts_subtotals['subtotal_discount'];
+        $unit_net               = $labour_subtotals['subtotal_net'] + $parts_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net'];        
+        $unit_tax               = $labour_subtotals['subtotal_tax'] + $parts_subtotals['subtotal_tax'] + $voucher_subtotals['subtotal_tax'];
+        $unit_gross             = $labour_subtotals['subtotal_gross'] + $parts_subtotals['subtotal_gross'] + $voucher_subtotals['subtotal_gross'];    
+        $balance                = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."invoice_records SET            
-                unit_paid           =". $this->app->db->qStr( $payments_subtotal  ).",
-                balance             =". $this->app->db->qStr( $balance            )."
-                WHERE invoice_id    =". $this->app->db->qStr( $invoice_id         );
+                unit_net            =". $this->app->db->qstr( $unit_net            ).",
+                unit_discount       =". $this->app->db->qstr( $unit_discount       ).",
+                unit_tax            =". $this->app->db->qstr( $unit_tax            ).",
+                unit_gross          =". $this->app->db->qstr( $unit_gross          ).",
+                unit_paid           =". $this->app->db->qstr( $payments_subtotal   ).",
+                balance             =". $this->app->db->qstr( $balance             )."
+                WHERE invoice_id    =". $this->app->db->qstr( $invoice_id          );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        /* Update Status - only change if there is a change in status */    
+        /* Update Status - only if required */    
+        
+        $invoice_details        = $this->getRecord($invoice_id); 
 
         // No invoiceable amount, set to pending (if not already)
         if($invoice_details['unit_gross'] == 0 && $invoice_details['status'] != 'pending') {
@@ -1431,7 +1484,7 @@ defined('_QWEXEC') or die;
         elseif($invoice_details['unit_gross'] > 0 && $invoice_details['unit_gross'] == $payments_subtotal && $invoice_details['status'] != 'paid') {            
             $this->updateStatus($invoice_id, 'paid');
         }        
-
+                
         return;
 
     }

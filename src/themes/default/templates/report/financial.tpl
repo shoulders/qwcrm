@@ -183,8 +183,8 @@
                                                                         <td><font color="red"><b>{$voucher_stats.count_redeemed}</b></font></td>
                                                                     </tr> 
                                                                     <tr>
-                                                                        <td><b>{t}Expired{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$voucher_stats.count_expired}</b></font></td>
+                                                                        <td><b>{t}Expired Unused{/t}:</b></td>
+                                                                        <td><font color="red"><b>{$voucher_stats.count_expired_unused}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Refunded{/t}:</b></td>
@@ -235,7 +235,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Qty{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$invoice_stats.labour_sum_items|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$invoice_stats.labour_sum_unit_qty|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
@@ -263,7 +263,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Qty{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$invoice_stats.parts_sum_items|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$invoice_stats.parts_sum_unit_qty|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
@@ -600,19 +600,19 @@
                                                                         <td><hr></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td colspan="2">{t}Expired Vouchers{/t}</td>
+                                                                        <td colspan="2">{t}Expired Unused{/t} {t}Vouchers{/t}</td>
                                                                     </tr>                                                                    
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unit_net|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unused_unit_net|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Tax{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unit_tax|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unused_unit_tax|string_format:"%.2f"}</b></font></td>
                                                                     </tr>   
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unit_gross|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_unused_unit_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>

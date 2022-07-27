@@ -8,82 +8,175 @@
 
 defined('_QWEXEC') or die;
 
-class PaymentTypeExpense {
+class PaymentTypeExpense extends PaymentType
+{     
+    private $expense_details = array();
     
-    private $app = null;
-    private $VAR = null;    
-    private $expense_details = null;
-    
-    public function __construct() {
+    public function __construct()
+    {        
+        parent::__construct();
         
         // Set class variables
-        $this->app = \Factory::getApplication();
-        $this->VAR = &\CMSApplication::$VAR;        
-        $this->expense_details = $this->app->components->expense->getRecord($this->VAR['qpayment']['expense_id']);        
+        Payment::$payment_details['type'] = 'expense';            
+        $this->expense_details = $this->app->components->expense->getRecord($this->VAR['qpayment']['expense_id']); // only needed for smarty?
+        
+        // For logging and insertRecord()
+        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = null;
+        Payment::$payment_details['workorder_id'] = \CMSApplication::$VAR['qpayment']['workorder_id'] = null;
+        Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = null;
         
         // Set intial record balance
         Payment::$record_balance = (float) $this->expense_details['balance'];
         
-        // Assign Type specific template variables  
+        // Assign Type specific template variables  - should these be here, maybe in post
         $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, array()));
         $this->app->smarty->assign('expense_details', $this->expense_details);
-        $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses());   
-        
+        $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses());        
     }    
     
     // Pre-Processing
-    public function preProcess() {
+    public function preProcess()
+    {
+        parent::preProcess();        
         
-        // Add required variables
-        $this->VAR['qpayment']['client_id'] = '';
-        $this->VAR['qpayment']['workorder_id'] = '';
+        if(Payment::$action === 'new')
+        {            
+            // Do nothing
+        }        
         
-        // Validate payment_amount (New Payments)
-        if(Payment::$action === 'new') {
-            Payment::$record_balance = (float) $this->expense_details['balance'];
-            if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, $this->VAR['qpayment']['amount'])) {
-                Payment::$payment_valid = false;
-            }            
+        if(Payment::$action === 'edit')
+        {            
+           // Do nothing                       
         }
         
-        // Validate payment_amount (Payment Update)
-        if(Payment::$action === 'update') {
-            Payment::$record_balance = ((float) $this->expense_details['balance'] + (float) Payment::$payment_details['amount']);
-            if(!$this->app->components->payment->checkAmountValid(Payment::$record_balance, Payment::$payment_details['amount'])) {
-                Payment::$payment_valid = false;
-            }
+        if(Payment::$action === 'cancel')
+        {            
+            // Do nothing
+        }
+        
+        if(Payment::$action === 'delete')
+        {            
+            // Do nothing
         }
         
         return;
-
     }
 
     // Processing
-    public function process() {
+    public function process()
+    {
+        parent::process();
         
         // Recalculate record totals
         $this->app->components->expense->recalculateTotals($this->VAR['qpayment']['expense_id']);
         
         // Refresh the record data        
-        $this->expense_details = $this->app->components->expense->getRecord($this->VAR['qpayment']['expense_id']);
-        $this->app->smarty->assign('expense_details', $this->expense_details);
+        $this->expense_details = $this->app->components->expense->getRecord($this->VAR['qpayment']['expense_id']);        
         Payment::$record_balance = (float) $this->expense_details['balance'];
         
-        return;
+        $this->app->smarty->assign('expense_details', $this->expense_details);  ////////////////////
         
+        // New
+        if(Payment::$action === 'new')
+        {      
+            // Do nothing
+        }
+        
+        // Edit
+        if(Payment::$action === 'edit')
+        {
+            // Do nothing
+        }
+        
+        // Cancel
+        if(Payment::$action === 'cancel')
+        {            
+            // Do nothing
+        }
+        
+        // Delete
+        if(Payment::$action === 'delete')
+        {            
+            // Do nothing
+        }
+       
+        return;    
     }
     
     // Post-Processing 
-    public function postProcess() {   
+    public function postProcess()
+    { 
+        parent::postProcess();
         
-        /* If the balance has been cleared, redirect to the record details page
-        if($this->expense_details['balance'] == 0) {
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("The balance has been cleared."));
-            $this->app->system->page->force_page('expense', 'details&expense_id='.$this->VAR['expense_id']);
-        }*/
+        // Different actions depending on success
+        if(Payment::$payment_successful)
+        {
+            // If the balance has been cleared
+            if(Payment::$record_balance == 0)
+            {
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("The balance has been cleared."));
+                $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['expense_id']);
+            }
+            
+            // New
+            if(Payment::$action === 'new')
+            {
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment added successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+                // No forcepage, this will reload the new payment page
+            }
+            
+            // Edit
+            if(Payment::$action === 'edit')
+            {
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
+            }
+            
+            // Cancel
+            if(Payment::$action === 'cancel')
+            {
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
+            }
+            
+            // Delete
+            if(Payment::$action === 'delete')
+            {
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
+            } 
+            
+        }
+        else
+        {
+            // The same page will be reloaded unless specified here, error messages is handled by methof
+            
+            // New
+            if(Payment::$action === 'new')
+            {
+                // Do nothing
+            }
+            
+            // Edit
+            if(Payment::$action === 'edit')
+            {
+                // Do nothing
+            }
+            
+            // Cancel
+            if(Payment::$action === 'cancel')            {
+                
+                $this->app->system->page->forcePage('expense', 'status&expense_id='.$this->VAR['qpayment']['expense_id']);                
+            }
+            
+            // Delete
+            if(Payment::$action === 'delete')
+            {
+                $this->app->system->page->forcePage('expense', 'status&expense_id='.$this->VAR['qpayment']['expense_id']);
+            } 
+        }
         
-        return;
-       
+        return;       
     }
     
     // Build Buttons
@@ -119,82 +212,5 @@ class PaymentTypeExpense {
             Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Expense Record");
         }
         
-    }   
-    
-    // Update Payment
-    public function update() {
-        
-        // Update the payment
-        $this->app->components->payment->updateRecord($this->VAR['qpayment']);
-                
-        // Recalculate record totals
-        $this->app->components->expense->recalculateTotals($this->VAR['qpayment']['expense_id']);
-        
-        // Refresh the record data        
-        //$this->expense_details = $this->app->components->expense->get_expense_details($this->VAR['qpayment']['expense_id']);        
-        
-        // Load the relevant record details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
-                
-        return;        
-        
     }
-    
-    // Cancel Payment
-    public function cancel() {
-        
-        // Cancel the payment
-        $this->app->components->payment->cancelRecord($this->VAR['qpayment']['payment_id']);
-                
-        // Recalculate record totals
-        $this->app->components->expense->recalculateTotals($this->VAR['qpayment']['expense_id']);
-        
-        // Refresh the record data        
-        //$this->expense_details = $this->app->components->expense->get_expense_details($this->VAR['qpayment']['expense_id']);        
-        
-        // Load the relevant record details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
-                
-        return;        
-        
-    }
-    
-    // Delete Payment
-    public function delete() {
-        
-        // Delete the payment
-        $this->app->components->payment->deleteRecord($this->VAR['qpayment']['payment_id']);
-                
-        // Recalculate record totals
-        $this->app->components->expense->recalculateTotals($this->VAR['qpayment']['expense_id']);
-        
-        // Refresh the record data        
-        //$this->expense_details = $this->app->components->expense->get_expense_details($this->VAR['qpayment']['expense_id']);        
-        
-        // Load the relevant record details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
-        $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
-                
-        return;        
-        
-    }
-    
-    // Check Payment is allowed
-    public function checkPaymentAllowed() {
-        
-        $state_flag = true;
-        
-        /* Is on a different tax system
-        if($this->expense_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot receive a payment because it is on a different tax system."));
-            $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
-            //$state_flag = false;           
-        }*/
-        
-        return $state_flag;
-       
-    }
-
 }

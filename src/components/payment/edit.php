@@ -18,41 +18,16 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
 if(!$this->app->components->payment->checkRecordAllowsEdit(\CMSApplication::$VAR['payment_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this payment because its status does not allow it."));
     $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
-}
-           
-// Load the Type and Method classes (files only, no store)
-\CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/types/'); 
-//\CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/methods/');       
+}  
 
-// Set Action Type
-Payment::$action = 'update';
-
-// Set Payment details
-Payment::$payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);
-
-// Set Payment into [qpayment]
-$this->app->components->payment->buildQpaymentArray();
-
-// Set the payment type class (Capitlaise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
-$typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['type']));
-$paymentType = new $typeClassName;
-
-// Prep/validate the data        
-$paymentType->preProcess();
+// Build the Payment Environment
+$this->app->components->payment->buildPaymentEnvironment('edit');
 
 // If the form is submitted
-if(isset(\CMSApplication::$VAR['submit'])) {            
-
-    // Process the update if valid
-    if(Payment::$payment_valid) {  
-
-        // process and update the payment record in the database
-        $paymentType->update();
-
-        // Get the updated details
-        Payment::$payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);
-    }
-
+if(isset(\CMSApplication::$VAR['submit']))
+{
+    // Process the payment
+    $this->app->components->payment->processPayment();
 }
 
 // Build the page
@@ -62,4 +37,4 @@ $this->app->smarty->assign('payment_types',            $this->app->components->p
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods());
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses() );
 $this->app->smarty->assign('payment_details',          Payment::$payment_details);
-$this->app->smarty->assign('record_balance',           Payment::$record_balance);
+$this->app->smarty->assign('parent_record_balance',    Payment::$record_balance + Payment::$payment_details['amount']);

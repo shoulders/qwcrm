@@ -182,9 +182,9 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Unused{/t}:</b></td>
+                    <td><b>{t}Paid Unused{/t}:</b></td>
                     <td><b>{$voucher_stats.count_unused}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_unused_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_paid_unused_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Suspended{/t}:</b></td>
@@ -213,8 +213,8 @@
                     <td colspan="3">&nbsp;</td>                    
                 </tr>
                 <tr>
-                    <td><b>{t}Expired{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_expired}</b></td>
+                    <td><b>{t}Expired Unused{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_expired_unused}</b></td>
                     <td><b>({$currency_sym}{$voucher_stats.sum_expired_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>

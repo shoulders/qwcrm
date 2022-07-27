@@ -235,7 +235,9 @@
                                                                 {/if}
                                                                 <td>{$currency_sym}{$labour_items[l].subtotal_gross|string_format:"%.2f"}</td>                                                            
                                                             </tr>
-                                                        {/section}                                               
+                                                        {/section}
+                                                        
+                                                        <!-- Labour Sub Totals -->
                                                         <tr>
                                                             <td colspan="10" style="text-align:right;">
                                                                 <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
@@ -251,6 +253,8 @@
                                                                 </table>  
                                                             </td>
                                                         </tr>
+                                                        
+                                                        
                                                     </table>
                                                 {/if}
                                                 <br>
@@ -317,12 +321,14 @@
                                                                 <td>{$currency_sym}{$parts_items[p].subtotal_gross|string_format:"%.2f"}</td>                                                            
                                                             </tr>
                                                         {/section}
+                                                        
+                                                        <!-- Parts Sub Totals -->
                                                         <tr>
                                                             <td colspan="10" style="text-align:right;">
                                                                 <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                                                     <tr>
                                                                         <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
-                                                                        <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_subtotals.subtotal_discount|string_format:"%.2f"}</td>
+                                                                        <td width="80" align="right">{t}Discount{/t}: {$currency_sym}{$parts_items_subtotals.subtotal_discount|string_format:"%.2f"}</td>
                                                                         {if $invoice_details.tax_system != 'no_tax'}
                                                                             <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_subtotals.subtotal_net|string_format:"%.2f"}</td>                                                                       
                                                                             <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$parts_items_subtotals.subtotal_tax|string_format:"%.2f"}</td>
@@ -332,6 +338,7 @@
                                                                 </table>  
                                                             </td>
                                                         </tr>
+                                                        
                                                     </table>
                                                 {/if}                                                
                                             </td>

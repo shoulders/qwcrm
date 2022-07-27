@@ -20,22 +20,8 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
     $this->app->system->page->forcePage('payment', 'search');
 }   
 
-// Load the Type and Method classes (files only, no store)
-\CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/types/'); 
-//\CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/methods/');
+// Build the Payment Environment
+$this->app->components->payment->buildPaymentEnvironment('cancel');
 
-// Set Action Type
-Payment::$action = 'cancel';
-        
-// Set Payment details
-Payment::$payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);
-
-// Set Payment into [qpayment]
-$this->app->components->payment->buildQpaymentArray();
-
-// Set the payment type class (Capitlaise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
-$typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['type']));
-$paymentType = new $typeClassName;
-
-// Run the type specific cancel routines
-$paymentType->cancel();
+// Process the payment
+$this->app->components->payment->processPayment();

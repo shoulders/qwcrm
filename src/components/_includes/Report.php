@@ -247,7 +247,7 @@ class Report extends Components {
     #   Get All invoices stats          #
     #####################################
 
-    public function getInvoicesStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null) {
+    public function getInvoicesStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $invoice_id = null) {
 
         $stats = array();
 
@@ -310,24 +310,26 @@ class Report extends Components {
         // Labour -----------------
         if($record_set == 'labour' || $record_set == 'all') {        
 
-            $stats['labour_count_items'] = $this->countLabourItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);             // Total Different Items
-            $stats['labour_sum_items'] = $this->sumLabourItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);        // Total Items
-            $stats['labour_sum_subtotal_net'] = $this->sumLabourItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);   // Total net amount for labour               
-            $stats['labour_sum_subtotal_tax'] = $this->sumLabourItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
-            $stats['labour_sum_subtotal_gross'] = $this->sumLabourItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
+            $stats['labour_count_items'] = $this->countLabourItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);             // Total Different Items
+            $stats['labour_sum_unit_qty'] = $this->sumLabourItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
+            $stats['labour_sum_subtotal_net'] = $this->sumLabourItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
+            $stats['labour_sum_subtotal_tax'] = $this->sumLabourItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
+            $stats['labour_sum_subtotal_gross'] = $this->sumLabourItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
 
         }
 
         // Parts
         if($record_set == 'parts' || $record_set == 'all') {        
 
-            $stats['parts_count_items'] = $this->countPartsItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);              // Total Different Items
-            $stats['parts_sum_items'] = $this->sumPartsItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);         // Total Items
-            $stats['parts_sum_subtotal_net'] = $this->sumPartsItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);    // Total net amount for labour
-            $stats['parts_sum_subtotal_tax'] = $this->sumPartsItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
-            $stats['parts_sum_subtotal_gross'] = $this->sumPartsItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
+            $stats['parts_count_items'] = $this->countPartsItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);               // Total Different Items
+            $stats['parts_sum_unit_qty'] = $this->sumPartsItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
+            $stats['parts_sum_subtotal_net'] = $this->sumPartsItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
+            $stats['parts_sum_subtotal_tax'] = $this->sumPartsItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
+            $stats['parts_sum_subtotal_gross'] = $this->sumPartsItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
 
-        }   
+        }
+        
+        // Could possible add vouchers here
 
         return $stats;
 
@@ -695,7 +697,7 @@ class Report extends Components {
         if($record_set == 'current' || $record_set == 'all') {
 
             $stats['count_open'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'open', $employee_id, $client_id);
-            $stats['count_unused'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'unused', $employee_id, $client_id);
+            $stats['count_paid_unused'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'paid_unused', $employee_id, $client_id);
             $stats['count_redeemed'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
             $stats['count_suspended'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'suspended', $employee_id, $client_id);                                            
 
@@ -708,7 +710,7 @@ class Report extends Components {
             $stats['count_opened'] = $this->countVouchers('opened_on', $start_date, $end_date, $tax_system, null, null, 'opened', $employee_id, $client_id);
             $stats['count_closed'] = $this->countVouchers('closed_on', $start_date, $end_date, $tax_system, null, null, 'closed', $employee_id, $client_id);            
             $stats['count_claimed'] = $this->countVouchers('closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else on their account 
-            $stats['count_expired'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
+            $stats['count_expired_unused'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'expired_unused', $employee_id, $client_id);
             $stats['count_refunded'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'refunded', $employee_id, $client_id);
             $stats['count_cancelled'] = $this->countVouchers('date', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
 
@@ -723,18 +725,18 @@ class Report extends Components {
             $stats['sum_redeemed_unit_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
             $stats['sum_redeemed_unit_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
             $stats['sum_redeemed_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);         
-            $stats['sum_expired_unit_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
-            $stats['sum_expired_unit_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
-            $stats['sum_expired_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
+            $stats['sum_expired_unused_unit_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired_unused', $employee_id, $client_id);
+            $stats['sum_expired_unused_unit_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired_unused', $employee_id, $client_id);
+            $stats['sum_expired_unused_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'expired_unused', $employee_id, $client_id);
             //$stats['sum_cancelled_unit_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
             //$stats['sum_cancelled_unit_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
             //$stats['sum_cancelled_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
 
             // Only used on Client Tab        
-            $stats['sum_unused_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'unused', $employee_id, $client_id);
+            $stats['sum_paid_unused_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'paid_unused', $employee_id, $client_id);
             //$stats['sum_redeemed_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
             $stats['sum_suspended_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'suspended', $employee_id, $client_id);         
-            //$stats['sum_expired_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'expired', $employee_id, $client_id);
+            //$stats['sum_expired_unused_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'expired_unused', $employee_id, $client_id);
             $stats['sum_refunded_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'refunded', $employee_id, $client_id);
             $stats['sum_cancelled_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id); 
             $stats['sum_open_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'open', $employee_id, $client_id);
@@ -743,8 +745,8 @@ class Report extends Components {
             $stats['sum_claimed_unit_gross'] = $this->sumVouchers('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
             
             // Used for VAT Flate Rate calculations (not currently used)
-            //$stats['sum_voucher_spv_unit_gross'] = $this->sum_vouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, 'SPV', null, $employee_id, $client_id);
-            //$stats['sum_voucher_mpv_unit_gross'] = $this->sum_vouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, 'MPV', null, $employee_id, $client_id);
+            //$stats['sum_voucher_spv_unit_gross'] = $this->sum_vouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, 'spv', null, $employee_id, $client_id);
+            //$stats['sum_voucher_mpv_unit_gross'] = $this->sum_vouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, 'mpv', null, $employee_id, $client_id);
             
         }
         
@@ -787,22 +789,38 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.employee_id=".$this->app->db->qStr($employee_id);
         }
 
-        // Filter by Claimed status
+        // Filter by Client (who purchaed the voucher)
         if($client_id && $status != 'claimed') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->app->db->qStr($client_id);
+        }
+        
+        // Filter by Claimed Client (who used the voucher)
+        if($client_id && $status == 'claimed') {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);
         }
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->app->db->qStr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qStr($invoice_id);
         }
 
-        // Execute the SQL
+        // Build the SQL
         $sql = "SELECT COUNT(*) AS count
                 FROM ".PRFX."voucher_records
-                LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
-                ".$whereTheseRecords;    
-
+                ";        
+        if($status != 'claimed')
+        {
+            $sql .= "LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
+                ";
+        }
+        else
+        {
+            $sql .= "RIGHT JOIN ".PRFX."payment_records ON ".PRFX."voucher_records.voucher_id = ".PRFX."payment_records.voucher_id
+                ";
+        }        
+        $sql .= $whereTheseRecords;
+        
+        // Execute the SQL
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
         return $rs->fields['count'];
@@ -844,9 +862,14 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.voucher_records.employee_id=".$this->app->db->qStr($employee_id);
         }
 
-        // Filter by Client
+        // Filter by Client (who purchaed the voucher)
         if($client_id && $status != 'claimed') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->app->db->qStr($client_id);
+        }
+        
+        // Filter by Claimed Client (who used the voucher)
+        if($client_id && $status == 'claimed') {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);
         }
 
         // Filter by Invoice
@@ -854,11 +877,23 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->app->db->qStr($invoice_id);
         }
 
+        // Build the SQL
         $sql = "SELECT SUM(".PRFX."voucher_records.$value_name) AS sum
                 FROM ".PRFX."voucher_records
-                LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
-                ".$whereTheseRecords;
+                ";        
+        if($status != 'claimed')
+        {
+            $sql .= "LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
+                ";
+        }
+        else
+        {
+            $sql .= "RIGHT JOIN ".PRFX."payment_records ON ".PRFX."voucher_records.voucher_id = ".PRFX."payment_records.voucher_id
+                ";
+        }        
+        $sql .= $whereTheseRecords;
 
+        // Execute the SQL
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         return $rs->fields['sum']; 
@@ -880,8 +915,7 @@ class Report extends Components {
         } elseif($status == 'closed') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NOT NULL";
         } elseif($status == 'claimed' && $client_id) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id = ".$this->app->db->qStr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";            
         } elseif($status) {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.status = ".$this->app->db->qStr($status);                       
         }
@@ -1877,7 +1911,7 @@ class Report extends Components {
                     $voucher_type = $this->app->components->voucher->getRecord($rs->fields['voucher_id'], 'type');
 
                     // Multi Purpose Voucher
-                    if($voucher_type == 'MPV') {
+                    if($voucher_type == 'mpv') {
                         $prorata_totals['invoice']['net'] += 0.00;
                         $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
                         $prorata_totals['invoice']['gross'] += 0.00;  
@@ -1890,7 +1924,7 @@ class Report extends Components {
                     }
 
                     // Single Purpose Voucher
-                    if($voucher_type == 'SPV') {
+                    if($voucher_type == 'spv') {
                         $prorata_totals['invoice']['net'] += 0.00;
                         $prorata_totals['invoice']['tax'] += 0.00; 
                         $prorata_totals['invoice']['gross'] += 0.00;
@@ -1973,12 +2007,12 @@ class Report extends Components {
 
         /* This gets the exact amounts of vouchers paid for, used upstream (not currently used)
         if($record_type == 'invoice') {  
-            $record_prorata_totals['voucher']['spv']['net'] = $this->sum_vouchers('unit_net', null, null, null, null, null, 'SPV', null, null, null, $record_details['invoice_id']) * $percentage;
-            $record_prorata_totals['voucher']['spv']['tax'] = $this->sum_vouchers('unit_tax', null, null, null, null, null, 'SPV', null, null, null, $record_details['invoice_id']) * $percentage;
-            $record_prorata_totals['voucher']['spv']['gross'] = $this->sum_vouchers('unit_gross', null, null, null, null, null, 'SPV', null, null, null, $record_details['invoice_id']) * $percentage;
-            $record_prorata_totals['voucher']['mpv']['net'] = $this->sum_vouchers('unit_net', null, null, null, null, null, 'MPV', null, null, null, $record_details['invoice_id']) * $percentage;
-            $record_prorata_totals['voucher']['mpv']['tax'] = $this->sum_vouchers('unit_tax', null, null, null, null, null, 'MPV', null, null, null, $record_details['invoice_id']) * $percentage;
-            $record_prorata_totals['voucher']['mpv']['gross'] = $this->sum_vouchers('unit_gross', null, null, null, null, null, 'MPV', null, null, null, $record_details['invoice_id']) * $percentage;     
+            $record_prorata_totals['voucher']['spv']['net'] = $this->sum_vouchers('unit_net', null, null, null, null, null, 'spv', null, null, null, $record_details['invoice_id']) * $percentage;
+            $record_prorata_totals['voucher']['spv']['tax'] = $this->sum_vouchers('unit_tax', null, null, null, null, null, 'spv', null, null, null, $record_details['invoice_id']) * $percentage;
+            $record_prorata_totals['voucher']['spv']['gross'] = $this->sum_vouchers('unit_gross', null, null, null, null, null, 'spv', null, null, null, $record_details['invoice_id']) * $percentage;
+            $record_prorata_totals['voucher']['mpv']['net'] = $this->sum_vouchers('unit_net', null, null, null, null, null, 'mpv', null, null, null, $record_details['invoice_id']) * $percentage;
+            $record_prorata_totals['voucher']['mpv']['tax'] = $this->sum_vouchers('unit_tax', null, null, null, null, null, 'mpv', null, null, null, $record_details['invoice_id']) * $percentage;
+            $record_prorata_totals['voucher']['mpv']['gross'] = $this->sum_vouchers('unit_gross', null, null, null, null, null, 'mpv', null, null, null, $record_details['invoice_id']) * $percentage;     
         }*/
 
         return $record_prorata_totals;

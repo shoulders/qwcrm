@@ -1239,15 +1239,11 @@ CREATE TABLE `#__voucher_records` (
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
   `client_id` int(10) UNSIGNED DEFAULT NULL,
   `workorder_id` int(10) UNSIGNED DEFAULT NULL,
-  `invoice_id` int(10) UNSIGNED DEFAULT NULL,
-  `payment_id` int(10) UNSIGNED DEFAULT NULL,
-  `refund_id` int(10) UNSIGNED DEFAULT NULL,
-  `redeemed_client_id` int(10) UNSIGNED DEFAULT NULL,
-  `redeemed_invoice_id` int(10) UNSIGNED DEFAULT NULL,
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL,  
+  `refund_id` int(10) UNSIGNED DEFAULT NULL,  
   `expiry_date` date DEFAULT NULL,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `opened_on` datetime DEFAULT NULL,
-  `redeemed_on` datetime DEFAULT NULL,
+  `opened_on` datetime DEFAULT NULL,  
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `blocked` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
@@ -1259,6 +1255,7 @@ CREATE TABLE `#__voucher_records` (
   `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
   `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `balance` DECIMAL(10,2) NOT NULL DEFAULT 0.00; 
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1279,13 +1276,16 @@ CREATE TABLE `#__voucher_statuses` (
 --
 
 INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'unused', 'Unused'),
-(2, 'redeemed', 'Redeemed'),
-(3, 'suspended', 'Suspended'),
-(4, 'expired', 'Expired'),
-(5, 'refunded', 'Refunded'),
-(6, 'cancelled', 'Cancelled'),
-('7', 'deleted', 'Deleted');
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid_unused', 'Paid Unused'),
+(4, 'partially_redeemed', 'Partially Redeemed'),
+(5, 'fully_redeemed', 'Fully Redeemed'),
+(6, 'suspended', 'Suspended'),
+(7, 'expired_unused', 'Expired Unused'),
+(8, 'refunded', 'Refunded'),
+(9, 'cancelled', 'Cancelled'),
+(10, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -1304,8 +1304,8 @@ CREATE TABLE `#__voucher_types` (
 --
 
 INSERT INTO `#__voucher_types` (`id`, `type_key`, `display_name`) VALUES
-(1, 'MPV', 'Multi Purpose (MPV)'),
-(2, 'SPV', 'Single Purpose (SPV)');
+(1, 'mpv', 'Multi Purpose (MPV)'),
+(2, 'spv', 'Single Purpose (SPV)');
 
 -- --------------------------------------------------------
 

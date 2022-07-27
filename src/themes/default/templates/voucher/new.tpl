@@ -45,9 +45,9 @@
                                                 <td><b>{t}Type{/t}</b></td>                                               
                                                 <td>
                                                     {section name=s loop=$voucher_types}    
-                                                        {if 'MPV' == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}        
+                                                        {if $voucher_types[s].type_key == 'mpv'}{t} {$voucher_types[s].display_name}{/t}{/if}        
                                                     {/section} 
-                                                    <input name="qform[type]" value="MPV" type="hidden" />            
+                                                    <input name="qform[type]" value="mpv" type="hidden" />            
                                                 </td>                                               
                                             </tr>
                                             <tr>

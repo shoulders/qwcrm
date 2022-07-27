@@ -278,10 +278,10 @@ class Variables extends System {
 
     }
 
-    // Get force_page() Message Store and merge (if passed/present)
+    // Get forcePage() Message Store and merge (if passed/present)
     public function systemMessagesReturnForcePageStore() {
 
-        // If a System Message Store has been passed by force_page(), merge this array in to the System Message Store
+        // If a System Message Store has been passed by forcePage(), merge this array in to the System Message Store
         if(isset(\CMSApplication::$VAR['forcePageSystemMessageStore']) && is_array(\CMSApplication::$VAR['forcePageSystemMessageStore'])) {
             $message_store = \CMSApplication::$VAR['forcePageSystemMessageStore'];
             unset(\CMSApplication::$VAR['forcePageSystemMessageStore']);

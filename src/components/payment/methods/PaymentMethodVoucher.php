@@ -8,81 +8,179 @@
 
 defined('_QWEXEC') or die;
 
-class PaymentMethodVoucher {
+class PaymentMethodVoucher extends PaymentMethod
+{
     
-    private $app = null;
-    private $VAR = null;  
+    private $voucher_details = array();
+    private $currency_symbol = '';
     
-    public function __construct() {
+    public function __construct()
+    {        
+        parent::__construct();
         
         // Set class variables
-        $this->app = \Factory::getApplication();
-        $this->VAR = &\CMSApplication::$VAR;        
+        Payment::$payment_details['method'] = 'voucher';
         
-        // Check the Voucher exists, get the voucher_id and set amount
-        if(!$this->VAR['qpayment']['voucher_id'] = $this->app->components->voucher->getIdByVoucherCode($this->VAR['qpayment']['voucher_code'])) {
-            Payment::$payment_valid = false;
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no Voucher with that code."));                   
-        } else {                        
-            $this->VAR['qpayment']['amount'] = $this->app->components->voucher->getRecord($this->VAR['qpayment']['voucher_id'], 'unit_net');
-        }        
-        
+        // Set currency symbol
+        $this->currency_symbol = $this->app->components->company->getRecord('currency_symbol');
     }
     
     // Pre-Processing
-    public function preProcess() {
+    public function preProcess()
+    {        
+        parent::preProcess();
         
-        // Make sure the Voucher is valid and then pass the amount to the next process
-        if(!$this->app->components->voucher->checkRecordAllowsRedeem($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'])) {
+        // Get voucher details - Compensates for using voucher_code
+        if(!isset($this->VAR['qpayment']['voucher_id']) && !$this->VAR['qpayment']['voucher_id'] = $this->app->components->voucher->getIdByVoucherCode($this->VAR['qpayment']['voucher_code']))
+        {
             Payment::$payment_valid = false;
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This Voucher is not valid or cannot be redeemed."));
-            return false;                
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no Voucher with that code."));
+            return; // If there is no voucher_id, we cannot proceed
+        }
+        else
+        {                
+            $this->voucher_details = $this->app->components->voucher->getRecord($this->VAR['qpayment']['voucher_id']);
         }
         
-        return true;
-
-    }
-
-    // Processing
-    public function process() {
+        // New
+        if(Payment::$action === 'new')
+        {   
+            // Is the voucher allowed to be redeemed
+            if(!$this->app->components->voucher->checkRecordAllowsRedeem($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id']))
+            {
+                Payment::$payment_valid = false;
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This Voucher is not valid or cannot be redeemed."));              
+            }
+            
+            // Does the voucher have enough balance to cover the payment amount submitted
+            if($this->VAR['qpayment']['amount'] > $this->voucher_details['balance'])
+            {
+                Payment::$payment_valid = false;                
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This Voucher does not have a sufficient balance to cover the submitted payment amount."));                
+            }            
+        }
         
-        // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson();    
-
-        // Insert the payment with the calculated information
-        $payment_id = $this->app->components->payment->insertRecord($this->VAR['qpayment']);
-        if($payment_id) {
-            
-            Payment::$payment_processed = true;
-            
-            // Change the status of the Voucher to prevent further use
-            $this->app->components->voucher->updateStatus($this->VAR['qpayment']['voucher_id'], 'redeemed', true);
-
-            // Update the redeemed Voucher with the missing redemption information
-            $this->app->components->voucher->updateRecordAsRedeemed($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'], $payment_id);
-            
+        // Edit
+        if(Payment::$action === 'edit')
+        {            
+            // Does the voucher have enough balance to cover the payment amount submitted (after removing htis payments intial amount)
+            if($this->VAR['qpayment']['amount'] > ($this->voucher_details['balance'] + Payment::$payment_details['amount']))
+            {
+                Payment::$payment_valid = false;                
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This Voucher does not have a sufficient balance to cover the submitted payment amount."));                
+            }
+        }
+        
+        // Cancel
+        if(Payment::$action === 'cancel')
+        {            
+            // Do nothing
+        }
+        
+        // Delete
+        if(Payment::$action === 'delete')
+        {            
+            // Do nothing
         }
         
         return;
+    }
+    
+    // Processing
+    public function process()
+    {        
+        parent::process();
         
+        if(Payment::$action === 'new')
+        {            
+            // Build additional_info column
+            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson();    
+
+            // Insert the payment with the calculated information            
+            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment']))
+            {
+                // Update the balance, and status if required
+                $this->app->components->voucher->updateBalance($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['amount'], Payment::$action);
+                        
+                Payment::$payment_successful = true;                 
+            }
+        }
+        
+        if(Payment::$action === 'edit')
+        {            
+            // Update the balance, and status if required
+            $this->app->components->voucher->updateBalance($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['amount'], Payment::$action, Payment::$payment_details['amount']);
+            
+            Payment::$payment_successful = true;
+        }
+        
+        if(Payment::$action === 'cancel')
+        {            
+            // Update the balance, and status if required
+            $this->app->components->voucher->updateBalance($this->VAR['qpayment']['voucher_id'], Payment::$payment_details['amount'], Payment::$action);
+            
+            Payment::$payment_successful = true;
+        }
+        
+        if(Payment::$action === 'delete')
+        {            
+            // Update the balance, and status if required
+            $this->app->components->voucher->updateBalance($this->VAR['qpayment']['voucher_id'], Payment::$payment_details['amount'], Payment::$action);
+        }
+          
+        return;        
     }
     
     // Post-Processing 
-    public function postProcess() { 
+    public function postProcess()
+    {       
+        parent::postProcess();
         
         // Set success/failure message
-        if(!Payment::$payment_processed) {
-        
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher was not applied successfully."));
-        
-        } else {            
-            
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher applied successfully."));
-
+        if(Payment::$payment_successful)
+        {        
+           $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher applied successfully."));       
+        }
+        else
+        {            
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher was not applied successfully."));  
+            //$record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was redeemed by").' '.$this->app->components->client->getRecord($invoice_details['client_id'], 'display_name').'.';
         }
         
-        return;
-       
-    }
-    
+        // Refresh the voucher details
+        if(isset($this->VAR['qpayment']['voucher_id']))
+        {
+            $this->voucher_details = $this->app->components->voucher->getRecord($this->VAR['qpayment']['voucher_id']);
+            
+            // Balance remaining
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("The balance left on this voucher is").': '.$this->currency_symbol.$this->voucher_details['balance']); 
+        
+        }        
+        
+        // New
+        if(Payment::$action === 'new')
+        {            
+            // Do nothing
+        }
+        
+        // Edit
+        if(Payment::$action === 'edit')
+        {            
+            // Do nothing
+        }
+        
+        // Cancel
+        if(Payment::$action === 'cancel')
+        {            
+            // Do nothing
+        }
+        
+        // Delete
+        if(Payment::$action === 'delete')
+        {            
+            // Do nothing
+        }
+        
+        return;       
+    }    
 }

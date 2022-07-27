@@ -399,7 +399,7 @@ class Supplier extends Components {
     #  Check if the supplier status is allowed to be changed  #  // not currently used
     ###########################################################
 
-     public function checkRecordAllowsChange($supplier_id) {
+     public function checkRecordAllowsStatusChange($supplier_id) {
 
         $state_flag = true;
 

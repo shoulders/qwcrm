@@ -8,57 +8,57 @@
 
 defined('_QWEXEC') or die;
 
-class PaymentMethodCheque {
-    
-    private $app = null;
-    private $VAR = null;
-    
-    public function __construct() {
+class PaymentMethodCheque extends PaymentMethod
+{    
+    public function __construct()
+    {        
+        parent::__construct();
         
         // Set class variables
-        $this->app = \Factory::getApplication();
-        $this->VAR = &\CMSApplication::$VAR;        
-        
+        Payment::$payment_details['method'] = 'cheque';
     }
     
     // Pre-Processing
-    public function preProcess() {
-
-            return true;
-            
+    public function preProcess()
+    {
+        parent::preProcess();        
+        return;            
     }
 
     // Processing
-    public function process() {
+    public function process()
+    {        
+        parent::process();
         
-        // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, null, null, $this->VAR['qpayment']['cheque_number']);
-        
-        // Insert the payment with the calculated information
-        if($this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
-            Payment::$payment_processed = true;            
+        if(Payment::$action === 'new')
+        { 
+            // Build additional_info column
+            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, null, null, $this->VAR['qpayment']['cheque_number']);
+
+            // Insert the payment with the calculated information
+            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
+                Payment::$payment_successful = true;            
+            }
         }
         
-        return;
-        
+        return;        
     }
     
     // Post-Processing 
-    public function postProcess() { 
+    public function postProcess()
+    {        
+        parent::postProcess();
         
         // Set success/failure message
-        if(!Payment::$payment_processed) {
-        
+        if(Payment::$payment_successful)
+        {        
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Cheque payment added successfully."));        
+        }
+        else
+        {            
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cheque payment was not successful."));
-        
-        } else {            
-            
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Cheque payment added successfully."));
-
         }
         
-        return;
-       
-    }  
-
+        return;       
+    }
 }

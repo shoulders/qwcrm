@@ -59,7 +59,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         
         // Load the updated schedule details page
         // $this->app->system->variables->systemMessagesWrite('success', gettext("Schedule Successfully Updated."));
-        //$this->app->system->page->force_page('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id']);
+        //$this->app->system->page->forcePage('schedule', 'details&schedule_id='.\CMSApplication::$VAR['qform']['schedule_id']);
         
     }
 

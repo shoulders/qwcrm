@@ -62,10 +62,6 @@
                                             <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$voucher_details.invoice_id}">{$voucher_details.invoice_id}</a></td>            
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Payment ID{/t}</b></td>                                            
-                                            <td>{if $voucher_details.payment_id}<a href="index.php?component=payment&page_tpl=details&payment_id={$voucher_details.payment_id}">{$voucher_details.payment_id}</a>{else}&nbsp;{/if}</td>            
-                                        </tr>
-                                        <tr>
                                             <td><b>{t}Refund ID{/t}</b></td>                                            
                                             <td>{if $voucher_details.refund_id}<a href="index.php?component=refund&page_tpl=details&refund_id={$voucher_details.refund_id}">{$voucher_details.refund_id}</a>{else}&nbsp;{/if}</td>            
                                         </tr>
@@ -111,12 +107,8 @@
                                             <td>{$voucher_details.expiry_date|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Redeemed On{/t}</b></td>
-                                            <td>{$voucher_details.redeemed_on|date_format:$date_format}</td>
-                                        </tr>
-                                        <tr>
                                             <td><b>{t}Closed On{/t}</b></td>
-                                            <td>{$voucher_details.redeemed_on|date_format:$date_format}</td>
+                                            <td>{$voucher_details.closed_on|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Last Active{/t}</b></td>
@@ -137,13 +129,12 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Redeemed by{/t}</b></td>
-                                            <td><a href="index.php?component=client&page_tpl=details&client_id={$voucher_details.redeemed_client_id}">{$redeemed_client_display_name}</a></td>
+                                            <td><b>{t}Redemptions{/t}</b></td>
+                                            <td>                                                
+                                                {$voucher_details.redemptions|redemptions}
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td><b>{t}Redeemed on Invoice{/t}</b></td>
-                                            <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$voucher_details.redeemed_invoice_id}">{$voucher_details.redeemed_invoice_id}</a></td>            
-                                        </tr>
+                                        
                                     </table>                                   
                                 </td>                                
                             </tr>

@@ -23,9 +23,10 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
 // Delete Invoice
 if(!$this->app->components->invoice->deleteRecord(\CMSApplication::$VAR['invoice_id'])) {    
     
-    // Load the invoice details page with error
+    // Load the invoice record on the search page with the error
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The invoice failed to be deleted."));
-    $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);    
+    //$this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+    $this->app->system->page->forcePage('invoice', 'search&search_category=invoice_id&search_term='.\CMSApplication::$VAR['invoice_id']);
     
 } else {   
     
