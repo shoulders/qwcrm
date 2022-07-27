@@ -104,6 +104,6 @@ SDMenu.prototype.memorize = function() {
 			states.push(this.submenus[i].className == "collapsed" ? 0 : 1);
 		var d = new Date();
 		d.setTime(d.getTime() + (30 * 24 * 60 * 60 * 1000));
-		document.cookie = "sdmenu_" + encodeURIComponent(this.menu.id) + "=" + states.join("") + "; expires=" + d.toGMTString() + "; path=/";
+		document.cookie = "sdmenu_" + encodeURIComponent(this.menu.id) + "=" + states.join("") + "; expires=" + d.toGMTString() + "; path=/;SameSite=Lax";
 	}
 };
