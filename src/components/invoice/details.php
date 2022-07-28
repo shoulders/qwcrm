@@ -16,6 +16,12 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
 
 $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
 
+// Check if invoice is deleted
+if($invoice_details['status'] === 'deleted') {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot view this invoice because it has been deleted."));
+    $this->app->system->page->forcePage('invoice', 'search');
+}
+
 // Invoice Details
 $this->app->smarty->assign('company_details',          $this->app->components->company->getRecord()                                                                    );
 $this->app->smarty->assign('client_details',           $this->app->components->client->getRecord($invoice_details['client_id'])             );

@@ -18,6 +18,12 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
     $this->app->system->page->forcePage('invoice', 'search');
 }
 
+// Check if invoice is deleted
+if($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'status') === 'deleted') {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this invoice because it has been deleted."));
+    $this->app->system->page->forcePage('invoice', 'search');
+}
+
 // Check if invoice can be edited
 if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR['invoice_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this invoice because its status does not allow it."));
