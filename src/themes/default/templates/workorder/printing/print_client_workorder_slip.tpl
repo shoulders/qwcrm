@@ -97,7 +97,7 @@
                                 <b>{t}Phone{/t}: </b>{$company_details.primary_phone}<br>                        
                                 <b>{t}Mobile{/t}: </b>{$company_details.mobile_phone}<br>
                                 <b>{t}Fax{/t}: </b>{$company_details.fax}<br>
-                                <b>{t}Website{/t}: </b>{$company_details.website|regex_replace:"/^https?:\/\//":""}<br>   
+                                <b>{t}Website{/t}: </b>{$company_details.website|regex_replace:"/^https?:\/\//":""|regex_replace:"/\/$/":""}<br>   
                                 <b>{t}Email{/t}: </b>{$company_details.email}
                             </p>
                         </td>

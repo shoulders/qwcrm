@@ -109,7 +109,7 @@
                                     </tr>
                                     <tr>
                                         <td><b>{t}Website{/t} :&nbsp;</b></td>
-                                        <td>{$company_details.website|regex_replace:"/^https?:\/\//":""}</td>
+                                        <td>{$company_details.website|regex_replace:"/^https?:\/\//":""|regex_replace:"/\/$/":""}</td>
                                     </tr>
                                     <tr>
                                         <td><b>{t}Email{/t} :&nbsp;</b></td>
