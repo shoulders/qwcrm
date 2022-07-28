@@ -65,13 +65,13 @@ class Router extends System {
             $this->parseSefUrl($_SERVER['REQUEST_URI'], 'basic', 'set_var');
             
             // Re-Grab the routing components
-            $component = \CMSApplication::$VAR['component'];
-            $page_tpl = \CMSApplication::$VAR['page_tpl'];
+            $component = \CMSApplication::$VAR['component'] ?? null;
+            $page_tpl = \CMSApplication::$VAR['page_tpl'] ?? null;
 
         }
         
         // Check to see if the page exists otherwise send to the 404 page
-        if (isset($component, $page_tpl) && !$this->checkPageExists($component, $page_tpl)) {
+        if (isset($component) && !$this->checkPageExists($component, $page_tpl)) {
 
             // Set to the 404 error page       
             $component   = 'core';
@@ -231,18 +231,18 @@ class Router extends System {
             // Set $_GET routing variables        
             $nonsef_url_path_variables .= '?';
             $nonsef_url_path_variables .= 'component='.$url_segments['0'];
-            $nonsef_url_path_variables .= '&page_tpl='.$url_segments['1'];       
+            if(isset($url_segments['1'])) { $nonsef_url_path_variables .= '&page_tpl='.$url_segments['1']; }
 
             // Sets the following routing values for return statement
             if ($mode == 'get_var') {
-                if($url_segments['0']) { $onlyVar['component'] = $url_segments['0']; }
-                if($url_segments['1']) { $onlyVar['page_tpl'] = $url_segments['1']; }
+                $onlyVar['component'] = $url_segments['0'];
+                if(isset($url_segments['1'])) { $onlyVar['page_tpl'] = $url_segments['1']; }
             }
 
             // Sets the following routing values into \CMSApplication::$VAR for routing
             if ($mode == 'set_var') {
-                if($url_segments['0']) { \CMSApplication::$VAR['component'] = $url_segments['0']; }
-                if($url_segments['1']) { \CMSApplication::$VAR['page_tpl'] = $url_segments['1']; }
+                \CMSApplication::$VAR['component'] = $url_segments['0'];
+                if(isset($url_segments['1'])) { \CMSApplication::$VAR['page_tpl'] = $url_segments['1']; }
             }
 
         }
@@ -427,17 +427,17 @@ class Router extends System {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        $acl = $rs->fields['acl'];
+        $acl = $rs->fields['acl'] ?? null;
 
         // Add if guest (8) rules here if there are errors
 
-        if($acl != 1) {
+        if($acl) {
 
-            return false;
+            return true;
 
         } else {
 
-            return true;
+            return false;
 
         }
 
