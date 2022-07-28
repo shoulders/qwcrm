@@ -95,16 +95,16 @@ class Cronjob extends Components {
 
     public function updateRecord($qform) {
         
-        $sql = "UPDATE ".PRFX."cronjob_records SET
-                
+        $sql = "UPDATE ".PRFX."cronjob_records SET                
                 active              =". $this->app->db->qStr( $qform['active']              ).",
                 pseudo_allowed      =". $this->app->db->qStr( $qform['pseudo_allowed']      ).",            
                 minute              =". $this->app->db->qStr( $qform['minute']              ).",            
                 hour                =". $this->app->db->qStr( $qform['hour']                ).",
                 day                 =". $this->app->db->qStr( $qform['day']                 ).",
                 month               =". $this->app->db->qStr( $qform['month']               ).",
-                weekday             =". $this->app->db->qStr( $qform['weekday']             );                        
-
+                weekday             =". $this->app->db->qStr( $qform['weekday']             )."                     
+                WHERE cronjob_id    =". $this->app->db->qStr( $qform['cronjob_id']          );
+        
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity        
@@ -414,6 +414,18 @@ class Cronjob extends Components {
         
         // Log activity        
         $this->app->system->general->writeRecordToActivityLog(_gettext("Cronjob test initiated."));
+        
+        return true;
+
+    }
+    
+    ############################################
+    #     Check all Vouchers for expiry        #
+    ############################################
+
+    public function cronjobCheckAllVouchersForExpiry() {
+
+        $this->app->components->voucher->checkAllVouchersForExpiry();
         
         return true;
 

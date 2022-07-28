@@ -10,4 +10,4 @@ defined('_QWEXEC') or die;
 
 // Build the page
 $this->app->smarty->assign('cronjob_system_details', $this->app->components->cronjob->getSystem());
-$this->app->smarty->assign('display_cronjobs', $this->app->components->cronjob->getRecords('cronjob_id', 'DESC'));
+$this->app->smarty->assign('display_cronjobs', $this->app->components->cronjob->getRecords('cronjob_id', 'ASC'));
