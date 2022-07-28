@@ -722,6 +722,7 @@ ALTER TABLE `#__voucher_records` DROP `payment_id`;
 ALTER TABLE `#__voucher_records` DROP `redeemed_on`;
 ALTER TABLE `#__voucher_records` DROP `redeemed_client_id`;
 ALTER TABLE `#__voucher_records` DROP `redeemed_invoice_id`;
+UPDATE `#__voucher_records` SET `last_active` = NULL WHERE `status` = 'deleted';
 
 --
 -- Misc
