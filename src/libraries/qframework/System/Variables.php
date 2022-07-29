@@ -237,9 +237,12 @@ class Variables extends System {
     
     public function systemMessagesReturnStore($keep_store = false, $format = 'html') {
 
-        // Remove all empty message type holders
+        // Remove all empty message type holders (}not sure why i need this)
         \CMSApplication::$messages = array_filter(\CMSApplication::$messages);
-
+        
+        // Remove duplicate entries
+        \CMSApplication::$messages = array_unique(\CMSApplication::$messages);
+        
         // Return Message store as an array
         if($format === 'array') {
             $messages = \CMSApplication::$messages;
