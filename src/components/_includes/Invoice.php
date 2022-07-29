@@ -305,7 +305,7 @@ defined('_QWEXEC') or die;
                         SEPARATOR ',')
                 ,']') AS voucher_items
                 FROM ".PRFX."voucher_records
-                GROUP BY ".PRFX."voucher_records.voucher_id
+                GROUP BY ".PRFX."voucher_records.invoice_id
                 ORDER BY ".PRFX."voucher_records.voucher_id
                 ASC        
             ) AS vouchers
