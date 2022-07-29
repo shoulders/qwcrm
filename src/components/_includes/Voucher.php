@@ -1105,7 +1105,7 @@ class Voucher extends Components {
         // Is the voucher deleted
         if($voucher_details['status'] === 'deleted')
         {
-            $expired_status = true;  
+            $expired_status = true; 
         }
         
         // Has the voucher been closed already (same effect as expired)
@@ -1131,7 +1131,7 @@ class Voucher extends Components {
             }            
 
             // Process the Voucher for the purposes of Tax
-            $this->processNewlyExpiredVoucher($voucher_details['voucher_id']);            
+            $this->processNewlyExpiredVoucher($voucher_id);            
 
         }
 
