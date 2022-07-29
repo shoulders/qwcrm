@@ -256,7 +256,8 @@ defined('_QWEXEC') or die;
             ".PRFX."workorder_records.scope,
                 
             labour.labour_items,
-            parts.parts_items
+            parts.parts_items,
+            vouchers.voucher_items
 
             FROM ".PRFX."invoice_records
 
@@ -288,8 +289,28 @@ defined('_QWEXEC') or die;
                 ORDER BY ".PRFX."invoice_parts.invoice_id
                 ASC            
             ) AS parts
-            ON ".PRFX."invoice_records.invoice_id = parts.invoice_id 
-
+            ON ".PRFX."invoice_records.invoice_id = parts.invoice_id
+                
+            LEFT JOIN (
+                SELECT ".PRFX."voucher_records.invoice_id,                                   
+                CONCAT('[',
+                    GROUP_CONCAT(
+                        JSON_OBJECT(    
+                            'voucher_id', voucher_id
+                            ,'voucher_code', voucher_code                            
+                            ,'expiry_date', expiry_date
+                            ,'unit_net', unit_net
+                            ,'balance', balance
+                            )
+                        SEPARATOR ',')
+                ,']') AS voucher_items
+                FROM ".PRFX."voucher_records
+                GROUP BY ".PRFX."voucher_records.voucher_id
+                ORDER BY ".PRFX."voucher_records.voucher_id
+                ASC        
+            ) AS vouchers
+            ON ".PRFX."invoice_records.invoice_id = vouchers.invoice_id
+                
             LEFT JOIN ".PRFX."client_records ON ".PRFX."invoice_records.client_id = ".PRFX."client_records.client_id         
             LEFT JOIN ".PRFX."user_records ON ".PRFX."invoice_records.employee_id = ".PRFX."user_records.user_id
             LEFT JOIN ".PRFX."workorder_records ON ".PRFX."invoice_records.workorder_id = ".PRFX."workorder_records.workorder_id

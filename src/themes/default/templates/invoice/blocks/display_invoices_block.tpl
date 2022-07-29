@@ -16,6 +16,7 @@
         <td class="olohead" nowrap>{t}Scope{/t}</td>
         <td class="olohead" nowrap>{t}Labour{/t}</td>
         <td class="olohead" nowrap>{t}Parts{/t}</td>
+        <td class="olohead" nowrap>{t}Vouchers{/t}</td>
         <td class="olohead" nowrap>{t}Status{/t}</td> 
         {if $qw_tax_system != 'no_tax'}
             <td class="olohead" nowrap>{t}Net{/t}</td>
@@ -50,6 +51,11 @@
             <td class="olotd4" nowrap>
                 {if $display_invoices.records[i].parts_items}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_invoices.records[i].parts_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {/if}
+            </td>
+            <td class="olotd4" nowrap>
+                {if $display_invoices.records[i].voucher_items}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Vouchers{/t}</strong></div><hr><div>{$display_invoices.records[i].voucher_items|vouchers|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4" nowrap>

@@ -15,10 +15,10 @@
  */
 
 /**
- * Smarty    Voucher Redemptions Information modifier plugin
+ * Smarty    Voucher Information modifier plugin
  * Type:     modifier
- * Name:     redemptions
- * Purpose:  convert voucher redemptions JSON string to a viewable HTML block
+ * Name:     vouchers
+ * Purpose:  convert an Voucher records JSON string to a viewable HTML block
  *
  * @link      http://quantumwarp.com
  * @author    Jon Brown https://quantumwarp.com/
@@ -27,45 +27,50 @@
  *
  * @return string
  */
-function smarty_modifier_redemptions($string)
+function smarty_modifier_vouchers($string)
 {
     // Get the QWcrm Application
-    //$app = \Factory::getApplication();
+    $app = \Factory::getApplication();
     
     // Convert into a standard PHP array or return null
-    if(!$redemptions = json_decode($string)) { return; }
+    if(!$vouchers = json_decode($string)) { return; }
     
+    // Set currency symbol
+    $currency_symbol = $app->components->company->getRecord('currency_symbol');
+       
     // Build HTML
     $contentFlag = false;
     $html = '';
-    foreach ($redemptions as $redemption) {
+    foreach ($vouchers as $voucher) {
         
-        foreach ($redemption as $key => $value) {
+        foreach ($voucher as $key => $value) {
         
-            // Make sure there is a value
-            if(!$value) {continue;}
-
             // Apply modifications as required
-            if($key == 'payment_id')
+            if($key == 'voucher_id')
             {                       
-                $html .= '<strong>'._gettext("Payment ID").':</strong> <a href="index.php?component=payment&page_tpl=details&payment_id='.$value.'">'.$value.'</a><br>';
+                $html .= '<strong>'._gettext("Voucher ID").':</strong> <a href="index.php?component=voucher&page_tpl=details&voucher_id='.$value.'">'.$value.'</a><br>';
                 $contentFlag = true;            
             }
-            if($key == 'redeemed_on')
+            if($key == 'voucher_code')
+            {                       
+                $html .= '<strong>'._gettext("Voucher Code").':</strong> '.$value.'<br>';
+                $contentFlag = true;            
+            }
+            if($key == 'expiry_date')
             {                   
-                $html .= '<strong>'._gettext("Redeemed On").':</strong> '.date(str_replace('%', '', DATE_FORMAT), strtotime($value)).'<br>';
+                $html .= '<strong>'._gettext("Expiry Date").':</strong> '.date(str_replace('%', '', DATE_FORMAT), strtotime($value)).'<br>';
                 $contentFlag = true;  
-            }  
-            if($key == 'redeemed_client_id')
+            }
+            if($key == 'unit_net')
             {                       
-                $html .= '<strong>'._gettext("Redeemed Client ID").':</strong> <a href="index.php?component=client&page_tpl=details&client_id='.$value.'">'.$value.'</a><br>';
+                $html .= '<strong>'._gettext("Net").':</strong> '.$currency_symbol.sprintf('%.2f', $value).'<br>';
                 $contentFlag = true;            
             }
-            if($key == 'redeemed_invoice_id')
+            if($key == 'balance')
             {                       
-                $html .= '<strong>'._gettext("Redeemed Invoice ID").':</strong> <a href="index.php?component=invoice&page_tpl=details&invoice_id='.$value.'">'.$value.'</a><br>';
+                $html .= '<strong>'._gettext("Balance").':</strong> '.$currency_symbol.sprintf('%.2f', $value).'<br>';
                 $contentFlag = true;            
-            }            
+            }
         }
         
         // Break the different redepmtions

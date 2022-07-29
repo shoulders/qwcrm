@@ -12,7 +12,6 @@
         <td class="olohead">{t}Employee{/t}</td>
         <td class="olohead">{t}WO ID{/t}</td>
         <td class="olohead">{t}Inv ID{/t}</td>
-        {*<td class="olohead">{t}Payment ID{/t}</td>*}
         <td class="olohead">{t}Code{/t}</td>
         <td class="olohead">{t}Client{/t}</td>
         <td class="olohead">{t}Opened{/t}</td>
