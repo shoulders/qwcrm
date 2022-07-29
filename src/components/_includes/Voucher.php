@@ -1063,13 +1063,19 @@ class Voucher extends Components {
     /** Check Functions **/
 
     #################################################
-    #   Check to see if the voucher is expired      #  // This does a live check to see if the voucher is expired and tagged as such
-    #################################################
+    #   Check to see if the voucher is expired      #   // This does a live check to see if the voucher is expired and tagged as such
+    #################################################   // by default all vouchers are checked
 
-    public function checkAllVouchersForExpiry() {
+    public function checkAllVouchersForExpiry($invoice_id = null) {
 
         $sql = "SELECT voucher_id, status
-                FROM ".PRFX."voucher_records;";
+                FROM ".PRFX."voucher_records
+                ";
+        
+        if($invoice_id)
+        {
+            $sql .= "WHERE invoice_id=".$this->app->db->qStr($invoice_id);   
+        }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

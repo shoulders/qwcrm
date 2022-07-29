@@ -22,6 +22,9 @@ if($invoice_details['status'] === 'deleted') {
     $this->app->system->page->forcePage('invoice', 'search');
 }
 
+// Update all invoice Voucher expiry statuses
+$this->app->components->voucher->checkAllVouchersForExpiry(\CMSApplication::$VAR['invoice_id']);
+
 // Invoice Details
 $this->app->smarty->assign('company_details',          $this->app->components->company->getRecord()                                                                    );
 $this->app->smarty->assign('client_details',           $this->app->components->client->getRecord($invoice_details['client_id'])             );
