@@ -202,25 +202,29 @@ class Cronjob extends Components {
     ###############################
     
     public function systemRun() {
-        
-        // Identify cronjobs are being executed by QWcrm and not manually
-        define('CRONJOB_SYSTEM_ACTIVE', 1);  
-        
+                
         $cronjobSystem = $this->app->config->get('cronjob_system');
         
-        // Real Cronjob system - Ignore for normal page load
-        if($cronjobSystem === 'real' && !defined('_REAL_CRONJOB')) {
-            return;
+        // Real Cronjob system (CLI)
+        if($cronjobSystem === 'real')
+        {            
+            // If loaded by cron.php
+            if(defined('_REAL_CRONJOB'))
+            {
+                // Identify cronjobs are being executed by QWcrm and not manually
+                define('CRONJOB_SYSTEM_ACTIVE', 1);
+            }     
+            
+            // Ignore for normal page load
+            else
+            {
+                return;
+            }
         }
         
-        // Real Cronjob system - If loaded by cron.php but Cronjob system is not set to 'real'
-        if(!$cronjobSystem === 'real' && defined('_REAL_CRONJOB')) {
-            die();
-        }       
-        
         // Pseudo Cronjob system - Check to see if it should be run
-        if($cronjobSystem === 'pseudo') {
-           
+        if($cronjobSystem === 'pseudo')
+        {           
             $currentTime        = time();                                                   // Current Time (in timestamp)
             $cronjobLastActive  = strtotime($this->getSystem('last_run_time'));             // Last run time (in timestamp)
             $pseudoInterval     = $this->app->config->get('cronjob_pseudo_interval') * 60;  // Pseudo Cronjob Interval (in seconds)   
@@ -228,13 +232,16 @@ class Cronjob extends Components {
             // Do not run cronjobs if time expired is less than the interval         
             if( ($currentTime - $cronjobLastActive) < $pseudoInterval ) { return; }
             
+            // Identify cronjobs are being executed by QWcrm and not manually
+            define('CRONJOB_SYSTEM_ACTIVE', 1);            
         }
                
         // Run All Cronjobs
         $this->runCronjobs();
         
         // Perform correct exit strategy               
-        if(defined('_REAL_CRONJOB')) {
+        if(defined('_REAL_CRONJOB'))
+        {
             die();
         } else {
             return;
@@ -410,7 +417,7 @@ class Cronjob extends Components {
         
         // Send Email (silently)
         $message = _gettext("Cron Test").': '._gettext("This is a test mail sent using").' '.$this->app->config->get('email_mailer').'. '._gettext("Your email settings are correct!");
-        $this->app->system->email->send($company_details['email'], _gettext("Test mail from QWcrm Cronjob System"), $message, $company_details['company_name'], array(), null, null, null, null, true);        
+        $this->app->system->email->send($company_details['email'], _gettext("Test mail from QWcrm Cronjob System").' ( '.date(str_replace('%', '', DATE_FORMAT.' H:i:s').' )'), $message, $company_details['company_name'], array(), null, null, null, null, true);        
         
         // Log activity        
         $this->app->system->general->writeRecordToActivityLog(_gettext("Cronjob test initiated."));
