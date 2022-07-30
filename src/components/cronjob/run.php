@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!$this->app->system->security->checkPageAccessedViaQwcrm('cronjob', 'details')) {
+if(!$this->app->system->security->checkPageAccessedViaQwcrm('cronjob', 'details') && !$this->app->system->security->checkPageAccessedViaQwcrm('cronjob', 'overview')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
