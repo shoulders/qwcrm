@@ -10,7 +10,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Basic QWcrm Statistics{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Basic QWcrm Statistics{/t} - ({t}Only showing records from the{/t} `{section name=s loop=$tax_systems}{if $qw_tax_system == $tax_systems[s].type_key}{$tax_systems[s].display_name}{/if}{/section}` {t}system{/t})</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}REPORT_BASIC_STATS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}REPORT_BASIC_STATS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">

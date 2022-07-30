@@ -29,3 +29,5 @@ $this->app->smarty->assign('global_voucher_revenue_stats', $this->app->component
 
 // Global Payment Stats
 $this->app->smarty->assign('global_payment_revenue_stats', $this->app->components->report->getPaymentsStats('revenue'));
+
+$this->app->smarty->assign('tax_systems', $this->app->components->company->getTaxSystems());
