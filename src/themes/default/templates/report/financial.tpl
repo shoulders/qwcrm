@@ -188,7 +188,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Refunded{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$voucher_stats.count_expired}</b></font></td>
+                                                                        <td><font color="red"><b>{$voucher_stats.count_expired_unused}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Cancelled{/t}: </b></td>
