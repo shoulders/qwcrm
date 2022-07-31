@@ -28,9 +28,9 @@ class PaymentTypeRefund extends PaymentType
         // Set intial record balance
         Payment::$record_balance = (float) $this->refund_details['balance'];
         
-        // Assign Type specific template variables
-        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->refund_details['client_id']));
+        // Assign Payment Type specific template variables
         $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, array()));
+        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->refund_details['client_id']));        
         $this->app->smarty->assign('refund_details', $this->refund_details);
         $this->app->smarty->assign('refund_statuses', $this->app->components->refund->getStatuses());
         $this->app->smarty->assign('name_on_card', $this->app->components->company->getRecord('company_name'));        

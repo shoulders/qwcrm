@@ -28,7 +28,7 @@ class PaymentTypeOtherincome extends PaymentType
         // Set intial record balance
         Payment::$record_balance = (float) $this->otherincome_details['balance'];
         
-        // Assign Type specific template variables  
+        // Assign Payment Type specific template variables
         $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, array('voucher')));
         $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
         $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->getStatuses());        
