@@ -1149,7 +1149,7 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);
         
         // Is the Voucher expired - this should not be needed but I feel better
-        if(checkVoucherIsExpired($voucher_id)) { return; }        
+        if($this->checkVoucherIsExpired($voucher_id)) { return; }        
             
         // Is the voucher a SPV
         if($voucher_details['type'] == 'spv')
@@ -1188,8 +1188,7 @@ class Voucher extends Components {
             }            
         }
         
-        return;
-        
+        return;        
     }    
     
  ////////////////////////////////////////////////////////   

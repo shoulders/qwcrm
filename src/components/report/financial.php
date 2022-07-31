@@ -8,49 +8,37 @@
 
 defined('_QWEXEC') or die;
 
-if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])) {
-
+if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date']))
+{
     // Get the company VAT Flat Rate
     $vat_flat_rate = $this->app->components->company->getRecord('vat_flat_rate');
         
     // Update all Voucher expiry statuses
     $this->app->components->voucher->checkAllVouchersForExpiry();
     
-    /* Build Basic Data Set */
+    /* Get Data Sets */
 
     // Change dates to proper timestamps
     $start_date = $this->app->system->general->dateToMysqlDate(\CMSApplication::$VAR['start_date']);    
     $end_date   = $this->app->system->general->dateToMysqlDate(\CMSApplication::$VAR['end_date']);    
     
-    // Clients
-    $this->app->smarty->assign('client_stats', $this->app->components->report->getClientsStats('current', $start_date, $end_date));      
-    
-    // Workorders
-    $this->app->smarty->assign('workorder_stats', $this->app->components->report->getWorkordersStats('historic', $start_date, $end_date));
-             
-    // Invoices
-    $invoice_stats = $this->app->components->report->getInvoicesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);
-    $this->app->smarty->assign('invoice_stats', $invoice_stats );       
-        
-    // Vouchers
-    $voucher_stats = $this->app->components->report->getVouchersStats('all', $start_date, $end_date, QW_TAX_SYSTEM);
-    $this->app->smarty->assign('voucher_stats', $voucher_stats);
-       
-    // Payments
-    $payment_stats = $this->app->components->report->getPaymentsStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
-    $this->app->smarty->assign('payment_stats', $payment_stats);   
-    
-    // Refunds
+    // Get get stats for calculations (below)
+    $invoice_stats = $this->app->components->report->getInvoicesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);        
+    $voucher_stats = $this->app->components->report->getVouchersStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     $refund_stats = $this->app->components->report->getRefundsStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
-    $this->app->smarty->assign('refund_stats', $refund_stats);   
-        
-    // Expense    
     $expense_stats = $this->app->components->report->getExpensesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
-    $this->app->smarty->assign('expense_stats', $expense_stats);    
+    $otherincome_stats = $this->app->components->report->getOtherincomesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);
+    $payment_stats = $this->app->components->report->getPaymentsStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     
-    // Otherincomes
-    $otherincome_stats = $this->app->components->report->getOtherincomesStats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
-    $this->app->smarty->assign('otherincome_stats', $otherincome_stats);    
+    // Assign stats to Template variables
+    $this->app->smarty->assign('client_stats', $this->app->components->report->getClientsStats('current', $start_date, $end_date));      
+    $this->app->smarty->assign('workorder_stats', $this->app->components->report->getWorkordersStats('historic', $start_date, $end_date));            
+    $this->app->smarty->assign('invoice_stats', $invoice_stats);       
+    $this->app->smarty->assign('voucher_stats', $voucher_stats);    
+    $this->app->smarty->assign('refund_stats', $refund_stats);   
+    $this->app->smarty->assign('expense_stats', $expense_stats);    
+    $this->app->smarty->assign('otherincome_stats', $otherincome_stats);
+    $this->app->smarty->assign('payment_stats', $payment_stats);   
         
     /* Profit and Turnover Calculations */
     
@@ -66,12 +54,14 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
                         );
     
     // Prorata Calculations Calculate NET/TAX/GROSS totals based on the prorata of payments against their parent transaction (if appropriate)
-    if (QW_TAX_SYSTEM == 'sales_tax_cash' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_cash') {
+    if (QW_TAX_SYSTEM == 'sales_tax_cash' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_cash')
+    {
         $prorata_totals = $this->app->components->report->revenuePaymentsProratedAgainstRecords($start_date, $end_date, QW_TAX_SYSTEM);
     }     
         
     // No Tax - Straight profit and loss calculations     
-    if(QW_TAX_SYSTEM == 'no_tax') {        
+    if(QW_TAX_SYSTEM == 'no_tax')
+    {        
         $profit_totals['invoice']['gross'] = $payment_stats['sum_invoice'];  // Voucher payments have already been removed   
         $profit_totals['refund']['gross'] = $payment_stats['sum_refund'];
         $profit_totals['otherincome']['gross'] = $payment_stats['sum_otherincome'];
@@ -82,7 +72,8 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     }
             
     // Sales Tax (Cash Basis) - Prorated Turnover / Prorated Profit
-    if (QW_TAX_SYSTEM == 'sales_tax_cash') {
+    if (QW_TAX_SYSTEM == 'sales_tax_cash')
+    {
         $profit_totals['invoice']['net'] = $prorata_totals['invoice']['net'];        
         $profit_totals['refund']['net'] = $prorata_totals['refund']['net'];
         $profit_totals['otherincome']['gross'] = $prorata_totals['otherincome']['gross'];
@@ -93,7 +84,8 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     }
        
     // VAT Standard Accounting (UK) - Record Based Turnover / Record Based Profit
-    if(QW_TAX_SYSTEM == 'vat_standard') {
+    if(QW_TAX_SYSTEM == 'vat_standard')
+    {
         $profit_totals['invoice']['net'] = $invoice_stats['sum_unit_net'];        
         $profit_totals['refund']['net'] = $refund_stats['sum_unit_net'];
         $profit_totals['otherincome']['net'] = $otherincome_stats['sum_unit_net'];
@@ -104,7 +96,8 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     }
     
     // VAT Cash Accounting (UK) - Prorated Turnover / Prorated Profit
-    if(QW_TAX_SYSTEM == 'vat_cash') {
+    if(QW_TAX_SYSTEM == 'vat_cash')
+    {
         $profit_totals['invoice']['net'] = $prorata_totals['invoice']['net'];        
         $profit_totals['refund']['net'] = $prorata_totals['refund']['net'];
         $profit_totals['otherincome']['net'] = $prorata_totals['otherincome']['net'];
@@ -115,7 +108,8 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     }
     
     // VAT Flat Rate (Basic turnover) (UK) - Record Based Turnover / Record Based Profit (this only takes into account the transactions and not payments do there is no double taxation issue)
-    if(QW_TAX_SYSTEM == 'vat_flat_basic') {
+    if(QW_TAX_SYSTEM == 'vat_flat_basic')
+    {
         $profit_totals['invoice']['gross'] = $invoice_stats['sum_unit_gross'];        
         $profit_totals['refund']['gross'] = $refund_stats['sum_unit_gross'];
         $profit_totals['otherincome']['gross'] = $otherincome_stats['sum_unit_gross'];
@@ -129,7 +123,8 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
         
     // VAT Flat Rate (Cash Based Turnover) (UK) - Prorated Turnover / Prorated Profit - Vouchers (Redeemed vouchers do not appear in turnover/prorata totals so there is no double taxation issue)
     // This makes you pay Flat Rate VAT for a voucher when you pay the invoice, not when the voucher is redeemed (I suppose that fits with turnover x Flat Rate)
-    if(QW_TAX_SYSTEM == 'vat_flat_cash') {     
+    if(QW_TAX_SYSTEM == 'vat_flat_cash')
+    {     
         $profit_totals['invoice']['gross'] = $prorata_totals['invoice']['gross'];        
         $profit_totals['refund']['gross'] = $prorata_totals['refund']['gross'];
         $profit_totals['otherincome']['gross'] = $prorata_totals['otherincome']['gross'];
@@ -158,12 +153,14 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
                 );
     
     // No Tax - No Tax to process
-    if(QW_TAX_SYSTEM == 'no_tax') {        
+    if(QW_TAX_SYSTEM == 'no_tax')
+    {        
         // Do Nothing        
     }
         
     // Sales Tax (Cash Basis)- Prorated TAX
-    if (QW_TAX_SYSTEM == 'sales_tax_cash') {        
+    if (QW_TAX_SYSTEM == 'sales_tax_cash')
+    {        
         $tax_totals['invoice']['tax'] = $prorata_totals['invoice']['tax'];
         $tax_totals['refund']['tax'] = $prorata_totals['refund']['tax'];         
         
@@ -173,7 +170,8 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     }  
     
     // VAT Standard Accounting (UK) - Record Based TAX
-    if(QW_TAX_SYSTEM == 'vat_standard') {        
+    if(QW_TAX_SYSTEM == 'vat_standard')
+    {        
         $tax_totals['invoice']['tax'] = $invoice_stats['sum_unit_tax'];        
         $tax_totals['otherincome']['tax'] = $otherincome_stats['sum_unit_tax'];  
         $tax_totals['expense']['tax'] = $expense_stats['sum_unit_tax'];
@@ -185,7 +183,8 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     }
     
     // VAT Cash Accounting (UK) - Prorated TAX
-    if (QW_TAX_SYSTEM == 'vat_cash') {         
+    if (QW_TAX_SYSTEM == 'vat_cash')
+    {         
         $tax_totals['invoice']['tax'] = $prorata_totals['invoice']['tax'];
         $tax_totals['refund']['tax'] = $prorata_totals['refund']['tax'];
         $tax_totals['expense']['tax'] = $prorata_totals['expense']['tax'];
@@ -197,12 +196,14 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     }    
     
     // VAT Flat Rate (Basic turnover) (UK) - Gross Turnover x Flat Rate
-    if(QW_TAX_SYSTEM == 'vat_flat_basic') {
+    if(QW_TAX_SYSTEM == 'vat_flat_basic')
+    {
         $tax_totals['balance'] = $vat_liability;  // Calculated above in 'Profit and Turnover Calculations' section
     }
     
     // VAT Flat Rate (Cash Based Turnover) (UK) - Gross Turnover x Flat Rate
-    if(QW_TAX_SYSTEM == 'vat_flat_cash') {
+    if(QW_TAX_SYSTEM == 'vat_flat_cash')
+    {
         $tax_totals['balance'] = $vat_liability;  // Calculated above in 'Profit and Turnover Calculations' section
     }
     
@@ -229,19 +230,20 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     
     // Log activity
     $this->app->system->general->writeRecordToActivityLog(_gettext("Financial report run for the date range").': '.\CMSApplication::$VAR['start_date'].' - '.\CMSApplication::$VAR['end_date']);
-    
-} else {
-    
+ 
+// If no submit just load basic page
+}
+else
+{    
     // Set the report section to hidden - Prevents undefined variable error
     $this->app->smarty->assign('enable_report_section', false);
     
     // Load company finacial year dates
     $start_date = $this->app->components->company->getRecord('year_start'); 
-    $end_date   = $this->app->components->company->getRecord('year_end'); 
-    
+    $end_date   = $this->app->components->company->getRecord('year_end');    
 }
 
 // Build the page
 $this->app->smarty->assign('start_date', $start_date);
 $this->app->smarty->assign('end_date', $end_date);
-$this->app->smarty->assign('tax_systems', $this->app->components->company->getTaxSystems() );
+$this->app->smarty->assign('tax_systems', $this->app->components->company->getTaxSystems());
