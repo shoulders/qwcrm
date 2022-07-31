@@ -27,6 +27,12 @@ class PaymentType
     // Pre-Processing - Prep/validate the data
     protected function preProcess()
     {
+        // Is the payment allowed - no checks in this function are currently in place - this is a placeholder
+        if(!$this->paymentType->checkPaymentAllowed())
+        {
+            Payment::$payment_valid = false;
+        }
+        
         // New
         if(Payment::$action === 'new')
         {            
@@ -159,19 +165,13 @@ class PaymentType
         return;       
     }
     
-    // Check Payment is allowed - I think this can be removed
-    protected function checkPaymentAllowed()
+    // General payment checks - not currently used for anything - (placeholder)
+    // Is there an issue with the client? Is the payment system enabled etc... can be added here
+    private function checkPaymentAllowed()
     {        
         $state_flag = true;
-        
-        // Is on a different tax system
-        if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));            
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
-            $state_flag = false;            
-        }
 
-        return $state_flag;       
+        return $state_flag;      
     }
     
 }

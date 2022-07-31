@@ -955,23 +955,34 @@ class Payment extends Components {
 
     }
     
-    // Build the buttons array for payment buttons (currently only used for new payments) this prevents undefined variable errors
-    public function prepareButtonsHolder() {
-        
-        Payment::$buttons = array(
-            'submit' => array('allowed' => false, 'url' => null, 'title' => null),
-            'cancel' => array('allowed' => false, 'url' => null, 'title' => null),
-            'returnToRecord' => array('allowed' => false, 'url' => null, 'title' => null),
-            'addNewRecord' => array('allowed' => false, 'url' => null, 'title' => null)
-        );
-        
-    }
-    
     // Build the enviroment for for making payments - The relevant Type and Class
     public function buildPaymentEnvironment($action)
     {
         // Set Action Type
         Payment::$action = $action;
+        
+        // New
+        if($action === 'new')
+        {
+            // Prevent undefined variable errors (with and without submit)
+            \CMSApplication::$VAR['qpayment']['type']           = \CMSApplication::$VAR['type'];
+            \CMSApplication::$VAR['qpayment']['method']         = \CMSApplication::$VAR['qpayment']['method'] ?? null;
+            \CMSApplication::$VAR['qpayment']['invoice_id']     = \CMSApplication::$VAR['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['voucher_id']     = null;
+            \CMSApplication::$VAR['qpayment']['voucher_code']   = \CMSApplication::$VAR['voucher_code'] ?? \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null;
+            \CMSApplication::$VAR['qpayment']['refund_id']      = \CMSApplication::$VAR['refund_id'] ?? \CMSApplication::$VAR['qpayment']['refund_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['expense_id']     = \CMSApplication::$VAR['expense_id'] ?? \CMSApplication::$VAR['qpayment']['expense_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['otherincome_id'] = \CMSApplication::$VAR['otherincome_id'] ?? \CMSApplication::$VAR['qpayment']['otherincome_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['name_on_card']   = \CMSApplication::$VAR['qpayment']['name_on_card'] ?? null;
+
+            // Build empty button array - to prevent undefined variable errors
+            Payment::$buttons = array(
+                'submit' => array('allowed' => false, 'url' => null, 'title' => null),
+                'cancel' => array('allowed' => false, 'url' => null, 'title' => null),
+                'returnToRecord' => array('allowed' => false, 'url' => null, 'title' => null),
+                'addNewRecord' => array('allowed' => false, 'url' => null, 'title' => null)
+            );
+        }
         
         // For all actions that are not new
         if($action !== 'new')
@@ -997,7 +1008,6 @@ class Payment extends Components {
         // Set the payment type class (Capitalise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
         $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['type']));
         $this->paymentType = new $typeClassName;        
-        
     }
     
     // Process the payment

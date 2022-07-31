@@ -57,25 +57,8 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
     die(_gettext("No Direct Access Allowed."));
 }
 
-// Prevent undefined variable errors (with and without submit)
-\CMSApplication::$VAR['qpayment']['type']           = \CMSApplication::$VAR['type'];
-\CMSApplication::$VAR['qpayment']['method']         = \CMSApplication::$VAR['qpayment']['method'] ?? null;
-\CMSApplication::$VAR['qpayment']['invoice_id']     = \CMSApplication::$VAR['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'] ?? null;
-\CMSApplication::$VAR['qpayment']['voucher_id']     = null;
-\CMSApplication::$VAR['qpayment']['voucher_code']   = \CMSApplication::$VAR['voucher_code'] ?? \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null;
-\CMSApplication::$VAR['qpayment']['refund_id']      = \CMSApplication::$VAR['refund_id'] ?? \CMSApplication::$VAR['qpayment']['refund_id'] ?? null;
-\CMSApplication::$VAR['qpayment']['expense_id']     = \CMSApplication::$VAR['expense_id'] ?? \CMSApplication::$VAR['qpayment']['expense_id'] ?? null;
-\CMSApplication::$VAR['qpayment']['otherincome_id'] = \CMSApplication::$VAR['otherincome_id'] ?? \CMSApplication::$VAR['qpayment']['otherincome_id'] ?? null;
-\CMSApplication::$VAR['qpayment']['name_on_card']   = \CMSApplication::$VAR['qpayment']['name_on_card'] ?? null;
-
-// Build button array (only used for new to prevent undefined variable errors)
-$this->app->components->payment->prepareButtonsHolder();
-
 // Build the Payment Environment
 $this->app->components->payment->buildPaymentEnvironment('new');
-
-// Is the payment allowed this check is pointless
-//$paymentType->checkPaymentAllowed();  ####################### what about this command - this should be called in preprocess wit the other errors = put in payments.php as this is agenerl check
 
 // If the form is submitted
 if(isset(\CMSApplication::$VAR['submit']))
