@@ -729,4 +729,11 @@ UPDATE `#__voucher_records` SET `last_active` = NULL WHERE `status` = 'deleted';
 -- Misc
 --
 
-ALTER TABLE `#__invoice_records` CHANGE `unit_discount` `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`; 
+ALTER TABLE `#__invoice_records` CHANGE `unit_discount` `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
+
+--
+-- Remove workorder_id from payments
+--
+
+ALTER TABLE `#__payment_records` DROP `workorder_id`;
+ALTER TABLE `#__refund_records` DROP `workorder_id`;

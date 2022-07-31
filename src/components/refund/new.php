@@ -60,8 +60,7 @@ if (isset(\CMSApplication::$VAR['submit'])) {
     $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
         
     // Build array
-    $refund_details['client_id'] = $invoice_details['client_id'];
-    $refund_details['workorder_id'] = $invoice_details['workorder_id'];
+    $refund_details['client_id'] = $invoice_details['client_id'];    
     $refund_details['invoice_id'] = $invoice_details['invoice_id'];
     $refund_details['date'] = date('Y-m-d');
     $refund_details['tax_system'] = $invoice_details['tax_system'];    

@@ -704,8 +704,7 @@ INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_accoun
 CREATE TABLE `#__payment_records` (
   `payment_id` int(10) UNSIGNED NOT NULL,
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
-  `client_id` int(10) UNSIGNED DEFAULT NULL,
-  `workorder_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL,  
   `invoice_id` int(10) UNSIGNED DEFAULT NULL,
   `voucher_id` int(10) UNSIGNED DEFAULT NULL,
   `refund_id` int(10) UNSIGNED DEFAULT NULL,
@@ -774,8 +773,7 @@ INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
 CREATE TABLE `#__refund_records` (
   `refund_id` int(10) UNSIGNED NOT NULL,
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
-  `client_id` int(10) UNSIGNED DEFAULT NULL,
-  `workorder_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL,  
   `invoice_id` int(10) UNSIGNED DEFAULT NULL,
   `date` date DEFAULT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,

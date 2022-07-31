@@ -21,8 +21,7 @@ class PaymentTypeExpense extends PaymentType
         $this->expense_details = $this->app->components->expense->getRecord($this->VAR['qpayment']['expense_id']); // only needed for smarty?
         
         // For logging and insertRecord()
-        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = null;
-        Payment::$payment_details['workorder_id'] = \CMSApplication::$VAR['qpayment']['workorder_id'] = null;
+        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = null;        
         Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = null;
         
         // Set intial record balance

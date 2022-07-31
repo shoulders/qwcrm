@@ -21,8 +21,7 @@ class PaymentTypeRefund extends PaymentType
         $this->refund_details = $this->app->components->refund->getRecord($this->VAR['qpayment']['refund_id']);  //only needed for smarty?
         
         // For logging and insertRecord()
-        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->refund_details['client_id'];
-        Payment::$payment_details['workorder_id'] = \CMSApplication::$VAR['qpayment']['workorder_id'] = $this->refund_details['workorder_id'];
+        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->refund_details['client_id'];        
         Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = $this->refund_details['invoice_id'];
         
         // Set intial record balance

@@ -32,8 +32,7 @@ class Refund extends Components {
 
         $sql = "INSERT INTO ".PRFX."refund_records SET
                 employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
-                client_id        =". $this->app->db->qStr( $qform['client_id']               ).",
-                workorder_id     =". $this->app->db->qStr( $qform['workorder_id'] ?: null    ).",
+                client_id        =". $this->app->db->qStr( $qform['client_id']               ).",                
                 invoice_id       =". $this->app->db->qStr( $qform['invoice_id']              ).",                        
                 date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 tax_system       =". $this->app->db->qStr( $qform['tax_system']              ).",
@@ -52,16 +51,15 @@ class Refund extends Components {
 
         $refund_id = $this->app->db->Insert_ID();
 
-        // Create a Workorder History Note
-        $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note - not a workorder
+        //$this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qform['client_id'], null, $qform['invoice_id']);
 
         // Update last active record    
-        $this->app->components->client->updateLastActive($qform['client_id']);
-        $this->app->components->workorder->updateLastActive($qform['workorder_id']);
+        $this->app->components->client->updateLastActive($qform['client_id']);        
         $this->app->components->invoice->updateLastActive($qform['invoice_id']);
 
         return $refund_id; 
@@ -271,19 +269,15 @@ class Refund extends Components {
 
         $refund_details = $this->getRecord($qform['refund_id']);
 
-        // Get related workorder_id
-        $workorder_id = $this->app->components->invoice->getRecord($refund_details['invoice_id'], 'workorder_id');
-
-        // Create a Workorder History Note
-        $this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund").' '.$qform['refund_id'].' '._gettext("updated").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note - not a workorder
+        //$this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund").' '.$qform['refund_id'].' '._gettext("updated").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Refund Record").' '.$qform['refund_id'].' '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $refund_details['client_id'], null, $refund_details['invoice_id']);
 
         // Update last active record  
-        $this->app->components->client->updateLastActive($refund_details['client_id']);
-        $this->app->components->workorder->updateLastActive($workorder_id);
+        $this->app->components->client->updateLastActive($refund_details['client_id']);        
         $this->app->components->invoice->updateLastActive($refund_details['invoice_id']);
 
         return true;
@@ -319,25 +313,21 @@ class Refund extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
-        // Get related workorder_id
-        $workorder_id = $this->app->components->invoice->getRecord($refund_details['invoice_id'], 'workorder_id');
-
         // Status updated message
         if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Refund status updated.")); }
 
         // For writing message to log file, get refund status display name
         $refund_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
-        // Create a Workorder History Note
-        $this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note - not a workorder
+        //$this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Refund").' '.$refund_id.' '._gettext("Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $refund_details['client_id'], null, $refund_details['invoice_id']);
 
         // Update last active record - // not used, the current user is updated elsewhere  
-        $this->app->components->client->updateLastActive($refund_details['client_id']);
-        $this->app->components->workorder->updateLastActive($workorder_id);
+        $this->app->components->client->updateLastActive($refund_details['client_id']);        
         $this->app->components->invoice->updateLastActive($refund_details['invoice_id']);              
 
         return true;
@@ -360,9 +350,6 @@ class Refund extends Components {
         // Get refund details
         $refund_details = $this->getRecord($refund_id);
 
-        // Get related workorder_id
-        $workorder_id = $this->app->components->invoice->getRecord($refund_details['invoice_id'], 'workorder_id');
-
         // Change the refund status to cancelled (I do this here to maintain consistency)
         $this->updateStatus($refund_id, 'cancelled');
 
@@ -375,16 +362,15 @@ class Refund extends Components {
         // Revert attached vouchers status back to paid
         $this->app->components->voucher->revertRefundedInvoiceVouchers($refund_details['invoice_id']);
 
-        // Create a Workorder History Note  
-        $this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note  - not a workorder
+        //$this->app->components->workorder->insertHistory($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $refund_details['client_id'], null, $refund_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($refund_details['client_id']);
-        $this->app->components->workorder->updateLastActive($workorder_id);
+        $this->app->components->client->updateLastActive($refund_details['client_id']);        
         $this->app->components->invoice->updateLastActive($refund_details['invoice_id']);
 
         return true;
@@ -421,8 +407,7 @@ class Refund extends Components {
 
         $sql = "UPDATE ".PRFX."refund_records SET
                 employee_id         = NULL,
-                client_id           = NULL,
-                workorder_id        = NULL,
+                client_id           = NULL,                
                 invoice_id          = NULL,
                 date                = NULL, 
                 tax_system          = '',  
@@ -442,19 +427,15 @@ class Refund extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Get related workorder_id
-        $workorder_id = $this->app->components->invoice->getRecord($refund_details['invoice_id'], 'workorder_id');
-
-        // Create a Workorder History Note  
-        $this->app->components->workorder->insertHistory($workorder_id, _gettext("Expense").' '.$refund_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note  - not a workorder
+        //$this->app->components->workorder->insertHistory($workorder_id, _gettext("Expense").' '.$refund_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("deleted.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $refund_details['client_id'], null, $refund_details['invoice_id']);
 
         // Update last active record    
         $this->app->components->client->updateLastActive($refund_details['client_id']);
-        $this->app->components->workorder->updateLastActive($workorder_id);
         $this->app->components->invoice->updateLastActive($refund_details['invoice_id']);
 
         return true;  

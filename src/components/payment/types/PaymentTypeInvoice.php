@@ -21,8 +21,7 @@ class PaymentTypeInvoice extends PaymentType
         $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']); // only needed for smarty?
         
         // For logging and insertRecord()
-        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];
-        Payment::$payment_details['workorder_id'] = \CMSApplication::$VAR['qpayment']['workorder_id'] = $this->invoice_details['workorder_id'];
+        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];        
         Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = $this->invoice_details['invoice_id'];
         
         // Set initial record balance

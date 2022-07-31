@@ -52,12 +52,6 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Workorder ID{/t}</b></td>
-                                                        <td colspan="3">
-                                                            <a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.workorder_id}">{$payment_details.workorder_id}</a>                                                            
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
                                                         <td align="right"><b>{t}Invoice ID{/t}</b></td>
                                                         <td colspan="3">
                                                             <a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a>                                                            

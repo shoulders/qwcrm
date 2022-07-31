@@ -47,8 +47,7 @@ class Payment extends Components {
 
         $sql = "INSERT INTO ".PRFX."payment_records SET            
                 employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id          ).",
-                client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?: null           ).",
-                workorder_id    = ".$this->app->db->qStr( $qpayment['workorder_id'] ?: null        ).",
+                client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?: null           ).",                
                 invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?: null          ).",
                 voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?: null          ).",               
                 refund_id       = ".$this->app->db->qStr( $qpayment['refund_id'] ?: null           ).", 
@@ -69,16 +68,15 @@ class Payment extends Components {
         // Get Payment Record ID
         $payment_id = $this->app->db->Insert_ID();
 
-        // Create a Workorder History Note       
-        $this->app->components->workorder->insertHistory(Payment::$payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
+        // Create a Workorder History Note - not a work order    
+        //$this->app->components->workorder->insertHistory(Payment::$payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
 
         // Log activity        
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], Payment::$payment_details['workorder_id'], Payment::$payment_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], null, Payment::$payment_details['invoice_id']);
 
         // Update last active record    
-        $this->app->components->client->updateLastActive(Payment::$payment_details['client_id']);
-        $this->app->components->workorder->updateLastActive(Payment::$payment_details['workorder_id']);
+        $this->app->components->client->updateLastActive(Payment::$payment_details['client_id']);        
         $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id']);
 
         // Return the payment_id
@@ -466,16 +464,15 @@ class Payment extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Create a Workorder History Note       
-        $this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);           
+        // Create a Workorder History Note - not a Workorder  
+        //$this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);           
 
         // Log activity 
         $record = _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], null, $qpayment['invoice_id']);
 
         // Update last active record    
-        $this->app->components->client->updateLastActive($qpayment['client_id']);
-        $this->app->components->workorder->updateLastActive($qpayment['workorder_id']);
+        $this->app->components->client->updateLastActive($qpayment['client_id']);        
         $this->app->components->invoice->updateLastActive($qpayment['invoice_id']);
 
         return;
@@ -569,16 +566,15 @@ class Payment extends Components {
         $payment_status_names = $this->getStatusDisplayNames();
         $payment_status_display_name = _gettext($payment_status_names[$new_status]);
 
-        // Create a Workorder History Note (Not Used)      
-        $this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note (Not Used) - not a workorder
+        //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
 
         // Update last active record (Not Used)
-        $this->app->components->client->updateLastActive($payment_details['client_id']);
-        $this->app->components->workorder->updateLastActive($payment_details['workorder_id']);
+        $this->app->components->client->updateLastActive($payment_details['client_id']);        
         $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
 
         return true;        
@@ -600,16 +596,15 @@ class Payment extends Components {
         // Change the payment status to cancelled (I do this here to maintain consistency)
         $this->updateStatus($payment_id, 'cancelled');      
 
-        // Create a Workorder History Note  
-        $this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note - not a work order
+        //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($payment_details['client_id']);
-        $this->app->components->workorder->updateLastActive($payment_details['workorder_id']);
+        $this->app->components->client->updateLastActive($payment_details['client_id']);        
         $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
 
         return true;
@@ -629,8 +624,7 @@ class Payment extends Components {
 
         $sql = "UPDATE ".PRFX."payment_records SET        
                 employee_id     = NULL,
-                client_id       = NULL,
-                workorder_id    = NULL,
+                client_id       = NULL,                
                 invoice_id      = NULL,
                 voucher_id      = NULL,
                 refund_id       = NULL,
@@ -649,16 +643,15 @@ class Payment extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Create a Workorder History Note       
-        $this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);           
+        // Create a Workorder History Note - not a workorder      
+        //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);           
 
         // Log activity        
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
 
         // Update last active record    
-        $this->app->components->client->updateLastActive($payment_details['client_id']);
-        $this->app->components->workorder->updateLastActive($payment_details['workorder_id']);
+        $this->app->components->client->updateLastActive($payment_details['client_id']);        
         $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
 
         return true;        

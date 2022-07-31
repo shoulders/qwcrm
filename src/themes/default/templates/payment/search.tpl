@@ -37,7 +37,6 @@
                                                                         <option value="payment_id"{if $search_category == 'payment_id'} selected{/if}>{t}Payment ID{/t}</option>
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Client{/t}</option>                                                                        
-                                                                        <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="amount"{if $search_category == 'amount'} selected{/if}>{t}Amount{/t}</option>
                                                                         <option value="additional_info"{if $search_category == 'additional_info'} selected{/if}>{t}Additional Info{/t}</option>
