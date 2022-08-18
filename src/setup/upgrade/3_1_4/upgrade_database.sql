@@ -737,3 +737,10 @@ ALTER TABLE `#__invoice_records` CHANGE `unit_discount` `unit_discount` DECIMAL(
 
 ALTER TABLE `#__payment_records` DROP `workorder_id`;
 ALTER TABLE `#__refund_records` DROP `workorder_id`;
+
+--
+-- Add cancel message to invoice and allow for more information
+--
+
+ALTER TABLE `#__invoice_records` ADD `additional_info` TEXT NOT NULL AFTER `is_closed`;
+UPDATE `#__invoice_records` SET `additional_info` = '{}';

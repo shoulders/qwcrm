@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
 }
 
 // Cancel Invoice --- add reasso9n for cancel here
-if(!$this->app->components->invoice->cancelRecord(\CMSApplication::$VAR['invoice_id'], \CMSApplication::$VAR['invoice_id'])) {    
+if(!$this->app->components->invoice->cancelRecord(\CMSApplication::$VAR['invoice_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling'])) {    
     
     // Load the invoice details page with error
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The invoice failed to be cancelled."));

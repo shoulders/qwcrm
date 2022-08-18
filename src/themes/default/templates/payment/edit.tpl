@@ -131,7 +131,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Additional Info{/t}</b></td>
-                                                        <td>{if $payment_details.additional_info|adinfodisplay}{$payment_details.additional_info|adinfodisplay}{else}{t}none{/t}{/if}</td>
+                                                        <td>{if $payment_details.additional_info|paymentadinfodisplay}{$payment_details.additional_info|paymentadinfodisplay}{else}{t}none{/t}{/if}</td>
                                                     </tr> 
                                                     <tr>
                                                         <td align="right"><b>{t}Note{/t}</b></td>

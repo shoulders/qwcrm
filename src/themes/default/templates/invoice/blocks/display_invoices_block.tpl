@@ -17,13 +17,14 @@
         <td class="olohead" nowrap>{t}Labour{/t}</td>
         <td class="olohead" nowrap>{t}Parts{/t}</td>
         <td class="olohead" nowrap>{t}Vouchers{/t}</td>
-        <td class="olohead" nowrap>{t}Status{/t}</td> 
+        <td class="olohead" nowrap>{t}Status{/t}</td>        
         {if $qw_tax_system != 'no_tax'}
             <td class="olohead" nowrap>{t}Net{/t}</td>
             <td class="olohead"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
         {/if}
         <td class="olohead" nowrap>{t}Gross{/t}</td>
         <td class="olohead" nowrap>{t}Balance{/t}</td>
+        <td class="olohead" nowrap>{t}Additional Info{/t}</td> 
     </tr>
     {section name=i loop=$display_invoices.records}
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_invoices.records[i].status != 'deleted'} onDblClick="window.location='index.php?component=invoice&page_tpl={if $display_invoices.records[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices.records[i].invoice_id}';"{/if}>
@@ -70,7 +71,12 @@
                 <td class="olotd4" nowrap>{$currency_sym}{$display_invoices.records[i].unit_tax|string_format:"%.2f"}</td>
             {/if}
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices.records[i].unit_gross|string_format:"%.2f"}</td>
-            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices.records[i].balance|string_format:"%.2f"}</td> 
+            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices.records[i].balance|string_format:"%.2f"}</td>
+            <td class="olotd4" nowrap>
+                {if $display_invoices.records[i].additional_info|invoiceadinfodisplay}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_invoices.records[i].additional_info|invoiceadinfodisplay|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {/if}
+             </td> 
         </tr>
     {/section}
     {if $display_invoices.restricted_records}

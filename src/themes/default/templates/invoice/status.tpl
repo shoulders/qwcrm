@@ -92,11 +92,10 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_cancel}
-                                        {*<button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to cancel this invoice? All records relating to this invoice will be kept.{/t}')) window.location.href='index.php?component=invoice&page_tpl=cancel&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>*}
                                         <form method="post" action="index.php?component=invoice&page_tpl=cancel&invoice_id={$invoice_id};">
-                                            <textarea name="qform[reason_for_cancelling]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Cancelling{/t}"/></textarea>
+                                            <textarea id="qform[reason_for_cancelling]" name="qform[reason_for_cancelling]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Cancelling{/t}"/></textarea>
                                             <p>&nbsp;</p>
-                                            <input class="olotd4" name="cancel_invoice" value="{t}Cancel{/t}" type="submit" onclick="if (confirm('{t}Are you sure you want to cancel this invoice? All records relating to this invoice will be kept.{/t}'))">
+                                            <input class="olotd4" name="cancel_invoice" value="{t}Cancel{/t}" type="submit" onclick="confirm('{t}Are you sure you want to cancel this invoice? All records relating to this invoice will be kept but will be removed from the relevant financial calculations.{/t}');">
                                         </form>
                                     {else}
                                         {t}This invoice cannot be cancelled. You can only cancel the invoice if it is open and does not have any payments.{/t}

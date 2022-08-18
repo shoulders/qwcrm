@@ -488,7 +488,8 @@ CREATE TABLE `#__invoice_records` (
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
-  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

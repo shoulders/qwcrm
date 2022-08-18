@@ -47,7 +47,8 @@ defined('_QWEXEC') or die;
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",            
                 status          =". $this->app->db->qStr( 'pending'                            ).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)           ).",
-                is_closed       =". $this->app->db->qStr( 0                                    ); 
+                is_closed       =". $this->app->db->qStr( 0                                    ).",
+                additional_info =". $this->app->db->qStr( '{}'                                 ); 
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -178,7 +179,7 @@ defined('_QWEXEC') or die;
         $this->app->system->general->writeRecordToActivityLog(_gettext("The Invoice Prefill Items").' '._gettext("were modified by").' '.$this->app->user->login_display_name.'.');    
 
     }
- 
+    
     /** Get Functions **/
 
     #########################################
@@ -829,7 +830,20 @@ defined('_QWEXEC') or die;
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }    
-        
+     
+    ###################################
+    #    update additional info       #
+    ###################################
+
+    public function updateAdditionalInfo($invoice_id, $additional_info = null) {
+
+        $sql = "UPDATE ".PRFX."invoice_records SET
+                additional_info=".$this->app->db->qStr( $additional_info )."
+                WHERE invoice_id=".$this->app->db->qStr($invoice_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+    }    
 
     /** Close Functions **/
 
@@ -879,7 +893,7 @@ defined('_QWEXEC') or die;
     #   Cancel Invoice                  # // This does not delete information i.e. client went bust and did not pay
     #####################################
 
-    public function cancelRecord($invoice_id) {
+    public function cancelRecord($invoice_id, $reason_for_cancelling = null) {
 
         // Make sure the invoice can be cancelled
         if(!$this->checkRecordAllowsCancel($invoice_id)) {        
@@ -893,10 +907,14 @@ defined('_QWEXEC') or die;
         //$this->app->components->voucher->cancelInvoiceVouchers($invoice_id);
 
         // Change the invoice status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($invoice_id, 'cancelled');      
+        die();
+        $this->updateStatus($invoice_id, 'cancelled');
+        
+        // Add Cancelled message to the additional info
+        $this->updateAdditionalInfo($invoice_id, $this->buildAdditionalInfoJson($invoice_id, $reason_for_cancelling));
 
-        // Create a Workorder History Note  
-        $this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
+        // Create a Workorder History Note  - this is an invoice
+        //$this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
@@ -957,7 +975,8 @@ defined('_QWEXEC') or die;
                 opened_on           = NULL,
                 closed_on           = NULL,
                 last_active         = NULL,            
-                is_closed           = 1            
+                is_closed           = 1,
+                additional_info     = ''
                 WHERE invoice_id    =". $this->app->db->qStr( $invoice_id  );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -1756,6 +1775,26 @@ defined('_QWEXEC') or die;
 
         return $state_flag; 
 
-    }  
+    }
+    
+    #########################################
+    #  Build additional_info JSON           #       
+    #########################################
+
+     public function buildAdditionalInfoJson($invoice_id, $reason_for_cancelling = null) {
+
+        // Make sure we merge current data from the database - decodes as an array even if empty
+        $additional_info = json_decode($this->app->components->invoice->getRecord($invoice_id, 'additional_info'), true);
+       
+        // Add reason for cancelling
+        if($reason_for_cancelling)
+        {           
+            $additional_info['reason_for_cancelling'] = $reason_for_cancelling;
+        }
+        
+        // Return as a JSON object
+        return json_encode($additional_info, JSON_FORCE_OBJECT);
+
+    }
     
 }

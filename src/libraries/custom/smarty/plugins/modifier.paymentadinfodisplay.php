@@ -15,9 +15,9 @@
  */
 
 /**
- * Smarty    Additional Information modifier plugin
+ * Smarty    Payment Additional Information modifier plugin
  * Type:     modifier
- * Name:     adinfodisplay
+ * Name:     paymentadinfodisplay
  * Purpose:  convert an Additional Info JSON string to a viewable HTML block
  *
  * @link      http://quantumwarp.com
@@ -27,7 +27,7 @@
  *
  * @return string
  */
-function smarty_modifier_adinfodisplay($string)
+function smarty_modifier_paymentadinfodisplay($string)
 {
     // Get the QWcrm Application
     $app = \Factory::getApplication();
