@@ -28,7 +28,7 @@ class PaymentType
     protected function preProcess()
     {
         // Is the payment allowed - no checks in this function are currently in place - this is a placeholder
-        if(!$this->paymentType->checkPaymentAllowed())
+        if(!$this->checkPaymentAllowed())
         {
             Payment::$payment_valid = false;
         }
@@ -133,19 +133,19 @@ class PaymentType
             // Edit
             if(Payment::$action === 'edit')
             {
-                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._getttext("was edited.");
+                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was edited.");
             }
             
             // Cancel
             if(Payment::$action === 'cancel')
             {
-                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._getttext("was cancelled.");
+                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was cancelled.");
             }
             
             // Delete
             if(Payment::$action === 'delete')
             {
-                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._getttext("was deleted.");
+                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was deleted.");
             }  
             
             // Log activity

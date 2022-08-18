@@ -604,13 +604,9 @@ class WorkOrder extends Components {
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $workorder_details['employee_id'];
 
-        // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : null;
-
         $sql = "UPDATE ".PRFX."workorder_records SET   
                 employee_id         =". $this->app->db->qStr( $employee_id ?: null   ).",
-                status              =". $this->app->db->qStr( $new_status      ).",
-                closed_on           =". $this->app->db->qStr( $closed_on ?: null )."  
+                status              =". $this->app->db->qStr( $new_status      )."                
                 WHERE workorder_id  =". $this->app->db->qStr( $workorder_id    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -649,7 +645,7 @@ class WorkOrder extends Components {
     }
 
     ###################################
-    # Update Workorder Closed Status  #  // This should be moved to $this->app->components->workorder->update_workorder_status()
+    # Update Workorder Closed Status  #
     ###################################
 
     public function updateClosedStatus($workorder_id, $new_closed_status) {
@@ -667,7 +663,7 @@ class WorkOrder extends Components {
         if($new_closed_status == 'close') {        
             $sql = "UPDATE ".PRFX."workorder_records SET
                     closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
-                    closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",
+                    closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() ).",
                     is_closed           =". $this->app->db->qStr( 1                                    )."
                     WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
 

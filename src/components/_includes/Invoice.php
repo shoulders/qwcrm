@@ -721,7 +721,7 @@ defined('_QWEXEC') or die;
         // Get invoice details
         $invoice_details = $this->getRecord($invoice_id);
 
-        // if the new status is the same as the current one, exit
+        // If the new status is the same as the current one, exit
         if($new_status == $invoice_details['status']) {        
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new invoice status is the same as the current invoice status."));
             return false;
@@ -730,13 +730,10 @@ defined('_QWEXEC') or die;
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $invoice_details['employee_id'];
 
-        // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime() : null;
-
+        
         $sql = "UPDATE ".PRFX."invoice_records SET   
                 employee_id         =". $this->app->db->qStr( $employee_id     ).",
-                status              =". $this->app->db->qStr( $new_status      ).",
-                closed_on           =". $this->app->db->qStr( $closed_on       )."  
+                status              =". $this->app->db->qStr( $new_status      )."               
                 WHERE invoice_id    =". $this->app->db->qStr( $invoice_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
@@ -1484,7 +1481,7 @@ defined('_QWEXEC') or die;
 
         /* Update Status - only if required */    
         
-        $invoice_details        = $this->getRecord($invoice_id); 
+        $invoice_details = $this->getRecord($invoice_id); 
 
         // No invoiceable amount, set to pending (if not already)
         if($invoice_details['unit_gross'] == 0 && $invoice_details['status'] != 'pending') {
