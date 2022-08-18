@@ -164,20 +164,10 @@ class PaymentType
         return;       
     }
     
-    // General payment checks - not currently used for anything - (placeholder)
-    // Is there an issue with the client? Is the payment system enabled etc... can be added here
+    // General payment checks (Common) (placeholder for now)
     private function checkPaymentAllowed()
     {        
-        $state_flag = true;
-        
-        /* Is on a different tax system
-        if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));            
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
-            $state_flag = false;            
-        }*/
-
-        return $state_flag;      
+       return true;      
     }
     
 }

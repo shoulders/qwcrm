@@ -20,7 +20,7 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
     $this->app->system->page->forcePage('invoice', 'search');
 }
 
-// Cancel Invoice
+// Cancel Invoice --- add reasso9n for cancel here
 if(!$this->app->components->invoice->cancelRecord(\CMSApplication::$VAR['invoice_id'], \CMSApplication::$VAR['invoice_id'])) {    
     
     // Load the invoice details page with error

@@ -183,6 +183,21 @@ class PaymentTypeOtherincome extends PaymentType
         return;       
     }
     
+    // General payment checks
+    private function checkPaymentAllowed()
+    {        
+        $state_flag = parent::checkPaymentAllowed();
+                        
+        // Is on a different tax system
+        if($this->otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot receive a payment because it is on a different tax system."));            
+            $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
+            $state_flag = false;            
+        }
+
+        return $state_flag;      
+    }
+    
     // Build Buttons
     public function buildButtons()
     {        
