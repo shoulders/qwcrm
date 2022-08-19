@@ -201,6 +201,8 @@ class PaymentTypeOtherincome extends PaymentType
     // Build Buttons
     public function buildButtons()
     {        
+        parent::buildButtons();
+        
         // Submit
         if($this->otherincome_details['balance'] > 0) {
             Payment::$buttons['submit']['allowed'] = true;

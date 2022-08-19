@@ -164,10 +164,16 @@ class PaymentType
         return;       
     }
     
-    // General payment checks (Common) (placeholder for now)
+    // General payment checks (placeholder for now)
     private function checkPaymentAllowed()
     {        
        return true;      
+    }
+    
+    // Build Buttons (placeholder for now)
+    public function buildButtons()
+    {        
+        return;
     }
     
 }

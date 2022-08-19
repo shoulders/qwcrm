@@ -196,6 +196,8 @@ class PaymentTypeExpense extends PaymentType
     // Build Buttons
     public function buildButtons() {
         
+        parent::buildButtons();
+        
         // Submit
         if($this->expense_details['balance'] > 0) {
             Payment::$buttons['submit']['allowed'] = true;

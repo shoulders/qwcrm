@@ -907,7 +907,6 @@ defined('_QWEXEC') or die;
         //$this->app->components->voucher->cancelInvoiceVouchers($invoice_id);
 
         // Change the invoice status to cancelled (I do this here to maintain consistency)
-        die();
         $this->updateStatus($invoice_id, 'cancelled');
         
         // Add Cancelled message to the additional info
