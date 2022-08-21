@@ -10,22 +10,20 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="../`$theme_js_dir_finc`jscal2/language.js"}</script>
-<script>
+<script>    
     
-    // If the page is reloaded by the system we need to select the last payment method used
-    {if $payment_method}
-        $(document).ready(function() {
-            selectPaymentMethod();
-        } );    
-    {/if}
-    
+    // If apayment method is set, enable its panel
+    $(document).ready(function() {
+        selectPaymentMethod();
+    } );    
+       
     // Show selected Payment Method
     function selectPaymentMethod() { 
 
         // Get the selected payment method name
         var paymentMethod = document.getElementById("method").value;
         
-        // Hide the other payment methods
+        // Hide all payment methods
         $(".paymentMethod").hide();
         
         // Disable all input fields
@@ -412,10 +410,49 @@
                                 </td>
                             </tr>                                                
                         </table>                                                  
+                    </div>                                            
+
+                    <!-- Credit Note -->
+                    <div id="credit_note" class="paymentMethod"{if $payment_method !== 'credit_note'} hidden{/if}>
+                        <table width="100%" cellpadding="4" cellspacing="0" border="0">
+                            <tr>
+                                <td class="menuhead2">&nbsp;{t}Credit Note{/t}</td>
+                            </tr>
+                            <tr>
+                                <td class="menutd2">
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" width="100%" class="olotable">
+                                        <tr class="olotd4">
+                                            <td class="row2"></td>
+                                            <td class="row2"><b>{t}Date{/t}</b></td>
+                                            <td class="row2"><b>{t}Amount{/t}</b></td>
+                                        </tr>
+                                        <tr class="olotd4">
+                                            <td></td>
+                                            <td>
+                                                <input id="credit_note_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <button type="button" id="credit_note_date_button">+</button>
+                                                <script>                                                        
+                                                    Calendar.setup( {
+                                                        trigger     : "credit_note_date_button",
+                                                        inputField  : "credit_note_date",
+                                                        dateFormat  : "{$date_format}"                                                                                            
+                                                    } );                                                        
+                                                </script>                                                    
+                                            </td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top"><b>{t}Note{/t}</b></td>
+                                            <td colspan="3"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" placeholder="{t}You must leave a reason for this Credit Note{/t}" required disabled></textarea></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                                             
                 </td>
-            </tr>
+            </tr>                                                    
         {/if}
         
         <!-- Buttons -->

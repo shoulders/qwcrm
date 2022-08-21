@@ -669,7 +669,8 @@ INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `r
 (5, 'direct_debit', 'Direct Debit', 1, 1, 0, 0, 0),
 (6, 'other', 'Other', 0, 1, 0, 0, 0),
 (7, 'paypal', 'PayPal', 1, 1, 0, 0, 0),
-(8, 'voucher', 'Voucher', 0, 1, 1, 1, 0);
+(8, 'voucher', 'Voucher', 0, 1, 1, 1, 0),
+(9, 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');
 
 -- --------------------------------------------------------
 

@@ -744,3 +744,10 @@ ALTER TABLE `#__refund_records` DROP `workorder_id`;
 
 ALTER TABLE `#__invoice_records` ADD `additional_info` TEXT NOT NULL AFTER `is_closed`;
 UPDATE `#__invoice_records` SET `additional_info` = '{}';
+
+--
+-- Adding Credit Note System
+--
+
+INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES 
+('9', 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');

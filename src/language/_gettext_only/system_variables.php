@@ -126,6 +126,7 @@ _gettext("Direct Debit");
 _gettext("Other");
 _gettext("PayPal");
 _gettext("Voucher");
+_gettext("Credit Note");
 
 /* Payment Statuses */
 _gettext("Valid");
