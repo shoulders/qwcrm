@@ -972,9 +972,9 @@ class Setup extends Components {
         
     }
     
-    ############################################################################
-    #  Convert Otherincomes into a separate item and make a related payment    #
-    ############################################################################
+    #######################################
+    #  Databse - copy ColumnA To ColumnB  #
+    #######################################
 
     public function copyColumnAToColumnB($table, $columnA, $columnB) {
         

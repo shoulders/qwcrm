@@ -40,8 +40,7 @@
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>                                                                                                                                                                                                                     
                                                                         <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>
                                                                         <option disabled>----------</option>                                                                        
-                                                                        <option value="labour_items"{if $search_category == 'labour_items'} selected{/if}>{t}Labour{/t}</option>
-                                                                        <option value="parts_items"{if $search_category == 'parts_items'} selected{/if}>{t}Parts{/t}</option>                                                                        
+                                                                        <option value="invoice_items"{if $search_category == 'invoice_items'} selected{/if}>{t}Items{/t}</option>                                                                                                                                           
                                                                     </select>
                                                                    <br />
                                                                    <b>{t}for{/t}</b>

@@ -14,8 +14,7 @@
         <td class="olohead" nowrap>{t}Client{/t}</td>                                                        
         <td class="olohead" nowrap>{t}Employee{/t}</td>
         <td class="olohead" nowrap>{t}Scope{/t}</td>
-        <td class="olohead" nowrap>{t}Labour{/t}</td>
-        <td class="olohead" nowrap>{t}Parts{/t}</td>
+        <td class="olohead" nowrap>{t}Items{/t}</td>        
         <td class="olohead" nowrap>{t}Vouchers{/t}</td>
         <td class="olohead" nowrap>{t}Status{/t}</td>        
         {if $qw_tax_system != 'no_tax'}
@@ -45,13 +44,8 @@
                 {/if}
             </td>
             <td class="olotd4" nowrap>
-                {if $display_invoices.records[i].labour_items}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_invoices.records[i].labour_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
-                {/if}
-            </td>
-            <td class="olotd4" nowrap>
-                {if $display_invoices.records[i].parts_items}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_invoices.records[i].parts_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {if $display_invoices.records[i].invoice_items}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_invoices.records[i].invoice_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4" nowrap>

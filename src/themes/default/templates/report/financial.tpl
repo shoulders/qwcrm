@@ -219,68 +219,39 @@
                                                 <td class="olotd5" colspan="2">
                                                     <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
                                                         <tr>                                                            
-                                                            <td class="olohead">{t}Labour{/t}</td>
-                                                            <td class="olohead">{t}Parts{/t}</td>
+                                                            <td class="olohead">{t}Invoice Items{/t}</td>                                                            
                                                             <td class="olohead">{t}Vouchers{/t}</td>
                                                             <td class="olohead">{t}Totals{/t}</td>
                                                         </tr>
                                                         <tr>                                                             
 
-                                                            <!-- Labour -->
+                                                            <!-- Invoice Items -->
                                                             <td class="olotd4" valign="top">
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Items{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$invoice_stats.labour_count_items}</b></font></td>
+                                                                        <td><font color="red"><b>{$invoice_stats.items_count}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Qty{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$invoice_stats.labour_sum_unit_qty|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$invoice_stats.items_sum_unit_qty|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
                                                                             <td><b>{t}Net{/t}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
+                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.items_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_subtotal_tax|string_format:"%.2f"}</b></font></td>
+                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.items_sum_subtotal_tax|string_format:"%.2f"}</b></font></td>
                                                                         </tr>                                                                        
                                                                     {/if}
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_subtotal_gross|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.items_sum_subtotal_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
-                                                            </td>
-
-                                                            <!-- Parts -->
-                                                            <td class="olotd4" valign="top">
-                                                                <table>
-                                                                    <tr>
-                                                                        <td><b>{t}Items{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$invoice_stats.parts_count_items}</b></font></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>{t}Qty{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$invoice_stats.parts_sum_unit_qty|string_format:"%.2f"}</b></font></td>
-                                                                    </tr>
-                                                                    {if $qw_tax_system != 'no_tax'}
-                                                                        <tr>
-                                                                            <td><b>{t}Net{/t}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_subtotal_tax|string_format:"%.2f"}</b></font></td>
-                                                                        </tr>                                                                        
-                                                                    {/if}
-                                                                    <tr>
-                                                                        <td><b>{t}Gross{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_subtotal_gross|string_format:"%.2f"}</b></font></td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>    
+                                                            </td>                                                              
                                                             
                                                             <!-- Vouchers -->
                                                             <td class="olotd4" valign="top">
@@ -313,12 +284,8 @@
                                                             <td class="olotd4" valign="top">
                                                                 <table>
                                                                     <tr>
-                                                                        <td><b>{t}Labour{/t} {t}[N]{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>{t}Parts{/t} {t}[N]{/t}</b></font></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
+                                                                        <td><b>{t}Invoice Items{/t} {t}[N]{/t}</b></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.items_sum_subtotal_net|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Vouchers{/t} {t}[N]{/t}</b></td>

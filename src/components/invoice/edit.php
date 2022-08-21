@@ -9,8 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['qform']['labour_items'] = \CMSApplication::$VAR['qform']['labour_items'] ?? null;
-\CMSApplication::$VAR['qform']['parts_items'] = \CMSApplication::$VAR['qform']['parts_items'] ?? null;
+\CMSApplication::$VAR['qform']['invoice_items'] = \CMSApplication::$VAR['qform']['invoice_items'] ?? null;
 
 // Check if we have an invoice_id
 if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
@@ -36,10 +35,9 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
 
 if(isset(\CMSApplication::$VAR['submit'])) {
     
-    // insert the parts and labour item arrays
-    $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], 'labour', \CMSApplication::$VAR['qform']['labour_items']);
-    $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], 'parts', \CMSApplication::$VAR['qform']['parts_items']);
-    
+    // insert the invoice items into an array
+    $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['invoice_items']);
+        
     // update and recalculate the invoice
     $this->app->components->invoice->updateRecord(\CMSApplication::$VAR['qform']);
     $this->app->components->invoice->recalculateTotals(\CMSApplication::$VAR['qform']['invoice_id']);
@@ -60,19 +58,16 @@ $this->app->smarty->assign('workorder_details',        $this->app->components->w
 $this->app->smarty->assign('invoice_details',          $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'])                                                );
 
 // Prefill Items
-$this->app->smarty->assign('labour_prefill_items',     $this->app->components->invoice->getPrefillItems('Labour', '1')                                               ); 
-$this->app->smarty->assign('parts_prefill_items',      $this->app->components->invoice->getPrefillItems('Parts', '1')                                                );
+$this->app->smarty->assign('invoice_prefill_items',     $this->app->components->invoice->getPrefillItems(1)                                               ); 
 $this->app->smarty->assign('vat_tax_codes',            $this->app->components->company->getVatTaxCodes(false)                                                               );
 $this->app->smarty->assign('default_vat_tax_code',     $this->app->components->company->getDefaultVatTaxCode($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'tax_system'))        );
 
 // Invoice Items
-$this->app->smarty->assign('labour_items_json',        json_encode($this->app->components->invoice->getLabourItems(\CMSApplication::$VAR['invoice_id']))                                                  );
-$this->app->smarty->assign('parts_items_json',         json_encode($this->app->components->invoice->getPartsItems(\CMSApplication::$VAR['invoice_id']))                                                   );
+$this->app->smarty->assign('invoice_items_json',       json_encode($this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id']))                                                  );
 $this->app->smarty->assign('display_vouchers',         $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
 
 // Sub Totals
-$this->app->smarty->assign('labour_items_subtotals',  $this->app->components->invoice->getLabourItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );
-$this->app->smarty->assign('parts_items_subtotals',   $this->app->components->invoice->getPartsItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                           );
+$this->app->smarty->assign('invoice_items_subtotals',  $this->app->components->invoice->getItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );
 $this->app->smarty->assign('voucher_items_subtotals', $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id'])                                                       );
 
 // Payment Details

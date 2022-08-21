@@ -179,16 +179,16 @@
                                 </td>
                             </tr>   
 
-                            <!-- Labour Items -->
+                            <!-- Invoice Items -->
                             <tr>
                                 <td>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                         <tr>
-                                            <td class="menuhead2">&nbsp;{t}Labour{/t}</td>
+                                            <td class="menuhead2">&nbsp;{t}Items{/t}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd2">
-                                                {if $labour_items}
+                                                {if $invoice_items}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                         <tr class="olotd4">
                                                             <td class="row2"><b>{t}No{/t}</b></td>
@@ -208,47 +208,47 @@
                                                             {/if}
                                                             <td class="row2"><b>{t}Gross{/t}</b></td>                                                            
                                                         </tr>
-                                                        {section name=l loop=$labour_items}
+                                                        {section name=l loop=$invoice_items}
                                                             <tr class="olotd4">
                                                                 <td>{$smarty.section.w.index+1}</td>
-                                                                <td>{$labour_items[l].description}</td>
-                                                                <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
-                                                                <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>
-                                                                <td>{$currency_sym}{$labour_items[l].unit_discount|string_format:"%.2f"}</td>
+                                                                <td>{$invoice_items[l].description}</td>
+                                                                <td>{$invoice_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
+                                                                <td>{$currency_sym}{$invoice_items[l].unit_net|string_format:"%.2f"}</td>
+                                                                <td>{$currency_sym}{$invoice_items[l].unit_discount|string_format:"%.2f"}</td>
                                                                 {if $invoice_details.tax_system != 'no_tax'}
-                                                                    <td>{$currency_sym}{$labour_items[l].subtotal_net|string_format:"%.2f"}</td>                                                                     
-                                                                    {if $labour_items[l].sales_tax_exempt}
+                                                                    <td>{$currency_sym}{$invoice_items[l].subtotal_net|string_format:"%.2f"}</td>                                                                     
+                                                                    {if $invoice_items[l].sales_tax_exempt}
                                                                         <td colspan="2" align="center">{t}Exempt{/t}</td>
-                                                                    {elseif $labour_items[l].vat_tax_code == 'T2'}
+                                                                    {elseif $invoice_items[l].vat_tax_code == 'T2'}
                                                                         <td colspan="3" align="center">{t}Exempt{/t}</td>
                                                                     {else}
                                                                         {if '/^vat_/'|preg_match:$invoice_details.tax_system}
                                                                             <td>
                                                                                 {section name=s loop=$vat_tax_codes}
-                                                                                    {if $labour_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                                    {if $invoice_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
                                                                                 {/section}
                                                                             </td>
                                                                         {/if}
-                                                                        <td>{$labour_items[l].unit_tax_rate|string_format:"%.2f"}%</td> 
-                                                                        <td>{$currency_sym}{$labour_items[l].subtotal_tax|string_format:"%.2f"}</td>
+                                                                        <td>{$invoice_items[l].unit_tax_rate|string_format:"%.2f"}%</td> 
+                                                                        <td>{$currency_sym}{$invoice_items[l].subtotal_tax|string_format:"%.2f"}</td>
                                                                     {/if}                                                                    
                                                                 {/if}
-                                                                <td>{$currency_sym}{$labour_items[l].subtotal_gross|string_format:"%.2f"}</td>                                                            
+                                                                <td>{$currency_sym}{$invoice_items[l].subtotal_gross|string_format:"%.2f"}</td>                                                            
                                                             </tr>
                                                         {/section}
                                                         
-                                                        <!-- Labour Sub Totals -->
+                                                        <!-- Invoice Items Sub Totals -->
                                                         <tr>
                                                             <td colspan="10" style="text-align:right;">
                                                                 <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                                                     <tr>
-                                                                        <td style="text-align:right;"><b>{t}Labour{/t} {t}Totals{/t}</b></td>
-                                                                        <td width="80" align="right">{t}Discount{/t}: {$currency_sym}{$labour_items_subtotals.subtotal_discount|string_format:"%.2f"}</td>
+                                                                        <td style="text-align:right;"><b>{t}Invoice Items{/t} {t}Totals{/t}</b></td>
+                                                                        <td width="80" align="right">{t}Discount{/t}: {$currency_sym}{$invoice_items_subtotals.subtotal_discount|string_format:"%.2f"}</td>
                                                                         {if $invoice_details.tax_system != 'no_tax'}
-                                                                            <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$labour_items_subtotals.subtotal_net|string_format:"%.2f"}</td>
-                                                                            <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$labour_items_subtotals.subtotal_tax|string_format:"%.2f"}</td>
+                                                                            <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$invoice_items_subtotals.subtotal_net|string_format:"%.2f"}</td>
+                                                                            <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$invoice_items_subtotals.subtotal_tax|string_format:"%.2f"}</td>
                                                                         {/if}
-                                                                        <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$labour_items_subtotals.subtotal_gross|string_format:"%.2f"}</td>
+                                                                        <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$invoice_items_subtotals.subtotal_gross|string_format:"%.2f"}</td>
                                                                     </tr>
                                                                 </table>  
                                                             </td>
@@ -264,89 +264,6 @@
                                 </td>
                             </tr>
 
-                            <!-- Parts Items -->
-                            <tr>
-                                <td>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-                                        <tr>
-                                            <td class="menuhead2">&nbsp;{t}Parts{/t}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd2">
-                                                {if $parts_items}
-                                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                                        <tr class="olotd4">
-                                                            <td class="row2"><b>{t}No{/t}</b></td>
-                                                            <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>
-                                                            {if $invoice_details.tax_system != 'no_tax'}
-                                                                <td class="row2"><b>{t}Unit Net{/t}</b></td>
-                                                            {else}
-                                                                <td class="row2"><b>{t}Unit Gross{/t}</b></td> 
-                                                            {/if}
-                                                            <td class="row2"><b>{t}Unit Discount{/t}</b></td>
-                                                            {if $invoice_details.tax_system != 'no_tax'}
-                                                                <td class="row2"><b>{t}Net{/t}</b></td>                                                            
-                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
-                                                            {/if}
-                                                            <td class="row2"><b>{t}Gross{/t}</b></td>                                                            
-                                                        </tr>
-                                                        {section name=p loop=$parts_items}
-                                                            <tr class="olotd4">
-                                                                <td>{$smarty.section.w.index+1}</td>
-                                                                <td>{$parts_items[p].description}</td>
-                                                                <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
-                                                                <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
-                                                                <td>{$currency_sym}{$parts_items[p].unit_discount|string_format:"%.2f"}</td>
-                                                                {if $invoice_details.tax_system != 'no_tax'}
-                                                                    <td>{$currency_sym}{$parts_items[p].subtotal_net|string_format:"%.2f"}</td>                                                                     
-                                                                    {if $parts_items[p].sales_tax_exempt}
-                                                                        <td colspan="2" align="center">{t}Exempt{/t}</td>
-                                                                    {elseif $parts_items[p].vat_tax_code == 'T2'}
-                                                                        <td colspan="3" align="center">{t}Exempt{/t}</td>
-                                                                    {else}
-                                                                        {if '/^vat_/'|preg_match:$invoice_details.tax_system}
-                                                                            <td>
-                                                                                {section name=s loop=$vat_tax_codes}
-                                                                                    {if $parts_items[p].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                                                {/section}
-                                                                            </td>
-                                                                        {/if}
-                                                                        <td>{$parts_items[p].unit_tax_rate|string_format:"%.2f"}%</td> 
-                                                                        <td>{$currency_sym}{$parts_items[p].subtotal_tax|string_format:"%.2f"}</td>
-                                                                    {/if}                                                                    
-                                                                {/if}
-                                                                <td>{$currency_sym}{$parts_items[p].subtotal_gross|string_format:"%.2f"}</td>                                                            
-                                                            </tr>
-                                                        {/section}
-                                                        
-                                                        <!-- Parts Sub Totals -->
-                                                        <tr>
-                                                            <td colspan="10" style="text-align:right;">
-                                                                <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
-                                                                    <tr>
-                                                                        <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
-                                                                        <td width="80" align="right">{t}Discount{/t}: {$currency_sym}{$parts_items_subtotals.subtotal_discount|string_format:"%.2f"}</td>
-                                                                        {if $invoice_details.tax_system != 'no_tax'}
-                                                                            <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_subtotals.subtotal_net|string_format:"%.2f"}</td>                                                                       
-                                                                            <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$parts_items_subtotals.subtotal_tax|string_format:"%.2f"}</td>
-                                                                        {/if}
-                                                                        <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$parts_items_subtotals.subtotal_gross|string_format:"%.2f"}</td>
-                                                                    </tr>
-                                                                </table>  
-                                                            </td>
-                                                        </tr>
-                                                        
-                                                    </table>
-                                                {/if}                                                
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            
                             <!-- Vouchers -->                                
                             <tr>
                                 <td>                                                

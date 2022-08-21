@@ -385,36 +385,11 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__invoice_labour`
+-- Table structure for table `#__invoice_items`
 --
 
-CREATE TABLE `#__invoice_labour` (
-  `invoice_labour_id` int(10) UNSIGNED NOT NULL,
-  `invoice_id` int(10) UNSIGNED NOT NULL,
-  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__invoice_parts`
---
-
-CREATE TABLE `#__invoice_parts` (
-  `invoice_parts_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE `#__invoice_items` (
+  `invoice_item_id` int(10) UNSIGNED NOT NULL,
   `invoice_id` int(10) UNSIGNED NOT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -440,7 +415,6 @@ CREATE TABLE `#__invoice_parts` (
 CREATE TABLE `#__invoice_prefill_items` (
   `invoice_prefill_id` int(10) UNSIGNED NOT NULL,
   `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
   `active` tinyint(1) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -450,16 +424,16 @@ CREATE TABLE `#__invoice_prefill_items` (
 --
 
 INSERT INTO `#__invoice_prefill_items` (`invoice_prefill_id`, `description`, `type`, `unit_net`, `active`) VALUES
-(1, 'Callout', 'Labour', '35.00', 1),
-(2, 'Basic Labour', 'Labour', '20.00', 1),
-(3, 'Virus Removal', 'Labour', '65.00', 1),
-(4, 'PC Clean', 'Labour', '55.00', 1),
-(5, 'Diagnostics', 'Labour', '100.00', 1),
-(6, '3.0ghz 8400 CPU', 'Parts', '88.00', 1),
-(7, 'Server', 'Parts', '999.00', 1),
-(8, 'Hard Drive', 'Parts', '66.50', 1),
-(9, 'SSD', 'Parts', '112.00', 1),
-(10, 'RAM', 'Parts', '78.00', 1);
+(1, 'Callout', '35.00', 1),
+(2, 'Basic Labour', '20.00', 1),
+(3, 'Virus Removal', '65.00', 1),
+(4, 'PC Clean', '55.00', 1),
+(5, 'Diagnostics', '100.00', 1),
+(6, '3.0GHz 8400 CPU', '88.00', 1),
+(7, 'Server', '999.00', 1),
+(8, 'Hard Drive', '66.50', 1),
+(9, 'SSD', '112.00', 1),
+(10, 'RAM', '78.00', 1);
 
 -- --------------------------------------------------------
 
@@ -1465,16 +1439,10 @@ ALTER TABLE `#__expense_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `#__invoice_labour`
+-- Indexes for table `#__invoice_items`
 --
-ALTER TABLE `#__invoice_labour`
-  ADD PRIMARY KEY (`invoice_labour_id`);
-
---
--- Indexes for table `#__invoice_parts`
---
-ALTER TABLE `#__invoice_parts`
-  ADD PRIMARY KEY (`invoice_parts_id`);
+ALTER TABLE `#__invoice_items`
+  ADD PRIMARY KEY (`invoice_item_id`);
 
 --
 -- Indexes for table `#__invoice_prefill_items`
@@ -1713,16 +1681,10 @@ ALTER TABLE `#__expense_records`
   MODIFY `expense_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `#__invoice_labour`
+-- AUTO_INCREMENT for table `#__invoice_items`
 --
-ALTER TABLE `#__invoice_labour`
-  MODIFY `invoice_labour_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `#__invoice_parts`
---
-ALTER TABLE `#__invoice_parts`
-  MODIFY `invoice_parts_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__invoice_items`
+  MODIFY `invoice_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `#__invoice_prefill_items`

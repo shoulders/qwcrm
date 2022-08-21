@@ -35,13 +35,11 @@ $this->app->smarty->assign('invoice_details',          $this->app->components->i
 $this->app->smarty->assign('vat_tax_codes',            $this->app->components->company->getVatTaxCodes()                                                               );
 
 // Invoice Items
-$this->app->smarty->assign('labour_items',             $this->app->components->invoice->getLabourItems(\CMSApplication::$VAR['invoice_id'])                                                  );
-$this->app->smarty->assign('parts_items',              $this->app->components->invoice->getPartsItems(\CMSApplication::$VAR['invoice_id'])                                                   );
+$this->app->smarty->assign('invoice_items',           $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'])                                                  );
 $this->app->smarty->assign('display_vouchers',        $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
 
 // Sub Totals
-$this->app->smarty->assign('labour_items_subtotals',         $this->app->components->invoice->getLabourItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );
-$this->app->smarty->assign('parts_items_subtotals',          $this->app->components->invoice->getPartsItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                           );
+$this->app->smarty->assign('invoice_items_subtotals',         $this->app->components->invoice->getItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );
 $this->app->smarty->assign('voucher_subtotals',            $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id'])                                                       );
 
 /* Refund Details - This is not used and should be deleted when i am sure I will not use it. I might use something like this to include the refund block

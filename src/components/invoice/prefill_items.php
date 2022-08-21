@@ -26,12 +26,12 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         die();
     }
     
-    // New invoice labour rates item
+    // New invoice prefill item
     if(\CMSApplication::$VAR['submit'] == 'submit') {
         $this->app->components->invoice->insertPrefillItems(\CMSApplication::$VAR['qform']['prefill_items']);
     }    
     
-    // Upload CSV file of invoice labour rates items
+    // Upload CSV file of prefill items
     if(\CMSApplication::$VAR['submit'] == 'import') {
         $this->app->components->invoice->uploadPrefillItemsCsv(\CMSApplication::$VAR['empty_prefill_items_table']);
     }

@@ -52,3 +52,4 @@ $this->app->smarty->assign('refund_types',            $this->app->components->re
 $this->app->smarty->assign('refund_statuses',         $this->app->components->refund->getStatuses()                                                                                                        );
 $this->app->smarty->assign('display_refunds',         $this->app->components->refund->getRecords('refund_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, null, null, null, \CMSApplication::$VAR['client_id'])        );
 $this->app->smarty->assign('refund_stats',            $this->app->components->report->getRefundsStats('all', null, null, QW_TAX_SYSTEM, null, \CMSApplication::$VAR['client_id'])   );
+$chicken = 53;

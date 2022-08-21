@@ -76,21 +76,21 @@ defined('_QWEXEC') or die;
 
     ##################################### 
     #     Insert Items                  #  // Some or all of these calculations are done on the invoice:edit page - This extra code might not be needed in the future
-    ##################################### // section = 'labour' or 'parts'
+    #####################################
 
-    public function insertItems($invoice_id, $section, $items = null) {
+    public function insertItems($invoice_id, $items = null) {
         
         // Get Invoice Details
         $invoice_details = $this->getRecord($invoice_id);
         
         // Delete all items from the invoice to prevent duplication
-        $sql = "DELETE FROM ".PRFX."invoice_$section WHERE invoice_id=".$this->app->db->qStr($invoice_id);    
+        $sql = "DELETE FROM ".PRFX."invoice_items WHERE invoice_id=".$this->app->db->qStr($invoice_id);    
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Insert Items/Rows into database (if any)
         if($items) {
 
-            $sql = "INSERT INTO `".PRFX."invoice_$section` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
+            $sql = "INSERT INTO `".PRFX."invoice_items` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
 
             foreach($items as $item) {
 
@@ -201,11 +201,8 @@ defined('_QWEXEC') or die;
         // Restrict results by search category (employee) and search term
         elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
-        // Restrict results by search category (labour items / labour descriptions) and search term
-        elseif($search_category == 'labour_items') {$whereTheseRecords .= " AND labour.labour_items LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
-
-        // Restrict results by search category (parts items / parts descriptions) and search term
-        elseif($search_category == 'parts_items') {$whereTheseRecords .= " AND parts.parts_items LIKE ".$this->app->db->qStr('%'.$search_term.'%');}    
+        // Restrict results by search category (invoice items) and search term
+        elseif($search_category == 'invoice_items') {$whereTheseRecords .= " AND invoice_items LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
 
         // Restrict results by search category and search term
         elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
@@ -256,42 +253,26 @@ defined('_QWEXEC') or die;
 
             ".PRFX."workorder_records.scope,
                 
-            labour.labour_items,
-            parts.parts_items,
+            items.combined as invoice_items,            
             vouchers.voucher_items
 
             FROM ".PRFX."invoice_records
 
             LEFT JOIN (
-                SELECT ".PRFX."invoice_labour.invoice_id,            
+                SELECT ".PRFX."invoice_items.invoice_id,            
                 GROUP_CONCAT(
-                    CONCAT(".PRFX."invoice_labour.unit_qty, ' x ', ".PRFX."invoice_labour.description)                
-                    ORDER BY ".PRFX."invoice_labour.invoice_labour_id
+                    CONCAT(".PRFX."invoice_items.unit_qty, ' x ', ".PRFX."invoice_items.description)                
+                    ORDER BY ".PRFX."invoice_items.invoice_item_id
                     ASC
                     SEPARATOR '|||'                
-                ) AS labour_items           
-                FROM ".PRFX."invoice_labour
-                GROUP BY ".PRFX."invoice_labour.invoice_id
-                ORDER BY ".PRFX."invoice_labour.invoice_id
+                ) AS combined          
+                FROM ".PRFX."invoice_items
+                GROUP BY ".PRFX."invoice_items.invoice_id
+                ORDER BY ".PRFX."invoice_items.invoice_id
                 ASC            
-            ) AS labour
-            ON ".PRFX."invoice_records.invoice_id = labour.invoice_id 
+            ) AS items
+            ON ".PRFX."invoice_records.invoice_id = items.invoice_id 
 
-            LEFT JOIN (
-                SELECT ".PRFX."invoice_parts.invoice_id,            
-                GROUP_CONCAT(
-                    CONCAT(".PRFX."invoice_parts.unit_qty, ' x ', ".PRFX."invoice_parts.description)                
-                    ORDER BY ".PRFX."invoice_parts.invoice_parts_id
-                    ASC
-                    SEPARATOR '|||'                
-                ) AS parts_items
-                FROM ".PRFX."invoice_parts
-                GROUP BY ".PRFX."invoice_parts.invoice_id
-                ORDER BY ".PRFX."invoice_parts.invoice_id
-                ASC            
-            ) AS parts
-            ON ".PRFX."invoice_records.invoice_id = parts.invoice_id
-                
             LEFT JOIN (
                 SELECT ".PRFX."voucher_records.invoice_id,                                   
                 CONCAT('[',
@@ -406,12 +387,12 @@ defined('_QWEXEC') or die;
     
     
     #########################################
-    #   Get All invoice labour items        #
+    #   Get All invoice items               #
     #########################################
 
-    public function getLabourItems($invoice_id) {
+    public function getItems($invoice_id) {
 
-        $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$this->app->db->qStr($invoice_id);
+        $sql = "SELECT * FROM ".PRFX."invoice_items WHERE invoice_id=".$this->app->db->qStr($invoice_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -424,12 +405,12 @@ defined('_QWEXEC') or die;
     }
 
     #######################################
-    #   Get invoice labour item details   #  // not used anywhere
+    #   Get invoice item details           #  // not used anywhere
     #######################################
 
-    public function getLabourItem($invoice_labour_id, $item = null) {
+    public function getItem($invoice_item_id, $item = null) {
 
-        $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$this->app->db->qStr($invoice_labour_id);
+        $sql = "SELECT * FROM ".PRFX."invoice_items WHERE invoice_item_id =".$this->app->db->qStr($invoice_item_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -446,22 +427,21 @@ defined('_QWEXEC') or die;
     }
     
     ############################################
-    #   Get Labour Invoice Sub Totals          #
+    #   Get Invoice items Sub Totals           #
     ############################################
 
-    public function getLabourItemsSubtotals($invoice_id) {
+    public function getItemsSubtotals($invoice_id) {
 
-        // I could use $this->app->components->report->sumLabourItems() - with additional calculation for subtotal_discount
+        // I could use $this->app->components->report->sumInvoiceItems() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
-        // $labour_items_subtotals = $this->app->components->report->getInvoicesStats('labour', null, null, null, null, null, $invoice_id);        
-
-        // the first line is wrong and also on parts
+        // $invoice_items_subtotals = $this->app->components->report->getInvoicesStats('items', null, null, null, null, null, $invoice_id);        
+        
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
                 SUM(subtotal_net) AS subtotal_net,                
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
-                FROM ".PRFX."invoice_labour
+                FROM ".PRFX."invoice_items
                 WHERE invoice_id=". $this->app->db->qStr($invoice_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -470,83 +450,16 @@ defined('_QWEXEC') or die;
 
     }
 
-    #####################################
-    #   Get All invoice parts items     #
-    #####################################
-
-    public function getPartsItems($invoice_id) {
-
-        $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$this->app->db->qStr( $invoice_id );
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        if(!empty($rs)) {
-
-            return $rs->GetArray();
-
-        }
-
-    }
-
-    #######################################
-    #   Get invoice parts item details    # // not used anywhere
-    #######################################
-
-    public function getPartsItem($invoice_parts_id, $item = null) {
-
-        $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$this->app->db->qStr($invoice_parts_id);
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        if($item === null){
-
-            return $rs->GetRowAssoc(); 
-
-        } else {
-
-            return $rs->fields[$item];   
-
-        } 
-
-    }
-    
-    ###########################################
-    #   Get Parts Invoice Sub Total           #
-    ###########################################
-
-    public function getPartsItemsSubtotals($invoice_id) {
-
-        // I could use $this->app->components->report->sumPartsItems() - with additional calculation for subtotal_discount
-        // NB: i dont think i need the aliases
-        // $parts_subtotals = $this->app->components->report->getInvoicesStats('parts', null, null, null, null, null, $invoice_id);
-
-        $sql = "SELECT
-                SUM(unit_discount * unit_qty) AS subtotal_discount,
-                SUM(subtotal_net) AS subtotal_net,                
-                SUM(subtotal_tax) AS subtotal_tax,
-                SUM(subtotal_gross) AS subtotal_gross
-                FROM ".PRFX."invoice_parts
-                WHERE invoice_id=". $this->app->db->qStr($invoice_id);
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        return $rs->GetRowAssoc();
-        
-    }
-
     #######################################
     #   Get invoice prefill items         #
     #######################################
 
-    public function getPrefillItems($type = null, $status = null) {
+    public function getPrefillItems($status = null) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_prefill_items";
 
-        // prepare the sql for the optional filter
+        // Prepare the sql for the optional filter
         $sql .= " WHERE invoice_prefill_id >= 1";
-
-        // filter by type
-        if($type) { $sql .= " AND type=".$this->app->db->qStr($type);}    
 
         // filter by status
         if($status) {$sql .= " AND active=".$this->app->db->qStr($status);}
@@ -947,9 +860,8 @@ defined('_QWEXEC') or die;
         // Delete any Vouchers - handled in updateInvoiceVouchersStatuses()
         //$this->app->components->voucher->deleteInvoiceVouchers($invoice_id);  
 
-        // Delete parts and labour
-        $this->deleteLabourItems($invoice_id);
-        $this->deletePartsItems($invoice_id);
+        // Delete invoice items
+        $this->deleteItems($invoice_id);        
 
         // Change the invoice status to deleted - This triggers certain routines such as voucher deletion
         $this->updateStatus($invoice_id, 'deleted'); 
@@ -1011,32 +923,18 @@ defined('_QWEXEC') or die;
     }
 
     #############################################
-    #   Delete an invoice's Labour Items (ALL)  #
+    #   Delete an invoice's Items (ALL)         #
     #############################################
 
-    public function deleteLabourItems($invoice_id) {
+    public function deleteItems($invoice_id) {
 
-        $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $this->app->db->qStr($invoice_id);
+        $sql = "DELETE FROM ".PRFX."invoice_items WHERE invoice_id=" . $this->app->db->qStr($invoice_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         return true;
 
     }
-    
-    #############################################
-    #   Delete an invoice's Parts Items (ALL)   #
-    #############################################
-
-    public function deletePartsItems($invoice_id) {
-
-        $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $this->app->db->qStr($invoice_id);
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        return true;
-
-    }   
 
     /** Check Functions **/
     
@@ -1321,16 +1219,10 @@ defined('_QWEXEC') or die;
 
         /*
         // Has Labour (these will get deleted anyway)
-        if(!empty($this->get_invoice_labour_items($invoice_id))) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has labour items."));
+        if(!empty($this->getItems($invoice_id))) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has items."));
             $state_flag = false;         
         }    
-
-        // Has Parts (these will get deleted anyway)
-        if(!empty($this->get_invoice_parts_items($invoice_id))) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has parts."));
-            $state_flag = false;         
-        }
         */
 
         /* Has Refunds (should not be needed)
@@ -1416,7 +1308,7 @@ defined('_QWEXEC') or die;
 
         // The current record VAT code is enabled
         if(!$this->checkVatTaxCodeStatuses($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of the parts or labour have a VAT Tax Code that is not enabled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."));
             $state_flag = false;
         }
 
@@ -1475,15 +1367,14 @@ defined('_QWEXEC') or die;
 
     public function recalculateTotals($invoice_id) {
         
-        $labour_subtotals       = $this->getLabourItemsSubtotals($invoice_id);
-        $parts_subtotals        = $this->getPartsItemsSubtotals($invoice_id);        
+        $items_subtotals        = $this->getItemsSubtotals($invoice_id);             
         $voucher_subtotals      = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);        
         $payments_subtotal      = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
         
-        $unit_discount          = $labour_subtotals['subtotal_discount'] + $parts_subtotals['subtotal_discount'];
-        $unit_net               = $labour_subtotals['subtotal_net'] + $parts_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net'];        
-        $unit_tax               = $labour_subtotals['subtotal_tax'] + $parts_subtotals['subtotal_tax'] + $voucher_subtotals['subtotal_tax'];
-        $unit_gross             = $labour_subtotals['subtotal_gross'] + $parts_subtotals['subtotal_gross'] + $voucher_subtotals['subtotal_gross'];    
+        $unit_discount          = $items_subtotals['subtotal_discount'];
+        $unit_net               = $items_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net'];        
+        $unit_tax               = $items_subtotals['subtotal_tax'] + $voucher_subtotals['subtotal_tax'];
+        $unit_gross             = $items_subtotals['subtotal_gross'] + $voucher_subtotals['subtotal_gross'];    
         $balance                = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."invoice_records SET            
@@ -1525,9 +1416,9 @@ defined('_QWEXEC') or die;
 
     }
 
-    #####################################
-    #   Upload labour rates CSV file    #
-    #####################################
+    ##############################################
+    #   Upload Prefill items using a CSV file    #
+    ##############################################
 
     public function uploadPrefillItemsCsv($empty_prefill_items_table) {
 
@@ -1574,8 +1465,7 @@ defined('_QWEXEC') or die;
         if ($_FILES['invoice_prefill_csv']['size'] > $maxAllowedSize) {
             $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it is too large.").' '._gettext("The maximum size is ").' '.($maxAllowedSize/1024/1024).'MB');
-        }
-        
+        }        
         
         // If no errors
         if(!$error_flag) {
@@ -1604,7 +1494,7 @@ defined('_QWEXEC') or die;
                     continue;               
                 }
 
-                $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, unit_net, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
+                $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, unit_net, active) VALUES ('$data[0]','$data[1]','$data[2]')";
 
                 if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -1652,7 +1542,7 @@ defined('_QWEXEC') or die;
 
     public function exportPrefillItemsCsv() {
 
-        $sql = "SELECT description, type, unit_net, active FROM ".PRFX."invoice_prefill_items";
+        $sql = "SELECT description, unit_net, active FROM ".PRFX."invoice_prefill_items";
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
 
@@ -1666,11 +1556,11 @@ defined('_QWEXEC') or die;
         $output_stream = fopen('php://output', 'w');
 
         // output the column headings
-        fputcsv($output_stream, array(_gettext("Description"), _gettext("Type"), _gettext("Unit Net"), _gettext("Active")));
+        fputcsv($output_stream, array(_gettext("Description"), _gettext("Unit Net"), _gettext("Active")));
 
         // loop over the rows, outputting them
         foreach($prefill_items as $key => $value) {
-            $row = array($value['description'], $value['type'], $value['unit_net'], $value['active']);
+            $row = array($value['description'], $value['unit_net'], $value['active']);
             fputcsv($output_stream, $row);            
         }       
 
@@ -1755,20 +1645,14 @@ defined('_QWEXEC') or die;
     }
 
     ####################################################################
-    #   Check invoice Labour and parts VAT Tax Codes are all enabled   #
+    #   Check invoice items VAT Tax Codes are all enabled              #
     ####################################################################
 
     public function checkVatTaxCodeStatuses($invoice_id) {
 
         $state_flag = true;
 
-        // Check all labour
-        foreach ($this->getLabourItems($invoice_id) as $key => $value) {        
-            if(!$this->app->components->company->getVatTaxCodeStatus($value['vat_tax_code'])) { $state_flag = false;}        
-        }
-
-        // Check all parts
-        foreach ($this->getPartsItems($invoice_id) as $key => $value) {        
+        foreach ($this->getItems($invoice_id) as $key => $value) {        
             if(!$this->app->components->company->getVatTaxCodeStatus($value['vat_tax_code'])) { $state_flag = false;}        
         }
 

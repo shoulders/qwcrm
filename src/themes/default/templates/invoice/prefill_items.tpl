@@ -40,14 +40,13 @@
         
     });
 
-    // Create and populate Labour and Parts item rows with sotered data from the database
+    // Create and populate invoice item rows with stored data from the database
     function processPrefillItemsFromDatabase(items) {
         
         // Form Fields that are submitted, not all item fields submitted are currently used in the backend
         fieldNames = [
             //"invoice_prefill_id",
-            "description",
-            "type",      
+            "description",                 
             "unit_net",
             "active"];
     
@@ -115,10 +114,10 @@
             $(this).removeClass("row1");
         });         
            
-        // Monitor for change in Type selectbox
+        /* Monitor for change in Type selectbox - items no longer have type
         $(".item_row select[id$='\\[type\\]']" ).off("change").on("change", function() {                       
             refreshPage();            
-        });
+        });*/
         
         // Monitor Active Checkboxes for click
         $(".item_row input[id$='\\[active\\]']").click(function () {
@@ -228,8 +227,7 @@
                                                         <!-- Table Headings -->
                                                         <tr>
                                                             <td class="olohead">{t}ID{/t}</td>
-                                                            <td class="olohead">{t}Description{/t}</td>
-                                                            <td class="olohead" align="center">{t}Type{/t}</td>
+                                                            <td class="olohead">{t}Description{/t}</td>                                                            
                                                             <td class="olohead" align="center"><b>{t}Unit Net{/t}</b></td>                                                        
                                                             <td class="olohead" align="center">{t}Active{/t}</td>                                                                                                               
                                                             <td class="olohead" align="center">{t}Action{/t}</td>
@@ -239,13 +237,6 @@
                                                         <tr id="dummy_prefill_items_row_iteration" class="dummy_item_row olotd4 row1" style="display: none;">
                                                             <td class="olotd4" nowrap id="qform[prefill_items][iteration][invoice_prefill_id]">iteration</td>
                                                             <td class="olotd4" nowrap=""><input id="qform[prefill_items][iteration][description]" name="qform[prefill_items][iteration][description]" class="olotd5" size="50" value="" type="text" maxlength="50" required disabled onkeydown="return onlyAlphaNumericPunctuation(event);"></td>
-                                                            <td class="olotd4" nowrap="">
-                                                                <select id="qform[prefill_items][iteration][type]" name="qform[prefill_items][iteration][type]" class="olotd5" value="" required disabled>
-                                                                    <option hidden disabled></option>
-                                                                    <option value="Labour">{t}Labour{/t}</option>
-                                                                    <option value="Parts">{t}Parts{/t}</option>
-                                                                </select>
-                                                            </td>                                                            
                                                             <td class="olotd4" nowrap="">{$currency_sym}<input id="qform[prefill_items][iteration][unit_net]" name="qform[prefill_items][iteration][unit_net]" class="olotd5" size="10" value="" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="olotd4" nowrap=""><input id="qform[prefill_items][iteration][active]" name="qform[prefill_items][iteration][active]" class="olotd5" value="1" type="checkbox" disabled></td>
                                                             <td class="olotd4" nowrap="">                                                                

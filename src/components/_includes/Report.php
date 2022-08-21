@@ -307,25 +307,14 @@ class Report extends Components {
 
         }
 
-        // Labour -----------------
-        if($record_set == 'labour' || $record_set == 'all') {        
+        // Items - This might be redundant now
+        if($record_set == 'items' || $record_set == 'all') {        
 
-            $stats['labour_count_items'] = $this->countLabourItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);             // Total Different Items
-            $stats['labour_sum_unit_qty'] = $this->sumLabourItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
-            $stats['labour_sum_subtotal_net'] = $this->sumLabourItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
-            $stats['labour_sum_subtotal_tax'] = $this->sumLabourItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
-            $stats['labour_sum_subtotal_gross'] = $this->sumLabourItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
-
-        }
-
-        // Parts
-        if($record_set == 'parts' || $record_set == 'all') {        
-
-            $stats['parts_count_items'] = $this->countPartsItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);               // Total Different Items
-            $stats['parts_sum_unit_qty'] = $this->sumPartsItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
-            $stats['parts_sum_subtotal_net'] = $this->sumPartsItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
-            $stats['parts_sum_subtotal_tax'] = $this->sumPartsItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
-            $stats['parts_sum_subtotal_gross'] = $this->sumPartsItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
+            $stats['items_count'] = $this->countInvoiceItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);             // Total Different Items
+            $stats['items_sum_unit_qty'] = $this->sumInvoiceItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
+            $stats['items_sum_subtotal_net'] = $this->sumInvoiceItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
+            $stats['items_sum_subtotal_tax'] = $this->sumInvoiceItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
+            $stats['items_sum_subtotal_gross'] = $this->sumInvoiceItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
 
         }
         
@@ -479,28 +468,28 @@ class Report extends Components {
 
     }
 
-    /** Labour **/
+    /** Invoice Items **/
 
     #########################
-    #  Count labour items   #
+    #  Count invoice items  #
     #########################
 
-    public function countLabourItems($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
+    public function countInvoiceItems($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Default Action
-        $whereTheseRecords = "WHERE ".PRFX."invoice_labour.invoice_labour_id\n";    
+        $whereTheseRecords = "WHERE ".PRFX."invoice_items.invoice_item_id\n";    
 
         // Filter by Date
         $whereTheseRecords .= $this->invoiceBuildFilterByDate($date_type, $start_date, $end_date);
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.tax_system=".$this->app->db->qStr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."invoice_items.tax_system=".$this->app->db->qStr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."invoice_items.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
         }
 
         // Restrict by Status
@@ -517,8 +506,8 @@ class Report extends Components {
         }
 
         $sql = "SELECT COUNT(*) AS count
-                FROM ".PRFX."invoice_labour
-                LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_labour.invoice_id = ".PRFX."invoice_records.invoice_id
+                FROM ".PRFX."invoice_items
+                LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_items.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;    
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -528,28 +517,28 @@ class Report extends Components {
     }
 
     #########################################
-    #  Sum selected value of labour items   #
+    #  Sum selected value of invoice items   #
     #########################################
 
-    public function sumLabourItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+    public function sumInvoiceItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
 
         // Prevent ambiguous error
-        $value_name = PRFX."invoice_labour.".$value_name;
+        $value_name = PRFX."invoice_items.".$value_name;
 
         // Default Action
-        $whereTheseRecords = "WHERE ".PRFX."invoice_labour.invoice_labour_id\n"; 
+        $whereTheseRecords = "WHERE ".PRFX."invoice_items.invoice_item_id\n"; 
 
         // Filter by Date
         $whereTheseRecords .= $this->invoiceBuildFilterByDate($date_type, $start_date, $end_date);
 
         // Filter by Tax System
         if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.tax_system=".$this->app->db->qStr($tax_system);
+            $whereTheseRecords .= " AND ".PRFX."invoice_items.tax_system=".$this->app->db->qStr($tax_system);
         }
 
         // Filter by VAT Tax Code
         if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
+            $whereTheseRecords .= " AND ".PRFX."invoice_items.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
         }    
 
         // Restrict by Status
@@ -567,114 +556,12 @@ class Report extends Components {
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_labour.invoice_id=".$this->app->db->qStr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_items.invoice_id=".$this->app->db->qStr($invoice_id);
         }
 
         $sql = "SELECT SUM($value_name) AS sum
-                FROM ".PRFX."invoice_labour
-                LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_labour.invoice_id = ".PRFX."invoice_records.invoice_id
-                ".$whereTheseRecords;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        return $rs->fields['sum'];
-
-    }
-
-    /** Parts **/
-
-    ########################
-    #  Count parts items   #
-    ########################
-
-    public function countPartsItems($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
-
-        // Default Action
-        $whereTheseRecords = "WHERE ".PRFX."invoice_parts.invoice_parts_id\n";    
-
-        // Filter by Date
-        $whereTheseRecords .= $this->invoiceBuildFilterByDate($date_type, $start_date, $end_date);
-
-        // Filter by Tax System
-        if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.tax_system=".$this->app->db->qStr($tax_system);
-        }
-
-        // Filter by VAT Tax Code
-        if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
-        }    
-
-        // Restrict by Status
-        $whereTheseRecords .= $this->invoiceBuildFilterByStatus($status);
-
-        // Filter by Employee
-        if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qStr($employee_id);
-        }
-
-        // Filter by Client
-        if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qStr($client_id);
-        }
-
-        // Filter by Invoice
-        if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.invoice_id=".$this->app->db->qStr($invoice_id);
-        }
-
-        $sql = "SELECT COUNT(*) AS count
-                FROM ".PRFX."invoice_parts
-                LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_parts.invoice_id = ".PRFX."invoice_records.invoice_id
-                ".$whereTheseRecords;    
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        return $rs->fields['count'];  
-
-    }
-
-    ###################################
-    #  Sum selected value of Parts    #
-    ###################################
-
-    public function sumPartsItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
-
-        // Prevent ambiguous error
-        $value_name = PRFX."invoice_parts.".$value_name;
-
-        // Default Action
-        $whereTheseRecords = "WHERE ".PRFX."invoice_parts.invoice_parts_id\n"; 
-
-        // Filter by Date
-        $whereTheseRecords .= $this->invoiceBuildFilterByDate($date_type, $start_date, $end_date);
-
-        // Filter by Tax System
-        if($tax_system) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.tax_system=".$this->app->db->qStr($tax_system);
-        }
-
-        // Filter by VAT Tax Code
-        if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_parts.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
-        }    
-
-        // Restrict by Status
-        $whereTheseRecords .= $this->invoiceBuildFilterByStatus($status);
-
-        // Filter by Employee
-        if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qStr($employee_id);
-        }
-
-        // Filter by Client
-        if($client_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qStr($client_id);
-        }
-
-        $sql = "SELECT SUM($value_name) AS sum
-                FROM ".PRFX."invoice_parts
-                LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_parts.invoice_id = ".PRFX."invoice_records.invoice_id
+                FROM ".PRFX."invoice_items
+                LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_items.invoice_id = ".PRFX."invoice_records.invoice_id
                 ".$whereTheseRecords;
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -720,7 +607,7 @@ class Report extends Components {
         if($record_set == 'revenue' || $record_set == 'all') {
              
             $stats['sum_unit_net'] = $this->sumVouchers('unit_net', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
-            //$stats['sum_unit_tax'] = $this->sumVouchers('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
+            $stats['sum_unit_tax'] = $this->sumVouchers('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
             $stats['sum_unit_gross'] = $this->sumVouchers('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);        
             $stats['sum_redeemed_unit_net'] = $this->sumVouchers('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
             $stats['sum_redeemed_unit_tax'] = $this->sumVouchers('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
