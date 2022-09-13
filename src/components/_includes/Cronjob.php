@@ -438,4 +438,16 @@ class Cronjob extends Components {
 
     }
     
+    ############################################
+    #     Check all Credit Notes for expiry        #
+    ############################################
+
+    public function cronjobCheckAllCreditnotesForExpiry() {
+
+        $this->app->components->creditnote->checkAllCreditnotesForExpiry();
+        
+        return true;
+
+    }
+    
 }

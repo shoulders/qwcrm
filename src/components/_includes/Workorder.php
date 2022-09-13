@@ -903,7 +903,7 @@ class WorkOrder extends Components {
     #  Check if the workorder status is allowed to be changed  #
     ############################################################
 
-     public function checkRecordAllowsStatusChange($workorder_id) {
+     public function checkRecordAllowsManualStatusChange($workorder_id) {
 
         $state_flag = true;
 

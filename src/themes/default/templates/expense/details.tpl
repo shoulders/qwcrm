@@ -138,6 +138,16 @@
                         {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
                     </td>
                 </tr> 
+                
+                <!-- Credit Note --> 
+                {if $allowed_to_create_creditnote}                
+                    <tr>
+                        <td colspan="2">
+                            <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}', '_self');">{t}Add Purchase Credit Note{/t}</button>
+                        </td>
+                    </tr>
+                {/if}
+                
             </table>
         </td>
     </tr>

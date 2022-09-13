@@ -304,8 +304,17 @@
                         <hr>
                     </td>
                 </tr>
+                
             </table>
-        </td>
-
+        </td>    
     </tr>
+    
+    {if $allowed_to_create_creditnote}
+        <tr>
+            <td colspan="2">
+                <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&client_id={$client_details.client_id}', '_self');">{t}Add Sales Credit Note (Standalone){/t}</button>
+            </td>
+        </tr>
+    {/if}
+    
 </table>

@@ -333,7 +333,7 @@
                 <td colspan="2" valign="top">
                     <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                         <tr>
-                            <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.unit_discount_rate|string_format:"%.2f"}%)</b></td>
+                            <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_discount|string_format:"%.2f"}</td>
                         </tr>
                         {if $invoice_details.tax_system != 'no_tax'}

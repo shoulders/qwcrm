@@ -247,7 +247,7 @@ class Report extends Components {
     #   Get All invoices stats          #
     #####################################
 
-    public function getInvoicesStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+    public function getInvoicesStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null) {
 
         $stats = array();
 
@@ -307,14 +307,14 @@ class Report extends Components {
 
         }
 
-        // Items - This might be redundant now
+        // Items - This might be redundant now - only used in report:financial - useful to split vouchers and normal invoice items
         if($record_set == 'items' || $record_set == 'all') {        
 
-            $stats['items_count'] = $this->countInvoiceItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);             // Total Different Items
-            $stats['items_sum_unit_qty'] = $this->sumInvoiceItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
-            $stats['items_sum_subtotal_net'] = $this->sumInvoiceItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id);
-            $stats['items_sum_subtotal_tax'] = $this->sumInvoiceItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
-            $stats['items_sum_subtotal_gross'] = $this->sumInvoiceItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id, $invoice_id); 
+            $stats['items_count'] = $this->countInvoiceItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);             // Total Different Items
+            $stats['items_sum_unit_qty'] = $this->sumInvoiceItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
+            $stats['items_sum_subtotal_net'] = $this->sumInvoiceItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
+            $stats['items_sum_subtotal_tax'] = $this->sumInvoiceItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id); 
+            $stats['items_sum_subtotal_gross'] = $this->sumInvoiceItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id); 
 
         }
         
@@ -517,10 +517,10 @@ class Report extends Components {
     }
 
     #########################################
-    #  Sum selected value of invoice items   #
+    #  Sum selected value of invoice items  #
     #########################################
 
-    public function sumInvoiceItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+    public function sumInvoiceItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Prevent ambiguous error
         $value_name = PRFX."invoice_items.".$value_name;
@@ -552,11 +552,6 @@ class Report extends Components {
         // Filter by Client
         if($client_id) {
             $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qStr($client_id);
-        }
-
-        // Filter by Invoice
-        if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_items.invoice_id=".$this->app->db->qStr($invoice_id);
         }
 
         $sql = "SELECT SUM($value_name) AS sum
@@ -1439,6 +1434,401 @@ class Report extends Components {
         return $whereTheseRecords;
 
     }
+    
+    /** Credit Notes **/
+
+    #####################################
+    #   Get All Credit Notes stats      #
+    #####################################
+
+    public function getCreditnotesStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+
+        $stats = array();
+
+        // Current
+        if($record_set == 'current' || $record_set == 'all') {    
+
+            $stats['count_open'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_discounted'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);        
+            $stats['count_pending'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  
+            $stats['count_unused'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'unused', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id); 
+            $stats['count_partially_applied'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'partially_applied', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  
+        }
+
+        // Historic
+        if($record_set == 'historic' || $record_set == 'all') {              
+
+            $stats['count_opened'] = $this->countCreditnotes('opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_closed'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_fully_applied'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'fully_applied', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_expired_unused'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'expired_unused', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_cancelled'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_deleted'] = $this->countCreditnotes('', $start_date, $end_date, $tax_system, 'deleted', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_closed_discounted'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            
+        }       
+
+        // Revenue
+        if($record_set == 'revenue' || $record_set == 'all') {
+            
+            // Totals
+            $stats['sum_unit_net'] = $this->sumCreditnotes('unit_net', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_unit_discount'] = $this->sumCreditnotes('unit_discount', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_unit_tax'] = $this->sumCreditnotes('unit_tax', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);        
+            $stats['sum_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);           
+            $stats['sum_unit_paid'] = $this->sumCreditnotes('unit_paid', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);       
+            $stats['sum_balance'] = $this->sumCreditnotes('balance', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);   
+            
+            // Sums by Status - Only used on Client Tab        
+            $stats['sum_pending_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_unused_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unused', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_partially_applied_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_applied', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_fully_applied_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'fully_applied', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_cancelled_unit_gross'] = $this->sumCreditnotes('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);        
+            $stats['sum_open_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_discounted_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  // Cannot remove cancelled with discount
+            $stats['sum_opened_unit_gross'] = $this->sumCreditnotes('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_closed_unit_gross'] = $this->sumCreditnotes('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_closed_discounted_unit_gross'] = $this->sumCreditnotes('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  // Cannot remove cancelled with discount
+
+        }
+
+        /* Items - This might be redundant now - only used in report:financial
+        if($record_set == 'items' || $record_set == 'all') {        
+
+            $stats['items_count'] = $this->countCreditnoteItems('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);             // Total Different Items
+            $stats['items_sum_unit_qty'] = $this->sumCreditnoteItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
+            $stats['items_sum_subtotal_net'] = $this->sumCreditnoteItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id);
+            $stats['items_sum_subtotal_tax'] = $this->sumCreditnoteItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id); 
+            $stats['items_sum_subtotal_gross'] = $this->sumCreditnoteItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $client_id); 
+
+        }*/
+        
+        
+        return $stats;
+
+    }
+
+    ####################################################
+    #     Count Credit Notes                           #
+    ####################################################
+
+    public function countCreditnotes($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {   
+
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."creditnote_records.creditnote_id\n";  
+
+        // Filter by Date
+        $whereTheseRecords .= $this->creditnoteBuildFilterByDate($date_type, $start_date, $end_date);
+
+        // Filter by Tax System
+        if($tax_system) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.tax_system=".$this->app->db->qStr($tax_system);
+        }
+
+        // Restrict by Status
+        $whereTheseRecords .= $this->creditnoteBuildFilterByStatus($status);
+
+        // Filter by Employee
+        if($employee_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.employee_id=".$this->app->db->qStr($employee_id);
+        }
+
+        // Filter by Client
+        if($client_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.client_id=".$this->app->db->qStr($client_id);
+        }
+        
+        // Filter by Supplier
+        if($supplier_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.supplier_id=".$this->app->db->qStr($supplier_id);
+        }
+        
+        // Filter by Invoice
+        if($invoice_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.invoice_id=".$this->app->db->qStr($invoice_id);
+        }
+        
+        // Filter by Expense
+        if($expense_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expense_id=".$this->app->db->qStr($expense_id);
+        }
+        
+        // Filter by Other Income
+        if($otherincome_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
+        }
+
+        // Execute the SQL
+        $sql = "SELECT COUNT(*) AS count
+                FROM ".PRFX."creditnote_records
+                ".$whereTheseRecords;                
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['count'];
+
+    }
+
+    #########################################
+    #  Sum selected value of Credit Notes   #
+    #########################################
+
+    public function sumCreditnotes($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."creditnote_records.creditnote_id\n"; 
+
+        // Filter by Date
+        $whereTheseRecords .= $this->creditnoteBuildFilterByDate($date_type, $start_date, $end_date);
+
+        // Filter by Tax System
+        if($tax_system) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.tax_system=".$this->app->db->qStr($tax_system);
+        }
+
+        // Restrict by Status
+        $whereTheseRecords .= $this->creditnoteBuildFilterByStatus($status);
+
+        // Filter by Employee
+        if($employee_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.employee_id=".$this->app->db->qStr($employee_id);
+        }
+
+        // Filter by Client
+        if($client_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.client_id=".$this->app->db->qStr($client_id);
+        }
+        
+        // Filter by Supplier
+        if($supplier_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.supplier_id=".$this->app->db->qStr($supplier_id);
+        }
+        
+        // Filter by Invoice
+        if($invoice_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.invoice_id=".$this->app->db->qStr($invoice_id);
+        }
+        
+        // Filter by Expense
+        if($expense_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expense_id=".$this->app->db->qStr($expense_id);
+        }
+        
+        // Filter by Other Income
+        if($otherincome_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
+        }
+
+        // Execute the SQL
+        $sql = "SELECT SUM(".PRFX."creditnote_records.$value_name) AS sum
+                FROM ".PRFX."creditnote_records
+                ".$whereTheseRecords;                
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['sum'];    
+
+    }
+
+    #########################################
+    #   Build Credit Note Date filter SQL   #
+    #########################################
+
+    public function creditnoteBuildFilterByDate($date_type, $start_date = null, $end_date = null) {
+
+        $whereTheseRecords = '';
+
+        if($start_date && $end_date) {
+            if ($date_type == 'date') {       
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.date <= ".$this->app->db->qStr($end_date);
+            } elseif ($date_type == 'due_date') {       
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.due_date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.due_date <= ".$this->app->db->qStr($end_date);
+            } elseif ($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'closed_on') {       
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'last_active') {       
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
+        }
+
+        return $whereTheseRecords;
+
+    }
+
+    #########################################
+    #  Build Credit Note Status filter SQL  #
+    #########################################
+
+    public function creditnoteBuildFilterByStatus($status = null) {
+
+        $whereTheseRecords = '';
+
+        // Restrict the records
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NULL";                 
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NOT NULL";
+        } elseif($status == 'discounted') {            
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.unit_discount > 0";                    
+        } elseif($status) {            
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status= ".$this->app->db->qStr($status);            
+        }
+                
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status != 'cancelled'";
+        }        
+        
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status != 'deleted'";
+        }
+
+        return $whereTheseRecords;
+
+    }
+
+    /** Credit Note Items **/
+
+    #############################
+    #  Count Credit Note items  #
+    #############################
+
+    public function countCreditnoteItems($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."creditnote_items.creditnote_item_id\n";    
+
+        // Filter by Date
+        $whereTheseRecords .= $this->creditnoteBuildFilterByDate($date_type, $start_date, $end_date);
+
+        // Filter by Tax System
+        if($tax_system) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_items.tax_system=".$this->app->db->qStr($tax_system);
+        }
+
+        // Filter by VAT Tax Code
+        if($vat_tax_code) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_items.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
+        }
+
+        // Restrict by Status
+        $whereTheseRecords .= $this->creditnoteBuildFilterByStatus($status);
+
+        // Filter by Employee
+        if($employee_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.employee_id=".$this->app->db->qStr($employee_id);
+        }
+
+        // Filter by Client
+        if($client_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.client_id=".$this->app->db->qStr($client_id);
+        }
+        
+        // Filter by Supplier
+        if($supplier_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.supplier_id=".$this->app->db->qStr($supplier_id);
+        }
+        
+        // Filter by Invoice
+        if($invoice_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.invoice_id=".$this->app->db->qStr($invoice_id);
+        }
+        
+        // Filter by Expense
+        if($expense_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expense_id=".$this->app->db->qStr($expense_id);
+        }
+        
+        // Filter by Other Income
+        if($otherincome_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
+        }
+
+        $sql = "SELECT COUNT(*) AS count
+                FROM ".PRFX."creditnote_items
+                LEFT JOIN ".PRFX."creditnote_records ON ".PRFX."creditnote_items.creditnote_id = ".PRFX."creditnote_records.creditnote_id
+                ".$whereTheseRecords;    
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['count'];   
+
+    }
+
+    #############################################
+    #  Sum selected value of Credit Note items  #
+    #############################################
+
+    public function sumCreditnoteItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+
+        // Prevent ambiguous error
+        $value_name = PRFX."creditnote_items.".$value_name;
+
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."creditnote_items.creditnote_item_id\n"; 
+
+        // Filter by Date
+        $whereTheseRecords .= $this->creditnoteBuildFilterByDate($date_type, $start_date, $end_date);
+
+        // Filter by Tax System
+        if($tax_system) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_items.tax_system=".$this->app->db->qStr($tax_system);
+        }
+
+        // Filter by VAT Tax Code
+        if($vat_tax_code) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_items.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
+        }    
+
+        // Restrict by Status
+        $whereTheseRecords .= $this->creditnoteBuildFilterByStatus($status);
+
+        // Filter by Employee
+        if($employee_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.employee_id=".$this->app->db->qStr($employee_id);
+        }
+
+        // Filter by Client
+        if($client_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.client_id=".$this->app->db->qStr($client_id);
+        }
+        
+        // Filter by Supplier
+        if($supplier_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.supplier_id=".$this->app->db->qStr($supplier_id);
+        }
+        
+        // Filter by Invoice
+        if($invoice_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.invoice_id=".$this->app->db->qStr($invoice_id);
+        }
+        
+        // Filter by Expense
+        if($expense_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expense_id=".$this->app->db->qStr($expense_id);
+        }
+        
+        // Filter by Other Income
+        if($otherincome_id) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
+        }
+
+        $sql = "SELECT SUM($value_name) AS sum
+                FROM ".PRFX."creditnote_items
+                LEFT JOIN ".PRFX."creditnote_records ON ".PRFX."creditnote_items.creditnote_id = ".PRFX."creditnote_records.creditnote_id
+                ".$whereTheseRecords;
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['sum'];
+
+    }
 
     /** Payments **/
 
@@ -1446,37 +1836,37 @@ class Report extends Components {
     #   Get All payments stats          #
     #####################################
 
-    public function getPaymentsStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+    public function getPaymentsStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null) {
 
         $stats = array();
 
         // Current
         if($record_set == 'current' || $record_set == 'all') {
 
-            $stats['count_valid'] = $this->countPayments('date', $start_date, $end_date, $tax_system, 'valid', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+            $stats['count_valid'] = $this->countPayments('date', $start_date, $end_date, $tax_system, 'valid', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
 
         }
 
         // Historic
         if($record_set == 'historic' || $record_set == 'all') {       
 
-            $stats['count_invoice'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['count_refund'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['count_expense'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['count_otherincome'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['count_sent'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['count_received'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+            $stats['count_invoice'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['count_refund'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['count_expense'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['count_otherincome'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['count_sent'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['count_received'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
            
         }  
 
         // Revenue
         if($record_set == 'revenue' || $record_set == 'all') {       
-            $stats['sum_invoice'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_refund'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_expense'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_otherincome'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_sent'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-            $stats['sum_received'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+            $stats['sum_invoice'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['sum_refund'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['sum_expense'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['sum_otherincome'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['sum_sent'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
+            $stats['sum_received'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id);
 
         } 
 
@@ -1488,7 +1878,7 @@ class Report extends Components {
     #     Count Payments                               #
     ####################################################
 
-    public function countPayments($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {   
+    public function countPayments($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null) {   
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";  
@@ -1541,6 +1931,11 @@ class Report extends Components {
         if($otherincome_id) {
             $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
         }
+        
+        // Filter by Creditnote
+        if($creditnote_id) {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);
+        }
 
         // Execute the SQL
         $sql = "SELECT COUNT(*) AS count
@@ -1557,7 +1952,7 @@ class Report extends Components {
     #  Sum selected value of payments       #
     #########################################
 
-    public function sumPayments($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+    public function sumPayments($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
@@ -1609,6 +2004,11 @@ class Report extends Components {
         // Filter by Otherincome
         if($otherincome_id) {
             $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
+        }
+        
+        // Filter by Creditnote
+        if($creditnote_id) {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);
         }
 
         // Execute the SQL

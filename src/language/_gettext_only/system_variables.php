@@ -23,8 +23,8 @@ _gettext("No Tax");
 _gettext("Sales Tax (Cash Basis)");
 _gettext("VAT Standard Accounting (UK)");
 _gettext("VAT Cash Accounting (UK)");
-_gettext("VAT Flat Rate (Basic Turnover) (UK)");
-_gettext("VAT Flat Rate (Cash Based Turnover) (UK)");
+_gettext("VAT Flat Rate (Basic turnover) (UK)");
+_gettext("VAT Flat Rate (Cash based turnover) (UK)");
 
 /* Company VAT Tax Codes */
 _gettext("Zero Rate");
@@ -42,6 +42,19 @@ _gettext("Standard Rate Purchases - Services - EC");
 _gettext("Flat Rate Capital Asset");
 _gettext("Not Applicable");
 _gettext("VAT Multi TCode");
+
+/* Credit Note Statuses */
+_gettext("Pending");
+_gettext("Unused");
+_gettext("Partially Applied");
+_gettext("Fully Applied");
+_gettext("Expired Unused");
+_gettext("Cancelled");
+_gettext("Deleted");
+
+/* Credit Note Types */
+_gettext("Sales");
+_gettext("Purchase");
 
 /* Expense Statuses */
 _gettext("Unpaid");

@@ -160,6 +160,11 @@ class Supplier extends Components {
     ############################
 
     public function getRecord($supplier_id, $item = null) {
+        
+        // This allows blank calls (i.e. payment:details, not all records have a client_id)
+        if(!$supplier_id) {
+            return;        
+        }
 
         $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);
 
@@ -399,7 +404,7 @@ class Supplier extends Components {
     #  Check if the supplier status is allowed to be changed  #  // not currently used
     ###########################################################
 
-     public function checkRecordAllowsStatusChange($supplier_id) {
+     public function checkRecordAllowsManualStatusChange($supplier_id) {
 
         $state_flag = true;
 

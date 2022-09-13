@@ -230,9 +230,7 @@ class Client extends Components {
             // Return static item
             return $rs->fields[$item];   
 
-        } 
-
-        
+        }    
 
     }
 

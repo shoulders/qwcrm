@@ -276,6 +276,13 @@
                                                                         </tr>
                                                                     {/section}
                                                                     <tr>
+                                                                        <td align="right"><b>{t}Credit Note Expiry Offset{/t}:</b> <span style="color: #ff0000">*</span></td>
+                                                                        <td>
+                                                                            <input name="qform[creditnote_expiry_offset]" class="olotd5" value="{$company_details.creditnote_expiry_offset}" type="text" maxlength="5" required onkeydown="return onlyNumber(event);">
+                                                                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Credit Note Expiry Offset{/t}</strong></div><hr><div>{t escape=js}This is the number of days added to todays date to generate the credit notes default expiry date. This date can be changed.{/t}</div>');" onMouseOut="hideddrivetip();">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <td align="right"><b>{t}Voucher Expiry Offset{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                         <td>
                                                                             <input name="qform[voucher_expiry_offset]" class="olotd5" value="{$company_details.voucher_expiry_offset}" type="text" maxlength="5" required onkeydown="return onlyNumber(event);">
@@ -462,6 +469,38 @@
                                                                                         <select name="qform[email_msg_voucher_active]">                                                                    
                                                                                             <option value="1" {if $company_details.email_msg_voucher_active == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                                             <option value="0" {if $company_details.email_msg_voucher_active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                                        </select>
+                                                                                    </td>
+                                                                                </tr>*}
+                                                                            </table>                                                        
+                                                                        </td>
+                                                                    </tr> 
+                                                                    
+                                                                    <!-- Credit Note -->
+
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table cellpadding="5" cellspacing="0">
+                                                                                <tr>
+                                                                                    <td class="menuhead">{t}Credit Note Email Message{/t}:</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>                                                                
+                                                                                        <strong>Placeholders</strong><br>
+                                                                                        {literal}{company_name}{/literal} = {t}This company's name{/t}<br>
+                                                                                        {literal}{client_display_name}{/literal} = {t}Client's company name or contact name (automatic){/t}<br>
+                                                                                        {literal}{client_first_name}{/literal} = {t}Client's/Contact's first name{/t}<br> 
+                                                                                        {literal}{client_last_name}{/literal} = {t}Client's/Contact's last name{/t}<br>                                                                                        
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td><textarea cols="80" rows="15" class="olotd5" name="qform[email_msg_creditnote]">{$company_details.email_msg_creditnote}</textarea></td>
+                                                                                </tr>
+                                                                                {*<tr>
+                                                                                    <td align="left"><b>{t}Enabled{/t}:</b>
+                                                                                        <select name="qform[email_msg_creditnote_active]">                                                                    
+                                                                                            <option value="1" {if $company_details.email_msg_creditnote_active == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                                            <option value="0" {if $company_details.email_msg_creditnote_active == '0'} selected{/if}>{t}No{/t}</option>
                                                                                         </select>
                                                                                     </td>
                                                                                 </tr>*}

@@ -29,7 +29,7 @@ if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR
 // if information submitted
 if(isset(\CMSApplication::$VAR['submit'])) {
     
-    // Check the expiry date is valid, if not reload the page wiht an error message
+    // Check the expiry date is valid, if not reload the page with an error message
     if($this->app->components->voucher->checkVoucherExpiryIsValid(\CMSApplication::$VAR['qform']['expiry_date']))
     {
         // Update Voucher

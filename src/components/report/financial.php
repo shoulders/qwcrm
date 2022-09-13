@@ -16,6 +16,9 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
     // Update all Voucher expiry statuses
     $this->app->components->voucher->checkAllVouchersForExpiry();
     
+    // Update all Creditnote expiry statuses
+    $this->app->components->creditnote->checkAllCreditnotesForExpiry();
+    
     /* Get Data Sets */
 
     // Change dates to proper timestamps

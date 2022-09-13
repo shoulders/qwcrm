@@ -377,7 +377,7 @@ class Page extends System {
     
     #####################################
     #   force_page - Page Redirector    #  // Can send variables as a GET string or POST variables
-    #####################################
+    #####################################  // vAriables can be a GET string or an array
 
     /*
      * If no $page_tpl and $variables are supplied then this function 

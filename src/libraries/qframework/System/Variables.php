@@ -59,6 +59,7 @@ class Variables extends System {
         $this->app->smarty->assign('otherincome_id', \CMSApplication::$VAR['otherincome_id'] ?? null);
         $this->app->smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'] ?? null);
         $this->app->smarty->assign('cronjob_id', \CMSApplication::$VAR['cronjob_id'] ?? null);
+        $this->app->smarty->assign('creditnote_id', \CMSApplication::$VAR['creditnote_id'] ?? null);
 
         // Used throughout the site
         if(!defined('QWCRM_SETUP')) {

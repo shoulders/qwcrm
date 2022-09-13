@@ -48,11 +48,13 @@ class Payment extends Components {
         $sql = "INSERT INTO ".PRFX."payment_records SET            
                 employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id          ).",
                 client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?: null           ).",                
+                supplier_id     = ".$this->app->db->qStr( $qpayment['supplier_id'] ?: null         ).", 
                 invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?: null          ).",
-                voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?: null          ).",               
                 refund_id       = ".$this->app->db->qStr( $qpayment['refund_id'] ?: null           ).", 
-                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?: null          ).", 
-                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",
+                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?: null          ).",  
+                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",                
+                voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?: null          ).",
+                creditnote_id   = ".$this->app->db->qStr( $qpayment['creditnote_id'] ?: null          ).",
                 date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date'])    ).",
                 tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",   
                 type            = ".$this->app->db->qStr( $qpayment['type']        ).",
@@ -90,7 +92,7 @@ class Payment extends Components {
     #  Display all payments the given status            #
     #####################################################
 
-    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
@@ -137,18 +139,24 @@ class Payment extends Components {
 
         // Restrict by Client
         if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);}
-
+        
         // Restrict by Invoice
         if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qStr($invoice_id);}    
 
         // Restrict by Refund
         if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->app->db->qStr($refund_id);} 
 
+        // Restrict by Supplier
+        if($supplier_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);}
+        
         // Restrict by Expense
         if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qStr($expense_id);} 
 
         // Restrict by Otherincome
-        if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qStr($otherincome_id);}             
+        if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qStr($otherincome_id);}
+        
+        // Restrict by Credit Note
+        if($creditnote_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);} 
 
         // The SQL code
         $sql =  "SELECT
@@ -494,7 +502,8 @@ class Payment extends Components {
                 paypal_email                =". $this->app->db->qStr( $qform['paypal_email']                 ).",        
                 invoice_bank_transfer_msg   =". $this->app->db->qStr( $qform['invoice_bank_transfer_msg']    ).",
                 invoice_cheque_msg          =". $this->app->db->qStr( $qform['invoice_cheque_msg']           ).",
-                invoice_footer_msg          =". $this->app->db->qStr( $qform['invoice_footer_msg']           );            
+                invoice_footer_msg          =". $this->app->db->qStr( $qform['invoice_footer_msg']           ).",
+                creditnote_footer_msg       =". $this->app->db->qStr( $qform['creditnote_footer_msg']        ); 
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -733,7 +742,7 @@ class Payment extends Components {
     #  Check if the payment status is allowed to be changed  #  // used on payment:status
     ##########################################################  // This feature is not implemented, but present
 
-     public function checkRecordAllowsStatusChange($payment_id) {
+     public function checkRecordAllowsManualStatusChange($payment_id) {
 
         $state_flag = false; // Disable the ability to manually change status for now
 

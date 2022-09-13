@@ -39,8 +39,22 @@ CREATE TABLE `#__client_notes` (
   `employee_id` int(10) UNSIGNED NOT NULL,
   `client_id` int(10) UNSIGNED NOT NULL,
   `date` datetime NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `#__client_notes`
+--
+
+INSERT INTO `#__client_notes` (`client_note_id`, `employee_id`, `client_id`, `date`, `note`) VALUES
+(10, 1, 1, '0000-00-00 00:00:00', '<p>holiday</p>'),
+(11, 1, 1, '0000-00-00 00:00:00', '<p>sddsfsdfs</p>'),
+(15, 1, 3, '0000-00-00 00:00:00', '<p>chieckn kanabs are aweful</p>'),
+(16, 1, 1, '0000-00-00 00:00:00', '<p>terminator is back</p>'),
+(17, 1, 5, '0000-00-00 00:00:00', '<p>scscs</p>'),
+(18, 1, 4, '0000-00-00 00:00:00', '<p>rhrhdrh</p>'),
+(21, 1, 6, '0000-00-00 00:00:00', '<p>sdfsdf</p>'),
+(23, 1, 14, '2019-10-30 08:18:31', '<p>cccccccccccc</p>');
 
 -- --------------------------------------------------------
 
@@ -145,7 +159,8 @@ CREATE TABLE `#__company_record` (
   `vat_flat_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
   `year_start` date NOT NULL,
   `year_end` date NOT NULL,
-  `voucher_expiry_offset` INT(5) UNSIGNED NOT NULL; 
+  `creditnote_expiry_offset` int(5) UNSIGNED NOT NULL DEFAULT 366,
+  `voucher_expiry_offset` int(5) UNSIGNED NOT NULL DEFAULT 1827,
   `welcome_msg` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `currency_symbol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `currency_code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -158,7 +173,8 @@ CREATE TABLE `#__company_record` (
   `email_signature_active` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `email_msg_workorder` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `email_msg_invoice` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `email_msg_voucher` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `email_msg_voucher` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email_msg_creditnote` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -166,7 +182,7 @@ CREATE TABLE `#__company_record` (
 --
 
 INSERT INTO `#__company_record` (`company_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_system`, `sales_tax_rate`, `vat_number`, `vat_flat_rate`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', 'qw-logo.png', '', '', '', '', '', '', '', '', '', '', '', 'no_tax', '0.00', '', '0.00', NULL, NULL, 1827,'<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '&pound;', 'GBP', '%Y-%m-%d', 10, 0, 17, 0, '<p>{company_logo}</p>\r\n<p><strong>{company_name}</strong></p>\r\n<p><strong>Address:</strong> <br />{company_address}</p>\r\n<p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>', 1, '<p>There is currently no message here for Work Orders.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is an invoice for the recent work at carried out by {company_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>');
+('', 'qw-logo.png', '', '', '', '', '', '', '', '', '', '', '', 'no_tax', '0.00', '', '0.00', NULL, NULL, , 366, 1827,'<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '&pound;', 'GBP', '%Y-%m-%d', 10, 0, 17, 0, '<p>{company_logo}</p>\r\n<p><strong>{company_name}</strong></p>\r\n<p><strong>Address:</strong> <br />{company_address}</p>\r\n<p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>', 1, '<p>There is currently no message here for Work Orders.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is an invoice for the recent work at carried out by {company_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>', '<p>Hi {client_display_name}</p>\r\n<p>This is a credit note from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>');
 
 -- --------------------------------------------------------
 
@@ -189,8 +205,8 @@ INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
 (2, 'sales_tax_cash', 'Sales Tax (Cash Basis)'),
 (3, 'vat_standard', 'VAT Standard Accounting (UK)'),
 (4, 'vat_cash', 'VAT Cash Accounting (UK)'),
-(5, 'vat_flat_basic', 'VAT Flat Rate (Basic Turnover) (UK)'),
-(6, 'vat_flat_cash', 'VAT Flat Rate (Cash Based Turnover) (UK)');
+(5, 'vat_flat_basic', 'VAT Flat Rate (Basic turnover) (UK)'),
+(6, 'vat_flat_cash', 'VAT Flat Rate (Cash based turnover) (UK)');
 
 -- --------------------------------------------------------
 
@@ -247,26 +263,129 @@ INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `descri
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__creditnote_items`
+--
+
+CREATE TABLE `#__creditnote_items` (
+  `creditnote_item_id` int(10) UNSIGNED NOT NULL,
+  `creditnote_id` int(10) UNSIGNED NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__creditnote_records`
+--
+
+CREATE TABLE `#__creditnote_records` (
+  `creditnote_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this client',
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this invoice',
+  `supplier_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this supplier',
+  `expense_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this expense',
+  `date` date DEFAULT NULL,
+  `expiry_date` date DEFAULT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_paid` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opened_on` datetime DEFAULT NULL,
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__creditnote_statuses`
+--
+
+CREATE TABLE `#__creditnote_statuses` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `#__creditnote_statuses`
+--
+
+INSERT INTO `#__creditnote_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'pending', 'Pending'),
+(2, 'unused', 'Unused'),
+(3, 'partially_applied', 'Partially Applied'),
+(4, 'fully_applied', 'Fully Applied'),
+(5, 'expired_unused', 'Expired Unused'),
+(6, 'cancelled', 'Cancelled'),
+(7, 'deleted', 'Deleted');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__creditnote_types`
+--
+
+CREATE TABLE `#__creditnote_types` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `#__creditnote_types`
+--
+
+INSERT INTO `#__creditnote_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'sales', 'Sales'),
+(2, 'purchase', 'Purchase');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__cronjob_records`
 --
 
 CREATE TABLE `#__cronjob_records` (
-  `cronjob_id` int(11) NOT NULL,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `active` int(11) NOT NULL DEFAULT 1,
-  `pseudo_allowed` int(1) NOT NULL DEFAULT 1,
-  `default_settings` text COLLATE utf8_unicode_ci NOT NULL,
-  `last_run_time` datetime NOT NULL,
-  `last_run_status` int(1) NOT NULL DEFAULT 0,
-  `locked` int(1) NOT NULL DEFAULT 0,
-  `minute` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `hour` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `day` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `month` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `weekday` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `command` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `cronjob_id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `active` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `pseudo_allowed` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
+  `default_settings` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_run_time` datetime DEFAULT NULL,
+  `last_run_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `locked` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `minute` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hour` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `day` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `month` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `weekday` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `command` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__cronjob_records`
@@ -274,7 +393,8 @@ CREATE TABLE `#__cronjob_records` (
 
 INSERT INTO `#__cronjob_records` (`cronjob_id`, `name`, `description`, `active`, `pseudo_allowed`, `default_settings`, `last_run_time`, `last_run_status`, `locked`, `minute`, `hour`, `day`, `month`, `weekday`, `command`) VALUES
 (1, 'Test Cron', '<p>This cronjob is designed to check the basic functionality of the cronjob system. When enabled it will send an email every 15 minutes from QWcrm to the configured company email address. You can also run the cronjob manually to test immediately.</p>', 0, 1, '{\"active\":\"0\",\"pseudo_allowed\":\"1\",\"minute\":\"*\\/15\",\"hour\":\"*\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '*/15', '*', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobTest\"}'),
-(2, 'Voucher Expiry', '<p>This cronjob when run will check all vouchers for their expiry status. Vouchers that are expired and have not been flagged will have their status changed to expired.</p>', 1, 1, '{\"active\":\"1\",\"pseudo_allowed\":\"1\",\"minute\":\"0\",\"hour\":\"0\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '0', '0', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobCheckAllVouchersForExpiry\"}');
+(2, 'Voucher Expiry', '<p>This cronjob when run, will check all vouchers for their expiry status. Vouchers that are expired and have not been flagged will have their status changed to expired.</p>', 1, 1, '{\"active\":\"1\",\"pseudo_allowed\":\"1\",\"minute\":\"0\",\"hour\":\"0\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '0', '0', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobCheckAllVouchersForExpiry\"}'),
+(3, 'Credit Note Expiry', '<p>This cronjob when run, will check all credit notes for their expiry status. credit notes that are expired and have not been flagged will have their status changed to expired.</p>', 1, 1, '{\"active\":\"1\",\"pseudo_allowed\":\"1\",\"minute\":\"0\",\"hour\":\"0\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '0', '0', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobCheckAllCreditnotesForExpiry\"}');
 
 -- --------------------------------------------------------
 
@@ -284,9 +404,9 @@ INSERT INTO `#__cronjob_records` (`cronjob_id`, `name`, `description`, `active`,
 
 CREATE TABLE `#__cronjob_system` (
   `last_run_time` datetime NOT NULL,
-  `last_run_status` int(1) NOT NULL DEFAULT 0,
-  `locked` int(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `last_run_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `locked` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__cronjob_system`
@@ -304,6 +424,7 @@ INSERT INTO `#__cronjob_system` (`last_run_time`, `last_run_status`, `locked`) V
 CREATE TABLE `#__expense_records` (
   `expense_id` int(10) UNSIGNED NOT NULL,
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `supplier_id` int(10) UNSIGNED DEFAULT NULL,
   `payee` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date DEFAULT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -450,9 +571,8 @@ CREATE TABLE `#__invoice_records` (
   `date` date DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unit_discount_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
-  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
   `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -463,7 +583,7 @@ CREATE TABLE `#__invoice_records` (
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -661,15 +781,16 @@ CREATE TABLE `#__payment_options` (
   `paypal_email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `invoice_bank_transfer_msg` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `invoice_cheque_msg` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `invoice_footer_msg` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `invoice_footer_msg` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `creditnote_footer_msg` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__payment_options`
 --
 
-INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `invoice_bank_transfer_msg`, `invoice_cheque_msg`, `invoice_footer_msg`) VALUES
-('', '', '', '', '', '', '<p>Use your invoice number as the reference ...</p>\r\n<p>This message can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message where you can put extra information ...</p>\r\n<p>This message can be edited in payment options.</p>');
+INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `invoice_bank_transfer_msg`, `invoice_cheque_msg`, `invoice_footer_msg`, `creditnote_footer_msg`) VALUES
+('', '', '', '', '', '', '<p>Use your invoice number as the reference ...</p>\r\n<p>This message can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message where you can put extra information ...</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message where you can put extra information ...</p>\r\n<p>This message can be edited in payment options.</p>');
 
 -- --------------------------------------------------------
 
@@ -680,12 +801,14 @@ INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_accoun
 CREATE TABLE `#__payment_records` (
   `payment_id` int(10) UNSIGNED NOT NULL,
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
-  `client_id` int(10) UNSIGNED DEFAULT NULL,  
-  `invoice_id` int(10) UNSIGNED DEFAULT NULL,
-  `voucher_id` int(10) UNSIGNED DEFAULT NULL,
-  `refund_id` int(10) UNSIGNED DEFAULT NULL,
-  `expense_id` int(10) UNSIGNED DEFAULT NULL,
-  `otherincome_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
+  `supplier_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
+  `refund_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
+  `expense_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
+  `otherincome_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
+  `voucher_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Voucher used',
+  `creditnote_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Credit Note used',
   `date` date DEFAULT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -823,8 +946,8 @@ CREATE TABLE `#__schedule_records` (
   `workorder_id` int(10) UNSIGNED NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -974,6 +1097,15 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:home', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:maintenance', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+('creditnote:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:email', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:print', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('cronjob:details', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('cronjob:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('cronjob:overview', 1, 1, 0, 0, 0, 0, 0, 0, 0),
@@ -1052,6 +1184,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('voucher:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('voucher:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('voucher:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('voucher:email', 1, 1, 0, 1, 1, 1, 0, 0, 0),
 ('voucher:new', 1, 1, 0, 0, 1, 1, 0, 0, 0),
 ('voucher:print', 1, 1, 0, 0, 1, 1, 0, 0, 0),
 ('voucher:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
@@ -1230,7 +1363,7 @@ CREATE TABLE `#__voucher_records` (
   `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
   `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `balance` DECIMAL(10,2) NOT NULL DEFAULT 0.00; 
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1406,6 +1539,30 @@ ALTER TABLE `#__company_tax_systems`
 -- Indexes for table `#__company_vat_tax_codes`
 --
 ALTER TABLE `#__company_vat_tax_codes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__creditnote_items`
+--
+ALTER TABLE `#__creditnote_items`
+  ADD PRIMARY KEY (`creditnote_item_id`);
+
+--
+-- Indexes for table `#__creditnote_records`
+--
+ALTER TABLE `#__creditnote_records`
+  ADD PRIMARY KEY (`creditnote_id`);
+
+--
+-- Indexes for table `#__creditnote_statuses`
+--
+ALTER TABLE `#__creditnote_statuses`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__creditnote_types`
+--
+ALTER TABLE `#__creditnote_types`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1623,13 +1780,13 @@ ALTER TABLE `#__voucher_records`
   ADD PRIMARY KEY (`voucher_id`);
 
 --
--- Indexes for table `#__voucher_types`
+-- Indexes for table `#__voucher_statuses`
 --
 ALTER TABLE `#__voucher_statuses`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `#__voucher_statuses`
+-- Indexes for table `#__voucher_types`
 --
 ALTER TABLE `#__voucher_types`
   ADD PRIMARY KEY (`id`);
@@ -1673,6 +1830,18 @@ ALTER TABLE `#__client_notes`
 --
 ALTER TABLE `#__client_records`
   MODIFY `client_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__creditnote_items`
+--
+ALTER TABLE `#__creditnote_items`
+  MODIFY `creditnote_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__creditnote_records`
+--
+ALTER TABLE `#__creditnote_records`
+  MODIFY `creditnote_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `#__expense_records`

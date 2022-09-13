@@ -51,7 +51,7 @@ class Voucher extends Components {
                 client_id           =". $this->app->db->qStr( $invoice_details['client_id']                ).",
                 workorder_id        =". $this->app->db->qStr( $invoice_details['workorder_id']             ).",
                 invoice_id          =". $this->app->db->qStr( $invoice_details['invoice_id']               ).",
-                expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($expiry_date).' 23:59:59' ).",
+                expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($expiry_date) ).",
                 status              =". $this->app->db->qStr( 'unpaid'                                     ).",
                 opened_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                             ).",
                 blocked             =". $this->app->db->qStr( 1                                          ).",
@@ -154,9 +154,8 @@ class Voucher extends Components {
         if($redeemed_invoice_id) {$whereTheseRecords .= " AND payment_records.invoice_id=".$this->app->db->qStr($redeemed_invoice_id);}
 
         // The SQL code
-        $sql = "SELECT
-
-            ".PRFX."voucher_records.*,                            
+        $sql = "SELECT ".PRFX."voucher_records.*,
+            
             IF(".PRFX."client_records.company_name !='', ".PRFX."client_records.company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,                       
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,            
             redemptions            
@@ -195,7 +194,9 @@ class Voucher extends Components {
                 $sql .="
                     RIGHT JOIN 
                     (
-                        SELECT *,            
+                        SELECT 
+                        ".PRFX."payment_records.voucher_id,
+                        ".PRFX."payment_records.client_id,
                         CONCAT('[',                        
                             JSON_OBJECT(    
                                 'payment_id', payment_id
@@ -277,7 +278,7 @@ class Voucher extends Components {
 
     public function getRecord($voucher_id, $item = null) {
 
-        $sql = "SELECT *,
+        $sql = "SELECT ".PRFX."voucher_records.*,
                 redemptions
                 
                 FROM ".PRFX."voucher_records
@@ -429,8 +430,8 @@ class Voucher extends Components {
             if($tax_system == 'vat_flat_cash') { return 'T1'; }         
         }    
 
-    }    
-
+    }       
+    
     /** Update Functions **/
 
     #################################
@@ -446,7 +447,7 @@ class Voucher extends Components {
 
         $sql = "UPDATE ".PRFX."voucher_records SET     
                 employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id           ).",
-                expiry_date     =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($expiry_date).' 23:59:59' ).",            
+                expiry_date     =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($expiry_date) ).",            
                 unit_net        =". $unit_net                                                .",
                 unit_tax        =". $unit_tax                                                .",
                 unit_gross      =". ($unit_net + $unit_tax)                                  .",
@@ -709,7 +710,7 @@ class Voucher extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) {       
             $vouchers_new_status = '';      
         }*/
         
@@ -1062,9 +1063,9 @@ class Voucher extends Components {
     
     /** Check Functions **/
 
-    #################################################
-    #   Check to see if the voucher is expired      #   // This does a live check to see if the voucher is expired and tagged as such
-    #################################################   // by default all vouchers are checked
+    #####################################################
+    #   Check all vouchers to see if any have expired   #   // This does a live check to see if the voucher is expired and tagged as such
+    #####################################################   // by default all vouchers are checked
 
     public function checkAllVouchersForExpiry($invoice_id = null) {
 
@@ -1142,7 +1143,7 @@ class Voucher extends Components {
     
     ###########################################################
     #  Process the newly expired voucher for tax              # // This does nothing at the minute, but is an excellent placeholder for voucher tax processing
-    ########################################################### // should this be moved below checkVoucherIsExpired() to make reading easier?
+    ###########################################################
     
     private function processNewlyExpiredVoucher($voucher_id)
     {
@@ -1201,7 +1202,7 @@ class Voucher extends Components {
     #  Check if the voucher status is allowed to be changed   #  // used on voucher:status
     ###########################################################
 
-    public function checkRecordAllowsStatusChange($voucher_id) {
+    public function checkRecordAllowsManualStatusChange($voucher_id) {
         
          $state_flag = true;
         
@@ -1346,7 +1347,7 @@ class Voucher extends Components {
         
         // Is Expired (Live Check)
         if($this->checkVoucherIsExpired($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it expired."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has expired."));
             $state_flag = false;
         }
         
@@ -2486,7 +2487,7 @@ private function checkInvoiceAllowsSingleVoucherChanges($invoice_id) {
         
     }
     
-    ############################################
+    ############################################  // this could be put in general with date stuff
     #  Check Voucher Expiry is valid           #
     ############################################
     
@@ -2533,5 +2534,6 @@ private function checkInvoiceAllowsSingleVoucherChanges($invoice_id) {
         return $voucher_code;
 
     }
+    
     
 }

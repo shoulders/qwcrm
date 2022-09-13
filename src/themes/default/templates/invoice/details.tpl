@@ -125,9 +125,7 @@
                                         <!-- Terms and Discount -->
                                         <tr>
                                             <td colspan="10" valign="top" align="left">                                                        
-                                                <b>{t}TERMS{/t}:</b> {$client_details.credit_terms}<br>
-                                                <b>{t}Client Discount Rate{/t}:</b>
-                                                {$invoice_details.unit_discount_rate|string_format:"%.2f"}%                                                                                                     
+                                                <p><b>{t}Credit Terms{/t}: </b>{if $client_details.credit_terms}{$client_details.credit_terms}{else}{t}n/a{/t}{/if}</p>                                                                                                   
                                             </td>
                                         </tr>
 
@@ -164,6 +162,11 @@
                                                 <!-- Receive Payment Button -->
                                                 {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}                                                            
                                                     <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                {/if}
+                                                
+                                                <!-- Credit Note Button -->
+                                                {if $allowed_to_create_creditnote}                                                         
+                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}');">{t}Add Sales Credit Note{/t}</button>
                                                 {/if}
                                                 
                                             </td>
@@ -296,7 +299,7 @@
                                             <td class="menutd2">
                                                 <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                                                     <tr>
-                                                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.unit_discount_rate|string_format:"%.2f"}%)</b></td>
+                                                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_discount|string_format:"%.2f"}</td>
                                                     </tr>
                                                     {if $invoice_details.tax_system != 'no_tax'}

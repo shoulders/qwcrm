@@ -325,16 +325,22 @@ class Email extends System {
             $this->replacePlaceholder($message, '{client_first_name}', $client_details['first_name']);
             $this->replacePlaceholder($message, '{client_last_name}', $client_details['last_name']); 
             $this->replacePlaceholder($message, '{client_credit_terms}', $client_details['credit_terms']);
-        }
+        }        
         if($message_name == 'email_msg_workorder') {
             // not currently used
-        }
+        }        
         if($message_name == 'email_msg_voucher') {
             $this->replacePlaceholder($message, '{company_name}', $company_details['company_name']);
             $this->replacePlaceholder($message, '{client_display_name}', $client_details['display_name']);
             $this->replacePlaceholder($message, '{client_first_name}', $client_details['first_name']);
             $this->replacePlaceholder($message, '{client_last_name}', $client_details['last_name']);
         }
+        if($message_name == 'email_msg_creditnote') {
+            $this->replacePlaceholder($message, '{company_name}', $company_details['company_name']);
+            $this->replacePlaceholder($message, '{client_display_name}', $client_details['display_name']);
+            $this->replacePlaceholder($message, '{client_first_name}', $client_details['first_name']);
+            $this->replacePlaceholder($message, '{client_last_name}', $client_details['last_name']);            
+        } 
 
         // return the process email
         return $message;

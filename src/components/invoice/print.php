@@ -98,7 +98,7 @@ if(\CMSApplication::$VAR['commContent'] == 'invoice')
 // Client Envelope Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'client_envelope')
 {    
-    $templateFile = 'invoice/printing/print_client_envelope.tpl';
+    $templateFile = 'client/printing/print_client_envelope.tpl';
     $filename = _gettext("Invoice Envelope").' '.\CMSApplication::$VAR['invoice_id'];
     
     // Print HTML Client Envelope

@@ -142,4 +142,14 @@
             </table>
         </td>
     </tr>
+    
+    <!-- Credit Note Button -->
+    {if $allowed_to_create_creditnote}  
+        <tr>
+            <td>
+
+                <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Purchase Credit Note (Standalone){/t}</button>
+            </td>
+        </tr>
+    {/if}
 </table>

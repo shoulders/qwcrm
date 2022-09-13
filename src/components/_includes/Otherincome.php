@@ -365,7 +365,7 @@ class OtherIncome extends Components {
     #  Check if the otherincome status is allowed to be changed  #  // not currently used
     ##############################################################
 
-     public function checkRecordAllowsStatusChange($otherincome_id) {
+     public function checkRecordAllowsManualStatusChange($otherincome_id) {
 
         $state_flag = true;
 
@@ -391,7 +391,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
             $state_flag = false;        
         }*/
@@ -436,7 +436,7 @@ class OtherIncome extends Components {
         }    
 
         /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(!$this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if(!$this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be refunded because the otherincome has no payments."));
             $state_flag = false;        
         }*/
@@ -481,7 +481,7 @@ class OtherIncome extends Components {
         }    
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
             $state_flag = false;        
         }*/
@@ -526,7 +526,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments."));
             $state_flag = false;        
         }*/
@@ -577,7 +577,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has payments."));
             $state_flag = false;        
         }*/
@@ -604,7 +604,7 @@ class OtherIncome extends Components {
         $otherincome_details            = $this->getRecord($otherincome_id);    
 
         $unit_gross                     = $otherincome_details['unit_gross'];   
-        $payments_subtotal             = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
+        $payments_subtotal             = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
         $balance                        = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."otherincome_records SET

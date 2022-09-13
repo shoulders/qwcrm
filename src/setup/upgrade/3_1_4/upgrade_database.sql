@@ -43,7 +43,8 @@ CREATE TABLE `#__cronjob_records` (
 
 INSERT INTO `#__cronjob_records` (`cronjob_id`, `name`, `description`, `active`, `pseudo_allowed`, `default_settings`, `last_run_time`, `last_run_status`, `locked`, `minute`, `hour`, `day`, `month`, `weekday`, `command`) VALUES
 (1, 'Test Cron', '<p>This cronjob is designed to check the basic functionality of the cronjob system. When enabled it will send an email every 15 minutes from QWcrm to the configured company email address. You can also run the cronjob manually to test immediately.</p>', 0, 1, '{\"active\":\"0\",\"pseudo_allowed\":\"1\",\"minute\":\"*\\/15\",\"hour\":\"*\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '*/15', '*', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobTest\"}'),
-(2, 'Voucher Expiry', '<p>This cronjob when run will check all vouchers for their expiry status. Vouchers that are expired and have not been flagged will have their status changed to expired.</p>', 1, 1, '{\"active\":\"1\",\"pseudo_allowed\":\"1\",\"minute\":\"0\",\"hour\":\"0\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '0', '0', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobCheckAllVouchersForExpiry\"}');
+(2, 'Voucher Expiry', '<p>This cronjob when run, will check all vouchers for their expiry status. Vouchers that are expired and have not been flagged will have their status changed to expired.</p>', 1, 1, '{\"active\":\"1\",\"pseudo_allowed\":\"1\",\"minute\":\"0\",\"hour\":\"0\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '0', '0', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobCheckAllVouchersForExpiry\"}'),
+(3, 'Credit Note Expiry', '<p>This cronjob when run, will check all credit notes for their expiry status. credit notes that are expired and have not been flagged will have their status changed to expired.</p>', 1, 1, '{\"active\":\"1\",\"pseudo_allowed\":\"1\",\"minute\":\"0\",\"hour\":\"0\",\"day\":\"*\",\"month\":\"*\",\"weekday\":\"*\"}', NULL, 1, 0, '0', '0', '*', '*', '*', '{\"class\":\"Cronjob\",\"function\":\"cronjobCheckAllCreditnotesForExpiry\"}');
 
 ALTER TABLE `#__cronjob_records` ADD PRIMARY KEY (`cronjob_id`);
 
@@ -746,13 +747,6 @@ ALTER TABLE `#__invoice_records` ADD `additional_info` TEXT NOT NULL AFTER `is_c
 UPDATE `#__invoice_records` SET `additional_info` = '{}';
 
 --
--- Adding Credit Note System
---
-
-INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES 
-('9', 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');
-
---
 -- Merging Labour and parts into invoice_items to allow credit note system
 --
 
@@ -774,11 +768,9 @@ CREATE TABLE `#__invoice_items` (
   `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `#__invoice_items`
-  ADD PRIMARY KEY (`invoice_item_id`);
+ALTER TABLE `#__invoice_items` ADD PRIMARY KEY (`invoice_item_id`);
 
-ALTER TABLE `#__invoice_items`
-  MODIFY `invoice_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__invoice_items` MODIFY `invoice_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 INSERT 
 INTO    `#__invoice_items` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`)
@@ -794,3 +786,162 @@ DROP TABLE `#__invoice_parts`;
 --
 
 ALTER TABLE `#__invoice_prefill_items` DROP `type`;
+
+--
+-- Correct some small typos
+--
+TRUNCATE TABLE `#__company_tax_systems`;
+INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
+(1, 'no_tax', 'No Tax'),
+(2, 'sales_tax_cash', 'Sales Tax (Cash Basis)'),
+(3, 'vat_standard', 'VAT Standard Accounting (UK)'),
+(4, 'vat_cash', 'VAT Cash Accounting (UK)'),
+(5, 'vat_flat_basic', 'VAT Flat Rate (Basic turnover) (UK)'),
+(6, 'vat_flat_cash', 'VAT Flat Rate (Cash based turnover) (UK)');
+
+--
+-- Adding Credit Note System
+--
+
+
+--
+-- Table structure for table `#__creditnote_items`
+--
+
+CREATE TABLE `#__creditnote_items` (
+  `creditnote_item_id` int(10) UNSIGNED NOT NULL,
+  `creditnote_id` int(10) UNSIGNED NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `#__creditnote_items` ADD PRIMARY KEY (`creditnote_item_id`);
+ALTER TABLE `#__creditnote_items` MODIFY `creditnote_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Table structure for table `#__creditnote_records`
+--
+
+CREATE TABLE `#__creditnote_records` (
+  `creditnote_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `client_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this client',
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this invoice',
+  `supplier_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this supplier',
+  `expense_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this expense',
+  `date` date DEFAULT NULL,
+  `expiry_date` date DEFAULT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_paid` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `opened_on` datetime DEFAULT NULL,
+  `closed_on` datetime DEFAULT NULL,
+  `last_active` datetime DEFAULT NULL,
+  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `#__creditnote_records` ADD PRIMARY KEY (`creditnote_id`);
+ALTER TABLE `#__creditnote_records` MODIFY `creditnote_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Table structure for table `#__creditnote_statuses`
+--
+
+CREATE TABLE `#__creditnote_statuses` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `#__creditnote_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'pending', 'Pending'),
+(2, 'unused', 'Unused'),
+(3, 'partially_applied', 'Partially Applied'),
+(4, 'fully_applied', 'Fully Applied'),
+(5, 'expired_unused', 'Expired Unused'),
+(6, 'cancelled', 'Cancelled'),
+(7, 'deleted', 'Deleted');
+
+ALTER TABLE `#__creditnote_statuses` ADD PRIMARY KEY (`id`);
+
+--
+-- Table structure for table `#__creditnote_types`
+--
+
+CREATE TABLE `#__creditnote_types` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+INSERT INTO `#__creditnote_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'sales', 'Sales'),
+(2, 'purchase', 'Purchase');
+
+ALTER TABLE `#__creditnote_types` ADD PRIMARY KEY (`id`);
+
+--
+
+INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES 
+('9', 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');
+
+ALTER TABLE `#__invoice_records` DROP `unit_discount_rate`;
+
+--
+
+INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
+('creditnote:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:email', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:print', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('creditnote:status', 1, 1, 0, 0, 1, 0, 0, 0, 0);
+
+--
+
+ALTER TABLE `#__payment_records` ADD `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `otherincome_id`; 
+ALTER TABLE `#__company_record` ADD `email_msg_creditnote` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '<p>Hi {client_display_name}</p> <p>This is a credit note from {company_name} which is redeemable against our services and products.</p> <p><em><strong>Terms and conditions apply.</strong></em></p> <p>Thanks for your custom.</p>' AFTER `email_msg_voucher`;
+
+--
+
+ALTER TABLE `#__payment_records` CHANGE `client_id` `client_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against';
+ALTER TABLE `#__payment_records` CHANGE `invoice_id` `invoice_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against';
+ALTER TABLE `#__payment_records` CHANGE `expense_id` `expense_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against' AFTER `invoice_id`;
+ALTER TABLE `#__payment_records` CHANGE `otherincome_id` `otherincome_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against' AFTER `expense_id`;
+ALTER TABLE `#__payment_records` ADD `supplier_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against' AFTER `client_id`;
+ALTER TABLE `#__payment_records` CHANGE `refund_id` `refund_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against' AFTER `invoice_id`;
+ALTER TABLE `#__payment_records` CHANGE `voucher_id` `voucher_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Voucher used';
+ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Credit Note used';
+ALTER TABLE `#__company_record` ADD `creditnote_expiry_offset` INT(5) UNSIGNED NOT NULL AFTER `year_end`;
+UPDATE `#__company_record` SET `creditnote_expiry_offset` = '366' WHERE `#__company_record`.`creditnote_expiry_offset` = 0; 
+ALTER TABLE `#__expense_records` ADD `supplier_id` INT(10) UNSIGNED NULL AFTER `employee_id`;
+ALTER TABLE `#__payment_options` ADD `creditnote_footer_msg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `invoice_footer_msg`;
+UPDATE `#__payment_options` SET `creditnote_footer_msg` = '<p>This is a footer message where you can put extra information ...</p>\r\n<p>This message can be edited in payment options.</p>';
+
+
+--------------------------------------------------

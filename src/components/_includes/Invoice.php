@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
     #     insert invoice                #
     #####################################
 
-    public function insertRecord($client_id, $workorder_id, $unit_discount_rate) {
+    public function insertRecord($client_id, $workorder_id = null) {
 
         // Unify Dates and Times
         $timestamp = time();
@@ -41,8 +41,7 @@ defined('_QWEXEC') or die;
                 client_id       =". $this->app->db->qStr( $client_id                           ).",
                 workorder_id    =". $this->app->db->qStr( $workorder_id ?: null                   ).",
                 date            =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",
-                due_date        =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",            
-                unit_discount_rate   =". $this->app->db->qStr( $unit_discount_rate             ).",
+                due_date        =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",                
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                          ).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",            
                 status          =". $this->app->db->qStr( 'pending'                            ).",
@@ -236,8 +235,7 @@ defined('_QWEXEC') or die;
         if($client_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qStr($client_id);}
 
         // The SQL code
-        $sql = "SELECT        
-            ".PRFX."invoice_records.*,
+        $sql = "SELECT ".PRFX."invoice_records.*,
 
             IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,
             ".PRFX."client_records.first_name AS client_first_name,
@@ -359,6 +357,11 @@ defined('_QWEXEC') or die;
     #####################################
 
     public function getRecord($invoice_id, $item = null) {
+        
+        // This allows for blank calls
+        if(!$invoice_id){
+            return;        
+        }
 
         $sql = "SELECT * FROM ".PRFX."invoice_records WHERE invoice_id =".$this->app->db->qStr($invoice_id);
 
@@ -387,10 +390,12 @@ defined('_QWEXEC') or die;
     
     
     #########################################
-    #   Get All invoice items               #
-    #########################################
+    #   Get All invoice items               # // withVouchers adds the invoice vouchers in as items, useful for credit notes and print/email TPL
+    #########################################  
 
-    public function getItems($invoice_id) {
+    public function getItems($invoice_id, $withVouchers = false) {
+        
+        $invoice_items = array();
 
         $sql = "SELECT * FROM ".PRFX."invoice_items WHERE invoice_id=".$this->app->db->qStr($invoice_id);
 
@@ -398,9 +403,46 @@ defined('_QWEXEC') or die;
 
         if(!empty($rs)) {
 
-            return $rs->GetArray();
+            $invoice_items = $rs->GetArray();
 
         }
+        
+        // Converts invoice voucher records into items and merges them into the invoice items- This is a bit of a workaround, this 
+        if($withVouchers)
+        {
+            $voucher_records = $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, $invoice_id);
+
+            $voucher_items = array();
+            
+            (int) $index = count($invoice_items);
+
+            foreach($voucher_records['records'] as $key => $value)
+            {
+                $voucher_items[$index]['invoice_item_id'] = $value['voucher_id'];  // this number is not actually used in the TPL
+                $voucher_items[$index]['invoice_id'] = $value['invoice_id'];
+                $voucher_items[$index]['tax_system'] = $value['tax_system'];
+                $voucher_items[$index]['description'] = _gettext("Voucher").': '.$value['voucher_code'];
+                $voucher_items[$index]['unit_qty'] = 1;
+                $voucher_items[$index]['unit_net'] = $value['unit_net'];
+                $voucher_items[$index]['unit_discount'] = 0.00;
+                $voucher_items[$index]['sales_tax_exempt'] = $value['sales_tax_exempt'];
+                $voucher_items[$index]['vat_tax_code'] = $value['vat_tax_code'];
+                $voucher_items[$index]['unit_tax_rate'] = $value['unit_tax_rate'];
+                $voucher_items[$index]['unit_tax'] = $value['unit_tax'];
+                $voucher_items[$index]['unit_gross'] = $value['unit_gross'];
+                $voucher_items[$index]['subtotal_net'] = $value['unit_net'];
+                $voucher_items[$index]['subtotal_tax'] = $value['unit_tax'];
+                $voucher_items[$index]['subtotal_gross'] = $value['unit_gross'];
+
+                ++$index;
+            }
+
+            // Merge Item arrays
+            $invoice_items = $invoice_items + $voucher_items;
+            
+        }
+        
+        return $invoice_items;
 
     }
 
@@ -434,7 +476,7 @@ defined('_QWEXEC') or die;
 
         // I could use $this->app->components->report->sumInvoiceItems() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
-        // $invoice_items_subtotals = $this->app->components->report->getInvoicesStats('items', null, null, null, null, null, $invoice_id);        
+        // $invoice_items_subtotals = $this->app->components->report->getInvoicesStats('items', null, null, null, null, null);        
         
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
@@ -518,8 +560,7 @@ defined('_QWEXEC') or die;
 
         $sql = "UPDATE ".PRFX."invoice_records SET
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])     ).",
-                due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['due_date']) ).",
-                unit_discount_rate  =". $this->app->db->qStr( $qform['unit_discount_rate']  ).",               
+                due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['due_date']) ).",                              
                 unit_discount       =". $this->app->db->qStr( $qform['unit_discount']   ).",                    
                 unit_net            =". $this->app->db->qStr( $qform['unit_net']            ).",
                 unit_tax            =". $this->app->db->qStr( $qform['unit_tax']            ).",
@@ -558,8 +599,7 @@ defined('_QWEXEC') or die;
                 workorder_id        =". $this->app->db->qStr( $qform['workorder_id']    ).",               
                 date                =". $this->app->db->qStr( $qform['date']            ).",
                 due_date            =". $this->app->db->qStr( $qform['due_date']        ).", 
-                tax_system          =". $this->app->db->qStr( $qform['tax_system']      ).", 
-                unit_discount_rate  =". $this->app->db->qStr( $qform['unit_discount_rate']   ).",                            
+                tax_system          =". $this->app->db->qStr( $qform['tax_system']      ).",                                          
                 unit_discount       =". $this->app->db->qStr( $qform['unit_discount'] ).",   
                 unit_net            =". $this->app->db->qStr( $qform['unit_net']      ).",
                 sales_tax_rate      =". $this->app->db->qStr( $qform['sales_tax_rate']  ).",
@@ -600,12 +640,11 @@ defined('_QWEXEC') or die;
     #   update invoice static values   #  // This is used when a user updates an invoice before any payments
     ####################################
 
-    public function updateStaticValues($invoice_id, $date, $due_date, $unit_discount_rate) {
+    public function updateStaticValues($invoice_id, $date, $due_date) {
 
         $sql = "UPDATE ".PRFX."invoice_records SET
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($date)     ).",
-                due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($due_date) ).",
-                unit_discount_rate  =". $this->app->db->qStr( $unit_discount_rate           )."               
+                due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($due_date) )."                             
                 WHERE invoice_id    =". $this->app->db->qStr( $invoice_id                   );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -873,8 +912,7 @@ defined('_QWEXEC') or die;
                 workorder_id        = NULL,               
                 date                = NULL,    
                 due_date            = NULL, 
-                tax_system          = '',  
-                unit_discount_rate  = 0.00,                         
+                tax_system          = '',                                       
                 unit_discount       = 0.00, 
                 unit_net            = 0.00, 
                 sales_tax_rate      = 0.00, 
@@ -942,7 +980,7 @@ defined('_QWEXEC') or die;
     #  Check if the invoice status is allowed to be changed  #
     ##########################################################
 
-     public function checkRecordAllowsStatusChange($invoice_id) {
+     public function checkRecordAllowsManualStatusChange($invoice_id) {
 
         $state_flag = true; 
 
@@ -992,7 +1030,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) {       
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
             return false;        
         }*/
@@ -1055,7 +1093,7 @@ defined('_QWEXEC') or die;
         }    
 
         /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(!$this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
+        if(!$this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be refunded because the invoice has no payments."));
             return false;        
         }*/
@@ -1131,7 +1169,7 @@ defined('_QWEXEC') or die;
         }    
 
         /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice has payments."));
             return false;        
         }*/
@@ -1212,7 +1250,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) { 
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."));
             $state_flag = false;       
         }*/
@@ -1295,7 +1333,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments(null, null, 'date', null, null, 'invoice', null, null, null, $invoice_id)) {       
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) {       
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
             $state_flag = false;       
         }*/
@@ -1369,7 +1407,7 @@ defined('_QWEXEC') or die;
         
         $items_subtotals        = $this->getItemsSubtotals($invoice_id);             
         $voucher_subtotals      = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);        
-        $payments_subtotal      = $this->app->components->report->sumPayments(null, null, 'date', null, 'valid', 'invoice', null, null, null, $invoice_id);
+        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'invoice', null, null, null, $invoice_id);
         
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net'];        
@@ -1574,7 +1612,7 @@ defined('_QWEXEC') or die;
 
 
     #########################################
-    # Assign Workorder to another employee  #
+    # Assign Invoice to another employee  #
     #########################################
 
     public function assignToEmployee($invoice_id, $target_employee_id) {

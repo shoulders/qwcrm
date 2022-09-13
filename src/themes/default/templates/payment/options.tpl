@@ -97,6 +97,7 @@
                                                 <td><b>{t}PayPal{/t} {t}Email{/t}</b></td>
                                                 <td><input name="qform[paypal_email]" class="olotd5" value="{$payment_options.paypal_email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
                                             </tr>
+                                            
                                             <!-- Invoice Messages -->
                                             <tr>
                                                 <td colspan="2"><font color="red"><b>{t}Invoice Messages{/t}</b></font></td>
@@ -110,8 +111,14 @@
                                                 <td><textarea class="olotd5" name="qform[invoice_cheque_msg]" cols="50" rows="2" >{$payment_options.invoice_cheque_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Footer{/t}</b></td>
+                                                <td><b>{t}Invoice{/t} {t}Footer{/t}</b></td>
                                                 <td><textarea class="olotd5" name="qform[invoice_footer_msg]" cols="50" rows="2" >{$payment_options.invoice_footer_msg}</textarea><br></td>
+                                            </tr>
+                                            
+                                            <!-- Credit Note Messages -->
+                                            <tr>
+                                                <td><b>{t}Credit Note{/t} {t}Footer{/t}</b></td>
+                                                <td><textarea class="olotd5" name="qform[creditnote_footer_msg]" cols="50" rows="2" >{$payment_options.creditnote_footer_msg}</textarea><br></td>
                                             </tr>
 
                                         </table>                                            

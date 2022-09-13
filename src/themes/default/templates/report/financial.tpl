@@ -717,8 +717,7 @@
                                                                             <tr>
                                                                                 <td>&nbsp;</td>
                                                                                 <td>{$currency_sym}{$tax_totals.total_in|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$tax_totals.total_out|string_format:"%.2f"}</td>
-                                                                            </tr>
-                                                                            
+                                                                            </tr>                                                                            
                                                                             <tr>
                                                                                 <td><b>{t}Balance{/t}:</b></td>
                                                                                 <td><font color="red"><b>{$currency_sym}{$tax_totals.balance|string_format:"%.2f"}</b></font>&nbsp;&nbsp;&nbsp;({$tax_totals.message})</td>

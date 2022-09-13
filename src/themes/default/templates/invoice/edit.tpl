@@ -244,25 +244,37 @@
     }
 
     // Refresh all dynamic items onscreen
-    function refreshPage() {
+    function refreshPage(applyDiscountRate = false) {
                     
         // Disable all buttons on page refresh unless on initial page build, if there is a change
         if(pageBuilding === false) {            
             $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
         }
         
-        // Only allow Refresh Invoice Totals after the page has completely loaded
+        // Only allow 'Refresh Invoice Totals' after the page has completely loaded
         if(pageBuilding === false) {            
-            refreshTotals();
+            refreshTotals(applyDiscountRate);
         }
      
     }
+    
+    // Apply a discount rate to all items via the 'Apply Discount' button
+    function applyDiscountRate() {
+    
+        let clientDiscountRate = +$("#client_discount_rate").val();
+        
+        if (clientDiscountRate < 0 || clientDiscountRate > 99.99) {
+            alert("{t}The discount rate must be within the range of 0 and 99.99{/t}");
+        } else {
+            refreshPage(true);
+        }
+    }
 
     // Recalculate and then refresh all onscreen invoice totals
-    function refreshTotals() {
+    function refreshTotals(applyDiscountRate = false) {
         
-        // Get the discount rate
-        var invoiceDiscountRate = +$("#qform\\[unit_discount_rate\\]").val();   
+        // Get the client discount rate
+        var clientDiscountRate = +$("#client_discount_rate").val();        
         
         /* Invoice Item Rows */
         
@@ -277,23 +289,23 @@
             
             // Unit Values (not used onscreen)
             rowUnitQty                  = +$(this).find("input[id$='\\[unit_qty\\]']").val();
-            rowUnitNet                  = +$(this).find("input[id$='\\[unit_net\\]']").val();
-            rowUnitDiscount             = rowUnitNet * (invoiceDiscountRate / 100);
+            rowUnitNet                  = +$(this).find("input[id$='\\[unit_net\\]']").val();            
+            rowUnitDiscount             = applyDiscountRate ? rowUnitNet * (clientDiscountRate / 100) : +$(this).find("input[id$='\\[unit_discount\\]']").val();
             rowUnitTaxRate              = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
-                                    
+                 
             // Row Totals
             rowSubTotalNet              = (rowUnitNet - rowUnitDiscount) * rowUnitQty;
             rowSubTotalTax              = rowSubTotalNet * (rowUnitTaxRate / 100);
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
             
             // Update Row Totals onscreen
-            $(this).find("input[id$='\\[unit_discount\\]']").val(parseFloat(rowUnitDiscount).toFixed(2));            
+            if(applyDiscountRate) { $(this).find("input[id$='\\[unit_discount\\]']").val(parseFloat(rowUnitDiscount).toFixed(2)); }            
             $(this).find("input[id$='\\[subtotal_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));
             
             // Update Invoice Items SubTotals            
-            invoiceItemsSubTotalDiscount     = rowUnitDiscount * rowUnitQty;
+            invoiceItemsSubTotalDiscount     += rowUnitDiscount * rowUnitQty;
             invoiceItemsSubTotalNet          += rowSubTotalNet;
             invoiceItemsSubTotalTax          += rowSubTotalTax;
             invoiceItemsSubTotalGross        += rowSubTotalGross;            
@@ -325,8 +337,7 @@
         
         // Update values onscreen + Convert Value to 0.00 format                
         $("#invoiceTotalDiscountText").text(parseFloat(invoiceTotalDiscount).toFixed(2));
-        $("#invoiceTotalDiscount").val(parseFloat(invoiceTotalDiscount).toFixed(2));        
-        $("#invoiceTotalDiscountRate").text(parseFloat(invoiceDiscountRate).toFixed(2));        
+        $("#invoiceTotalDiscount").val(parseFloat(invoiceTotalDiscount).toFixed(2));              
         $("#invoiceTotalNetText").text(parseFloat(invoiceTotalNet).toFixed(2));
         $("#invoiceTotalNet").val(parseFloat(invoiceTotalNet).toFixed(2));
         $("#invoiceTotalTaxText").text(parseFloat(invoiceTotalTax).toFixed(2));
@@ -343,7 +354,7 @@
     <tr>
         <td>
             <form action="index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}" method="post" name="new_invoice" id="new_invoice">
-                <table width="700" cellpadding="4" cellspacing="0" border="0" >
+                <table width="1024" cellpadding="4" cellspacing="0" border="0" >
 
                     <!-- Title -->
                     <tr>
@@ -480,14 +491,15 @@
 
                                                 <!-- Terms and Discount -->
                                                 <td colspan="7" valign="top" align="left">                                                        
-                                                    <b>{t}TERMS{/t}:</b> {$client_details.credit_terms}<br>
-                                                    <b>{t}Client Discount Rate{/t}:</b>
+                                                    <p><b>{t}Credit Terms{/t}: </b>{if $client_details.credit_terms}{$client_details.credit_terms}{else}{t}n/a{/t}{/if}</p>
+                                                    <b>{t}Discount{/t}:</b><br>
                                                     {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
-                                                        <input type="number" class="olotd4" size="6" id="qform[unit_discount_rate]" name="qform[unit_discount_rate]" max="99.99" value="{$invoice_details.unit_discount_rate|string_format:"%.2f"}" onchange="refreshPage();"> %<br>
-                                                        <b>** {t}Change this if you want to temporarily override the discount rate for this invoice ONLY{/t} **</b>
-                                                    {else}                                                        
-                                                        {$invoice_details.unit_discount_rate|string_format:"%.2f"} % 
-                                                    {/if}                                           
+                                                        <input type="number" class="olotd4" size="6" id="client_discount_rate" value="{$client_details.discount_rate|string_format:"%.2f"}"> %<br>
+                                                        <button type="button" onclick="applyDiscountRate();">{t}Apply Discount{/t}</button>
+                                                        <br>
+                                                        ** {t}The default value shown is the client's standard discount rate, but can be changed for this invoice.{/t} **<br>
+                                                        ** {t}This will alter all items.{/t} **
+                                                    {/if}                                                                                              
                                                 </td>
 
                                             </tr>
@@ -506,7 +518,7 @@
                                                 <td class="menutd2">
 
                                                     <!-- Print Buttons -->  
-                                                    {if $invoice_details.unit_gross > 0 }                                                             
+                                                    {if $invoice_details.unit_gross > 0}                                                             
                                                         <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=htmlBrowser');">{t}Print HTML{/t}</button>
                                                         <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=pdfBrowser');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                         <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=pdfDownload');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Download PDF{/t}</button>
@@ -525,6 +537,11 @@
                                                     {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}                                                            
                                                         <button type="button" class="userButton" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                     {/if}
+                                                    
+                                                    <!-- Credit Note Button -->
+                                                    {*if $invoice_details.balance > 0}                                                        
+                                                        <button type="button" class="userButton" onclick="window.open('index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}', '_self');">{t}Add a Sales Credit Note{/t}</button>
+                                                    {/if*}
 
                                                 </td>
                                             </tr>
@@ -554,14 +571,14 @@
                                                         <tr class="olotd4">
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>
-                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $invoice_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if}</b></td>
-                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t}</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t}</b></td>                                                            
+                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $invoice_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_sym})</b></td>
+                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_sym})</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_sym})</b></td>                                                            
                                                             <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t} (%)</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} ({$currency_sym})</b></td>
                                                             <td class="salesTaxSystem row2"  align="right" hidden><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>
-                                                            <td class="row2" align="right"><b>{t}Gross{/t}</b></td>
+                                                            <td class="row2" align="right"><b>{t}Gross{/t} ({$currency_sym})</b></td>
                                                             <td class="row2" align="right"><b>{t}Actions{/t}</b></td>                                                                
                                                         </tr>
 
@@ -576,7 +593,7 @@
                                                             </td>
                                                             <td align="left"><input id="qform[invoice_items][iteration][unit_qty]" name="qform[invoice_items][iteration][unit_qty]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="left"><input id="qform[invoice_items][iteration][unit_net]" name="qform[invoice_items][iteration][unit_net]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
-                                                            <td align="left"><input id="qform[invoice_items][iteration][unit_discount]" name="qform[invoice_items][iteration][unit_discount]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td align="left"><input id="qform[invoice_items][iteration][unit_discount]" name="qform[invoice_items][iteration][unit_discount]" style="width: 50px;" size="6" value="0.00" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[invoice_items][iteration][subtotal_net]" name="qform[invoice_items][iteration][subtotal_net]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="right" hidden>
                                                                 <select id="qform[invoice_items][iteration][vat_tax_code]" name="qform[invoice_items][iteration][vat_tax_code]" value="TNA" style="width: 100%; font-size: 10px;" required disabled>                                                                            
@@ -587,7 +604,7 @@
                                                                 </select>
                                                             </td>                                                                               
                                                             <td class="vatTaxSystem salesTaxSystem" align="right" hidden>
-                                                                <input id="qform[invoice_items][iteration][unit_tax_rate]" name="qform[invoice_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="{if $invoice_details.tax_system == 'sales_tax_cash'}{$invoice_details.sales_tax_rate|string_format:"%.2f"}{else}0.00{/if}" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);">%</td>
+                                                                <input id="qform[invoice_items][iteration][unit_tax_rate]" name="qform[invoice_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="{if $invoice_details.tax_system == 'sales_tax_cash'}{$invoice_details.sales_tax_rate|string_format:"%.2f"}{else}0.00{/if}" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem salesTaxSystem" align="right" hidden><input id="qform[invoice_items][iteration][subtotal_tax]" name="qform[invoice_items][iteration][subtotal_tax]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>                                                                                                                                      
                                                             <td class="salesTaxSystem" align="right" hidden><input id="qform[invoice_items][iteration][sales_tax_exempt]" name="qform[invoice_items][iteration][sales_tax_exempt]" type="checkbox" disabled></td>
                                                             <td align="right">
@@ -665,7 +682,7 @@
                                                             <td class="menutd2">
                                                                 <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                                                                     <tr>
-                                                                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ <span id="invoiceTotalDiscountRate">0.00</span>%)</b></td>
+                                                                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
                                                                             {$currency_sym}<span id="invoiceTotalDiscountText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="invoiceTotalDiscount" name="qform[unit_discount]" value="0.00" readonly hidden>
@@ -711,7 +728,7 @@
                                                     {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
                                                         <input type="hidden" name="qform[invoice_id]" value="{$invoice_details.invoice_id}">
                                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=search';">{t}Cancel{/t}</button>
+                                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_details.invoice_id}';">{t}Cancel{/t}</button>
                                                     {/if}
                                                 </td>
                                                 <td align="right" width="75%"></td>
