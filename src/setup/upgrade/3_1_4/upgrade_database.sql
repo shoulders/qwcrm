@@ -799,10 +799,9 @@ INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
 (5, 'vat_flat_basic', 'VAT Flat Rate (Basic turnover) (UK)'),
 (6, 'vat_flat_cash', 'VAT Flat Rate (Cash based turnover) (UK)');
 
---
+--------------------------------------------------
 -- Adding Credit Note System
---
-
+--------------------------------------------------
 
 --
 -- Table structure for table `#__creditnote_items`
@@ -903,14 +902,28 @@ INSERT INTO `#__creditnote_types` (`id`, `type_key`, `display_name`) VALUES
 ALTER TABLE `#__creditnote_types` ADD PRIMARY KEY (`id`);
 
 --
+-- Table structure for table `#__payment_creditnote_action_types`
+--
 
-INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES 
-('9', 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');
+CREATE TABLE `#__payment_creditnote_action_types` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `#__invoice_records` DROP `unit_discount_rate`;
+INSERT INTO `#__payment_creditnote_action_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'sales_apply', 'Sales Apply'),
+(2, 'sales_refund', 'Sales Refund'),
+(3, 'purchase_apply', 'Purchase Apply'),
+(4, 'purchase_refund', 'Purchase Refund');
+
+ALTER TABLE `#__payment_creditnote_action_types` ADD PRIMARY KEY (`id`);
 
 --
 
+INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES 
+('9', 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');
+ALTER TABLE `#__invoice_records` DROP `unit_discount_rate`;
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
 ('creditnote:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('creditnote:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -948,27 +961,12 @@ UPDATE `#__payment_options` SET `creditnote_footer_msg` = '<p>This is a footer m
 ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against / Refunded against' AFTER `otherincome_id`; 
 ALTER TABLE `#__payment_records` ADD `creditnote_action` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `creditnote_id`;
 
+--
+
+UPDATE `#__company_vat_tax_codes` SET `hidden` = '0' WHERE `#__company_vat_tax_codes`.`id` = 10; 
 
 --------------------------------------------------
 
---
--- Table structure for table `#__payment_creditnote_action_types`
---
-
-CREATE TABLE `#__payment_creditnote_action_types` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `#__payment_creditnote_action_types` (`id`, `type_key`, `display_name`) VALUES
-(1, 'sales_apply', 'Sales Apply'),
-(2, 'sales_refund', 'Sales Refund'),
-(3, 'purchase_apply', 'Purchase Apply'),
-(4, 'purchase_refund', 'Purchase Refund');
-
-ALTER TABLE `#__payment_creditnote_action_types` ADD PRIMARY KEY (`id`);
-
-
---
-UPDATE `#__company_vat_tax_codes` SET `hidden` = '0' WHERE `qw_company_vat_tax_codes`.`id` = 10; 
+---
+--- Add direction on to payments
+---
