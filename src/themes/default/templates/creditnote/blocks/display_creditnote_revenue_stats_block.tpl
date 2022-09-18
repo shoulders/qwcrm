@@ -9,7 +9,7 @@
 <br>
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr class="olotd4">
-        <td class="row2"><b>{t}Invoiced Total{/t} ({t}Excl.{/t} {t}Cancelled{/t})</b></td>
+        <td class="row2"><b>{t}Credit Note Total{/t} ({t}Excl.{/t} {t}Cancelled{/t})</b></td>
         <td class="row2"><b>{t}Cancelled{/t}</b></td>
         <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>
     </tr>

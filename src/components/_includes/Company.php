@@ -112,7 +112,7 @@ class Company extends Components {
 
         $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
 
-        // Restrict by enabled status - only return enabled records
+        // Only return enabled records
         $sql .= "\nWHERE enabled = 1";
 
         // Restrict by hidden_status - hidden codes canot be selected by users, these are only needed for displaying data
@@ -125,7 +125,7 @@ class Company extends Components {
             $sql .= "\nAND editable = ".$this->app->db->qStr($editable_status);
         }
 
-        // Restrict by system_tax_code - these are system Tax codes and are not accessible by a user, these are only needed for displaying data
+        // Restrict by system_tax_code - these are system Tax codes and are not accessible by a user, these are only needed for displaying data (only needed for TNA and TVM))
         if(!is_null($system_tax_code)) {
             $sql .= "\nAND standard = ".$this->app->db->qStr($system_tax_code);
         }
@@ -135,7 +135,6 @@ class Company extends Components {
         return $rs->GetArray();           
 
     }
-    
     
     #####################################
     #   Get VAT rate for given tax_key  #

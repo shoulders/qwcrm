@@ -547,7 +547,7 @@ class Voucher extends Components {
     #   Update Voucher Balance              # // when a voucher is redeemed against an invoice, or that payment is cancel or deleted, the balance needs updating and the status needs recalcualting
     ######################################### // only change status if required                                         
 
-    public function updateBalance($voucher_id, $amount, $action, $previous_amount = null) {
+    public function recalculateTotals($voucher_id, $amount, $action, $previous_amount = null) {
         
         /* Update the balance */
         

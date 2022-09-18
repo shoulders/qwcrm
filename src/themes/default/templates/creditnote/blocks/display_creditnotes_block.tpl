@@ -64,7 +64,7 @@
                     {if $display_creditnotes.records[i].type == $creditnote_types[s].type_key}{t}{$creditnote_types[s].display_name}{/t}{/if}                    
                 {/section}                
             </td> 
-            <td class="olotd4" nowrap>                
+            <td class="olotd4" nowrap>   
                 {section name=s loop=$creditnote_statuses}                    
                     {if $display_creditnotes.records[i].status == $creditnote_statuses[s].status_key}{t}{$creditnote_statuses[s].display_name}{/t}{/if}                    
                 {/section}                
@@ -76,8 +76,8 @@
             <td class="olotd4" nowrap>{$currency_sym}{$display_creditnotes.records[i].unit_gross|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>{$currency_sym}{$display_creditnotes.records[i].balance|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>
-                {if $display_creditnotes.records[i].additional_info|redemptions}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_creditnotes.records[i].additional_info|redemptions|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {if $display_creditnotes.records[i].redemptions|redemptions}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Redemptions{/t}</strong></div><hr><div>{$display_creditnotes.records[i].redemptions|redemptions|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
              </td>
              <td class="olotd4" nowrap>

@@ -33,7 +33,7 @@ function smarty_modifier_vouchers($string)
     $app = \Factory::getApplication();
     
     // Convert into a standard PHP array or return null
-    if(!$vouchers = json_decode($string)) { return; }
+    if(!$vouchers = json_decode($string)) { return false; }
     
     // Set currency symbol
     $currency_symbol = $app->components->company->getRecord('currency_symbol');

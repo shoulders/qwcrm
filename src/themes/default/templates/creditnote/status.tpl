@@ -85,7 +85,7 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if creditnote is open and does not have any payments -->                                        
                                     {if $allowed_to_cancel}
-                                        <form method="post" action="index.php?component=creditnote&page_tpl=cancel&creditnote_id={$creditnote_id};">
+                                        <form method="post" action="index.php?component=creditnote&page_tpl=cancel&creditnote_id={$creditnote_id}">
                                             <textarea id="qform[reason_for_cancelling]" name="qform[reason_for_cancelling]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Cancelling{/t}"/></textarea>
                                             <p>&nbsp;</p>
                                             <input class="olotd4" name="cancel_creditnote" value="{t}Cancel{/t}" type="submit" onclick="confirm('{t}Are you sure you want to cancel this creditnote? All records relating to this creditnote will be kept but will be removed from the relevant financial calculations.{/t}');">

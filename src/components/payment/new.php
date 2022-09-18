@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Make sure a payment type is set
-if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'invoice' || \CMSApplication::$VAR['type'] == 'refund' || \CMSApplication::$VAR['type'] == 'expense' || \CMSApplication::$VAR['type'] == 'otherincome')) {
+if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'invoice' || \CMSApplication::$VAR['type'] == 'refund' || \CMSApplication::$VAR['type'] == 'expense' || \CMSApplication::$VAR['type'] == 'otherincome' || \CMSApplication::$VAR['type'] == 'creditnote')) {
     $this->app->system->variables->systemMessagesWrite('success', _gettext("No Payment Type supplied."));
     $this->app->system->page->forcePage('payment', 'search');  
 }
@@ -20,7 +20,7 @@ if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'i
 if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') || $this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details')) {  
     
     // Check we have a valid request
-    if(\CMSApplication::$VAR['type'] == 'invoice' && (!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id'])) {
+    if(\CMSApplication::$VAR['type'] == 'invoice' && !(\CMSApplication::$VAR['invoice_id'] ?? false)) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
         $this->app->system->page->forcePage('invoice', 'search');    
     }    
@@ -29,7 +29,7 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
 } elseif($this->app->system->security->checkPageAccessedViaQwcrm('refund', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('refund', 'details')) {   
     
     // Check we have a valid request
-    if(\CMSApplication::$VAR['type'] == 'refund' && (!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id'])) {
+    if(\CMSApplication::$VAR['type'] == 'refund' && !(\CMSApplication::$VAR['refund_id'] ?? null)) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
         $this->app->system->page->forcePage('refund', 'search');    
     }    
@@ -38,7 +38,7 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
 } elseif($this->app->system->security->checkPageAccessedViaQwcrm('expense', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details')) {
     
     // Check we have a valid request
-    if(\CMSApplication::$VAR['type'] == 'expense' && (!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id'])) {
+    if(\CMSApplication::$VAR['type'] == 'expense' && !(\CMSApplication::$VAR['expense_id'] ?? false)) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
         $this->app->system->page->forcePage('expense', 'search');    
     }
@@ -47,11 +47,21 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
 } elseif($this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'details')) {
     
     // Check we have a valid request
-    if(\CMSApplication::$VAR['type'] == 'otherincome' && (!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id'])) {
+    if(\CMSApplication::$VAR['type'] == 'otherincome' && !(\CMSApplication::$VAR['otherincome_id'] ?? false)) {
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
         $this->app->system->page->forcePage('otherincome', 'search');    
     }
      
+// Credit Note
+} elseif($this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'details')) {
+    
+    // Check we have a valid request
+    if(\CMSApplication::$VAR['type'] == 'creditnote' && !(\CMSApplication::$VAR['creditnote_id'] ?? false)) {
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Credit Note ID supplied."));
+        $this->app->system->page->forcePage('creditnote', 'search');    
+    }
+
+// Allow for page reload
 } elseif(!$this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
@@ -63,8 +73,8 @@ $this->app->components->payment->buildPaymentEnvironment('new');
 // If the form is submitted
 if(isset(\CMSApplication::$VAR['submit']))
 {
-    // Wrap the submitted note - note is not wrapped in <p> by tinymce
-    if(\CMSApplication::$VAR['qpayment']['note']) {\CMSApplication::$VAR['qpayment']['note'] = '<p>'.\CMSApplication::$VAR['qpayment']['note'].'</p>';}
+    // Wrap the submitted note - note is not wrapped in <p> by tinymce - this is popintless
+    //if(\CMSApplication::$VAR['qpayment']['note']) {\CMSApplication::$VAR['qpayment']['note'] = '<p>'.\CMSApplication::$VAR['qpayment']['note'].'</p>';}
 
     // Process the payment
     $this->app->components->payment->processPayment();
@@ -85,14 +95,18 @@ elseif (!\CMSApplication::$VAR['qpayment']['name_on_card'] && (\CMSApplication::
 }
       
 // Build the page
-$this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'])  );
+$this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'], \CMSApplication::$VAR['qpayment']['creditnote_id']));                  
 $this->app->smarty->assign('payment_method',                    \CMSApplication::$VAR['qpayment']['method']                                                      );
 $this->app->smarty->assign('payment_type',                      \CMSApplication::$VAR['qpayment']['type']                                                        );
 $this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes()                                                             );
 $this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods()                                                           );
 $this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses()                                                          );
+$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTpes());
 $this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes()                                                 );
 $this->app->smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
 $this->app->smarty->assign('voucher_code',                      \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null);
+$this->app->smarty->assign('creditnote_id',                     \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null); // This is needed becasue of the dualality of the Credit Note system, only works for form reloads
+$this->app->smarty->assign('note',                              \CMSApplication::$VAR['qpayment']['note'] ?? null                                                    );
+$this->app->smarty->assign('amount',                            \CMSApplication::$VAR['qpayment']['amount'] ?? Payment::$record_balance);
 $this->app->smarty->assign('record_balance',                    Payment::$record_balance                                                     );
 $this->app->smarty->assign('buttons',                           Payment::$buttons                                                            );

@@ -8,33 +8,54 @@
 
 defined('_QWEXEC') or die;
 
-class PaymentTypeInvoice extends PaymentType
+class PaymentTypeCreditnote extends PaymentType
 {    
-    public $invoice_details = array();
+    public $creditnote_details = array();
     
     public function __construct()
     {    
         parent::__construct();       
         
         // Set class variables
-        Payment::$payment_details['type'] = 'invoice';        
-        $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']); // only needed for smarty?
+        Payment::$payment_details['type'] = 'creditnote';        
+        $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']); // only needed for smarty?
+        
+        // Set Creditnote action
+        if($this->creditnote_details['type'] == 'sales')
+        {           
+            // Client refund
+            $this->VAR['qpayment']['creditnote_action'] = 'sales_refund';
+        }
+        else
+        {
+            // Refund from Supplier
+            $this->VAR['qpayment']['creditnote_action'] = 'purchase_refund';
+        }
         
         // Disable Unwanted Payment Methods
-        //Payment::$disabledMethods[] = '';
-        
+        Payment::$disabledMethods[] = 'credit_note';
+        Payment::$disabledMethods[] = 'voucher';                
+                
         // For logging and insertRecord()
-        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];        
-        Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = $this->invoice_details['invoice_id'];
+        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->creditnote_details['client_id'];        
+        Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = null;
         
         // Set initial record balance
-        Payment::$record_balance = (float) $this->invoice_details['balance'];
+        Payment::$record_balance = (float) $this->creditnote_details['balance'];
                        
         // Assign Payment Type specific template variables
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));
-        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->invoice_details['client_id']));        
-        $this->app->smarty->assign('invoice_details', $this->invoice_details);
-        $this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->getStatuses());        
+        if($this->creditnote_details['type'] == 'sales')
+        {
+            $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, Payment::$disabledMethods));
+            $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->creditnote_details['client_id']));
+        }
+        else
+        {
+            $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));
+            $this->app->smarty->assign('supplier_details', $this->app->components->supplier->getRecord($this->creditnote_details['supplier_id'])); 
+        }
+        $this->app->smarty->assign('creditnote_details', $this->creditnote_details);
+        $this->app->smarty->assign('creditnote_statuses', $this->app->components->creditnote->getStatuses());        
     }
         
     // Pre-Processing - Prep/validate the data
@@ -75,13 +96,13 @@ class PaymentTypeInvoice extends PaymentType
         parent::process();
         
         // Recalculate record totals
-        $this->app->components->invoice->recalculateTotals($this->VAR['qpayment']['invoice_id']);
+        $this->app->components->creditnote->recalculateTotals($this->VAR['qpayment']['creditnote_id']);
         
         // Refresh the record data        
-        $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']);
-        Payment::$record_balance = (float) $this->invoice_details['balance'];
+        $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']);
+        Payment::$record_balance = (float) $this->creditnote_details['balance'];
         
-        $this->app->smarty->assign('invoice_details', $this->invoice_details); 
+        $this->app->smarty->assign('creditnote_details', $this->creditnote_details); 
         
         // New
         if(Payment::$action === 'new')
@@ -116,7 +137,7 @@ class PaymentTypeInvoice extends PaymentType
         parent::postProcess();
         
         // Refresh the record data        
-        $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']); 
+        $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']); 
         
         // Different actions depending on success
         if(Payment::$payment_successful)
@@ -125,35 +146,35 @@ class PaymentTypeInvoice extends PaymentType
             if(Payment::$record_balance == 0)
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("The balance has been cleared."));
-                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+                $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             }
             
             // New
             if(Payment::$action === 'new')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment added successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment added successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
                 // No forcepage, this will reload the new payment page
             }
             
             // Edit
             if(Payment::$action === 'edit')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
             
             // Cancel
             if(Payment::$action === 'cancel')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
-                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);                
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);                
             }
             
             // Delete
             if(Payment::$action === 'delete')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
-                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             }  
               
         }
@@ -177,13 +198,13 @@ class PaymentTypeInvoice extends PaymentType
             // Cancel
             if(Payment::$action === 'cancel')            {
                 
-                $this->app->system->page->forcePage('invoice', 'status&invoice_id='.$this->VAR['qpayment']['invoice_id']);                
+                $this->app->system->page->forcePage('creditnote', 'status&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);                
             }
             
             // Delete
             if(Payment::$action === 'delete')
             {
-                $this->app->system->page->forcePage('invoice', 'status&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+                $this->app->system->page->forcePage('creditnote', 'status&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             } 
         }        
         
@@ -196,9 +217,9 @@ class PaymentTypeInvoice extends PaymentType
         $state_flag = parent::checkPaymentAllowed();
                         
         // Is on a different tax system
-        if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));            
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+        if($this->creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot receive a payment because it is on a different tax system."));            
+            $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             $state_flag = false;            
         }
 
@@ -211,23 +232,23 @@ class PaymentTypeInvoice extends PaymentType
         parent::buildButtons();
         
         // Submit
-        if($this->invoice_details['balance'] > 0) {
+        if($this->creditnote_details['balance'] > 0) {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
             Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }        
         
         // Cancel
-        if(!$this->invoice_details['balance'] == 0)
+        if(!$this->creditnote_details['balance'] == 0)
         {            
-            if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit')) {
+            if($this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'edit')) {
                 Payment::$buttons['cancel']['allowed'] = true;
-                Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+                Payment::$buttons['cancel']['url'] = 'index.php?component=creditnote&page_tpl=edit&creditnote_id='.$this->VAR['qpayment']['creditnote_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
-            if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details')) {
+            if($this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'details')) {
                 Payment::$buttons['cancel']['allowed'] = true;
-                Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+                Payment::$buttons['cancel']['url'] = 'index.php?component=creditnote&page_tpl=details&creditnote_id='.$this->VAR['qpayment']['creditnote_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }            
         }
@@ -236,7 +257,7 @@ class PaymentTypeInvoice extends PaymentType
         if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new'))
         {
             Payment::$buttons['returnToRecord']['allowed'] = true;
-            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=creditnote&page_tpl=details&creditnote_id='.$this->VAR['qpayment']['creditnote_id'];
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
         

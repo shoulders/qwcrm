@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['creditnote_id']) || !\CMSApplication::$VAR['cre
 }
 
 // Cancel Credit Note
-if(!$this->app->components->invoice->cancelRecord(\CMSApplication::$VAR['creditnote_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling'])) {    
+if(!$this->app->components->creditnote->cancelRecord(\CMSApplication::$VAR['creditnote_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling'])) {    
     
     // Load the creditnote details page with error
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The creditnote failed to be cancelled."));

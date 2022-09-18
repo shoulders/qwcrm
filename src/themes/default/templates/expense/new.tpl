@@ -44,6 +44,10 @@
                                                                             <td class="menuhead" colspan="3">{t}First Group{/t}</td>
                                                                         </tr>
                                                                         <tr>
+                                                                            <td align="right"><b>{t}Supplier ID{/t}</b></td>
+                                                                            <td colspan="3"><input id="supplier_id" name="qform[supplier_id]" class="olotd5" size="10" type="text" maxlength="50" placeholder="{t}Not Used{/t}" required readonly onkeydown="return onlyNumber(event);"></td>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td colspan="3"><input id="payee" name="qform[payee]" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                         </tr>

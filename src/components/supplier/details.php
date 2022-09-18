@@ -19,3 +19,7 @@ $this->app->smarty->assign('supplier_statuses',   $this->app->components->suppli
 $this->app->smarty->assign('supplier_types', $this->app->components->supplier->getTypes());
 $this->app->smarty->assign('supplier_details', $this->app->components->supplier->getRecord(\CMSApplication::$VAR['supplier_id']));
 $this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, null, \CMSApplication::$VAR['supplier_id'], null));
+
+$this->app->smarty->assign('creditnote_types',            $this->app->components->creditnote->getTypes());
+$this->app->smarty->assign('creditnote_statuses',         $this->app->components->creditnote->getStatuses());
+$this->app->smarty->assign('display_creditnotes',        $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 25, false, null, null, null, null, null, null, \CMSApplication::$VAR['supplier_id']));

@@ -456,6 +456,9 @@ class Client extends Components {
     public function checkRecordAllowsDelete($client_id) {
 
         $state_flag = true;
+        
+        // Get the client details
+        $client_details = $this->getRecord($cilent_id);
 
         // Check if client has any workorders
         $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$this->app->db->qStr($client_id);    
@@ -487,6 +490,12 @@ class Client extends Components {
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has client notes.');
             $state_flag = false;
+        }
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, $client_details['client_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client cannot be deleted because it has linked credit notes."));
+            return false;        
         }
 
         return $state_flag;

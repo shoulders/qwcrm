@@ -31,11 +31,17 @@
                                                 </table>
                                             </td>
                                         </tr>
+                                        <tr>                                            
+                                            <td class="menutd"><b>{t}Supplier ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=supplier&page_tpl=details&supplier_id={$expense_details.supplier_id}">{$expense_details.supplier_id}</a></td>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>   
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
                                             <td class="menutd">{$expense_details.payee}</td> 
                                             <td class="menutd">&nbsp;</td>
-                                            <td class="menutd">&nbsp;</td>                                            
+                                            <td class="menutd">&nbsp;</td>                                             
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
@@ -125,28 +131,27 @@
                         </table>
                     </td>
                 </tr>
+                
+                <!-- Buttons -->
                 <tr>
                     <td>
+                        <!-- Submit Payment -->
                         {if $expense_details.status == 'unpaid' || $expense_details.status == 'partially_paid'}
                             <button type="button" class="olotd4" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=expense&expense_id={$expense_details.expense_id}';">{t}Submit Payment{/t}</button>
+                        {/if}                    
+                    
+                        <!-- Create Credit Note --> 
+                        {if $allowed_to_create_creditnote}
+                            <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}', '_self');">{t}Add Purchase Credit Note{/t}</button>
                         {/if}
-                    </td>
+                    </td>                
                 </tr>
                 <!-- Payments -->                                    
                 <tr>
                     <td>                                                
                         {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
                     </td>
-                </tr> 
-                
-                <!-- Credit Note --> 
-                {if $allowed_to_create_creditnote}                
-                    <tr>
-                        <td colspan="2">
-                            <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}', '_self');">{t}Add Purchase Credit Note{/t}</button>
-                        </td>
-                    </tr>
-                {/if}
+                </tr>                
                 
             </table>
         </td>

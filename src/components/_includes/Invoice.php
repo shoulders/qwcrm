@@ -996,50 +996,56 @@ defined('_QWEXEC') or die;
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments and is partially paid."));
-            return false;        
+            $state_flag = false;       
         }
 
         // Is paid
         if($invoice_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments and is paid."));
-            return false;        
+            $state_flag = false;       
         }
 
         /* Is partially refunded (not currently used)
         if($invoice_details['status'] == 'partially_refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
-            return false;        
+            $state_flag = false;        
         }*/
 
         // Is refunded
         if($invoice_details['status'] == 'refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been refunded."));
-            return false;        
+            $state_flag = false;        
         }
 
         // Is cancelled
         if($invoice_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been cancelled."));
-            return false;        
+            $state_flag = false;       
         }
 
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been deleted."));
-            return false;        
+            $state_flag = false;       
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) {       
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
-            return false;        
+            $state_flag = false;       
         }*/
 
         // Does the invoice have any Vouchers preventing changing the invoice status
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceEdit($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
-            return false;
+            $state_flag = false;
         } 
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has linked credit notes."));
+            $state_flag = false;        
+        }
 
         return $state_flag;     
 
@@ -1065,49 +1071,49 @@ defined('_QWEXEC') or die;
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be refunded because the invoice is partially paid."));
-            return false;
+            $state_flag = false;
         }
 
         /* Is partially refunded (not currently used)
         if($invoice_details['status'] == 'partially_refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
-            return false;        
+            $state_flag = false;       
         }*/
 
         // Is refunded
         if($invoice_details['status'] == 'refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
-            return false;        
+            $state_flag = false;        
         }
 
         // Is cancelled
         if($invoice_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has been cancelled."));
-            return false;        
+            $state_flag = false;        
         }
 
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has been deleted."));
-            return false;        
+            $state_flag = false;        
         }    
 
         /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if(!$this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be refunded because the invoice has no payments."));
-            return false;        
+            $state_flag = false;        
         }*/
 
         /* Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
-            return false;
+            $state_flag = false;
         }*/
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceRefund($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
-            return false;
+            $state_flag = false;
         }    
 
         return $state_flag;
@@ -1134,57 +1140,63 @@ defined('_QWEXEC') or die;
         // Does not have a balance
         if($invoice_details['balance'] == 0) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice does not have a balance."));
-            return false;
+            $state_flag = false;
         }
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice is partially paid."));
-            return false;
+            $state_flag = false;
         }
 
         /* Is partially refunded (not currently used)
         if($invoice_details['status'] == 'partially_refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
-            return false;        
+            $state_flag = false;        
         }*/
 
 
         // Is refunded
         if($invoice_details['status'] == 'refunded') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
-            return false;        
+            $state_flag = false;        
         }
 
         // Is cancelled
         if($invoice_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has already been cancelled."));
-            return false;        
+            $state_flag = false;       
         }
 
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been deleted."));
-            return false;        
+            $state_flag = false;        
         }    
 
         /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice has payments."));
-            return false;        
+            $state_flag = false;       
         }*/
 
         /* Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
-            return false;
+            $state_flag = false;
         }*/
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceCancel($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
-            return false;
+            $state_flag = false;
         } 
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has linked credit notes."));
+            $state_flag = false;        
+        }
 
         return $state_flag;
 
@@ -1266,14 +1278,20 @@ defined('_QWEXEC') or die;
         /* Has Refunds (should not be needed)
         if($this->app->components->report->countRefunds(null, null, null, null, $invoice_id) > 0) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been refunded."));
-            return false;
+            $state_flag = false;
         }*/
 
         // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceDelete($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
-            return false;
+            $state_flag = false;
         } 
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it has linked credit notes."));
+            $state_flag = false;        
+        }
 
         return $state_flag;
 
@@ -1341,13 +1359,19 @@ defined('_QWEXEC') or die;
         // Does the invoice have any Vouchers preventing changing the invoice status
         if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceEdit($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."));
-            return false;
+            $state_flag = false;
         }
 
         // The current record VAT code is enabled
         if(!$this->checkVatTaxCodeStatuses($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."));
             $state_flag = false;
+        }
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it has linked credit notes."));
+            $state_flag = false;    
         }
 
         return $state_flag;   

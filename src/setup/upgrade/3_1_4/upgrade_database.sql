@@ -935,13 +935,40 @@ ALTER TABLE `#__payment_records` CHANGE `expense_id` `expense_id` INT(10) UNSIGN
 ALTER TABLE `#__payment_records` CHANGE `otherincome_id` `otherincome_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against' AFTER `expense_id`;
 ALTER TABLE `#__payment_records` ADD `supplier_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against' AFTER `client_id`;
 ALTER TABLE `#__payment_records` CHANGE `refund_id` `refund_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against' AFTER `invoice_id`;
-ALTER TABLE `#__payment_records` CHANGE `voucher_id` `voucher_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Voucher used';
-ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Credit Note used';
+ALTER TABLE `#__payment_records` CHANGE `voucher_id` `voucher_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Payment made with';
+ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against / Refunded against';
 ALTER TABLE `#__company_record` ADD `creditnote_expiry_offset` INT(5) UNSIGNED NOT NULL AFTER `year_end`;
 UPDATE `#__company_record` SET `creditnote_expiry_offset` = '366' WHERE `#__company_record`.`creditnote_expiry_offset` = 0; 
 ALTER TABLE `#__expense_records` ADD `supplier_id` INT(10) UNSIGNED NULL AFTER `employee_id`;
 ALTER TABLE `#__payment_options` ADD `creditnote_footer_msg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `invoice_footer_msg`;
 UPDATE `#__payment_options` SET `creditnote_footer_msg` = '<p>This is a footer message where you can put extra information ...</p>\r\n<p>This message can be edited in payment options.</p>';
 
+--
+
+ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against / Refunded against' AFTER `otherincome_id`; 
+ALTER TABLE `#__payment_records` ADD `creditnote_action` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `creditnote_id`;
+
 
 --------------------------------------------------
+
+--
+-- Table structure for table `#__payment_creditnote_action_types`
+--
+
+CREATE TABLE `#__payment_creditnote_action_types` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `#__payment_creditnote_action_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'sales_apply', 'Sales Apply'),
+(2, 'sales_refund', 'Sales Refund'),
+(3, 'purchase_apply', 'Purchase Apply'),
+(4, 'purchase_refund', 'Purchase Refund');
+
+ALTER TABLE `#__payment_creditnote_action_types` ADD PRIMARY KEY (`id`);
+
+
+--
+UPDATE `#__company_vat_tax_codes` SET `hidden` = '0' WHERE `qw_company_vat_tax_codes`.`id` = 10; 

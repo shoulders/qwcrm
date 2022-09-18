@@ -32,5 +32,5 @@ $this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_cat
 $this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                              );
 $this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                            );
 $this->app->smarty->assign('creditnote_types', $this->app->components->creditnote->getTypes()                                                              );
-$this->app->smarty->assign('creditnote_statuses', $this->app->components->creditnote->getStatuses(true)                                                              );
+$this->app->smarty->assign('creditnote_statuses', $this->app->components->creditnote->getStatuses()                                                              );
 $this->app->smarty->assign('display_creditnotes', $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status'])   );

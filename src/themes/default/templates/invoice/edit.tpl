@@ -534,9 +534,9 @@
                                                     {/if}
 
                                                     <!-- Receive Payment Button -->
-                                                    {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}                                                            
+                                                    {*if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}                                                            
                                                         <button type="button" class="userButton" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
-                                                    {/if}
+                                                    {/if*}
                                                     
                                                     <!-- Credit Note Button -->
                                                     {*if $invoice_details.balance > 0}                                                        
@@ -547,16 +547,7 @@
                                             </tr>
                                         </table>                                                
                                     </td>
-                                </tr>                                
-
-                                <!-- Payments -->                                
-                                {if $display_payments.total_results}
-                                    <tr>
-                                        <td>                                                
-                                            {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
-                                        </td>
-                                    </tr>
-                                {/if}
+                                </tr>
 
                                 <!-- Invoice Items -->
                                 <tr>

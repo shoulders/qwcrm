@@ -438,6 +438,12 @@ class Supplier extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
             $state_flag = false;       
         }  
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, $supplier_details['supplier_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because it has linked credit notes."));
+            return false;        
+        }
 
         return $state_flag;
 
@@ -452,13 +458,19 @@ class Supplier extends Components {
         $state_flag = true;
 
         // Get the supplier details
-        //$supplier_details = $this->get_supplier_details($supplier_id);
+        $supplier_details = $this->get_supplier_details($supplier_id);
 
-        /* Is cancelled
+        // Is cancelled
         if($supplier_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has been cancelled."));
             $state_flag = false;       
-        }*/
+        }
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, $supplier_details['supplier_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked credit notes."));
+            return false;        
+        }
 
         return $state_flag;
 

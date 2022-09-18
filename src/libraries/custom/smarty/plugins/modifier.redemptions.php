@@ -33,7 +33,7 @@ function smarty_modifier_redemptions($string)
     //$app = \Factory::getApplication();
     
     // Convert into a standard PHP array or return null
-    if(!$redemptions = json_decode($string)) { return; }
+    if(!$redemptions = json_decode($string)) { return false; }
     
     // Build HTML
     $contentFlag = false;

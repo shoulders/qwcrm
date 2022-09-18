@@ -240,7 +240,7 @@ INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `descri
 (7, 'T6', '', '', '0.00', 0, 0, 0, 0),
 (8, 'T7', 'Zero Rate Purchases - Goods - EC', 'Zero rated purchases of goods from suppliers in EC', '0.00', 0, 0, 0, 1),
 (9, 'T8', 'Standard Rate Purchases - Goods - EC', 'Standard rated purchases of goods from suppliers in EC', '0.00', 0, 0, 0, 1),
-(10, 'T9', 'Transactions not involving VAT', 'Transactions not involving VAT. This is the default non-vatable tax code.', '0.00', 1, 0, 0, 1),
+(10, 'T9', 'Transactions not involving VAT', 'Transactions not involving VAT. This is the default non-vatable tax code.', '0.00', 0, 0, 0, 1),
 (11, 'T10', '', '', '0.00', 0, 0, 0, 0),
 (12, 'T11', '', '', '0.00', 0, 0, 0, 0),
 (13, 'T12', '', '', '0.00', 0, 0, 0, 0),
@@ -737,6 +737,28 @@ INSERT INTO `#__payment_card_types` (`id`, `type_key`, `display_name`, `active`)
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__payment_creditnote_action_types`
+--
+
+CREATE TABLE `#__payment_creditnote_action_types` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `#__payment_creditnote_action_types`
+--
+
+INSERT INTO `#__payment_creditnote_action_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'sales_apply', 'Sales Apply'),
+(2, 'sales_refund', 'Sales Refund'),
+(3, 'purchase_apply', 'Purchase Apply'),
+(4, 'purchase_refund', 'Purchase Refund');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__payment_methods`
 --
 
@@ -807,8 +829,9 @@ CREATE TABLE `#__payment_records` (
   `refund_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
   `expense_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
   `otherincome_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
-  `voucher_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Voucher used',
-  `creditnote_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Credit Note used',
+  `creditnote_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against / Refunded against',
+  `creditnote_action` varchar(30) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `voucher_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Payment made with',  
   `date` date DEFAULT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1647,6 +1670,12 @@ ALTER TABLE `#__payment_additional_info_types`
 -- Indexes for table `#__payment_card_types`
 --
 ALTER TABLE `#__payment_card_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__payment_creditnote_action_types`
+--
+ALTER TABLE `#__payment_creditnote_action_types`
   ADD PRIMARY KEY (`id`);
 
 --

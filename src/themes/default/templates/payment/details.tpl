@@ -40,8 +40,9 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Client{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$payment_details.client_id}">{$client_display_name}</a></td>
-                                            <td class="menutd" ></td>
-                                            <td class="menutd" ></td>
+                                            <td class="menutd"><b>{t}Supplier{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=supplier&page_tpl=details&supplier_id={$payment_details.supplier_id}">{$supplier_display_name}</a></td>
+                                            
                                         </tr>
                                         <tr>
                                             <td class="menutd" ><b>{t}Date{/t}</b></td>
@@ -64,8 +65,17 @@
                                         <tr>
                                             <td class="menutd" ><b>{t}Otherincome ID{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$payment_details.otherincome_id}">{$payment_details.otherincome_id}</a></td>
-                                            <td class="menutd"></td>
-                                            <td class="menutd"></td>
+                                            <td class="menutd" >
+                                                <b>{t}Creditenote ID{/t}</b><br>
+                                                <b>{t}Credit Note Action{/t}<b>
+                                            </td>
+                                            <td class="menutd">
+                                                <a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$payment_details.creditnote_id}">{$payment_details.creditnote_id}</a><br>
+                                                {section name=c loop=$payment_creditnote_action_types}    
+                                                    {if $payment_details.creditnote_action == $payment_types[c].type_key}{t}{$payment_types[c].display_name}{/t}{/if}                    
+                                                {/section}
+                                            </td>
+                                            
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Payment Method{/t}</b></td>

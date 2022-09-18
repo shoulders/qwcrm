@@ -53,7 +53,8 @@ if($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes()                                                                                 );
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()                                                             ); 
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses()                                                                              );
-$this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id'])  );
+$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTpes());
+$this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']));
 
 // Misc
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($invoice_details['employee_id'], 'display_name')  );

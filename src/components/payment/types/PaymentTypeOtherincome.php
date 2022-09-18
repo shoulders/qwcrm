@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 class PaymentTypeOtherincome extends PaymentType
 {         
-    private $otherincome_details = array();
+    public $otherincome_details = array();
     
     public function __construct()
     {        
@@ -20,6 +20,10 @@ class PaymentTypeOtherincome extends PaymentType
         Payment::$payment_details['type'] = 'other_income';                 
         $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']); //only needed for smarty?
         
+        // Disable Unwanted Payment Methods
+        Payment::$disabledMethods[] = 'credit_note';
+        Payment::$disabledMethods[] = 'voucher';
+        
         // For logging and insertRecord()
         Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = null;        
         Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = null;
@@ -28,7 +32,7 @@ class PaymentTypeOtherincome extends PaymentType
         Payment::$record_balance = (float) $this->otherincome_details['balance'];
         
         // Assign Payment Type specific template variables
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, array('voucher')));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));
         $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
         $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->getStatuses());        
     }

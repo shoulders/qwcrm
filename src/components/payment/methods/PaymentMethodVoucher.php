@@ -33,9 +33,10 @@ class PaymentMethodVoucher extends PaymentMethod
         // Get voucher details - Compensates for using voucher_code
         if(!isset($this->VAR['qpayment']['voucher_id']) && !$this->VAR['qpayment']['voucher_id'] = $this->app->components->voucher->getIdByVoucherCode($this->VAR['qpayment']['voucher_code']))
         {
+            // If there is no voucher_id, we cannot proceed
             Payment::$payment_valid = false;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no Voucher with that code."));
-            return; // If there is no voucher_id, we cannot proceed
+            return; 
         }
         else
         {                
@@ -63,7 +64,7 @@ class PaymentMethodVoucher extends PaymentMethod
         // Edit
         if(Payment::$action === 'edit')
         {            
-            // Does the voucher have enough balance to cover the payment amount submitted (after removing htis payments intial amount)
+            // Does the voucher have enough balance to cover the payment amount submitted (after removing this payments intial amount)
             if($this->VAR['qpayment']['amount'] > ($this->voucher_details['balance'] + Payment::$payment_details['amount']))
             {
                 Payment::$payment_valid = false;                
@@ -100,7 +101,7 @@ class PaymentMethodVoucher extends PaymentMethod
             if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment']))
             {
                 // Update the balance, and status if required
-                $this->app->components->voucher->updateBalance($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['amount'], Payment::$action);
+                $this->app->components->voucher->recalculateTotals($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['amount'], Payment::$action);
                         
                 Payment::$payment_successful = true;                 
             }
@@ -109,7 +110,7 @@ class PaymentMethodVoucher extends PaymentMethod
         if(Payment::$action === 'edit')
         {            
             // Update the balance, and status if required
-            $this->app->components->voucher->updateBalance($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['amount'], Payment::$action, Payment::$payment_details['amount']);
+            $this->app->components->voucher->recalculateTotals($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['amount'], Payment::$action, Payment::$payment_details['amount']);
             
             Payment::$payment_successful = true;
         }
@@ -117,7 +118,7 @@ class PaymentMethodVoucher extends PaymentMethod
         if(Payment::$action === 'cancel')
         {            
             // Update the balance, and status if required
-            $this->app->components->voucher->updateBalance($this->VAR['qpayment']['voucher_id'], Payment::$payment_details['amount'], Payment::$action);
+            $this->app->components->voucher->recalculateTotals($this->VAR['qpayment']['voucher_id'], Payment::$payment_details['amount'], Payment::$action);
             
             Payment::$payment_successful = true;
         }
@@ -125,7 +126,7 @@ class PaymentMethodVoucher extends PaymentMethod
         if(Payment::$action === 'delete')
         {            
             // Update the balance, and status if required
-            $this->app->components->voucher->updateBalance($this->VAR['qpayment']['voucher_id'], Payment::$payment_details['amount'], Payment::$action);
+            $this->app->components->voucher->recalculateTotals($this->VAR['qpayment']['voucher_id'], Payment::$payment_details['amount'], Payment::$action);
         }
           
         return;        

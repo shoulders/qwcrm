@@ -314,7 +314,7 @@
                       
         /* Credit Note Totals */
         
-        // These var declarationsa re just kept for now for comparrision with invoice:edit
+        // These var declarationsa re just kept for now for comparrision with creditnote:edit
         var creditnoteTotalDiscount    = creditnoteItemsSubTotalDiscount;   
         var creditnoteTotalNet         = creditnoteItemsSubTotalNet;
         var creditnoteTotalTax         = creditnoteItemsSubTotalTax;
@@ -535,15 +535,6 @@
                                     </td>
                                 </tr>
 
-                                <!-- Payments -->                                
-                                {if $display_payments.total_results}
-                                    <tr>
-                                        <td>                                                
-                                            {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
-                                        </td>
-                                    </tr>
-                                {/if}
-
                                 <!-- Credit Note Items -->
                                 <tr>
                                     <td>
@@ -694,7 +685,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
-                                                    <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300" onkeydown="return onlyAddress(event);" required/>{$creditnote_details.note}</textarea>
+                                                    <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300" placeholder="{t}You must leave a reason for this Credit Note{/t}" onkeydown="return onlyAddress(event);" required/>{$creditnote_details.note}</textarea>
                                                 </td>
                                             </tr>
                                         </table>
@@ -706,12 +697,12 @@
                                     <td>
                                         <table width="100%"  cellpadding="3" cellspacing="0" border="0">
                                             <tr>
-                                                <td align="left" valign="top" width="25%">                                                    
-                                                    {if $creditnote_details.status == 'pending' || $creditnote_details.status == 'unused'}
+                                                <td align="left" valign="top" width="100%">                                                    
+                                                    {if $creditnote_details.status == 'pending' || $creditnote_details.status == 'unused'} 
                                                         <input type="hidden" name="qform[creditnote_id]" value="{$creditnote_details.creditnote_id}">
-                                                        <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=creditnote&page_tpl=details&creditnote_id={$creditnote_details.creditnote_id}';">{t}Cancel{/t}</button>
-                                                    {/if}
+                                                        <button type="submit" name="submit" value="submit">{t}Update{/t}</button>                                                        
+                                                    {/if}                                                    
+                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=creditnote&page_tpl=details&creditnote_id={$creditnote_details.creditnote_id}';">{t}Cancel{/t}</button>
                                                 </td>
                                                 <td align="right" width="75%"></td>
                                             </tr>

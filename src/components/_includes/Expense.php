@@ -32,6 +32,7 @@ class Expense extends Components {
 
         $sql = "INSERT INTO ".PRFX."expense_records SET
                 employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
+                supplier_id     =". $this->app->db->qStr( $qform['supplier_id'] ?: null            ).",  
                 payee           =". $this->app->db->qStr( $qform['payee']                   ).",
                 date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                     ).",              
@@ -248,7 +249,8 @@ class Expense extends Components {
     public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."expense_records SET
-                employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id    ).",
+                supplier_id         =". $this->app->db->qStr( $qform['supplier_id'] ?: null      ).",    
                 payee               =". $this->app->db->qStr( $qform['payee']                    ).",            
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",            
                 type                =". $this->app->db->qStr( $qform['type']                     ).",
@@ -474,6 +476,12 @@ class Expense extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."));
             $state_flag = false;        
         }*/
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because it has linked credit notes."));
+            return false;        
+        }
 
         return $state_flag;    
 
@@ -565,6 +573,12 @@ class Expense extends Components {
             $state_flag = false;        
         }*/
 
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because it has linked credit notes."));
+            return false;        
+        }
+        
         return $state_flag;
 
     }
@@ -609,6 +623,12 @@ class Expense extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."));
             $state_flag = false;        
         }*/
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because it has linked credit notes."));
+            return false;        
+        }
 
         return $state_flag;
 
@@ -660,6 +680,12 @@ class Expense extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
             $state_flag = false;        
         }*/
+        
+        // Has Credit notes
+        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."));
+            return false;        
+        }
 
         return $state_flag;    
 

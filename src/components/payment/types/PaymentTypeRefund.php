@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 class PaymentTypeRefund extends PaymentType
 {  
-    private $refund_details = array();
+    public $refund_details = array();
     
     public function __construct()
     {
@@ -20,6 +20,10 @@ class PaymentTypeRefund extends PaymentType
         Payment::$payment_details['type'] = 'refund';                      
         $this->refund_details = $this->app->components->refund->getRecord($this->VAR['qpayment']['refund_id']);  //only needed for smarty?
         
+        // Disable Unwanted Payment Methods
+        Payment::$disabledMethods[] = 'credit_note';
+        Payment::$disabledMethods[] = 'voucher';
+        
         // For logging and insertRecord()
         Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->refund_details['client_id'];        
         Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = $this->refund_details['invoice_id'];
@@ -28,7 +32,7 @@ class PaymentTypeRefund extends PaymentType
         Payment::$record_balance = (float) $this->refund_details['balance'];
         
         // Assign Payment Type specific template variables
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, array()));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, Payment::$disabledMethods));
         $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->refund_details['client_id']));        
         $this->app->smarty->assign('refund_details', $this->refund_details);
         $this->app->smarty->assign('refund_statuses', $this->app->components->refund->getStatuses());

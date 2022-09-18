@@ -52,16 +52,15 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
+                                                        <td align="right"><b>{t}Supplier{/t}</b></td>
+                                                        <td colspan="3">
+                                                            <a href="index.php?component=supplier&page_tpl=details&supplier_id={$payment_details.supplier_id}">{$supplier_display_name}</a>                                                            
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td align="right"><b>{t}Invoice ID{/t}</b></td>
                                                         <td colspan="3">
                                                             <a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a>                                                            
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    <tr>
-                                                        <td align="right"><b>{t}Voucher ID{/t}</b></td>
-                                                        <td colspan="3">
-                                                            <a href="index.php?component=voucher&page_tpl=details&voucher_id={$payment_details.voucher_id}">{$payment_details.voucher_id}</a>                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -80,6 +79,26 @@
                                                         <td align="right"><b>{t}Otherincome ID{/t}</b></td>
                                                         <td colspan="3">
                                                             <a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$payment_details.otherincome_id}">{$payment_details.otherincome_id}</a>                                                            
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right"><b>{t}Credit Note ID{/t}</b></td>
+                                                        <td colspan="3">
+                                                            <a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$payment_details.creditnote_id}">{$payment_details.creditnote_id}</a>                                                            
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right"><b>{t}Credit Note Action{/t}</b></td>
+                                                        <td colspan="3">
+                                                            {section name=c loop=$payment_creditnote_action_types}    
+                                                                {if $payment_details.creditnote_action == $payment_types[c].type_key}{t}{$payment_types[c].display_name}{/t}{/if}                    
+                                                            {/section}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right"><b>{t}Voucher ID{/t}</b></td>
+                                                        <td colspan="3">
+                                                            <a href="index.php?component=voucher&page_tpl=details&voucher_id={$payment_details.voucher_id}">{$payment_details.voucher_id}</a>                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>

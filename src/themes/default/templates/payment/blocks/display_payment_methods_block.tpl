@@ -107,11 +107,11 @@
                                                 </script>                                                    
                                             </td>
                                             <td><input name="qpayment[bank_transfer_reference]" class="paymentInput olotd5" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="3" ><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td colspan="3" ><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -146,11 +146,11 @@
                                                     } );                                                        
                                                 </script>                                                    
                                             </td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="3"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td colspan="3"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -187,11 +187,11 @@
                                                 </script>                                                    
                                             </td>
                                             <td><input name="qpayment[cheque_number]" class="paymentInput olotd5" type="text" maxlength="15" required onkeydown="return onlyNumber(event);"></td>                        
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="3" ><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td colspan="3" ><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -237,11 +237,11 @@
                                                 </select>
                                             </td>                        
                                             <td><input name="qpayment[name_on_card]" class="paymentInput olotd5" value="{$name_on_card}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);" disabled></td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="4"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td colspan="4"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -278,11 +278,11 @@
                                                 </script>                                                    
                                             </td>
                                             <td><input name="qpayment[direct_debit_reference]" class="paymentInput olotd5" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="3" ><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td colspan="3" ><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -319,11 +319,11 @@
                                                 </script>                                                    
                                             </td>
                                             <td><input name="qpayment[voucher_code]" class="paymentInput olotd5" size="32" value="{$voucher_code}" type="text" maxlength="16" required onkeydown="return onlyVoucherCode(event);" disabled></td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="2"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td colspan="2"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                             <td></td>
                                         </tr>                    
                                     </table>
@@ -359,11 +359,11 @@
                                                     } );                                                        
                                                 </script>                                                    
                                             </td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="3"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td colspan="3"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -400,11 +400,11 @@
                                                 </script>                                                    
                                             </td>
                                             <td><input name="qpayment[paypal_payment_id]" class="paymentInput olotd5" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" disabled></td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="4"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                            <td colspan="4"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                         </tr>                    
                                     </table>                                                        
                                 </td>
@@ -421,13 +421,13 @@
                             <tr>
                                 <td class="menutd2">
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" width="100%" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"></td>
+                                        <tr class="olotd4">                                            
                                             <td class="row2"><b>{t}Date{/t}</b></td>
+                                            <td class="row2"><b>{t}Credit Note ID{/t}</b></td>
                                             <td class="row2"><b>{t}Amount{/t}</b></td>
                                         </tr>
                                         <tr class="olotd4">
-                                            <td></td>
+                                            
                                             <td>
                                                 <input id="credit_note_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="credit_note_date_button">+</button>
@@ -439,11 +439,12 @@
                                                     } );                                                        
                                                 </script>                                                    
                                             </td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td><input name="qpayment[creditnote_id]" class="paymentInput olotd5" size="32" value="{$creditnote_id}" type="text" maxlength="16" required onkeydown="return onlyNumber(event);" disabled></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
-                                            <td colspan="3"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" placeholder="{t}You must leave a reason for this Credit Note{/t}" required disabled></textarea></td>
+                                            <td colspan="3"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled>{$note}</textarea></td>
                                         </tr>
                                     </table>
                                 </td>

@@ -20,6 +20,12 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
     $this->app->system->page->forcePage('payment', 'search');
 }   
 
+// Check if payment can be deleted
+if(!$this->app->components->payment->checkRecordAllowsDelete(\CMSApplication::$VAR['payment_id'])) {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete this payment because its status does not allow it."));
+    $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
+}
+
 // Build the Payment Environment
 $this->app->components->payment->buildPaymentEnvironment('delete');
 

@@ -18,6 +18,7 @@ if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['ot
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes()                                                                                 );
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()                                                             ); 
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses()                                                                              );
+$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTpes());
 $this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, 'otherincome', null, null, null, null, null, null, null, \CMSApplication::$VAR['otherincome_id']));
 
 // Build the page

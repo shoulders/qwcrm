@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 class PaymentTypeExpense extends PaymentType
 {     
-    private $expense_details = array();
+    public $expense_details = array();
     
     public function __construct()
     {        
@@ -20,6 +20,9 @@ class PaymentTypeExpense extends PaymentType
         Payment::$payment_details['type'] = 'expense';            
         $this->expense_details = $this->app->components->expense->getRecord($this->VAR['qpayment']['expense_id']); // only needed for smarty?
         
+        // Disable Unwanted Payment Methods
+        Payment::$disabledMethods[] = 'voucher';
+        
         // For logging and insertRecord()
         Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = null;        
         Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = null;
@@ -28,7 +31,7 @@ class PaymentTypeExpense extends PaymentType
         Payment::$record_balance = (float) $this->expense_details['balance'];
         
         // Assign Payment Type specific template variables
-        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, array()));
+        $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, Payment::$disabledMethods));
         $this->app->smarty->assign('expense_details', $this->expense_details);
         $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses());      
     }    

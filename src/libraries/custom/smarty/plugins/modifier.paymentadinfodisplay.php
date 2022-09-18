@@ -33,7 +33,7 @@ function smarty_modifier_paymentadinfodisplay($string)
     $app = \Factory::getApplication();
     
     // Convert into a standard PHP array or return null
-    if(!$additional_info = json_decode($string)) { return; }
+    if(!$additional_info = json_decode($string)) { return false; }
     
     // Get field names in an array for translation
     $adNames = $app->components->payment->getAdditionalInfoTypes();

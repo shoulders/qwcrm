@@ -29,6 +29,7 @@
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Vouchers{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Payments{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Credit Notes{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Refunds{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_8_contents" class="tab">{t}Account{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_9_contents" class="tab">{t}Notes{/t}</a></li>                    
@@ -78,9 +79,9 @@
                                                 {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_sent block_title=_gettext("Sent")}
                                             </div>
                                             
-                                            <!-- Tab 7 Contents (Refunds) -->
+                                            <!-- Tab 7 Contents (Credit Notes) -->
                                             <div id="tab_7_contents" class="tab_contents">
-                                                {include file='refund/blocks/display_refunds_block.tpl' display_refundss=$display_refunds block_title=_gettext("Refunds")}
+                                                {include file='creditnote/blocks/display_creditnotes_block.tpl' display_refunds=$display_creditnotes block_title=_gettext("Credit Notes")}                                                
                                             </div>
                                             
                                             <!-- Tab 8 Contents (Account) -->
@@ -91,6 +92,11 @@
                                             <!-- Tab 9 Contents (Client Notes) -->
                                             <div id="tab_9_contents" class="tab_contents">                        
                                                 {include file='client/blocks/details_notes_block.tpl'}   
+                                            </div>
+                                            
+                                            <!-- Tab 9 Contents (Refunds) -->
+                                            <div id="tab_7_contents" class="tab_contents">                                                
+                                                {include file='refund/blocks/display_refunds_block.tpl' display_refunds=$display_refunds block_title=_gettext("Refunds")}
                                             </div>
 
                                         </div>

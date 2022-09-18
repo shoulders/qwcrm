@@ -9,13 +9,16 @@
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
         <td class="olohead"><b>{t}Payment ID{/t}</b></td>
-        <td class="olohead"><b>{t}Employee{/t}</b></td>        
-        <td class="olohead"><b>{t}INV ID{/t}</b></td>  
-        <td class="olohead"><b>{t}Voucher ID{/t}</b></td> 
-        <td class="olohead"><b>{t}Refund ID{/t}</b></td> 
-        <td class="olohead"><b>{t}Expense ID{/t}</b></td> 
-        <td class="olohead"><b>{t}Otherincome ID{/t}</b></td>        
+        <td class="olohead"><b>{t}Employee{/t}</b></td>
         <td class="olohead"><b>{t}Client{/t}</b></td>
+        <td class="olohead"><b>{t}Supplier{/t}</b></td>
+        <td class="olohead"><b>{t}Invoice{/t}</b></td>         
+        <td class="olohead"><b>{t}Refund{/t}</b></td> 
+        <td class="olohead"><b>{t}Expense{/t}</b></td> 
+        <td class="olohead"><b>{t}Otherincome{/t}</b></td>
+        <td class="olohead"><b>{t}Credit Note{/t}</b></td>
+        <td class="olohead"><b>{t}Credit Action{/t}</b></td>
+        <td class="olohead"><b>{t}Voucher{/t}</b></td>               
         <td class="olohead"><b>{t}Date{/t}</b></td>
         <td class="olohead"><b>{t}Type{/t}</b></td>
         <td class="olohead"><b>{t}Method{/t}</b></td>
@@ -27,19 +30,21 @@
     </tr>
     {section name=p loop=$display_payments.records}        
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_payments.records[p].status != 'deleted'} onDblClick="window.location='index.php?component=payment&page_tpl=details&payment_id={$display_payments.records[p].payment_id}';"{/if}>
-
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_payments.records[p].payment_id}">{$display_payments.records[p].payment_id}</a></td>
-            <td class="olotd4" nowrap>                
-                <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_payments.records[p].employee_id}">{$display_payments.records[p].employee_display_name}</a>
-            </td>            
+            <td class="olotd4" nowrap><a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_payments.records[p].employee_id}">{$display_payments.records[p].employee_display_name}</a></td>
+            <td class="olotd4" nowrap><a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_payments.records[p].client_id}">{$display_payments.records[p].client_display_name}</a></td>
+            <td class="olotd4" nowrap><a class="link1" href="index.php?component=supplier&page_tpl=details&supplier_id={$display_payments.records[p].supplier_id}">{$display_payments.records[p].supplier_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_payments.records[p].invoice_id}">{$display_payments.records[p].invoice_id}</a></td>
-            <td class="olotd4"><a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_payments.records[p].voucher_id}">{$display_payments.records[p].voucher_id}</a></td>
             <td class="olotd4"><a href="index.php?component=refund&page_tpl=details&refund_id={$display_payments.records[p].refund_id}">{$display_payments.records[p].refund_id}</a></td>
             <td class="olotd4"><a href="index.php?component=expense&page_tpl=details&expense_id={$display_payments.records[p].expense_id}">{$display_payments.records[p].expense_id}</a></td>
-            <td class="olotd4"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_payments.records[p].otherincome_id}">{$display_payments.records[p].otherincome_id}</a></td>            
-            <td class="olotd4" nowrap>                
-                <a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_payments.records[p].client_id}">{$display_payments.records[p].client_display_name}</a>
-            </td>            
+            <td class="olotd4"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_payments.records[p].otherincome_id}">{$display_payments.records[p].otherincome_id}</a></td>
+            <td class="olotd4"><a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$display_payments.records[p].creditnote_id}">{$display_payments.records[p].creditnote_id}</a></td>
+            <td class="olotd4" align="center">
+                {section name=c loop=$payment_creditnote_action_types}    
+                    {if $display_payments.records[p].creditnote_action == $payment_types[c].type_key}{t}{$payment_types[c].display_name}{/t}{/if}                    
+                {/section}
+            </td> 
+            <td class="olotd4"><a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_payments.records[p].voucher_id}">{$display_payments.records[p].voucher_id}</a></td>
             <td class="olotd4"> {$display_payments.records[p].date|date_format:$date_format}</td>
             <td class="olotd4" align="center">
                 {section name=t loop=$payment_types}    

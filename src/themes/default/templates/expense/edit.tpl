@@ -41,9 +41,14 @@
                                                         <td colspan="3">{$expense_details.expense_id}</td>
                                                     </tr>
                                                     <tr>
+                                                        <td align="right"><b>{t}Supplier ID{/t}</b></td>                                                       
+                                                        <td colspan="3"><input id="supplier_id" name="qform[supplier_id]" class="olotd5" size="10" value="{$expense_details.supplier_id}" type="text" maxlength="50" placeholder="{t}Not Used{/t}" required readonly onkeydown="return onlyNumber(event);"></td>
+                                                    </tr>
+                                                    <tr>
                                                         <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td colspan="3"><input id="payee" name="qform[payee]" class="olotd5" size="50" value="{$expense_details.payee}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
-                                                    </tr><tr>
+                                                    </tr>
+                                                    <tr>
                                                         <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td>
                                                             <input id="date" id="date" name="qform[date]" class="olotd5" size="10" value="{$expense_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">

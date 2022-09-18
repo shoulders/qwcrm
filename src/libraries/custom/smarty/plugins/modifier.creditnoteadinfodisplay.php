@@ -33,7 +33,7 @@ function smarty_modifier_creditnoteadinfodisplay($string)
     $app = \Factory::getApplication();
     
     // Convert into a standard PHP array or return null
-    if(!$additional_info = json_decode($string, true)) { return; }
+    if(!$additional_info = json_decode($string, true)) { return false; }
         
     // Build HTML
     $contentFlag = false;

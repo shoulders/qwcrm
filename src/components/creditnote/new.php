@@ -20,7 +20,7 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'new')
 }
 
 // Check CR can be created (this check is also do on the buttons but silently)
-if($this->app->system->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] ?? null, \CMSApplication::$VAR['invoice_id'] ?? null, \CMSApplication::$VAR['supplier_id'] ?? null, \CMSApplication::$VAR['expense_id'] ?? null, false))
+if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] ?? null, \CMSApplication::$VAR['invoice_id'] ?? null, \CMSApplication::$VAR['supplier_id'] ?? null, \CMSApplication::$VAR['expense_id'] ?? null, false))
 {
     // From Client details - Create a 'Sales Credit Note (Standalone)'
     if(\CMSApplication::$VAR['client_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('client', 'details'))
@@ -59,14 +59,33 @@ if($this->app->system->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR
         $reference = '';
     }
 
-    // From Expense details - create a 'Supplier Credit Note'  - Not all expenses have an supplier_id, but this will be failed on the 'We have a valid request'
+    // From Expense details - create a 'Supplier Credit Note' - Not all expenses have an supplier_id, but this will be failed on the 'We have a valid request'
     if(\CMSApplication::$VAR['expense_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details'))
     {
         $expense_id = \CMSApplication::$VAR['expense_id'];
-        $supplier_id = $this->app->components->expense->getRecord($expense_id, 'supplier_id');
+        $expense_details = $this->app->components->expense->getRecord($expense_id);
+        $supplier_id = $expense_details['supplier_id'];
         $type = 'purchase';
         //$reference = _gettext("Expense").': '.$expense_id ;
         $reference = '';
+        
+        // Build a single item to match the expense record - this is a workaround whilst expenses does not use items
+        $creditnote_items = array();
+        $creditnote_items[0]['creditnote_item_id'] = 1;
+        $creditnote_items[0]['expense_id'] = $expense_details['expense_id'];
+        $creditnote_items[0]['tax_system'] = $expense_details['tax_system'];
+        $creditnote_items[0]['description'] = _gettext("Items from from expense").': '.$expense_details['expense_id'];
+        $creditnote_items[0]['unit_qty'] = 1;
+        $creditnote_items[0]['unit_net'] = $expense_details['unit_net'];
+        $creditnote_items[0]['unit_discount'] = 0.00;
+        $creditnote_items[0]['sales_tax_exempt'] = 1;
+        $creditnote_items[0]['vat_tax_code'] = 'T9';
+        $creditnote_items[0]['unit_tax_rate'] = 0.00;
+        $creditnote_items[0]['unit_tax'] = $expense_details['unit_tax'];
+        $creditnote_items[0]['unit_gross'] = $expense_details['unit_gross'];
+        $creditnote_items[0]['subtotal_net'] = $expense_details['unit_net'];
+        $creditnote_items[0]['subtotal_tax'] = $expense_details['unit_tax'];
+        $creditnote_items[0]['subtotal_gross'] = $expense_details['unit_gross'];        
     }
 
     // We have a valid request

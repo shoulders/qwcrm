@@ -11,19 +11,13 @@
     <tr class="olotd4">
         <td class="row2"><b>{t}Open{/t}</b></td>        
         <td class="row2"><b>{t}Pending{/t}</b></td>
-        <td class="row2"><b>{t}Unpaid{/t}</b></td>
-        <td class="row2"><b>{t}Partially Paid{/t}</b></td>        
-        <td class="row2"><b>{t}In Dispute{/t}</b></td>
-        <td class="row2"><b>{t}Overdue{/t}</b></td>
-        <td class="row2"><b>{t}Collections{/t}</b></td>
+        <td class="row2"><b>{t}Unused{/t}</b></td>
+        <td class="row2"><b>{t}Partially Applied{/t}</b></td>
     </tr>
     <tr class="olotd4">
         <td>{$creditnote_stats.count_open}</td>
         <td>{$creditnote_stats.count_pending}</td>
-        <td>{$creditnote_stats.count_unpaid}</td>
-        <td>{$creditnote_stats.count_partially_paid}</td>        
-        <td>{$creditnote_stats.count_in_dispute}</td>
-        <td>{$creditnote_stats.count_overdue}</td>       
-        <td>{$creditnote_stats.count_collections}</td>
+        <td>{$creditnote_stats.count_unused}</td>
+        <td>{$creditnote_stats.count_partially_applied}</td> 
     </tr>
 </table>

@@ -150,6 +150,12 @@ _gettext("Deleted");
 _gettext("Invoice");
 _gettext("Refund");
 
+/* Payment Cedit Note Action Types*/
+_gettext("Sales Apply");
+_gettext("Sales Refund");
+_gettext("Purchase Apply");
+_gettext("Purchase Refund");
+
 /* Refund Statuses */
 _gettext("Unpaid");
 _gettext("Partially Paid");

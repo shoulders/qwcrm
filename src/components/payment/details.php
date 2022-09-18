@@ -16,14 +16,12 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
     
 $payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);
 
-// Prevent undefined variable errors
-$client_display_name = $payment_details['client_id'] ? $this->app->components->client->getRecord($payment_details['client_id'], 'display_name') : null;
-$employee_display_name = $payment_details['employee_id'] ? $this->app->components->user->getRecord($payment_details['employee_id'], 'display_name') : null;
-
 // Build the page
-$this->app->smarty->assign('client_display_name',      $client_display_name);
-$this->app->smarty->assign('employee_display_name',    $employee_display_name);
+$this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($payment_details['employee_id'], 'display_name'));
+$this->app->smarty->assign('client_display_name',      $this->app->components->client->getRecord($payment_details['client_id'], 'display_name'));
+$this->app->smarty->assign('supplier_display_name',    $this->app->components->supplier->getRecord($payment_details['supplier_id'], 'display_name'));
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes()    );
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()  ); 
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses() );
-$this->app->smarty->assign('payment_details', $payment_details);
+$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTpes());
+$this->app->smarty->assign('payment_details',          $payment_details);

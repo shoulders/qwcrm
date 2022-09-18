@@ -20,6 +20,12 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
     $this->app->system->page->forcePage('payment', 'search');
 }   
 
+// Check if payment can be cancelled
+if(!$this->app->components->payment->checkRecordAllowsCancel(\CMSApplication::$VAR['payment_id'])) {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this payment because its status does not allow it."));
+    $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
+}
+
 // Build the Payment Environment
 $this->app->components->payment->buildPaymentEnvironment('cancel');
 

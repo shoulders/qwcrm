@@ -202,7 +202,19 @@
                                                 
                                                 <!-- Refund Button -->
                                                 {if ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_applied') && $creditnote_details.client_id} 
-                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Refund{/t} ({t}Refund to Client{/t})</button>
+                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Refund{/t} / {t}Refund to Client{/t}</button>
+                                                {/if}
+                                                
+                                                <!-- Apply Payment Buttons -->
+                                                {if $creditnote_details.balance > 0 && $creditnote_details.supplier_id} 
+                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Payment from Supplier{/t}</button>
+                                                {/if}
+                                                
+                                                {if $creditnote_details.status == 'unused' && $creditnote_details.invoice_id}                                                        
+                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$creditnote_details.invoice_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Invoice{/t}</button>                                                                                                             
+                                                {/if}
+                                                {if $creditnote_details.status == 'unused' && $creditnote_details.expense_id}                                                        
+                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=expense&expense_id={$creditnote_details.expense_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Expense{/t}</button>                                                                                                             
                                                 {/if}
                                                 
                                             </td>
