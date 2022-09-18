@@ -1866,23 +1866,23 @@ class Report extends Components {
         // Historic
         if($record_set == 'historic' || $record_set == 'all') {       
 
-            $stats['count_invoice'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['count_refund'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['count_expense'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['count_otherincome'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['count_sent'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['count_received'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['count_invoice'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['count_refund'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'refund', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['count_expense'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'expense', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['count_otherincome'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['count_sent'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'monies_sent', null, 'monies_sent', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, 'monies_sent', $voucher_id);
+            $stats['count_received'] = $this->countPayments('date', $start_date, $end_date, $tax_system, null, 'monies_received', null, 'monies_received', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, 'monies_received', $voucher_id);
            
         }  
 
         // Revenue
         if($record_set == 'revenue' || $record_set == 'all') {       
-            $stats['sum_invoice'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['sum_refund'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['sum_expense'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['sum_otherincome'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['sum_sent'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
-            $stats['sum_received'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['sum_invoice'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'invoice', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['sum_refund'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'refund', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['sum_expense'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'expense', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['sum_otherincome'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'otherincome', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, $creditnote_action, $voucher_id);
+            $stats['sum_sent'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'monies_sent', null, 'monies_sent', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, 'monies_sent', $voucher_id);
+            $stats['sum_received'] = $this->sumPayments('date', $start_date, $end_date, $tax_system, null, 'monies_received', null, 'monies_received', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id, $creditnote_id, 'monies_received', $voucher_id);
 
         } 
 
@@ -1894,7 +1894,7 @@ class Report extends Components {
     #     Count Payments                               #
     ####################################################
 
-    public function countPayments($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {  
+    public function countPayments($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $paymentDirection = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {  
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";  
@@ -1910,12 +1910,21 @@ class Report extends Components {
         // Restrict by Status
         $whereTheseRecords .= $this->paymentBuildFilterByStatus($status);
 
-        // Restrict by Type
-        $whereTheseRecords .= $this->paymentBuildFilterByType($type); 
-
+        // Restrict by Type 
+        if($type) {
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
+            $whereTheseRecords .= $this->paymentBuildFilterByType($type);
+        } 
+        
         // Filter by Method
         if($method) {
             $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$this->app->db->qStr($method);
+        }
+        
+        // Restrict by Direction
+        if($paymentDirection) {
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);
+            $whereTheseRecords .= $this->paymentBuildFilterByPaymentDirection($paymentDirection);
         }
 
         // Filter by Employee
@@ -1953,9 +1962,10 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);
         }
         
-        // Filter by Creditnote action
+        // Restrict by Credit Note Action
         if($creditnote_action) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
+            $whereTheseRecords .= $this->paymentBuildFilterByCreditnoteAction($creditnote_action);
         }
         
         // Filter by Voucher
@@ -1978,7 +1988,7 @@ class Report extends Components {
     #  Sum selected value of payments       #
     #########################################
 
-    public function sumPayments($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {
+    public function sumPayments($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $paymentDirection = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
@@ -1994,12 +2004,21 @@ class Report extends Components {
         // Restrict by Status
         $whereTheseRecords .= $this->paymentBuildFilterByStatus($status);
 
-        // Restrict by Type
-        $whereTheseRecords .= $this->paymentBuildFilterByType($type);    
+        // Restrict by Type 
+        if($type) {
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
+            $whereTheseRecords .= $this->paymentBuildFilterByType($type);
+        }       
 
         // Filter by Method
         if($method) {
             $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$this->app->db->qStr($method);
+        }
+        
+        // Restrict by Direction
+        if($paymentDirection) {
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);
+            $whereTheseRecords .= $this->paymentBuildFilterByPaymentDirection($paymentDirection);
         }
 
         // Filter by Employee
@@ -2037,9 +2056,10 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);
         }
         
-        // Filter by Creditnote action
+        // Restrict by Credit Note Action
         if($creditnote_action) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
+            $whereTheseRecords .= $this->paymentBuildFilterByCreditnoteAction($creditnote_action);
         }
         
         // Filter by Voucher
@@ -2115,23 +2135,17 @@ class Report extends Components {
         $whereTheseRecords = '';
 
         // All received monies
-        if($type == 'received') {            
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome')";
+        if($type == 'monies_received') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome', 'creditnote')";            
 
         // All sent monies
-        } elseif($type == 'sent') {            
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'refund')";        
+        } elseif($type == 'monies_sent') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'refund', 'creditnote')";            
 
         // Return records for the given type
         } elseif($type) {            
             $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);            
         }
-        
-        /* Remove `creditnote` records from the results, unless you are looking up creditnote records, creditnotes are not real payments and are accounted for elsewhere
-        if($type !== 'creditnote')
-        {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type != 'creditnote'";
-        }*/
         
         // Remove `voucher` records from the results, unless you are looking up voucher records, vouchers are not real payments and are accounted for elsewhere
         if($type !== 'voucher')
@@ -2142,6 +2156,57 @@ class Report extends Components {
         return $whereTheseRecords;
 
     }
+    
+    ##########################################
+    #  Build payment direction filter SQL    # // Restrict by direction
+    ##########################################
+
+    public function paymentBuildFilterByPaymentDirection($paymentDirection = null) {
+
+        $whereTheseRecords = '';
+
+        // All received monies
+        if($paymentDirection == 'monies_received') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.direction = 'credit'";            
+
+        // All sent monies
+        } elseif($paymentDirection == 'monies_sent') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.direction = 'debit'";              
+
+        // Return records for the given direction
+        } elseif($paymentDirection) {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);            
+        }
+
+        return $whereTheseRecords;
+
+    }    
+    
+    ###################################################
+    #  Build payment Creditenote Action filter SQL    # // Restrict by Creditnote Action
+    ###################################################
+
+    public function paymentBuildFilterByCreditnoteAction($creditnote_action = null) {
+
+        $whereTheseRecords = '';
+
+        // All received monies
+        if($creditnote_action == 'monies_received') {            
+           
+            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action IN (NULL, 'purchase_refund')";  // allow only real payments on credit notes
+
+        // All sent monies
+        } elseif($creditnote_action == 'monies_sent') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action IN (NULL, 'sales_refund')";            
+
+        // Return records for the given direction
+        } elseif($creditnote_action) {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action= ".$this->app->db->qStr($creditnote_action);            
+        }
+
+        return $whereTheseRecords;
+
+    }   
 
     ##############################################################################################  // cancelled payment records are ignored
     #  Calulate the revenue and tax liability for a ALL payments against their parent record     #  // I dont use most of these filters at the minute (only start_date, end_date and tax_system)

@@ -20,16 +20,22 @@ class PaymentTypeCreditnote extends PaymentType
         Payment::$payment_details['type'] = 'creditnote';        
         $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']); // only needed for smarty?
         
-        // Set Creditnote action
+        // Set Creditnote action and direction
         if($this->creditnote_details['type'] == 'sales')
         {           
             // Client refund
             $this->VAR['qpayment']['creditnote_action'] = 'sales_refund';
+            
+            // Set Payment direction
+            $this->VAR['qpayment']['direction'] = 'debit';
         }
         else
         {
             // Refund from Supplier
             $this->VAR['qpayment']['creditnote_action'] = 'purchase_refund';
+            
+            // Set Payment direction
+            $this->VAR['qpayment']['direction'] = 'credit';
         }
         
         // Disable Unwanted Payment Methods

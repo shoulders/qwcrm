@@ -390,7 +390,7 @@
                                                 <td>{$creditnote_id}</td>
                                                 <td>
                                                     {section name=t loop=$creditnote_types}    
-                                                        {if $creditnote_details.type == $creditnote_types[t].type_key}{t}{$creditnote_types[t].display_name}{/t}{/if}        
+                                                        {if $creditnote_details.type == $creditnote_types[t].type_key}{t}{$creditnote_types[t].display_name}{/t}{/if}
                                                     {/section}
                                                 </td>
                                                 <td>                                                    

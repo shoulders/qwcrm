@@ -20,6 +20,9 @@ class PaymentTypeInvoice extends PaymentType
         Payment::$payment_details['type'] = 'invoice';        
         $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']); // only needed for smarty?
         
+        // Set Payment direction
+        $this->VAR['qpayment']['direction'] = 'credit';
+        
         // Disable Unwanted Payment Methods
         //Payment::$disabledMethods[] = '';
         

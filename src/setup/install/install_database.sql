@@ -759,6 +759,26 @@ INSERT INTO `#__payment_creditnote_action_types` (`id`, `type_key`, `display_nam
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__payment_directions`
+--
+
+CREATE TABLE `#__payment_directions` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `#__payment_directions`
+--
+
+INSERT INTO `#__payment_directions` (`id`, `key`, `display_name`) VALUES
+(1, 'credit', 'Credit'),
+(2, 'debit', 'Debit');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__payment_methods`
 --
 
@@ -836,6 +856,7 @@ CREATE TABLE `#__payment_records` (
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `method` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `direction` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `last_active` datetime DEFAULT NULL,
@@ -1676,6 +1697,12 @@ ALTER TABLE `#__payment_card_types`
 -- Indexes for table `#__payment_creditnote_action_types`
 --
 ALTER TABLE `#__payment_creditnote_action_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__payment_directions`
+--
+ALTER TABLE `#__payment_directions`
   ADD PRIMARY KEY (`id`);
 
 --

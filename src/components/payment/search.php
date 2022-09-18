@@ -14,6 +14,7 @@ defined('_QWEXEC') or die;
 \CMSApplication::$VAR['search_term']   = \CMSApplication::$VAR['search_term'] ?? null;
 \CMSApplication::$VAR['filter_type']   = \CMSApplication::$VAR['filter_type'] ?? null;
 \CMSApplication::$VAR['filter_method'] = \CMSApplication::$VAR['filter_method'] ?? null;
+\CMSApplication::$VAR['filter_direction'] = \CMSApplication::$VAR['filter_direction'] ?? null;
 \CMSApplication::$VAR['filter_status'] = \CMSApplication::$VAR['filter_status'] ?? null;
 
 // If a search is submitted
@@ -34,9 +35,11 @@ $this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_cat
 $this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                                 );
 $this->app->smarty->assign('filter_type',      \CMSApplication::$VAR['filter_type']                                                                                 );
 $this->app->smarty->assign('filter_method',    \CMSApplication::$VAR['filter_method']                                                                               );
+$this->app->smarty->assign('filter_direction',    \CMSApplication::$VAR['filter_direction']                                                                               );
 $this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                               );
 $this->app->smarty->assign('payment_types',    $this->app->components->payment->getTypes()                                                                                 );
 $this->app->smarty->assign('payment_methods',  $this->app->components->payment->getMethods()                                                                               );
+$this->app->smarty->assign('payment_directions',  $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses', $this->app->components->payment->getStatuses()                                                                              );
-$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTpes());
+$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
 $this->app->smarty->assign('display_payments', $this->app->components->payment->getRecords('payment_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_method'], \CMSApplication::$VAR['filter_status'])   );

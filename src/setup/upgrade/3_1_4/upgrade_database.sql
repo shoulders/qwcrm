@@ -970,3 +970,25 @@ UPDATE `#__company_vat_tax_codes` SET `hidden` = '0' WHERE `#__company_vat_tax_c
 ---
 --- Add direction on to payments
 ---
+
+ALTER TABLE `#__payment_records` ADD `direction` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `method`;
+UPDATE `#__payment_records` SET `direction` = 'credit' WHERE `#__payment_records`.`type` = 'invoice';
+UPDATE `#__payment_records` SET `direction` = 'credit' WHERE `#__payment_records`.`type` = 'otherincome';
+UPDATE `#__payment_records` SET `direction` = 'debit' WHERE `#__payment_records`.`type` = 'expense';
+UPDATE `#__payment_records` SET `direction` = 'debit' WHERE `#__payment_records`.`type` = 'refund';
+
+--
+-- Table structure for table `qw_payment_directions`
+--
+
+CREATE TABLE `#__payment_directions` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `#__payment_directions` (`id`, `key`, `display_name`) VALUES
+(1, 'credit', 'Credit'),
+(2, 'debit', 'Debit');
+
+ALTER TABLE `#__payment_directions` ADD PRIMARY KEY (`id`);

@@ -20,6 +20,9 @@ class PaymentTypeExpense extends PaymentType
         Payment::$payment_details['type'] = 'expense';            
         $this->expense_details = $this->app->components->expense->getRecord($this->VAR['qpayment']['expense_id']); // only needed for smarty?
         
+        // Set Payment direction
+        $this->VAR['qpayment']['direction'] = 'debit';
+        
         // Disable Unwanted Payment Methods
         Payment::$disabledMethods[] = 'voucher';
         

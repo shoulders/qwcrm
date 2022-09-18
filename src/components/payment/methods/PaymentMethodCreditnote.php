@@ -21,17 +21,22 @@ class PaymentMethodCreditnote extends PaymentMethod
         // Set class variables
         Payment::$payment_details['method'] = 'credit_note';        
         
-        // Set Creditnote action - When using credit note as a Method, you can only apply agaisnt records
         if($this->creditnote_details['type'] == 'sales')
         {
             // Apply a Client's credit note
-            $this->VAR['qpayment']['creditnote_action'] = 'sales_apply'; 
+            $this->VAR['qpayment']['creditnote_action'] = 'sales_apply';
+            
+            // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
+            $this->VAR['qpayment']['direction'] = 'debit';
              
         }
         else
         {
-            // apply a Supplier's credit note
-            $this->VAR['qpayment']['creditnote_action'] = 'purchase_apply'; 
+            // Apply a Supplier's credit note
+            $this->VAR['qpayment']['creditnote_action'] = 'purchase_apply';
+            
+            // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
+            $this->VAR['qpayment']['direction'] = 'credit';
         }
         
         // Set currency symbol

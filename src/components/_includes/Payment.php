@@ -59,6 +59,7 @@ class Payment extends Components {
                 tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",   
                 type            = ".$this->app->db->qStr( $qpayment['type']        ).",
                 method          = ".$this->app->db->qStr( $qpayment['method']      ).",
+                direction       = ".$this->app->db->qStr( $qpayment['direction']      ).",
                 status          = 'valid',
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                      ).",
                 last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                         ).",
@@ -92,7 +93,7 @@ class Payment extends Components {
     #  Display all payments the given status            #
     #####################################################
 
-    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $paymentDirection = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
@@ -109,29 +110,23 @@ class Payment extends Components {
 
         // Restrict results by search category and search term
         elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
-
-        // Restrict by Type
-        if($type) {   
-
-            // All received monies
-            if($type == 'received') {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome')";
-
-            // All sent monies
-            } elseif($type == 'sent') {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'refund')";        
-
-            // Return records for the given type
-            } else {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);            
-            }
-
+        
+        // Restrict by Type 
+        if($type) {
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
+            $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByType($type);
+        }        
+        
+        // Restrict by Method
+        if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qStr($method);}
+        
+        // Restrict by Direction
+        if($paymentDirection) {
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);
+            $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByPaymentDirection($paymentDirection);
         }
 
-        // Restrict by method
-        if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qStr($method);}
-
-        // Restrict by status
+        // Restrict by Status
         if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);}   
 
         // Restrict by Employee
@@ -159,7 +154,10 @@ class Payment extends Components {
         if($creditnote_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);}
         
         // Restrict by Credit Note Action
-        if($creditnote_action) {$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);}
+        if($creditnote_action) {
+            //$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
+            $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByCreditnoteAction($creditnote_action);
+        }
         
         // Restrict by Voucher
         if($voucher_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.voucher_id=".$this->app->db->qStr($voucher_id);} 
@@ -348,9 +346,24 @@ class Payment extends Components {
     #############################################
     
 
-    public function getCreditnoteActionTpes() {
+    public function getCreditnoteActionTypes() {
 
         $sql = "SELECT * FROM ".PRFX."payment_creditnote_action_types";
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+     
+        return $rs->GetArray();     
+
+    }
+    
+    #############################################
+    #    Get Payment Directions                 #
+    #############################################
+    
+
+    public function getDirections() {
+
+        $sql = "SELECT * FROM ".PRFX."payment_directions";
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
      
@@ -668,6 +681,7 @@ class Payment extends Components {
                 tax_system      = '',
                 type            = '',
                 method          = '',
+                direction       = '',
                 status          = 'deleted',
                 amount          = 0.00,
                 additional_info = '',
@@ -997,6 +1011,7 @@ class Payment extends Components {
             // Prevent undefined variable errors (with and without submit)  - some of these vairables can be from page referrals (i.e. new) or page reloads or dont exists,
             \CMSApplication::$VAR['qpayment']['type']               = \CMSApplication::$VAR['type'];
             \CMSApplication::$VAR['qpayment']['method']             = \CMSApplication::$VAR['qpayment']['method'] ?? null;
+            \CMSApplication::$VAR['qpayment']['direction']          = null;
             \CMSApplication::$VAR['qpayment']['client_id']          = \CMSApplication::$VAR['client_id'] ?? \CMSApplication::$VAR['qpayment']['client_id'] ?? null; 
             \CMSApplication::$VAR['qpayment']['supplier_id']        = \CMSApplication::$VAR['supplier_id'] ?? \CMSApplication::$VAR['qpayment']['supplier_id'] ?? null;            
             \CMSApplication::$VAR['qpayment']['invoice_id']         = \CMSApplication::$VAR['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'] ?? null;            
@@ -1004,7 +1019,7 @@ class Payment extends Components {
             \CMSApplication::$VAR['qpayment']['expense_id']         = \CMSApplication::$VAR['expense_id'] ?? \CMSApplication::$VAR['qpayment']['expense_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['otherincome_id']     = \CMSApplication::$VAR['otherincome_id'] ?? \CMSApplication::$VAR['qpayment']['otherincome_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['creditnote_id']      = \CMSApplication::$VAR['creditnote_id'] ?? \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['creditnote_action']  = null;
+            \CMSApplication::$VAR['qpayment']['creditnote_action']  = null;            
             \CMSApplication::$VAR['qpayment']['voucher_id']         = null;
             \CMSApplication::$VAR['qpayment']['voucher_code']       = \CMSApplication::$VAR['voucher_code'] ?? \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null;            
             \CMSApplication::$VAR['qpayment']['name_on_card']       = \CMSApplication::$VAR['qpayment']['name_on_card'] ?? null;
@@ -1027,7 +1042,8 @@ class Payment extends Components {
             // Set Payment IDs into [qpayment]
             \CMSApplication::$VAR['qpayment']['payment_id'] = Payment::$payment_details['payment_id'];
             \CMSApplication::$VAR['qpayment']['type'] = Payment::$payment_details['type'];
-            \CMSApplication::$VAR['qpayment']['method'] = Payment::$payment_details['method'];            
+            \CMSApplication::$VAR['qpayment']['method'] = Payment::$payment_details['method'];
+            \CMSApplication::$VAR['qpayment']['direction'] = Payment::$payment_details['direction']; 
             \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];            
             \CMSApplication::$VAR['qpayment']['refund_id'] = Payment::$payment_details['refund_id'];
             \CMSApplication::$VAR['qpayment']['expense_id'] = Payment::$payment_details['expense_id'];
@@ -1074,6 +1090,5 @@ class Payment extends Components {
             Payment::$payment_details = $this->app->components->payment->getRecord(Payment::$payment_details['payment_id']); 
         }
     }
-    
     
 }

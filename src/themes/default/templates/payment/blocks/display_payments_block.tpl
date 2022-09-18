@@ -22,6 +22,7 @@
         <td class="olohead"><b>{t}Date{/t}</b></td>
         <td class="olohead"><b>{t}Type{/t}</b></td>
         <td class="olohead"><b>{t}Method{/t}</b></td>
+        <td class="olohead"><b>{t}Direction{/t}</b></td>
         <td class="olohead"><b>{t}Status{/t}</b></td>
         <td class="olohead"><b>{t}Amount{/t}</b></td>
         <td class="olohead"><b>{t}Additional Info{/t}</b></td>  
@@ -54,6 +55,11 @@
             <td class="olotd4" align="center">
                 {section name=m loop=$payment_methods}    
                     {if $display_payments.records[p].method == $payment_methods[m].method_key}{t}{$payment_methods[m].display_name}{/t}{/if}                         
+                {/section}
+            </td>
+            <td class="olotd4" align="center">
+                {section name=d loop=$payment_directions}    
+                    {if $display_payments.records[p].direction == $payment_directions[d].key}{t}{$payment_directions[d].display_name}{/t}{/if}                         
                 {/section}
             </td>
             <td class="olotd4" align="center">

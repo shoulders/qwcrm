@@ -41,18 +41,21 @@ $this->app->smarty->assign('vouchers_purchased',      $this->app->components->vo
 $this->app->smarty->assign('vouchers_claimed',        $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'redeemed', null, null, null, null, \CMSApplication::$VAR['client_id'])        );
 $this->app->smarty->assign('voucher_stats',           $this->app->components->report->getVouchersStats('all', null, null, QW_TAX_SYSTEM, null, \CMSApplication::$VAR['client_id'])  );
 
-$this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes()                                                                                 );
-$this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()                                                                               );
+$this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes());
+$this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods());
+$this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
-$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTpes());
+$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
 
-$this->app->smarty->assign('payments_received',        $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'received', null, null, null, \CMSApplication::$VAR['client_id'])        );
-$this->app->smarty->assign('payments_sent',            $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'sent', null, null, null, \CMSApplication::$VAR['client_id'])        );
-$this->app->smarty->assign('payment_stats',            $this->app->components->report->getPaymentsStats('all', null, null, QW_TAX_SYSTEM, null, \CMSApplication::$VAR['client_id'])   );
+//$this->app->smarty->assign('payments_received',        $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'monies_received', null, 'monies_received', null, null, \CMSApplication::$VAR['client_id'], null, null, null, null, null, null, 'monies_received'));
+//$this->app->smarty->assign('payments_sent',            $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'monies_sent', null, 'monies_sent', null, null, \CMSApplication::$VAR['client_id'], null, null, null, null, null, null, 'monies_sent'));
+$this->app->smarty->assign('payments_credits',         $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, null, null, 'credit', null, null, \CMSApplication::$VAR['client_id']));
+$this->app->smarty->assign('payments_debits',          $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, null, null, 'debit', null, null, \CMSApplication::$VAR['client_id']));
+$this->app->smarty->assign('payment_stats',           $this->app->components->report->getPaymentsStats('all', null, null, QW_TAX_SYSTEM, null, \CMSApplication::$VAR['client_id'])   );
 
-$this->app->smarty->assign('creditnote_types',            $this->app->components->creditnote->getTypes());
-$this->app->smarty->assign('creditnote_statuses',         $this->app->components->creditnote->getStatuses());
-$this->app->smarty->assign('display_creditnotes',        $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 25, false, null, null, null, null, null, \CMSApplication::$VAR['client_id']));
+$this->app->smarty->assign('creditnote_types',        $this->app->components->creditnote->getTypes());
+$this->app->smarty->assign('creditnote_statuses',     $this->app->components->creditnote->getStatuses());
+$this->app->smarty->assign('display_creditnotes',     $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 25, false, null, null, null, null, null, \CMSApplication::$VAR['client_id']));
 
 $this->app->smarty->assign('refund_types',            $this->app->components->refund->getTypes()                                                                                 );
 $this->app->smarty->assign('refund_statuses',         $this->app->components->refund->getStatuses()                                                                                                        );

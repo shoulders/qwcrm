@@ -77,20 +77,30 @@
                                             </td>
                                             
                                         </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Payment Method{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$payment_methods}    
-                                                    {if $payment_details.method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}   
-                                                {/section}
-                                            </td>
+                                        <tr>                                            
                                             <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=t loop=$payment_types}    
                                                     {if $payment_details.type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}                    
                                                 {/section}
                                             </td>
-                                        </tr>                                        
+                                            <td class="menutd"><b>{t}Method{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=s loop=$payment_methods}    
+                                                    {if $payment_details.method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}   
+                                                {/section}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd"><b>{t}Direction{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=d loop=$payment_directions}    
+                                                    {if $payment_details.direction == $payment_directions[d].key}{t}{$payment_directions[d].display_name}{/t}{/if}                         
+                                                {/section}
+                                            </td>
+                                            <td class="menutd"></td>
+                                            <td class="menutd"></td>
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Status{/t}</b></td>
                                             <td class="menutd">

@@ -20,6 +20,9 @@ class PaymentTypeRefund extends PaymentType
         Payment::$payment_details['type'] = 'refund';                      
         $this->refund_details = $this->app->components->refund->getRecord($this->VAR['qpayment']['refund_id']);  //only needed for smarty?
         
+        // Set Payment direction
+        $this->VAR['qpayment']['direction'] = 'debit';
+        
         // Disable Unwanted Payment Methods
         Payment::$disabledMethods[] = 'credit_note';
         Payment::$disabledMethods[] = 'voucher';

@@ -20,6 +20,9 @@ class PaymentTypeOtherincome extends PaymentType
         Payment::$payment_details['type'] = 'other_income';                 
         $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']); //only needed for smarty?
         
+        // Set Payment direction
+        $this->VAR['qpayment']['direction'] = 'credit';
+        
         // Disable Unwanted Payment Methods
         Payment::$disabledMethods[] = 'credit_note';
         Payment::$disabledMethods[] = 'voucher';

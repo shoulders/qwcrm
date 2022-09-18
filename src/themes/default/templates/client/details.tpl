@@ -74,9 +74,9 @@
                                             
                                             <!-- Tab 6 Contents (Payments) -->
                                             <div id="tab_6_contents" class="tab_contents">
-                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_received block_title=_gettext("Received")}
+                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_credits block_title=_gettext("Credits")}
                                                 <br>
-                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_sent block_title=_gettext("Sent")}
+                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_debits block_title=_gettext("Debits")}
                                             </div>
                                             
                                             <!-- Tab 7 Contents (Credit Notes) -->
