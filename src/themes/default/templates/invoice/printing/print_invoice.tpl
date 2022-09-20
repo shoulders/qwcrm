@@ -58,9 +58,7 @@
                                             {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
                                         {/section}<br>
                                         <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format}<br>
-                                        <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
-                                        <b>{t}Work Order{/t} - </b>{if $invoice_details.workorder_id}{$invoice_details.workorder_id}{else}{t}n/a{/t}{/if}<br>
-                                        <b>{t}Employee{/t} - </b>{$employee_display_name}<br>                                                                            
+                                        <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>                                                                                                                 
                                     </td>
                                 </tr>
                             </table>
@@ -162,15 +160,16 @@
                 <tr>                
                     <td class="olohead"><b>{t}Description{/t}</b></td>
                     <td class="olohead" width="40" align="right"><b>{t}Unit Qty{/t}</b></td>
-                    {if $invoice_details.tax_system != 'no_tax'}
-                        <td class="olohead" width="50" align="right"><b>{t}Unit Net{/t}</b></td>
-                    {else}
-                        <td class="olohead" width="50" align="right"><b>{t}Unit Gross{/t}</b></td> 
-                    {/if}
+                    <td class="olohead" width="50" align="right">
+                        {if $invoice_details.tax_system != 'no_tax'}
+                            <b>{t}Unit Net{/t}</b>
+                        {else}
+                            <b>{t}Unit Gross{/t}</b> 
+                        {/if}
+                    </td>
                     <td class="olohead" width="50" align="right"><b>{t}Unit Discount{/t}</b></td>
                     {if $invoice_details.tax_system != 'no_tax'}
-                        <td class="olohead" width="40" align="right"><b>{t}Net{/t}</b></td>                
-                        {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="olohead"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                        <td class="olohead" width="40" align="right"><b>{t}Net{/t}</b></td>                        
                         <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
                         <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>  
                     {/if}
@@ -183,28 +182,27 @@
                         <td>{$currency_sym}{$invoice_items[l].unit_net|string_format:"%.2f"}</td>
                         <td>{$currency_sym}{$invoice_items[l].unit_discount|string_format:"%.2f"}</td>
                         {if $invoice_details.tax_system != 'no_tax'}
-                            <td>{$currency_sym}{$invoice_items[l].subtotal_net|string_format:"%.2f"}</td>                                                                     
-                            {if $invoice_items[l].sales_tax_exempt}
-                                <td colspan="2" align="center">{t}Exempt{/t}</td>
-                            {elseif $invoice_items[l].vat_tax_code == 'T2'}
-                                <td colspan="3" align="center">{t}Exempt{/t}</td>
-                            {else}
-                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}
-                                    <td>
-                                        {section name=s loop=$vat_tax_codes}
-                                            {if $invoice_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                        {/section}
-                                    </td>
+                            <td>{$currency_sym}{$invoice_items[l].subtotal_net|string_format:"%.2f"}</td>
+                            <td align="center">
+                                {if $invoice_items[l].sales_tax_exempt}
+                                    {t}Exempt{/t}
+                                {elseif $invoice_items[l].vat_tax_code == 'T2'}
+                                    {t}Exempt{/t}
+                                {elseif $invoice_items[l].vat_tax_code == 'T9'}
+                                    {t}n/a{/t}
+                                {else}
+                                    {$invoice_items[l].unit_tax_rate|string_format:"%.2f"}%
                                 {/if}
-                                <td>{$invoice_items[l].unit_tax_rate|string_format:"%.2f"}%</td> 
-                                <td>{$currency_sym}{$invoice_items[l].subtotal_tax|string_format:"%.2f"}</td>
-                            {/if}                                                                    
+                            </td>                            
+                            <td>{$currency_sym}{$invoice_items[l].subtotal_tax|string_format:"%.2f"}</td>                                                                                             
                         {/if}
                         <td>{$currency_sym}{$invoice_items[l].subtotal_gross|string_format:"%.2f"}</td>                                                            
                     </tr>
                 {/section} 
             </table>
             <br>
+            
+            {*
             <table style="margin-top: 10px;" width="675" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                 <tr>
                     <td style="text-align:right;"><b>{t}Invoice Items{/t} {t}Totals{/t}</b></td>
@@ -215,11 +213,14 @@
                     {/if}
                     <td class="olotd4" width="80" align="right">{t}Gross{/t}: {$currency_sym}{$invoice_items_subtotals.subtotal_gross|string_format:"%.2f"}</td>
                 </tr>
-            </table>
+            </table>*}
+            
+            
         {/if}        
 
         <!-- Vouchers Table -->
-        {if $display_vouchers.total_results}
+        {*if $display_vouchers.total_results}
+            <br><br>
             <table width="675" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                 <tr>
                     <td class="olohead"><b>{t}Voucher{/t} {t}Code{/t}</b></td>                
@@ -254,7 +255,7 @@
                 </tr>
             </table>
             <br>
-        {/if}
+        {/if*}
 
         <!-- Financial Section -->         
 

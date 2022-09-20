@@ -146,15 +146,16 @@
                 <tr>                
                     <td class="olohead"><b>{t}Description{/t}</b></td>
                     <td class="olohead" width="40" align="right"><b>{t}Unit Qty{/t}</b></td>
-                    {if $creditnote_details.tax_system != 'no_tax'}
-                        <td class="olohead" width="50" align="right"><b>{t}Unit Net{/t}</b></td>
-                    {else}
-                        <td class="olohead" width="50" align="right"><b>{t}Unit Gross{/t}</b></td> 
-                    {/if}
+                    <td class="olohead" width="50" align="right">
+                        {if $creditnote_details.tax_system != 'no_tax'}
+                            <b>{t}Unit Net{/t}</b>
+                        {else}
+                            <b>{t}Unit Gross{/t}</b>
+                        {/if}
+                    </td>
                     <td class="olohead" width="50" align="right"><b>{t}Unit Discount{/t}</b></td>
                     {if $creditnote_details.tax_system != 'no_tax'}
-                        <td class="olohead" width="40" align="right"><b>{t}Net{/t}</b></td>                
-                        {if '/^vat_/'|preg_match:$creditnote_details.tax_system}<td class="olohead"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                        <td class="olohead" width="40" align="right"><b>{t}Net{/t}</b></td>                        
                         <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
                         <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>  
                     {/if}
@@ -165,24 +166,21 @@
                         <td>{$creditnote_items[l].description}</td>
                         <td>{$creditnote_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
                         <td>{$currency_sym}{$creditnote_items[l].unit_net|string_format:"%.2f"}</td>
-                        <td>{$currency_sym}{$creditnote_items[l].unit_discount|string_format:"%.2f"}</td>
+                        <td>{$currency_sym}{$creditnote_items[l].unit_discount|string_format:"%.2f"}</td>                        
                         {if $creditnote_details.tax_system != 'no_tax'}
-                            <td>{$currency_sym}{$creditnote_items[l].subtotal_net|string_format:"%.2f"}</td>                                                                     
-                            {if $creditnote_items[l].sales_tax_exempt}
-                                <td colspan="2" align="center">{t}Exempt{/t}</td>
-                            {elseif $creditnote_items[l].vat_tax_code == 'T2'}
-                                <td colspan="3" align="center">{t}Exempt{/t}</td>
-                            {else}
-                                {if '/^vat_/'|preg_match:$creditnote_details.tax_system}
-                                    <td>
-                                        {section name=s loop=$vat_tax_codes}
-                                            {if $creditnote_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                        {/section}
-                                    </td>
+                            <td>{$currency_sym}{$creditnote_items[l].subtotal_net|string_format:"%.2f"}</td>
+                            <td align="center">
+                                {if $creditnote_items[l].sales_tax_exempt}
+                                    {t}Exempt{/t}
+                                {elseif $creditnote_items[l].vat_tax_code == 'T2'}
+                                    {t}Exempt{/t}
+                                {elseif $creditnote_items[l].vat_tax_code == 'T9'}
+                                    {t}n/a{/t}
+                                {else}
+                                    {$creditnote_items[l].unit_tax_rate|string_format:"%.2f"}%
                                 {/if}
-                                <td>{$creditnote_items[l].unit_tax_rate|string_format:"%.2f"}%</td> 
-                                <td>{$currency_sym}{$creditnote_items[l].subtotal_tax|string_format:"%.2f"}</td>
-                            {/if}                                                                    
+                            </td>
+                            <td>{$currency_sym}{$creditnote_items[l].subtotal_tax|string_format:"%.2f"}</td>
                         {/if}
                         <td>{$currency_sym}{$creditnote_items[l].subtotal_gross|string_format:"%.2f"}</td>                                                            
                     </tr>

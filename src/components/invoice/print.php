@@ -49,16 +49,9 @@ $this->app->smarty->assign('client_details',                   $client_details  
 $this->app->smarty->assign('workorder_details',                $this->app->components->workorder->getRecord($invoice_details['workorder_id'])    );
 $this->app->smarty->assign('invoice_details',                  $invoice_details                                           );
 
-// Prefill Items
-$this->app->smarty->assign('vat_tax_codes',                    $this->app->components->company->getVatTaxCodes(false)                                                               );
-
 // Invoice Items
-$this->app->smarty->assign('invoice_items',                     $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'])               );
+$this->app->smarty->assign('invoice_items',                     $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'], true)               );
 $this->app->smarty->assign('display_vouchers',                 $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
-
-// Sub Totals
-$this->app->smarty->assign('invoice_items_subtotals',          $this->app->components->invoice->getItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );
-$this->app->smarty->assign('voucher_subtotals',               $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id'])                                                       );
 
 // Payment Details
 $this->app->smarty->assign('payment_options',                  $this->app->components->payment->getOptions()                                      );
@@ -66,7 +59,6 @@ $this->app->smarty->assign('payment_methods',                  $payment_methods 
 
 // Misc
 $this->app->smarty->assign('display_payment_instructions',     $display_payment_instructions                              );
-$this->app->smarty->assign('employee_display_name',            $this->app->components->user->getRecord($invoice_details['employee_id'], 'display_name')  );
 $this->app->smarty->assign('invoice_statuses',                 $this->app->components->invoice->getStatuses()                                     );
 
 // Invoice Print Routine

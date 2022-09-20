@@ -36,9 +36,6 @@ $this->app->smarty->assign('client_details',                   $client_details  
 $this->app->smarty->assign('creditnote_details',               $creditnote_details                                           );
 $this->app->smarty->assign('creditnote_items',                 $this->app->components->creditnote->getItems(\CMSApplication::$VAR['creditnote_id'])               );
 
-// Prefill Items
-$this->app->smarty->assign('vat_tax_codes',                    $this->app->components->company->getVatTaxCodes(false)                                                               );
-
 // Misc
 $this->app->smarty->assign('creditnote_statuses',                 $this->app->components->creditnote->getStatuses()                                     );
 $this->app->smarty->assign('creditnote_footer_msg',               $this->app->components->payment->getOptions('creditnote_footer_msg'));
