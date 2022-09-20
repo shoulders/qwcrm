@@ -575,7 +575,7 @@ class Setup extends Components {
 
     public function setWorkorderStartNumber($start_number) {
 
-        $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$this->app->db->qStr($start_number);
+        $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$start_number;
 
         // Perform the query
         if(!$this->app->db->execute($sql)) {
@@ -609,7 +609,7 @@ class Setup extends Components {
 
     public function setInvoiceStartNumber($start_number) {
 
-        $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$this->app->db->qStr($start_number);
+        $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$start_number;
 
         // Perform the query
         if(!$this->app->db->execute($sql)) {
