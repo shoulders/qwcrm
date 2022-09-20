@@ -40,8 +40,6 @@ _gettext("Sales - Services - EC VAT Customers");
 _gettext("Zero Rate / Exempt Purchases - Services - EC");
 _gettext("Standard Rate Purchases - Services - EC");
 _gettext("Flat Rate Capital Asset");
-_gettext("Not Applicable");
-_gettext("VAT Multi TCode");
 
 /* Credit Note Statuses */
 _gettext("Pending");
