@@ -64,7 +64,7 @@
                                             <td class="menutd">&nbsp;</td>
                                             {if $refund_details.tax_system != 'no_tax'}
                                                 <td class="menutd"><b>{if '/^vat_/'|preg_match:$refund_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                <td class="menutd">{if $refund_details.vat_tax_code == 'TVM'}{t}n/a{/t}{else}{$refund_details.unit_tax_rate|string_format:"%.2f"}%{/if}</td>
+                                                <td class="menutd">{$refund_details.unit_tax_rate|string_format:"%.2f"}%</td>
                                             {else}
                                                 <td class="menutd">&nbsp;</td>
                                                 <td class="menutd">&nbsp;</td>

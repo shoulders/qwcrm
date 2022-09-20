@@ -992,3 +992,21 @@ INSERT INTO `#__payment_directions` (`id`, `key`, `display_name`) VALUES
 (2, 'debit', 'Debit');
 
 ALTER TABLE `#__payment_directions` ADD PRIMARY KEY (`id`);
+
+
+---
+--- Remove TNA and TVM Vat Codes
+---
+
+ALTER TABLE `#__company_vat_tax_codes` DROP `system_tax_code`;
+DELETE FROM `#__company_vat_tax_codes` WHERE `#__company_vat_tax_codes`.`id` = 1000;
+DELETE FROM `#__company_vat_tax_codes` WHERE `#__company_vat_tax_codes`.`id` = 1001;
+
+UPDATE `#__invoice_items` SET `vat_tax_code` = 'T9' WHERE `#__invoice_items`.`vat_tax_code` = 'TNA';
+UPDATE `#__refund_records` SET `vat_tax_code` = 'T9' WHERE `#__refund_records`.`vat_tax_code` = 'TNA';
+UPDATE `#__voucher_records` SET `vat_tax_code` = 'T9' WHERE `#__voucher_records`.`vat_tax_code` = 'TNA';
+
+-- I think this was only ever a thing on Refunds - I will use T1 to replace, but it is not ideal
+UPDATE `#__invoice_items` SET `vat_tax_code` = 'T1' WHERE `#__invoice_items`.`vat_tax_code` = 'TVM';
+UPDATE `#__refund_records` SET `vat_tax_code` = 'T1' WHERE `#__refund_records`.`vat_tax_code` = 'TVM';
+UPDATE `#__voucher_records` SET `vat_tax_code` = 'T1' WHERE `#__voucher_records`.`vat_tax_code` = 'TVM';

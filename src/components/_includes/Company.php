@@ -106,9 +106,9 @@ class Company extends Components {
 
     #####################################
     #    Get VAT Tax Codes              # Editable is only used in company:edit
-    ##################################### system_tax_code is not currently used and might be removed
+    #####################################
 
-    public function getVatTaxCodes($hidden_status = null, $editable_status = null, $system_tax_code = null) {
+    public function getVatTaxCodes($hidden_status = null, $editable_status = null) {
 
         $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
 
@@ -123,11 +123,6 @@ class Company extends Components {
         // Restrict by editable_status - only some of the VAT codes are editable
         if(!is_null($editable_status)) {
             $sql .= "\nAND editable = ".$this->app->db->qStr($editable_status);
-        }
-
-        // Restrict by system_tax_code - these are system Tax codes and are not accessible by a user, these are only needed for displaying data (only needed for TNA and TVM))
-        if(!is_null($system_tax_code)) {
-            $sql .= "\nAND standard = ".$this->app->db->qStr($system_tax_code);
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -159,8 +154,8 @@ class Company extends Components {
 
         if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
 
-        if($tax_system == 'no_tax') { return 'TNA'; }
-        if($tax_system == 'sales_tax_cash') { return 'TNA'; }     
+        if($tax_system == 'no_tax') { return 'T9'; }
+        if($tax_system == 'sales_tax_cash') { return 'T9'; }     
         if($tax_system == 'vat_standard') { return 'T1'; }    
         if($tax_system == 'vat_cash') { return 'T1'; }
         if($tax_system == 'vat_flat_basic') { return 'T1'; }

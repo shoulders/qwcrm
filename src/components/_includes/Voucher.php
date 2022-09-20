@@ -413,8 +413,8 @@ class Voucher extends Components {
         if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
 
         if($type == 'mpv') {
-            if($tax_system == 'no_tax') { return 'TNA'; }
-            if($tax_system == 'sales_tax_cash') { return 'TNA'; } 
+            if($tax_system == 'no_tax') { return 'T9'; }
+            if($tax_system == 'sales_tax_cash') { return 'T9'; } 
             if($tax_system == 'vat_standard') { return 'T9'; }        
             if($tax_system == 'vat_cash') { return 'T9'; }
             if($tax_system == 'vat_flat_basic') { return 'T9'; }
@@ -422,8 +422,8 @@ class Voucher extends Components {
         }
 
         if($type == 'spv') {
-            if($tax_system == 'no_tax') { return 'TNA'; }
-            if($tax_system == 'sales_tax_cash') { return 'TNA'; }
+            if($tax_system == 'no_tax') { return 'T9'; }
+            if($tax_system == 'sales_tax_cash') { return 'T9'; }
             if($tax_system == 'vat_standard') { return 'T1'; }
             if($tax_system == 'vat_cash') { return 'T1'; }
             if($tax_system == 'vat_flat_basic') { return 'T1'; }

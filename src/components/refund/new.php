@@ -67,7 +67,7 @@ if (isset(\CMSApplication::$VAR['submit'])) {
     $refund_details['type'] = \CMSApplication::$VAR['type'];    
     $refund_details['unit_net'] = $invoice_details['unit_net'];
     if(preg_match('/^vat_/', $invoice_details['tax_system']) && \CMSApplication::$VAR['type'] == 'invoice') {
-        $refund_details['vat_tax_code'] = 'TVM';
+        $refund_details['vat_tax_code'] = 'T1';
     } else {
         $refund_details['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']);
     }
