@@ -31,7 +31,7 @@
             <td class="olotd4">{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>
         {/if}
         <td class="olotd4">{$currency_sym}{$refund_details.unit_gross|string_format:"%.2f"}</td> 
-        <td class="olotd4">{$currency_sym}{$refund_details.unit_gross - $refund_details.balance|string_format:"%.2f"}</td> 
+        <td class="olotd4">{$currency_sym}{($refund_details.unit_gross - $refund_details.balance)|string_format:"%.2f"}</td> 
         <td class="olotd4"><font color="#cc0000"><b>{$currency_sym}{$refund_details.balance|string_format:"%.2f"}</b></font></td>  
         <td class="olotd4">
             {section name=s loop=$refund_statuses}

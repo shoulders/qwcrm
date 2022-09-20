@@ -37,17 +37,17 @@
                                 </td>
                             </tr>                                                       
 
-                            <!-- Payments -->                           
-                            <tr>
-                                <td>                                                
-                                    {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
-                                </td>
-                            </tr>
-                            
                             <!-- Payment Methods -->
                             <tr>
                                 <td>
                                     {include file='payment/blocks/display_payment_methods_block.tpl'}
+                                </td>
+                            </tr>
+                            
+                            <!-- Payments -->                           
+                            <tr>
+                                <td>                                                
+                                    {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
                                 </td>
                             </tr>
 

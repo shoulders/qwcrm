@@ -107,6 +107,5 @@ $this->app->smarty->assign('name_on_card',                      \CMSApplication:
 $this->app->smarty->assign('voucher_code',                      \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null);
 $this->app->smarty->assign('creditnote_id',                     \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null); // This is needed becasue of the dualality of the Credit Note system, only works for form reloads
 $this->app->smarty->assign('note',                              \CMSApplication::$VAR['qpayment']['note'] ?? null                                                    );
-$this->app->smarty->assign('amount',                            Payment::$record_balance);
 $this->app->smarty->assign('record_balance',                    Payment::$record_balance);
 $this->app->smarty->assign('buttons',                           Payment::$buttons);
