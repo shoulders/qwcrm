@@ -38,6 +38,7 @@
                                                                         <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Client{/t}</option>
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>                                                                                                                                                                                                                     
+                                                                        <option disabled>----------</option>   
                                                                         <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>
                                                                         <option disabled>----------</option>                                                                        
                                                                         <option value="invoice_items"{if $search_category == 'invoice_items'} selected{/if}>{t}Items{/t}</option>                                                                                                                                           

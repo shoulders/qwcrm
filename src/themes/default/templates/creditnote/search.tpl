@@ -47,6 +47,10 @@
                                                                         <option value="redeemed_supplier_display_name"{if $search_category == 'redeemed_supplier_display_name'} selected{/if}>{t}Supplier redeemed against{/t}</option> 
                                                                         <option value="redeemed_expense_id"{if $search_category == 'redeemed_expense_id'} selected{/if}>{t}Expense ID redeemed against{/t}</option>
                                                                         <option disabled>----------</option>
+                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>
+                                                                        <option disabled>----------</option>
+                                                                        <option value="creditnote_items"{if $search_category == 'creditnote_items'} selected{/if}>{t}Items{/t}</option>  
+                                                                        <option disabled>----------</option>
                                                                         <option value="reference"{if $search_category == 'reference'} selected{/if}>{t}Reference{/t}</option> 
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option> 
                                                                     </select>

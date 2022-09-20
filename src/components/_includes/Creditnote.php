@@ -167,31 +167,26 @@ class Creditnote extends Components {
         elseif($search_category == 'expense_id') {$havingTheseRecords .= " HAVING expense_id = ".$this->app->db->qStr($search_term);}
         
         // Restrict results by search category (client - redeemed against) and search term
-        elseif($search_category == 'redeemed_client_display_name') {
-            $redeemedHavingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');            
-        }
+        elseif($search_category == 'redeemed_client_display_name') {$redeemedHavingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
         
         // Restrict results by search category (Invoice ID - redeemed against) and search term
-        elseif($search_category == 'redeemed_invoice_id') {            
-            $redeemedWhereTheseRecords .= " WHERE invoice_id = ".$this->app->db->qStr($search_term);            
-        }
+        elseif($search_category == 'redeemed_invoice_id') {$redeemedWhereTheseRecords .= " WHERE invoice_id = ".$this->app->db->qStr($search_term);}
         
         // Restrict results by search category (supplier - redeemed against) and search term
-        elseif($search_category == 'redeemed_supplier_display_name') {
-            $redeemedHavingTheseRecords .= " HAVING supplier_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');            
-        }
+        elseif($search_category == 'redeemed_supplier_display_name') {$redeemedHavingTheseRecords .= " HAVING supplier_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
         
         // Restrict results by search category (Expense ID - redeemed against) and search term
-        elseif($search_category == 'redeemed_expense_id') {            
-            $redeemedWhereTheseRecords .= " WHERE expense_id = ".$this->app->db->qStr($search_term);            
-        }
+        elseif($search_category == 'redeemed_expense_id') {$redeemedWhereTheseRecords .= " WHERE expense_id = ".$this->app->db->qStr($search_term);}
+        
+        // Restrict results by search category (creditnote items) and search term
+        elseif($search_category == 'creditnote_items') {$havingTheseRecords .= " HAVING creditnote_items LIKE ".$this->app->db->qStr('%'.$search_term.'%');}        
         
         // Restrict results by search category and search term
         elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."creditnote_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict by Status
-        if($status) {
-
+        if($status)
+        {
             // All Open Credit Notes
             if($status == 'open') {
 
@@ -204,11 +199,10 @@ class Creditnote extends Components {
 
             // Return Credit Notes for the given status
             } else {
-
+                
                 $whereTheseRecords .= " AND ".PRFX."creditnote_records.status= ".$this->app->db->qStr($status);
-
+                
             }
-
         }
 
         // Restrict by Employee
@@ -246,6 +240,7 @@ class Creditnote extends Components {
             ".PRFX."user_records.work_mobile_phone AS employee_work_mobile_phone,
             ".PRFX."user_records.home_mobile_phone AS employee_home_mobile_phone,            
                 
+            items.combined as creditnote_items,
             redemptions        
 
             FROM ".PRFX."creditnote_records
@@ -308,6 +303,20 @@ class Creditnote extends Components {
             LEFT JOIN ".PRFX."client_records ON ".PRFX."creditnote_records.client_id = ".PRFX."client_records.client_id         
             LEFT JOIN ".PRFX."user_records ON ".PRFX."creditnote_records.employee_id = ".PRFX."user_records.user_id
             LEFT JOIN ".PRFX."supplier_records ON ".PRFX."creditnote_records.supplier_id = ".PRFX."supplier_records.supplier_id
+            LEFT JOIN (
+                SELECT ".PRFX."creditnote_items.creditnote_id,            
+                GROUP_CONCAT(
+                    CONCAT(".PRFX."creditnote_items.unit_qty, ' x ', ".PRFX."creditnote_items.description)                
+                    ORDER BY ".PRFX."creditnote_items.creditnote_item_id
+                    ASC
+                    SEPARATOR '|||'                
+                ) AS combined          
+                FROM ".PRFX."creditnote_items
+                GROUP BY ".PRFX."creditnote_items.creditnote_id
+                ORDER BY ".PRFX."creditnote_items.creditnote_id
+                ASC            
+            ) AS items
+            ON ".PRFX."creditnote_records.creditnote_id = items.creditnote_id
             
             ".$whereTheseRecords."
             GROUP BY ".PRFX."creditnote_records.".$order_by."

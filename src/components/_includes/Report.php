@@ -1911,10 +1911,7 @@ class Report extends Components {
         $whereTheseRecords .= $this->paymentBuildFilterByStatus($status);
 
         // Restrict by Type 
-        if($type) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
-            $whereTheseRecords .= $this->paymentBuildFilterByType($type);
-        } 
+        $whereTheseRecords .= $this->paymentBuildFilterByType($type);        
         
         // Filter by Method
         if($method) {
@@ -1922,10 +1919,7 @@ class Report extends Components {
         }
         
         // Restrict by Direction
-        if($paymentDirection) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);
-            $whereTheseRecords .= $this->paymentBuildFilterByPaymentDirection($paymentDirection);
-        }
+        $whereTheseRecords .= $this->paymentBuildFilterByPaymentDirection($paymentDirection);        
 
         // Filter by Employee
         if($employee_id) {
@@ -1963,10 +1957,7 @@ class Report extends Components {
         }
         
         // Restrict by Credit Note Action
-        if($creditnote_action) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
-            $whereTheseRecords .= $this->paymentBuildFilterByCreditnoteAction($creditnote_action);
-        }
+        $whereTheseRecords .= $this->paymentBuildFilterByCreditnoteAction($creditnote_action);        
         
         // Filter by Voucher
         if($voucher_id) {
@@ -2004,11 +1995,8 @@ class Report extends Components {
         // Restrict by Status
         $whereTheseRecords .= $this->paymentBuildFilterByStatus($status);
 
-        // Restrict by Type 
-        if($type) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
-            $whereTheseRecords .= $this->paymentBuildFilterByType($type);
-        }       
+        // Restrict by Type
+        $whereTheseRecords .= $this->paymentBuildFilterByType($type);              
 
         // Filter by Method
         if($method) {
@@ -2016,10 +2004,7 @@ class Report extends Components {
         }
         
         // Restrict by Direction
-        if($paymentDirection) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);
-            $whereTheseRecords .= $this->paymentBuildFilterByPaymentDirection($paymentDirection);
-        }
+        $whereTheseRecords .= $this->paymentBuildFilterByPaymentDirection($paymentDirection);        
 
         // Filter by Employee
         if($employee_id) {
@@ -2057,10 +2042,7 @@ class Report extends Components {
         }
         
         // Restrict by Credit Note Action
-        if($creditnote_action) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
-            $whereTheseRecords .= $this->paymentBuildFilterByCreditnoteAction($creditnote_action);
-        }
+        $whereTheseRecords .= $this->paymentBuildFilterByCreditnoteAction($creditnote_action);        
         
         // Filter by Voucher
         if($voucher_id) {

@@ -24,6 +24,7 @@
         {/if}
         <td class="olohead" nowrap>{t}Gross{/t}</td>
         <td class="olohead" nowrap>{t}Balance{/t}</td>
+        <td class="olohead" nowrap>{t}Items{/t}</td>
         <td class="olohead" nowrap>{t}Redemptions{/t}</td>
         <td class="olohead" nowrap>{t}Additional Info{/t}</td> 
     </tr>
@@ -75,6 +76,11 @@
             {/if}
             <td class="olotd4" nowrap>{$currency_sym}{$display_creditnotes.records[i].unit_gross|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>{$currency_sym}{$display_creditnotes.records[i].balance|string_format:"%.2f"}</td>
+            <td class="olotd4" nowrap>
+                {if $display_creditnotes.records[i].creditnote_items}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_creditnotes.records[i].creditnote_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {/if}
+            </td>
             <td class="olotd4" nowrap>
                 {if $display_creditnotes.records[i].redemptions|redemptions}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Redemptions{/t}</strong></div><hr><div>{$display_creditnotes.records[i].redemptions|redemptions|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">

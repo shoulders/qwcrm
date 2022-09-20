@@ -201,7 +201,7 @@ defined('_QWEXEC') or die;
         elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category (invoice items) and search term
-        elseif($search_category == 'invoice_items') {$whereTheseRecords .= " AND invoice_items LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
+        elseif($search_category == 'invoice_items') {$havingTheseRecords .= " HAVING invoice_items LIKE ".$this->app->db->qStr('%'.$search_term.'%');}         
 
         // Restrict results by search category and search term
         elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}

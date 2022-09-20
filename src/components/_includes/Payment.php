@@ -111,20 +111,20 @@ class Payment extends Components {
         // Restrict results by search category and search term
         elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
         
-        // Restrict by Type 
-        if($type) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
-            $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByType($type);
-        }        
+        // Restrict by Type
+        $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByType($type);
+        /*if($type) {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);            
+        }*/        
         
         // Restrict by Method
         if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qStr($method);}
         
         // Restrict by Direction
-        if($paymentDirection) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);
-            $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByPaymentDirection($paymentDirection);
-        }
+        $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByPaymentDirection($paymentDirection);
+        /*if($paymentDirection) {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);            
+        }*/
 
         // Restrict by Status
         if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);}   
@@ -154,10 +154,10 @@ class Payment extends Components {
         if($creditnote_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);}
         
         // Restrict by Credit Note Action
-        if($creditnote_action) {
-            //$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
-            $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByCreditnoteAction($creditnote_action);
-        }
+        $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByCreditnoteAction($creditnote_action);
+        /*if($creditnote_action) {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);            
+        }*/
         
         // Restrict by Voucher
         if($voucher_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.voucher_id=".$this->app->db->qStr($voucher_id);} 
