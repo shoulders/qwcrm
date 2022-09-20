@@ -104,20 +104,13 @@ class User extends Components {
         if($usergroup) {$whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$this->app->db->qStr($usergroup);}
 
         // Restrict results by user type
-        if($usertype && !$usergroup) {
+        if($usertype) {
 
             if($usertype == 'client') { 
-                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$this->app->db->qStr(7);}            
+                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup = 7";}            
 
             if($usertype == 'employee') {
-
-                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$this->app->db->qStr(1);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->app->db->qStr(2);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->app->db->qStr(3);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->app->db->qStr(4);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->app->db->qStr(5);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->app->db->qStr(6);
-
+                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup IN (1, 2, 3, 4, 5, 6)";
             }
 
         }
