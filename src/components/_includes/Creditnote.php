@@ -1527,8 +1527,8 @@ class Creditnote extends Components {
     public function recalculateTotals($creditnote_id) {
         
         $items_subtotals        = $this->getItemsSubtotals($creditnote_id);               
-        //$payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'invoice', 'creditnote', null, null, null, null, null, null, $creditnote_id);
-        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', null, null, null, null, null, null, null, null, $creditnote_id);
+        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'creditnote', null, null, null, null, null, null, null, $creditnote_id);
+        
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];       
         $unit_tax               = $items_subtotals['subtotal_tax'];

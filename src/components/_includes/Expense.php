@@ -472,7 +472,7 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id))
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."));
             $state_flag = false;        
         }*/
@@ -523,7 +523,7 @@ class Expense extends Components {
         }    
 
         /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(!$this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
+        if(!$this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be refunded because the expense has no payments."));
             $state_flag = false;        
         }*/
@@ -568,7 +568,7 @@ class Expense extends Components {
         }    
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."));
             $state_flag = false;        
         }*/
@@ -619,7 +619,7 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."));
             $state_flag = false;        
         }*/
@@ -676,7 +676,7 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
             $state_flag = false;        
         }*/
@@ -701,7 +701,7 @@ class Expense extends Components {
 
         $expense_details            = $this->getRecord($expense_id);    
         $unit_gross                 = $expense_details['unit_gross'];   
-        $payments_subtotal         = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'expense', null, null, null, null, null, $expense_id);
+        $payments_subtotal          = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'expense', null, null, null, null, null, null, $expense_id);
         $balance                    = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."expense_records SET

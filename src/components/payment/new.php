@@ -95,18 +95,18 @@ elseif (!\CMSApplication::$VAR['qpayment']['name_on_card'] && (\CMSApplication::
 }
       
 // Build the page
-$this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'], \CMSApplication::$VAR['qpayment']['creditnote_id']));                  
+$this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'], \CMSApplication::$VAR['qpayment']['creditnote_id']));                                                                                                 
 $this->app->smarty->assign('payment_method',                    \CMSApplication::$VAR['qpayment']['method']                                                      );
 $this->app->smarty->assign('payment_type',                      \CMSApplication::$VAR['qpayment']['type']                                                        );
 $this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes()                                                             );
 $this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods()                                                           );
 $this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses()                                                          );
-$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
+$this->app->smarty->assign('payment_creditnote_action_types',   $this->app->components->payment->getCreditnoteActionTypes());
 $this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes()                                                 );
 $this->app->smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
 $this->app->smarty->assign('voucher_code',                      \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null);
 $this->app->smarty->assign('creditnote_id',                     \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null); // This is needed becasue of the dualality of the Credit Note system, only works for form reloads
 $this->app->smarty->assign('note',                              \CMSApplication::$VAR['qpayment']['note'] ?? null                                                    );
-$this->app->smarty->assign('amount',                            \CMSApplication::$VAR['qpayment']['amount'] ?? Payment::$record_balance);
-$this->app->smarty->assign('record_balance',                    Payment::$record_balance                                                     );
-$this->app->smarty->assign('buttons',                           Payment::$buttons                                                            );
+$this->app->smarty->assign('amount',                            Payment::$record_balance);
+$this->app->smarty->assign('record_balance',                    Payment::$record_balance);
+$this->app->smarty->assign('buttons',                           Payment::$buttons);

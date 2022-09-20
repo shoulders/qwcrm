@@ -486,7 +486,7 @@ class Refund extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'refund', null, null, null, null, $refund_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'refund', null, null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments."));
             $state_flag = false;       
         }*/
@@ -531,7 +531,7 @@ class Refund extends Components {
         }    
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'refund', null, null, null, null, $refund_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'refund', null, null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be cancelled because the refund has payments."));
             $state_flag = false;       
         }*/
@@ -582,7 +582,7 @@ class Refund extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'refund', null, null, null, null, $refund_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'refund', null, null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments."));
             $state_flag = false;       
         }*/
@@ -645,7 +645,7 @@ class Refund extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'refund', null, null, null, null, $refund_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'refund', null, null, null, null, null, $refund_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments."));
             $state_flag = false;       
         }*/
@@ -675,9 +675,8 @@ class Refund extends Components {
     public function recalculateTotals($refund_id) {
 
         $refund_details             = $this->getRecord($refund_id);    
-
         $unit_gross                 = $refund_details['unit_gross'];   
-        $payments_subtotal         = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'refund', null, null, null, null, $refund_id);
+        $payments_subtotal          = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'refund', null, null, null, null, null, $refund_id);
         $balance                    = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."refund_records SET
