@@ -587,55 +587,6 @@ defined('_QWEXEC') or die;
 
     }  
     
-    /*#####################################
-    #     update invoice (full)         #  // not currently used
-    #####################################
-
-    public function updateRecordFull($qform, $doNotLog = false) {
-
-        $sql = "UPDATE ".PRFX."invoice_records SET     
-                employee_id         =". $this->app->db->qStr( $qform['employee_id']     ).", 
-                client_id           =". $this->app->db->qStr( $qform['client_id']       ).",
-                workorder_id        =". $this->app->db->qStr( $qform['workorder_id']    ).",               
-                date                =". $this->app->db->qStr( $qform['date']            ).",
-                due_date            =". $this->app->db->qStr( $qform['due_date']        ).", 
-                tax_system          =". $this->app->db->qStr( $qform['tax_system']      ).",                                          
-                unit_discount       =". $this->app->db->qStr( $qform['unit_discount'] ).",   
-                unit_net            =". $this->app->db->qStr( $qform['unit_net']      ).",
-                sales_tax_rate      =". $this->app->db->qStr( $qform['sales_tax_rate']  ).",
-                unit_tax            =". $this->app->db->qStr( $qform['unit_tax']      ).",             
-                unit_gross          =". $this->app->db->qStr( $qform['unit_gross']    ).", 
-                unit_paid           =". $this->app->db->qStr( $qform['unit_paid']     ).",
-                balance             =". $this->app->db->qStr( $qform['balance']         ).",
-                opened_on           =". $this->app->db->qStr( $qform['opened_on']       ).",
-                closed_on           =". $this->app->db->qStr( $qform['closed_on']       ).",
-                last_active         =". $this->app->db->qStr( $qform['last_active']     ).",
-                status              =". $this->app->db->qStr( $qform['status']          ).",
-                is_closed           =". $this->app->db->qStr( $qform['is_closed']       )."            
-                WHERE invoice_id    =". $this->app->db->qStr( $qform['invoice_id']      );
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        if (!$doNotLog) {
-
-            // Create a Workorder History Note  
-            $this->app->components->workorder->insertHistory($this->db, $qform['workorder_id'], _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
-
-            // Log activity        
-            $record = _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';        
-            $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
-
-            // Update last active record    
-            $this->app->components->client->updateLastActive($this->db, $qform['client_id']);
-            $this->app->components->workorder->updateLastActive($this->db, $qform['workorder_id']);
-            $this->updateLastActive($this->db, $qform['invoice_id']);        
-
-        }
-
-        return true;
-
-    }   */ 
-
     /*####################################
     #   update invoice static values   #  // This is used when a user updates an invoice before any payments
     ####################################
@@ -918,7 +869,6 @@ defined('_QWEXEC') or die;
                 sales_tax_rate      = 0.00, 
                 unit_tax            = 0.00,             
                 unit_gross          = 0.00,  
-                unit_paid           = 0.00, 
                 balance             = 0.00,
                 status              = 'deleted',
                 opened_on           = NULL,
@@ -1443,8 +1393,7 @@ defined('_QWEXEC') or die;
                 unit_net            =". $this->app->db->qstr( $unit_net            ).",
                 unit_discount       =". $this->app->db->qstr( $unit_discount       ).",
                 unit_tax            =". $this->app->db->qstr( $unit_tax            ).",
-                unit_gross          =". $this->app->db->qstr( $unit_gross          ).",
-                unit_paid           =". $this->app->db->qstr( $payments_subtotal   ).",
+                unit_gross          =". $this->app->db->qstr( $unit_gross          ).",                
                 balance             =". $this->app->db->qstr( $balance             )."
                 WHERE invoice_id    =". $this->app->db->qstr( $invoice_id          );
 

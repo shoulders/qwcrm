@@ -286,7 +286,6 @@ class Report extends Components {
             $stats['sum_unit_discount'] = $this->sumInvoices('unit_discount', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);
             $stats['sum_unit_tax'] = $this->sumInvoices('unit_tax', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);        
             $stats['sum_unit_gross'] = $this->sumInvoices('unit_gross', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);           
-            $stats['sum_unit_paid'] = $this->sumInvoices('unit_paid', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);       
             $stats['sum_balance'] = $this->sumInvoices('balance', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);   
             
             // Sums by Status - Only used on Client Tab        
@@ -1474,7 +1473,6 @@ class Report extends Components {
             $stats['sum_unit_discount'] = $this->sumCreditnotes('unit_discount', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_unit_tax'] = $this->sumCreditnotes('unit_tax', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);        
             $stats['sum_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);           
-            $stats['sum_unit_paid'] = $this->sumCreditnotes('unit_paid', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);       
             $stats['sum_balance'] = $this->sumCreditnotes('balance', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);   
             
             // Sums by Status - Only used on Client Tab        

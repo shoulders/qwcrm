@@ -849,7 +849,6 @@ CREATE TABLE `#__creditnote_records` (
   `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
   `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `unit_paid` decimal(10,2) NOT NULL DEFAULT 0.00,
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime DEFAULT NULL,
