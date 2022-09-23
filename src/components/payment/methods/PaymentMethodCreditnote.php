@@ -19,34 +19,7 @@ class PaymentMethodCreditnote extends PaymentMethod
         parent::__construct();
         
         // Set class variables
-        Payment::$payment_details['method'] = 'credit_note';        
-        
-        if($this->creditnote_details['type'] == 'sales')
-        {
-            // Apply a Client's credit note
-            $this->VAR['qpayment']['creditnote_action'] = 'sales_apply';
-            
-            // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
-            $this->VAR['qpayment']['direction'] = 'debit';
-             
-        }
-        else
-        {
-            // Apply a Supplier's credit note
-            $this->VAR['qpayment']['creditnote_action'] = 'purchase_apply';
-            
-            // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
-            $this->VAR['qpayment']['direction'] = 'credit';
-        }
-        
-        // Set currency symbol
-        $this->currency_symbol = $this->app->components->company->getRecord('currency_symbol');
-    }
-    
-    // Pre-Processing
-    public function preProcess()
-    {        
-        parent::preProcess();        
+        Payment::$payment_details['method'] = 'credit_note';    
         
         // Does this credit exist
         if(!$this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']))
@@ -59,8 +32,40 @@ class PaymentMethodCreditnote extends PaymentMethod
         }
         else
         {
-            $this->credit_note_exists = true;
+            // Set CR exists flag
+            $this->credit_note_exists = true;        
+        
+            // Set Action and Direction of payment
+            if($this->creditnote_details['type'] == 'sales')
+            {
+                // Apply a Client's credit note
+                $this->VAR['qpayment']['creditnote_action'] = 'sales_apply';
+
+                // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
+                $this->VAR['qpayment']['direction'] = 'debit';
+
+            }
+            else
+            {
+                // Apply a Supplier's credit note
+                $this->VAR['qpayment']['creditnote_action'] = 'purchase_apply';
+
+                // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
+                $this->VAR['qpayment']['direction'] = 'credit';
+            }
+
+            // Set currency symbol
+            $this->currency_symbol = $this->app->components->company->getRecord('currency_symbol');
         }
+    }
+    
+    // Pre-Processing
+    public function preProcess()
+    {        
+        // If there is no credit note, do not continue
+        if(!$this->credit_note_exists) {return;}
+        
+        parent::preProcess();        
         
         // New
         if(Payment::$action === 'new')
@@ -68,6 +73,13 @@ class PaymentMethodCreditnote extends PaymentMethod
             // Apply credit note against an Invoice            
             if(Payment::$payment_details['type'] == 'invoice')                
             {         
+                // Make sure this is a Sales Credit Note
+                if($this->creditnote_details['type'] != 'sales')
+                {
+                    Payment::$payment_valid = false;                
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is not a sales credit note and cannot be applied against an invoice.")); 
+                }
+                
                 // You can only apply a CR to an invoice belonging to the Client it was created from (standalone)
                 if($this->creditnote_details['client_id'] != $this->app->components->payment->paymentType->invoice_details['client_id'])
                 {
@@ -80,13 +92,19 @@ class PaymentMethodCreditnote extends PaymentMethod
                 {
                     Payment::$payment_valid = false;                
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against the invoice it is linked with.").' '._gettext("Invoice").': '.$this->creditnote_details['invoice_id']); 
-                } 
-                
+                }                
             }
             
             // Apply credit note against an Expense
             elseif(Payment::$payment_details['type'] == 'expense')
             {
+                // Make sure this is a Purchase Credit Note
+                if($this->creditnote_details['type'] != 'purchase')
+                {
+                    Payment::$payment_valid = false;                
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is not a purchase credit note and cannot be applied against an expense.")); 
+                }
+                
                 // You can only apply a CR to an expense belonging to the Supplier it was created from (standalone)
                 if($this->creditnote_details['supplier_id'] != $this->app->components->payment->paymentType->expense_details['supplier_id'])
                 {
@@ -107,7 +125,6 @@ class PaymentMethodCreditnote extends PaymentMethod
             {
                 Payment::$payment_valid = false;                
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against an invoice or an expense."));
-                
             }
             
             // Does the credit note have enough balance to cover the payment amount submitted
