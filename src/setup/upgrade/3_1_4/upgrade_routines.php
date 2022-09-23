@@ -120,8 +120,8 @@ class Upgrade3_1_4 extends Setup {
                 // Status - Refund as key / Creditnote as value
                 $status = array(
                                 'unpaid' => 'unused',
-                                'partially_paid' => 'partially_applied',
-                                'paid' => 'fully_applied',
+                                'partially_paid' => 'partially_used',
+                                'paid' => 'fully_used',
                                 'cancelled' => 'cancelled',
                                 'deleted' => 'deleted'                    
                                 );

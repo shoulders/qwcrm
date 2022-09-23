@@ -613,7 +613,7 @@ class Creditnote extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
         // Update creditnote 'is_closed' boolean
-        if($new_status == 'fully_applied' || $new_status == 'expired_unused' || $new_status == 'cancelled' || $new_status == 'deleted') {
+        if($new_status == 'fully_used' || $new_status == 'expired_unused' || $new_status == 'cancelled' || $new_status == 'deleted') {
             $this->updateClosedStatus($creditnote_id, 'closed');
         } else {
             $this->updateClosedStatus($creditnote_id, 'open');
@@ -1121,15 +1121,15 @@ class Creditnote extends Components {
             $state_flag = false;        
         }
         
-        // Is Partially Applied
-        if($creditnote_details['status'] == 'partially_applied') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has payments and is partially applied."));
+        // Is Partially Used
+        if($creditnote_details['status'] == 'partially_used') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has payments and is partially used."));
             $state_flag = false;       
         }
 
-        // Is Fully Applied
-        if($creditnote_details['status'] == 'fully_applied') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has payments and is fully applied."));
+        // Is Fully Used
+        if($creditnote_details['status'] == 'fully_used') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has payments and is fully used."));
             $state_flag = false;        
         }
 
@@ -1196,15 +1196,15 @@ class Creditnote extends Components {
         if($creditnote_details['status'] == 'unused') {                
         }
 
-        // Is Partially Applied
-        if($creditnote_details['status'] == 'partially_applied') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be cancelled because it is partially applied."));
+        // Is Partially Used
+        if($creditnote_details['status'] == 'partially_used') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be cancelled because it is partially used."));
             $state_flag = false;
         }
 
-        // Is Fully Applied
-        if($creditnote_details['status'] == 'fully_applied') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it is fully applied."));
+        // Is Fully Used
+        if($creditnote_details['status'] == 'fully_used') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it is fully used."));
             return false;        
         }
 
@@ -1267,15 +1267,15 @@ class Creditnote extends Components {
         if($creditnote_details['status'] == 'unused') {                
         }
 
-        // Is Partially Applied
-        if($creditnote_details['status'] == 'partially_applied') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it is partially applied."));
+        // Is Partially Used
+        if($creditnote_details['status'] == 'partially_used') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it is partially used."));
             $state_flag = false;
         }
 
-        // Is Fully Applied
-        if($creditnote_details['status'] == 'fully_applied') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it is fully applied."));
+        // Is Fully Used
+        if($creditnote_details['status'] == 'fully_used') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it is fully used."));
             return false;        
         }
 
@@ -1338,15 +1338,15 @@ class Creditnote extends Components {
         if($creditnote_details['status'] == 'unused') {                
         }
 
-        // Is Partially Applied
-        if($creditnote_details['status'] == 'partially_applied') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it is partially applied."));
+        // Is Partially Used
+        if($creditnote_details['status'] == 'partially_used') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it is partially used."));
             $state_flag = false;
         }
 
-        // Is Fully Applied
-        if($creditnote_details['status'] == 'fully_applied') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is fully applied."));
+        // Is Fully Used
+        if($creditnote_details['status'] == 'fully_used') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is fully used."));
             return false;        
         }
 
@@ -1468,13 +1468,13 @@ class Creditnote extends Components {
         }
 
         // Has creditable amount with partially usage, set to partially applid (if not already)
-        elseif($creditnote_details['unit_gross'] > 0 && $payments_subtotal > 0 && $payments_subtotal < $creditnote_details['unit_gross'] && $creditnote_details['status'] != 'partially_applied') {            
-            $this->updateStatus($creditnote_id, 'partially_applied');
+        elseif($creditnote_details['unit_gross'] > 0 && $payments_subtotal > 0 && $payments_subtotal < $creditnote_details['unit_gross'] && $creditnote_details['status'] != 'partially_used') {            
+            $this->updateStatus($creditnote_id, 'partially_used');
         }
 
-        // Has creditable amount and the payment(s) match the credit note amount, set to fully applied (if not already)
-        elseif($creditnote_details['unit_gross'] > 0 && $creditnote_details['unit_gross'] == $payments_subtotal && $creditnote_details['status'] != 'fully_applied') {            
-            $this->updateStatus($creditnote_id, 'fully_applied');
+        // Has creditable amount and the payment(s) match the credit note amount, set to fully used (if not already)
+        elseif($creditnote_details['unit_gross'] > 0 && $creditnote_details['unit_gross'] == $payments_subtotal && $creditnote_details['status'] != 'fully_used') {            
+            $this->updateStatus($creditnote_id, 'fully_used');
         }        
                 
         return;

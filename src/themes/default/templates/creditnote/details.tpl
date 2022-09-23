@@ -196,7 +196,7 @@
                                                 {/if}
                                                 
                                                 <!-- Record Refund Button -->
-                                                {if ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_applied') && $creditnote_details.client_id} 
+                                                {if ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used') && $creditnote_details.client_id} 
                                                     <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Refund{/t} / {t}Refund to Client{/t}</button>
                                                 {/if}
                                                 

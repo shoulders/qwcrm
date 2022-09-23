@@ -333,8 +333,8 @@ CREATE TABLE `#__creditnote_statuses` (
 INSERT INTO `#__creditnote_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'pending', 'Pending'),
 (2, 'unused', 'Unused'),
-(3, 'partially_applied', 'Partially Applied'),
-(4, 'fully_applied', 'Fully Applied'),
+(3, 'partially_used', 'Partially Used'),
+(4, 'fully_used', 'Fully Used'),
 (5, 'expired_unused', 'Expired Unused'),
 (6, 'cancelled', 'Cancelled'),
 (7, 'deleted', 'Deleted');

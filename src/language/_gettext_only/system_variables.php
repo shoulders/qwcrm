@@ -44,8 +44,8 @@ _gettext("Flat Rate Capital Asset");
 /* Credit Note Statuses */
 _gettext("Pending");
 _gettext("Unused");
-_gettext("Partially Applied");
-_gettext("Fully Applied");
+_gettext("Partially Used");
+_gettext("Fully Used");
 _gettext("Expired Unused");
 _gettext("Cancelled");
 _gettext("Deleted");

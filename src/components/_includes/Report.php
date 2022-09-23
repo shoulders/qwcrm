@@ -1244,7 +1244,7 @@ class Report extends Components {
             $stats['count_discounted'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'discounted', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);        
             $stats['count_pending'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'pending', $employee_id, null, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  
             $stats['count_unused'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'unused', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id); 
-            $stats['count_partially_applied'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'partially_applied', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  
+            $stats['count_partially_used'] = $this->countCreditnotes('date', $start_date, $end_date, $tax_system, 'partially_used', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  
         }
 
         // Historic
@@ -1252,7 +1252,7 @@ class Report extends Components {
 
             $stats['count_opened'] = $this->countCreditnotes('opened_on', $start_date, $end_date, $tax_system, 'opened', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['count_closed'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'closed', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
-            $stats['count_fully_applied'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'fully_applied', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_fully_used'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'fully_used', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['count_expired_unused'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'expired_unused', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['count_cancelled'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'cancelled', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['count_deleted'] = $this->countCreditnotes('', $start_date, $end_date, $tax_system, 'deleted', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
@@ -1273,8 +1273,8 @@ class Report extends Components {
             // Sums by Status - Only used on Client Tab        
             $stats['sum_pending_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_unused_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unused', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
-            $stats['sum_partially_applied_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_applied', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
-            $stats['sum_fully_applied_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'fully_applied', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_partially_used_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_used', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_fully_used_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'fully_used', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_cancelled_unit_gross'] = $this->sumCreditnotes('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);        
             $stats['sum_open_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_discounted_unit_gross'] = $this->sumCreditnotes('unit_gross', 'date', $start_date, $end_date, $tax_system, 'discounted', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  // Cannot remove cancelled with discount

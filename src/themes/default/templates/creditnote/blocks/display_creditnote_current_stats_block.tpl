@@ -12,12 +12,12 @@
         <td class="row2"><b>{t}Open{/t}</b></td>        
         <td class="row2"><b>{t}Pending{/t}</b></td>
         <td class="row2"><b>{t}Unused{/t}</b></td>
-        <td class="row2"><b>{t}Partially Applied{/t}</b></td>
+        <td class="row2"><b>{t}Partially Used{/t}</b></td>
     </tr>
     <tr class="olotd4">
         <td>{$creditnote_stats.count_open}</td>
         <td>{$creditnote_stats.count_pending}</td>
         <td>{$creditnote_stats.count_unused}</td>
-        <td>{$creditnote_stats.count_partially_applied}</td> 
+        <td>{$creditnote_stats.count_partially_used}</td> 
     </tr>
 </table>
