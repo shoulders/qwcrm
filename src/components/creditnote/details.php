@@ -38,7 +38,7 @@ $this->app->smarty->assign('payment_methods',          $this->app->components->p
 $this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
 $this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
-$this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['creditnote_id']));
+$this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['creditnote_id']));
 
 // Misc
 $this->app->smarty->assign('creditnote_statuses',      $this->app->components->creditnote->getStatuses());

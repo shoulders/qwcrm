@@ -53,8 +53,7 @@ class Variables extends System {
         $this->app->smarty->assign('schedule_id', \CMSApplication::$VAR['schedule_id'] ?? null);
         $this->app->smarty->assign('invoice_id', \CMSApplication::$VAR['invoice_id'] ?? null);
         $this->app->smarty->assign('voucher_id', \CMSApplication::$VAR['voucher_id'] ?? null);
-        $this->app->smarty->assign('payment_id', \CMSApplication::$VAR['payment_id'] ?? null);
-        $this->app->smarty->assign('refund_id', \CMSApplication::$VAR['refund_id'] ?? null);
+        $this->app->smarty->assign('payment_id', \CMSApplication::$VAR['payment_id'] ?? null);        
         $this->app->smarty->assign('expense_id', \CMSApplication::$VAR['expense_id'] ?? null);
         $this->app->smarty->assign('otherincome_id', \CMSApplication::$VAR['otherincome_id'] ?? null);
         $this->app->smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'] ?? null);

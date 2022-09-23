@@ -698,49 +698,7 @@ class Creditnote extends Components {
     }    
 
     /** Close Functions **/
-
-    /*##################################### //not used
-    #   Refund Invoice                  #
-    #####################################
-
-    public function refundRecord($refund_details) {
-
-        // Make sure the invoice can be refunded
-        if(!$this->checkRecordAllowsRefund($refund_details['invoice_id'])) {
-            return false;
-        }
-
-        // Get invoice details
-        $invoice_details = $this->getRecord($refund_details['invoice_id']);
-
-        // Insert refund record and return refund_id
-        $refund_id = $this->app->components->refund->insertRecord($refund_details);
-
-        // Refund any Vouchers - handled in updateInvoiceVouchersStatuses()
-        //$this->app->components->voucher->refundInvoiceVouchers($refund_details['invoice_id'], $refund_id);
-
-        // Update the invoice with the new refund_id
-        $this->updateRefundId($refund_details['invoice_id'], $refund_id);    
-
-        // Change the invoice status to refunded (I do this here to maintain consistency)
-        $this->updateStatus($refund_details['invoice_id'], 'refunded');
-
-        // Create a Workorder History Note  
-        $this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$refund_details['invoice_id'].' '._gettext("was refunded by").' '.$this->app->user->login_display_name.'.');
-
-        // Log activity        
-        $record = _gettext("Invoice").' '.$refund_details['invoice_id'].' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was refunded by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $refund_details['invoice_id']);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($invoice_details['client_id']);
-        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-        $this->updateLastActive($invoice_details['invoice_id']);
-
-        return $refund_id;
-
-    }*/
-    
+   
     ##################################### done
     #   Cancel Credit Note              # // This does not delete information i.e. client went bust and did not pay
     #####################################
@@ -1194,7 +1152,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(countPayments('', null, null, null, null, null, null, null, null, null, null, null, null, $creditnote_id)) {
+        if(countPayments('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because it has transactions against it."));
             $state_flag = false;        
         }*/
@@ -1269,7 +1227,7 @@ class Creditnote extends Components {
         }    
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(countPayments('', null, null, null, null, null, null, null, null, null, null, null, null, $creditnote_id)) {
+        if(countPayments('', null, null, null, null, 'creditnote', null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has transactions against it."));
             $state_flag = false;       
         }*/
@@ -1340,7 +1298,7 @@ class Creditnote extends Components {
         }    
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(countPayments('', null, null, null, null, null, null, null, null, null, null, null, null, $creditnote_id)) {
+        if(countPayments('', null, null, null, null, 'creditnote', null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has transactions against it."));
             $state_flag = false;       
         }*/
@@ -1411,7 +1369,7 @@ class Creditnote extends Components {
         }    
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(countPayments('', null, null, null, null, null, null, null, null, null, null, null, null, $creditnote_id)) {
+        if(countPayments('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has transactions against it."));
             $state_flag = false;       
         }*/      
@@ -1477,7 +1435,7 @@ class Creditnote extends Components {
     public function recalculateTotals($creditnote_id) {
         
         $items_subtotals        = $this->getItemsSubtotals($creditnote_id);               
-        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'creditnote', null, null, null, null, null, null, null, $creditnote_id);
+        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'creditnote', null, null, null, null, null, null, $creditnote_id);
         
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];       

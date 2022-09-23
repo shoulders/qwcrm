@@ -11,16 +11,14 @@
     <tr class="olotd4">
         <td class="row2"><b>{t}Opened{/t}</b></td>
         <td class="row2"><b>{t}Closed{/t}</b></td>
-        <td class="row2"><b>{t}Paid{/t}</b></td>
-        <td class="row2"><b>{t}Refunded{/t}</b></td>
+        <td class="row2"><b>{t}Paid{/t}</b></td>        
         <td class="row2"><b>{t}Cancelled{/t}</b></td>
         <td class="row2"><b>{t}Deleted{/t}</b></td>
     </tr>
     <tr class="olotd4">
         <td>{$invoice_stats.count_opened}</td>
         <td>{$invoice_stats.count_closed}</td>
-        <td>{$invoice_stats.count_paid}</td>
-        <td>{$invoice_stats.count_refunded}</td>
+        <td>{$invoice_stats.count_paid}</td>        
         <td>{$invoice_stats.count_cancelled}</td>
         <td>{$invoice_stats.count_deleted}</td>
     </tr>

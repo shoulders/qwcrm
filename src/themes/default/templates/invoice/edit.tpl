@@ -431,12 +431,11 @@
                                                     {/if}
                                                 </td>                                                
                                                 <td>
-                                                    {if $invoice_details.status == 'refunded'}<a href="index.php?component=refund&page_tpl=details&refund_id={$invoice_details.refund_id}">{/if}
                                                     {section name=s loop=$invoice_statuses}    
                                                         {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
                                                     {/section}
-                                                    {if $invoice_details.status == 'refunded'}</a>{/if}                                                    
-                                            <td>{$currency_sym}<span id="invoiceTotalGrossTop">0.00</span></td>                                                                                            
+                                                </td>                                                 
+                                                <td>{$currency_sym}<span id="invoiceTotalGrossTop">0.00</span></td>                                                                                            
 
                                             </tr>                                        
                                             <tr class="olotd4">

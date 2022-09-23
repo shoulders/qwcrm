@@ -154,11 +154,6 @@
                     <td><b>({$currency_sym}{$invoice_stats.sum_paid_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Refunded{/t}:</b></td>
-                    <td><b>{$invoice_stats.count_refunded}</b></td>
-                    <td><b>({$currency_sym}{$invoice_stats.sum_refunded_unit_gross|string_format:"%.2f"})</b></td>
-                </tr>                
-                <tr>
                     <td><b>{t}Cancelled{/t}:</b></td>
                     <td><b>{$invoice_stats.count_cancelled}</b></td>
                     <td><b>({$currency_sym}{$invoice_stats.sum_cancelled_unit_gross|string_format:"%.2f"})</b></td>
@@ -219,11 +214,6 @@
                     <td><b>({$currency_sym}{$voucher_stats.sum_expired_unused_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Refunded{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_refunded}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_refunded_unit_gross|string_format:"%.2f"})</b></td>
-                </tr>
-                <tr>
                     <td><b>{t}Cancelled{/t}:</b></td>
                     <td><b>{$voucher_stats.count_cancelled}</b></td>
                     <td><b>({$currency_sym}{$voucher_stats.sum_cancelled_unit_gross|string_format:"%.2f"})</b></td>
@@ -260,12 +250,12 @@
                     <td><span style="color: red;"><b>({$payment_stats.count_sent})</b></span></td>
                 </tr>
                 <tr>
-                    <td colspan="3"><h2>{t}{t}Refunds{/t}{/t}</h2></td>
+                    <td colspan="3"><h2>{t}Credit Notes{/t} - Needs finishing i.e. debit/credit</h2></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Refunds{/t}&nbsp;{t}[G]{/t}:</b></td>
-                    <td><span style="color: red;"><b>{$currency_sym}{$refund_stats.sum_unit_gross|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: red;"><b>({$refund_stats.count_items})</b></span></td>                    
+                    <td><b>{t}Creditnotes{/t}&nbsp;{t}[G]{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_sym}{$creditnote_stats.sum_unit_gross|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: red;"><b>({$creditnote_stats.count_opened})</b></span></td>                    
                 </tr> 
                 <tr>
                     <td colspan="3"><h2>{t}{t}Invoiced{/t}{/t}</h2></td>

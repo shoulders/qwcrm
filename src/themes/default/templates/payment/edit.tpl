@@ -64,12 +64,6 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Refund ID{/t}</b></td>
-                                                        <td colspan="3">
-                                                            <a href="index.php?component=refund&page_tpl=details&refund_id={$payment_details.refund_id}">{$payment_details.refund_id}</a>                                                            
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
                                                         <td align="right"><b>{t}Expense ID{/t}</b></td>
                                                         <td colspan="3">
                                                             <a href="index.php?component=expense&page_tpl=details&expense_id={$payment_details.expense_id}">{$payment_details.expense_id}</a>                                                            

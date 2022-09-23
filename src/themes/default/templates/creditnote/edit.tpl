@@ -442,12 +442,10 @@
                                                          {$creditnote_details.expiry_date|date_format:$date_format}
                                                     {/if}  
                                                 </td> 
-                                                <td>
-                                                    {if $creditnote_details.status == 'refunded'}<a href="index.php?component=refund&page_tpl=details&refund_id={$creditnote_details.refund_id}">{/if}
+                                                <td>                                                    
                                                     {section name=s loop=$creditnote_statuses}    
                                                         {if $creditnote_details.status == $creditnote_statuses[s].status_key}{t}{$creditnote_statuses[s].display_name}{/t}{/if}        
-                                                    {/section}
-                                                    {if $creditnote_details.status == 'refunded'}</a>{/if}
+                                                    {/section}                                                    
                                                 </td>
                                                 <td>{$currency_sym}<span id="creditnoteTotalGrossTop">0.00</span></td>                                                                                            
 

@@ -12,8 +12,7 @@
         <td class="olohead"><b>{t}Employee{/t}</b></td>
         <td class="olohead"><b>{t}Client{/t}</b></td>
         <td class="olohead"><b>{t}Supplier{/t}</b></td>
-        <td class="olohead"><b>{t}Invoice{/t}</b></td>         
-        <td class="olohead"><b>{t}Refund{/t}</b></td> 
+        <td class="olohead"><b>{t}Invoice{/t}</b></td>        
         <td class="olohead"><b>{t}Expense{/t}</b></td> 
         <td class="olohead"><b>{t}Otherincome{/t}</b></td>
         <td class="olohead"><b>{t}Credit Note{/t}</b></td>
@@ -36,7 +35,6 @@
             <td class="olotd4" nowrap><a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_payments.records[p].client_id}">{$display_payments.records[p].client_display_name}</a></td>
             <td class="olotd4" nowrap><a class="link1" href="index.php?component=supplier&page_tpl=details&supplier_id={$display_payments.records[p].supplier_id}">{$display_payments.records[p].supplier_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_payments.records[p].invoice_id}">{$display_payments.records[p].invoice_id}</a></td>
-            <td class="olotd4"><a href="index.php?component=refund&page_tpl=details&refund_id={$display_payments.records[p].refund_id}">{$display_payments.records[p].refund_id}</a></td>
             <td class="olotd4"><a href="index.php?component=expense&page_tpl=details&expense_id={$display_payments.records[p].expense_id}">{$display_payments.records[p].expense_id}</a></td>
             <td class="olotd4"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_payments.records[p].otherincome_id}">{$display_payments.records[p].otherincome_id}</a></td>
             <td class="olotd4"><a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$display_payments.records[p].creditnote_id}">{$display_payments.records[p].creditnote_id}</a></td>

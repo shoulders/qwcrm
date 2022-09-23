@@ -29,8 +29,7 @@
                             <!-- Record Details -->
                             <tr>
                                 <td>                                                
-                                    {if $payment_type == 'invoice'}{include file='invoice/blocks/display_invoice_balance_block.tpl'}{/if}
-                                    {if $payment_type == 'refund'}{include file='refund/blocks/display_refund_balance_block.tpl'}{/if}
+                                    {if $payment_type == 'invoice'}{include file='invoice/blocks/display_invoice_balance_block.tpl'}{/if}                                    
                                     {if $payment_type == 'expense'}{include file='expense/blocks/display_expense_balance_block.tpl'}{/if}
                                     {if $payment_type == 'otherincome'}{include file='otherincome/blocks/display_otherincome_balance_block.tpl'}{/if}
                                     {if $payment_type == 'creditnote'}{include file='creditnote/blocks/display_creditnote_balance_block.tpl'}{/if}

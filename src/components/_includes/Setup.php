@@ -112,18 +112,22 @@ class Setup extends Components {
     #   update all matching values in a column to new value #
     #########################################################
 
-    public function updateColumnValues($table, $column, $current_value, $new_value) {
+    public function updateColumnValues($table, $column, $current_value, $new_value, $and_column = null, $and_value = null) {
 
-        if($current_value === '*') {
-
+        if($current_value === '*')
+        {
             $sql = "UPDATE $table SET
-                    $column         =". $this->app->db->qStr( $new_value       );
-
-        } else {
-
+                    $column  =". $this->app->db->qStr($new_value);
+        }
+        else
+        {
             $sql = "UPDATE $table SET
-                    $column         =". $this->app->db->qStr( $new_value       )."                      
-                    WHERE $column   =". $this->app->db->qStr( $current_value   );
+                    $column         =". $this->app->db->qStr($new_value)."                      
+                    WHERE $column   =". $this->app->db->qStr($current_value);
+            if($and_column && $and_value)
+            {
+                $sql = " AND $table.$and_column = ".$this->app->db->qStr($and_value);
+            }
 
         }
 
@@ -972,9 +976,9 @@ class Setup extends Components {
         
     }
     
-    #######################################
-    #  Databse - copy ColumnA To ColumnB  #
-    #######################################
+    #############################################
+    #  Database - copy from ColumnA To ColumnB  #
+    #############################################
 
     public function copyColumnAToColumnB($table, $columnA, $columnB) {
         

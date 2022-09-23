@@ -463,57 +463,6 @@ _gettext("PAYMENT_STATUS_META_KEYWORDS");
 _gettext("PAYMENT_STATUS_HELP_TITLE");
 _gettext("PAYMENT_STATUS_HELP_CONTENT");
 
-/* Refund */
-
-// refund:cancel
-//_gettext("REFUND_CANCEL_PAGE_TITLE");
-//_gettext("REFUND_CANCEL_META_DESCRIPTION");
-//_gettext("REFUND_CANCEL_META_KEYWORDS");
-//_gettext("REFUND_CANCEL_HELP_TITLE");
-//_gettext("REFUND_CANCEL_HELP_CONTENT");
-
-// refund:delete
-//_gettext("REFUND_DELETE_PAGE_TITLE");
-//_gettext("REFUND_DELETE_META_DESCRIPTION");
-//_gettext("REFUND_DELETE_META_KEYWORDS");
-//_gettext("REFUND_DELETE_HELP_TITLE");
-//_gettext("REFUND_DELETE_HELP_CONTENT");
-
-// refund:details
-_gettext("REFUND_DETAILS_PAGE_TITLE");
-_gettext("REFUND_DETAILS_META_DESCRIPTION");
-_gettext("REFUND_DETAILS_META_KEYWORDS");
-_gettext("REFUND_DETAILS_HELP_TITLE");
-_gettext("REFUND_DETAILS_HELP_CONTENT");
-
-// refund:edit
-_gettext("REFUND_EDIT_PAGE_TITLE");
-_gettext("REFUND_EDIT_META_DESCRIPTION");
-_gettext("REFUND_EDIT_META_KEYWORDS");
-_gettext("REFUND_EDIT_HELP_TITLE");
-_gettext("REFUND_EDIT_HELP_CONTENT");
-
-// refund:new
-_gettext("REFUND_NEW_PAGE_TITLE");
-_gettext("REFUND_NEW_META_DESCRIPTION");
-_gettext("REFUND_NEW_META_KEYWORDS");
-_gettext("REFUND_NEW_HELP_TITLE");
-_gettext("REFUND_NEW_HELP_CONTENT");
-
-// refund:search
-_gettext("REFUND_SEARCH_PAGE_TITLE");
-_gettext("REFUND_SEARCH_META_DESCRIPTION");
-_gettext("REFUND_SEARCH_META_KEYWORDS");
-_gettext("REFUND_SEARCH_HELP_TITLE");
-_gettext("REFUND_SEARCH_HELP_CONTENT");
-
-// refund:status
-_gettext("REFUND_STATUS_PAGE_TITLE");
-_gettext("REFUND_STATUS_META_DESCRIPTION");
-_gettext("REFUND_STATUS_META_KEYWORDS");
-_gettext("REFUND_STATUS_HELP_TITLE");
-_gettext("REFUND_STATUS_HELP_CONTENT");
-
 /* Report */
 
 // report:basic_stats

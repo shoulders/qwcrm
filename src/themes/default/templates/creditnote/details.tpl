@@ -76,10 +76,7 @@
                                             <td>{$currency_sym}{$creditnote_details.unit_gross|string_format:"%.2f"}</td>
                                             <td><font color="#cc0000">{$currency_sym}{$creditnote_details.balance|string_format:"%.2f"}</font></td>
                                             <td>
-                                                {$creditnote_details.closed_on|date_format:$date_format}<br>
-                                                {if $creditnote_details.status == 'refunded'}
-                                                    <a href="index.php?component=refund&page_tpl=details&refund_id={$creditnote_details.refund_id}">{t}Refund ID{/t}: {$creditnote_details.refund_id}
-                                                {/if}                                                
+                                                {$creditnote_details.closed_on|date_format:$date_format}<br>                                                                                               
                                             </td>
                                             
                                         </tr>                                        
@@ -198,7 +195,7 @@
                                                     <button type="button" onclick="location.href='index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_details.creditnote_id}';">{t}Edit Credit Note{/t}</button>
                                                 {/if}
                                                 
-                                                <!-- Refund Button -->
+                                                <!-- Record Refund Button -->
                                                 {if ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_applied') && $creditnote_details.client_id} 
                                                     <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Refund{/t} / {t}Refund to Client{/t}</button>
                                                 {/if}

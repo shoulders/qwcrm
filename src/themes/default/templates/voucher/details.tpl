@@ -62,10 +62,6 @@
                                             <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$voucher_details.invoice_id}">{$voucher_details.invoice_id}</a></td>            
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Refund ID{/t}</b></td>                                            
-                                            <td>{if $voucher_details.refund_id}<a href="index.php?component=refund&page_tpl=details&refund_id={$voucher_details.refund_id}">{$voucher_details.refund_id}</a>{else}&nbsp;{/if}</td>            
-                                        </tr>
-                                        <tr>
                                             <td><b>{t}Type{/t}</b></td>
                                             <td>
                                                 {section name=s loop=$voucher_types}    
@@ -118,13 +114,7 @@
                                             <td><b>{t}Status{/t}</b></td>
                                             <td>
                                                 {section name=s loop=$voucher_statuses}   
-                                                    {if $voucher_details.status == $voucher_statuses[s].status_key}
-                                                        {if $voucher_details.status == 'refunded'}
-                                                            <a href="index.php?component=refund&page_tpl=details&refund_id={$voucher_details.refund_id}">{t}{$voucher_statuses[s].display_name}{/t}</a>
-                                                        {else}
-                                                            {t}{$voucher_statuses[s].display_name}{/t}
-                                                        {/if}                    
-                                                    {/if}        
+                                                    {if $voucher_details.status == $voucher_statuses[s].status_key}{t}{$voucher_statuses[s].display_name}{/t}{/if}        
                                                 {/section} 
                                             </td>
                                         </tr>

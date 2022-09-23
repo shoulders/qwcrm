@@ -48,8 +48,7 @@ class Payment extends Components {
                 employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id          ).",
                 client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?: null           ).",                
                 supplier_id     = ".$this->app->db->qStr( $qpayment['supplier_id'] ?: null         ).", 
-                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?: null          ).",
-                refund_id       = ".$this->app->db->qStr( $qpayment['refund_id'] ?: null           ).", 
+                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?: null          ).",                
                 expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?: null          ).",  
                 otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",                
                 creditnote_id   = ".$this->app->db->qStr( $qpayment['creditnote_id'] ?: null       ).",
@@ -93,7 +92,7 @@ class Payment extends Components {
     #  Display all payments the given status            #
     #####################################################
 
-    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $paymentDirection = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $paymentDirection = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
@@ -137,9 +136,6 @@ class Payment extends Components {
         
         // Restrict by Invoice
         if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qStr($invoice_id);}    
-
-        // Restrict by Refund
-        if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->app->db->qStr($refund_id);} 
 
         // Restrict by Supplier
         if($supplier_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);}
@@ -314,7 +310,7 @@ class Payment extends Components {
     }
 
     #####################################
-    #    Get Payment Types              #  // i.e. invoice, refund
+    #    Get Payment Types              #
     #####################################
 
     public function getTypes() {
@@ -672,7 +668,6 @@ class Payment extends Components {
                 client_id       = NULL,
                 supplier_id     = NULL,
                 invoice_id      = NULL,                
-                refund_id       = NULL,
                 expense_id      = NULL,
                 otherincome_id  = NULL,
                 creditnote_id   = NULL,
@@ -799,61 +794,10 @@ class Payment extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."));
             $state_flag = false;       
         }
-
-        // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be changed because the parent invoice has been refunded."));
-            $state_flag = false; 
-        }
-
+       
         return $state_flag;   
 
      }
-
-    /*###############################################################
-    #   Check to see if the payment can be refunded               #  // not currently used - i DONT think i will use this , you cant refund a payment?
-    ###############################################################
-
-    public function checkRecordAllowsRefund($payment_id) {
-
-        $state_flag = true;
-
-        // Get the payment details
-        $payment_details = $this->getRecord($payment_id);
-
-        // Is partially paid
-        if($payment_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be refunded because the payment is partially paid."));
-            return $state_flag;
-        }
-
-        // Is refunded
-        if($payment_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has already been refunded."));
-            $state_flag = false;       
-        }
-
-        // Is cancelled
-        if($payment_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has been cancelled."));
-            $state_flag = false;       
-        }
-
-        // Is deleted
-        if($payment_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has been deleted."));
-            $state_flag = false;       
-        }    
-
-        // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the parent invoice has been refunded."));
-            $state_flag = false; 
-        }
-
-        return $state_flag;
-
-    }*/
 
     ##########################################################
     #  Check if the payment status allows editing            #
@@ -882,12 +826,6 @@ class Payment extends Components {
         if($payment_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."));
             $state_flag = false;       
-        }
-
-        // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
-            $state_flag = false; 
         }
 
         return $state_flag; 
@@ -923,12 +861,6 @@ class Payment extends Components {
             $state_flag = false;       
         }
 
-        // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the parent invoice has been refunded."));
-            $state_flag = false; 
-        }
-
         return $state_flag;
 
     }
@@ -960,12 +892,6 @@ class Payment extends Components {
         if($payment_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it already been deleted."));
             $state_flag = false;       
-        }
-
-        // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status') == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be deleted because the parent invoice has been refunded."));
-            $state_flag = false; 
         }
 
         return $state_flag;
@@ -1015,7 +941,6 @@ class Payment extends Components {
             \CMSApplication::$VAR['qpayment']['client_id']          = \CMSApplication::$VAR['client_id'] ?? \CMSApplication::$VAR['qpayment']['client_id'] ?? null; 
             \CMSApplication::$VAR['qpayment']['supplier_id']        = \CMSApplication::$VAR['supplier_id'] ?? \CMSApplication::$VAR['qpayment']['supplier_id'] ?? null;            
             \CMSApplication::$VAR['qpayment']['invoice_id']         = \CMSApplication::$VAR['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'] ?? null;            
-            \CMSApplication::$VAR['qpayment']['refund_id']          = \CMSApplication::$VAR['refund_id'] ?? \CMSApplication::$VAR['qpayment']['refund_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['expense_id']         = \CMSApplication::$VAR['expense_id'] ?? \CMSApplication::$VAR['qpayment']['expense_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['otherincome_id']     = \CMSApplication::$VAR['otherincome_id'] ?? \CMSApplication::$VAR['qpayment']['otherincome_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['creditnote_id']      = \CMSApplication::$VAR['creditnote_id'] ?? \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null;
@@ -1044,8 +969,7 @@ class Payment extends Components {
             \CMSApplication::$VAR['qpayment']['type'] = Payment::$payment_details['type'];
             \CMSApplication::$VAR['qpayment']['method'] = Payment::$payment_details['method'];
             \CMSApplication::$VAR['qpayment']['direction'] = Payment::$payment_details['direction']; 
-            \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];            
-            \CMSApplication::$VAR['qpayment']['refund_id'] = Payment::$payment_details['refund_id'];
+            \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];           
             \CMSApplication::$VAR['qpayment']['expense_id'] = Payment::$payment_details['expense_id'];
             \CMSApplication::$VAR['qpayment']['otherincome_id'] = Payment::$payment_details['otherincome_id'];            
             \CMSApplication::$VAR['qpayment']['creditnote_id'] = Payment::$payment_details['creditnote_id'];

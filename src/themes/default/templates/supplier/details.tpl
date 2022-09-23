@@ -156,7 +156,7 @@
     <!-- Credit Notes  -->
     <tr>
         <td>            
-            {include file='creditnote/blocks/display_creditnotes_block.tpl' display_refunds=$display_creditnotes block_title=_gettext("Credit Notes")}                                            
+            {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes")}                                            
         </td>
     </tr>
     

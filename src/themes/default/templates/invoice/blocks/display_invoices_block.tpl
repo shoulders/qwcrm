@@ -53,12 +53,10 @@
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Vouchers{/t}</strong></div><hr><div>{$display_invoices.records[i].voucher_items|vouchers|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
-            <td class="olotd4" nowrap>
-                {if $display_invoices.records[i].status == 'refunded'}<a href="index.php?component=refund&page_tpl=details&refund_id={$display_invoices.records[i].refund_id}">{/if}
+            <td class="olotd4" nowrap>                
                 {section name=s loop=$invoice_statuses}                    
                     {if $display_invoices.records[i].status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}                    
-                {/section} 
-                {if $display_invoices.records[i].status == 'refunded'}</a>{/if}
+                {/section}                
             </td>
             {if $qw_tax_system != 'no_tax'}
                 <td class="olotd4" nowrap>{$currency_sym}{$display_invoices.records[i].unit_net|string_format:"%.2f"}</td> 

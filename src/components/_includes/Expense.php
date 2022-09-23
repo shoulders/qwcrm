@@ -472,7 +472,7 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id))
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id))
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."));
             $state_flag = false;        
         }*/
@@ -486,51 +486,6 @@ class Expense extends Components {
         return $state_flag;    
 
      }
-
-    ###############################################################
-    #   Check to see if the expense can be refunded (by status)   #  // not currently used - i DONT think i will use this
-    ###############################################################
-
-    public function checkRecordAllowsRefund($expense_id) {
-
-        $state_flag = true;
-
-        // Get the expense details
-        $expense_details = $this->getRecord($expense_id);
-
-        // Is partially paid
-        if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be refunded because the expense is partially paid."));
-            $state_flag = false;
-        }
-
-        // Is refunded
-        if($expense_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be refunded because the expense has already been refunded."));
-            $state_flag = false;        
-        }
-
-        // Is cancelled
-        if($expense_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be refunded because the expense has been cancelled."));
-            $state_flag = false;        
-        }
-
-        // Is deleted
-        if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be refunded because the expense has been deleted."));
-            $state_flag = false;        
-        }    
-
-        /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(!$this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be refunded because the expense has no payments."));
-            $state_flag = false;        
-        }*/
-
-        return $state_flag;
-
-    }
 
     ###############################################################
     #   Check to see if the expense can be cancelled              #  // Do I actuallu use this, the code seems to be implemented
@@ -568,7 +523,7 @@ class Expense extends Components {
         }    
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."));
             $state_flag = false;        
         }*/
@@ -619,7 +574,7 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."));
             $state_flag = false;        
         }*/
@@ -676,7 +631,7 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
             $state_flag = false;        
         }*/
@@ -701,7 +656,7 @@ class Expense extends Components {
 
         $expense_details            = $this->getRecord($expense_id);    
         $unit_gross                 = $expense_details['unit_gross'];   
-        $payments_subtotal          = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'expense', null, null, null, null, null, null, $expense_id);
+        $payments_subtotal          = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'expense', null, null, null, null, null, $expense_id);
         $balance                    = $unit_gross - $payments_subtotal;
 
         $sql = "UPDATE ".PRFX."expense_records SET

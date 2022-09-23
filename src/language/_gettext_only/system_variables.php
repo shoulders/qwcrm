@@ -92,7 +92,6 @@ _gettext("Paid");
 _gettext("In Dispute");
 _gettext("Overdue");
 _gettext("Collections");
-_gettext("Refunded");
 _gettext("Cancelled");
 _gettext("Deleted");
 
@@ -146,23 +145,15 @@ _gettext("Deleted");
 
 /* Payment Types */
 _gettext("Invoice");
-_gettext("Refund");
+_gettext("Expense");
+_gettext("Other Income");
+_gettext("Credit Note");
 
 /* Payment Cedit Note Action Types*/
 _gettext("Sales Apply");
 _gettext("Sales Refund");
 _gettext("Purchase Apply");
 _gettext("Purchase Refund");
-
-/* Refund Statuses */
-_gettext("Unpaid");
-_gettext("Partially Paid");
-_gettext("Paid");
-_gettext("Cancelled");
-_gettext("Deleted");
-
-/* Refund Types */
-_gettext("Invoice");
 
 /* Supplier Statuses */
 _gettext("Valid");
@@ -212,7 +203,6 @@ _gettext("Partially Redeemed");
 _gettext("Fully Redeemed");
 _gettext("Suspended");
 _gettext("Expired Unused");
-_gettext("Refunded");
 _gettext("Cancelled");
 _gettext("Deleted");
 

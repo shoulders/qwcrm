@@ -70,13 +70,7 @@
                                                 <a name="collections"></a>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_collections block_title=_gettext("Collections")}
                                             </td>
-                                        </tr> 
-                                        {*<tr>
-                                            <td>
-                                                <a name="refunded"></a>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_refunded block_title=_gettext("Refunded")}
-                                            </td>
-                                        </tr>*}
+                                        </tr>                                        
                                         {*<tr>
                                             <td>
                                                 <a name="cancelled"></a>

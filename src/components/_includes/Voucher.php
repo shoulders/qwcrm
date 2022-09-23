@@ -347,7 +347,6 @@ class Voucher extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restrict_statuses) {
-            //$sql .= "\nWHERE status_key NOT IN ('unpaid', 'partially_paid', 'partially_redeemed', 'redeemed', 'expired_unused', 'refunded', 'cancelled', 'deleted')";
             $sql .= "\nWHERE status_key IN ('paid_unused', 'suspended')";
         }
 
@@ -499,7 +498,7 @@ class Voucher extends Components {
         //$redeemed_on = ($new_status == 'redeemed') ? $datetime : null;
 
         // Update voucher 'closed_on' boolean for the new status
-        if(in_array($new_status, array('redeemed', 'expired_unused', 'refunded', 'cancelled'))) {
+        if(in_array($new_status, array('redeemed', 'expired_unused', 'cancelled'))) {
             $closed_on = $datetime;
         } else {
             $closed_on = null;
@@ -659,26 +658,6 @@ class Voucher extends Components {
             $vouchers_new_status = 'unpaid';    
         }
 
-        /* Is partially refunded (not currently used)
-        if($invoice_new_status == 'partially_refunded') {
-            $vouchers_new_status = '';      
-        }*/
-
-        // Is Refunded (this happens when you refund the invoice) - from refundInvoiceVouchers()
-        if($invoice_new_status == 'refunded') {           
-
-            while(!$rs->EOF)
-            {
-                // Refund Voucher
-                $this->refundRecord($rs->fields['voucher_id'], $invoice_details['refund_id']);
-
-                // Advance the loop to the next record
-                $rs->MoveNext();
-            }
-
-            return;     
-        }
-
         // Is Cancelled (this happens when you cancel the invoice) - from cancelInvoiceVouchers()
         if($invoice_new_status == 'cancelled') {
             
@@ -729,220 +708,15 @@ class Voucher extends Components {
             return;
         }
         
-    }
-    
-    /*######################################################
-    #   Redeem the voucher against an invoice            # // ??
-    ######################################################
-
-    public function updateRecordAsRedeemed($voucher_id, $invoice_id, $payment_id) {
-
-        $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
-
-        // some information has already been applied (as below) using $this->updateVoucherStatus() earlier in the process
-        $sql = "UPDATE ".PRFX."voucher_records SET
-                employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id       ).",
-                payment_id          =". $this->app->db->qStr( $payment_id                              ).",
-                redeemed_client_id  =". $this->app->db->qStr( $invoice_details['client_id']            ).",   
-                redeemed_invoice_id =". $this->app->db->qStr( $invoice_id                              )."            
-                WHERE voucher_id    =". $this->app->db->qStr( $voucher_id                              );
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
-
-        // Change the voucher status to refunded (I do this here to maintain consistency)
-        $this->updateStatus($voucher_id, 'redeemed', true);
-
-        // Log activity        
-        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was redeemed by").' '.$this->app->components->client->getRecord($invoice_details['client_id'], 'display_name').'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id'], null, $invoice_id);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($invoice_details['client_id']);        
-        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-        $this->app->components->invoice->updateLastActive($invoice_id);        
-
-    }*/
-
-    #################################
-    #    Update voucher refund ID   #
-    #################################
-
-    public function updateRefundId($voucher_id, $refund_id) {
-
-        $sql = "UPDATE ".PRFX."voucher_records SET
-                refund_id            =".$this->app->db->qStr($refund_id)."
-                WHERE voucher_id     =".$this->app->db->qStr($voucher_id);
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-    }
+    }    
 
     /** Close Functions **/
-    
-    ##########################################
-    #  Refund all of an Invoice's Vouchers   # now handled by updateInvoiceVouchersStatuses()
-    ##########################################
-/*
-    public function refundInvoiceVouchers($invoice_id, $refund_id) {
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {            
-
-            // Refund Voucher
-            $this->refundRecord($rs->fields['voucher_id'], $refund_id);
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-
-        return;
-
-    }*/
-    
-    #################################################
-    #  Revert Refund all of an Invoice's Vouchers   #
-    #################################################
-
-    public function revertRefundedInvoiceVouchers($invoice_id) {
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {            
-
-            // Refund Voucher
-            $this->revertRecordRefund($rs->fields['voucher_id']);
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-
-        return;
-
-    }
-
-    #####################################
-    #   Refund Voucher                  #
-    #####################################
-
-    public function refundRecord($voucher_id, $refund_id) {
-
-        // make sure the voucher can be cancelled
-        if(!$this->checkSingleVoucherAllowsInvoiceRefund($voucher_id)) {
-
-            // Load the relevant invoice page with failed message
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->getRecord($voucher_id, 'invoice_id'));
-
-        }
-
-        // Change the voucher status to refunded (I do this here to maintain consistency)
-        $this->updateStatus($voucher_id, 'refunded', true);
-
-        // Update the voucher with the new refund_id
-        $this->updateRefundId($voucher_id, $refund_id);  
-
-        // Get voucher details
-        $voucher_details = $this->getRecord($voucher_id);    
-
-        // Create a Workorder History Note  
-        $this->app->components->workorder->insertHistory($voucher_details['voucher_id'], _gettext("Voucher").' '.$voucher_id.' '._gettext("was refunded by").' '.$this->app->user->login_display_name.'.');
-
-        // Log activity        
-        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("for Invoice").' '.$voucher_details['invoice_id'].' '._gettext("was refunded by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_id);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($voucher_details['client_id']);
-        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
-
-        return true;
-
-    }
-    
-    #####################################
-    #   Revert Refund Voucher           #
-    #####################################
-
-    public function revertRecordRefund($voucher_id) {
-
-        /* make sure the voucher can be cancelled
-        if(!$this->checkSingleVoucherAllowsInvoiceRefund($voucher_id)) {
-
-            // Load the relevant invoice page with failed message
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->get_voucher_details($voucher_id, 'invoice_id'));
-
-        }*/
-
-        // Change the voucher status to refunded (I do this here to maintain consistency)
-        $this->updateStatus($voucher_id, 'paid', true);
-
-        // Update the voucher with the new refund_id
-        $this->updateRefundId($voucher_id, null);  
-
-        // Get voucher details
-        $voucher_details = $this->getRecord($voucher_id);    
-
-        // Create a Workorder History Note  
-        $this->app->components->workorder->insertHistory($voucher_details['voucher_id'], _gettext("Voucher").' '.$voucher_id.' '._gettext("was refund was reverted by").' '.$this->app->user->login_display_name.'.');
-
-        // Log activity        
-        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("for Invoice").' '.$voucher_details['invoice_id'].' '._gettext("refund was reverted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_id);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($voucher_details['client_id']);
-        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
-
-        return true;
-
-    }
-    
-
-    ##########################################
-    #  Cancel all of an Invoice's Vouchers   #  // now handled in $this->app->components->voucher->updateInvoiceVouchersStatuses(();
-    ##########################################
-
-    /*public function cancelInvoiceVouchers($invoice_id) {
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {            
-
-            // Cancel Voucher
-            $this->cancelRecord($rs->fields['voucher_id']);
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-
-        return;
-
-    }*/
-    
+        
     ##############################
     #  Cancel Voucher            #  // update and set blocked as you cannot really delete an issued Voucher  
-    ##############################
+    ##############################  // This can only be done when you cancel an invoice - updateInvoiceVouchersStatuses()
 
-    public function cancelRecord($voucher_id) {     
+    private function cancelRecord($voucher_id) {     
 
         $voucher_details = $this->getRecord($voucher_id);    
 
@@ -974,35 +748,9 @@ class Voucher extends Components {
 
     /** Delete Functions **/
     
-    ##########################################
-    #  Delete all of an Invoice's Vouchers   # // now handled by - updateInvoiceVouchersStatuses()
-    ##########################################
-
-    /*public function deleteInvoiceVouchers($invoice_id) {
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {            
-
-            // Refund Voucher
-            $this->deleteRecord($rs->fields['voucher_id']);
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-
-        return;  
-
-    }   */
-
     ##############################
     #  Delete Voucher            #  // remove some information and set blocked as you cannot really delete an issued Voucher  
-    ##############################
+    ##############################  // this can be called from voucher:delete or by updateInvoiceVouchersStatuses()
 
     public function deleteRecord($voucher_id) {     
 
@@ -1024,8 +772,7 @@ class Voucher extends Components {
                 employee_id         =   NULL,
                 client_id           =   NULL,
                 workorder_id        =   NULL,
-                invoice_id          =   NULL,                
-                refund_id           =   NULL,                
+                invoice_id          =   NULL,                               
                 expiry_date         =   NULL,
                 status              =   'deleted',
                 opened_on           =   NULL,                
@@ -1394,12 +1141,6 @@ class Voucher extends Components {
             $state_flag = false;        
         }*/ 
 
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has been refunded."));
-            $state_flag = false;        
-        }
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has been cancelled."));
@@ -1492,12 +1233,6 @@ class Voucher extends Components {
             $state_flag = false;        
         }*/
         
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been refunded."));
-            $state_flag = false;        
-        }
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $state_flag = true;      
@@ -1513,7 +1248,7 @@ class Voucher extends Components {
     }
     
     ############################################################### 
-    #   Check to see if the voucher status allows refunding       #
+    #   Check to see if the voucher status allows cancelling      #
     ###############################################################
 
     private function checkSingleVoucherAllowsInvoiceCancel($voucher_id) {
@@ -1570,12 +1305,6 @@ class Voucher extends Components {
             $state_flag = false;        
         }*/
 
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been refunded."));
-            $state_flag = false;        
-        }
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been cancelled."));
@@ -1592,7 +1321,7 @@ class Voucher extends Components {
     }
     
     ############################################################### 
-    #   Check to see if the voucher status allows refunding       #
+    #   Check to see if the voucher status allows Deleting        #
     ###############################################################
 
     private function checkSingleVoucherAllowsInvoiceDelete($voucher_id) {
@@ -1649,12 +1378,6 @@ class Voucher extends Components {
             $state_flag = false;        
         }*/
 
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been refunded."));
-            $state_flag = false;        
-        }
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been cancelled."));
@@ -1670,128 +1393,7 @@ class Voucher extends Components {
         return $state_flag;
         
     }
-    
-    ############################################################### 
-    #   Check to see if the voucher status allows refunding       #
-    ###############################################################
-
-    private function checkSingleVoucherAllowsInvoiceRefund($voucher_id) {
-
-        $state_flag = false;
-   
-        // Is Expired (Live Check)
-        if($this->checkVoucherIsExpired($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because this voucher has expired."));        
-            $state_flag = false;
-        }
-                
-        // Get the voucher details
-        $voucher_details = $this->getRecord($voucher_id);
         
-        // Is Unpaid
-        if($voucher_details['status'] == 'unpaid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because this voucher has not been paid."));
-            $state_flag = false;   
-        }
-        
-        // Is Partially Paid
-        if($voucher_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because this voucher has been partially paid."));
-            $state_flag = false;    
-        }
-        
-        // Is Unused
-        if($voucher_details['status'] == 'paid_unused') {            
-            $state_flag = true;  
-        }
-        
-        // Is Partially Redeemed
-        if($voucher_details['status'] == 'partially_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because this voucher has been partially redeemed."));
-            $state_flag = false;        
-        }
-        
-        // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because this voucher has been redeemed."));
-            $state_flag = false;        
-        }
-
-        // Is Suspended
-        if($voucher_details['status'] == 'suspended') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because this voucher has been suspended."));
-            $state_flag = false;        
-        }  
-
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because this voucher has expired."));
-            $state_flag = false;        
-        }*/
-
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because this voucher has been refunded."));
-            $state_flag = false;        
-        }
-
-        // Is Cancelled
-        if($voucher_details['status'] == 'cancelled') {            
-            $state_flag = true;        
-        }
-
-        // Is Deleted (should not be needed)
-        if($voucher_details['status'] == 'deleted') {
-            $state_flag = true;        
-        }
-
-        return $state_flag;
-
-    } 
-    
-    
-    #########################################################################
-    #   Check to see if the voucher status allows refund to be cancelled    #
-    #########################################################################
-
-    private function checkSingleVoucherAllowsInvoiceRefundCancel($voucher_id) {
-
-        $state_flag = true;
-
-        // Get the voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Is not refunded
-        if($voucher_details['status'] != 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot have it's refund cancelled because this voucher is not refunded."));
-            $state_flag = false;        
-        }
-
-        return $state_flag;
-
-    }     
-
-    #########################################################################
-    #   Check to see if the voucher status allows refund to be deleted      #
-    #########################################################################
-
-    private function checkSingleVoucherAllowsInvoiceRefundDelete($voucher_id) {
-
-        $state_flag = true;
-
-        // Get the voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Is not refunded
-        if($voucher_details['status'] != 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot have it's refund deleted because this voucher not refunded."));
-            $state_flag = false;        
-        }
-
-        return $state_flag;
-
-    }
-    
     ##############################################################
     #  Check if the Voucher can be redeemed                      #
     ##############################################################
@@ -1854,12 +1456,6 @@ class Voucher extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has expired."));        
             $state_flag = false;        
         }*/
-
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been refunded."));
-            $state_flag = false;        
-        }
 
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
@@ -1935,12 +1531,6 @@ class Voucher extends Components {
             $state_flag = false;        
         }*/
 
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been refunded."));
-            $state_flag = false;        
-        }
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has already been cancelled."));
@@ -2014,12 +1604,6 @@ class Voucher extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been expired."));
             $state_flag = false;        
         }*/
-
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been refunded."));
-            $state_flag = false;        
-        }
 
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
@@ -2113,12 +1697,6 @@ class Voucher extends Components {
             $state_flag = false;        
         }*/
         
-        // Is Refunded
-        if($voucher_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been refunded."));
-            $state_flag = false;        
-        }
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been cancelled."));
@@ -2198,12 +1776,6 @@ public function checkInvoiceAllowsSingleVoucherStatusChange($invoice_id) {
             $state_flag = false;        
         }
         
-        // Is the Parent Invoice Refunded
-        if($invoice_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice has been refunded."));
-            $state_flag = false;        
-        }
-        
         // Is the Parent Invoice Cancelled
         if($invoice_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice has been cancelled."));
@@ -2276,12 +1848,6 @@ private function checkInvoiceAllowsSingleVoucherChanges($invoice_id) {
             $state_flag = false;        
         }
         
-        // Is the Parent Invoice Refunded
-        if($invoice_details['status'] == 'refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice has been refunded."));
-            $state_flag = false;        
-        }
-        
         // Is the Parent Invoice Cancelled
         if($invoice_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice has been cancelled."));
@@ -2296,101 +1862,6 @@ private function checkInvoiceAllowsSingleVoucherChanges($invoice_id) {
  
         return $state_flag;
  }
-    
-    ############################################################################
-    # Check an invoices vouchers do not prevent the invoice getting refunded   #
-    ############################################################################
-
-    public function checkInvoiceVouchersAllowsInvoiceRefund($invoice_id) {
-
-        $state_flag = true;
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {            
-
-            //$voucher_details = $rs->GetRowAssoc();
-
-            // Check the Voucher to see if it can be refunded
-            if(!$this->checkSingleVoucherAllowsInvoiceRefund($rs->fields['voucher_id'])) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
-                $state_flag = false;                
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-
-        return $state_flag; 
-
-    }
-    
-    ##################################################################################
-    # Check an invoices vouchers do not prevent the invoice refund getting cancelled #  // should this use the function refund cancelled
-    ##################################################################################
-
-    public function checkInvoiceVouchersAllowsInvoiceRefundCancel($invoice_id) {
-
-        $state_flag = true;
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {            
-
-            // Check the Voucher to see if it can be cancelled
-            if(!$this->checkSingleVoucherAllowsInvoiceRefundCancel($rs->fields['voucher_id'])) {  
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']); 
-                $state_flag = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-
-        return $state_flag;
-
-    }
-    
-    #################################################################################
-    # Check an invoices vouchers do not prevent the invoice refund getting deleted  #
-    #################################################################################
-
-    public function checkInvoiceVouchersAllowsInvoiceRefundDelete($invoice_id) {
-
-        $state_flag = true;
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {            
-
-            // Check the Voucher to see if it can be refunded
-            if(!$this->checkSingleVoucherAllowsInvoiceRefundDelete($rs->fields['voucher_id'])) {  
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$rs->fields['voucher_id']); 
-                $state_flag = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-
-        return $state_flag;
-
-    }    
     
     ############################################################################
     # Check an invoices vouchers do not prevent the invoice getting cancelled  #

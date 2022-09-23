@@ -296,8 +296,7 @@ CREATE TABLE `#__creditnote_records` (
   `expense_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this expense',
   `date` date DEFAULT NULL,
   `expiry_date` date DEFAULT NULL,
-  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,  
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -310,6 +309,7 @@ CREATE TABLE `#__creditnote_records` (
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -562,8 +562,7 @@ CREATE TABLE `#__invoice_records` (
   `invoice_id` int(10) UNSIGNED NOT NULL,
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
   `client_id` int(10) UNSIGNED DEFAULT NULL,
-  `workorder_id` int(10) UNSIGNED DEFAULT NULL,
-  `refund_id` int(10) UNSIGNED DEFAULT NULL,
+  `workorder_id` int(10) UNSIGNED DEFAULT NULL,  
   `date` date DEFAULT NULL,
   `due_date` date DEFAULT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -605,9 +604,8 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (5, 'in_dispute', 'In Dispute'),
 (6, 'overdue', 'Overdue'),
 (7, 'collections', 'Collections'),
-(8, 'refunded', 'Refunded'),
 (9, 'cancelled', 'Cancelled'),
-(10, 'deleted', 'Deleted');
+(9, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -840,8 +838,7 @@ CREATE TABLE `#__payment_records` (
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
   `client_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
   `supplier_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
-  `invoice_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
-  `refund_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
+  `invoice_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',  
   `expense_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
   `otherincome_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against',
   `creditnote_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'Applied against / Refunded against',
@@ -898,79 +895,9 @@ CREATE TABLE `#__payment_types` (
 
 INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'invoice', 'Invoice'),
-(2, 'refund', 'Refund'),
-(3, 'expense', 'Expense'),
-(4, 'otherincome', 'Other Income');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__refund_records`
---
-
-CREATE TABLE `#__refund_records` (
-  `refund_id` int(10) UNSIGNED NOT NULL,
-  `employee_id` int(10) UNSIGNED DEFAULT NULL,
-  `client_id` int(10) UNSIGNED DEFAULT NULL,  
-  `invoice_id` int(10) UNSIGNED DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
-  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `opened_on` datetime DEFAULT NULL,
-  `closed_on` datetime DEFAULT NULL,
-  `last_active` datetime DEFAULT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__refund_statuses`
---
-
-CREATE TABLE `#__refund_statuses` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `#__refund_statuses`
---
-
-INSERT INTO `#__refund_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'unpaid', 'Unpaid'),
-(2, 'partially_paid', 'Partially Paid'),
-(3, 'paid', 'Paid'),
-(4, 'cancelled', 'Cancelled'),
-(5, 'deleted', 'Deleted');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__refund_types`
---
-
-CREATE TABLE `#__refund_types` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `#__refund_types`
---
-
-INSERT INTO `#__refund_types` (`id`, `type_key`, `display_name`) VALUES
-(1, 'invoice', 'Invoice'),
-(2, 'cash_purchase', 'Cash Purchase');
+(2, 'expense', 'Expense'),
+(3, 'otherincome', 'Other Income'),
+(4, 'creditnote', 'Credit Note');
 
 -- --------------------------------------------------------
 
@@ -1186,13 +1113,6 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('payment:options', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('refund:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('refund:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('refund:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('refund:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('refund:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('refund:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('refund:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('report:basic_stats', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('report:financial', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('schedule:day', 1, 1, 1, 1, 0, 0, 0, 0, 0),
@@ -1387,7 +1307,6 @@ CREATE TABLE `#__voucher_records` (
   `client_id` int(10) UNSIGNED DEFAULT NULL,
   `workorder_id` int(10) UNSIGNED DEFAULT NULL,
   `invoice_id` int(10) UNSIGNED DEFAULT NULL,  
-  `refund_id` int(10) UNSIGNED DEFAULT NULL,  
   `expiry_date` date DEFAULT NULL,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime DEFAULT NULL,  
@@ -1430,9 +1349,8 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (5, 'fully_redeemed', 'Fully Redeemed'),
 (6, 'suspended', 'Suspended'),
 (7, 'expired_unused', 'Expired Unused'),
-(8, 'refunded', 'Refunded'),
-(9, 'cancelled', 'Cancelled'),
-(10, 'deleted', 'Deleted');
+(8, 'cancelled', 'Cancelled'),
+(9, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -1731,24 +1649,6 @@ ALTER TABLE `#__payment_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `#__refund_records`
---
-ALTER TABLE `#__refund_records`
-  ADD PRIMARY KEY (`refund_id`);
-
---
--- Indexes for table `#__refund_statuses`
---
-ALTER TABLE `#__refund_statuses`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `#__refund_types`
---
-ALTER TABLE `#__refund_types`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `#__schedule_records`
 --
 ALTER TABLE `#__schedule_records`
@@ -1929,12 +1829,6 @@ ALTER TABLE `#__otherincome_records`
 --
 ALTER TABLE `#__payment_records`
   MODIFY `payment_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `#__refund_records`
---
-ALTER TABLE `#__refund_records`
-  MODIFY `refund_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `#__schedule_records`

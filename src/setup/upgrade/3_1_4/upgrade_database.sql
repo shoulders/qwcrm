@@ -841,8 +841,7 @@ CREATE TABLE `#__creditnote_records` (
   `expense_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this expense',
   `date` date DEFAULT NULL,
   `expiry_date` date DEFAULT NULL,
-  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,  
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -855,6 +854,7 @@ CREATE TABLE `#__creditnote_records` (
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1009,3 +1009,43 @@ UPDATE `#__voucher_records` SET `vat_tax_code` = 'T9' WHERE `#__voucher_records`
 UPDATE `#__invoice_items` SET `vat_tax_code` = 'T1' WHERE `#__invoice_items`.`vat_tax_code` = 'TVM';
 UPDATE `#__refund_records` SET `vat_tax_code` = 'T1' WHERE `#__refund_records`.`vat_tax_code` = 'TVM';
 UPDATE `#__voucher_records` SET `vat_tax_code` = 'T1' WHERE `#__voucher_records`.`vat_tax_code` = 'TVM';
+
+---
+--- Remove refund component and convert to Credit notes
+----
+
+TRUNCATE TABLE `#__payment_types`;
+INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'invoice', 'Invoice'),
+(2, 'expense', 'Expense'),
+(3, 'otherincome', 'Other Income'),
+(4, 'creditnote', 'Credit Note');
+
+TRUNCATE TABLE `#__invoice_statuses`;
+INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'pending', 'Pending'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'paid', 'Paid'),
+(5, 'in_dispute', 'In Dispute'),
+(6, 'overdue', 'Overdue'),
+(7, 'collections', 'Collections'),
+(9, 'cancelled', 'Cancelled'),
+(9, 'deleted', 'Deleted');
+
+TRUNCATE TABLE `#__voucher_statuses`;
+INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid_unused', 'Paid Unused'),
+(4, 'partially_redeemed', 'Partially Redeemed'),
+(5, 'fully_redeemed', 'Fully Redeemed'),
+(6, 'suspended', 'Suspended'),
+(7, 'expired_unused', 'Expired Unused'),
+(8, 'cancelled', 'Cancelled'),
+(9, 'deleted', 'Deleted');
+
+ALTER TABLE `#__invoice_records` DROP `refund_id`;
+ALTER TABLE `#__voucher_records` DROP `refund_id`;
+DROP TABLE `#__refund_statuses`;
+DROP TABLE `#__refund_types`;

@@ -24,8 +24,7 @@
             <td class="olohead"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
         {/if}        
         <td class="olohead">{t}Gross{/t}</td>     
-        <td class="olohead">{t}Balance{/t}</td>
-        <td class="olohead">{t}Refund ID{/t}</td>
+        <td class="olohead">{t}Balance{/t}</td>        
         <td class="olohead">{t}Redemptions{/t}</td>
         <td class="olohead">{t}Note{/t}</td>        
         <td class="olohead">{t}Action{/t}</td>
@@ -43,13 +42,7 @@
             <td class="olotd4">{$display_vouchers.records[g].closed_on|date_format:$date_format}</td>
             <td class="olotd4">
                 {section name=s loop=$voucher_statuses}    
-                    {if $display_vouchers.records[g].status == $voucher_statuses[s].status_key}
-                        {if $display_vouchers.records[g].status == 'refunded'}
-                            <a href="index.php?component=refund&page_tpl=details&refund_id={$display_vouchers.records[g].refund_id}">{t}{$voucher_statuses[s].display_name}{/t}</a>
-                        {else}
-                            {t}{$voucher_statuses[s].display_name}{/t}
-                        {/if}                    
-                    {/if}        
+                    {if $display_vouchers.records[g].status == $voucher_statuses[s].status_key}{t}{$voucher_statuses[s].display_name}{/t}{/if}        
                 {/section} 
             </td> 
             <td class="olotd4">
@@ -61,8 +54,7 @@
                 <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_tax}</td>
             {/if}
             <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_gross}</td>      
-            <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].balance}</td>
-            <td class="olotd4">{if $display_vouchers.records}<a href="index.php?component=refund&page_tpl=details&refund_id={$display_vouchers.records[g].refund_id}">{$display_vouchers.records[g].refund_id}</a>{else}&nbsp;{/if}</td>
+            <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].balance}</td>            
             <td class="olotd4" nowrap>
                 {if $display_vouchers.records[g].redemptions}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Voucher Redemptions{/t}</strong></div><hr><div>{$display_vouchers.records[g].redemptions|redemptions|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">

@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Make sure a payment type is set
-if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'invoice' || \CMSApplication::$VAR['type'] == 'refund' || \CMSApplication::$VAR['type'] == 'expense' || \CMSApplication::$VAR['type'] == 'otherincome' || \CMSApplication::$VAR['type'] == 'creditnote')) {
+if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'invoice' || \CMSApplication::$VAR['type'] == 'expense' || \CMSApplication::$VAR['type'] == 'otherincome' || \CMSApplication::$VAR['type'] == 'creditnote')) {
     $this->app->system->variables->systemMessagesWrite('success', _gettext("No Payment Type supplied."));
     $this->app->system->page->forcePage('payment', 'search');  
 }
@@ -25,15 +25,6 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
         $this->app->system->page->forcePage('invoice', 'search');    
     }    
 
-// Refund
-} elseif($this->app->system->security->checkPageAccessedViaQwcrm('refund', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('refund', 'details')) {   
-    
-    // Check we have a valid request
-    if(\CMSApplication::$VAR['type'] == 'refund' && !(\CMSApplication::$VAR['refund_id'] ?? null)) {
-        $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
-        $this->app->system->page->forcePage('refund', 'search');    
-    }    
- 
 // Expense
 } elseif($this->app->system->security->checkPageAccessedViaQwcrm('expense', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details')) {
     
@@ -83,19 +74,46 @@ if(isset(\CMSApplication::$VAR['submit']))
 // Build the buttons
 $this->app->components->payment->paymentType->buildButtons();
 
-// Autofill the name on the card payment
-if(!\CMSApplication::$VAR['qpayment']['name_on_card'] && (\CMSApplication::$VAR['qpayment']['type'] == 'refund' || \CMSApplication::$VAR['qpayment']['type'] == 'expense'))
+// Autofill the name on the card payment if not present - this code should perhaps be moved the the methods?
+if(!\CMSApplication::$VAR['qpayment']['name_on_card'])
 {
-    \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
-}
-elseif (!\CMSApplication::$VAR['qpayment']['name_on_card'] && (\CMSApplication::$VAR['qpayment']['type'] == 'invoice'))
-{
-    $client_id = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id'], 'client_id');    
-    \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->client->getRecord($client_id, 'display_name');
+    if (\CMSApplication::$VAR['qpayment']['type'] == 'invoice')
+    {
+        $client_id = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id'], 'client_id');    
+        \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->client->getRecord($client_id, 'display_name');
+    }
+    
+    elseif(\CMSApplication::$VAR['qpayment']['type'] == 'expense')
+    {
+        \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
+    }
+    
+    elseif(\CMSApplication::$VAR['qpayment']['type'] == 'otherincome')
+    {
+        \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->otherincome->getRecord('payee');
+    }
+    
+    elseif (\CMSApplication::$VAR['qpayment']['type'] == 'creditnote')
+    {
+        if(\CMSApplication::$VAR['qpayment']['creditnote_action'] == 'sales_refund')
+        {        
+             $client_id = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id'], 'client_id');
+             \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
+        }
+        elseif(\CMSApplication::$VAR['qpayment']['creditnote_action'] == 'purchase_refund')
+        {      
+            $supplier_id = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id'], 'supplier_id');
+            \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->supplier->getRecord($supplier_id, 'display_name');
+        }
+    }
+    else
+    {
+        \CMSApplication::$VAR['qpayment']['name_on_card'] = '';
+    }
 }
       
 // Build the page
-$this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'], \CMSApplication::$VAR['qpayment']['creditnote_id']));                                                                                                 
+$this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'], \CMSApplication::$VAR['qpayment']['creditnote_id']));                                                                                                 
 $this->app->smarty->assign('payment_method',                    \CMSApplication::$VAR['qpayment']['method']                                                      );
 $this->app->smarty->assign('payment_type',                      \CMSApplication::$VAR['qpayment']['type']                                                        );
 $this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes()                                                             );

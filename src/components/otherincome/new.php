@@ -17,7 +17,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         
     if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
 
-        // Load New Refund page
+        // Load New Otherincome page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);
         $this->app->system->page->forcePage('otherincome', 'new'); 
 
@@ -29,7 +29,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
          
     } else {
 
-        // Load Refund Details page
+        // Load Otherincome Details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);
         $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$otherincome_id);      
 
