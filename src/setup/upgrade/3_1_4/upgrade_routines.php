@@ -177,26 +177,44 @@ class Upgrade3_1_4 extends Setup {
                 
                 /* Record Items */
                 
-                // Build Creditnote items record migration SQL
-                $sql = "INSERT INTO `".PRFX."creditnote_items` (`creditnote_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
-                $sql .="(".
-                        $this->app->db->qStr($rs->fields['refund_id']).",".                    
-                        $this->app->db->qStr($rs->fields['tax_system'] ).",".                    
-                        $this->app->db->qStr(_gettext("Items")).",".          
-                        $this->app->db->qStr(1).",".
-                        $this->app->db->qStr($rs->fields['unit_net']).",".
-                        $this->app->db->qStr(0.00).",".
-                        $this->app->db->qStr(0).",".
-                        $this->app->db->qStr($rs->fields['vat_tax_code ']).",".
-                        $this->app->db->qStr((($rs->fields['unit_gross']/$rs->fields['unit_net']) * 100) - 100).",".
-                        $this->app->db->qStr($rs->fields['unit_tax']).",".
-                        $this->app->db->qStr($rs->fields['unit_gross']).",".                    
-                        $this->app->db->qStr($rs->fields['unit_net']).",".
-                        $this->app->db->qStr($rs->fields['unit_tax']).",".
-                        $this->app->db->qStr($rs->fields['unit_gross'])."),";            
+                // Get invoice items with voucher records merged as standard items
+                $creditnote_items = $this->invoiceGetItems($rs->fields['invoice_id'], true);
+
+                // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
+                $creditnote_items = json_encode($creditnote_items);
+                $creditnote_items = str_replace('invoice_item_id', 'creditnote_item_id', $creditnote_items);
+                $creditnote_items = json_decode($creditnote_items, true);
                 
-                // Run the Record items SQL
-                if(!$this->app->db->execute($sql))
+                // Build Items/Rows insert SQL
+                if($creditnote_items)
+                {
+                    $sql = "INSERT INTO `".PRFX."creditnote_items` (`creditnote_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
+
+                    foreach($items as $item)
+                    {
+                        $sql .="(".
+                                $this->app->db->qStr( $rs->fields['refund_id']          ).",".                    
+                                $this->app->db->qStr( $item['tax_system']               ).",".                    
+                                $this->app->db->qStr( $item['description']              ).",".                    
+                                $this->app->db->qStr( $item['unit_qty']                 ).",".
+                                $this->app->db->qStr( $item['unit_net']                 ).",".
+                                $this->app->db->qStr( $item['unit_discount']            ).",".
+                                $this->app->db->qStr( $item['sales_tax_exempt']         ).",".
+                                $this->app->db->qStr( $item['vat_tax_code']             ).",".
+                                $this->app->db->qStr( $item['unit_tax_rate']            ).",".
+                                $this->app->db->qStr( $item['unit_tax']                 ).",".
+                                $this->app->db->qStr( $item['unit_gross']               ).",".                    
+                                $this->app->db->qStr( $item['subtotal_net']             ).",".
+                                $this->app->db->qStr( $item['subtotal_tax']             ).",".
+                                $this->app->db->qStr( $item['subtotal_gross']           )."),";
+                    }
+
+                    // Strips off last comma as this is a joined SQL statement
+                    $sql = substr($sql , 0, -1);
+                }
+                
+                // Run the Record items SQL (if there is anything to run)
+                if($sql && !$this->app->db->execute($sql))
                 {                    
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -205,7 +223,7 @@ class Upgrade3_1_4 extends Setup {
                     $local_error_flag = true;
                     
                     // Log Message                    
-                    $record = _gettext("Failed to create an item for the converted refund record").' '.$rs->fields['refund_id'];
+                    $record = _gettext("Failed to migrate items for the converted refund record").' '.$rs->fields['refund_id'];
                     
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -258,6 +276,63 @@ class Upgrade3_1_4 extends Setup {
         }          
     
     } 
+    
+    #########################################
+    #   Get All invoice items               # // withVouchers adds the invoice vouchers in as items, useful for credit notes and print/email TPL
+    #########################################  
+
+    private function invoiceGetItems($invoice_id, $withVouchers = false) {
+        
+        $invoice_items = array();
+
+        $sql = "SELECT * FROM ".PRFX."invoice_items WHERE invoice_id=".$this->app->db->qStr($invoice_id);
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if(!empty($rs)) {
+
+            $invoice_items = $rs->GetArray();
+
+        }
+        
+        // Converts invoice voucher records into items and merges them into the invoice items - This is a bit of a workaround, this 
+        if($withVouchers)
+        {
+            $voucher_records = $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, $invoice_id);
+
+            $voucher_items = array();
+            
+            (int) $index = count($invoice_items);
+
+            foreach($voucher_records['records'] as $key => $value)
+            {
+                $voucher_items[$index]['invoice_item_id'] = $value['voucher_id'];  // this number is not actually used in the TPL
+                $voucher_items[$index]['invoice_id'] = $value['invoice_id'];
+                $voucher_items[$index]['tax_system'] = $value['tax_system'];
+                $voucher_items[$index]['description'] = _gettext("Voucher").': '.$value['voucher_code'];
+                $voucher_items[$index]['unit_qty'] = 1;
+                $voucher_items[$index]['unit_net'] = $value['unit_net'];
+                $voucher_items[$index]['unit_discount'] = 0.00;
+                $voucher_items[$index]['sales_tax_exempt'] = $value['sales_tax_exempt'];
+                $voucher_items[$index]['vat_tax_code'] = $value['vat_tax_code'];
+                $voucher_items[$index]['unit_tax_rate'] = $value['unit_tax_rate'];
+                $voucher_items[$index]['unit_tax'] = $value['unit_tax'];
+                $voucher_items[$index]['unit_gross'] = $value['unit_gross'];
+                $voucher_items[$index]['subtotal_net'] = $value['unit_net'];
+                $voucher_items[$index]['subtotal_tax'] = $value['unit_tax'];
+                $voucher_items[$index]['subtotal_gross'] = $value['unit_gross'];
+
+                ++$index;
+            }
+
+            // Merge Item arrays
+            $invoice_items = $invoice_items + $voucher_items;
+            
+        }
+        
+        return $invoice_items;
+
+    }
     
     #############################################
     # Remove Refund database columns and Tables #  // the rest are in the upgrade SQL
