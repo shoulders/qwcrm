@@ -414,6 +414,30 @@ INSERT INTO `#__cronjob_system` (`last_run_time`, `last_run_status`, `locked`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__expense_items`
+--
+
+CREATE TABLE `#__expense_items` (
+  `expense_item_id` int(10) UNSIGNED NOT NULL,
+  `expense_id` int(10) UNSIGNED NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__expense_records`
 --
 
@@ -423,9 +447,12 @@ CREATE TABLE `#__expense_records` (
   `supplier_id` int(10) UNSIGNED DEFAULT NULL,
   `payee` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,  
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,  
   `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -433,8 +460,8 @@ CREATE TABLE `#__expense_records` (
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
-  `items` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -454,11 +481,12 @@ CREATE TABLE `#__expense_statuses` (
 --
 
 INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'unpaid', 'Unpaid'),
-(2, 'partially_paid', 'Partially Paid'),
-(3, 'paid', 'Paid'),
-(4, 'cancelled', 'Cancelled'),
-(5, 'deleted', 'Deleted');
+(1, 'pending', 'Pending'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'paid', 'Paid'),
+(5, 'cancelled', 'Cancelled'),
+(6, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -610,6 +638,30 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__otherincome_items`
+--
+
+CREATE TABLE `#__otherincome_items` (
+  `otherincome_item_id` int(10) UNSIGNED NOT NULL,
+  `otherincome_id` int(10) UNSIGNED NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__otherincome_records`
 --
 
@@ -628,8 +680,8 @@ CREATE TABLE `#__otherincome_records` (
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
-  `items` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1535,6 +1587,12 @@ ALTER TABLE `#__cronjob_system`
   ADD PRIMARY KEY (`last_run_time`);
 
 --
+-- Indexes for table `#__expense_items`
+--
+ALTER TABLE `#__expense_items`
+  ADD PRIMARY KEY (`expense_item_id`);
+
+--
 -- Indexes for table `#__expense_records`
 --
 ALTER TABLE `#__expense_records`
@@ -1575,6 +1633,12 @@ ALTER TABLE `#__invoice_records`
 --
 ALTER TABLE `#__invoice_statuses`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__otherincome_items`
+--
+ALTER TABLE `#__otherincome_items`
+  ADD PRIMARY KEY (`otherincome_item_id`);
 
 --
 -- Indexes for table `#__otherincome_records`
@@ -1795,6 +1859,12 @@ ALTER TABLE `#__creditnote_records`
   MODIFY `creditnote_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `#__expense_items`
+--
+ALTER TABLE `#__expense_items`
+  MODIFY `expense_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `#__expense_records`
 --
 ALTER TABLE `#__expense_records`
@@ -1817,6 +1887,12 @@ ALTER TABLE `#__invoice_prefill_items`
 --
 ALTER TABLE `#__invoice_records`
   MODIFY `invoice_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `#__otherincome_items`
+--
+ALTER TABLE `#__otherincome_items`
+  MODIFY `otherincome_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `#__otherincome_records`

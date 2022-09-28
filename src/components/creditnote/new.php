@@ -104,7 +104,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $creditnote_id = $this->app->components->creditnote->insertRecord($record);
 
         // Get invoice items to populate the credit note      
-        $variables['creditnote_items'] = $creditnote_items ?? array();
+        $variables['qform']['creditnote_items'] = $creditnote_items ?? array();
 
         // Load the newly created credit note edit page but populate with invoice items
         $this->app->system->page->forcePage('creditnote', 'edit&creditnote_id='.$creditnote_id, $variables);

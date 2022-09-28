@@ -256,7 +256,7 @@
                                                         </tr>
                                                         {section name=l loop=$creditnote_items}
                                                             <tr class="olotd4">
-                                                                <td>{$smarty.section.w.index+1}</td>
+                                                                <td>{$smarty.section.l.index + 1}</td>
                                                                 <td>{$creditnote_items[l].description}</td>
                                                                 <td>{$creditnote_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                 <td>{$currency_sym}{$creditnote_items[l].unit_net|string_format:"%.2f"}</td>

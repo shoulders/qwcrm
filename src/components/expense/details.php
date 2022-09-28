@@ -14,6 +14,18 @@ if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expens
     $this->app->system->page->forcePage('expense', 'search');
 }
 
+// Load expense record
+$expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
+
+// Check if expense is deleted
+if($expense_details['status'] === 'deleted') {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot view this expense because it has been deleted."));
+    $this->app->system->page->forcePage('expense', 'search');
+}
+
+// Expense details
+$this->app->smarty->assign('expense_items',  $this->app->components->expense->getItems($expense_details['expense_id']));
+
 // Payment Details
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes()                                                                                 );
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()                                                             ); 
@@ -22,8 +34,10 @@ $this->app->smarty->assign('payment_statuses',         $this->app->components->p
 $this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
 $this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['expense_id']));
 
+// Misc
+$this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($expense_details['employee_id'], 'display_name'));
+
 // Build the page
 $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses()            );
 $this->app->smarty->assign('expense_types', $this->app->components->expense->getTypes());
-$this->app->smarty->assign('expense_details', $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']));
-$this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, null, null, \CMSApplication::$VAR['expense_id']));
+$this->app->smarty->assign('expense_details', $expense_details);

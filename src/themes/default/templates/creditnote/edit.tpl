@@ -45,7 +45,7 @@
         
     });
  
-    // Change the Dummy rcords so the visible fields match the Tax System
+    // Change the Dummy records so the visible fields match the Tax System
     function modifyDummyRowsForTaxSystem() {
         
         // If the Tax system is No Tax
@@ -94,7 +94,7 @@
             // Loop through the various fields and populate with their data
             $.each(fieldNames, function(fieldIndex, fieldName) {
                 
-                // If it is a checkbox
+                // If it is sales_tax_exempt and should be checked, do it
                 if(fieldName == "sales_tax_exempt") {
                     if(creditnoteItem[fieldName] === '1') {
                         $('#qform\\[creditnote_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').prop('checked', true);
@@ -244,16 +244,16 @@
     }
 
     // Refresh all dynamic items onscreen
-    function refreshPage(applyDiscountRate = false) {
-                    
-        // Disable all buttons on page refresh unless on initial page build, if there is a change
-        if(pageBuilding === false) {            
-            $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
-        }
+    function refreshPage(applyDiscountRate = false) {                    
         
-        // Only allow Refresh Credit Note Totals after the page has completely loaded
-        if(pageBuilding === false) {            
-            refreshTotals(applyDiscountRate);
+        // if not initial page build
+        if(pageBuilding === false) {
+            
+            // Disable some function buttons because there is a change
+            $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
+            
+            // Refresh Credit Note Totals
+            refreshTotals(applyDiscountRate);            
         }
      
     }
@@ -580,7 +580,7 @@
                                                             <td class="vatTaxSystem salesTaxSystem" align="right" hidden>
                                                                 <input id="qform[creditnote_items][iteration][unit_tax_rate]" name="qform[creditnote_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="{if $creditnote_details.tax_system == 'sales_tax_cash'}{$creditnote_details.sales_tax_rate|string_format:"%.2f"}{else}0.00{/if}" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem salesTaxSystem" align="right" hidden><input id="qform[creditnote_items][iteration][subtotal_tax]" name="qform[creditnote_items][iteration][subtotal_tax]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>                                                                                                                                      
-                                                            <td class="salesTaxSystem" align="right" hidden><input id="qform[creditnote_items][iteration][sales_tax_exempt]" name="qform[creditnote_items][iteration][sales_tax_exempt]" type="checkbox" disabled></td>
+                                                            <td class="salesTaxSystem" align="right" hidden><input id="qform[creditnote_items][iteration][sales_tax_exempt]" name="qform[creditnote_items][iteration][sales_tax_exempt]" type="checkbox" value="1" disabled></td>
                                                             <td align="right">
                                                                 <input id="qform[creditnote_items][iteration][subtotal_gross]" name="qform[creditnote_items][iteration][subtotal_gross]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);">
                                                                 <!-- Hidden but needed -->

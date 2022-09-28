@@ -57,12 +57,18 @@ class Upgrade3_1_4 extends Setup {
         $this->updateColumnValues(PRFX.'payment_records', 'direction', '', 'credit', 'type', 'otherincome');
         
         // Remove Refunds and convert to Creditnotes       
-        $this->convertRefundsToCreditnotes();
-        $this->removeRefundColumnsAndTables();        
+        $this->refundConvertToCreditnotes();
+        $this->refundTidyDatabase();        
         $this->copyColumnAToColumnB('payment_records', 'refund_id', 'creditnote_id');
         $this->updateColumnValues(PRFX.'payment_records', 'type', 'refund', 'creditnote');
         $this->updateColumnValues(PRFX.'payment_records', 'direction', '', 'credit', 'type', 'creditnote');
         $this->updateColumnValues(PRFX.'payment_records', 'creditnote_action', '', 'sales_refund', 'type', 'creditnote');
+        
+        // Convert Expense to use items
+        $this->expenseConvertToUseItems();
+        $this->expenseTidyDatabase();
+        
+        // Convert Otherincome to use items
         
         // Fix invoice and Voucher statuses
         $this->updateColumnValues(PRFX.'invoice_records', 'status', 'refunded', 'paid');
@@ -83,11 +89,11 @@ class Upgrade3_1_4 extends Setup {
     #   Convert Refunds into Credit Notes     #  // just map records over including building the credit note with items. there is only full refunds.. see creditnote:new.php
     ###########################################
     
-    public function convertRefundsToCreditnotes()
+    public function refundConvertToCreditnotes()
     {
         $local_error_flag = false;                     
         
-        // Loop through all of the Voucher records
+        // Loop through all of the Refund records
         $sql = "SELECT * FROM ".PRFX."refund_records";
         if(!$rs = $this->app->db->execute($sql))
         {            
@@ -178,7 +184,7 @@ class Upgrade3_1_4 extends Setup {
                 /* Record Items */
                 
                 // Get invoice items with voucher records merged as standard items
-                $creditnote_items = $this->invoiceGetItems($rs->fields['invoice_id'], true);
+                $creditnote_items = $this->refundInvoiceGetItems($rs->fields['invoice_id'], true);
 
                 // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
                 $creditnote_items = json_encode($creditnote_items);
@@ -281,7 +287,7 @@ class Upgrade3_1_4 extends Setup {
     #   Get All invoice items               # // withVouchers adds the invoice vouchers in as items, useful for credit notes and print/email TPL
     #########################################  
 
-    private function invoiceGetItems($invoice_id, $withVouchers = false) {
+    private function refundInvoiceGetItems($invoice_id, $withVouchers = false) {
         
         $invoice_items = array();
 
@@ -338,44 +344,163 @@ class Upgrade3_1_4 extends Setup {
     # Remove Refund database columns and Tables #  // the rest are in the upgrade SQL
     #############################################
     
-    public function removeRefundColumnsAndTables()
+    public function refundTidyDatabase()
     {
-        $sqls = array();
         $sqls[] = "DROP TABLE `".PRFX."refund_records`;";
         $sqls[] = "ALTER TABLE `".PRFX."payment_records` DROP `refund_id`;";
+        $this->executeSqlCommands($sqls);
+    }
+    
+    ###########################################
+    #   Convert Expense records to use items  # 
+    ###########################################
+    
+    public function expenseConvertToUseItems()
+    {
+        $local_error_flag = false;                     
         
-        foreach($sqls as $sql)
-        {
-            if(!$this->app->db->execute($sql))
-            {       
-                // Set the setup global error flag
-                self::$setup_error_flag = true;
-                    
-                // Log Message                    
-                $record = _gettext("Failed to run the SQL command");
-
-                // Output message via smarty
-                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-
-                // Log message to setup log
-                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);                   
-            }
-            else
-            {
-                // Log Message
-                $record = _gettext("Successfully ran the SQL command");
-
-                // Output message via smarty
-                self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
-                self::$executed_sql_results .= '<div>&nbsp;</div>';
-
-                // Log message to setup log
-                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
-
-                return true; 
-            }
-
+        // Loop through all of the Expense records
+        $sql = "SELECT * FROM ".PRFX."expense_records";
+        if(!$rs = $this->app->db->execute($sql))
+        {            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `expense_records`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
         }
+        else
+        {
+            // Loop through all records
+            while(!$rs->EOF)
+            {                
+                /* Main Record */ 
+                
+                // Move items into note, below any notes - this is definately a hack
+                $note = $rs->fields['note'].'<hr><strong>'._gettext("Items").'</strong><hr>'.$rs->fields['items'];
+                $sqls[] = "UPDATE `#__expense_record` SET `note` = '$note';";
+                if(!$this->executeSqlCommands($sqls)) {$local_error_flag = true;}
+                
+                /* Record Item - This is a made up item */
+                                                
+                // Build Items/Rows insert SQL
+                $sql = "INSERT INTO ".PRFX."expense_items SET                    
+                    expense_id          =". $this->app->db->qStr($rs->fields['expense_id']).",
+                    tax_system          =". $this->app->db->qStr($rs->fields['tax_system']).",
+                    description         =". $this->app->db->qStr(_gettext("Item(s) - Full list in notes")).",
+                    unit_qty            =". $this->app->db->qStr(1).",
+                    unit_net            =". $this->app->db->qStr($rs->fields['unit_net']).",
+                    unit_discount       =". $this->app->db->qStr(0.00).",
+                    sales_tax_exempt    =". $this->app->db->qStr(0).",
+                    vat_tax_code        =". $this->app->db->qStr($rs->fields['vat_tax_code']).",
+                    unit_tax_rate       =". $this->app->db->qStr($rs->fields['unit_tax_rate']).",
+                    unit_tax            =". $this->app->db->qStr($rs->fields['unit_tax']).",
+                    unit_gross          =". $this->app->db->qStr($rs->fields['unit_gross']).",
+                    subtotal_net        =". $this->app->db->qStr($rs->fields['unit_net']).",
+                    subtotal_tax        =". $this->app->db->qStr($rs->fields['unit_tax']).",
+                    subtotal_gross      =". $this->app->db->qStr($rs->fields['unit_gross']);
+                
+                // Run the Record items SQL (if there is anything to run)
+                if($sql && !$this->app->db->execute($sql))
+                {                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to create item for the expense record").' '.$rs->fields['refund_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;                    
+                }
+                
+                // Correct sales_tax_rate
+                
+                /* Advance the loop to the next record */
+                
+                $rs->MoveNext();                
+
+            }
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag)
+        {            
+            // Log Message
+            $record = _gettext("Failed to complete conversion of refunds to credit notes.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        }
+        else
+        {            
+            // Log Message
+            $record = _gettext("Successfully completed conversion of refunds to credit notes.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            
+            return true;            
+        }          
+    
+    }   
+    
+    #############################################
+    # Expense Tidy database                     #  // the rest are in the upgrade SQL
+    #############################################
+    
+    public function expenseTidyDatabase()
+    {
+        $sqls[] = "ALTER TABLE `".PRFX."expense_records` DROP `vat_tax_code`;";  // this has been deleted from the table - i have removed the rule now
+        $sqls[] = "ALTER TABLE `".PRFX."expense_records` DROP `unit_tax_rate`;"; // this has been deleted from the table - i have removed the rule now
+        $sqls[] = "ALTER TABLE `".PRFX."expense_records` DROP `items`;";
+        $this->executeSqlCommands($sqls);
+    }
+    
+    #############################################
+    # Otherincome Tidy database                 #  // the rest are in the upgrade SQL
+    #############################################
+    
+    public function otherincomeTidyDatabase()
+    {
+        $sqls[] = "ALTER TABLE `".PRFX."otherincome_records` DROP `vat_tax_code`;";    // this has been deleted from the table - i have removed the rule now
+        $sqls[] = "ALTER TABLE `".PRFX."otherincome_records` DROP `unit_tax_rate`;";   // this has been deleted from the table - i have removed the rule now
+        $sqls[] = "ALTER TABLE `".PRFX."otherincome_records` DROP `items`;";
+        $this->executeSqlCommands($sqls);
     }
         
 }

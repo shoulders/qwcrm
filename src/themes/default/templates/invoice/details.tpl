@@ -204,7 +204,7 @@
                                                         </tr>
                                                         {section name=l loop=$invoice_items}
                                                             <tr class="olotd4">
-                                                                <td>{$smarty.section.w.index+1}</td>
+                                                                <td>{$smarty.section.l.index + 1}</td>
                                                                 <td>{$invoice_items[l].description}</td>
                                                                 <td>{$invoice_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                 <td>{$currency_sym}{$invoice_items[l].unit_net|string_format:"%.2f"}</td>

@@ -687,16 +687,6 @@ ALTER TABLE `#__invoice_labour` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAU
 ALTER TABLE `#__invoice_parts` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
 
 --
--- Remove T9 VAT code from the user space
---
-
-UPDATE `#__company_vat_tax_codes` SET `hidden` = '1' WHERE `#__company_vat_tax_codes`.`id` = 10;
-ALTER TABLE `#__expense_records` DROP `vat_tax_code`;
-ALTER TABLE `#__expense_records` DROP `unit_tax_rate`;
-ALTER TABLE `#__otherincome_records` DROP `vat_tax_code`;
-ALTER TABLE `#__otherincome_records` DROP `unit_tax_rate`;
-
---
 -- Upgrade Voucher system
 --
 
@@ -977,7 +967,7 @@ UPDATE `#__payment_records` SET `direction` = 'debit' WHERE `#__payment_records`
 UPDATE `#__payment_records` SET `direction` = 'debit' WHERE `#__payment_records`.`type` = 'refund';
 
 --
--- Table structure for table `qw_payment_directions`
+-- Table structure for table `#__payment_directions`
 --
 
 CREATE TABLE `#__payment_directions` (
@@ -1004,11 +994,15 @@ DELETE FROM `#__company_vat_tax_codes` WHERE `#__company_vat_tax_codes`.`id` = 1
 UPDATE `#__invoice_items` SET `vat_tax_code` = 'T9' WHERE `#__invoice_items`.`vat_tax_code` = 'TNA';
 UPDATE `#__refund_records` SET `vat_tax_code` = 'T9' WHERE `#__refund_records`.`vat_tax_code` = 'TNA';
 UPDATE `#__voucher_records` SET `vat_tax_code` = 'T9' WHERE `#__voucher_records`.`vat_tax_code` = 'TNA';
+UPDATE `#__expense_records` SET `vat_tax_code` = 'T9' WHERE `#__expense_records`.`vat_tax_code` = 'TNA';
+UPDATE `#__otherincome_records` SET `vat_tax_code` = 'T9' WHERE `#__otherincome_records`.`vat_tax_code` = 'TNA';
 
 -- I think this was only ever a thing on Refunds - I will use T1 to replace, but it is not ideal
 UPDATE `#__invoice_items` SET `vat_tax_code` = 'T1' WHERE `#__invoice_items`.`vat_tax_code` = 'TVM';
 UPDATE `#__refund_records` SET `vat_tax_code` = 'T1' WHERE `#__refund_records`.`vat_tax_code` = 'TVM';
 UPDATE `#__voucher_records` SET `vat_tax_code` = 'T1' WHERE `#__voucher_records`.`vat_tax_code` = 'TVM';
+UPDATE `#__expense_records` SET `vat_tax_code` = 'T1' WHERE `#__expense_records`.`vat_tax_code` = 'TVM';
+UPDATE `#__otherincome_records` SET `vat_tax_code` = 'T1' WHERE `#__otherincome_records`.`vat_tax_code` = 'TVM';
 
 ---
 --- Remove refund component and convert to Credit notes
@@ -1049,3 +1043,95 @@ ALTER TABLE `#__invoice_records` DROP `refund_id`;
 ALTER TABLE `#__voucher_records` DROP `refund_id`;
 DROP TABLE `#__refund_statuses`;
 DROP TABLE `#__refund_types`;
+
+--
+-- Upgrade expense and otherincome to use items
+--
+
+ALTER TABLE `#__expense_records` ADD `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
+ALTER TABLE `#__expense_records` ADD `due_date` DATE NULL DEFAULT NULL AFTER `items`;
+ALTER TABLE `#__expense_records` ADD `reference` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `last_active`; 
+ALTER TABLE `#__otherincome_records` ADD `reference` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `items`; 
+
+-- Table structure for table `#__expense_items`
+
+CREATE TABLE `#__expense_items` (
+  `expense_item_id` int(10) UNSIGNED NOT NULL,
+  `expense_id` int(10) UNSIGNED NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `#__expense_items` ADD PRIMARY KEY (`expense_item_id`);
+ALTER TABLE `#__expense_items` MODIFY `expense_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `#__expense_records` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
+
+-- Table structure for table `#__otherincome_items`
+
+CREATE TABLE `#__otherincome_items` (
+  `otherincome_item_id` int(10) UNSIGNED NOT NULL,
+  `otherincome_id` int(10) UNSIGNED NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_exempt` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `vat_tax_code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `subtotal_gross` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `#__otherincome_items` ADD PRIMARY KEY (`otherincome_item_id`);
+ALTER TABLE `#__otherincome_items` MODIFY `otherincome_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+
+TRUNCATE TABLE `#__expense_statuses`;
+INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'pending', 'Pending'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'paid', 'Paid'),
+(5, 'cancelled', 'Cancelled'),
+(6, 'deleted', 'Deleted');
+
+TRUNCATE TABLE `#__expense_types`;
+INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'bank_charges', 'Bank Charges'),
+(2, 'commission', 'Commission'),
+(3, 'consumables', 'Consumables'),
+(4, 'equipment', 'Equipment'),
+(5, 'fuel', 'Fuel'),
+(6, 'marketing', 'Marketing'),
+(7, 'office_supplies', 'Office Supplies'),
+(8, 'online', 'Online'),
+(9, 'other', 'Other'),
+(10, 'parts', 'Parts'),
+(11, 'postage', 'Postage'),
+(12, 'rent', 'Rent'),
+(13, 'royalties', 'Royalties'),
+(14, 'services', 'Services'),
+(15, 'software', 'Software'),
+(16, 'telco', 'TelCo'),
+(17, 'transport', 'Transport'),
+(18, 'utilities', 'Utilities'),
+(19, 'voucher', 'Voucher'),
+(20, 'wages', 'Wages');
+UPDATE `#__expense_records` SET `type` = 'other' WHERE `#__expense_records`.`type` = 'credit'; 

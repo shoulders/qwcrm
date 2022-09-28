@@ -605,19 +605,20 @@ class Creditnote extends Components {
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $creditnote_details['employee_id'];
         
+        // Build SQL
         $sql = "UPDATE ".PRFX."creditnote_records SET   
-                employee_id         =". $this->app->db->qStr( $employee_id     ).",
-                status              =". $this->app->db->qStr( $new_status      )."               
-                WHERE creditnote_id =". $this->app->db->qStr( $creditnote_id      );
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
-
-        // Update creditnote 'is_closed' boolean
+                employee_id         =". $this->app->db->qStr($employee_id).",
+                status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'fully_used' || $new_status == 'expired_unused' || $new_status == 'cancelled' || $new_status == 'deleted') {
-            $this->updateClosedStatus($creditnote_id, 'closed');
+             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime() ).",
+                      is_closed =". $this->app->db->qStr(1);
         } else {
-            $this->updateClosedStatus($creditnote_id, 'open');
-        }
+             $sql .= "closed_on = NULL,
+                      is_closed   =". $this->app->db->qStr(0);
+        }        
+        $sql .= "WHERE creditnote_id =". $this->app->db->qStr($creditnote_id);
+        
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
 
         // Status updated message
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Credit Note status updated."));  
@@ -640,35 +641,7 @@ class Creditnote extends Components {
         return true;
 
     }
-
-    ####################################### done
-    # Update Credit Note Closed Status    #
-    #######################################
-
-    public function updateClosedStatus($creditnote_id, $new_closed_status) {
-
-        if($new_closed_status == 'open') {
-
-            $sql = "UPDATE ".PRFX."creditnote_records SET
-                    closed_on           = NULL,
-                    is_closed           =". $this->app->db->qStr( 0                )."
-                    WHERE creditnote_id    =". $this->app->db->qStr( $creditnote_id      );
-
-        }
-
-        if($new_closed_status == 'closed') {
-
-            $sql = "UPDATE ".PRFX."creditnote_records SET
-                    closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() ).",
-                    is_closed           =". $this->app->db->qStr( 1                )."
-                    WHERE creditnote_id    =". $this->app->db->qStr( $creditnote_id      );
-        }    
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-    }
-
-    
+   
     ################################# done
     #    Update Last Active         # 
     #################################
@@ -1013,7 +986,7 @@ class Creditnote extends Components {
     {
         $state_flag = true; 
         
-        // Check the expiry date is valid,
+        // Check the submission is valid,
         if(!$this->checkCreditnoteExpiryIsValid($qform['expiry_date']))
         {
            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be submitted because there is an issue with the expiry date."));
@@ -1205,13 +1178,13 @@ class Creditnote extends Components {
         // Is Fully Used
         if($creditnote_details['status'] == 'fully_used') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it is fully used."));
-            return false;        
+            $state_flag = false;         
         }
 
         // Is Expired Unused
         if($creditnote_details['status'] == 'expired_unused') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it is unused and has expired."));
-            return false;        
+            $state_flag = false;        
         }
        
         // Is Cancelled
@@ -1276,13 +1249,13 @@ class Creditnote extends Components {
         // Is Fully Used
         if($creditnote_details['status'] == 'fully_used') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it is fully used."));
-            return false;        
+            $state_flag = false;        
         }
 
         // Is Expired Unused
         if($creditnote_details['status'] == 'expired_unused') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it is unused and has expired."));
-            return false;        
+            $state_flag = false;       
         }
        
         // Is Cancelled
@@ -1347,13 +1320,13 @@ class Creditnote extends Components {
         // Is Fully Used
         if($creditnote_details['status'] == 'fully_used') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is fully used."));
-            return false;        
+            $state_flag = false;        
         }
 
         // Is Expired Unused
         if($creditnote_details['status'] == 'expired_unused') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is unused and has expired."));
-            return false;        
+            $state_flag = false;        
         }
        
         // Is Cancelled
@@ -1428,7 +1401,7 @@ class Creditnote extends Components {
 
     }*/
 
-    #####################################  // Most calculations are done on the invoice:edit tpl but this is still required for when payments are made because of the balance field
+    #####################################  // Most calculations are done on the creditnote:edit tpl but this is still required for when payments are made because of the balance field
     #   Recalculate Credit Note Totals  # 
     #####################################  done
 

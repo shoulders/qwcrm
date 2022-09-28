@@ -8,35 +8,17 @@
 
 defined('_QWEXEC') or die;
 
-// If details submitted insert record, if non submitted load new.tpl and populate values
-if(isset(\CMSApplication::$VAR['submit'])) {
+/* Check if we have a supplier_id
+if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id_id']) {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
+    $this->app->system->page->forcePage('expense', 'search');
+}*/
 
-    // Insert the Expense into the database
-    $expense_id = $this->app->components->expense->insertRecord(\CMSApplication::$VAR['qform']);
-    $this->app->components->expense->recalculateTotals($expense_id);
+// This is a workaround whilst supplier IDs are not enforced
+\CMSApplication::$VAR['supplier_id'] = null;
 
-    if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
+// Create the expense record and return the new expense_id
+\CMSApplication::$VAR['expense_id'] = $this->app->components->expense->insertRecord(\CMSApplication::$VAR['supplier_id']);
 
-         // Load the new expense page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
-        $this->app->system->page->forcePage('expense', 'new');
-
-    } elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
-         
-        // Load the new payment page for expense
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
-         $this->app->system->page->forcePage('payment', 'new&type=expense&expense_id='.$expense_id);
-         
-    } else {
-
-        // load expense details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
-        $this->app->system->page->forcePage('expense', 'details&expense_id='.$expense_id);
-
-     }        
-
-} else {
-    
-    // Build the page
-    $this->app->smarty->assign('expense_types', $this->app->components->expense->getTypes());
-}
+// Load the newly created invoice edit page
+$this->app->system->page->forcePage('expense', 'edit&expense_id='.\CMSApplication::$VAR['expense_id']);

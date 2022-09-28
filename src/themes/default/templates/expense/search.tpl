@@ -36,8 +36,10 @@
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
                                                                         <option value="expense_id"{if $search_category == 'expense_id'} selected{/if}>{t}Expense ID{/t}</option>                                                                        
-                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>                                                                        
-                                                                        <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
+                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>
+                                                                        <option disabled>----------</option>   
+                                                                        <option value="exepense_items"{if $search_category == 'expense_items'} selected{/if}>{t}Items{/t}</option>
+                                                                        <option disabled>----------</option>   
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>                                                                        
                                                                     </select>
                                                                    <br />
@@ -67,7 +69,11 @@
                                                                 <td>
                                                                     <b>{t}Filter By Status{/t}</b><br>
                                                                     <select class="olotd5" id="filter_status" name="filter_status">
-                                                                        <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>
+                                                                        <option value="open"{if $filter_status == 'open'} selected{/if}>{t}Open{/t}</option> 
+                                                                        <option value="closed"{if $filter_status == 'closed'} selected{/if}>{t}Closed{/t}</option>
+                                                                        <option disabled>----------</option>                                                                     
                                                                         {section name=s loop=$expense_statuses}    
                                                                             <option value="{$expense_statuses[s].status_key}"{if $filter_status == $expense_statuses[s].status_key} selected{/if}>{t}{$expense_statuses[s].display_name}{/t}</option>        
                                                                         {/section} 

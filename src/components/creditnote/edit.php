@@ -32,26 +32,22 @@ $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplicat
 $creditnote_details = array_merge($creditnote_details, \CMSApplication::$VAR['qform']);
 
 // Get credit note items (if present) from whichever source
-$creditnote_items = \CMSApplication::$VAR['creditnote_items'] ?? \CMSApplication::$VAR['qform']['creditnote_items'] ?? $this->app->components->creditnote->getItems(\CMSApplication::$VAR['creditnote_id']) ?? null;
+$creditnote_items = \CMSApplication::$VAR['qform']['creditnote_items'] ?? $this->app->components->creditnote->getItems(\CMSApplication::$VAR['creditnote_id']) ?? null;
 
 // Update credit note (if submited)
-if(isset(\CMSApplication::$VAR['submit'])) {
-    
-    // Check the expiry date is valid, if not reload the page with an error message
+if(isset(\CMSApplication::$VAR['submit']))
+{    
+    // Check the submission is valid, if not, load the page with an error message
     if($this->app->components->creditnote->checkRecordCanBeSubmitted($creditnote_details))
     {    
-        // Insert the credit note items into database
         $this->app->components->creditnote->insertItems($creditnote_details['creditnote_id'], $creditnote_items);
-
-        // Update and recalculate the credit note record
         $this->app->components->creditnote->updateRecord($creditnote_details);
         $this->app->components->creditnote->recalculateTotals($creditnote_details['creditnote_id']);
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice updated successfully."));
         
         // Load credit note record - this makes sure any calculations are taken into account such as balance and status
-        $creditnote_details = $this->app->components->creditnote->getRecord($creditnote_details['creditnote_id']);
-        
-    }
-    
+        $creditnote_details = $this->app->components->creditnote->getRecord($creditnote_details['creditnote_id']);        
+    }    
 }
     
 // Credit Note Details

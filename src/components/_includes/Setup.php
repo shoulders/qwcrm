@@ -453,6 +453,49 @@ class Setup extends Components {
         }
 
     }
+    
+    ############################################
+    #   Execute SQL Comands from an array      #
+    ############################################
+    
+    public function executeSqlCommands(array $sqls) {
+        
+        foreach($sqls as $sql)
+        {
+            if(!$this->app->db->execute($sql))
+            {       
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+                    
+                // Log Message                    
+                $record = _gettext("Failed to run the SQL command");
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                
+                return false;
+            }
+            else
+            {
+                // Log Message
+                $record = _gettext("Successfully ran the SQL command");
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+                self::$executed_sql_results .= '<div>&nbsp;</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                
+                return true;
+            }
+
+        }
+        
+    }
 
     ############################################
     #  Generate Random Database prefix         #

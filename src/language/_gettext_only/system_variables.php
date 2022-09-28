@@ -55,6 +55,7 @@ _gettext("Sales");
 _gettext("Purchase");
 
 /* Expense Statuses */
+_gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
@@ -63,7 +64,6 @@ _gettext("Deleted");
 
 /* Expense Types */
 _gettext("Bank Charges");
-_gettext("Credit");
 _gettext("Commission");
 _gettext("Consumables");
 _gettext("Equipment");

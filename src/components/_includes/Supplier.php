@@ -343,6 +343,23 @@ class Supplier extends Components {
         return true;
         
     }
+    
+    #################################
+    #    Update Last Active         #
+    #################################
+
+    public function updateLastActive($supplier_id = null) {
+
+        // Allow null calls
+        if(!$supplier_id) { return; }
+
+        $sql = "UPDATE ".PRFX."supplier_records SET
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                WHERE supplier_id=".$this->app->db->qStr($supplier_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+    }
 
     /** Close Functions **/
 

@@ -627,27 +627,30 @@ defined('_QWEXEC') or die;
 
         // If the new status is the same as the current one, exit
         if($new_status == $invoice_details['status']) {        
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new invoice status is the same as the current invoice status."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status."));
             return false;
         }    
 
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $invoice_details['employee_id'];
-
         
+        // Build SQL
         $sql = "UPDATE ".PRFX."invoice_records SET   
-                employee_id         =". $this->app->db->qStr( $employee_id     ).",
-                status              =". $this->app->db->qStr( $new_status      )."               
-                WHERE invoice_id    =". $this->app->db->qStr( $invoice_id      );
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
-
-        // Update invoice 'is_closed' boolean
-        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted') {
-            $this->updateClosedStatus($invoice_id, 'closed');
-        } else {
-            $this->updateClosedStatus($invoice_id, 'open');
+                employee_id         =". $this->app->db->qStr($employee_id).",
+                status              =". $this->app->db->qStr($new_status).",";        
+        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
+        {
+            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime() ).",
+                     is_closed =". $this->app->db->qStr(1);
         }
+        else
+        {
+            $sql .= "closed_on = NULL,
+                     is_closed   =". $this->app->db->qStr(0);
+        }        
+        $sql .= "WHERE invoice_id =". $this->app->db->qStr($invoice_id);
+        
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);} 
 
         // Process invoice Vouchers and their status
         $this->app->components->voucher->updateInvoiceVouchersStatuses($invoice_id, $new_status);
@@ -674,32 +677,6 @@ defined('_QWEXEC') or die;
 
     }
 
-    ###################################
-    # Update invoice Closed Status    #
-    ###################################
-
-    public function updateClosedStatus($invoice_id, $new_closed_status) {
-
-        if($new_closed_status == 'open') {
-
-            $sql = "UPDATE ".PRFX."invoice_records SET
-                    closed_on           = NULL,
-                    is_closed           =". $this->app->db->qStr( 0                )."
-                    WHERE invoice_id    =". $this->app->db->qStr( $invoice_id      );
-
-        }
-
-        if($new_closed_status == 'closed') {
-
-            $sql = "UPDATE ".PRFX."invoice_records SET
-                    closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() ).",
-                    is_closed           =". $this->app->db->qStr( 1                )."
-                    WHERE invoice_id    =". $this->app->db->qStr( $invoice_id      );
-        }    
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-    }
 
     #################################
     #    Update Last Active         #

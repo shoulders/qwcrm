@@ -43,7 +43,7 @@ class OtherIncome extends Components {
                 unit_gross       =". $this->app->db->qStr( $qform['unit_gross']              ).",
                 status           =". $this->app->db->qStr( 'unpaid'                        ).",            
                 opened_on        =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                ).",            
-                items            =". $this->app->db->qStr( $qform['items']                   ).",
+                reference        =". $this->app->db->qStr( $qform['reference']                   ).",
                 note             =". $this->app->db->qStr( $qform['note']                    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
