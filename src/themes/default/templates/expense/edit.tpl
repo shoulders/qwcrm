@@ -422,7 +422,7 @@
                                                             <td><strong>{t}Type{/t}:</strong></td>
                                                             <td>
                                                                 <select id="type" name="qform[type]" class="olotd5" required>
-                                                                <option value=""{if !$expense_details.type} selected{/if}>&nbsp;</option>
+                                                                <option value=""{if !$expense_details.type} selected{/if} disabled>&nbsp;</option>
                                                                 <option disabled>----------</option>
                                                                 {section name=s loop=$expense_types}    
                                                                     <option value="{$expense_types[s].type_key}"{if $expense_details.type == $expense_types[s].type_key} selected{/if}>{t}{$expense_types[s].display_name}{/t}</option>
@@ -514,7 +514,7 @@
                                     <td>
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
-                                                <td class="menuhead2">&nbsp;{t}Expense Total{/t}</td>
+                                                <td class="menuhead2">&nbsp;{t}Totals{/t}</td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">

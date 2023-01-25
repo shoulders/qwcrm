@@ -69,6 +69,8 @@ class Upgrade3_1_4 extends Setup {
         $this->expenseTidyDatabase();
         
         // Convert Otherincome to use items
+        $this->otherincomeConvertToUseItems();
+        $this->otherincomeTidyDatabase();
         
         // Fix invoice and Voucher statuses
         $this->updateColumnValues(PRFX.'invoice_records', 'status', 'refunded', 'paid');
@@ -284,7 +286,7 @@ class Upgrade3_1_4 extends Setup {
     } 
     
     #########################################
-    #   Get All invoice items               # // withVouchers adds the invoice vouchers in as items, useful for credit notes and print/email TPL
+    #   Get All invoice items               # // also adds the invoice vouchers in as items, useful for credit notes and print/email TPL
     #########################################  
 
     private function refundInvoiceGetItems($invoice_id, $withVouchers = false) {
@@ -389,7 +391,7 @@ class Upgrade3_1_4 extends Setup {
             {                
                 /* Main Record */ 
                 
-                // Move items into note, below any notes - this is definately a hack
+                // Move items into note, below any notes - this is definitely a hack
                 $note = $rs->fields['note'].'<hr><strong>'._gettext("Items").'</strong><hr>'.$rs->fields['items'];
                 $sqls[] = "UPDATE `#__expense_record` SET `note` = '$note';";
                 if(!$this->executeSqlCommands($sqls)) {$local_error_flag = true;}
@@ -450,7 +452,7 @@ class Upgrade3_1_4 extends Setup {
         if($local_error_flag)
         {            
             // Log Message
-            $record = _gettext("Failed to complete conversion of refunds to credit notes.");            
+            $record = _gettext("Failed to complete conversion of Expenses using items.");            
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -465,7 +467,7 @@ class Upgrade3_1_4 extends Setup {
         else
         {            
             // Log Message
-            $record = _gettext("Successfully completed conversion of refunds to credit notes.");
+            $record = _gettext("Successfully completed conversion of Expenses using items.");
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -490,6 +492,135 @@ class Upgrade3_1_4 extends Setup {
         $sqls[] = "ALTER TABLE `".PRFX."expense_records` DROP `items`;";
         $this->executeSqlCommands($sqls);
     }
+    
+    ###############################################
+    #   Convert Otherincome records to use items  # 
+    ###############################################
+    
+    public function otherincomeConvertToUseItems()
+    {
+        $local_error_flag = false;                     
+        
+        // Loop through all of the Otherincome records
+        $sql = "SELECT * FROM ".PRFX."otherincome_records";
+        if(!$rs = $this->app->db->execute($sql))
+        {            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `otherincome_records`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        }
+        else
+        {
+            // Loop through all records
+            while(!$rs->EOF)
+            {                
+                /* Main Record */ 
+                
+                // Move items into note, below any notes - this is definitely a hack
+                $note = $rs->fields['note'].'<hr><strong>'._gettext("Items").'</strong><hr>'.$rs->fields['items'];
+                $sqls[] = "UPDATE `#__otherincome_record` SET `note` = '$note';";
+                if(!$this->executeSqlCommands($sqls)) {$local_error_flag = true;}
+                
+                /* Record Item - This is a made up item */
+                                                
+                // Build Items/Rows insert SQL
+                $sql = "INSERT INTO ".PRFX."expense_items SET                    
+                    otherincome_id      =". $this->app->db->qStr($rs->fields['otherincome_id']).",
+                    tax_system          =". $this->app->db->qStr($rs->fields['tax_system']).",
+                    description         =". $this->app->db->qStr(_gettext("Item(s) - Full list in notes")).",
+                    unit_qty            =". $this->app->db->qStr(1).",
+                    unit_net            =". $this->app->db->qStr($rs->fields['unit_net']).",
+                    unit_discount       =". $this->app->db->qStr(0.00).",
+                    sales_tax_exempt    =". $this->app->db->qStr(0).",
+                    vat_tax_code        =". $this->app->db->qStr($rs->fields['vat_tax_code']).",
+                    unit_tax_rate       =". $this->app->db->qStr($rs->fields['unit_tax_rate']).",
+                    unit_tax            =". $this->app->db->qStr($rs->fields['unit_tax']).",
+                    unit_gross          =". $this->app->db->qStr($rs->fields['unit_gross']).",
+                    subtotal_net        =". $this->app->db->qStr($rs->fields['unit_net']).",
+                    subtotal_tax        =". $this->app->db->qStr($rs->fields['unit_tax']).",
+                    subtotal_gross      =". $this->app->db->qStr($rs->fields['unit_gross']);
+                
+                // Run the Record items SQL (if there is anything to run)
+                if($sql && !$this->app->db->execute($sql))
+                {                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to create item for the otherincome record").' '.$rs->fields['otherincome_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;                    
+                }
+                
+                // Correct sales_tax_rate
+                
+                /* Advance the loop to the next record */
+                
+                $rs->MoveNext();                
+
+            }
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag)
+        {            
+            // Log Message
+            $record = _gettext("Failed to complete conversion of Otherincome using items.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        }
+        else
+        {            
+            // Log Message
+            $record = _gettext("Successfully completed conversion of Otherincome using items.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            
+            return true;            
+        }          
+    
+    }
+    
     
     #############################################
     # Otherincome Tidy database                 #  // the rest are in the upgrade SQL

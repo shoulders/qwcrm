@@ -401,10 +401,13 @@ defined('_QWEXEC') or die;
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if(!empty($rs)) {
-
-            $invoice_items = $rs->GetArray();
-
+        if($rs->recordCount())
+        {
+            return $rs->GetArray();
+        }
+        else
+        {
+            return null;   
         }
         
         // Converts invoice voucher records into items and merges them into the invoice items- This is a bit of a workaround, this 

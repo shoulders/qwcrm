@@ -23,7 +23,7 @@ if($expense_details['status'] === 'deleted') {
     $this->app->system->page->forcePage('expense', 'search');
 }
 
-// Expense details
+// Items
 $this->app->smarty->assign('expense_items',  $this->app->components->expense->getItems($expense_details['expense_id']));
 
 // Payment Details
@@ -31,7 +31,6 @@ $this->app->smarty->assign('payment_types',            $this->app->components->p
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()                                                             ); 
 $this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses()                                                                              );
-$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
 $this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['expense_id']));
 
 // Misc
@@ -40,4 +39,5 @@ $this->app->smarty->assign('employee_display_name',    $this->app->components->u
 // Build the page
 $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses()            );
 $this->app->smarty->assign('expense_types', $this->app->components->expense->getTypes());
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(false));
 $this->app->smarty->assign('expense_details', $expense_details);

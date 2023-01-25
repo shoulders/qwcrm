@@ -26,7 +26,7 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
     }    
 
 // Expense
-} elseif($this->app->system->security->checkPageAccessedViaQwcrm('expense', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details')) {
+} elseif($this->app->system->security->checkPageAccessedViaQwcrm('expense', 'edit') || $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details')) {
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['type'] == 'expense' && !(\CMSApplication::$VAR['expense_id'] ?? false)) {
@@ -35,7 +35,7 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
     }
  
 // Otherincome
-} elseif($this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'details')) {
+} elseif($this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'edit') || $this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'details')) {
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['type'] == 'otherincome' && !(\CMSApplication::$VAR['otherincome_id'] ?? false)) {
@@ -44,7 +44,7 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
     }
      
 // Credit Note
-} elseif($this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'details')) {
+} elseif($this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'edit') || $this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'details')) {
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['type'] == 'creditnote' && !(\CMSApplication::$VAR['creditnote_id'] ?? false)) {

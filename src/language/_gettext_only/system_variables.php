@@ -96,6 +96,7 @@ _gettext("Cancelled");
 _gettext("Deleted");
 
 /* Otherincome Statuses */
+_gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
@@ -105,7 +106,6 @@ _gettext("Deleted");
 /* Otherincome Types */
 _gettext("Cancelled Services");
 _gettext("Commision");
-_gettext("Credit Note");
 _gettext("Interest");
 _gettext("Other");
 _gettext("Returned Goods");

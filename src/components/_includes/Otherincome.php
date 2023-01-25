@@ -22,41 +22,112 @@ defined('_QWEXEC') or die;
 
 class OtherIncome extends Components {
 
-
-
     /** Insert Functions **/
 
     ##########################################
     #      Insert Otherincome                #
     ##########################################
 
-    public function insertRecord($qform) {
+    public function insertRecord() {
+        
+        // Unify Dates and Times
+        $timestamp = time();
+        
+        // If QWcrm Tax system is set to Sales Tax, then set the rate
+        $sales_tax_rate = (QW_TAX_SYSTEM === 'sales_tax_cash') ? $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
 
         $sql = "INSERT INTO ".PRFX."otherincome_records SET
-                employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
-                payee            =". $this->app->db->qStr( $qform['payee']                   ).",
-                date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
-                tax_system       =". $this->app->db->qStr( QW_TAX_SYSTEM                     ).",            
-                type             =". $this->app->db->qStr( $qform['type']                    ).",            
-                unit_net         =". $this->app->db->qStr( $qform['unit_net']                ).",
-                unit_tax         =". $this->app->db->qStr( $qform['unit_tax']                ).",
-                unit_gross       =". $this->app->db->qStr( $qform['unit_gross']              ).",
-                status           =". $this->app->db->qStr( 'unpaid'                        ).",            
-                opened_on        =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                ).",            
-                reference        =". $this->app->db->qStr( $qform['reference']                   ).",
-                note             =". $this->app->db->qStr( $qform['note']                    );
-
+                employee_id     =". $this->app->db->qStr($this->app->user->login_user_id).",                              
+                date            =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
+                due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
+                tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
+                sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
+                status          =". $this->app->db->qStr('pending').",            
+                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime());             
+                            
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
+        // Get otherincome_id
+        $otherincome_id = $this->app->db->Insert_ID();
+        
         // Log activity        
-        $record = _gettext("Otherincome Record").' '.$this->app->db->Insert_ID().' '._gettext("created.");
+        $record = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("created.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        
+        // Update last active record
+        $this->updateLastActive($otherincome_id);
 
-        return $this->app->db->Insert_ID();        
+        return $otherincome_id;        
 
     }
 
-     /** Get Functions **/
+    ##################################### 
+    #     Insert Items                  #  // Some or all of these calculations are done on the otherincome:edit page - This extra code might not be needed in the future
+    #####################################  done
+
+    public function insertItems($otherincome_id, $items = null) {
+        
+        // Get Otherincome Details
+        $otherincome_details = $this->getRecord($otherincome_id);
+        
+        // Delete all items from the otherincome to prevent duplication
+        $sql = "DELETE FROM ".PRFX."otherincome_items WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);    
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        // Insert Items/Rows into database (if any)
+        if($items) {
+
+            $sql = "INSERT INTO `".PRFX."otherincome_items` (`otherincome_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
+
+            foreach($items as $item) {
+                
+                // Correct Sales Tax Exempt indicator
+                $sales_tax_exempt = isset($item['sales_tax_exempt']) ? 1 : 0;
+                
+                // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes)
+                $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($otherincome_details['tax_system']);
+                
+                /* All this is done in the TPL
+                    // Calculate the correct tax rate based on tax system (and exemption status)
+                    if($otherincome_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+                    elseif($otherincome_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $otherincome_details['sales_tax_rate']; }
+                    elseif(preg_match('/^vat_/', $otherincome_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($item['vat_tax_code']); }
+                    else { $unit_tax_rate = 0.00; }                
+
+                    // Build item totals based on selected TAX system
+                    $item_totals = $this->calculateItemsSubtotals($otherincome_details['tax_system'], $item['unit_qty'], $item['unit_net'], $unit_tax_rate);
+                */
+
+                $sql .="(".
+                        $this->app->db->qStr( $otherincome_id                    ).",".                    
+                        $this->app->db->qStr( $otherincome_details['tax_system'] ).",".                    
+                        $this->app->db->qStr( $item['description']              ).",".                    
+                        $this->app->db->qStr( $item['unit_qty']                 ).",".
+                        $this->app->db->qStr( $item['unit_net']                 ).",".
+                        $this->app->db->qStr( $item['unit_discount']            ).",".
+                        $this->app->db->qStr( $sales_tax_exempt                 ).",".
+                        $this->app->db->qStr( $vat_tax_code                     ).",".
+                        $this->app->db->qStr( $item['unit_tax_rate']            ).",".
+                        $this->app->db->qStr( $item['unit_tax']                 ).",".
+                        $this->app->db->qStr( $item['unit_gross']               ).",".                    
+                        $this->app->db->qStr( $item['subtotal_net']             ).",".
+                        $this->app->db->qStr( $item['subtotal_tax']             ).",".
+                        $this->app->db->qStr( $item['subtotal_gross']           )."),";
+
+            }
+
+            // Strips off last comma as this is a joined SQL statement
+            $sql = substr($sql , 0, -1);
+
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+            return;
+
+        }
+
+    }    
+    
+    /** Get Functions **/
 
     ###############################
     #  Display otherincomes       #
@@ -76,17 +147,55 @@ class OtherIncome extends Components {
         // Restrict by Type
         if($type) { $whereTheseRecords .= " AND ".PRFX."otherincome_records.type= ".$this->app->db->qStr($type);}
 
-        // Restrict by status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qStr($status);} 
+        // Restrict by Status
+        if($status) {
+
+            // All Open Otherrincomes
+            if($status == 'open') {
+
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NULL";
+
+            // All Closed Otherincomes
+            } elseif($status == 'closed') {
+
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on";
+
+            // Return Otherincomes for the given status
+            } else {
+
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qStr($status);
+
+            }
+
+        }
 
         // The SQL code
-        $sql =  "SELECT * 
-                FROM ".PRFX."otherincome_records                                                   
+        $sql = "SELECT ".PRFX."otherincome_records.*,
+                                               
+                items.combined as otherincome_items
+                
+                FROM ".PRFX."otherincome_records
+                    
+                LEFT JOIN (
+                    SELECT ".PRFX."otherincome_items.otherincome_id,            
+                    GROUP_CONCAT(
+                        CONCAT(".PRFX."otherincome_items.unit_qty, ' x ', ".PRFX."otherincome_items.description)                
+                        ORDER BY ".PRFX."otherincome_items.otherincome_item_id
+                        ASC
+                        SEPARATOR '|||'                
+                    ) AS combined          
+                    FROM ".PRFX."otherincome_items
+                    GROUP BY ".PRFX."otherincome_items.otherincome_id
+                    ORDER BY ".PRFX."otherincome_items.otherincome_id
+                    ASC            
+                ) AS items
+                ON ".PRFX."otherincome_records.otherincome_id = items.otherincome_id
+                    
                 ".$whereTheseRecords."            
                 GROUP BY ".PRFX."otherincome_records.".$order_by."
                 ORDER BY ".PRFX."otherincome_records.".$order_by."
-                ".$direction;           
-
+                ".$direction;    
+        
         // Get the total number of records in the database for the given search        
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
         $total_results = $rs->RecordCount();
@@ -140,24 +249,82 @@ class OtherIncome extends Components {
     #   Get otherincome details   #
     ###############################
 
-    public function getRecord($otherincome_id, $item = null) {
+    public function getRecord($otherincome_id, $item = null)
+    {
+        // This allows for blank calls
+        if(!$otherincome_id)
+        {
+            return;        
+        }
 
         $sql = "SELECT * FROM ".PRFX."otherincome_records WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if($item === null){
+        // I have only done this record check here not currently in other components
+        if($rs->recordCount())
+        {
+            if(!$item)
+            {
+                return $rs->GetRowAssoc();            
 
-            return $rs->GetRowAssoc();            
+            } else {
 
-        } else {
+                return $rs->fields[$item];   
 
-            return $rs->fields[$item];   
-
-        } 
+            }
+        }
+        else
+        {
+            return null;  
+        }
 
     }
 
+    #####################################
+    #   Get All otherincome items       #
+    #####################################
+
+    public function getItems($otherincome_id)
+    {
+        $sql = "SELECT * FROM ".PRFX."otherincome_items WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        if($rs->recordCount())
+        {
+            return $rs->GetArray();
+        }
+        else
+        {
+            return null;   
+        }
+    }
+    
+    ############################################
+    #   Get otherincome items Sub Totals       #
+    ############################################
+
+    public function getItemsSubtotals($otherincome_id) {
+
+        // I could use $this->app->components->report->sumCreditnoteItems() - with additional calculation for subtotal_discount
+        // NB: i dont think i need the aliases
+        // $otherincome_items_subtotals = $this->app->components->report->getExpensesStats('items', null, null, null, null, null, $supplier_id);        
+        
+        $sql = "SELECT
+                SUM(unit_discount * unit_qty) AS subtotal_discount,
+                SUM(subtotal_net) AS subtotal_net,                
+                SUM(subtotal_tax) AS subtotal_tax,
+                SUM(subtotal_gross) AS subtotal_gross
+                FROM ".PRFX."otherincome_items
+                WHERE otherincome_id=". $this->app->db->qStr($otherincome_id);
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->GetRowAssoc(); 
+
+    }
+    
     #####################################
     #    Get Otherincome Statuses       #
     #####################################
@@ -232,13 +399,11 @@ class OtherIncome extends Components {
         $sql = "UPDATE ".PRFX."otherincome_records SET
                 employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
                 payee            =". $this->app->db->qStr( $qform['payee']                   ).",
-                date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",            
-                type             =". $this->app->db->qStr( $qform['type']               ).",            
-                unit_net         =". $this->app->db->qStr( $qform['unit_net']                ).",
-                unit_tax         =". $this->app->db->qStr( $qform['unit_tax']                ).",
-                unit_gross       =". $this->app->db->qStr( $qform['unit_gross']              ).",
-                last_active      =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                ).",
-                items            =". $this->app->db->qStr( $qform['items']                   ).",
+                date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
+                due_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",    
+                type             =". $this->app->db->qStr( $qform['type']               ).",  
+                sales_tax_rate   =". $this->app->db->qStr( $qform['sales_tax_rate']           ).",  
+                reference        =". $this->app->db->qStr( $qform['reference']                    ).",
                 note             =". $this->app->db->qStr( $qform['note']                    )."
                 WHERE otherincome_id  =". $this->app->db->qStr( $qform['otherincome_id']     );                        
 
@@ -247,6 +412,9 @@ class OtherIncome extends Components {
         // Log activity        
         $record = _gettext("Otherincome Record").' '.$qform['otherincome_id'].' '._gettext("updated.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        
+        // Update last active record               
+        $this->updateLastActive($qform['otherincome_id']);
 
         return true;       
 
@@ -267,34 +435,53 @@ class OtherIncome extends Components {
             return false;
         }    
 
-        // Unify Dates and Times
-        $datetime = $this->app->system->general->mysqlDatetime();
-
-        // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'paid') ? $datetime : null;
-
-        $sql = "UPDATE ".PRFX."otherincome_records SET
-                status             =". $this->app->db->qStr( $new_status   ).",
-                closed_on          =". $this->app->db->qStr( $closed_on    ).",
-                last_active        =". $this->app->db->qStr( $datetime     )." 
-                WHERE otherincome_id =". $this->app->db->qStr( $otherincome_id );
+        // Build SQL
+        $sql = "UPDATE ".PRFX."otherincome_records SET   
+                employee_id         =". $this->app->db->qStr($otherincome_details['employee_id']).",
+                status              =". $this->app->db->qStr($new_status).",";        
+        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
+        {
+            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime() );
+        }
+        else
+        {
+            $sql .= "closed_on = NULL\n";
+        }        
+        $sql .= "WHERE otherincome_id =". $this->app->db->qStr($otherincome_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
 
         // Status updated message
-        if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("otherincome status updated.")); }
-
-        // For writing message to log file, get otherincome status display name
-        $otherincome_status_display_name = _gettext($this->getStatusDisplayName($new_status));
+        if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome status updated.")); }
 
         // Log activity        
-        $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '.$otherincome_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        
+        // Update last active record
+        $this->updateLastActive($otherincome_id);
 
         return true; 
 
     }
 
+    #################################
+    #    Update Last Active         #
+    #################################
+
+    public function updateLastActive($otherincome_id = null) {
+
+        // Allow null calls
+        if(!$otherincome_id) { return; }
+
+        $sql = "UPDATE ".PRFX."otherincome_records SET
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+    }
+    
     /** Close Functions **/
 
     #####################################
@@ -315,6 +502,9 @@ class OtherIncome extends Components {
         $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
+        // Update last active record            
+        $this->updateLastActive($otherincome_id);
+        
         return true;
 
     }
@@ -330,13 +520,21 @@ class OtherIncome extends Components {
         // Change the otherincome status to deleted (I do this here to maintain consistency)
         $this->updateStatus($otherincome_id, 'deleted'); 
 
+        // Delete record items
+        $sql = "DELETE FROM `".PRFX."otherincome_items` WHERE `".PRFX."otherincome_items`.`otherincome_id` = $otherincome_id";
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        
+        // Delete Main record
         $sql = "UPDATE ".PRFX."otherincome_records SET
             employee_id         = NULL,
             payee               = '',           
-            date                = NULL, 
+            date                = NULL,
+            due_date            = NULL,
             tax_system          = '',  
             type                = '',        
             unit_net            = 0.00,
+            unit_discount       = 0.00,
+            sales_tax_rate      = 0.00,
             unit_tax            = 0.00,
             unit_gross          = 0.00,
             balance             = 0.00,
@@ -344,10 +542,13 @@ class OtherIncome extends Components {
             opened_on           = NULL,
             closed_on           = NULL,
             last_active         = NULL,
-            items               = '',
+            reference           = '',
             note                = ''
             WHERE otherincome_id =". $this->app->db->qStr($otherincome_id);
-
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        
+        // Delete all items from the otherincome to prevent duplication
+        $sql = "DELETE FROM ".PRFX."otherincome_items WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);    
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity        
@@ -361,6 +562,27 @@ class OtherIncome extends Components {
     
     /** Check Functions **/
 
+    #############################################################
+    # Validate submitted information before allowing submission #
+    #############################################################
+    
+    public function checkRecordCanBeSubmitted($qform)
+    {
+        $state_flag = true; 
+        
+        //$otherincome_details = $this->app->components->otherincome->getRecord($qform['otherincome_id']);
+        
+        // Check there is a positive unit_gross
+        if($qform['unit_gross'] <= 0)
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot have a negative or zero gross amount."));
+            $state_flag = false;                     
+        }        
+        
+        return $state_flag;       
+        
+    }
+    
     ##############################################################
     #  Check if the otherincome status is allowed to be changed  #  // not currently used
     ##############################################################
@@ -411,6 +633,12 @@ class OtherIncome extends Components {
         // Get the otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
 
+        // Is pending
+        if($otherincome_details['status'] == 'pending') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome is pending."));
+            $state_flag = false;
+        }
+        
         // Is partially paid
         if($otherincome_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome is partially paid."));
@@ -419,7 +647,7 @@ class OtherIncome extends Components {
 
         // Is paid
         if($otherincome_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments and is paid."));
             $state_flag = false;        
         }
 
@@ -455,6 +683,10 @@ class OtherIncome extends Components {
 
         // Get the otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
+        
+        // Is Pending
+        if($otherincome_details['status'] == 'pending') {              
+        }
 
         // Is partially paid
         if($otherincome_details['status'] == 'partially_paid') {
@@ -507,6 +739,10 @@ class OtherIncome extends Components {
             $state_flag = false;        
         }
 
+        // Is Pending
+        if($otherincome_details['status'] == 'pending') {              
+        }
+        
         // Is partially paid
         if($otherincome_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has payments and is partially paid."));
@@ -520,8 +756,8 @@ class OtherIncome extends Components {
         }
 
         // Is cancelled
-        if($otherincome_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it already been deleted."));
+        if($otherincome_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has been cancelled."));
             $state_flag = false;        
         }
 
@@ -537,11 +773,14 @@ class OtherIncome extends Components {
             $state_flag = false;        
         }*/
 
-        // The current record VAT code is enabled
+        // Add tax code check for all current items + add this to credit notes, vouchgers? expense, invoices - the code should be present in on of the others
+        
+        
+        /* The current record VAT code is enabled
         if(!$this->app->components->company->getVatTaxCodeStatus($otherincome_details['vat_tax_code'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."));
             $state_flag = false; 
-        }
+        }*/
 
         return $state_flag;   
 
@@ -550,41 +789,56 @@ class OtherIncome extends Components {
 
     /** Other Functions **/
 
-    ##########################################
-    #    Recalculate Other income totals     #
-    ##########################################
+    #######################################
+    #   Recalculate Otherincome Totals    #
+    #######################################
 
-    public function recalculateTotals($otherincome_id) {
+    public function recalculateTotals($otherincome_id) {    
+        
+        $items_subtotals        = $this->getItemsSubtotals($otherincome_id);               
+        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
+        
+        $unit_discount          = $items_subtotals['subtotal_discount'];
+        $unit_net               = $items_subtotals['subtotal_net'];       
+        $unit_tax               = $items_subtotals['subtotal_tax'];
+        $unit_gross             = $items_subtotals['subtotal_gross'];  
+        $balance                = $unit_gross - $payments_subtotal;
 
-        $otherincome_details            = $this->getRecord($otherincome_id);    
-        $unit_gross                     = $otherincome_details['unit_gross'];   
-        $payments_subtotal              = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
-        $balance                        = $unit_gross - $payments_subtotal;
-
-        $sql = "UPDATE ".PRFX."otherincome_records SET
-                balance                 =". $this->app->db->qStr( $balance        )."
-                WHERE otherincome_id    =". $this->app->db->qStr( $otherincome_id );
+        $sql = "UPDATE ".PRFX."otherincome_records SET            
+                unit_net            =". $this->app->db->qstr( $unit_net            ).",
+                unit_discount       =". $this->app->db->qstr( $unit_discount       ).",    
+                unit_tax            =". $this->app->db->qstr( $unit_tax            ).",
+                unit_gross          =". $this->app->db->qstr( $unit_gross          ).",                
+                balance             =". $this->app->db->qstr( $balance             )."
+                WHERE otherincome_id    =". $this->app->db->qstr( $otherincome_id  );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        /* Update Status - only change if there is a change in status */        
+        /* Update Status - only if required */    
+        
+        $otherincome_details = $this->getRecord($otherincome_id); 
 
-        // Balance = Gross Amount (i.e no payments)
-        if($unit_gross > 0 && $unit_gross == $balance && $otherincome_details['status'] != 'unpaid') {
+        // No otherincome amount, set to pending (if not already)
+        if($otherincome_details['unit_gross'] == 0 && $otherincome_details['status'] != 'pending') {
+            $this->updateStatus($otherincome_id, 'pending');
+        }
+
+        // Has otherincome amount with no payments, set to unpaid (if not already)
+        elseif($otherincome_details['unit_gross'] > 0 && $otherincome_details['unit_gross'] == $balance && $otherincome_details['status'] != 'unpaid') {
             $this->updateStatus($otherincome_id, 'unpaid');
         }
 
-        // Balance < Gross Amount (i.e some payments)
-        elseif($unit_gross > 0 && $payments_subtotal > 0 && $payments_subtotal < $unit_gross && $otherincome_details['status'] != 'partially_paid') {            
+        // Has otherincome amount with partially usage, set to partially paid (if not already)
+        elseif($otherincome_details['unit_gross'] > 0 && $payments_subtotal > 0 && $payments_subtotal < $otherincome_details['unit_gross'] && $otherincome_details['status'] != 'partially_paid') {            
             $this->updateStatus($otherincome_id, 'partially_paid');
         }
 
-        // Balance = 0.00 (i.e has payments and is all paid)
-        elseif($unit_gross > 0 && $unit_gross == $payments_subtotal && $otherincome_details['status'] != 'paid') {            
+        // Has otherincome amount and the payment(s) match the credit note amount, set to paid (if not already)
+        elseif($otherincome_details['unit_gross'] > 0 && $otherincome_details['unit_gross'] == $payments_subtotal && $otherincome_details['status'] != 'paid') {            
             $this->updateStatus($otherincome_id, 'paid');
         }        
-
-        return;   
+                
+        return;
 
     }
 

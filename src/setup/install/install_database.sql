@@ -670,9 +670,12 @@ CREATE TABLE `#__otherincome_records` (
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
   `payee` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,  
+  `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
   `unit_tax` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -701,11 +704,12 @@ CREATE TABLE `#__otherincome_statuses` (
 --
 
 INSERT INTO `#__otherincome_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'unpaid', 'Unpaid'),
-(2, 'partially_paid', 'Partially Paid'),
-(3, 'paid', 'Paid'),
-(4, 'cancelled', 'Cancelled'),
-(5, 'deleted', 'Deleted');
+(1, 'pending', 'Pending'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'paid', 'Paid'),
+(5, 'cancelled', 'Cancelled'),
+(6, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -726,12 +730,11 @@ CREATE TABLE `#__otherincome_types` (
 INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'cancelled_services', 'Cancelled Services'),
 (2, 'commission', 'Commission'),
-(3, 'credit_note', 'Credit Note'),
-(4, 'interest', 'Interest'),
-(5, 'other', 'Other'),
-(6, 'returned_goods', 'Returned Goods'),
-(7, 'royalties', 'Royalties'),
-(8, 'tips', 'Tips');
+(3, 'interest', 'Interest'),
+(4, 'other', 'Other'),
+(5, 'returned_goods', 'Returned Goods'),
+(6, 'royalties', 'Royalties'),
+(7, 'tips', 'Tips');
 
 --
 -- Table structure for table `#__payment_additional_info_types`

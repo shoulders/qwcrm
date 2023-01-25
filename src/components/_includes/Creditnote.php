@@ -417,12 +417,14 @@ class Creditnote extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if(!empty($rs)) {
-
+        if($rs->recordCount())
+        {
             return $rs->GetArray();
-
         }
-
+        else
+        {
+            return null;   
+        }
     }
 
     #######################################  done
@@ -709,7 +711,7 @@ class Creditnote extends Components {
 
     /** Delete Functions **/
 
-    ##################################### done
+    #####################################
     #   Delete Credit Note              #
     #####################################
 
@@ -729,7 +731,11 @@ class Creditnote extends Components {
         // Change the creditnote status to deleted - This triggers certain other routines
         $this->updateStatus($creditnote_id, 'deleted'); 
 
-        // Build the data to replace the creditnote record (some stuff has just been updated with $this->updateStatus())
+        // Delete record items
+        $sql = "DELETE FROM `".PRFX."creditnote_items` WHERE `".PRFX."creditnote_items`.`creditnote_id` = $creditnote_id";
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        
+        // Delete Main record
         $sql = "UPDATE ".PRFX."creditnote_records SET        
                 employee_id         = NULL,
                 client_id           = NULL,
@@ -752,10 +758,10 @@ class Creditnote extends Components {
                 closed_on           = NULL,
                 last_active         = NULL,            
                 is_closed           = 1,
+                reference           = '',
                 note                = '',
                 additional_info     = ''
                 WHERE creditnote_id    =". $this->app->db->qStr( $creditnote_id  );
-
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}           
 
         // Create a Workorder History Note  - this is not a workorder

@@ -384,7 +384,7 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$this->app->db->qStr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$this->app->db->qStr($employee_id);
         }
 
         // Filter by Client
@@ -853,27 +853,30 @@ class Report extends Components {
         // Current
         if($record_set == 'current' || $record_set == 'all') {    
 
-            $stats['count_unpaid'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id, $supplier_id);
-            $stats['count_partially_paid'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id, $supplier_id);           
+            $stats['count_pending'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, 'unpaid', $employee_id, $supplier_id);
+            $stats['count_unpaid'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, 'unpaid', $employee_id, $supplier_id);
+            $stats['count_partially_paid'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, 'partially_paid', $employee_id, $supplier_id);           
 
         }
         
         // Historic
         if($record_set == 'historic' || $record_set == 'all') {    
 
-            $stats['count_items'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $supplier_id);
-            $stats['count_paid'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, null, 'paid', $employee_id, $supplier_id);          
-            $stats['count_cancelled'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $supplier_id); 
+            $stats['count_items'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
+            $stats['count_opened'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
+            $stats['count_closed'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
+            $stats['count_paid'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, 'paid', $employee_id, $supplier_id);          
+            $stats['count_cancelled'] = $this->countExpenses('date', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id, $supplier_id); 
 
         }
 
         // Revenue
         if($record_set == 'revenue' || $record_set == 'all') {
             
-            $stats['sum_unit_net'] = $this->sumExpenses('unit_net', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $supplier_id);
-            $stats['sum_unit_tax'] = $this->sumExpenses('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $supplier_id);      
-            $stats['sum_unit_gross'] = $this->sumExpenses('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $supplier_id);                  
-            $stats['sum_balance'] = $this->sumExpenses('balance', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $supplier_id);
+            $stats['sum_unit_net'] = $this->sumExpenses('unit_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
+            $stats['sum_unit_tax'] = $this->sumExpenses('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);      
+            $stats['sum_unit_gross'] = $this->sumExpenses('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);                  
+            $stats['sum_balance'] = $this->sumExpenses('balance', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
 
         }
         
@@ -892,12 +895,11 @@ class Report extends Components {
 
     }
 
-
     #########################################
     #     Count Expenses                    #
     #########################################
 
-    public function countExpenses($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
+    public function countExpenses($date_type, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
@@ -909,11 +911,6 @@ class Report extends Components {
         if($tax_system) {
             $whereTheseRecords .= " AND ".PRFX."expense_records.tax_system=".$this->app->db->qStr($tax_system);
         }
-
-        // Filter by VAT Tax Code
-        if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
-        }    
 
         // Filter by Item Type
         if($type) {
@@ -948,7 +945,7 @@ class Report extends Components {
     #  Sum selected value of expenses #
     ###################################
 
-    public function sumExpenses($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
+    public function sumExpenses($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
@@ -959,12 +956,7 @@ class Report extends Components {
         // Filter by Tax System
         if($tax_system) {
             $whereTheseRecords .= " AND ".PRFX."expense_records.tax_system=".$this->app->db->qStr($tax_system);
-        }
-
-        // Filter by VAT Tax Code
-        if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
-        }      
+        }    
 
         // Filter by Item Type
         if($type) {
@@ -998,7 +990,7 @@ class Report extends Components {
     #  Count Expense items      #
     #############################
 
-    public function countExpenseItems($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+    public function countExpenseItems($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_items.expense_item_id\n";    
@@ -1049,11 +1041,6 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."expense_records.expense_id=".$this->app->db->qStr($expense_id);
         }
         
-        // Filter by Other Income
-        if($otherincome_id) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
-        }
-
         $sql = "SELECT COUNT(*) AS count
                 FROM ".PRFX."expense_items
                 LEFT JOIN ".PRFX."expense_records ON ".PRFX."expense_items.expense_id = ".PRFX."expense_records.expense_id
@@ -1069,7 +1056,7 @@ class Report extends Components {
     #  Sum selected value of expense items      #
     #############################################
 
-    public function sumExpenseItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+    public function sumExpenseItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
 
         // Prevent ambiguous error
         $value_name = PRFX."expense_items.".$value_name;
@@ -1123,11 +1110,6 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."expense_records.expense_id=".$this->app->db->qStr($expense_id);
         }
         
-        // Filter by Other Income
-        if($otherincome_id) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
-        }
-
         $sql = "SELECT SUM($value_name) AS sum
                 FROM ".PRFX."expense_items
                 LEFT JOIN ".PRFX."expense_records ON ".PRFX."expense_items.expense_id = ".PRFX."expense_records.expense_id
@@ -1210,31 +1192,43 @@ class Report extends Components {
         // Current
         if($record_set == 'current' || $record_set == 'all') {    
 
-            $stats['count_unpaid'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id);
-            $stats['count_partially_paid'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id);            
+            $stats['count_pending'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, 'unpaid', $employee_id);
+            $stats['count_unpaid'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, 'unpaid', $employee_id);
+            $stats['count_partially_paid'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, 'partially_paid', $employee_id);            
 
         }
 
         // Historic
         if($record_set == 'historic' || $record_set == 'all') {            
 
-            $stats['count_items'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
-            $stats['count_opened'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, null, 'opened', $employee_id);
-            $stats['count_closed'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, null, 'closed', $employee_id);
-            $stats['count_paid'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, null, 'paid', $employee_id);            
-            $stats['count_cancelled'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);            
+            $stats['count_items'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, null, $employee_id);
+            $stats['count_opened'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, 'opened', $employee_id);
+            $stats['count_closed'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, 'closed', $employee_id);
+            $stats['count_paid'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, 'paid', $employee_id);            
+            $stats['count_cancelled'] = $this->countOtherincomes('date', $start_date, $end_date, $tax_system, null, 'cancelled', $employee_id);            
 
         }  
 
         // Revenue
         if($record_set == 'revenue' || $record_set == 'all') {            
 
-            $stats['sum_unit_net'] = $this->sumOtherincomes('unit_net', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
-            $stats['sum_unit_tax'] = $this->sumOtherincomes('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);       
-            $stats['sum_unit_gross'] = $this->sumOtherincomes('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
-            $stats['sum_balance'] = $this->sumOtherincomes('balance', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
+            $stats['sum_unit_net'] = $this->sumOtherincomes('unit_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);
+            $stats['sum_unit_tax'] = $this->sumOtherincomes('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);       
+            $stats['sum_unit_gross'] = $this->sumOtherincomes('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);                   
+            $stats['sum_balance'] = $this->sumOtherincomes('balance', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);
             
-        }     
+        }
+        
+        /* Items - This might be redundant now - only used in report:financial
+        if($record_set == 'items' || $record_set == 'all')
+        {
+            $stats['items_count'] = $this->countOtherincomeItems('date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $otherincome_id);          // Total Different Items
+            $stats['items_sum_unit_qty'] = $this->sumOtherincomeItems('unit_qty', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $otherincome_id);
+            $stats['items_sum_subtotal_net'] = $this->sumOtherincomeItems('subtotal_net', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $otherincome_id);
+            $stats['items_sum_subtotal_tax'] = $this->sumOtherincomeItems('subtotal_tax', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $otherincome_id);
+            $stats['items_sum_subtotal_gross'] = $this->sumOtherincomeItems('subtotal_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $otherincome_id);
+        }
+           */
 
         return $stats;
 
@@ -1244,7 +1238,7 @@ class Report extends Components {
     #     Count Other Incomes               #
     #########################################
 
-    public function countOtherincomes($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $employee_id = null) {
+    public function countOtherincomes($date_type, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";  
@@ -1255,11 +1249,6 @@ class Report extends Components {
         // Filter by Tax System
         if($tax_system) {
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.tax_system=".$this->app->db->qStr($tax_system);
-        }
-
-        // Filter by VAT Tax Code
-        if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
         }
 
         // Filter by Item Type
@@ -1290,7 +1279,7 @@ class Report extends Components {
     #  Sum selected value of Other Incomes  #
     #########################################
 
-    public function sumOtherincomes($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $employee_id = null) {
+    public function sumOtherincomes($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";  
@@ -1301,11 +1290,6 @@ class Report extends Components {
         // Filter by Tax System
         if($tax_system) {
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.tax_system=".$this->app->db->qStr($tax_system);
-        }
-
-        // Filter by VAT Tax Code
-        if($vat_tax_code) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
         }
 
         // Filter by Item Type
@@ -1330,6 +1314,110 @@ class Report extends Components {
         return $rs->fields['sum']; 
 
     }
+    
+    #################################
+    #  Count Otherincome items      #
+    #################################
+    
+    function countOtherincomeItems($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $otherincome_id = null)
+    {
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."otherincome_items.otherincome_item_id\n";    
+
+        // Filter by Date
+        $whereTheseRecords .= $this->otherincomeBuildFilterByDate($date_type, $start_date, $end_date);
+
+        // Filter by Tax System
+        if($tax_system) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_items.tax_system=".$this->app->db->qStr($tax_system);
+        }
+
+        // Filter by VAT Tax Code
+        if($vat_tax_code) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_items.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
+        }
+
+        // Restrict by Status
+        $whereTheseRecords .= $this->otherincomeBuildFilterByStatus($status);
+        
+        // Filter by Type
+        if($type) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.type=".$this->app->db->qStr($type);
+        }
+
+        // Filter by Employee
+        if($employee_id) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.employee_id=".$this->app->db->qStr($employee_id);
+        }
+        
+        // Filter by Otherincome
+        if($otherincome_id) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
+        }
+        
+        $sql = "SELECT COUNT(*) AS count
+                FROM ".PRFX."otherincome_items
+                LEFT JOIN ".PRFX."otherincome_records ON ".PRFX."otherincome_items.otherincome_id = ".PRFX."otherincome_records.otherincome_id
+                ".$whereTheseRecords;    
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['count'];
+        
+    }
+    
+    #################################
+    #  Sum Otherincome items        #
+    #################################
+    function sumOtherincomeItems($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $otherincome_id = null) {
+
+        // Prevent ambiguous error
+        $value_name = PRFX."otherincome_items.".$value_name;
+
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."otherincome_items.otherincome_item_id\n"; 
+
+        // Filter by Date
+        $whereTheseRecords .= $this->otherincomeBuildFilterByDate($date_type, $start_date, $end_date);
+
+        // Filter by Tax System
+        if($tax_system) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_items.tax_system=".$this->app->db->qStr($tax_system);
+        }
+
+        // Filter by VAT Tax Code
+        if($vat_tax_code) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_items.vat_tax_code=".$this->app->db->qStr($vat_tax_code);
+        }    
+
+        // Restrict by Status
+        $whereTheseRecords .= $this->otherincomeBuildFilterByStatus($status);
+        
+        // Filter by Type
+        if($type) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.type=".$this->app->db->qStr($type);
+        }
+
+        // Filter by Employee
+        if($employee_id) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.employee_id=".$this->app->db->qStr($employee_id);
+        }
+
+        // Filter by Expense
+        if($otherincome_id) {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.otherincome_id=".$this->app->db->qStr($otherincome_id);
+        }
+        
+        $sql = "SELECT SUM($value_name) AS sum
+                FROM ".PRFX."otherincome_items
+                LEFT JOIN ".PRFX."otherincome_records ON ".PRFX."otherincome_items.otherincome_id = ".PRFX."otherincome_records.otherincome_id
+                ".$whereTheseRecords;
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['sum'];
+
+    }  
 
     ########################################
     #   Build otherincome Date filter SQL  #
@@ -1955,7 +2043,7 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->app->db->qStr($employee_id);
         }
 
         // Filter by Client
@@ -2182,7 +2270,7 @@ class Report extends Components {
 
         // Filter by Employee
         if($employee_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($employee_id);
+            $whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->app->db->qStr($employee_id);
         }
 
         // Filter by Client

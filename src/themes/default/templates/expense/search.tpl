@@ -31,7 +31,7 @@
                                                     <div>                                                        
                                                         <table border="0">
                                                             <tr>
-                                                                <td align="left" valign="top"><b>{t}Search{/t}</b>
+                                                                <td align="left" valign="top"><b>{t}Search Expenses{/t}</b>
                                                                    <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>

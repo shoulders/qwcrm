@@ -20,7 +20,7 @@ if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['ot
     $this->app->system->page->forcePage('otherincome', 'search');
 } 
 
-// Cancel the otherincome function call
+// Cancel the otherincome call
 $this->app->components->otherincome->cancelRecord(\CMSApplication::$VAR['otherincome_id']);
 
 // Load the otherincome search page

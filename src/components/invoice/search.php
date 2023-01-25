@@ -12,6 +12,7 @@ defined('_QWEXEC') or die;
 \CMSApplication::$VAR['page_no'] = \CMSApplication::$VAR['page_no'] ?? null;
 \CMSApplication::$VAR['search_category'] = \CMSApplication::$VAR['search_category'] ?? null;
 \CMSApplication::$VAR['search_term'] = \CMSApplication::$VAR['search_term'] ?? null;
+\CMSApplication::$VAR['filter_type'] = \CMSApplication::$VAR['filter_type'] ?? null;
 \CMSApplication::$VAR['filter_status'] = \CMSApplication::$VAR['filter_status'] ?? null;
 
 // If a search is submitted
@@ -30,6 +31,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 // Build the page
 $this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                          );
 $this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                              );
+$this->app->smarty->assign('filter_type',      \CMSApplication::$VAR['filter_type']                                                                                             );
 $this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                            );
 $this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->getStatuses()                                                                           );
 $this->app->smarty->assign('display_invoices', $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status'])   );

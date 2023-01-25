@@ -16,7 +16,7 @@
                         <td class="menuhead2" width="80%">&nbsp;{t}Details for{/t} {t}Expense ID{/t} {$expense_details.expense_id}</td>
                         <td class="menuhead2" width="20%" align="right" valign="middle">
                             <a>
-                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}CREDITNOTE_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}CREDITNOTE_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}EXPENSE_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}EXPENSE_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                             </a>
                         </td>
                     </tr>
@@ -49,9 +49,7 @@
                                                         <a href="index.php?component=supplier&page_tpl=details&supplier_id={$supplier_details.supplier_id}">{$supplier_details.supplier_id}</a><br>                                                    
                                                     {/if}
                                                 </td>                                                
-                                                <td>
-                                                    <a href="index.php?component=user&page_tpl=details&user_id={$expense_details.employee_id}">{$employee_display_name}</a>                                                    
-                                                </td> 
+                                                <td><a href="index.php?component=user&page_tpl=details&user_id={$expense_details.employee_id}">{$employee_display_name}</a></td> 
                                                 <td>{$expense_details.date|date_format:$date_format}</td>
                                                 <td>{$expense_details.due_date|date_format:$date_format}</td> 
                                                 <td>                                                    
@@ -59,8 +57,7 @@
                                                         {if $expense_details.status == $expense_statuses[s].status_key}{t}{$expense_statuses[s].display_name}{/t}{/if}        
                                                     {/section}                                                    
                                                 </td>
-                                                <td>{$currency_sym}{$expense_details.unit_gross|string_format:"%.2f"}</td>                                                                                            
-
+                                                <td>{$currency_sym}{$expense_details.unit_gross|string_format:"%.2f"}</td>
                                             </tr>         
                                             
                                             <!-- Expense Details -->
@@ -102,7 +99,7 @@
 
                                                     <!-- Edit Button -->
                                                     {if $expense_details.status == 'pending' || $expense_details.status == 'unpaid'}                                                          
-                                                        <button type="button" onclick="location.href='index.php?component=expense&page_tpl=edit&expense_id={$expense_details.expense_id}';">{t}Edit Expense{/t}</button>
+                                                        <button type="button" onclick="location.href='index.php?component=expense&page_tpl=edit&expense_id={$expense_details.expense_id}';">{t}Edit{/t}</button>
                                                     {/if}
 
                                                     <!-- Apply Payment Button -->

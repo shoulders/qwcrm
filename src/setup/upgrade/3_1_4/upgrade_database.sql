@@ -1049,9 +1049,12 @@ DROP TABLE `#__refund_types`;
 --
 
 ALTER TABLE `#__expense_records` ADD `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
-ALTER TABLE `#__expense_records` ADD `due_date` DATE NULL DEFAULT NULL AFTER `items`;
-ALTER TABLE `#__expense_records` ADD `reference` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `last_active`; 
-ALTER TABLE `#__otherincome_records` ADD `reference` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `items`; 
+ALTER TABLE `#__expense_records` ADD `due_date` DATE NULL DEFAULT NULL AFTER `date`;
+ALTER TABLE `#__expense_records` ADD `reference` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `last_active`;
+
+ALTER TABLE `#__otherincome_records` ADD `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
+ALTER TABLE `#__otherincome_records` ADD `due_date` DATE NULL DEFAULT NULL AFTER `date`;
+ALTER TABLE `#__otherincome_records` ADD `reference` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `last_active`;
 
 -- Table structure for table `#__expense_items`
 
@@ -1078,6 +1081,15 @@ ALTER TABLE `#__expense_items` MODIFY `expense_item_id` int(10) UNSIGNED NOT NUL
 
 ALTER TABLE `#__expense_records` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
 
+TRUNCATE TABLE `#__expense_statuses`;
+INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'pending', 'Pending'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'paid', 'Paid'),
+(5, 'cancelled', 'Cancelled'),
+(6, 'deleted', 'Deleted');
+
 -- Table structure for table `#__otherincome_items`
 
 CREATE TABLE `#__otherincome_items` (
@@ -1101,16 +1113,18 @@ CREATE TABLE `#__otherincome_items` (
 ALTER TABLE `#__otherincome_items` ADD PRIMARY KEY (`otherincome_item_id`);
 ALTER TABLE `#__otherincome_items` MODIFY `otherincome_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
---
-
-TRUNCATE TABLE `#__expense_statuses`;
-INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
+TRUNCATE TABLE `#__otherincome_statuses`;
+INSERT INTO `#__otherincome_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'pending', 'Pending'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
 (5, 'cancelled', 'Cancelled'),
 (6, 'deleted', 'Deleted');
+
+--
+-- Update Types
+--
 
 TRUNCATE TABLE `#__expense_types`;
 INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
@@ -1135,3 +1149,16 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (19, 'voucher', 'Voucher'),
 (20, 'wages', 'Wages');
 UPDATE `#__expense_records` SET `type` = 'other' WHERE `#__expense_records`.`type` = 'credit'; 
+
+TRUNCATE TABLE `#__otherincome_types`;
+INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'cancelled_services', 'Cancelled Services'),
+(2, 'commission', 'Commission'),
+(3, 'interest', 'Interest'),
+(4, 'other', 'Other'),
+(5, 'returned_goods', 'Returned Goods'),
+(6, 'royalties', 'Royalties'),
+(7, 'tips', 'Tips');
+UPDATE `#__expense_records` SET `type` = 'other' WHERE `#__expense_records`.`type` = 'credit_note';
+
+--

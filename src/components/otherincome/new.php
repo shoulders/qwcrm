@@ -8,34 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-// If details submitted insert record, if non submitted load new.tpl and populate values
-if(isset(\CMSApplication::$VAR['submit'])) {
+// Create the otherincome record and return the new otherincome_id
+\CMSApplication::$VAR['otherincome_id'] = $this->app->components->otherincome->insertRecord();
 
-    // insert the otherincome and get the otherincome_id
-    $otherincome_id = $this->app->components->otherincome->insertRecord(\CMSApplication::$VAR['qform']);
-    $this->app->components->otherincome->recalculateTotals($otherincome_id);
-        
-    if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
-
-        // Load New Otherincome page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);
-        $this->app->system->page->forcePage('otherincome', 'new'); 
-
-    } elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
-         
-        // Load the new payment page for otherincome
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);
-         $this->app->system->page->forcePage('payment', 'new&type=otherincome&otherincome_id='.$otherincome_id);      
-         
-    } else {
-
-        // Load Otherincome Details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);
-        $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$otherincome_id);      
-
-    }
-         
-}
-
-// Build the page
-$this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->getTypes());
+// Load the newly created invoice edit page
+$this->app->system->page->forcePage('otherincome', 'edit&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
