@@ -509,24 +509,25 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (2, 'commission', 'Commission'),
 (3, 'consumables', 'Consumables'),
 (4, 'credit_card', 'Credit Card'),
-(5, 'equipment', 'Equipment'),
-(6, 'fuel', 'Fuel'),
-(7, 'loan', 'Loan'),
-(8, 'marketing', 'Marketing'),
-(9, 'office_supplies', 'Office Supplies'),
-(10, 'online', 'Online'),
-(11, 'other', 'Other'),
-(12, 'parts', 'Parts'),
-(13, 'postage', 'Postage'),
-(14, 'rent', 'Rent'),
-(15, 'royalties', 'Royalties'),
-(16, 'services', 'Services'),
-(17, 'software', 'Software'),
-(18, 'telco', 'TelCo'),
-(19, 'transport', 'Transport'),
-(20, 'utilities', 'Utilities'),
-(21, 'voucher', 'Voucher'),
-(22, 'wages', 'Wages');
+(5, 'donation', 'Donation'),
+(6, 'equipment', 'Equipment'),
+(7, 'fuel', 'Fuel'),
+(8, 'loan', 'Loan'),
+(9, 'marketing', 'Marketing'),
+(10, 'office_supplies', 'Office Supplies'),
+(11, 'online', 'Online'),
+(12, 'other', 'Other'),
+(13, 'parts', 'Parts'),
+(14, 'postage', 'Postage'),
+(15, 'rent', 'Rent'),
+(16, 'royalties', 'Royalties'),
+(17, 'services', 'Services'),
+(18, 'software', 'Software'),
+(19, 'telco', 'TelCo'),
+(20, 'transport', 'Transport'),
+(21, 'utilities', 'Utilities'),
+(22, 'voucher', 'Voucher'),
+(23, 'wages', 'Wages');
 
 -- --------------------------------------------------------
 
@@ -731,11 +732,12 @@ CREATE TABLE `#__otherincome_types` (
 INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'cancelled_services', 'Cancelled Services'),
 (2, 'commission', 'Commission'),
-(3, 'interest', 'Interest'),
-(4, 'other', 'Other'),
-(5, 'returned_goods', 'Returned Goods'),
-(6, 'royalties', 'Royalties'),
-(7, 'tips', 'Tips');
+(3, 'donation', 'Donation'),
+(4, 'interest', 'Interest'),
+(5, 'other', 'Other'),
+(6, 'returned_goods', 'Returned Goods'),
+(7, 'royalties', 'Royalties'),
+(8, 'tips', 'Tips');
 
 --
 -- Table structure for table `#__payment_additional_info_types`

@@ -67,6 +67,7 @@ _gettext("Bank Charges");
 _gettext("Commission");
 _gettext("Consumables");
 _gettext("Credit Card");
+_gettext("Donation");
 _gettext("Equipment");
 _gettext("Fuel");
 _gettext("Loan");
@@ -108,6 +109,7 @@ _gettext("Deleted");
 /* Otherincome Types */
 _gettext("Cancelled Services");
 _gettext("Commision");
+_gettext("Donation");
 _gettext("Interest");
 _gettext("Other");
 _gettext("Returned Goods");
