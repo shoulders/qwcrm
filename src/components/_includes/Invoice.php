@@ -403,11 +403,11 @@ defined('_QWEXEC') or die;
 
         if($rs->recordCount())
         {
-            return $rs->GetArray();
+            $invoice_items = $rs->GetArray();
         }
         else
         {
-            return null;   
+            return array();   
         }
         
         // Converts invoice voucher records into items and merges them into the invoice items- This is a bit of a workaround, this 
