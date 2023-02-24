@@ -122,7 +122,7 @@ class Report extends Components {
             $stats['count_closed'] = $this->countWorkorders('closed_on', $start_date, $end_date, 'closed', $employee_id, $client_id);
             $stats['count_closed_without_invoice'] = $this->countWorkorders('opened_on', $start_date, $end_date, 'closed_without_invoice', $employee_id, $client_id);
             $stats['count_closed_with_invoice'] = $this->countWorkorders('opened_on', $start_date, $end_date, 'closed_with_invoice', $employee_id, $client_id);
-            $stats['count_deleted'] = $this->countWorkorders('', null, null, 'deleted', $employee_id, $client_id);   // Only used on basic stats
+            $stats['count_deleted'] = $this->countWorkorders(null, null, null, 'deleted', $employee_id, $client_id);   // Only used on basic stats
 
         }    
 
@@ -272,7 +272,7 @@ class Report extends Components {
             $stats['count_closed'] = $this->countInvoices('closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $client_id);
             $stats['count_paid'] = $this->countInvoices('closed_on', $start_date, $end_date, $tax_system, 'paid', $employee_id, $client_id);            
             $stats['count_cancelled'] = $this->countInvoices('closed_on', $start_date, $end_date, $tax_system, 'cancelled', $employee_id, $client_id);
-            $stats['count_deleted'] = $this->countInvoices('', $start_date, $end_date, $tax_system, 'deleted', $employee_id, $client_id);
+            $stats['count_deleted'] = $this->countInvoices(null, $start_date, $end_date, $tax_system, 'deleted', $employee_id, $client_id);
             $stats['count_closed_discounted'] = $this->countInvoices('closed_on', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);
             
         }       
@@ -1504,7 +1504,7 @@ class Report extends Components {
             $stats['count_fully_used'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'fully_used', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['count_expired_unused'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'expired_unused', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['count_cancelled'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'cancelled', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
-            $stats['count_deleted'] = $this->countCreditnotes('', $start_date, $end_date, $tax_system, 'deleted', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['count_deleted'] = $this->countCreditnotes(null, $start_date, $end_date, $tax_system, 'deleted', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['count_closed_discounted'] = $this->countCreditnotes('closed_on', $start_date, $end_date, $tax_system, 'discounted', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             
         }       

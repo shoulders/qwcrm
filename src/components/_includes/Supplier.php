@@ -457,7 +457,7 @@ class Supplier extends Components {
         }  
         
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, $supplier_details['supplier_id'])) {
+        if($this->app->components->report$this->countCreditnotes(null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because it has linked credit notes."));
             return false;        
         }
@@ -484,7 +484,7 @@ class Supplier extends Components {
         }
         
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes('', null, null, null, null, null, null, $supplier_details['supplier_id'])) {
+        if($this->app->components->report$this->countCreditnotes(null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked credit notes."));
             return false;        
         }
