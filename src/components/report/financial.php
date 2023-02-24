@@ -110,7 +110,7 @@ if(isset(\CMSApplication::$VAR['start_date'], \CMSApplication::$VAR['end_date'])
         $profit_totals['profit'] = $profit_totals['turnover']['net'] - $prorata_totals['expense']['net'];        
     }
     
-    // VAT Flat Rate (Basic turnover) (UK) - Record Based Turnover / Record Based Profit (this only takes into account the transactions and not payments do there is no double taxation issue)
+    // VAT Flat Rate (Basic turnover) (UK) - Record Based Turnover / Record Based Profit (this only takes into account the transactions and not payments so there is no double taxation issue)
     if(QW_TAX_SYSTEM == 'vat_flat_basic')
     {
         $profit_totals['invoice']['gross'] = $invoice_stats['sum_unit_gross'];        

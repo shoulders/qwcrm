@@ -406,6 +406,13 @@ class Voucher extends Components {
     #####################################  // This gets the Voucher VAT Tax Code based on the company tax system or supplied tax_system
     #    Get Voucher default VAT Code   #  // not currently using '$tax_system = null'
     #####################################
+    /*
+     * Common
+     * T9 is the correct code for any tax system that does not have VAT.
+     * I am using T9 for non-british systems because then i don't have to invent a new code
+     * MPV are always T9 because VAT is never a consideration at point of sale, the appropriate VAT is calculated upon sale if used.
+     * SPV vouceher's VAT is calculated when the voucher is sold, hence the default code is T1 for VAT tax systems. This VAT code can be changed on the invoice.
+     */
 
     public function getVatTaxCode($type, $tax_system = null) {
 
