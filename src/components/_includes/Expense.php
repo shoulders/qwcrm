@@ -484,7 +484,7 @@ class Expense extends Components {
         
         // Log activity        
         $record = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
                 
         // Update last active record
         $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);        
@@ -542,7 +542,7 @@ class Expense extends Components {
 
         /* Log activity        
         $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
         */
         
         // Update last active record
@@ -611,7 +611,7 @@ class Expense extends Components {
 
         /* Log activity        
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
-        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record
         $this->app->components->client->update_client_last_active($invoice_details['client_id']);

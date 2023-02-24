@@ -367,7 +367,7 @@ class Company extends Components {
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("VAT rates have been updated."));
 
         // Log activity        
-        //$this->app->system->general->write_record_to_activity_log(_gettext("VAT rates have been updated."));        
+        //$this->app->system->general->writeRecordToActivityLog(_gettext("VAT rates have been updated."));        
 
         return true;        
 

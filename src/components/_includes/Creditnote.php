@@ -423,7 +423,7 @@ class Creditnote extends Components {
         }
         else
         {
-            return null;   
+            return array();   
         }
     }
 
