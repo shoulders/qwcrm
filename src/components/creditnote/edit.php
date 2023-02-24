@@ -43,7 +43,7 @@ if(isset(\CMSApplication::$VAR['submit']))
         $this->app->components->creditnote->insertItems($creditnote_details['creditnote_id'], $creditnote_items);
         $this->app->components->creditnote->updateRecord($creditnote_details);
         $this->app->components->creditnote->recalculateTotals($creditnote_details['creditnote_id']);
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice updated successfully."));
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Credit note updated successfully."));
         
         // Load credit note record - this makes sure any calculations are taken into account such as balance and status
         $creditnote_details = $this->app->components->creditnote->getRecord($creditnote_details['creditnote_id']);        
