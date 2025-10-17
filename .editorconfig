@@ -1,0 +1,32 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Default Behaviour
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.php]
+indent_style = space
+indent_size = 4
+
+[*.{mjs,js,json,scss,css,yml,vue}]
+indent_style = space
+indent_size = 2
+
+# Exclude Files and Folders (Paths)
+[/{localonly,vendor}/**]
+generated_code = true
+indent_style = unset
+indent_size = unset
+tab_width = unset
+end_of_line = unset
+charset = unset
+trim_trailing_whitespace = unset
+insert_final_newline = unset
