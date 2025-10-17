@@ -903,7 +903,7 @@ defined('_QWEXEC') or die;
         } 
         
         // Has Credit notes
-        if($this->app->components->report$this->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has linked credit notes."));
             $state_flag = false;        
         }
@@ -966,7 +966,7 @@ defined('_QWEXEC') or die;
         } 
         
         // Has Credit notes
-        if($this->app->components->report$this->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has linked credit notes."));
             $state_flag = false;        
         }
@@ -1043,7 +1043,7 @@ defined('_QWEXEC') or die;
         } 
         
         // Has Credit notes
-        if($this->app->components->report$this->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it has linked credit notes."));
             $state_flag = false;        
         }
@@ -1112,7 +1112,7 @@ defined('_QWEXEC') or die;
         }
         
         // Has Credit notes
-        if($this->app->components->report$this->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it has linked credit notes."));
             $state_flag = false;    
         }
