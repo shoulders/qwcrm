@@ -34,7 +34,7 @@ tinymce.init( {
     menubar: false,    
     toolbar: [       
         'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | blockquote hr charmap insertdatetime',
-        'bullist numlist | table | link unlink | cut copy paste | removeformat | preview code fullscreen | print | help'
+        'bullist numlist | table | link unlink | cut copy paste pastetext | removeformat | preview code fullscreen | print | help'
     ],    
     schema: 'html5-strict',    
     invalid_elements: 'iframe,script,style,applet,body,bgsound,base,basefont,frame,frameset,head,html,id,ilayer,layer,link,meta,name,title,xml',
