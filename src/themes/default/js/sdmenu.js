@@ -21,12 +21,12 @@ SDMenu.prototype.init = function() {
   			mainInstance.toggleMenu(this.parentNode);
 		};
 
-  // Set the current Sub Menu item
+  // Set the Current Sub Menu item
 	if (this.markCurrent) {
 		var links = this.menu.getElementsByTagName("a");
 		for (var i = 0; i < links.length; i++)
 			if (links[i].href == document.location.href) {
-				links[i].className = "current";
+				links[i].classList.add("current");
 				break;
 			}
 	}
