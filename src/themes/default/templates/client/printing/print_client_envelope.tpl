@@ -9,50 +9,50 @@
 <html lang="en-GB">
 <head>
     <meta charset="utf-8">
-    
+
     <!-- PDF Title -->
-    <title>{t}CREDITNOTE_PRINT_CLIENT_ENVELOPE_PAGE_TITLE{/t}</title>   
-        
+    <title>{t}CLIENT_PRINT_CLIENT_ENVELOPE_PAGE_TITLE{/t}</title>
+
     <!-- PDF Subject -->
-    <meta name="description" content="{t}CREDITNOTE_PRINT_CLIENT_ENVELOPE_PAGE_DESCTIPTION{/t}">
-    
+    <meta name="description" content="{t}CLIENT_PRINT_CLIENT_ENVELOPE_PAGE_DESCRIPTION{/t}">
+
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{t}CREDITNOTE_PRINT_CLIENT_ENVELOPE_META_KEYWORDS{/t}">
-    
+    <meta name="keywords" content="{t}CLIENT_PRINT_CLIENT_ENVELOPE_META_KEYWORDS{/t}">
+
     <!-- PDF Author -->
-    <meta name="author" content="QWcrm - QuantumWarp.com">       
-    
+    <meta name="author" content="QWcrm - QuantumWarp.com">
+
     <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="{$theme_css_dir}template.css">    
+    <link rel="stylesheet" href="{$theme_css_dir}template.css">
 </head>
 
 <body>
-    
+
     <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin: 20px;">
-        
+
         <!-- Logo and Company Name -->
-        <tr>            
+        <tr>
             <td width="250px">
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <td align="center">{if $company_logo}<img src="{$company_logo}" alt="" style="max-height: 75px; max-width: 150px;">{/if}</td>                        
+                        <td align="center">{if $company_logo}<img src="{$company_logo}" alt="" style="max-height: 75px; max-width: 150px;">{/if}</td>
                     </tr>
                     <tr><td style="text-align:center">{$company_details.company_name}</td></tr>
                 </table>
             </td>
         </tr>
-        
+
         <!-- Divider -->
         <tr>
             <td>&nbsp;</td>
         </tr>
-        
+
         <!-- Client Address -->
         <tr>
             <td>&nbsp;</td>
             <td align="center">
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                    <tr>                        
+                    <tr>
                         <td>
                             <span style="font-size: 20px;">
                                 {$client_details.display_name}<br>
@@ -67,6 +67,6 @@
                 </table>
             </td>
         </tr>
-    
+
 </body>
 </html>

@@ -40,43 +40,43 @@ $this->app->smarty->assign('creditnote_items',                 $this->app->compo
 $this->app->smarty->assign('creditnote_statuses',                 $this->app->components->creditnote->getStatuses()                                     );
 $this->app->smarty->assign('creditnote_footer_msg',               $this->app->components->payment->getOptions('creditnote_footer_msg'));
 
-// Invoice Print Routine
+// Credit Note Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'creditnote')
-{    
+{
     $templateFile = 'creditnote/printing/print_creditnote.tpl';
     $filename = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'];
-    
+
     // Print HTML Invoice
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
-    {        
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been printed as html.");       
+    {
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been printed as html.");
     }
-    
+
     // Print PDF Invoice
     if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
-    {        
+    {
         $record = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been printed as a PDF.");
-    } 
-    
+    }
+
     // Download PDF Invoice
     if (\CMSApplication::$VAR['commType'] == 'pdfDownload')
-    {        
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been dowloaded as a PDF.");      
-    } 
-    
+    {
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been dowloaded as a PDF.");
+    }
+
 }
 
 // Client Envelope Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'client_envelope')
-{    
+{
     $templateFile = 'client/printing/print_client_envelope.tpl';
     $filename = _gettext("Invoice Envelope").' '.\CMSApplication::$VAR['creditnote_id'];
-    
+
     // Print HTML Client Envelope
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
-    {        
+    {
         $record = _gettext("Invoice Envelope").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
-    }    
+    }
 }
 
 // Log activity
