@@ -40,34 +40,34 @@ $expense_items = \CMSApplication::$VAR['qform']['expense_items'] ?? $this->app->
 
 // Update expense (if submited)
 if(isset(\CMSApplication::$VAR['submit']))
-{    
+{
     // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
     if($this->app->components->expense->checkRecordCanBeSubmitted($expense_details))
-    {    
-        // Update the record        
+    {
+        // Update the record
         $this->app->components->expense->updateRecord($expense_details);
         $this->app->components->expense->insertItems($expense_details['expense_id'], $expense_items);
         $this->app->components->expense->recalculateTotals($expense_details['expense_id']);
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense updated successfully."));
-        
-        // Load the new expense page      
+
+        // Load the new expense page
         if (\CMSApplication::$VAR['submit'] == 'submitandnew')
-        {                     
+        {
            $this->app->system->page->forcePage('expense', 'new');
         }
-        
-        // Load the new payment page for expense   
+
+        // Load the new payment page for expense
         elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment')
-        {                    
-            $this->app->system->page->forcePage('payment', 'new&type=expense&expense_id='.$expense_id);
+        {
+            $this->app->system->page->forcePage('payment', 'new&type=expense&expense_id='.$expense_details['expense_id']);
         }
-        
+
         // Refresh expense record - this makes sure any calculations are taken into account such as balance and status after record update
         else
-        {            
-            $expense_details = $this->app->components->expense->getRecord($expense_details['expense_id']); 
+        {
+            $expense_details = $this->app->components->expense->getRecord($expense_details['expense_id']);
         }
-    }      
+    }
 }
 
 // Build the page
@@ -75,7 +75,7 @@ if(isset(\CMSApplication::$VAR['submit']))
 // Expense Details
 $this->app->smarty->assign('expense_details',       $expense_details);
 $this->app->smarty->assign('supplier_display_name', $this->app->components->supplier->getRecord($expense_details['supplier_id'] ?? null, 'display_name'));
-$this->app->smarty->assign('expense_items_json',    json_encode($expense_items));                                            
+$this->app->smarty->assign('expense_items_json',    json_encode($expense_items));
 
 // Misc
 $this->app->smarty->assign('expense_statuses',         $this->app->components->expense->getStatuses());

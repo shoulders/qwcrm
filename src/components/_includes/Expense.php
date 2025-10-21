@@ -29,28 +29,28 @@ class Expense extends Components {
     ##########################################
 
     public function insertRecord($supplier_id = null) {
-        
+
         // Unify Dates and Times
         $timestamp = time();
-        
+
         // If QWcrm Tax system is set to Sales Tax, then set the rate
         $sales_tax_rate = (QW_TAX_SYSTEM === 'sales_tax_cash') ? $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
 
         $sql = "INSERT INTO ".PRFX."expense_records SET
                 employee_id     =". $this->app->db->qStr($this->app->user->login_user_id).",
-                supplier_id     =". $this->app->db->qStr($supplier_id ?: null).",               
+                supplier_id     =". $this->app->db->qStr($supplier_id ?: null).",
                 date            =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
-                due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",  
+                due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
-                sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).", 
-                status          =". $this->app->db->qStr('pending').",            
-                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime());            
+                sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
+                status          =". $this->app->db->qStr('pending').",
+                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime());
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Get expense_id
         $expense_id = $this->app->db->Insert_ID();
-        
+
         /* This code is not used because I removed 'invoice_id'
          * Get related invoice details
         $invoice_details = $this->app->components->invoice->getRecord($qform['invoice_id']);
@@ -59,30 +59,30 @@ class Expense extends Components {
         $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$this->app->db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
         */
 
-        // Log activity        
+        // Log activity
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("created.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-        
+
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($supplier_id);        
+        $this->app->components->supplier->updateLastActive($supplier_id);
         $this->updateLastActive($expense_id);
 
-        return $expense_id;        
+        return $expense_id;
 
-    } 
+    }
 
-    ##################################### 
+    #####################################
     #     Insert Items                  #  // Some or all of these calculations are done on the expense:edit page - This extra code might not be needed in the future
     #####################################  done
 
     public function insertItems($expense_id, $items = null) {
-        
+
         // Get Expense Details
         $expense_details = $this->getRecord($expense_id);
-        
+
         // Delete all items from the expense to prevent duplication
-        $sql = "DELETE FROM ".PRFX."expense_items WHERE expense_id=".$this->app->db->qStr($expense_id);    
+        $sql = "DELETE FROM ".PRFX."expense_items WHERE expense_id=".$this->app->db->qStr($expense_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Insert Items/Rows into database (if any)
@@ -97,22 +97,22 @@ class Expense extends Components {
 
                 // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes)
                 $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']);
-                
+
                 /* All this is done in the TPL
                     // Calculate the correct tax rate based on tax system (and exemption status)
                     if($expense_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
                     elseif($expense_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $expense_details['sales_tax_rate']; }
                     elseif(preg_match('/^vat_/', $expense_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($item['vat_tax_code']); }
-                    else { $unit_tax_rate = 0.00; }                
+                    else { $unit_tax_rate = 0.00; }
 
                     // Build item totals based on selected TAX system
                     $item_totals = $this->calculateItemsSubtotals($expense_details['tax_system'], $item['unit_qty'], $item['unit_net'], $unit_tax_rate);
                 */
 
                 $sql .="(".
-                        $this->app->db->qStr( $expense_id                    ).",".                    
-                        $this->app->db->qStr( $expense_details['tax_system'] ).",".                    
-                        $this->app->db->qStr( $item['description']              ).",".                    
+                        $this->app->db->qStr( $expense_id                    ).",".
+                        $this->app->db->qStr( $expense_details['tax_system'] ).",".
+                        $this->app->db->qStr( $item['description']              ).",".
                         $this->app->db->qStr( $item['unit_qty']                 ).",".
                         $this->app->db->qStr( $item['unit_net']                 ).",".
                         $this->app->db->qStr( $item['unit_discount']            ).",".
@@ -120,7 +120,7 @@ class Expense extends Components {
                         $this->app->db->qStr( $vat_tax_code                     ).",".
                         $this->app->db->qStr( $item['unit_tax_rate']            ).",".
                         $this->app->db->qStr( $item['unit_tax']                 ).",".
-                        $this->app->db->qStr( $item['unit_gross']               ).",".                    
+                        $this->app->db->qStr( $item['unit_gross']               ).",".
                         $this->app->db->qStr( $item['subtotal_net']             ).",".
                         $this->app->db->qStr( $item['subtotal_tax']             ).",".
                         $this->app->db->qStr( $item['subtotal_gross']           )."),";
@@ -148,13 +148,13 @@ class Expense extends Components {
     public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'expense_id', $search_term = null, $type = null, $status = null) {
 
         // This is needed because of how page numbering works
-        $page_no = $page_no ?: 1;  
+        $page_no = $page_no ?: 1;
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";
 
         // Restrict results by search category and search term
-        if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}     
+        if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict by type
         if($type) { $whereTheseRecords .= " AND ".PRFX."expense_records.type= ".$this->app->db->qStr($type);}
@@ -183,38 +183,38 @@ class Expense extends Components {
 
         // The SQL code
         $sql = "SELECT ".PRFX."expense_records.*,
-            
+
                 IF(company_name !='', company_name, CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name)) AS supplier_display_name,
-                    
+
                 items.combined as expense_items
-                
+
                 FROM ".PRFX."expense_records
-                    
+
                 LEFT JOIN (
-                    SELECT ".PRFX."expense_items.expense_id,            
+                    SELECT ".PRFX."expense_items.expense_id,
                     GROUP_CONCAT(
-                        CONCAT(".PRFX."expense_items.unit_qty, ' x ', ".PRFX."expense_items.description)                
+                        CONCAT(".PRFX."expense_items.unit_qty, ' x ', ".PRFX."expense_items.description)
                         ORDER BY ".PRFX."expense_items.expense_item_id
                         ASC
-                        SEPARATOR '|||'                
-                    ) AS combined          
+                        SEPARATOR '|||'
+                    ) AS combined
                     FROM ".PRFX."expense_items
                     GROUP BY ".PRFX."expense_items.expense_id
                     ORDER BY ".PRFX."expense_items.expense_id
-                    ASC            
+                    ASC
                 ) AS items
                 ON ".PRFX."expense_records.expense_id = items.expense_id
-                    
-                LEFT JOIN ".PRFX."supplier_records ON ".PRFX."expense_records.supplier_id = ".PRFX."supplier_records.supplier_id  
 
-                ".$whereTheseRecords."            
+                LEFT JOIN ".PRFX."supplier_records ON ".PRFX."expense_records.supplier_id = ".PRFX."supplier_records.supplier_id
+
+                ".$whereTheseRecords."
                 GROUP BY ".PRFX."expense_records.".$order_by."
                 ORDER BY ".PRFX."expense_records.".$order_by."
-                ".$direction;    
-        
-        // Get the total number of records in the database for the given search    
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}      
-        $total_results = $rs->RecordCount();        
+                ".$direction;
+
+        // Get the total number of records in the database for the given search
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        $total_results = $rs->RecordCount();
 
         // Restrict by pages
         if($use_pages) {
@@ -224,19 +224,19 @@ class Expense extends Components {
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            
-            // Assign the Previous page        
-            $previous_page_no = ($page_no - 1);        
-             
-            // Assign the next page        
+
+            // Assign the Previous page
+            $previous_page_no = ($page_no - 1);
+
+            // Assign the next page
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
-            else {$next_page_no = $total_pages;}            
+            else {$next_page_no = $total_pages;}
 
             // Only return the given page's records
             $sql .= " LIMIT ".$start_record.", ".$records_per_page;
 
-        // Restrict by number of records   
+        // Restrict by number of records
         } elseif($records_per_page) {
 
             // Only return the first x number of records
@@ -250,29 +250,29 @@ class Expense extends Components {
         // Get the records
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Return the data        
+        // Return the data
         return array(
                 'records' => $rs->GetArray(),
                 'total_results' => $total_results,
                 'total_pages' => $total_pages ?? 1,             // This make the drop down menu look correct on search tpl with use_pages off
                 'page_no' => $page_no,
                 'previous_page_no' => $previous_page_no ?? null,
-                'next_page_no' => $next_page_no ?? null,                    
+                'next_page_no' => $next_page_no ?? null,
                 'restricted_records' => $restricted_records ?? false,
                 );
 
-    }  
+    }
 
     ##########################
     #  Get Expense Details   #
     ##########################
 
     public function getRecord($expense_id, $item = null) {
-        
+
         // This allows for blank calls
         if(!$expense_id)
         {
-            return;        
+            return;
         }
 
         $sql = "SELECT * FROM ".PRFX."expense_records WHERE expense_id=".$this->app->db->qStr($expense_id);
@@ -281,16 +281,16 @@ class Expense extends Components {
 
         if($item === null){
 
-            return $rs->GetRowAssoc();            
+            return $rs->GetRowAssoc();
 
         } else {
 
-            return $rs->fields[$item];   
+            return $rs->fields[$item];
 
-        }        
+        }
 
     }
-    
+
     #####################################
     #   Get All expense items           #
     #####################################
@@ -307,7 +307,7 @@ class Expense extends Components {
         }
         else
         {
-            return null;   
+            return null;
         }
 
     }
@@ -320,11 +320,11 @@ class Expense extends Components {
 
         // I could use $this->app->components->report->sumCreditnoteItems() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
-        // $expense_items_subtotals = $this->app->components->report->getExpensesStats('items', null, null, null, null, null, $supplier_id);        
-        
+        // $expense_items_subtotals = $this->app->components->report->getExpensesStats('items', null, null, null, null, null, $supplier_id);
+
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
-                SUM(subtotal_net) AS subtotal_net,                
+                SUM(subtotal_net) AS subtotal_net,
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
                 FROM ".PRFX."expense_items
@@ -332,7 +332,7 @@ class Expense extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetRowAssoc(); 
+        return $rs->GetRowAssoc();
 
     }
 
@@ -351,12 +351,12 @@ class Expense extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray(); 
-        
+        return $rs->GetArray();
+
     }
 
     ######################################
-    #  Get Expense status display name   # // might not be used anymore 
+    #  Get Expense status display name   # // might not be used anymore
     ######################################
 
     public function getStatusDisplayName($status_key) {
@@ -365,7 +365,7 @@ class Expense extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->fields['display_name'];  
+        return $rs->fields['display_name'];
 
     }
 
@@ -379,7 +379,7 @@ class Expense extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray();           
+        return $rs->GetArray();
 
     }
 
@@ -395,9 +395,9 @@ class Expense extends Components {
 
         return $rs->fields['expense_id'];
 
-    }    
-    
-    
+    }
+
+
     /** Update Functions **/
 
     #####################################
@@ -408,15 +408,15 @@ class Expense extends Components {
 
         $sql = "UPDATE ".PRFX."expense_records SET
                 employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id    ).",
-                supplier_id         =". $this->app->db->qStr( $qform['supplier_id'] ?: null      ).",    
-                payee               =". $this->app->db->qStr( $qform['payee']                    ).",            
+                supplier_id         =". $this->app->db->qStr( $qform['supplier_id'] ?: null      ).",
+                payee               =". $this->app->db->qStr( $qform['payee']                    ).",
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",
-                due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",  
-                type                =". $this->app->db->qStr( $qform['type']                     ).",                
-                sales_tax_rate      =". $this->app->db->qStr( $qform['sales_tax_rate']           ).",                
+                due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",
+                type                =". $this->app->db->qStr( $qform['type']                     ).",
+                sales_tax_rate      =". $this->app->db->qStr( $qform['sales_tax_rate']           ).",
                 reference           =". $this->app->db->qStr( $qform['reference']                    ).",
                 note                =". $this->app->db->qStr( $qform['note']                     )."
-                WHERE expense_id    =". $this->app->db->qStr( $qform['expense_id']               );                        
+                WHERE expense_id    =". $this->app->db->qStr( $qform['expense_id']               );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -427,18 +427,18 @@ class Expense extends Components {
         // Create a Workorder History Note
         $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("updated").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
         */
-        
+
         // Log activity
         $record = _gettext("Expense Record").' '.$qform['expense_id'].' '._gettext("updated.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-                
+
         // Update last active record
-        $this->app->components->supplier->updateLastActive($qform['supplier_id']);        
+        $this->app->components->supplier->updateLastActive($qform['supplier_id']);
         $this->updateLastActive($qform['expense_id']);
 
-        return true;        
+        return true;
 
-    } 
+    }
 
     ############################
     # Update Expense Status    #
@@ -450,15 +450,15 @@ class Expense extends Components {
         $expense_details = $this->getRecord($expense_id);
 
         // if the new status is the same as the current one, exit
-        if($new_status == $expense_details['status']) {        
+        if($new_status == $expense_details['status']) {
             if (!$silent) { $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
             return false;
-        }    
+        }
 
         // Build SQL
-        $sql = "UPDATE ".PRFX."expense_records SET   
+        $sql = "UPDATE ".PRFX."expense_records SET
                 employee_id         =". $this->app->db->qStr($expense_details['employee_id']).",
-                status              =". $this->app->db->qStr($new_status).",";        
+                status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
         {
             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime() );
@@ -466,10 +466,10 @@ class Expense extends Components {
         else
         {
             $sql .= "closed_on = NULL\n";
-        }        
+        }
         $sql .= "WHERE expense_id =". $this->app->db->qStr($expense_id);
 
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Status updated message
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense status updated."));
@@ -478,22 +478,22 @@ class Expense extends Components {
          * Get related invoice details
         $invoice_details = $this->app->components->invoice->getRecord($expense_details['invoice_id']);
 
-        // Create a Workorder History Note (Not Used)      
+        // Create a Workorder History Note (Not Used)
         $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
         */
-        
-        // Log activity        
+
+        // Log activity
         $record = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-                
+
         // Update last active record
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);        
+        $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);
         $this->updateLastActive($expense_id);
 
-        return true;        
+        return true;
 
     }
-    
+
     #################################
     #    Update Last Active         #
     #################################
@@ -520,7 +520,7 @@ class Expense extends Components {
     public function cancelRecord($expense_id) {
 
         // Make sure the expense can be cancelled
-        if(!$this->checkRecordAllowsCancel($expense_id)) {        
+        if(!$this->checkRecordAllowsCancel($expense_id)) {
             return false;
         }
 
@@ -531,22 +531,22 @@ class Expense extends Components {
         //$invoice_details = $this->app->components->invoice->getRecord($expense_details['invoice_id']);
 
         // Change the expense status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($expense_id, 'cancelled');      
+        $this->updateStatus($expense_id, 'cancelled');
 
-        /*Create a Workorder History Note  
+        /*Create a Workorder History Note
         $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');*/
 
-        // Log activity        
+        // Log activity
         $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
-        /* Log activity        
+        /* Log activity
         $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
         */
-        
+
         // Update last active record
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);        
+        $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);
         $this->updateLastActive($expense_id);
 
         return true;
@@ -569,7 +569,7 @@ class Expense extends Components {
 
         // Change the expense status to deleted (I do this here to maintain consistency)
         $this->updateStatus($expense_id, 'deleted');
-        
+
         // Delete record items
         $sql = "DELETE FROM `".PRFX."expense_items` WHERE `".PRFX."expense_items`.`expense_id` = $expense_id";
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -578,18 +578,18 @@ class Expense extends Components {
         $sql = "UPDATE ".PRFX."expense_records SET
                 employee_id         = NULL,
                 supplier_id         = NULL,
-                payee               = '',           
+                payee               = '',
                 date                = NULL,
                 due_date            = NULL,
-                tax_system          = '',  
+                tax_system          = '',
                 type                = '',
                 unit_net            = 0.00,
                 unit_discount       = 0.00,
                 sales_tax_rate      = 0.00,
-                unit_tax            = 0.00,                
+                unit_tax            = 0.00,
                 unit_gross          = 0.00,
                 balance             = 0.00,
-                status              = 'deleted', 
+                status              = 'deleted',
                 opened_on           = NULL,
                 closed_on           = NULL,
                 last_active         = NULL,
@@ -597,19 +597,19 @@ class Expense extends Components {
                 note                = ''
                 WHERE expense_id    =". $this->app->db->qStr($expense_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        
+
         // Delete all items from the expense to prevent duplication
-        $sql = "DELETE FROM ".PRFX."expense_items WHERE expense_id=".$this->app->db->qStr($expense_id);    
+        $sql = "DELETE FROM ".PRFX."expense_items WHERE expense_id=".$this->app->db->qStr($expense_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        /* Create a Workorder History Note  
+        /* Create a Workorder History Note
         $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');*/
 
-        // Log activity        
+        // Log activity
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
-        /* Log activity        
+        /* Log activity
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
@@ -618,40 +618,40 @@ class Expense extends Components {
         $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
         //$this->app->components->invoice->update_invoice_last_active($invoice_id);*/
 
-        return true;        
+        return true;
 
     }
-    
-    
+
+
     /** Check Functions **/
 
 
-    
+
     ############################################################# done
     # Validate submitted information before allowing submission #
     #############################################################
-    
+
     public function checkRecordCanBeSubmitted($qform)
     {
-        $state_flag = true; 
-        
+        $state_flag = true;
+
         //$expense_details = $this->app->components->expense->getRecord($qform['expense_id']);
-        
+
         // Check there is a positive unit_gross
         if($qform['unit_gross'] <= 0)
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot have a negative or zero gross amount."));
-            $state_flag = false;                     
-        }        
-        
-        return $state_flag;       
-        
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
     }
 
     ##########################################################
     #  Check if the expense status is allowed to be changed  #  // not currently used
     ##########################################################
-    
+
     public function checkRecordAllowsManualStatusChange($expense_id) {
 
         $state_flag = true;
@@ -662,34 +662,34 @@ class Expense extends Components {
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is paid
         if($expense_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is paid."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is deleted
         if($expense_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been deleted."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id))
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."));
-            $state_flag = false;        
+            $state_flag = false;
         }*/
-        
+
         // Has Credit notes
         if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because it has linked credit notes."));
-            return false;        
+            return false;
         }
 
-        return $state_flag;    
+        return $state_flag;
 
      }
 
@@ -709,7 +709,7 @@ class Expense extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is pending."));
             $state_flag = false;
         }
-        
+
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is partially paid."));
@@ -719,33 +719,33 @@ class Expense extends Components {
         // Is paid
         if($expense_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is cancelled
         if($expense_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has already been cancelled."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is deleted
         if($expense_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has been deleted."));
-            $state_flag = false;        
-        }    
+            $state_flag = false;
+        }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."));
-            $state_flag = false;        
+            $state_flag = false;
         }*/
 
         // Has Credit notes
         if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because it has linked credit notes."));
-            return false;        
+            return false;
         }
-        
+
         return $state_flag;
 
     }
@@ -760,45 +760,45 @@ class Expense extends Components {
 
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
-        
+
         // Is Pending
-        if($expense_details['status'] == 'pending') {              
+        if($expense_details['status'] == 'pending') {
         }
-        
+
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is paid
         if($expense_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is cancelled
         if($expense_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been cancelled."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is deleted
         if($expense_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it already been deleted."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."));
-            $state_flag = false;        
+            $state_flag = false;
         }*/
-        
+
         // Has Credit notes
         if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because it has linked credit notes."));
-            return false;        
+            return false;
         }
 
         return $state_flag;
@@ -806,7 +806,7 @@ class Expense extends Components {
     }
 
     ##########################################################
-    #  Check if the expense status allows editing            #       
+    #  Check if the expense status allows editing            #
     ##########################################################
 
      public function checkRecordAllowsEdit($expense_id) {
@@ -819,52 +819,52 @@ class Expense extends Components {
         // Is on a different tax system
         if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it is on a different Tax system."));
-            $state_flag = false;        
+            $state_flag = false;
         }
-        
+
         // Is Pending
-        if($expense_details['status'] == 'pending') {              
+        if($expense_details['status'] == 'pending') {
         }
 
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is partially paid."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is paid
         if($expense_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is paid."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is cancelled
         if($expense_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been cancelled."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         // Is deleted
         if($expense_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."));
-            $state_flag = false;        
+            $state_flag = false;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
         if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
-            $state_flag = false;        
+            $state_flag = false;
         }*/
-        
+
         // Has Credit notes
         if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."));
-            return false;        
+            return false;
         }
 
-        return $state_flag;    
+        return $state_flag;
 
-    }    
+    }
 
     /** Other Functions **/
 
@@ -872,30 +872,30 @@ class Expense extends Components {
     #   Recalculate Expense Totals      #
     #####################################
 
-    public function recalculateTotals($expense_id) {    
-        
-        $items_subtotals        = $this->getItemsSubtotals($expense_id);               
-        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'expense', null, null, null, null, $expense_id);
-        
+    public function recalculateTotals($expense_id) {
+
+        $items_subtotals        = $this->getItemsSubtotals($expense_id);
+        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'expense', null, null, null, null, null, $expense_id);
+
         $unit_discount          = $items_subtotals['subtotal_discount'];
-        $unit_net               = $items_subtotals['subtotal_net'];       
+        $unit_net               = $items_subtotals['subtotal_net'];
         $unit_tax               = $items_subtotals['subtotal_tax'];
-        $unit_gross             = $items_subtotals['subtotal_gross'];  
+        $unit_gross             = $items_subtotals['subtotal_gross'];
         $balance                = $unit_gross - $payments_subtotal;
 
-        $sql = "UPDATE ".PRFX."expense_records SET            
+        $sql = "UPDATE ".PRFX."expense_records SET
                 unit_net            =". $this->app->db->qstr( $unit_net            ).",
                 unit_discount       =". $this->app->db->qstr( $unit_discount       ).",
                 unit_tax            =". $this->app->db->qstr( $unit_tax            ).",
-                unit_gross          =". $this->app->db->qstr( $unit_gross          ).",                
+                unit_gross          =". $this->app->db->qstr( $unit_gross          ).",
                 balance             =". $this->app->db->qstr( $balance             )."
                 WHERE expense_id    =". $this->app->db->qstr( $expense_id          );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        /* Update Status - only if required */    
-        
-        $expense_details = $this->getRecord($expense_id); 
+        /* Update Status - only if required */
+
+        $expense_details = $this->getRecord($expense_id);
 
         // No expense amount, set to pending (if not already)
         if($expense_details['unit_gross'] == 0 && $expense_details['status'] != 'pending') {
@@ -908,15 +908,15 @@ class Expense extends Components {
         }
 
         // Has expense amount with partially usage, set to partially paid (if not already)
-        elseif($expense_details['unit_gross'] > 0 && $payments_subtotal > 0 && $payments_subtotal < $expense_details['unit_gross'] && $expense_details['status'] != 'partially_paid') {            
+        elseif($expense_details['unit_gross'] > 0 && $payments_subtotal > 0 && $payments_subtotal < $expense_details['unit_gross'] && $expense_details['status'] != 'partially_paid') {
             $this->updateStatus($expense_id, 'partially_paid');
         }
 
         // Has expense amount and the payment(s) match the credit note amount, set to paid (if not already)
-        elseif($expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $payments_subtotal && $expense_details['status'] != 'paid') {            
+        elseif($expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $payments_subtotal && $expense_details['status'] != 'paid') {
             $this->updateStatus($expense_id, 'paid');
-        }        
-                
+        }
+
         return;
 
     }
