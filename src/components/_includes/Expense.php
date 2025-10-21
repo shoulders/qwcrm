@@ -44,7 +44,7 @@ class Expense extends Components {
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
                 status          =". $this->app->db->qStr('pending').",
-                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime());
+                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp));
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
