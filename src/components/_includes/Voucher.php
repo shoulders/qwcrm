@@ -31,6 +31,9 @@ class Voucher extends Components {
 
     public function insertRecord($invoice_id, $type, $expiry_date, $unit_net, $note) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
 
         // Add in missing sales tax exempt option - This prevents undefined variable errors (ALL 'sales_tax_cash' vouchers and coupons should be exempt)
@@ -53,7 +56,7 @@ class Voucher extends Components {
                 invoice_id          =". $this->app->db->qStr( $invoice_details['invoice_id']               ).",
                 expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($expiry_date) ).",
                 status              =". $this->app->db->qStr( 'unpaid'                                     ).",
-                opened_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                             ).",
+                opened_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)                             ).",
                 blocked             =". $this->app->db->qStr( 1                                          ).",
                 tax_system          =". $this->app->db->qStr( $invoice_details['tax_system']               ).",
                 type                =". $this->app->db->qStr( $type                                        ).",
@@ -78,9 +81,9 @@ class Voucher extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($invoice_details['client_id']);
-        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id']);
-        $this->app->components->invoice->updateLastActive($invoice_details['invoice_id']);
+        $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
+        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
+        $this->app->components->invoice->updateLastActive($invoice_details['invoice_id'], $timestamp);
 
         return $voucher_id;
 
@@ -446,6 +449,9 @@ class Voucher extends Components {
 
     public function updateRecord($voucher_id, $unit_net, $expiry_date, $note) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         $voucher_details = $this->getRecord($voucher_id);
 
         $unit_tax_rate = $this->getRecord($voucher_id, 'unit_tax_rate');
@@ -474,10 +480,10 @@ class Voucher extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id']);
 
         // Update last active record
-        $this->updateLastActive($voucher_id);
-        $this->app->components->client->updateLastActive($voucher_details['client_id']);
-        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
+        $this->updateLastActive($voucher_id, $timestamp);
+        $this->app->components->client->updateLastActive($voucher_details['client_id'], $timestamp);
+        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id'], $timestamp);
+        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id'], $timestamp);
 
         return;
 
@@ -489,11 +495,11 @@ class Voucher extends Components {
 
     public function updateStatus($voucher_id, $new_status, $silent = false) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         // Get voucher details
         $voucher_details = $this->getRecord($voucher_id);
-
-        // Get Datetime
-        $datetime = $this->app->system->general->mysqlDatetime(time());
 
         // if the new status is the same as the current one, exit
         if($new_status == $voucher_details['status']) {
@@ -502,11 +508,11 @@ class Voucher extends Components {
         }
 
         // Set appropriate redeemed_on datetime for the new status
-        //$redeemed_on = ($new_status == 'redeemed') ? $datetime : null;
+        //$redeemed_on = ($new_status == 'redeemed') ? $this->app->system->general->mysqlDatetime($timestamp) : null;
 
         // Update voucher 'closed_on' boolean for the new status
         if(in_array($new_status, array('redeemed', 'expired_unused', 'cancelled'))) {
-            $closed_on = $datetime;
+            $closed_on = $this->app->system->general->mysqlDatetime($timestamp);
         } else {
             $closed_on = null;
         }
@@ -518,11 +524,9 @@ class Voucher extends Components {
             $blocked = 1;
         }
 
-        //TODO: remove datetime here when i use unfied timestamp + see above
         $sql = "UPDATE ".PRFX."voucher_records SET
                 status             =". $this->app->db->qStr( $new_status   ).",
                 closed_on          =". $this->app->db->qStr( $closed_on    ).",
-                last_active        =". $this->app->db->qStr( $datetime     ).",
                 blocked            =". $this->app->db->qStr( $blocked      )."
                 WHERE voucher_id   =". $this->app->db->qStr( $voucher_id   );
 
@@ -542,10 +546,10 @@ class Voucher extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_id);
 
         // Update last active record
-        $this->updateLastActive($voucher_id);
-        $this->app->components->client->updateLastActive($voucher_details['client_id']);
-        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
+        $this->updateLastActive($voucher_id, $timestamp);
+        $this->app->components->client->updateLastActive($voucher_details['client_id'], $timestamp);
+        $this->app->components->workorder->updateLastActive($voucher_details['workorder_id'], $timestamp);
+        $this->app->components->invoice->updateLastActive($voucher_details['invoice_id'], $timestamp);
 
         return true;
 
@@ -726,13 +730,13 @@ class Voucher extends Components {
     #    Update Last Active         #
     #################################
 
-    public function updateLastActive($voucher_id = null) {
+    public function updateLastActive($voucher_id = null, $timestamp = null) {
 
         // Allow null calls
         if(!$voucher_id) { return; }
 
         $sql = "UPDATE ".PRFX."voucher_records SET
-                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
                 WHERE voucher_id=".$this->app->db->qStr($voucher_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -746,6 +750,9 @@ class Voucher extends Components {
     ##############################  // This can only be done when you cancel an invoice - updateInvoiceVouchersStatuses()
 
     private function cancelRecord($voucher_id) {
+
+        // Unify Dates and Times
+        $timestamp = time();
 
         $voucher_details = $this->getRecord($voucher_id);
 
@@ -765,10 +772,10 @@ class Voucher extends Components {
             $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id']);
 
             // Update last active record
-            $this->updateLastActive($voucher_id);
-            $this->app->components->client->updateLastActive($voucher_details['client_id']);
-            $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-            $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
+            $this->updateLastActive($voucher_id, $timestamp);
+            $this->app->components->client->updateLastActive($voucher_details['client_id'], $timestamp);
+            $this->app->components->workorder->updateLastActive($voucher_details['workorder_id'], $timestamp);
+            $this->app->components->invoice->updateLastActive($voucher_details['invoice_id'], $timestamp);
 
             return true;
 
@@ -783,6 +790,9 @@ class Voucher extends Components {
     ##############################  // this can be called from voucher:delete or by updateInvoiceVouchersStatuses()
 
     public function deleteRecord($voucher_id) {
+
+        // Unify Dates and Times
+        $timestamp = time();
 
         $voucher_details = $this->getRecord($voucher_id);
 
@@ -828,9 +838,9 @@ class Voucher extends Components {
             $this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id']);
 
             // Update last active record
-            $this->app->components->client->updateLastActive($voucher_details['client_id']);
-            $this->app->components->workorder->updateLastActive($voucher_details['workorder_id']);
-            $this->app->components->invoice->updateLastActive($voucher_details['invoice_id']);
+            $this->app->components->client->updateLastActive($voucher_details['client_id'], $timestamp);
+            $this->app->components->workorder->updateLastActive($voucher_details['workorder_id'], $timestamp);
+            $this->app->components->invoice->updateLastActive($voucher_details['invoice_id'], $timestamp);
 
             return true;
 
@@ -2035,6 +2045,5 @@ private function checkInvoiceAllowsSingleVoucherChanges($invoice_id) {
         return $voucher_code;
 
     }
-
 
 }

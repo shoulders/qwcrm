@@ -59,8 +59,8 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qform['client_id'], null, $qform['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($qform['client_id']);
-        $this->app->components->invoice->updateLastActive($qform['invoice_id']);
+        $this->app->components->client->updateLastActive($qform['client_id'], $timestamp);
+        $this->app->components->invoice->updateLastActive($qform['invoice_id'], $timestamp);
 
         return $creditnote_id;
 
@@ -529,6 +529,9 @@ class Creditnote extends Components {
 
     public function updateRecord($qform) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         $sql = "UPDATE ".PRFX."creditnote_records SET
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])     ).",
                 expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['expiry_date']) ).",
@@ -552,8 +555,8 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($this->getRecord($creditnote_details['creditnote_id'], 'client_id'));
-        $this->app->components->invoice->updateLastActive($this->getRecord($creditnote_details['creditnote_id'], 'invoice_id'));
+        $this->app->components->client->updateLastActive($this->getRecord($creditnote_details['creditnote_id'], 'client_id'), $timestamp);
+        $this->app->components->invoice->updateLastActive($this->getRecord($creditnote_details['creditnote_id'], 'invoice_id'), $timestamp);
 
         return;
 
@@ -564,6 +567,9 @@ class Creditnote extends Components {
     ####################################
 
     public function updateStaticValues($invoice_id, $date, $due_date) {
+
+        // Unify Dates and Times
+        $timestamp = time();
 
         $sql = "UPDATE ".PRFX."creditnote_records SET
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($date)     ).",
@@ -582,8 +588,8 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'));
-        $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'));
+        $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'), $timestamp);
+        $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'), $timestamp);
         $this->updateLastActive($invoice_id);
 
     }*/
@@ -593,6 +599,9 @@ class Creditnote extends Components {
     ################################
 
     public function updateStatus($creditnote_id, $new_status) {
+
+        // Unify Dates and Times
+        $timestamp = time();
 
         // Get credit note details
         $creditnote_details = $this->getRecord($creditnote_id);
@@ -611,7 +620,7 @@ class Creditnote extends Components {
                 employee_id         =". $this->app->db->qStr($employee_id).",
                 status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'fully_used' || $new_status == 'expired_unused' || $new_status == 'cancelled' || $new_status == 'deleted') {
-             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime() ).",
+             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) ).",
                       is_closed =". $this->app->db->qStr(1);
         } else {
              $sql .= "closed_on = NULL,
@@ -635,8 +644,8 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($creditnote_details['client_id']);
-        $this->app->components->invoice->updateLastActive($creditnote_details['invoice_id']);
+        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
+        $this->app->components->invoice->updateLastActive($creditnote_details['invoice_id'], $timestamp);
 
 
         return true;
@@ -647,10 +656,10 @@ class Creditnote extends Components {
     #    Update Last Active         #
     #################################
 
-    public function updateLastActive($creditnote_id) {
+    public function updateLastActive($creditnote_id, $timestamp = null) {
 
         $sql = "UPDATE ".PRFX."creditnote_records SET
-                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
                 WHERE creditnote_id=".$this->app->db->qStr($creditnote_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -679,6 +688,9 @@ class Creditnote extends Components {
 
     public function cancelRecord($creditnote_id, $reason_for_cancelling = null) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         // Make sure the creditnote can be cancelled
         if(!$this->checkRecordAllowsCancel($creditnote_id)) {
             return false;
@@ -701,8 +713,8 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($creditnote_details['client_id']);
-        $this->updateLastActive($creditnote_id);
+        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
+        $this->updateLastActive($creditnote_id, $timestamp);
 
         return true;
 
@@ -715,6 +727,9 @@ class Creditnote extends Components {
     #####################################
 
     public function deleteRecord($creditnote_id) {
+
+        // Unify Dates and Times
+        $timestamp = time();
 
         // Make sure the creditnote can be deleted
         if(!$this->checkRecordAllowsDelete($creditnote_id)) {
@@ -772,8 +787,8 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($creditnote_details['client_id']);
-        $this->updateLastActive($creditnote_id);
+        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
+        $this->updateLastActive($creditnote_id, $timestamp);
 
         return true;
 
@@ -1466,6 +1481,9 @@ class Creditnote extends Components {
 
     public function assignToEmployee($creditnote_id, $target_employee_id) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         // Get the creditnote details
         $creditnote_details = $this->getRecord($creditnote_id);
 
@@ -1502,10 +1520,10 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->user->updateLastActive($creditnote_details['employee_id']);
-        $this->app->components->user->updateLastActive($target_employee_id);
-        $this->app->components->client->updateLastActive($creditnote_details['client_id']);
-        $this->updateLastActive($creditnote_id);
+        $this->app->components->user->updateLastActive($creditnote_details['employee_id'], $timestamp);
+        $this->app->components->user->updateLastActive($target_employee_id, $timestamp);
+        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
+        $this->updateLastActive($creditnote_id, $timestamp);
 
         return true;
 
@@ -1546,6 +1564,5 @@ class Creditnote extends Components {
         return json_encode($additional_info, JSON_FORCE_OBJECT);
 
     }
-
 
 }

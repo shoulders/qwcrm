@@ -270,6 +270,9 @@ class Supplier extends Components {
 
     public function updateRecord($qform) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         $sql = "UPDATE ".PRFX."supplier_records SET
                 employee_id    =". $this->app->db->qStr( $this->app->user->login_user_id ).",
                 company_name   =". $this->app->db->qStr( $qform['company_name']  ).",
@@ -286,7 +289,7 @@ class Supplier extends Components {
                 state          =". $this->app->db->qStr( $qform['state']         ).",
                 zip            =". $this->app->db->qStr( $qform['zip']           ).",
                 country        =". $this->app->db->qStr( $qform['country']       ).",
-                last_active    =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()      ).",
+                last_active    =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)      ).",
                 description    =". $this->app->db->qStr( $qform['description']   ).",
                 note           =". $this->app->db->qStr( $qform['note']          )."
                 WHERE supplier_id = ". $this->app->db->qStr( $qform['supplier_id'] );
@@ -298,7 +301,7 @@ class Supplier extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->updateLastActive($qform['supplier_id']);
+        $this->updateLastActive($qform['supplier_id'], $timestamp);
 
         return true;
 
@@ -310,6 +313,9 @@ class Supplier extends Components {
 
     public function updateStatus($supplier_id, $new_status, $silent = false) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         // Get supplier details
         $supplier_details = $this->getRecord($supplier_id);
 
@@ -319,17 +325,12 @@ class Supplier extends Components {
             return false;
         }
 
-        // Get Datetime
-        $datetime = $this->app->system->general->mysqlDatetime(time());
-
         // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $datetime : null;
+        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime($timestamp) : null;
 
-        //TODO: remove datetime here when i use unfied timestamp + see above
         $sql = "UPDATE ".PRFX."supplier_records SET
                 status             =". $this->app->db->qStr( $new_status   )."
                 closed_on          =". $this->app->db->qStr( $closed_on    )."
-                last_active        =". $this->app->db->qStr( $datetime     )."
                 WHERE supplier_id  =". $this->app->db->qStr( $supplier_id  );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -345,7 +346,7 @@ class Supplier extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->updateLastActive($supplier_id);
+        $this->updateLastActive($supplier_id, $timestamp);
 
         return true;
 
@@ -355,13 +356,13 @@ class Supplier extends Components {
     #    Update Last Active         #
     #################################
 
-    public function updateLastActive($supplier_id = null) {
+    public function updateLastActive($supplier_id = null, $timestamp = null) {
 
         // Allow null calls
         if(!$supplier_id) { return; }
 
         $sql = "UPDATE ".PRFX."supplier_records SET
-                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
                 WHERE supplier_id=".$this->app->db->qStr($supplier_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -390,9 +391,6 @@ class Supplier extends Components {
         // Log activity
         $record = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($supplier_id);
 
         return true;
 

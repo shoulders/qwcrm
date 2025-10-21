@@ -33,52 +33,49 @@ class User extends Components {
     public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."user_records SET
-                client_id           =". $this->app->db->qStr( $qform['client_id'] ?: null                    ).", 
+                client_id           =". $this->app->db->qStr( $qform['client_id'] ?: null                    ).",
                 username            =". $this->app->db->qStr( $qform['username']                             ).",
                 password            =". $this->app->db->qStr( \Joomla\CMS\User\UserHelper::hashPassword($qform['password'])  ).",
                 email               =". $this->app->db->qStr( $qform['email']                                ).",
                 usergroup           =". $this->app->db->qStr( $qform['usergroup']                            ).",
                 active              =". $this->app->db->qStr( $qform['active']                               ).",
-                register_date       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()   ).",   
+                register_date       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()   ).",
                 require_reset       =". $this->app->db->qStr( $qform['require_reset']                        ).",
-                is_employee         =". $this->app->db->qStr( $qform['is_employee']                          ).", 
+                is_employee         =". $this->app->db->qStr( $qform['is_employee']                          ).",
                 first_name          =". $this->app->db->qStr( $qform['first_name']                           ).",
                 last_name           =". $this->app->db->qStr( $qform['last_name']                            ).",
                 work_primary_phone  =". $this->app->db->qStr( $qform['work_primary_phone']                   ).",
                 work_mobile_phone   =". $this->app->db->qStr( $qform['work_mobile_phone']                    ).",
-                work_fax            =". $this->app->db->qStr( $qform['work_fax']                             ).",                    
+                work_fax            =". $this->app->db->qStr( $qform['work_fax']                             ).",
                 home_primary_phone  =". $this->app->db->qStr( $qform['home_primary_phone']                   ).",
                 home_mobile_phone   =". $this->app->db->qStr( $qform['home_mobile_phone']                    ).",
                 home_email          =". $this->app->db->qStr( $qform['home_email']                           ).",
                 home_address        =". $this->app->db->qStr( $qform['home_address']                         ).",
-                home_city           =". $this->app->db->qStr( $qform['home_city']                            ).",  
+                home_city           =". $this->app->db->qStr( $qform['home_city']                            ).",
                 home_state          =". $this->app->db->qStr( $qform['home_state']                           ).",
                 home_zip            =". $this->app->db->qStr( $qform['home_zip']                             ).",
-                home_country        =". $this->app->db->qStr( $qform['home_country']                         ).", 
-                based               =". $this->app->db->qStr( $qform['based']                                ).",  
-                note                =". $this->app->db->qStr( $qform['note']                                 );                     
+                home_country        =". $this->app->db->qStr( $qform['home_country']                         ).",
+                based               =". $this->app->db->qStr( $qform['based']                                ).",
+                note                =". $this->app->db->qStr( $qform['note']                                 );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Get user_id
         $user_id = $this->app->db->Insert_ID();
 
-        // Update last active record        
-        $this->app->components->client->updateLastActive($qform['client_id']);        
-
         // Log activity
         if($qform['client_id']) {
             $user_type = _gettext("Client");
         } else {
             $user_type = _gettext("Employee");
-        }        
+        }
         $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
         $this->app->system->general->writeRecordToActivityLog($record, $user_id);
 
-        return $user_id; 
+        return $user_id;
 
     }
-    
+
     /** Get Functions **/
 
     #####################################
@@ -88,7 +85,7 @@ class User extends Components {
     public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'user_id', $search_term = null, $usergroup = null, $usertype = null, $status = null) {
 
         // This is needed because of how page numbering works
-        $page_no = $page_no ?: 1;      
+        $page_no = $page_no ?: 1;
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";
@@ -106,8 +103,8 @@ class User extends Components {
         // Restrict results by user type
         if($usertype) {
 
-            if($usertype == 'client') { 
-                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup = 7";}            
+            if($usertype == 'client') {
+                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup = 7";}
 
             if($usertype == 'employee') {
                 $whereTheseRecords .= " AND ".PRFX."user_records.usergroup IN (1, 2, 3, 4, 5, 6)";
@@ -116,13 +113,13 @@ class User extends Components {
         }
 
         // Restrict by Status (is null because using boolean/integer)
-        if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."user_records.active=".$this->app->db->qStr($status);}  
+        if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."user_records.active=".$this->app->db->qStr($status);}
 
         // The SQL code
         $sql = "SELECT
                 ".PRFX."user_records.*,
                 CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS display_name,
-                CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS full_name                
+                CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS full_name
 
                 FROM ".PRFX."user_records
                 LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user_records.usergroup = ".PRFX."user_usergroups.usergroup_id)
@@ -130,12 +127,12 @@ class User extends Components {
                 GROUP BY ".PRFX."user_records.".$order_by."
                 ".$havingTheseRecords."
                 ORDER BY ".PRFX."user_records.".$order_by."
-                ".$direction; 
+                ".$direction;
 
-       // Get the total number of records in the database for the given search        
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
-        $total_results = $rs->RecordCount();        
-            
+       // Get the total number of records in the database for the given search
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        $total_results = $rs->RecordCount();
+
         // Restrict by pages
         if($use_pages) {
 
@@ -143,20 +140,20 @@ class User extends Components {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of pages. Always round up using ceil()
-            $total_pages = ceil($total_results / $records_per_page);            
+            $total_pages = ceil($total_results / $records_per_page);
 
-            // Assign the Previous page        
-            $previous_page_no = ($page_no - 1);                    
+            // Assign the Previous page
+            $previous_page_no = ($page_no - 1);
 
-            // Assign the next page        
+            // Assign the next page
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
-            else {$next_page_no = $total_pages;}            
-            
+            else {$next_page_no = $total_pages;}
+
             // Only return the given page's records
             $sql .= " LIMIT ".$start_record.", ".$records_per_page;
 
-        // Restrict by number of records   
+        // Restrict by number of records
         } elseif($records_per_page) {
 
             // Only return the first x number of records
@@ -165,23 +162,23 @@ class User extends Components {
             // Show restricted records message if required
             $restricted_records = $total_results > $records_per_page ? true : false;
 
-        }       
+        }
 
-        // Get the records        
+        // Get the records
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Return the data        
+        // Return the data
         return array(
                 'records' => $rs->GetArray(),
                 'total_results' => $total_results,
                 'total_pages' => $total_pages ?? 1,             // This make the drop down menu look correct on search tpl with use_pages off
                 'page_no' => $page_no,
                 'previous_page_no' => $previous_page_no ?? null,
-                'next_page_no' => $next_page_no ?? null,                    
+                'next_page_no' => $next_page_no ?? null,
                 'restricted_records' => $restricted_records ?? false,
                 );
 
-    } 
+    }
 
     #####################################
     #     Get User Details              #  // 'display_name' and 'full_name' are the same. This is usability issues.
@@ -191,7 +188,7 @@ class User extends Components {
 
         // This allows for workorder:status to work
         if(!$user_id){
-            return;        
+            return;
         }
 
         $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id =".$this->app->db->qStr($user_id);
@@ -202,7 +199,7 @@ class User extends Components {
 
             $results = $rs->GetRowAssoc();
 
-            // Add these dynamically created fields           
+            // Add these dynamically created fields
             $results['display_name'] = $results['first_name'].' '.$results['last_name'];
             $results['full_name'] = $results['first_name'].' '.$results['last_name'];
 
@@ -222,23 +219,23 @@ class User extends Components {
                 return $results['first_name'].' '.$results['last_name'];
             }
 
-            return $rs->fields[$item];   
+            return $rs->fields[$item];
 
-        } 
-        
+        }
+
     }
 
     #########################################
     # Get User ID by username               # // moved from core
     #########################################
 
-    /* 
+    /*
      * Not used in core anywhere
      * it was used for getting user specific stats in theme_header_block.php
      * $user->login_user_id is not set via the auth session
      * i will leave this here just for now
      * no longer needed as I stored the id in the session
-     * 
+     *
      */
 
     public function getIdByUsername($username) {
@@ -248,7 +245,7 @@ class User extends Components {
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         return $rs->fields['user_id'];
-        
+
     }
 
     #########################################
@@ -271,7 +268,7 @@ class User extends Components {
 
             return $rs->fields['user_id'];
 
-        }  
+        }
 
     }
 
@@ -285,7 +282,7 @@ class User extends Components {
 
         // Filter the results by user type client/employee
         if($user_type === 'employees') {$sql .= " WHERE user_type='1'";}
-        if($user_type === 'clients')   {$sql .= " WHERE user_type='2'";}    
+        if($user_type === 'clients')   {$sql .= " WHERE user_type='2'";}
         if($user_type === 'other')     {$sql .= " WHERE user_type='3'";}
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -298,9 +295,9 @@ class User extends Components {
     # Get all active users display name and ID       #
     ##################################################
 
-    public function getActiveUsers($user_type = null) {  
+    public function getActiveUsers($user_type = null) {
 
-        $sql = "SELECT        
+        $sql = "SELECT
                 user_id,
                 CONCAT(first_name, ' ', last_name) AS display_name
 
@@ -321,13 +318,13 @@ class User extends Components {
     # Get all active users display name and ID       #
     ##################################################
 
-    public function getLocations() {  
+    public function getLocations() {
 
         $sql = "SELECT * FROM ".PRFX."user_locations";
 
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}   
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray();    
+        return $rs->GetArray();
 
     }
 
@@ -339,26 +336,29 @@ class User extends Components {
 
     public function updateRecord($qform) {
 
-        $sql = "UPDATE ".PRFX."user_records SET        
+        // Unify Dates and Times
+        $timestamp = time();
+
+        $sql = "UPDATE ".PRFX."user_records SET
                 username            =". $this->app->db->qStr( $qform['username']                             ).",
                 email               =". $this->app->db->qStr( $qform['email']                                ).",
                 usergroup           =". $this->app->db->qStr( $qform['usergroup']                            ).",
-                active              =". $this->app->db->qStr( $qform['active']                               ).",                    
-                require_reset       =". $this->app->db->qStr( $qform['require_reset']                        ).",               
+                active              =". $this->app->db->qStr( $qform['active']                               ).",
+                require_reset       =". $this->app->db->qStr( $qform['require_reset']                        ).",
                 first_name          =". $this->app->db->qStr( $qform['first_name']                           ).",
                 last_name           =". $this->app->db->qStr( $qform['last_name']                            ).",
                 work_primary_phone  =". $this->app->db->qStr( $qform['work_primary_phone']                   ).",
                 work_mobile_phone   =". $this->app->db->qStr( $qform['work_mobile_phone']                    ).",
-                work_fax            =". $this->app->db->qStr( $qform['work_fax']                             ).",                    
+                work_fax            =". $this->app->db->qStr( $qform['work_fax']                             ).",
                 home_primary_phone  =". $this->app->db->qStr( $qform['home_primary_phone']                   ).",
                 home_mobile_phone   =". $this->app->db->qStr( $qform['home_mobile_phone']                    ).",
                 home_email          =". $this->app->db->qStr( $qform['home_email']                           ).",
                 home_address        =". $this->app->db->qStr( $qform['home_address']                         ).",
-                home_city           =". $this->app->db->qStr( $qform['home_city']                            ).",  
+                home_city           =". $this->app->db->qStr( $qform['home_city']                            ).",
                 home_state          =". $this->app->db->qStr( $qform['home_state']                           ).",
                 home_zip            =". $this->app->db->qStr( $qform['home_zip']                             ).",
                 home_country        =". $this->app->db->qStr( $qform['home_country']                         ).",
-                based               =". $this->app->db->qStr( $qform['based']                                ).",  
+                based               =". $this->app->db->qStr( $qform['based']                                ).",
                 note                =". $this->app->db->qStr( $qform['note']                                 )."
                 WHERE user_id= ".$this->app->db->qStr($qform['user_id']);
 
@@ -369,15 +369,15 @@ class User extends Components {
             $this->resetPassword($qform['user_id'], $qform['password']);
         }
 
-        // Update last active record
-        $this->updateLastActive($qform['user_id']);
-        $this->app->components->client->updateLastActive($this->getRecord($qform['user_id'], 'client_id'));        
-
-        // Log activity        
+        // Log activity
         $record = _gettext("User Account").' '.$qform['user_id'].' ('.$this->getRecord($qform['user_id'], 'display_name').') '._gettext("updated.");
         $this->app->system->general->writeRecordToActivityLog($record, $qform['user_id']);
 
-        return true; 
+        // Update last active record
+        $this->updateLastActive($qform['user_id'], $timestamp);
+        $this->app->components->client->updateLastActive($this->getRecord($qform['user_id'], 'client_id'), $timestamp);
+
+        return true;
 
     }
 
@@ -385,17 +385,18 @@ class User extends Components {
     #    Update User's Last Active Date   #
     #######################################
 
-    public function updateLastActive($user_id = null) {
+    public function updateLastActive($user_id = null, $timestamp = null) {
 
         // compensate for some operations not having a user_id
-        if(!$user_id) { return; }        
+        if(!$user_id) { return; }
 
-        $sql = "UPDATE ".PRFX."user_records SET last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )." WHERE user_id=".$this->app->db->qStr($user_id);
+        $sql = "UPDATE ".PRFX."user_records SET last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
+        WHERE user_id=".$this->app->db->qStr($user_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
-    
+
     /** Close Functions **/
 
     /** Delete Functions **/
@@ -409,30 +410,30 @@ class User extends Components {
         // get user details before deleting
         $user_details = $this->getRecord($user_id);
 
-        // Make sure the client can be deleted 
-        if(!$this->checkRecordAllowsDelete($user_id)) {        
+        // Make sure the client can be deleted
+        if(!$this->checkRecordAllowsDelete($user_id)) {
             return false;
         }
 
         /* we can now delete the user */
 
         // Delete User account
-        $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$this->app->db->qStr($user_id);    
+        $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$this->app->db->qStr($user_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Log activity        
+        // Log activity
         $record = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
         $this->app->system->general->writeRecordToActivityLog($record, $user_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($user_details['client_id']);    
+        $this->app->components->client->updateLastActive($user_details['client_id']);
 
         return true;
 
     }
-    
+
     /** Check Functions **/
-    
+
     #################################################
     #    Check if username already exists           #
     #################################################
@@ -458,7 +459,7 @@ class User extends Components {
 
             return false;
 
-        }        
+        }
 
     }
 
@@ -487,7 +488,7 @@ class User extends Components {
 
             return false;
 
-        } 
+        }
 
     }
 
@@ -505,7 +506,7 @@ class User extends Components {
 
         if($result_count >= 1) {
 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client already has a login."));           
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client already has a login."));
 
             return true;
 
@@ -513,9 +514,9 @@ class User extends Components {
 
             return false;
 
-        }    
+        }
 
-    }    
+    }
 
     ###############################################################
     #   Check to see if the user can be deleted                   #
@@ -530,44 +531,44 @@ class User extends Components {
 
         // User cannot delete their own account
         if($user_id == $this->app->user->login_user_id) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete your own account."));        
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete your own account."));
             $state_flag = false;
         }
 
         // Cannot delete this account if it is the last administrator account
         if($user_details['usergroup'] == '1') {
 
-            $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";    
-            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
+            $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";
+            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
             if($rs->fields['count'] <= 1 ) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."));        
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."));
                 $state_flag = false;
-            }        
+            }
         }
 
         // Check if user has created any workorders
-        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$this->app->db->qStr($user_id);    
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
+        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$this->app->db->qStr($user_id);
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."));        
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."));
             $state_flag = false;
         }
 
         // Check if user has any assigned workorders
-        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$this->app->db->qStr($user_id);    
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}  
+        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$this->app->db->qStr($user_id);
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."));
             $state_flag = false;
         }
 
         // Check if user has any invoices
-        $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$this->app->db->qStr($user_id);    
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}    
+        $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$this->app->db->qStr($user_id);
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."));
             $state_flag = false;
-        }    
+        }
 
         // Check if user is assigned to any Vouchers
         $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$this->app->db->qStr($user_id);
@@ -579,7 +580,7 @@ class User extends Components {
 
         return $state_flag;
 
-    }    
+    }
 
     /** Other Functions **/
 
@@ -589,15 +590,15 @@ class User extends Components {
 
     /*
      * This utilises the ADODB PHP Framework for building a <option> list from the supplied data set.
-     * 
+     *
      * Build <option></option> list for a <form></form> to select employee for 'Assign To' feature
      * GetMenu2('assign_employee_val, null, false') will turn off the blank option
      * GetMenu2('dataset values', 'default option', 'blank 1st record' )
-     * 
+     *
      * The assigned employee is the default option selected
-     * 
+     *
      * I will use Smarty for this feature
-     * 
+     *
      */
 
     public function buildActiveEmployeeFormOptionList($assigned_user_id) {
@@ -618,32 +619,35 @@ class User extends Components {
     }
 
     #####################################
-    #    Reset a user's password        #    
+    #    Reset a user's password        #
     #####################################
 
-    public function resetPassword($user_id, $password = null) { 
+    public function resetPassword($user_id, $password = null) {
+
+        // Unify Dates and Times
+        $timestamp = time();
 
         // if no password supplied generate a random one
         if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
 
         $sql = "UPDATE ".PRFX."user_records SET
                 password        =". $this->app->db->qStr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
-                require_reset   =". $this->app->db->qStr( 0                                    ).",   
-                last_reset_time =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",
+                require_reset   =". $this->app->db->qStr( 0                                    ).",
+                last_reset_time =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)                     ).",
                 reset_count     =". $this->app->db->qStr( 0                                    )."
                 WHERE user_id   =". $this->app->db->qStr( $user_id                             );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Log activity        
+        // Log activity
         $record = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("password has been reset.");
         $this->app->system->general->writeRecordToActivityLog($record, $user_id);
 
         // Update last active record
-        $this->updateLastActive($user_id);
-        $this->app->components->client->updateLastActive($this->getRecord($user_id, 'client_id'));
+        $this->updateLastActive($user_id, $timestamp);
+        $this->app->components->client->updateLastActive($this->getRecord($user_id, 'client_id'), $timestamp);
 
-        return;         
+        return;
 
     }
 
@@ -655,8 +659,8 @@ class User extends Components {
     ####################################
 
     public function login($qform, $credentials, $options = array())
-    {   
-        $this->smarty = \Factory::getSmarty();   
+    {
+        $this->smarty = \Factory::getSmarty();
 
         // If username or password is missing
         if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
@@ -666,7 +670,7 @@ class User extends Components {
 
             return false;
 
-        } 
+        }
 
         // Does the account require the password to be reset, if so force it
         if($this->getRecord($this->getIdByUsername($qform['login_username']), 'require_reset')) {
@@ -679,12 +683,12 @@ class User extends Components {
         }
 
         // If user is blocked - QFramework returns True for a blocked user, but does blocks it.
-        if($this->getRecord($this->getIdByUsername($qform['login_username']), 'active') === '0') {  
+        if($this->getRecord($this->getIdByUsername($qform['login_username']), 'active') === '0') {
 
             // Set error message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
 
-            // Log activity       
+            // Log activity
             $this->app->system->general->writeRecordToActivityLog(_gettext("Login denied for").' '.$qform['login_username'].'.');
 
             return false;
@@ -697,19 +701,19 @@ class User extends Components {
 
             // Wipe the current user details (probably guest) is this needed?
             //$this->app->user = null; \Factory::$user = null;
-            
+
             // Get the new login details
-            $user = \Factory::getUser();       
+            $user = \Factory::getUser();
 
-            // Log activity       
+            // Log activity
             $record = _gettext("Login successful for").' '.$user->login_username.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $user->login_user_id);        
-
-            // Update last active record        
-            $this->app->components->client->updateLastActive($user->login_client_id);        
+            $this->app->system->general->writeRecordToActivityLog($record, $user->login_user_id);
 
             // set success message to survice the login event
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Login successful."));
+
+            // Update last active record
+            $this->app->components->client->updateLastActive($user->login_client_id);
 
             return true;
 
@@ -717,7 +721,7 @@ class User extends Components {
 
             /* Login failed */
 
-            // Log activity       
+            // Log activity
             $this->app->system->general->writeRecordToActivityLog(_gettext("Login unsuccessful for").' '.$credentials['username'].'.');
 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Login Failed. Check you username and password."));
@@ -731,27 +735,31 @@ class User extends Components {
     #  Login authentication   #
     ###########################
 
-    public function logout($silent = null)        
-    {   
+    public function logout($silent = null)
+    {
+
+        // Unify Dates and Times
+        $timestamp = time();
+
         // Build logout message (while user details exist)
         $record = _gettext("Logout successful for").' '.$this->app->user->login_username.'.';
 
         // Logout
-        \Factory::getAuth()->logout();    
+        \Factory::getAuth()->logout();
 
-        // Log activity       
+        // Log activity
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
-        // Update last active record 
-        $this->updateLastActive($this->app->user->login_user_id);
-        $this->app->components->client->updateLastActive($this->app->user->login_client_id);
+        // Update last active record
+        $this->updateLastActive($this->app->user->login_user_id, $timestamp);
+        $this->app->components->client->updateLastActive($this->app->user->login_client_id, $timestamp);
 
         // Action after logout
         if($silent) {
 
             // No message or redirect
 
-            return;        
+            return;
 
         } else {
 
@@ -763,10 +771,10 @@ class User extends Components {
 
         }
 
-    } 
+    }
 
     ####################################
-    #  Logout all online users         #  // This terminates sessions fo those currently connected (Logged in and Guests). This does not handle users with 'remember me' enabled. 
+    #  Logout all online users         #  // This terminates sessions fo those currently connected (Logged in and Guests). This does not handle users with 'remember me' enabled.
     ####################################
 
     public function logoutAllUsers($except_me = false) {
@@ -784,7 +792,7 @@ class User extends Components {
             $sql = "TRUNCATE ".PRFX."user_keys";
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Delete all sessions except the currently logged in user 
+        // Delete all sessions except the currently logged in user
         } else {
 
             $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$this->app->db->qStr($this->app->user->login_user_id);
@@ -802,12 +810,12 @@ class User extends Components {
     /* Reset Password */
 
     #####################################
-    #    Verify submitted reCAPTCHA     #    
+    #    Verify submitted reCAPTCHA     #
     #####################################
 
     public function authenticateRecaptcha($recaptcha_secret_key, $recaptcha_response) {
 
-        // Load ReCaptcha library       
+        // Load ReCaptcha library
         $recaptcha = new \ReCaptcha\ReCaptcha($recaptcha_secret_key);
 
         // Get response from Google
@@ -821,7 +829,7 @@ class User extends Components {
 
         } else {
 
-            /* If it's not successful, then one or more error codes will be returned.      
+            /* If it's not successful, then one or more error codes will be returned.
             $error_msg .= '<h2>Something went wrong</h2>';
             $error_msg .= '<p>The following error was returned:';
                 foreach ($response->getErrorCodes() as $error_code) {
@@ -830,24 +838,24 @@ class User extends Components {
             $error_msg .= '</p>';
             $error_msg .= '<p>Check the error code reference at <kbd><a href="https://developers.google.com/recaptcha/docs/verify#error-code-reference">https://developers.google.com/recaptcha/docs/verify#error-code-reference</a></kbd>.';
             $error_msg .= '<p><strong>Note:</strong> Error code <kbd>missing-input-response</kbd> may mean the user just didn\'t complete the reCAPTCHA.</p>';
-            $error_msg .= '<p><a href="/">Try again</a></p>';*/        
+            $error_msg .= '<p><a href="/">Try again</a></p>';*/
 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Google reCAPTCHA Verification Failed."));
             return false;
 
-        }  
+        }
 
     }
 
     ######################################################################################
-    #    Validate that the email submitted belongs to a valid account and can be reset   #    
+    #    Validate that the email submitted belongs to a valid account and can be reset   #
     ######################################################################################
 
     public function validateResetEmail($email) {
 
         // get the user_id if the user exists
         if(!$user_id = $this->getIdByEmail($email)) {
-            return false;        
+            return false;
         }
 
         // is the user active
@@ -860,7 +868,7 @@ class User extends Components {
     }
 
     #####################################
-    #    Build and send a reset email   #    
+    #    Build and send a reset email   #
     #####################################
 
     public function sendResetEmail($user_id) {
@@ -868,8 +876,8 @@ class User extends Components {
         // Get recipient email
         $recipient_email = $this->getRecord($user_id, 'email');
 
-        // Set subject  
-        $subject = _gettext("Your QWcrm password reset request");    
+        // Set subject
+        $subject = _gettext("Your QWcrm password reset request");
 
         // Create Token
         $token = $this->createResetToken($user_id);
@@ -903,14 +911,14 @@ class User extends Components {
 
         $body .= '<p>'._gettext("Select the URL below and proceed with resetting your password.").'</p>';
 
-        $body .= '<p>'. QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH ."index.php?component=user&page_tpl=reset&token=".$token.'</p>';  
+        $body .= '<p>'. QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH ."index.php?component=user&page_tpl=reset&token=".$token.'</p>';
 
-        $body .= '<p>'._gettext("Thank you.").'</p>';    
+        $body .= '<p>'._gettext("Thank you.").'</p>';
 
         // Send Reset Email (no onscreen notifications to prevent headers already sent error)
         $this->app->system->email->send($recipient_email, $subject, $body, null, null, null, null, null, null, true);
 
-        // Log activity        
+        // Log activity
         $record = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("reset email has been sent.");
         $this->app->system->general->writeRecordToActivityLog($record, $user_id);
 
@@ -930,7 +938,7 @@ class User extends Components {
         $sql = "UPDATE ".PRFX."user_reset
                 SET
                 reset_code              =". $this->app->db->qStr( $reset_code              ).",
-                reset_code_expiry_time  =". $this->app->db->qStr( $reset_code_expiry_time  )."            
+                reset_code_expiry_time  =". $this->app->db->qStr( $reset_code_expiry_time  )."
                 WHERE token             =". $this->app->db->qStr( $token                   );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -940,7 +948,7 @@ class User extends Components {
     }
 
     #####################################
-    #    create a reset user token      #    
+    #    create a reset user token      #
     #####################################
 
     public function createResetToken($user_id) {
@@ -948,10 +956,10 @@ class User extends Components {
         // check for previous tokens for this user and delete them
         $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$this->app->db->qStr($user_id);
 
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
-        
-        $result_count = $rs->RecordCount();       
-         
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $result_count = $rs->RecordCount();
+
         // Delete any reset tokens for this user
         if($result_count >= 1) {
 
@@ -963,15 +971,15 @@ class User extends Components {
         $expiry_time = time() + (60 * 15);              // 15 minute expiry time
         $token = \Joomla\CMS\User\UserHelper::genRandomPassword(64);    // 64 character token
 
-        $sql = "INSERT INTO ".PRFX."user_reset SET              
-                user_id         =". $this->app->db->qStr( $user_id     ).", 
-                expiry_time     =". $this->app->db->qStr( $expiry_time ).",   
-                token           =". $this->app->db->qStr( $token       );                     
+        $sql = "INSERT INTO ".PRFX."user_reset SET
+                user_id         =". $this->app->db->qStr( $user_id     ).",
+                expiry_time     =". $this->app->db->qStr( $expiry_time ).",
+                token           =". $this->app->db->qStr( $token       );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Return the token
-        return $token;    
+        return $token;
 
     }
 
@@ -990,7 +998,7 @@ class User extends Components {
     }
 
     ##############################################
-    #    validate the reset token can be used    #    
+    #    validate the reset token can be used    #
     ##############################################
 
     public function validateResetToken($token) {
@@ -1006,7 +1014,7 @@ class User extends Components {
             return false;
         }
 
-        // check if user is blocked        
+        // check if user is blocked
         if(!$this->getRecord($rs->fields['user_id'], 'active')){
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The user is blocked."));
             return false;
@@ -1020,7 +1028,7 @@ class User extends Components {
 
         // All checked passed
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Token accepted."));
-        return true;     
+        return true;
 
     }
 
@@ -1036,7 +1044,7 @@ class User extends Components {
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Check there is only 1 record
-        if($rs->RecordCount() != 1) {            
+        if($rs->RecordCount() != 1) {
             $this->app->system->variables->systemMessagesWrite('danger', 'The reset code does not exist.');
             return false;
         }
@@ -1048,8 +1056,8 @@ class User extends Components {
         }
 
         // All checked passed
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Reset code accepted."));        
-        return true; 
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Reset code accepted."));
+        return true;
 
     }
 
@@ -1057,7 +1065,7 @@ class User extends Components {
     #    Delete user reset codes             #
     ##########################################
 
-    public function deleteResetCode($user_id) {  
+    public function deleteResetCode($user_id) {
 
         $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$this->app->db->qStr($user_id);
 
@@ -1069,7 +1077,7 @@ class User extends Components {
     #    Delete all expired reset codes      #
     ##########################################
 
-    public function deleteExpiredResetCodes() {   
+    public function deleteExpiredResetCodes() {
 
         $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$this->app->db->qStr( time() );
 
@@ -1079,42 +1087,42 @@ class User extends Components {
 
 
     #####################################
-    #    Update users reset count       #    
+    #    Update users reset count       #
     #####################################
 
      public function updateResetCount($user_id) {
 
-        $sql = "UPDATE ".PRFX."user_records SET       
+        $sql = "UPDATE ".PRFX."user_records SET
                 reset_count     = reset_count + 1
                 WHERE user_id   =". $this->app->db->qStr($user_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
      }
-     
-     
+
+
     #####################################   // Not Currently used
     #    Reset all user's passwords     #   // used for migrations or security
     #####################################
 
-    public function resetAllPasswords() { 
+    public function resetAllPasswords() {
 
         $sql = "SELECT user_id FROM ".PRFX."user_records";
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Loop through all users
-        while(!$rs->EOF) { 
+        while(!$rs->EOF) {
 
             // Reset User's password
             $this->resetPassword($rs->fields['user_id']);
 
-            // Advance the INSERT loop to the next record            
-            $rs->MoveNext();            
+            // Advance the INSERT loop to the next record
+            $rs->MoveNext();
 
         }
 
-        // Log activity        
+        // Log activity
         $this->app->system->general->writeRecordToActivityLog(_gettext("All User Account passwords have been reset."));
 
         return;

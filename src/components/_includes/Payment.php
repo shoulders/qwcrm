@@ -21,19 +21,21 @@
 defined('_QWEXEC') or die;
 
 class Payment extends Components {
-    
+
     // Used for Payment Types and Methods
     public static $action = '';
     public static $buttons = array();
-    public static $payment_details = array();    
+    public static $payment_details = array();
     public static $payment_valid = true;
     public static $payment_successful = false;
     public static $record_balance = null;
     public static $disabledMethods = array();
-     
+    public static $timestamp = time();  // Unify Dates and Times
+
+
     public function __construct()
     {
-        parent::__construct();        
+        parent::__construct();
     }
 
     /** Insert Functions **/
@@ -44,24 +46,24 @@ class Payment extends Components {
 
     public function insertRecord($qpayment) {
 
-        $sql = "INSERT INTO ".PRFX."payment_records SET            
+        $sql = "INSERT INTO ".PRFX."payment_records SET
                 employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id          ).",
-                client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?: null           ).",                
-                supplier_id     = ".$this->app->db->qStr( $qpayment['supplier_id'] ?: null         ).", 
-                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?: null          ).",                
-                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?: null          ).",  
-                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",                
+                client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?: null           ).",
+                supplier_id     = ".$this->app->db->qStr( $qpayment['supplier_id'] ?: null         ).",
+                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?: null          ).",
+                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?: null          ).",
+                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",
                 creditnote_id   = ".$this->app->db->qStr( $qpayment['creditnote_id'] ?: null       ).",
-                creditnote_action  = ".$this->app->db->qStr( $qpayment['creditnote_action'] ?: null).",   
+                creditnote_action  = ".$this->app->db->qStr( $qpayment['creditnote_action'] ?: null).",
                 voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?: null          ).",
                 date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date'])    ).",
-                tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",   
+                tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",
                 type            = ".$this->app->db->qStr( $qpayment['type']        ).",
                 method          = ".$this->app->db->qStr( $qpayment['method']      ).",
                 direction       = ".$this->app->db->qStr( $qpayment['direction']      ).",
                 status          = 'valid',
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                      ).",
-                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                         ).",
+                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($this->timestamp)                         ).",
                 additional_info = ".$this->app->db->qStr( $qpayment['additional_info']             ).",
                 note            = ".$this->app->db->qStr( $qpayment['note']                        );
 
@@ -70,24 +72,24 @@ class Payment extends Components {
         // Get Payment Record ID
         $payment_id = $this->app->db->Insert_ID();
 
-        // Create a Workorder History Note - not a work order    
+        // Create a Workorder History Note - not a work order
         //$this->app->components->workorder->insertHistory(Payment::$payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
 
-        // Log activity        
+        // Log activity
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], null, Payment::$payment_details['invoice_id']);
 
-        // Update last active record    
-        $this->app->components->client->updateLastActive(Payment::$payment_details['client_id']);        
-        $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id']);
+        // Update last active record
+        $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'], $this->timestamp);
+        $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'], $this->timestamp);
 
         // Return the payment_id
-        return $payment_id;    
+        return $payment_id;
 
     }
 
     /** Get Functions **/
-    
+
     #####################################################
     #  Display all payments the given status            #
     #####################################################
@@ -96,7 +98,7 @@ class Payment extends Components {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
-        
+
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
         $havingTheseRecords = '';
@@ -105,63 +107,63 @@ class Payment extends Components {
         if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
        // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}     
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');} 
-        
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
+
         // Restrict by Type
         $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByType($type);
         /*if($type) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);            
-        }*/        
-        
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
+        }*/
+
         // Restrict by Method
         if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qStr($method);}
-        
+
         // Restrict by Direction
         $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByPaymentDirection($paymentDirection);
         /*if($paymentDirection) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($paymentDirection);
         }*/
 
         // Restrict by Status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);}   
+        if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);}
 
         // Restrict by Employee
         if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->app->db->qStr($employee_id);}
 
         // Restrict by Client
         if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);}
-        
+
         // Restrict by Invoice
-        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qStr($invoice_id);}    
+        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qStr($invoice_id);}
 
         // Restrict by Supplier
         if($supplier_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);}
-        
+
         // Restrict by Expense
-        if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qStr($expense_id);} 
+        if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->app->db->qStr($expense_id);}
 
         // Restrict by Otherincome
         if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->app->db->qStr($otherincome_id);}
-        
+
         // Restrict by Credit Note
         if($creditnote_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);}
-        
+
         // Restrict by Credit Note Action
         $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByCreditnoteAction($creditnote_action);
         /*if($creditnote_action) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
         }*/
-        
+
         // Restrict by Voucher
-        if($voucher_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.voucher_id=".$this->app->db->qStr($voucher_id);} 
+        if($voucher_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.voucher_id=".$this->app->db->qStr($voucher_id);}
 
         // The SQL code
         $sql =  "SELECT
                 ".PRFX."payment_records.*,
-                
+
                 CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,
                 IF(".PRFX."client_records.company_name !='', ".PRFX."client_records.company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,
                 IF(".PRFX."supplier_records.company_name !='', ".PRFX."supplier_records.company_name, CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name)) AS supplier_display_name
@@ -175,12 +177,12 @@ class Payment extends Components {
                 GROUP BY ".PRFX."payment_records.".$order_by."
                 ".$havingTheseRecords."
                 ORDER BY ".PRFX."payment_records.".$order_by."
-                ".$direction;           
+                ".$direction;
 
-        // Get the total number of records in the database for the given search           
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}        
-        $total_results = $rs->RecordCount();            
-            
+        // Get the total number of records in the database for the given search
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+        $total_results = $rs->RecordCount();
+
         // Restrict by pages
         if($use_pages) {
 
@@ -189,19 +191,19 @@ class Payment extends Components {
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            
-            // Assign the Previous page        
-            $previous_page_no = ($page_no - 1);        
-      
-            // Assign the next page        
+
+            // Assign the Previous page
+            $previous_page_no = ($page_no - 1);
+
+            // Assign the next page
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-     
+
             // Only return the given page's records
             $sql .= " LIMIT ".$start_record.", ".$records_per_page;
 
-        // Restrict by number of records   
+        // Restrict by number of records
         } elseif($records_per_page) {
 
             // Only return the first x number of records
@@ -210,24 +212,24 @@ class Payment extends Components {
             // Show restricted records message if required
             $restricted_records = $total_results > $records_per_page ? true : false;
 
-        }    
+        }
 
-        // Get the records        
+        // Get the records
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Return the data        
+        // Return the data
         return array(
                 'records' => $rs->GetArray(),
                 'total_results' => $total_results,
                 'total_pages' => $total_pages ?? 1,             // This make the drop down menu look correct on search tpl with use_pages off
                 'page_no' => $page_no,
                 'previous_page_no' => $previous_page_no ?? null,
-                'next_page_no' => $next_page_no ?? null,                    
+                'next_page_no' => $next_page_no ?? null,
                 'restricted_records' => $restricted_records ?? false,
                 );
 
-    }  
-    
+    }
+
     #############################
     #  Get payment details      #
     #############################
@@ -240,13 +242,13 @@ class Payment extends Components {
 
         if($item === null){
 
-            return $rs->GetRowAssoc();            
+            return $rs->GetRowAssoc();
 
         } else {
 
-            return $rs->fields[$item];   
+            return $rs->fields[$item];
 
-        } 
+        }
 
     }
 
@@ -262,13 +264,13 @@ class Payment extends Components {
 
         if($item === null){
 
-            return $rs->GetRowAssoc();            
+            return $rs->GetRowAssoc();
 
         } else {
 
-            return $rs->fields[$item];   
+            return $rs->fields[$item];
 
-        }  
+        }
 
     }
 
@@ -277,36 +279,36 @@ class Payment extends Components {
     ################################################  // invalidTypes() are specific payment methods that are not allowed for this payment type
 
     public function getMethods($direction = null, $activeOnly = false, $invalidMethods = array()) {
-        
+
         // Default Action
         $sql = "SELECT * FROM ".PRFX."payment_methods
-                WHERE ".PRFX."payment_methods.id\n"; 
+                WHERE ".PRFX."payment_methods.id\n";
 
         // If the method direction is specified
         if($direction == 'send') {
-            $sql .= "\nAND send = '1'";           
-        } elseif($direction == 'receive') {        
-            $sql .= "\nAND receive = '1'";        
+            $sql .= "\nAND send = '1'";
+        } elseif($direction == 'receive') {
+            $sql .= "\nAND receive = '1'";
         }
 
         // Only return methods that are enabled
-        if($activeOnly) { 
-            $sql .= "\nAND enabled = '1'";        
+        if($activeOnly) {
+            $sql .= "\nAND enabled = '1'";
         }
-        
+
         // Restrict Payment Methods - remove these methods from results
         if($invalidMethods) {
             $notTheseMethods = '';
             foreach($invalidMethods as $invalidMethod) {
                 $notTheseMethods .= "'$invalidMethod', ";
-            }        
+            }
             $sql .= "\nAND method_key NOT IN (".rtrim($notTheseMethods, ', ').")";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray();            
-        
+        return $rs->GetArray();
+
     }
 
     #####################################
@@ -319,7 +321,7 @@ class Payment extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray();   
+        return $rs->GetArray();
 
     }
 
@@ -332,41 +334,41 @@ class Payment extends Components {
         $sql = "SELECT * FROM ".PRFX."payment_statuses";
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-     
-        return $rs->GetArray();     
+
+        return $rs->GetArray();
 
     }
-    
+
     #############################################
     #    Get Credit Note Action Types           #
     #############################################
-    
+
 
     public function getCreditnoteActionTypes() {
 
         $sql = "SELECT * FROM ".PRFX."payment_creditnote_action_types";
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-     
-        return $rs->GetArray();     
+
+        return $rs->GetArray();
 
     }
-    
+
     #############################################
     #    Get Payment Directions                 #
     #############################################
-    
+
 
     public function getDirections() {
 
         $sql = "SELECT * FROM ".PRFX."payment_directions";
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-     
-        return $rs->GetArray();     
+
+        return $rs->GetArray();
 
     }
-    
+
     #####################################
     #  Get status names as an array     #
     #####################################
@@ -389,9 +391,9 @@ class Payment extends Components {
             return $records;
 
         }
-         
+
     }
-    
+
     #####################################
     #  Get Card names as an array       #  // Used in smarty modifier - libraries/vendor/smarty/smarty/libs/plugins/modifier.adinfodisplay.php
     #####################################
@@ -413,7 +415,7 @@ class Payment extends Components {
 
             return $records;
 
-        }          
+        }
 
     }
 
@@ -443,7 +445,7 @@ class Payment extends Components {
 
         }
 
-          
+
 
     }
 
@@ -458,13 +460,13 @@ class Payment extends Components {
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         return $rs->fields['display_name'];
-        
+
     }
 
 
     ##########################################
     #    Get Payment additional info names   #  // Used in smarty modifier - libraries/vendor/smarty/smarty/libs/plugins/modifier.adinfodisplay.php
-    ##########################################  
+    ##########################################
 
     public function getAdditionalInfoTypes() {
 
@@ -483,7 +485,7 @@ class Payment extends Components {
 
             return $records;
 
-        }     
+        }
 
     }
 
@@ -493,28 +495,28 @@ class Payment extends Components {
     #   update payment  #
     #####################
 
-    public function updateRecord($qpayment) {    
+    public function updateRecord($qpayment) {
 
-        $sql = "UPDATE ".PRFX."payment_records SET        
+        $sql = "UPDATE ".PRFX."payment_records SET
                 employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id    ).",
                 date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date']) ).",
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                   ).",
-                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                      ).",
+                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($this->timestamp)                      ).",
                 note            = ".$this->app->db->qStr( $qpayment['note']                     )."
                 WHERE payment_id =". $this->app->db->qStr( $qpayment['payment_id']              );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Create a Workorder History Note - not a Workorder  
-        //$this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);           
+        // Create a Workorder History Note - not a Workorder
+        //$this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);
 
-        // Log activity 
+        // Log activity
         $record = _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], null, $qpayment['invoice_id']);
 
-        // Update last active record    
-        $this->app->components->client->updateLastActive($qpayment['client_id']);        
-        $this->app->components->invoice->updateLastActive($qpayment['invoice_id']);
+        // Update last active record
+        $this->app->components->client->updateLastActive($qpayment['client_id'], $this->timestamp);
+        $this->app->components->invoice->updateLastActive($qpayment['invoice_id'], $this->timestamp);
 
         return true;
 
@@ -526,24 +528,24 @@ class Payment extends Components {
 
     public function updateOptions($qform) {
 
-        $sql = "UPDATE ".PRFX."payment_options SET            
+        $sql = "UPDATE ".PRFX."payment_options SET
                 bank_account_name           =". $this->app->db->qStr( $qform['bank_account_name']            ).",
                 bank_name                   =". $this->app->db->qStr( $qform['bank_name']                    ).",
                 bank_account_number         =". $this->app->db->qStr( $qform['bank_account_number']          ).",
                 bank_sort_code              =". $this->app->db->qStr( $qform['bank_sort_code']               ).",
                 bank_iban                   =". $this->app->db->qStr( $qform['bank_iban']                    ).",
-                paypal_email                =". $this->app->db->qStr( $qform['paypal_email']                 ).",        
+                paypal_email                =". $this->app->db->qStr( $qform['paypal_email']                 ).",
                 invoice_bank_transfer_msg   =". $this->app->db->qStr( $qform['invoice_bank_transfer_msg']    ).",
                 invoice_cheque_msg          =". $this->app->db->qStr( $qform['invoice_cheque_msg']           ).",
                 invoice_footer_msg          =". $this->app->db->qStr( $qform['invoice_footer_msg']           ).",
-                creditnote_footer_msg       =". $this->app->db->qStr( $qform['creditnote_footer_msg']        ); 
+                creditnote_footer_msg       =". $this->app->db->qStr( $qform['creditnote_footer_msg']        );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Log activity 
+        // Log activity
         // Done in payment:options controller
 
-        return;   
+        return;
 
     }
 
@@ -565,14 +567,14 @@ class Payment extends Components {
                     SET
                     send                    = ". $this->app->db->qStr($payment_method['send']).",
                     receive                 = ". $this->app->db->qStr($payment_method['receive']).",
-                    enabled                 = ". $this->app->db->qStr($payment_method['enabled'])."   
-                    WHERE method_key = ". $this->app->db->qStr($payment_method['method_key']); 
+                    enabled                 = ". $this->app->db->qStr($payment_method['enabled'])."
+                    WHERE method_key = ". $this->app->db->qStr($payment_method['method_key']);
 
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         }
 
-        // Log activity 
+        // Log activity
         // Done in payment:options controller
 
         return;
@@ -589,17 +591,17 @@ class Payment extends Components {
         $payment_details = $this->getRecord($payment_id);
 
         // if the new status is the same as the current one, exit
-        if($new_status == $payment_details['status']) {        
+        if($new_status == $payment_details['status']) {
             if (!$silent) { $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
             return false;
-        }    
+        }
 
         $sql = "UPDATE ".PRFX."payment_records SET
                 status               =". $this->app->db->qStr( $new_status      ).",
                 last_active          =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
                 WHERE payment_id     =". $this->app->db->qStr( $payment_id      );
 
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}       
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Status updated message
         if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment status updated.")); }
@@ -611,20 +613,20 @@ class Payment extends Components {
         // Create a Workorder History Note (Not Used) - not a workorder
         //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
-        // Log activity        
+        // Log activity
         $record = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
 
         // Update last active record (Not Used)
-        $this->app->components->client->updateLastActive($payment_details['client_id']);        
-        $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
+        $this->app->components->client->updateLastActive($payment_details['client_id'], $this->timestamp);
+        $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this->timestamp);
 
-        return true;        
+        return true;
 
     }
 
     /** Close Functions **/
-    
+
     #####################################
     #    Cancel  Payment                #
     #####################################
@@ -635,18 +637,18 @@ class Payment extends Components {
         $payment_details = $this->getRecord($payment_id);
 
         // Change the payment status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($payment_id, 'cancelled');      
+        $this->updateStatus($payment_id, 'cancelled');
 
         // Create a Workorder History Note - not a work order
         //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
-        // Log activity        
+        // Log activity
         $record = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($payment_details['client_id']);        
-        $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
+        $this->app->components->client->updateLastActive($payment_details['client_id'], $this->timestamp);
+        $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this->timestamp);
 
         return true;
 
@@ -659,15 +661,15 @@ class Payment extends Components {
     #####################################
 
     public function deleteRecord($payment_id) {
-        
+
         // Get payment details before deleting the record
         $payment_details = $this->getRecord($payment_id);
 
-        $sql = "UPDATE ".PRFX."payment_records SET        
+        $sql = "UPDATE ".PRFX."payment_records SET
                 employee_id     = NULL,
                 client_id       = NULL,
                 supplier_id     = NULL,
-                invoice_id      = NULL,                
+                invoice_id      = NULL,
                 expense_id      = NULL,
                 otherincome_id  = NULL,
                 creditnote_id   = NULL,
@@ -686,23 +688,23 @@ class Payment extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Create a Workorder History Note - not a workorder      
-        //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);           
+        // Create a Workorder History Note - not a workorder
+        //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);
 
-        // Log activity        
+        // Log activity
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
 
-        // Update last active record    
-        $this->app->components->client->updateLastActive($payment_details['client_id']);        
-        $this->app->components->invoice->updateLastActive($payment_details['invoice_id']);
+        // Update last active record
+        $this->app->components->client->updateLastActive($payment_details['client_id'], $this->timestamp);
+        $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this->timestamp);
 
-        return true;        
+        return true;
 
     }
-    
+
     /** Check functions **/
-    
+
     ######################################################
     #   Make sure the submitted payment amount is valid  #
     ######################################################
@@ -745,7 +747,7 @@ class Payment extends Components {
     ####################################################
 
     public function checkMethodActive($method, $direction = null) {
-        
+
         // If payment is deleted it's method is null, always return disabled for both directions
         if(!$method) { return false; }
 
@@ -757,7 +759,7 @@ class Payment extends Components {
 
         // If no direction specified, return method active status
         if(!$direction) { return $rs->fields['enabled']; }
-        
+
         // If module is disabled, always return disabled for both directions
         if(!$rs->fields['enabled']) { return false; }
 
@@ -786,16 +788,16 @@ class Payment extends Components {
         // Is the current payment method is not active, if not you cannot change status
         if(!$this->checkMethodActive($payment_details['method'], 'receive')) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because it's current payment method is not available."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         // Is deleted
         if($payment_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."));
-            $state_flag = false;       
+            $state_flag = false;
         }
-       
-        return $state_flag;   
+
+        return $state_flag;
 
      }
 
@@ -813,25 +815,25 @@ class Payment extends Components {
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it is on a different Tax system."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         // Is Cancelled
         if($payment_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been cancelled."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         // Is Deleted
         if($payment_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
-        return $state_flag; 
+        return $state_flag;
 
-    }    
-    
+    }
+
     ###############################################################
     #   Check to see if the payment can be cancelled              #
     ###############################################################
@@ -842,23 +844,23 @@ class Payment extends Components {
 
         // Get the payment details
         $payment_details = $this->getRecord($payment_id);
-        
+
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because it is on a different Tax system."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the payment has already been cancelled."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         // Is deleted
         if($payment_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the payment has been deleted."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         return $state_flag;
@@ -875,23 +877,23 @@ class Payment extends Components {
 
         // Get the payment details
         $payment_details = $this->getRecord($payment_id);
-        
+
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be deleted because it is on a different Tax system."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been cancelled."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         // Is deleted
         if($payment_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it already been deleted."));
-            $state_flag = false;       
+            $state_flag = false;
         }
 
         return $state_flag;
@@ -902,10 +904,10 @@ class Payment extends Components {
     /** Other Functions **/
 
     #########################################
-    #  Build additional_info JSON           #       
+    #  Build additional_info JSON           #
     #########################################
 
-     public function buildAdditionalInfoJson($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
+    public function buildAdditionalInfoJson($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
 
         $additional_info = array();
 
@@ -921,16 +923,16 @@ class Payment extends Components {
         return json_encode($additional_info);
 
     }
-    
+
     ##################################################################################
     #  Build the enviroment for for making payments - The relevant Type and Class    #
     ##################################################################################
-    
+
     public function buildPaymentEnvironment($action)
     {
         // Set Action Type
         Payment::$action = $action;
-        
+
         // New
         if($action === 'new')
         {
@@ -938,15 +940,15 @@ class Payment extends Components {
             \CMSApplication::$VAR['qpayment']['type']               = \CMSApplication::$VAR['type'];
             \CMSApplication::$VAR['qpayment']['method']             = \CMSApplication::$VAR['qpayment']['method'] ?? null;
             \CMSApplication::$VAR['qpayment']['direction']          = null;
-            \CMSApplication::$VAR['qpayment']['client_id']          = \CMSApplication::$VAR['client_id'] ?? \CMSApplication::$VAR['qpayment']['client_id'] ?? null; 
-            \CMSApplication::$VAR['qpayment']['supplier_id']        = \CMSApplication::$VAR['supplier_id'] ?? \CMSApplication::$VAR['qpayment']['supplier_id'] ?? null;            
-            \CMSApplication::$VAR['qpayment']['invoice_id']         = \CMSApplication::$VAR['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'] ?? null;            
+            \CMSApplication::$VAR['qpayment']['client_id']          = \CMSApplication::$VAR['client_id'] ?? \CMSApplication::$VAR['qpayment']['client_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['supplier_id']        = \CMSApplication::$VAR['supplier_id'] ?? \CMSApplication::$VAR['qpayment']['supplier_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['invoice_id']         = \CMSApplication::$VAR['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['expense_id']         = \CMSApplication::$VAR['expense_id'] ?? \CMSApplication::$VAR['qpayment']['expense_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['otherincome_id']     = \CMSApplication::$VAR['otherincome_id'] ?? \CMSApplication::$VAR['qpayment']['otherincome_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['creditnote_id']      = \CMSApplication::$VAR['creditnote_id'] ?? \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['creditnote_action']  = null;            
+            \CMSApplication::$VAR['qpayment']['creditnote_action']  = null;
             \CMSApplication::$VAR['qpayment']['voucher_id']         = null;
-            \CMSApplication::$VAR['qpayment']['voucher_code']       = \CMSApplication::$VAR['voucher_code'] ?? \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null;            
+            \CMSApplication::$VAR['qpayment']['voucher_code']       = \CMSApplication::$VAR['voucher_code'] ?? \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null;
             \CMSApplication::$VAR['qpayment']['name_on_card']       = \CMSApplication::$VAR['qpayment']['name_on_card'] ?? null;
 
             // Build empty button array - to prevent undefined variable errors
@@ -957,7 +959,7 @@ class Payment extends Components {
                 'addNewRecord' => array('allowed' => false, 'url' => null, 'title' => null)
             );
         }
-        
+
         // For all actions that are not new
         if($action !== 'new')
         {
@@ -968,38 +970,38 @@ class Payment extends Components {
             \CMSApplication::$VAR['qpayment']['payment_id'] = Payment::$payment_details['payment_id'];
             \CMSApplication::$VAR['qpayment']['type'] = Payment::$payment_details['type'];
             \CMSApplication::$VAR['qpayment']['method'] = Payment::$payment_details['method'];
-            \CMSApplication::$VAR['qpayment']['direction'] = Payment::$payment_details['direction']; 
-            \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];           
+            \CMSApplication::$VAR['qpayment']['direction'] = Payment::$payment_details['direction'];
+            \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];
             \CMSApplication::$VAR['qpayment']['expense_id'] = Payment::$payment_details['expense_id'];
-            \CMSApplication::$VAR['qpayment']['otherincome_id'] = Payment::$payment_details['otherincome_id'];            
+            \CMSApplication::$VAR['qpayment']['otherincome_id'] = Payment::$payment_details['otherincome_id'];
             \CMSApplication::$VAR['qpayment']['creditnote_id'] = Payment::$payment_details['creditnote_id'];
             \CMSApplication::$VAR['qpayment']['creditnote_action'] = Payment::$payment_details['creditnote_action'];
             \CMSApplication::$VAR['qpayment']['voucher_id'] = Payment::$payment_details['voucher_id'];
         }
 
         // Load the Type and Method classes (files only, no store)
-        \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/types/'); 
-        \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/methods/'); 
+        \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/types/');
+        \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/methods/');
 
         // Set the payment type class (Capitalise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
         $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['type']));
-        $this->paymentType = new $typeClassName;        
+        $this->paymentType = new $typeClassName;
     }
-    
+
     // Process the payment
     public function processPayment()
     {
         // Set the payment method class (Capitalise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
         $methodClassName = 'PaymentMethod'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['method']));
         $this->paymentMethod = new $methodClassName;
-        
+
         // Prep/Validate the data
         $this->paymentType->preProcess();      // Need to validate payment against Type first
         $this->paymentMethod->preProcess();    // now need to check if the payment method is valid
 
-        // Process the payment                  
+        // Process the payment
         if(Payment::$payment_valid)
-        {                 
+        {
             $this->paymentMethod->process();  // Insert/edit/cancel/delete database operations
             $this->paymentType->process();    // Recalcualtion of type records
         }
@@ -1007,12 +1009,12 @@ class Payment extends Components {
         // Final things like set messages and redirects based on results
         $this->paymentMethod->postProcess();  // Messages
         $this->paymentType->postProcess();    // Messages and redirects
-        
+
         // Refresh the payment details (used for page reloads) - if a new insert fails, then there will be no payment_id
         if(Payment::$payment_details['payment_id'] ?? false)
         {
-            Payment::$payment_details = $this->app->components->payment->getRecord(Payment::$payment_details['payment_id']); 
+            Payment::$payment_details = $this->app->components->payment->getRecord(Payment::$payment_details['payment_id']);
         }
     }
-    
+
 }

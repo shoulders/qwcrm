@@ -55,7 +55,7 @@ class OtherIncome extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->updateLastActive($otherincome_id);
+        $this->updateLastActive($otherincome_id, $timestamp);
 
         return $otherincome_id;
 
@@ -426,6 +426,9 @@ class OtherIncome extends Components {
 
     public function updateStatus($otherincome_id, $new_status, $silent = false) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         // Get otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
 
@@ -441,7 +444,7 @@ class OtherIncome extends Components {
                 status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
         {
-            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime() );
+            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) );
         }
         else
         {
@@ -459,7 +462,7 @@ class OtherIncome extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->updateLastActive($otherincome_id);
+        $this->updateLastActive($otherincome_id, $timestamp);
 
         return true;
 
@@ -469,13 +472,13 @@ class OtherIncome extends Components {
     #    Update Last Active         #
     #################################
 
-    public function updateLastActive($otherincome_id = null) {
+    public function updateLastActive($otherincome_id = null, $timestamp = null) {
 
         // Allow null calls
         if(!$otherincome_id) { return; }
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
-                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
                 WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -620,7 +623,7 @@ class OtherIncome extends Components {
 
         return $state_flag;
 
-     }
+    }
 
     ###############################################################
     #   Check to see if the otherincome can be cancelled          #

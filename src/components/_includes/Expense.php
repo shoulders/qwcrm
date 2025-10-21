@@ -65,8 +65,8 @@ class Expense extends Components {
 
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($supplier_id);
-        $this->updateLastActive($expense_id);
+        $this->app->components->supplier->updateLastActive($supplier_id, $timestamp);
+        $this->updateLastActive($expense_id, $timestamp);
 
         return $expense_id;
 
@@ -406,6 +406,9 @@ class Expense extends Components {
 
     public function updateRecord($qform) {
 
+        // Unify Dates and Times
+        $timestamp = time();
+
         $sql = "UPDATE ".PRFX."expense_records SET
                 employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id    ).",
                 supplier_id         =". $this->app->db->qStr( $qform['supplier_id'] ?: null      ).",
@@ -433,8 +436,8 @@ class Expense extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($qform['supplier_id']);
-        $this->updateLastActive($qform['expense_id']);
+        $this->app->components->supplier->updateLastActive($qform['supplier_id'], $timestamp);
+        $this->updateLastActive($qform['expense_id'], $timestamp);
 
         return true;
 
@@ -445,6 +448,9 @@ class Expense extends Components {
     ############################
 
     public function updateStatus($expense_id, $new_status, $silent = false) {
+
+        // Unify Dates and Times
+        $timestamp = time();
 
         // Get expense details
         $expense_details = $this->getRecord($expense_id);
@@ -461,7 +467,7 @@ class Expense extends Components {
                 status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
         {
-            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime() );
+            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) );
         }
         else
         {
@@ -487,8 +493,8 @@ class Expense extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);
-        $this->updateLastActive($expense_id);
+        $this->app->components->supplier->updateLastActive($expense_details['supplier_id'], $timestamp);
+        $this->updateLastActive($expense_id, $timestamp);
 
         return true;
 
@@ -498,13 +504,13 @@ class Expense extends Components {
     #    Update Last Active         #
     #################################
 
-    public function updateLastActive($expense_id = null) {
+    public function updateLastActive($expense_id = null, $timestamp = null) {
 
         // Allow null calls
         if(!$expense_id) { return; }
 
         $sql = "UPDATE ".PRFX."expense_records SET
-                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
                 WHERE expense_id=".$this->app->db->qStr($expense_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -518,6 +524,9 @@ class Expense extends Components {
     #####################################
 
     public function cancelRecord($expense_id) {
+
+        // Unify Dates and Times
+        $timestamp = time();
 
         // Make sure the expense can be cancelled
         if(!$this->checkRecordAllowsCancel($expense_id)) {
@@ -546,8 +555,8 @@ class Expense extends Components {
         */
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);
-        $this->updateLastActive($expense_id);
+        $this->app->components->supplier->updateLastActive($expense_details['supplier_id'], $timestamp);
+        $this->updateLastActive($expense_id, $timestamp);
 
         return true;
 

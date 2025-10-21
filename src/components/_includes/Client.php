@@ -372,13 +372,13 @@ class Client extends Components {
     #    Update Last Active         #
     #################################
 
-    public function updateLastActive($client_id = null) {
+    public function updateLastActive($client_id = null, $timestamp = null) {
 
         // compensate for some operations not having a client_id - i.e. sending some emails
         if(!$client_id) { return; }
 
         $sql = "UPDATE ".PRFX."client_records SET
-                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
                 WHERE client_id=".$this->app->db->qStr($client_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
