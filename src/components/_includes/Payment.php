@@ -80,11 +80,12 @@ class Payment extends Components {
 
         // Log activity
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], null, Payment::$payment_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], null, $qpayment['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'], $this::$timestamp);
-        $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'], $this::$timestamp);
+        $this->app->components->client->updateLastActive($qpayment['client_id'], $this::$timestamp);
+        $this->app->components->invoice->updateLastActive($qpayment['invoice_id'], $this::$timestamp);
+        $this->app->components->supplier->updateLastActive($qpayment['supplier_id'], $this::$timestamp);
 
         // Return the payment_id
         return $payment_id;
@@ -520,6 +521,7 @@ class Payment extends Components {
         // Update last active record
         $this->app->components->client->updateLastActive($qpayment['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($qpayment['invoice_id'], $this::$timestamp);
+        $this->app->components->supplier->updateLastActive($qpayment['supplier_id'], $this::$timestamp);
 
         return true;
 
@@ -623,6 +625,7 @@ class Payment extends Components {
         // Update last active record (Not Used)
         $this->app->components->client->updateLastActive($payment_details['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this::$timestamp);
+        $this->app->components->supplier->updateLastActive($payment_details['supplier_id'], $this::$timestamp);
 
         return true;
 
@@ -652,6 +655,7 @@ class Payment extends Components {
         // Update last active record
         $this->app->components->client->updateLastActive($payment_details['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this::$timestamp);
+        $this->app->components->supplier->updateLastActive($payment_details['supplier_id'], $this::$timestamp);
 
         return true;
 
@@ -701,6 +705,7 @@ class Payment extends Components {
         // Update last active record
         $this->app->components->client->updateLastActive($payment_details['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this::$timestamp);
+        $this->app->components->supplier->updateLastActive($payment_details['supplier_id'], $this::$timestamp);
 
         return true;
 

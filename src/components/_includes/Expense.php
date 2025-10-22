@@ -65,8 +65,8 @@ class Expense extends Components {
 
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($supplier_id, $timestamp);
         $this->updateLastActive($expense_id, $timestamp);
+        $this->app->components->supplier->updateLastActive($supplier_id, $timestamp);
 
         return $expense_id;
 
@@ -436,8 +436,8 @@ class Expense extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($qform['supplier_id'], $timestamp);
         $this->updateLastActive($qform['expense_id'], $timestamp);
+        $this->app->components->supplier->updateLastActive($qform['supplier_id'], $timestamp);
 
         return true;
 
@@ -493,8 +493,8 @@ class Expense extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id'], $timestamp);
         $this->updateLastActive($expense_id, $timestamp);
+        $this->app->components->supplier->updateLastActive($expense_details['supplier_id'], $timestamp);
 
         return true;
 
@@ -555,8 +555,8 @@ class Expense extends Components {
         */
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id'], $timestamp);
         $this->updateLastActive($expense_id, $timestamp);
+        $this->app->components->supplier->updateLastActive($expense_details['supplier_id'], $timestamp);
 
         return true;
 
@@ -570,17 +570,14 @@ class Expense extends Components {
 
     public function deleteRecord($expense_id) {
 
-        /* Get invoice_id before deleting the record
-        $invoice_id = $this->get_expense_details($expense_id, 'invoice_id');
-
-        // Get related invoice details before deleting the record
-        $invoice_details = $this->app->components->invoice->getRecord($invoice_id);*/
+        // Get expense details before deleting the record
+        $invoice_details = $this->getRecord($expense_id);
 
         // Change the expense status to deleted (I do this here to maintain consistency)
         $this->updateStatus($expense_id, 'deleted');
 
         // Delete record items
-        $sql = "DELETE FROM `".PRFX."expense_items` WHERE `".PRFX."expense_items`.`expense_id` = $expense_id";
+        $sql = "DELETE FROM ".PRFX."expense_items WHERE expense_id=".$this->app->db->qStr($expense_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Delete Main record
@@ -607,25 +604,12 @@ class Expense extends Components {
                 WHERE expense_id    =". $this->app->db->qStr($expense_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Delete all items from the expense to prevent duplication
-        $sql = "DELETE FROM ".PRFX."expense_items WHERE expense_id=".$this->app->db->qStr($expense_id);
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        /* Create a Workorder History Note
-        $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');*/
-
         // Log activity
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
-        /* Log activity
-        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
         // Update last active record
-        $this->app->components->client->update_client_last_active($invoice_details['client_id']);
-        $this->app->components->workorder->update_workorder_last_active($invoice_details['workorder_id']);
-        //$this->app->components->invoice->update_invoice_last_active($invoice_id);*/
+        $this->app->components->supplier->updateLastActive($supplier_id);
 
         return true;
 

@@ -270,9 +270,6 @@ class Supplier extends Components {
 
     public function updateRecord($qform) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         $sql = "UPDATE ".PRFX."supplier_records SET
                 employee_id    =". $this->app->db->qStr( $this->app->user->login_user_id ).",
                 company_name   =". $this->app->db->qStr( $qform['company_name']  ).",
@@ -289,7 +286,6 @@ class Supplier extends Components {
                 state          =". $this->app->db->qStr( $qform['state']         ).",
                 zip            =". $this->app->db->qStr( $qform['zip']           ).",
                 country        =". $this->app->db->qStr( $qform['country']       ).",
-                last_active    =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)      ).",
                 description    =". $this->app->db->qStr( $qform['description']   ).",
                 note           =". $this->app->db->qStr( $qform['note']          )."
                 WHERE supplier_id = ". $this->app->db->qStr( $qform['supplier_id'] );
@@ -301,7 +297,7 @@ class Supplier extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->updateLastActive($qform['supplier_id'], $timestamp);
+        $this->updateLastActive($qform['supplier_id']);
 
         return true;
 
@@ -412,8 +408,34 @@ class Supplier extends Components {
         // Get supplier details
         $supplier_details = $this->get_supplier_details($supplier_id);
 
+        // Change the supplier status to cancelled (I do this here to maintain consistency)
+        $this->updateStatus($supplier_id, 'deleted');
+
         // Run the SQL
-        $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);
+        $sql = "UPDATE ".PRFX."otherincome_records SET
+            supplier_id         = NULL,
+            employee_id         = NULL,
+            company_name        = '',
+            first_name          = '',
+            last_name           = '',
+            website             = '',
+            email               = '',
+            type                = '',
+            primary_phone       = '',
+            mobile_phone        = '',
+            fax                 = '',
+            address             = '',
+            city                = '',
+            state               = '',
+            zip                 = '',
+            country             = '',
+            status              = '',
+            opened_on           = NULL,
+            closed_on           = NULL,
+            last_active         = NULL,
+            description         = '',
+            note                = ''
+            WHERE supplier_id =". $this->app->db->qStr($supplier_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity

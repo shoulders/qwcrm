@@ -93,8 +93,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($client_id, $timestamp);
         $this->updateLastActive($workorder_id, $timestamp);
+        $this->app->components->client->updateLastActive($client_id, $timestamp);
 
         return true;
 
@@ -500,8 +500,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
         $this->updateLastActive($workorder_id, $timestamp);
+        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
 
         return true;
 
@@ -533,8 +533,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
         $this->updateLastActive($workorder_id, $timestamp);
+        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
 
         return true;
 
@@ -566,8 +566,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
         $this->updateLastActive($workorder_id, $timestamp);
+        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
 
         return true;
 
@@ -599,8 +599,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
         $this->updateLastActive($workorder_details['workorder_id'], $timestamp);
+        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
 
     }
 
@@ -658,8 +658,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($this->getRecord($workorder_id, 'client_id'), $timestamp);
         $this->updateLastActive($workorder_id, $timestamp);
+        $this->app->components->client->updateLastActive($this->getRecord($workorder_id, 'client_id'), $timestamp);
 
         return true;
 
@@ -825,8 +825,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
         $this->updateLastActive($workorder_details['workorder_id'], $timestamp);
+        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
 
     }
 
@@ -872,8 +872,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
         $this->updateLastActive($workorder_id, $timestamp);
+        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
 
         return true;
 
@@ -918,8 +918,8 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
         $this->updateLastActive($workorder_id, $timestamp);
+        $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
 
         return true;
 
@@ -1282,10 +1282,10 @@ class WorkOrder extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $workorder_details['client_id'], $workorder_id);
 
         // Update last active record
+        $this->updateLastActive($workorder_id);
         $this->app->components->user->updateLastActive($workorder_details['employee_id'], $timestamp);
         $this->app->components->user->updateLastActive($target_employee_id, $timestamp);
         $this->app->components->client->updateLastActive($workorder_details['client_id'], $timestamp);
-        $this->updateLastActive($workorder_id);
 
         return true;
 

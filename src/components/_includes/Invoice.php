@@ -585,9 +585,9 @@ defined('_QWEXEC') or die;
         $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
 
         // Update last active record
+        $this->updateLastActive($invoice_details['invoice_id'], $timestamp);
         $this->app->components->client->updateLastActive($this->getRecord($invoice_details['invoice_id'], 'client_id'), $timestamp);
         $this->app->components->workorder->updateLastActive($this->getRecord($invoice_details['invoice_id'], 'workorder_id'), $timestamp);
-        $this->updateLastActive($invoice_details['invoice_id'], $timestamp);
 
         return;
 
@@ -619,9 +619,9 @@ defined('_QWEXEC') or die;
         $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record
+        $this->updateLastActive($invoice_id);
         $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'), $timestamp);
         $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'), $timestamp);
-        $this->updateLastActive($invoice_id);
 
     }*/
 
@@ -681,9 +681,9 @@ defined('_QWEXEC') or die;
         $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record
+        $this->updateLastActive($invoice_id, $timestamp);
         $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
         $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
-        $this->updateLastActive($invoice_id, $timestamp);
 
         return true;
 
@@ -758,9 +758,9 @@ defined('_QWEXEC') or die;
         $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record
+        $this->updateLastActive($invoice_id, $timestamp);
         $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
         $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
-        $this->updateLastActive($invoice_id, $timestamp);
 
         return true;
 
@@ -840,9 +840,9 @@ defined('_QWEXEC') or die;
         }
 
         // Update last active record
+        $this->updateLastActive($invoice_id, $timestamp);
         $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
         $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
-        $this->updateLastActive($invoice_id, $timestamp);
 
         return true;
 
@@ -1456,11 +1456,11 @@ defined('_QWEXEC') or die;
         $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record
+        $this->updateLastActive($invoice_id, $timestamp);
         $this->app->components->user->updateLastActive($invoice_details['employee_id'], $timestamp);
         $this->app->components->user->updateLastActive($target_employee_id, $timestamp);
         $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
         $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
-        $this->updateLastActive($invoice_id, $timestamp);
 
         return true;
 

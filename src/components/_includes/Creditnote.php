@@ -61,6 +61,7 @@ class Creditnote extends Components {
         // Update last active record
         $this->app->components->client->updateLastActive($qform['client_id'], $timestamp);
         $this->app->components->invoice->updateLastActive($qform['invoice_id'], $timestamp);
+        $this->app->components->supplier->updateLastActive($qform['supplier_id'], $timestamp);
 
         return $creditnote_id;
 
@@ -588,9 +589,9 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record
+        $this->updateLastActive($invoice_id);
         $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'), $timestamp);
         $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'), $timestamp);
-        $this->updateLastActive($invoice_id);
 
     }*/
 
@@ -713,8 +714,8 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
         $this->updateLastActive($creditnote_id, $timestamp);
+        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
 
         return true;
 
@@ -787,8 +788,10 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
 
         // Update last active record
-        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
         $this->updateLastActive($creditnote_id, $timestamp);
+        $this->app->components->supplier->updateLastActive($creditnote_details['supplier_id'], $timestamp);
+        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
+
 
         return true;
 
@@ -1520,10 +1523,10 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
 
         // Update last active record
+        $this->updateLastActive($creditnote_id, $timestamp);
         $this->app->components->user->updateLastActive($creditnote_details['employee_id'], $timestamp);
         $this->app->components->user->updateLastActive($target_employee_id, $timestamp);
         $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
-        $this->updateLastActive($creditnote_id, $timestamp);
 
         return true;
 
