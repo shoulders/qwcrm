@@ -66,7 +66,6 @@ class Payment extends Components {
                 direction       = ".$this->app->db->qStr( $qpayment['direction']      ).",
                 status          = 'valid',
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                      ).",
-                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($this::$timestamp)                         ).",
                 additional_info = ".$this->app->db->qStr( $qpayment['additional_info']             ).",
                 note            = ".$this->app->db->qStr( $qpayment['note']                        );
 
@@ -83,6 +82,7 @@ class Payment extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], null, $qpayment['invoice_id']);
 
         // Update last active record
+        $this->updateLastActive($payment_id, $this::$timestamp);
         $this->app->components->client->updateLastActive($qpayment['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($qpayment['invoice_id'], $this::$timestamp);
         $this->app->components->supplier->updateLastActive($qpayment['supplier_id'], $this::$timestamp);
@@ -505,7 +505,6 @@ class Payment extends Components {
                 employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id    ).",
                 date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date']) ).",
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                   ).",
-                last_active     =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($this::$timestamp)                      ).",
                 note            = ".$this->app->db->qStr( $qpayment['note']                     )."
                 WHERE payment_id =". $this->app->db->qStr( $qpayment['payment_id']              );
 
@@ -519,6 +518,7 @@ class Payment extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], null, $qpayment['invoice_id']);
 
         // Update last active record
+        $this->updateLastActive($payment_id, $this::$timestamp);
         $this->app->components->client->updateLastActive($qpayment['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($qpayment['invoice_id'], $this::$timestamp);
         $this->app->components->supplier->updateLastActive($qpayment['supplier_id'], $this::$timestamp);
@@ -603,7 +603,6 @@ class Payment extends Components {
 
         $sql = "UPDATE ".PRFX."payment_records SET
                 status               =". $this->app->db->qStr( $new_status      ).",
-                last_active          =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
                 WHERE payment_id     =". $this->app->db->qStr( $payment_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -622,7 +621,8 @@ class Payment extends Components {
         $record = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
 
-        // Update last active record (Not Used)
+        // Update last active record
+        $this->updateLastActive($payment_id, $this::$timestamp);
         $this->app->components->client->updateLastActive($payment_details['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this::$timestamp);
         $this->app->components->supplier->updateLastActive($payment_details['supplier_id'], $this::$timestamp);
@@ -653,6 +653,7 @@ class Payment extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
 
         // Update last active record
+        $this->updateLastActive($payment_id, $this::$timestamp);
         $this->app->components->client->updateLastActive($payment_details['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this::$timestamp);
         $this->app->components->supplier->updateLastActive($payment_details['supplier_id'], $this::$timestamp);
@@ -1019,13 +1020,25 @@ class Payment extends Components {
 
         // Final things like set messages and redirects based on results
         $this->paymentMethod->postProcess();  // Messages
-        $this->paymentType->postProcess();    // Messages and redirects
+        $this->paymentType->postProcess();    // Messages
 
-        // Refresh the payment details (used for page reloads) - if a new insert fails, then there will be no payment_id
+        // Refresh the payment details (used for page reloads) - if an insert fails, then there will be no payment_id
         if(Payment::$payment_details['payment_id'] ?? false)
         {
             Payment::$payment_details = $this->app->components->payment->getRecord(Payment::$payment_details['payment_id']);
         }
+
+        // Log activity here if the payment activity failed (otherwise activity would not get logged)
+        if(!Payment::$payment_successful)
+
+            // Update last active record
+            $this->updateLastActive(Payment::$payment_details['payment_id']) $this::$timestamp);
+            $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'], Payment::$timestamp);
+            $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'], Payment::$timestamp);
+            $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'], Payment::$timestamp);
+
+        }
+
     }
 
 }

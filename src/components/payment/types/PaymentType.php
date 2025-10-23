@@ -151,9 +151,6 @@ class PaymentType
             // Log activity
             $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], null, Payment::$payment_details['invoice_id']);
 
-            // Update last active record
-            $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'], Payment::$timestamp);
-            $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'], Payment::$timestamp);
         }
 
         else
