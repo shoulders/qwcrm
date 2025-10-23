@@ -425,9 +425,6 @@ class User extends Components {
         $record = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
         $this->app->system->general->writeRecordToActivityLog($record, $user_id);
 
-        // Update last active record
-        $this->app->components->client->updateLastActive($user_details['client_id']);
-
         return true;
 
     }

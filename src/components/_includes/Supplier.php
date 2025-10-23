@@ -405,10 +405,7 @@ class Supplier extends Components {
             return false;
         }
 
-        // Get supplier details
-        $supplier_details = $this->get_supplier_details($supplier_id);
-
-        // Change the supplier status to cancelled (I do this here to maintain consistency)
+        // Change the supplier status to deleted (I do this here to maintain consistency)
         $this->updateStatus($supplier_id, 'deleted');
 
         // Run the SQL

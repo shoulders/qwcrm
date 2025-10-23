@@ -672,6 +672,9 @@ class Payment extends Components {
         // Get payment details before deleting the record
         $payment_details = $this->getRecord($payment_id);
 
+        // Change the payment status to cancelled (I do this here to maintain consistency)
+        $this->updateStatus($payment_id, 'deleted');
+
         $sql = "UPDATE ".PRFX."payment_records SET
                 employee_id     = NULL,
                 client_id       = NULL,
