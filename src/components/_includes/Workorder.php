@@ -755,7 +755,7 @@ class WorkOrder extends Components {
         $client_id = $this->getRecord($workorder_id, 'client_id');
 
         // Change the workorder status to deleted (I do this here to maintain consistency)
-        $this->app->components->workorder->updateStatus($workorder_id, 'deleted');
+        $this->updateStatus($workorder_id, 'deleted');
 
         // Delete the workorder primary record
         //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qStr($workorder_id); (this use to delete the whole record)
