@@ -405,8 +405,8 @@ class Supplier extends Components {
             return false;
         }
 
-        // Change the supplier status to deleted (I do this here to maintain consistency)
-        $this->updateStatus($supplier_id, 'deleted');
+        // Get supplier details
+        $supplier_details = $this->get_supplier_details($supplier_id);
 
         // Run the SQL
         $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);
