@@ -412,30 +412,7 @@ class Supplier extends Components {
         $this->updateStatus($supplier_id, 'deleted');
 
         // Run the SQL
-        $sql = "UPDATE ".PRFX."otherincome_records SET
-            supplier_id         = NULL,
-            employee_id         = NULL,
-            company_name        = '',
-            first_name          = '',
-            last_name           = '',
-            website             = '',
-            email               = '',
-            type                = '',
-            primary_phone       = '',
-            mobile_phone        = '',
-            fax                 = '',
-            address             = '',
-            city                = '',
-            state               = '',
-            zip                 = '',
-            country             = '',
-            status              = '',
-            opened_on           = NULL,
-            closed_on           = NULL,
-            last_active         = NULL,
-            description         = '',
-            note                = ''
-            WHERE supplier_id =". $this->app->db->qStr($supplier_id);
+        $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
