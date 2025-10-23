@@ -2118,7 +2118,7 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        // Restrict the records
+        // Return records for the given status
         if($status) {
             $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);
         }
@@ -2159,8 +2159,9 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
         }
 
-        // Remove `voucher` records from the results, unless you are looking up voucher records, vouchers are not real payments and are accounted for elsewhere
-        if($type !== 'voucher')
+        // By default remove `voucher` records from the results, unless you are looking up voucher records.
+        // Vouchers are not real payments and are accounted for elsewhere
+        else
         {
             $whereTheseRecords .= " AND ".PRFX."payment_records.type != 'voucher'";
         }
