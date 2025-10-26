@@ -7,7 +7,7 @@
 *}
 <table width="700" border="0" cellpadding="20" cellspacing="5">
     <tr>
-        <td>            
+        <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">{t}Supplier Details{/t}</td>
@@ -32,29 +32,29 @@
                                                     </tr>
                                                 </table>
                                             </td>
-                                        </tr>                                        
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Name{/t}</b></td>
                                             <td class="menutd">{$supplier_details.display_name}</td>
                                             <td class="menutd"><b>{t}Phone{/t}</b></td>
                                             <td class="menutd">{$supplier_details.primary_phone}</td>
-                                        </tr>                                        
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Contact{/t}</b></td>
-                                            <td class="menutd" >{$supplier_details.full_name}</td>                                            
+                                            <td class="menutd" >{$supplier_details.full_name}</td>
                                             <td class="menutd"><b>{t}Mobile{/t}</b></td>
                                             <td class="menutd">{$supplier_details.mobile_phone}</td>
-                                        </tr>                                      
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd">
-                                                {section name=s loop=$supplier_types}    
-                                                    {if $supplier_details.type == $supplier_types[s].type_key}{t}{$supplier_types[s].display_name}{/t}{/if}        
-                                                {/section}    
+                                                {section name=s loop=$supplier_types}
+                                                    {if $supplier_details.type == $supplier_types[s].type_key}{t}{$supplier_types[s].display_name}{/t}{/if}
+                                                {/section}
                                             </td>
                                             <td class="menutd" ><b>{t}Fax{/t}</b></td>
                                             <td class="menutd">{$supplier_details.fax}</td>
-                                        </tr>                                    
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Website{/t}</b></td>
                                             <td class="menutd"><a href="{$supplier_details.website}" target="_blank">{$supplier_details.website|regex_replace:"/^https?:\/\//":""|regex_replace:"/\/$/":""}</a></td>
@@ -63,22 +63,22 @@
                                         </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
-                                        </tr>                                      
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Address{/t}</b></td>
                                             <td class="menutd">{$supplier_details.address|nl2br}</td>
                                             <td class="menutd" colspan="2"></td>
-                                        </tr>                                      
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}City{/t}</b></td>
                                             <td class="menutd">{$supplier_details.city}</td>
                                             <td class="menutd" colspan="2"></td>
-                                        </tr>                                       
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}State{/t}</b></td>
                                             <td class="menutd">{$supplier_details.state}</td>
                                             <td class="menutd" colspan="2"></td>
-                                        </tr>                                    
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Zip{/t}</b></td>
                                             <td class="menutd">{$supplier_details.zip}</td>
@@ -94,9 +94,9 @@
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd"><b>{t}Status{/t}</b></td>
                                             <td class="menutd">
-                                                {section name=r loop=$supplier_statuses}    
-                                                    {if $supplier_details.status == $supplier_statuses[r].status_key}{t}{$supplier_statuses[r].display_name}{/t}{/if}        
-                                                {/section} 
+                                                {section name=r loop=$supplier_statuses}
+                                                    {if $supplier_details.status == $supplier_statuses[r].status_key}{t}{$supplier_statuses[r].display_name}{/t}{/if}
+                                                {/section}
                                             </td>
                                         </tr>
                                         <tr>
@@ -124,7 +124,7 @@
                                         </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
-                                        </tr>  
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Note{/t}</b></td>
                                             <td class="menutd" colspan="3"></td>
@@ -132,7 +132,7 @@
                                         <tr>
                                             <td class="menutd" colspan="3">{$supplier_details.note}</td>
                                             <td class="menutd"></td>
-                                        </tr>                                                                                                                                                                
+                                        </tr>
                                     </table>
                                 </td>
                             </tr>
@@ -142,22 +142,32 @@
             </table>
         </td>
     </tr>
-    
-    <!-- Credit Note Button -->
-    {if $allowed_to_create_creditnote}  
-        <tr>
-            <td>
 
-                <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Purchase Credit Note (Standalone){/t}</button>
-            </td>
-        </tr>
-    {/if}
-    
-    <!-- Credit Notes  -->
+    <!-- Buttons -->
     <tr>
-        <td>            
-            {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes")}                                            
+
+    </tr>
+
+    <tr>
+        <td>
+            <button type="button" onclick="window.open('index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Expense{/t}</button>
+        {if $allowed_to_create_creditnote}
+            <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Purchase Credit Note (Standalone){/t}</button>
+        {/if}
         </td>
     </tr>
-    
+
+
+    <!-- Tables  -->
+    <tr>
+        <td>
+            {include file='expense/blocks/display_expenses_block.tpl' display_expenses=$display_expenses block_title=_gettext("Expenses")}
+        </td>
+    </tr>
+        <tr>
+        <td>
+            {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes")}
+        </td>
+    </tr>
+
 </table>

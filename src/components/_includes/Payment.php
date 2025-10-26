@@ -631,6 +631,23 @@ class Payment extends Components {
 
     }
 
+    #################################
+    #    Update Last Active         #
+    #################################
+
+    public function updateLastActive($payment_id = null, $timestamp = null) {
+
+        // Allow null calls
+        if(!$payment_id) { return; }
+
+        $sql = "UPDATE ".PRFX."payment_records SET
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
+                WHERE payment_id=".$this->app->db->qStr($payment_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+    }
+
     /** Close Functions **/
 
     #####################################
@@ -1030,9 +1047,9 @@ class Payment extends Components {
 
         // Log activity here if the payment activity failed (otherwise activity would not get logged)
         if(!Payment::$payment_successful)
-
+        {
             // Update last active record
-            $this->updateLastActive(Payment::$payment_details['payment_id']) $this::$timestamp);
+            $this->updateLastActive(Payment::$payment_details['payment_id'], Payment::$timestamp);
             $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'], Payment::$timestamp);
             $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'], Payment::$timestamp);
             $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'], Payment::$timestamp);

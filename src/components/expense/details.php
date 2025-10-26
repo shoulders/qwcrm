@@ -28,13 +28,14 @@ $this->app->smarty->assign('expense_items',  $this->app->components->expense->ge
 
 // Payment Details
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes()                                                                                 );
-$this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()                                                             ); 
+$this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods()                                                             );
 $this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses()                                                                              );
 $this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['expense_id']));
 
 // Misc
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($expense_details['employee_id'], 'display_name'));
+$this->app->smarty->assign('supplier_display_name', $this->app->components->supplier->getRecord($expense_details['supplier_id'] ?? null, 'display_name'));
 
 // Build the page
 $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses()            );

@@ -33,8 +33,8 @@ class Administrator extends Components {
         // Add the setting into the Registry
         $this->app->config->set($key, $value);
 
-        // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = $this->getQwcrmConfigAsArray();  
+        // Get a fresh copy of the current settings as an array
+        $qwcrm_config = $this->getQwcrmConfigAsArray();
 
         // Add the key/value pair into the array
         //$qwcrm_config[$key] = $value;
@@ -46,7 +46,7 @@ class Administrator extends Components {
         $this->writeConfigFile($qwcrm_config);
 
         // Log activity
-        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was inserted."));    
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was inserted."));
 
         return true;
 
@@ -60,16 +60,16 @@ class Administrator extends Components {
 
     public function getQwcrmConfigAsArray() {
 
-        // Use the config settings in the live Registry 
+        // Use the config settings in the live Registry
         return get_object_vars($this->app->config->toObject());
-            
+
         // Return Settings Array Directly from the QConfig
         //if(!class_exists('QConfig')) { return get_object_vars(new \QConfig); }
-                
-    }  
+
+    }
 
 
- 
+
 
     #################################
     #   Get ACL Permissions         #
@@ -81,7 +81,7 @@ class Administrator extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray(); 
+        return $rs->GetArray();
 
     }
 
@@ -96,7 +96,7 @@ class Administrator extends Components {
         // Update a setting into the Registry
         $this->app->config->set($key, $value);
 
-        // Get a fresh copy of the current settings as an array        
+        // Get a fresh copy of the current settings as an array
         $qwcrm_config = $this->getQwcrmConfigAsArray();
 
         // Add the key/value pair into the object
@@ -109,7 +109,7 @@ class Administrator extends Components {
         $this->writeConfigFile($qwcrm_config);
 
         // Log activity
-        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was updated to").' `'.$value.'`.');    
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was updated to").' `'.$value.'`.');
 
         return true;
 
@@ -135,7 +135,7 @@ class Administrator extends Components {
             $page_permission['Counter'] = $page_permission['Counter'] ?? 0;
             $page_permission['Client'] = $page_permission['Client'] ?? 0;
             $page_permission['Guest'] = $page_permission['Guest'] ?? 0;
-            $page_permission['Public'] = $page_permission['Public'] ?? 0;        
+            $page_permission['Public'] = $page_permission['Public'] ?? 0;
 
             // Enforce Administrators always have access to everything
             $page_permission['Administrator'] = '1';
@@ -152,7 +152,7 @@ class Administrator extends Components {
                     `Public`        =". $this->app->db->qStr( $page_permission['Public']           )."
                     WHERE `page`    =". $this->app->db->qStr( $page_name                           ).";";
 
-            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}               
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         }
 
@@ -180,7 +180,7 @@ class Administrator extends Components {
                 'setup:migrate'     => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
                 'setup:upgrade'     => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0')
 
-            ); 
+            );
 
         // Cycle through mandatory permissions and update the database
         foreach($mandatory_permissions as $page_name => $page_permission) {
@@ -197,12 +197,12 @@ class Administrator extends Components {
                     `Public`        =". $this->app->db->qStr( $page_permission['Public']         )."
                     WHERE `page`    =". $this->app->db->qStr( $page_name                         ).";";
 
-            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}              
+            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         }
 
-        // Log activity        
-        $this->app->system->general->writeRecordToActivityLog(_gettext("ACL permissions updated."));      
+        // Log activity
+        $this->app->system->general->writeRecordToActivityLog(_gettext("ACL permissions updated."));
 
     }
 
@@ -215,10 +215,10 @@ class Administrator extends Components {
         // Perform miscellaneous operations based on configuration settings/changes. (not currently need for setup
         $new_config = $this->processSubmittedConfigData($new_config);
 
-        // Get a fresh copy of the current settings as an array        
+        // Get a fresh copy of the current settings as an array
         $current_config = $this->getQwcrmConfigAsArray();
 
-        // Merge the new_config and the current_config. We do this to preserve values that were not in the submitted form but are in the config.    
+        // Merge the new_config and the current_config. We do this to preserve values that were not in the submitted form but are in the config.
         $merged_config = array_merge($current_config, $new_config);
 
         // Walk through the merged_config array and escape all apostophes (anonymous public function)
@@ -232,8 +232,8 @@ class Administrator extends Components {
         // Write the configuration file.
         $this->writeConfigFile($merged_config);
 
-        // Log activity        
-        $this->app->system->general->writeRecordToActivityLog(_gettext("QWcrm config settings updated."));   
+        // Log activity
+        $this->app->system->general->writeRecordToActivityLog(_gettext("QWcrm config settings updated."));
 
         return true;
 
@@ -250,7 +250,7 @@ class Administrator extends Components {
         // Remove the setting from the Registry
         $this->app->config->remove($key);
 
-        // Get a fresh copy of the current settings as an array        
+        // Get a fresh copy of the current settings as an array
         $qwcrm_config = $this->getQwcrmConfigAsArray();
 
         // Remove the key from the array
@@ -263,7 +263,7 @@ class Administrator extends Components {
         $this->writeConfigFile($qwcrm_config);
 
         // Log activity
-        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));    
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));
 
         return true;
 
@@ -284,7 +284,7 @@ class Administrator extends Components {
      * @return  string  PHP info
      *
      * @since   1.6
-     * 
+     *
      * From {Joomla}administrator/components/com_admin/models/sysinfo.php - it strips dodgy formatting
      */
     public function getPhpInfo()
@@ -301,7 +301,7 @@ class Administrator extends Components {
         $output = str_replace('<div class="center">', '', $output);
         $output = preg_replace('#<tr class="h">(.*)<\/tr>#', '<thead><tr class="h">$1</tr></thead><tbody>', $output);
         $output = str_replace('</table>', '</tbody></table>', $output);
-        $output = str_replace('</div>', '', $output);    
+        $output = str_replace('</div>', '', $output);
 
         return $output;
     }
@@ -311,31 +311,31 @@ class Administrator extends Components {
     #################################
 
     public function checkQwcrmUpdateAvailability() {
-        
+
         $update_page    = 'https://quantumwarp.com/ext/updates/qwcrm/qwcrm.xml';
         $useragent      = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        // FALSE to stop cURL from verifying the peer's certificate (need unless i bundle certs with my install)
-        curl_setopt($ch, CURLOPT_URL, $update_page);            // The URL to fetch. This can also be set when initializing a session with curl_init(). 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);            // TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly. 
+        curl_setopt($ch, CURLOPT_URL, $update_page);            // The URL to fetch. This can also be set when initializing a session with curl_init().
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);            // TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
         curl_setopt($ch, CURLOPT_USERAGENT, $useragent);        // Make the http request using this user agent string
 
-        $curl_response = curl_exec($ch);     
-        $curl_error = curl_errno($ch);  
+        $curl_response = curl_exec($ch);
+        $curl_error = curl_errno($ch);
         curl_close($ch);
 
         // If there is a connection error
-        if($curl_error) {         
+        if($curl_error) {
             $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("Connection Error - cURL Error Number").': '.$curl_error);
-            return;        
+            return;
         }
 
         // If no response return with error message
-        if(!$curl_response) {         
+        if(!$curl_response) {
             $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
             $this->app->smarty->assign('update_response', 'no_response');
-            return;        
+            return;
         }
 
         // Parse the grabbed XML into an array
@@ -345,55 +345,55 @@ class Administrator extends Components {
         if(!$update_response['name']) {
             $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
             $this->app->smarty->assign('update_response', 'no_response');
-            return;       
+            return;
         }
 
 
         // Build the update message
         if (version_compare(QWCRM_VERSION, $update_response['version'], '<')) {
 
-            // An Update is available        
+            // An Update is available
             $this->app->smarty->assign('version_compare', '1');
 
         } else {
 
-            // No Updates available      
+            // No Updates available
             $this->app->smarty->assign('version_compare', '0');
 
         }
 
-        // Assign Variables    
+        // Assign Variables
         $this->app->smarty->assign('update_response', $update_response);
 
-        // Log activity        
+        // Log activity
         $this->app->system->general->writeRecordToActivityLog(_gettext("QWcrm checked for updates."));
 
         return;
 
     }
-    
+
 
     ##############################################
     #   Reload configuration registry from file  #
     ##############################################
-    
-    function refreshQwcrmConfig() {        
-            
+
+    function refreshQwcrmConfig() {
+
         // Wipe the live registry - i dont think this works (because of context ?)
-        //$this->app->system->config = null;        
+        //$this->app->system->config = null;
 
         // Wipe the live registry - Must call the static directly because of context
         \Factory::$config = null;
 
         // Re-populate the Config Registry
         $this->app->config = \Factory::getConfig();
-        
+
         // Log activity
-        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm live config registry has been refreshed from the config file.")); 
-        
+        $this->app->system->general->writeRecordToActivityLog(_gettext("The QWcrm live config registry has been refreshed from the config file."));
+
         return;
-                
-    }        
+
+    }
 
     ############################################
     #   Prepare the Config file data layout    #
@@ -411,8 +411,8 @@ class Administrator extends Components {
 
        $output .= "}";
 
-       return $output;   
-    }    
+       return $output;
+    }
 
 
     ############################################
@@ -430,7 +430,7 @@ class Administrator extends Components {
             // Create and Open file
             $fp = fopen($file, 'x');
 
-        // if file exists - Open    
+        // if file exists - Open
         } else {
 
             // Make file is writable - is this needed?
@@ -441,27 +441,27 @@ class Administrator extends Components {
 
         }
 
-        // Write file    
+        // Write file
         fwrite($fp, $content);
 
         // Close file
         fclose($fp);
 
         // Make file 444
-        chmod($file, 0444);      
+        chmod($file, 0444);
 
         return true;
 
-    }    
+    }
 
 
     ###########################################################
     #   Process form SUBMITTED config data before saving      #  // joomla/administrator/components/com_config/model/application.php  -  public public function save($data)
     ###########################################################
 
-    public function processSubmittedConfigData($new_config) {    
+    public function processSubmittedConfigData($new_config) {
 
-        // Get a fresh copy of the current settings as an array        
+        // Get a fresh copy of the current settings as an array
         $current_config = $this->getQwcrmConfigAsArray();
 
         // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error becasue the variable is not present yet
@@ -473,7 +473,7 @@ class Administrator extends Components {
             // Empty the session table if changing to database session handling from non-database session handling
             if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database')
             {
-                $sql = "TRUNCATE ".PRFX."session";                    
+                $sql = "TRUNCATE ".PRFX."session";
 
                 if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -489,7 +489,7 @@ class Administrator extends Components {
             if ($new_config['shared_session'] == 1 && $currentShared == 0)
             {
                 // Generate a random shared session name (by doing this the old session becomes detached and the user is logged out)
-                $new_config['session_name'] = \Joomla\CMS\User\UserHelper::genRandomPassword(16);                       
+                $new_config['session_name'] = \Joomla\CMS\User\UserHelper::genRandomPassword(16);
             }
 
             // Has the user disabled shared sessions?
@@ -504,9 +504,9 @@ class Administrator extends Components {
                 // Logout the current user out silently (this should be for all users ie.e TRUNCATE #_session when on database handler, but this a work around for the current user)
                 $this->app->user->logout(true);
             }
-        }     
+        }
 
-        // Return the processed config   
+        // Return the processed config
         return $new_config;
 
     }
@@ -521,7 +521,7 @@ class Administrator extends Components {
 
         $this->app->system->email->send($user_details['email'], _gettext("Test mail from QWcrm"), _gettext("This is a test mail sent using").' '.$this->app->config->get('email_mailer').'. '._gettext("Your email settings are correct!"), $user_details['display_name']);
 
-        // Log activity        
+        // Log activity
         $this->app->system->general->writeRecordToActivityLog(_gettext("Test email initiated."));
 
     }
@@ -536,7 +536,7 @@ class Administrator extends Components {
         $sql = "TRUNCATE ".PRFX."user_acl_page";
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Insert default permissions 
+        // Insert default permissions
         $sql = "INSERT INTO `".PRFX."user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
                 ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -549,7 +549,7 @@ class Administrator extends Components {
                 ('client:note_delete', 1, 1, 1, 1, 1, 0, 0, 0, 0),
                 ('client:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
                 ('client:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
+                ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('company:business_hours', 1, 1, 0, 0, 0, 0, 0, 0, 0),
                 ('company:edit', 1, 1, 0, 0, 0, 0, 0, 0, 0),
                 ('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -582,12 +582,12 @@ class Administrator extends Components {
                 ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                ('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
-                ('invoice:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),                    
+                ('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('invoice:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('invoice:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('invoice:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
                 ('invoice:email', '1', '1', '1', '1', '1', '1', '0', '0', '0'),
-                ('invoice:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
+                ('invoice:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('invoice:overview', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('invoice:prefill_items', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('invoice:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
@@ -603,10 +603,10 @@ class Administrator extends Components {
                 ('payment:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
-                ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
+                ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('payment:options', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-                ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0), 
+                ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('payment:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('report:basic_stats', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('report:financial', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -621,6 +621,7 @@ class Administrator extends Components {
                 ('setup:install', 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 ('setup:migrate', 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 ('setup:upgrade', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('supplier:autosuggest_name', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('supplier:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('supplier:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('supplier:details', 1, 1, 1, 1, 1, 0, 0, 0, 0),
@@ -643,7 +644,7 @@ class Administrator extends Components {
                 ('voucher:print', 1, 1, 0, 0, 1, 1, 0, 0, 0),
                 ('voucher:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('voucher:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                ('workorder:autosuggest_scope', 1, 1, 1, 1, 0, 1, 0, 0, 0),                
+                ('workorder:autosuggest_scope', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:delete', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                 ('workorder:details', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:details_edit_comment', 1, 1, 1, 1, 0, 1, 0, 0, 0),
@@ -652,16 +653,16 @@ class Administrator extends Components {
                 ('workorder:new', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:note_delete', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:note_edit', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                ('workorder:note_new', 1, 1, 1, 1, 0, 1, 0, 0, 0),                
+                ('workorder:note_new', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:overview', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                 ('workorder:print', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:search', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                 ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
-        
+
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Log activity        
-        $this->app->system->general->writeRecordToActivityLog(_gettext("ACL permissions reset to default settings."));    
+        // Log activity
+        $this->app->system->general->writeRecordToActivityLog(_gettext("ACL permissions reset to default settings."));
 
         return;
 

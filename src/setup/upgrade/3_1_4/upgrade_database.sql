@@ -16,7 +16,7 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'invoice:delete
 -- Add Cron Component
 --
 
-INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES 
+INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
 ('cronjob:details', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('cronjob:edit', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('cronjob:overview', 1, 1, 0, 0, 0, 0, 0, 0, 0),
@@ -73,9 +73,9 @@ ALTER TABLE `#__invoice_parts` CHANGE `sub_total_gross` `subtotal_gross` DECIMAL
 
 --
 -- Add Email permissions
--- 
+--
 
-INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES 
+INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
 ('invoice:email', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('voucher:email', 1, 1, 0, 1, 1, 1, 0, 0, 0);
 
@@ -85,7 +85,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 
 ALTER TABLE `#__company_record` ADD `email_msg_voucher` TEXT NOT NULL AFTER `email_msg_workorder`;
 UPDATE `#__company_record` SET `email_msg_voucher` = '<p>Hi {client_display_name}</p>\r\n<p>This is a voucher from {company_name} which is redeemable against our services and products.</p>\r\n<p><em><strong>Terms and conditions apply.</strong></em></p>\r\n<p>Thanks for your custom.</p>';
-ALTER TABLE `#__company_record` CHANGE `email_msg_workorder` `email_msg_workorder` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `email_signature_active`; 
+ALTER TABLE `#__company_record` CHANGE `email_msg_workorder` `email_msg_workorder` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `email_signature_active`;
 
 --
 -- Tidy up client_records
@@ -98,7 +98,7 @@ ALTER TABLE `#__client_records` CHANGE `unit_discount_rate` `discount_rate` DECI
 --
 
 ALTER TABLE `#__expense_records` CHANGE `item_type` `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__otherincome_records` CHANGE `item_type` `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL; 
+ALTER TABLE `#__otherincome_records` CHANGE `item_type` `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__refund_records` CHANGE `item_type` `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 
 --
@@ -108,7 +108,7 @@ ALTER TABLE `#__refund_records` CHANGE `item_type` `type` VARCHAR(20) CHARACTER 
 
 -- client_notes --
 ALTER TABLE `#__client_notes` CHANGE `client_note_id` `client_note_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__client_notes` CHANGE `employee_id` `employee_id` INT(10) UNSIGNED NOT NULL; 
+ALTER TABLE `#__client_notes` CHANGE `employee_id` `employee_id` INT(10) UNSIGNED NOT NULL;
 ALTER TABLE `#__client_notes` CHANGE `client_id` `client_id` INT(10) UNSIGNED NOT NULL;
 ALTER TABLE `#__client_notes` CHANGE `note` `note` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__client_notes` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -148,7 +148,7 @@ ALTER TABLE `#__client_types` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_u
 -- company_date_formats --
 ALTER TABLE `#__company_date_formats` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL COMMENT 'only for display order';
 ALTER TABLE `#__company_date_formats` CHANGE `date_format_key` `date_format_key` VARCHAR(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
-ALTER TABLE `#__company_date_formats` CHANGE `display_name` `display_name` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL; 
+ALTER TABLE `#__company_date_formats` CHANGE `display_name` `display_name` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__company_date_formats` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- company_record --
@@ -176,14 +176,14 @@ ALTER TABLE `#__company_record` CHANGE `opening_minute` `opening_minute` INT(2) 
 ALTER TABLE `#__company_record` CHANGE `closing_hour` `closing_hour` INT(2) UNSIGNED NOT NULL DEFAULT '17';
 ALTER TABLE `#__company_record` CHANGE `closing_minute` `closing_minute` INT(2) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `#__company_record` CHANGE `email_signature` `email_signature` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';
-ALTER TABLE `#__company_record` CHANGE `email_signature_active` `email_signature_active` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; 
-ALTER TABLE `#__company_record` CHANGE `email_msg_workorder` `email_msg_workorder` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''; 
+ALTER TABLE `#__company_record` CHANGE `email_signature_active` `email_signature_active` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
+ALTER TABLE `#__company_record` CHANGE `email_msg_workorder` `email_msg_workorder` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';
 ALTER TABLE `#__company_record` CHANGE `email_msg_invoice` `email_msg_invoice` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';
 ALTER TABLE `#__company_record` CHANGE `email_msg_voucher` `email_msg_voucher` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';
 ALTER TABLE `#__company_record` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- company_tax_systems --
-ALTER TABLE `#__company_tax_systems` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL COMMENT 'only for display order'; 
+ALTER TABLE `#__company_tax_systems` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL COMMENT 'only for display order';
 ALTER TABLE `#__company_tax_systems` CHANGE `type_key` `type_key` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__company_tax_systems` CHANGE `display_name` `display_name` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__company_tax_systems` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -206,7 +206,7 @@ ALTER TABLE `#__company_vat_tax_codes` CONVERT TO CHARACTER SET utf8mb4 COLLATE 
 -- expense_records --
 UPDATE `#__expense_records` SET `employee_id` = 0 WHERE `employee_id` = '';
 ALTER TABLE `#__expense_records` CHANGE `expense_id` `expense_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__expense_records` CHANGE `employee_id` `employee_id` INT(10) UNSIGNED NULL DEFAULT NULL; 
+ALTER TABLE `#__expense_records` CHANGE `employee_id` `employee_id` INT(10) UNSIGNED NULL DEFAULT NULL;
 ALTER TABLE `#__expense_records` CHANGE `payee` `payee` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__expense_records` CHANGE `date` `date` DATE NULL;
 ALTER TABLE `#__expense_records` CHANGE `tax_system` `tax_system` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
@@ -223,13 +223,13 @@ ALTER TABLE `#__expense_records` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb
 -- expense_statuses --
 ALTER TABLE `#__expense_statuses` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL COMMENT 'only for display order';
 ALTER TABLE `#__expense_statuses` CHANGE `status_key` `status_key` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
-ALTER TABLE `#__expense_statuses` CHANGE `display_name` `display_name` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL; 
+ALTER TABLE `#__expense_statuses` CHANGE `display_name` `display_name` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__expense_statuses` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- expense_types --
 ALTER TABLE `#__expense_types` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL COMMENT 'only for display order';
 ALTER TABLE `#__expense_types` CHANGE `type_key` `type_key` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
-ALTER TABLE `#__expense_types` CHANGE `display_name` `display_name` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL; 
+ALTER TABLE `#__expense_types` CHANGE `display_name` `display_name` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__expense_types` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- invoice_labour --
@@ -291,7 +291,7 @@ UPDATE `#__otherincome_records` SET `employee_id` = 0 WHERE `employee_id` = '';
 ALTER TABLE `#__otherincome_records` CHANGE `otherincome_id` `otherincome_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__otherincome_records` CHANGE `employee_id` `employee_id` INT(10) UNSIGNED NULL DEFAULT NULL;
 ALTER TABLE `#__otherincome_records` CHANGE `payee` `payee` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
-ALTER TABLE `#__otherincome_records` CHANGE `date` `date` DATE NULL; 
+ALTER TABLE `#__otherincome_records` CHANGE `date` `date` DATE NULL;
 ALTER TABLE `#__otherincome_records` CHANGE `tax_system` `tax_system` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__otherincome_records` CHANGE `type` `type` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__otherincome_records` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
@@ -353,7 +353,7 @@ ALTER TABLE `#__payment_options` CHANGE `bank_iban` `bank_iban` VARCHAR(34) CHAR
 ALTER TABLE `#__payment_options` CHANGE `paypal_email` `paypal_email` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__payment_options` CHANGE `invoice_bank_transfer_msg` `invoice_bank_transfer_msg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__payment_options` CHANGE `invoice_cheque_msg` `invoice_cheque_msg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
-ALTER TABLE `#__payment_options` CHANGE `invoice_footer_msg` `invoice_footer_msg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL; 
+ALTER TABLE `#__payment_options` CHANGE `invoice_footer_msg` `invoice_footer_msg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__payment_options` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- payment_records --
@@ -436,7 +436,7 @@ UPDATE `#__refund_records` SET `last_active` = NULL WHERE `last_active` = '0000-
 ALTER TABLE `#__refund_records` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- refund_statuses --
-ALTER TABLE `#__refund_statuses` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL COMMENT 'only for display order'; 
+ALTER TABLE `#__refund_statuses` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL COMMENT 'only for display order';
 ALTER TABLE `#__refund_statuses` CHANGE `status_key` `status_key` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__refund_statuses` CHANGE `display_name` `display_name` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__refund_statuses` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -477,7 +477,7 @@ ALTER TABLE `#__supplier_records` CHANGE `zip` `zip` VARCHAR(20) CHARACTER SET u
 ALTER TABLE `#__supplier_records` CHANGE `country` `country` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__supplier_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__supplier_records` CHANGE `closed_on` `closed_on` DATETIME NULL DEFAULT NULL;
-ALTER TABLE `#__supplier_records` CHANGE `last_active` `last_active` DATETIME NULL DEFAULT NULL; 
+ALTER TABLE `#__supplier_records` CHANGE `last_active` `last_active` DATETIME NULL DEFAULT NULL;
 ALTER TABLE `#__supplier_records` CHANGE `description` `description` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__supplier_records` CHANGE `note` `note` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__supplier_records` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -504,7 +504,7 @@ ALTER TABLE `#__user_acl_page` CHANGE `Clerical` `Clerical` TINYINT(1) UNSIGNED 
 ALTER TABLE `#__user_acl_page` CHANGE `Counter` `Counter` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `#__user_acl_page` CHANGE `Client` `Client` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `#__user_acl_page` CHANGE `Guest` `Guest` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
-ALTER TABLE `#__user_acl_page` CHANGE `Public` `Public` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; 
+ALTER TABLE `#__user_acl_page` CHANGE `Public` `Public` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `#__user_acl_page` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- user_keys --
@@ -553,10 +553,10 @@ ALTER TABLE `#__user_records` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_u
 UPDATE `#__user_reset` SET `expiry_time` = 0 WHERE `expiry_time` = '';
 UPDATE `#__user_reset` SET `reset_code_expiry_time` = 0 WHERE `reset_code_expiry_time` = '';
 ALTER TABLE `#__user_reset` CHANGE `user_id` `user_id` INT(10) UNSIGNED NOT NULL;
-ALTER TABLE `#__user_reset` CHANGE `expiry_time` `expiry_time` INT(20) UNSIGNED NOT NULL DEFAULT '0'; 
+ALTER TABLE `#__user_reset` CHANGE `expiry_time` `expiry_time` INT(20) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `#__user_reset` CHANGE `token` `token` VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
-ALTER TABLE `#__user_reset` CHANGE `reset_code` `reset_code` VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''; 
-ALTER TABLE `#__user_reset` CHANGE `reset_code_expiry_time` `reset_code_expiry_time` INT(20) UNSIGNED NOT NULL DEFAULT '0'; 
+ALTER TABLE `#__user_reset` CHANGE `reset_code` `reset_code` VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '';
+ALTER TABLE `#__user_reset` CHANGE `reset_code_expiry_time` `reset_code_expiry_time` INT(20) UNSIGNED NOT NULL DEFAULT '0';
 
 ALTER TABLE `#__user_reset` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -580,16 +580,16 @@ UPDATE `#__voucher_records` SET `refund_id` = 0 WHERE `refund_id` = '';
 UPDATE `#__voucher_records` SET `redeemed_client_id` = 0 WHERE `redeemed_client_id` = '';
 UPDATE `#__voucher_records` SET `redeemed_invoice_id` = 0 WHERE `redeemed_invoice_id` = '';
 ALTER TABLE `#__voucher_records` CHANGE `voucher_id` `voucher_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__voucher_records` CHANGE `voucher_code` `voucher_code` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL; 
+ALTER TABLE `#__voucher_records` CHANGE `voucher_code` `voucher_code` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `employee_id` `employee_id` INT(10) UNSIGNED NULL;
-ALTER TABLE `#__voucher_records` CHANGE `client_id` `client_id` INT(10) UNSIGNED NULL; 
+ALTER TABLE `#__voucher_records` CHANGE `client_id` `client_id` INT(10) UNSIGNED NULL;
 ALTER TABLE `#__voucher_records` CHANGE `workorder_id` `workorder_id` INT(10) UNSIGNED NULL DEFAULT NULL;
-ALTER TABLE `#__voucher_records` CHANGE `invoice_id` `invoice_id` INT(10) UNSIGNED NULL; 
+ALTER TABLE `#__voucher_records` CHANGE `invoice_id` `invoice_id` INT(10) UNSIGNED NULL;
 ALTER TABLE `#__voucher_records` CHANGE `payment_id` `payment_id` INT(10) UNSIGNED NULL DEFAULT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `refund_id` `refund_id` INT(10) UNSIGNED NULL DEFAULT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `redeemed_client_id` `redeemed_client_id` INT(10) UNSIGNED NULL DEFAULT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `redeemed_invoice_id` `redeemed_invoice_id` INT(10) UNSIGNED NULL DEFAULT NULL;
-ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATE NULL; 
+ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATE NULL;
 ALTER TABLE `#__voucher_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `opened_on` `opened_on` DATETIME NULL;
 ALTER TABLE `#__voucher_records` CHANGE `redeemed_on` `redeemed_on` DATETIME NULL DEFAULT NULL;
@@ -762,11 +762,11 @@ ALTER TABLE `#__invoice_items` ADD PRIMARY KEY (`invoice_item_id`);
 
 ALTER TABLE `#__invoice_items` MODIFY `invoice_item_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
-INSERT 
+INSERT
 INTO    `#__invoice_items` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`)
 SELECT  `invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`
 FROM    `#__invoice_labour`
-UNION ALL 
+UNION ALL
 SELECT  `invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`
 FROM    `#__invoice_parts`;
 
@@ -831,7 +831,7 @@ CREATE TABLE `#__creditnote_records` (
   `expense_id` int(10) UNSIGNED DEFAULT NULL COMMENT 'CR was generated from this expense',
   `date` date DEFAULT NULL,
   `expiry_date` date DEFAULT NULL,
-  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,  
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unit_net` decimal(10,2) NOT NULL DEFAULT 0.00,
   `unit_discount` decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -910,7 +910,7 @@ ALTER TABLE `#__payment_creditnote_action_types` ADD PRIMARY KEY (`id`);
 
 --
 
-INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES 
+INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
 ('9', 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');
 ALTER TABLE `#__invoice_records` DROP `unit_discount_rate`;
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
@@ -926,7 +926,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 
 --
 
-ALTER TABLE `#__payment_records` ADD `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `otherincome_id`; 
+ALTER TABLE `#__payment_records` ADD `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL AFTER `otherincome_id`;
 ALTER TABLE `#__company_record` ADD `email_msg_creditnote` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '<p>Hi {client_display_name}</p> <p>This is a credit note from {company_name} which is redeemable against our services and products.</p> <p><em><strong>Terms and conditions apply.</strong></em></p> <p>Thanks for your custom.</p>' AFTER `email_msg_voucher`;
 
 --
@@ -940,19 +940,19 @@ ALTER TABLE `#__payment_records` CHANGE `refund_id` `refund_id` INT(10) UNSIGNED
 ALTER TABLE `#__payment_records` CHANGE `voucher_id` `voucher_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Payment made with';
 ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against / Refunded against';
 ALTER TABLE `#__company_record` ADD `creditnote_expiry_offset` INT(5) UNSIGNED NOT NULL AFTER `year_end`;
-UPDATE `#__company_record` SET `creditnote_expiry_offset` = '366' WHERE `#__company_record`.`creditnote_expiry_offset` = 0; 
+UPDATE `#__company_record` SET `creditnote_expiry_offset` = '366' WHERE `#__company_record`.`creditnote_expiry_offset` = 0;
 ALTER TABLE `#__expense_records` ADD `supplier_id` INT(10) UNSIGNED NULL AFTER `employee_id`;
 ALTER TABLE `#__payment_options` ADD `creditnote_footer_msg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `invoice_footer_msg`;
 UPDATE `#__payment_options` SET `creditnote_footer_msg` = '<p>This is a footer message where you can put extra information ...</p>\r\n<p>This message can be edited in payment options.</p>';
 
 --
 
-ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against / Refunded against' AFTER `otherincome_id`; 
+ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against / Refunded against' AFTER `otherincome_id`;
 ALTER TABLE `#__payment_records` ADD `creditnote_action` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `creditnote_id`;
 
 --
 
-UPDATE `#__company_vat_tax_codes` SET `hidden` = '0' WHERE `#__company_vat_tax_codes`.`id` = 10; 
+UPDATE `#__company_vat_tax_codes` SET `hidden` = '0' WHERE `#__company_vat_tax_codes`.`id` = 10;
 
 --------------------------------------------------
 
@@ -1166,3 +1166,9 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 UPDATE `#__expense_records` SET `type` = 'other' WHERE `#__expense_records`.`type` = 'credit_note';
 
 --
+-- Final changes
+--
+
+-- Add Autosuggest for Supplier Name --
+INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
+('supplier:autosuggest_name', 1, 1, 1, 1, 0, 1, 0, 0, 0);

@@ -11,15 +11,15 @@
         <td class="olohead">{t}Expense ID{/t}</td>
         <td class="olohead">{t}Supplier ID{/t}</td>
         <td class="olohead">{t}Payee{/t}</td>
-        <td class="olohead">{t}Date{/t}</td>                                                        
-        <td class="olohead">{t}Type{/t}</td>        
-        {if '/^vat_/'|preg_match:$qw_tax_system} 
-            <td class="olohead">{t}Net{/t}</td>            
+        <td class="olohead">{t}Date{/t}</td>
+        <td class="olohead">{t}Type{/t}</td>
+        {if '/^vat_/'|preg_match:$qw_tax_system}
+            <td class="olohead">{t}Net{/t}</td>
             <td class="olohead">{t}VAT{/t}</td>
         {/if}
         <td class="olohead">{t}Gross{/t}</td>
         <td class="olohead">{t}Balance{/t}</td>
-        <td class="olohead">{t}Status{/t}</td>        
+        <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Items{/t}</td>
         <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
@@ -29,23 +29,23 @@
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_expenses.records[e].status != 'deleted'} onDblClick="window.location='index.php?component=expense&page_tpl=details&expense_id={$display_expenses.records[e].expense_id}';"{/if}>
             <td class="olotd4" nowrap><a href="index.php?component=expense&page_tpl=details&expense_id={$display_expenses.records[e].expense_id}">{$display_expenses.records[e].expense_id}</a></td>
             <td class="olotd4" nowrap><a href="index.php?component=supplier&page_tpl=details&supplier_id={$display_expenses.records[e].supplier_id}">{$display_expenses.records[e].supplier_id}</a></td>
-            <td class="olotd4" nowrap>{$display_expenses.records[e].payee}</td>
-            <td class="olotd4" nowrap>{$display_expenses.records[e].date|date_format:$date_format}</td>                                                            
+            <td class="olotd4" nowrap>{$display_expenses.records[e].display_name}</td>
+            <td class="olotd4" nowrap>{$display_expenses.records[e].date|date_format:$date_format}</td>
             <td class="olotd4" nowrap>
-                {section name=s loop=$expense_types}    
-                    {if $display_expenses.records[e].type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
-                {/section} 
+                {section name=s loop=$expense_types}
+                    {if $display_expenses.records[e].type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}
+                {/section}
             </td>
-            {if '/^vat_/'|preg_match:$qw_tax_system} 
-                <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].unit_net|string_format:"%.2f"}</td>                
+            {if '/^vat_/'|preg_match:$qw_tax_system}
+                <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].unit_net|string_format:"%.2f"}</td>
                 <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].unit_tax|string_format:"%.2f"}</td>
             {/if}
             <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].unit_gross|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].balance|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>
-               {section name=s loop=$expense_statuses}    
-                   {if $display_expenses.records[e].status == $expense_statuses[s].status_key}{t}{$expense_statuses[s].display_name}{/t}{/if}        
-               {/section} 
+                {section name=s loop=$expense_statuses}
+                    {if $display_expenses.records[e].status == $expense_statuses[s].status_key}{t}{$expense_statuses[s].display_name}{/t}{/if}
+                {/section}
             </td>
             <td class="olotd4" nowrap>
                 {if $display_expenses.records[e].expense_items}
@@ -69,7 +69,7 @@
                 </a>*}
             </td>
         </tr>
-    {/section}     
+    {/section}
     {if $display_expenses.restricted_records}
         <tr>
             <td colspan="13">{t}Not all records are shown here.{/t} {t}Click{/t} <a href="index.php?component=expense&page_tpl=search">{t}here{/t}</a> {t}to see all records.{/t}</td>
@@ -78,6 +78,6 @@
     {if !$display_expenses.records}
         <tr>
             <td colspan="13" class="error">{t}There are no expenses.{/t}</td>
-        </tr>        
-    {/if}  
+        </tr>
+    {/if}
  </table>

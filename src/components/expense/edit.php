@@ -53,7 +53,7 @@ if(isset(\CMSApplication::$VAR['submit']))
         // Load the new expense page
         if (\CMSApplication::$VAR['submit'] == 'submitandnew')
         {
-           $this->app->system->page->forcePage('expense', 'new');
+            $this->app->system->page->forcePage('expense', 'new');
         }
 
         // Load the new payment page for expense
@@ -74,7 +74,6 @@ if(isset(\CMSApplication::$VAR['submit']))
 
 // Expense Details
 $this->app->smarty->assign('expense_details',       $expense_details);
-$this->app->smarty->assign('supplier_display_name', $this->app->components->supplier->getRecord($expense_details['supplier_id'] ?? null, 'display_name'));
 $this->app->smarty->assign('expense_items_json',    json_encode($expense_items));
 
 // Misc
@@ -83,3 +82,4 @@ $this->app->smarty->assign('expense_types',            $this->app->components->e
 $this->app->smarty->assign('vat_tax_codes',            $this->app->components->company->getVatTaxCodes(false));
 $this->app->smarty->assign('default_vat_tax_code',     $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']));
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($expense_details['employee_id'], 'display_name'));
+$this->app->smarty->assign('supplier_display_name', $this->app->components->supplier->getRecord($expense_details['supplier_id'] ?? null, 'display_name'));

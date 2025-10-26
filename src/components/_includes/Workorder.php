@@ -410,7 +410,7 @@ class WorkOrder extends Components {
     #  Get Workorder Scope Suggestions      # // Used by ajax thing
     #########################################
 
-    public function getScopeSuggestions($scope_string, $minimum_characters = 4) {
+    public function getScopeSuggestions($scope_string, $minimum_characters = 3) {
 
         $pagePayload = '';
 
@@ -437,12 +437,11 @@ class WorkOrder extends Components {
 
         // This search removes case sensitive duplicates from the results i.e. 'chicken', 'CHICKEN' would return both 'chicken' and 'CHICKEN'
         $sql = "SELECT
-                DISTINCT (CAST(scope AS CHAR CHARACTER SET utf8) COLLATE utf8_bin) AS autoscope
+                DISTINCT (CAST(scope AS CHAR CHARACTER SET utf8) COLLATE utf8_bin) AS workorder_autosuggest_scope
                 FROM ".PRFX."workorder_records
                 WHERE scope
                 LIKE ".$this->app->db->qStr('%'.$scope_string.'%')."
                 LIMIT 10";
-
 
         // Get Workorder Scope Suggestions from the database
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('ajax', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -455,7 +454,7 @@ class WorkOrder extends Components {
 
             // loop over the rows, outputting them to the page object in the required format
             foreach($autosuggest_items as $key => $value) {
-                $pagePayload .= '<li onclick="fill(\''.$value['autoscope'].'\');">'.$value['autoscope'].'</li>';
+                $pagePayload .= '<li onclick="workorderAutosuggestScopeFill(\''.addslashes($value['workorder_autosuggest_scope']).'\');">'.addslashes($value['workorder_autosuggest_scope']).'</li>'."\n";
             }
 
             return $pagePayload;
@@ -466,8 +465,6 @@ class WorkOrder extends Components {
             return;
 
         }
-
-
 
     }
 

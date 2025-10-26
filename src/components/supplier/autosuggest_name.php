@@ -10,10 +10,10 @@
 defined('_QWEXEC') or die;
 
 // Is there a posted query string and is the string length greater than 0
-if(isset(\CMSApplication::$VAR['workorder_autosuggest_scope']) && strlen(\CMSApplication::$VAR['workorder_autosuggest_scope']) > 0) {
+if(isset(\CMSApplication::$VAR['supplier_autosuggest_name']) && strlen(\CMSApplication::$VAR['supplier_autosuggest_name']) > 0) {
 
     // BuildPage will only holds the html for the table, no template
-    $pagePayload  .= $this->app->components->workorder->getScopeSuggestions(\CMSApplication::$VAR['workorder_autosuggest_scope']);
+    $pagePayload .= $this->app->components->supplier->getNameSuggestions(\CMSApplication::$VAR['supplier_autosuggest_name']);
 
 }
 

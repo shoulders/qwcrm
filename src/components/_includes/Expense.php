@@ -25,7 +25,7 @@ class Expense extends Components {
     /** Insert Functions **/
 
     ##########################################
-    #      Insert Expense                    #
+    #      Insert Expense                    #  //supplier_id is a variable so I can allow creating an expense directly from a supplier page.
     ##########################################
 
     public function insertRecord($supplier_id = null) {
@@ -38,7 +38,7 @@ class Expense extends Components {
 
         $sql = "INSERT INTO ".PRFX."expense_records SET
                 employee_id     =". $this->app->db->qStr($this->app->user->login_user_id).",
-                supplier_id     =". $this->app->db->qStr($supplier_id ?: null).",
+                supplier_id     =". $this->app->db->qStr($supplier_id).",
                 date            =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
                 due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
@@ -145,16 +145,20 @@ class Expense extends Components {
     #         Display expenses                          #
     #####################################################
 
-    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'expense_id', $search_term = null, $type = null, $status = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'expense_id', $search_term = null, $type = null, $status = null, $supplier_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";
+        $havingTheseRecords = '';
+
+        // Restrict results by search category (display_name/payee) and search term
+        if($search_category == 'display_name') { $havingTheseRecords .= " HAVING display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%'); }
 
         // Restrict results by search category and search term
-        if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict by type
         if($type) { $whereTheseRecords .= " AND ".PRFX."expense_records.type= ".$this->app->db->qStr($type);}
@@ -181,10 +185,21 @@ class Expense extends Components {
 
         }
 
+        // Restrict by Supplier
+        if($supplier_id) {$whereTheseRecords .= " AND ".PRFX."expense_records.supplier_id=".$this->app->db->qStr($supplier_id);}
+
         // The SQL code
         $sql = "SELECT ".PRFX."expense_records.*,
 
-                IF(company_name !='', company_name, CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name)) AS supplier_display_name,
+                IF(
+                    ".PRFX."supplier_records.supplier_id !='',
+                    IF(
+                        ".PRFX."supplier_records.company_name !='',
+                        ".PRFX."supplier_records.company_name,
+                        CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name)
+                        ),
+                    payee
+                ) AS display_name,
 
                 items.combined as expense_items
 
@@ -209,6 +224,7 @@ class Expense extends Components {
 
                 ".$whereTheseRecords."
                 GROUP BY ".PRFX."expense_records.".$order_by."
+                ".$havingTheseRecords."
                 ORDER BY ".PRFX."expense_records.".$order_by."
                 ".$direction;
 
@@ -281,7 +297,9 @@ class Expense extends Components {
 
         if($item === null){
 
-            return $rs->GetRowAssoc();
+            $results = $rs->GetRowAssoc();
+            $results['display_name'] = $results['supplier_id'] ? $this->app->components->supplier->getRecord($results['supplier_id'], 'display_name') : $results['payee'];
+            return $results;
 
         } else {
 

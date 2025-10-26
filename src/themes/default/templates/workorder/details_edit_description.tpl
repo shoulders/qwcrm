@@ -7,32 +7,32 @@
 *}
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
-<script>{include file="`$theme_js_dir_finc`components/workorder.js"}</script>
+<script>{include file="`$theme_js_dir_finc`components/workorder_autosuggest.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
-                <tr>                    
+                <tr>
                     <td class="menuhead2" width="80%">{t}Edit Work Order Description{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
-                </tr>                
+                </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">                        
+                    <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
-                                <td width="100%" valign="top">                                                                      
-                                    <form method="post" action="index.php?component=workorder&page_tpl=details_edit_description&workorder_id={$workorder_id}">                                    
+                                <td width="100%" valign="top">
+                                    <form method="post" action="index.php?component=workorder&page_tpl=details_edit_description&workorder_id={$workorder_id}">
                                         <b>{t}Scope{/t}</b></br>
-                                        <input id="scope" name="scope" value="{$scope}"size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
+                                        <input id="scope" name="scope" value="{$scope}" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="debounceWorkorderAutosuggestScopeLookup(this.value);" onblur="workorderAutosuggestScopeClose();">
                                         <div class="suggestionsBoxWrapper">
-                                            <div class="suggestionsBox" id="suggestions">
+                                            <div id="workorderAutosuggestScope" class="suggestionsBox">
                                                 <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
-                                                <div class="suggestionList" id="autoSuggestionsList">&nbsp;</div>
+                                                <div id="workorderAutosuggestScopeList" class="suggestionList">&nbsp;</div>
                                             </div>
                                         </div>
                                         <br>
@@ -54,3 +54,4 @@
         </td>
     </tr>
 </table>
+

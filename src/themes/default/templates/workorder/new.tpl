@@ -7,13 +7,13 @@
 *}
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
-<script>{include file="`$theme_js_dir_finc`components/workorder.js"}</script>
+<script>{include file="`$theme_js_dir_finc`components/workorder_autosuggest.js"}</script>
 
-<table width="100%"> 
+<table width="100%">
     <tr>
-        <td>            
+        <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0">
-                <tr>                                
+                <tr>
                     <td class="menuhead2" width="80%">{t}New Work Order for{/t} {$client_display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
@@ -25,32 +25,32 @@
                     <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
-                                <td width="100%" valign="top">                                                
+                                <td width="100%" valign="top">
                                     <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                                         <tr>
-                                            <td valign="top">                                                    
-                                                <form method="post" action="index.php?component=workorder&page_tpl=new" name="new_workorder" id="new_workorder"> 
+                                            <td valign="top">
+                                                <form method="post" action="index.php?component=workorder&page_tpl=new" name="new_workorder" id="new_workorder">
 
                                                     <!-- Header -->
                                                     <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                         <tr>
                                                             <td class="olohead">{t}Opened{/t}</td>
                                                             <td class="olohead">{t}Client{/t}</td>
-                                                            <td class="olohead">{t}Scope{/t}</td>                                                                        
+                                                            <td class="olohead">{t}Scope{/t}</td>
                                                             <td class="olohead">{t}Employee{/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
                                                             <td class="olotd4">{$client_display_name}</td>
                                                             <td class="olotd4">
-                                                                <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
+                                                                <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="debounceWorkorderAutosuggestScopeLookup(this.value);" onblur="workorderAutosuggestScopeClose();">
                                                                 <div class="suggestionsBoxWrapper">
-                                                                    <div class="suggestionsBox" id="suggestions">
+                                                                    <div id="workorderAutosuggestScope" class="suggestionsBox">
                                                                         <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
-                                                                        <div class="suggestionList" id="autoSuggestionsList">&nbsp;</div>
+                                                                        <div id="workorderAutosuggestScopeList" class="suggestionList">&nbsp;</div>
                                                                     </div>
-                                                                </div>    
-                                                            </td>                                                                        
+                                                                </div>
+                                                            </td>
                                                             <td class="olotd4">{$login_display_name}</td>
                                                         </tr>
                                                     </table>
@@ -66,7 +66,7 @@
                                                                 <textarea class="olotd4 mceCheckForContent" rows="15" cols="70" name="description"></textarea>
                                                             </td>
                                                         </tr>
-                                                    </table>                                                                                                                  
+                                                    </table>
                                                     <br>
 
                                                     <!-- Comment -->
@@ -83,7 +83,7 @@
                                                     <!-- Submit Button -->
                                                     <table width="100%" border="0">
                                                         <tr>
-                                                            <td>                                                                            
+                                                            <td>
                                                                 <input name="assign_to_employee" type="checkbox" value="1" checked>{t}Assign to the current employee{/t} ({$login_display_name}).
                                                             </td>
                                                         </tr>
@@ -95,9 +95,9 @@
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    <br>                                                                
+                                                    <br>
 
-                                                </form>                                                    
+                                                </form>
                                             </td>
                                         </tr>
                                     </table>

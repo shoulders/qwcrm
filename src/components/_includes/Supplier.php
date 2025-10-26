@@ -170,30 +170,30 @@ class Supplier extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if($item === null){
+       if($item === null){
 
             $results = $rs->GetRowAssoc();
-
-            // Add these dynamically created fields
             $results['display_name'] = $results['company_name'] ?: $results['first_name'].' '.$results['last_name'];
             $results['full_name'] = $results['first_name'].' '.$results['last_name'];
-
             return $results;
 
         } else {
 
             // Return the dynamically created 'display_name'
             if($item == 'display_name') {
+
                 $results = $rs->GetRowAssoc();
                 return $results['company_name'] ?: $results['first_name'].' '.$results['last_name'];
             }
 
             // Return the dynamically created 'full_name'
-            if($item == 'display_name') {
+            if($item == 'full_name') {
+
                 $results = $rs->GetRowAssoc();
                 return $results['first_name'].' '.$results['last_name'];
             }
 
+            // Return the whole record
             return $rs->fields[$item];
 
         }
@@ -261,6 +261,54 @@ class Supplier extends Components {
 
     }
 
+
+    #########################################
+    #  Get Name Suggestions                 #  // Used by ajax thing - This will return the `display_name` and the `supplier_id`
+    #########################################
+
+    public function getNameSuggestions($inputtedStringToBeSearched, $minimum_characters = 3) {
+        $pagePayload = '';
+
+        // if the string is not long enough dont bother with a DB lookup
+        if(strlen($inputtedStringToBeSearched) < $minimum_characters) { return; }
+
+        // the full concat
+        //IF(company_name !='', CONCAT(".PRFX."supplier_records.company_name, ' (', ".PRFX."supplier_records.supplier_id, ')'), CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name, ' (', ".PRFX."supplier_records.supplier_id, ') ')) AS display_name
+
+        // Get Supplier names from the database with matching IDs
+        $sql = "SELECT *
+                FROM (
+                    SELECT
+                        supplier_id,
+                        IF(company_name !='', company_name, CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name)) AS display_name
+                    FROM ".PRFX."supplier_records
+                ) AS sub
+                WHERE sub.display_name LIKE ".$this->app->db->qStr('%'.$inputtedStringToBeSearched.'%')."
+                ORDER BY sub.display_name ASC
+                LIMIT 10;";
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('ajax', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        $record_count = $rs->RecordCount();
+
+        if($record_count) {
+
+            $autosuggest_items = $rs->GetArray();
+
+            // loop over the rows, outputting them to the page object in the required format
+            foreach($autosuggest_items as $key => $value) {
+                $pagePayload .= '<li onclick="supplierAutosuggestNameIdFill(\''.addslashes($value['display_name']).'\', \''.addslashes($value['supplier_id']).'\')">'.$value['display_name'].' ('.$value['supplier_id'].')</li>'."\n";
+            }
+
+            return $pagePayload;
+
+        } else {
+
+            // No records found - do nothing
+            return;
+
+        }
+
+    }
 
     /** Update Functions **/
 
