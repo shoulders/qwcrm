@@ -404,7 +404,7 @@ function printThisPage(printPreview = false, url = null) {
 }
 
 // Debounce - Only run the last submitted funciton request after a set timeout
-function debounce(func, timeout = 400){
+function debounce(func, timeout = 300){
   let timer;
   return (...args) => {
     clearTimeout(timer);
