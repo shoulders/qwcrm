@@ -823,7 +823,7 @@ class Upgrade3_1_0 extends Setup {
                 elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = get_vat_rate($vat_tax_code); }
                 else { $unit_tax_rate = 0.00; }
 
-                $item_totals = $this->app->components->invoice->calculateItemsSubtotals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
+                $item_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
 
                 $sql = "UPDATE `".PRFX."invoice_labour` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
@@ -959,7 +959,7 @@ class Upgrade3_1_0 extends Setup {
                 elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = $this->app->components->company->getVatRate($vat_tax_code); }
                 else { $unit_tax_rate = 0.00; }
 
-                $item_totals = $this->app->components->invoice->calculateItemsSubtotals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
+                $item_totals = $this->calculateItemsSubtotals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
 
                 $sql = "UPDATE `".PRFX."invoice_parts` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
@@ -1042,6 +1042,45 @@ class Upgrade3_1_0 extends Setup {
     
     }    
     
+    ################################################  // sales tax and VAT are the same
+    #   calculate an Invoice Item Sub Totals       #  // The exact dane totals calculation is done for all, just the inputs are different
+    ################################################  // these dont take into account individual rows
+
+    private function calculateItemsSubtotals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
+
+        $item_totals = array();
+
+        // No Tax
+        if($tax_system == 'no_tax') {
+            $item_totals['unit_tax'] = 0.00;
+            $item_totals['unit_gross'] = $unit_net;
+            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
+            $item_totals['subtotal_tax'] = 0.00;
+            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'];
+        }
+
+        // Sales Tax Calculations
+        if($tax_system == 'sales_tax_cash') {
+            $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
+            $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
+            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
+            $item_totals['subtotal_tax'] = $item_totals['subtotal_net'] * ($unit_tax_rate / 100);
+            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'] + $item_totals['subtotal_tax'];
+        }
+
+        // VAT Calculations
+        if(preg_match('/^vat_/', $tax_system)) {
+            $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
+            $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
+            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
+            $item_totals['subtotal_tax'] = $item_totals['subtotal_net'] * ($unit_tax_rate / 100);
+            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'] + $item_totals['subtotal_tax'];
+        }
+
+        return $item_totals;
+
+    }
+
     #################################################################
     #  Parse Payment records and populate additinal information     #
     #################################################################

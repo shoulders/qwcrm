@@ -94,17 +94,6 @@ class Creditnote extends Components {
                 // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes)
                 $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($creditnote_details['tax_system']);
 
-                /* All this is done in the TPL
-                    // Calculate the correct tax rate based on tax system (and exemption status)
-                    if($creditnote_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-                    elseif($creditnote_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $creditnote_details['sales_tax_rate']; }
-                    elseif(preg_match('/^vat_/', $creditnote_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($item['vat_tax_code']); }
-                    else { $unit_tax_rate = 0.00; }
-
-                    // Build item totals based on selected TAX system
-                    $item_totals = $this->calculateItemsSubtotals($creditnote_details['tax_system'], $item['unit_qty'], $item['unit_net'], $unit_tax_rate);
-                */
-
                 $sql .="(".
                         $this->app->db->qStr( $creditnote_id                    ).",".
                         $this->app->db->qStr( $creditnote_details['tax_system'] ).",".
@@ -1381,48 +1370,6 @@ class Creditnote extends Components {
     }
 
     /** Other Functions **/
-
-    ################################################  // sales tax and VAT are the same
-    #   calculate an Invoice Item Sub Totals       #  // The exact dane totals calculation is done for all, just the inputs are different
-    ################################################  // might njot be needed anymore
-                                                      // this is used in 3.1.0 upgrade
-                                                      // this should be removed or remmend out
-                                                      // these dont take into account individual rows
-
-    /*public function calculateItemsSubtotals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
-
-        $item_totals = array();
-
-        // No Tax
-        if($tax_system == 'no_tax') {
-            $item_totals['unit_tax'] = 0.00;
-            $item_totals['unit_gross'] = $unit_net;
-            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
-            $item_totals['subtotal_tax'] = 0.00;
-            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'];
-        }
-
-        // Sales Tax Calculations
-        if($tax_system == 'sales_tax_cash') {
-            $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
-            $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
-            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
-            $item_totals['subtotal_tax'] = $item_totals['subtotal_net'] * ($unit_tax_rate / 100);
-            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'] + $item_totals['subtotal_tax'];
-        }
-
-        // VAT Calculations
-        if(preg_match('/^vat_/', $tax_system)) {
-            $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
-            $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
-            $item_totals['subtotal_net'] = $unit_net * $unit_qty;
-            $item_totals['subtotal_tax'] = $item_totals['subtotal_net'] * ($unit_tax_rate / 100);
-            $item_totals['subtotal_gross'] = $item_totals['subtotal_net'] + $item_totals['subtotal_tax'];
-        }
-
-        return $item_totals;
-
-    }*/
 
     #####################################  // Most calculations are done on the creditnote:edit tpl but this is still required for when payments are made because of the balance field
     #   Recalculate Credit Note Totals  #

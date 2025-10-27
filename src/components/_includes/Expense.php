@@ -98,17 +98,6 @@ class Expense extends Components {
                 // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes)
                 $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']);
 
-                /* All this is done in the TPL
-                    // Calculate the correct tax rate based on tax system (and exemption status)
-                    if($expense_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-                    elseif($expense_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $expense_details['sales_tax_rate']; }
-                    elseif(preg_match('/^vat_/', $expense_details['tax_system'])) { $unit_tax_rate = $this->app->components->company->getVatRate($item['vat_tax_code']); }
-                    else { $unit_tax_rate = 0.00; }
-
-                    // Build item totals based on selected TAX system
-                    $item_totals = $this->calculateItemsSubtotals($expense_details['tax_system'], $item['unit_qty'], $item['unit_net'], $unit_tax_rate);
-                */
-
                 $sql .="(".
                         $this->app->db->qStr( $expense_id                    ).",".
                         $this->app->db->qStr( $expense_details['tax_system'] ).",".
