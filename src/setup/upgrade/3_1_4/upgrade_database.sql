@@ -1173,3 +1173,6 @@ UPDATE `#__expense_records` SET `type` = 'other' WHERE `#__expense_records`.`typ
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
 ('supplier:autosuggest_name', 1, 1, 1, 1, 0, 1, 0, 0, 0);
 ALTER TABLE `#__otherincome_records` ADD `supplier_id` int(10) UNSIGNED DEFAULT NULL AFTER `employee_id`;
+
+-- Note field for invoice --
+ALTER TABLE `#__invoice_records` ADD`note` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `additional_info`;

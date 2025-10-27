@@ -594,7 +594,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
-                                                    <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300"  onkeydown="return onlyAddress(event);"/>{$expense_details.note}</textarea>
+                                                    <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300"  onkeydown="return onlyAddress(event);">{$expense_details.note}</textarea>
                                                 </td>
                                             </tr>
                                         </table>
