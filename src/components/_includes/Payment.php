@@ -967,7 +967,7 @@ class Payment extends Components {
         {
             // Prevent undefined variable errors (with and without submit)  - some of these vairables can be from page referrals (i.e. new) or page reloads or dont exists,
             \CMSApplication::$VAR['qpayment']['type']               = \CMSApplication::$VAR['type'];
-            \CMSApplication::$VAR['qpayment']['method']             = \CMSApplication::$VAR['qpayment']['method'] ?? null;
+            \CMSApplication::$VAR['qpayment']['method']             = \CMSApplication::$VAR['method'] ?? \CMSApplication::$VAR['qpayment']['method'] ?? null;
             \CMSApplication::$VAR['qpayment']['direction']          = null;
             \CMSApplication::$VAR['qpayment']['client_id']          = \CMSApplication::$VAR['client_id'] ?? \CMSApplication::$VAR['qpayment']['client_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['supplier_id']        = \CMSApplication::$VAR['supplier_id'] ?? \CMSApplication::$VAR['qpayment']['supplier_id'] ?? null;

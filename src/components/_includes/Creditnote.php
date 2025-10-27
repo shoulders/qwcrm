@@ -1304,7 +1304,7 @@ class Creditnote extends Components {
     }
 
     ############################################################# done
-    #  Check if the creditnote status is allowed to be Edited   #
+    #  Check if the creditnote status allows it to be Edited    #
     #############################################################
 
      public function checkRecordAllowsEdit($creditnote_id) {

@@ -36,26 +36,29 @@ $creditnote_items = \CMSApplication::$VAR['qform']['creditnote_items'] ?? $this-
 
 // Update credit note (if submited)
 if(isset(\CMSApplication::$VAR['submit']))
-{    
+{
     // Check the submission is valid, if not, load the page with an error message
     if($this->app->components->creditnote->checkRecordCanBeSubmitted($creditnote_details))
-    {    
+    {
         $this->app->components->creditnote->insertItems($creditnote_details['creditnote_id'], $creditnote_items);
         $this->app->components->creditnote->updateRecord($creditnote_details);
         $this->app->components->creditnote->recalculateTotals($creditnote_details['creditnote_id']);
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Credit note updated successfully."));
-        
+
         // Load credit note record - this makes sure any calculations are taken into account such as balance and status
-        $creditnote_details = $this->app->components->creditnote->getRecord($creditnote_details['creditnote_id']);        
-    }    
+        //$creditnote_details = $this->app->components->creditnote->getRecord($creditnote_details['creditnote_id']);
+
+        // Load details page
+        $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$creditnote_details['creditnote_id']);
+    }
 }
-    
+
 // Credit Note Details
 $this->app->smarty->assign('creditnote_details',       $creditnote_details);
 $this->app->smarty->assign('company_details',          $this->app->components->company->getRecord());
 $this->app->smarty->assign('client_details',           $this->app->components->client->getRecord($creditnote_details['client_id'] ?? null));
 $this->app->smarty->assign('supplier_details',         $this->app->components->supplier->getRecord($creditnote_details['supplier_id'] ?? null));
-$this->app->smarty->assign('creditnote_items_json',    json_encode($creditnote_items));                                            
+$this->app->smarty->assign('creditnote_items_json',    json_encode($creditnote_items));
 
 // Payment Details
 $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes());
