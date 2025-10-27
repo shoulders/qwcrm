@@ -151,6 +151,7 @@
     <tr>
         <td>
             <button type="button" onclick="window.open('index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Expense{/t}</button>
+            <button type="button" onclick="window.open('index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Other Income{/t}</button>
         {if $allowed_to_create_creditnote}
             <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Purchase Credit Note (Standalone){/t}</button>
         {/if}
@@ -164,7 +165,12 @@
             {include file='expense/blocks/display_expenses_block.tpl' display_expenses=$display_expenses block_title=_gettext("Expenses")}
         </td>
     </tr>
-        <tr>
+    <tr>
+        <td>
+            {include file='otherincome/blocks/display_otherincomes_block.tpl' display_otherincomes=$display_otherincomes block_title=_gettext("Other Incomes")}
+        </td>
+    </tr>
+    <tr>
         <td>
             {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes")}
         </td>

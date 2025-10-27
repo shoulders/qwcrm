@@ -24,7 +24,10 @@ $this->app->smarty->assign('creditnote_types',            $this->app->components
 $this->app->smarty->assign('creditnote_statuses',         $this->app->components->creditnote->getStatuses());
 $this->app->smarty->assign('display_creditnotes',        $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 25, false, null, null, null, null, null, null, \CMSApplication::$VAR['supplier_id']));
 
-
 $this->app->smarty->assign('expense_types',            $this->app->components->expense->getTypes());
 $this->app->smarty->assign('expense_statuses',         $this->app->components->expense->getStatuses());
 $this->app->smarty->assign('display_expenses',        $this->app->components->expense->getRecords('expense_id', 'DESC', 25, false, null, null, null, null, null, \CMSApplication::$VAR['supplier_id']));
+
+$this->app->smarty->assign('otherincome_types',            $this->app->components->otherincome->getTypes());
+$this->app->smarty->assign('otherincome_statuses',         $this->app->components->otherincome->getStatuses());
+$this->app->smarty->assign('display_otherincomes',        $this->app->components->otherincome->getRecords('otherincome_id', 'DESC', 25, false, null, null, null, null, null, \CMSApplication::$VAR['supplier_id']));
