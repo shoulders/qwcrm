@@ -62,11 +62,17 @@ if(isset(\CMSApplication::$VAR['submit']))
             $this->app->system->page->forcePage('payment', 'new&type=expense&expense_id='.$expense_details['expense_id']);
         }
 
-        // Refresh expense record - this makes sure any calculations are taken into account such as balance and status after record update
+
         else
         {
-            $expense_details = $this->app->components->expense->getRecord($expense_details['expense_id']);
+            // Refresh expense record - this makes sure any calculations are taken into account such as balance and status after record update
+            //$expense_details = $this->app->components->expense->getRecord($expense_details['expense_id']);
+
+            // Load details page
+            $this->app->system->page->forcePage('expense', 'details&expense_id='.$expense_details['expense_id']);
+
         }
+
     }
 }
 

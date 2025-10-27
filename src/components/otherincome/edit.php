@@ -62,10 +62,13 @@ if(isset(\CMSApplication::$VAR['submit']))
             $this->app->system->page->forcePage('payment', 'new&type=otherincome&otherincome_id='.$otherincome_details['otherincome_id']);
         }
 
-        // Refresh otherincome record - this makes sure any calculations are taken into account such as balance and status after record update
         else
         {
-            $otherincome_details = $this->app->components->otherincome->getRecord($otherincome_details['otherincome_id']);
+            // Refresh otherincome record - this makes sure any calculations are taken into account such as balance and status after record update
+            //$otherincome_details = $this->app->components->otherincome->getRecord($otherincome_details['otherincome_id']);
+
+            // Load details page
+            $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$otherincome_details['otherincome_id']);
         }
     }
 }
