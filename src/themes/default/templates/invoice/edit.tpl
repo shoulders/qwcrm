@@ -414,12 +414,12 @@
                                                         <input id="due_date" name="qform[due_date]" class="olotd4" size="10" value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                         <button type="button" id="due_date_button">+</button>
                                                         <script>
-                                                           Calendar.setup({
-                                                               trigger     : "due_date_button",
-                                                               inputField  : "due_date",
-                                                               dateFormat  : "{$date_format}",
-                                                               onChange    : function() { refreshPage(); }
-                                                           });
+                                                            Calendar.setup({
+                                                                trigger     : "due_date_button",
+                                                                inputField  : "due_date",
+                                                                dateFormat  : "{$date_format}",
+                                                                onChange    : function() { refreshPage(); }
+                                                            });
                                                         </script>
                                                     {else}
                                                         {$invoice_details.due_date|date_format:$date_format}
@@ -531,11 +531,6 @@
                                                     {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}
                                                         <button type="button" class="userButton" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                     {/if}
-
-                                                    <!-- Credit Note Button -->
-                                                    {*if $invoice_details.balance > 0}
-                                                        <button type="button" class="userButton" onclick="window.open('index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}', '_self');">{t}Add a Sales Credit Note{/t}</button>
-                                                    {/if*}
 
                                                 </td>
                                             </tr>

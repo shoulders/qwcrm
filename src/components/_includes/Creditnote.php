@@ -936,7 +936,7 @@ class Creditnote extends Components {
             }
 
             // Invoice needs an outstanding balance
-            if(!$invoice_details['balance'])
+            if((float)$invoice_details['balance'] == 0)
             {
                 if(!$silent)
                 {
@@ -961,7 +961,7 @@ class Creditnote extends Components {
                 $state_flag = false;
             }
 
-            // Needs a supplier ID (legacy records with no assigned supplier)
+            // Needs a supplier ID
             if(!$expense_details['supplier_id'])
             {
                 if(!$silent)
@@ -972,7 +972,7 @@ class Creditnote extends Components {
             }
 
             // Expense needs an outstanding balance
-            if(!$expense_details['balance'])
+            if((float)$expense_details['balance'] == 0)
             {
                 if(!$silent)
                 {
