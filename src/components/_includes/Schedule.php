@@ -213,7 +213,7 @@ class Schedule extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if($item === null){
+        if(!$item){
 
             return $rs->GetRowAssoc();
 

@@ -54,12 +54,12 @@ class Company extends Components {
 
         $sql = "SELECT * FROM ".PRFX."company_record";
 
-        if(!$rs = $this->app->db->execute($sql)) {          
+        if(!$rs = $this->app->db->execute($sql)) {
 
             // Part of the fallback
-            if($item == 'date_format') {            
+            if($item == 'date_format') {
 
-                // This is first database Query that will fail if there are issues with the database connection          
+                // This is first database Query that will fail if there are issues with the database connection
                 die('
                         <div style="color: red;">'.
                         _gettext("Something went wrong executing an SQL query.").'<br><br>'.
@@ -69,24 +69,24 @@ class Company extends Components {
                         '</div>'
                    );
 
-            } else {        
+            } else {
 
                 // Any other lookup error
                 $this->app->system->page->forceErrorPage('system', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql, _gettext("This is the first function loaded for the variable date_format."));
-            
+
             }
 
         }
 
-        if($item === null) {
+        if(!$item) {
 
-            return $rs->GetRowAssoc();            
+            return $rs->GetRowAssoc();
 
         } else {
 
-            return $rs->fields[$item];   
+            return $rs->fields[$item];
 
-        }       
+        }
 
     }
 
@@ -100,7 +100,7 @@ class Company extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray();           
+        return $rs->GetArray();
 
     }
 
@@ -127,10 +127,10 @@ class Company extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray();           
+        return $rs->GetArray();
 
     }
-    
+
     #####################################
     #   Get VAT rate for given tax_key  #
     #####################################
@@ -141,8 +141,8 @@ class Company extends Components {
                 WHERE tax_key = ".$this->app->db->qStr($vat_tax_code);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        
-        return $rs->fields['rate'];           
+
+        return $rs->fields['rate'];
 
     }
 
@@ -155,11 +155,11 @@ class Company extends Components {
         if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
 
         if($tax_system == 'no_tax') { return 'T9'; }
-        if($tax_system == 'sales_tax_cash') { return 'T9'; }     
-        if($tax_system == 'vat_standard') { return 'T1'; }    
+        if($tax_system == 'sales_tax_cash') { return 'T9'; }
+        if($tax_system == 'vat_standard') { return 'T1'; }
         if($tax_system == 'vat_cash') { return 'T1'; }
         if($tax_system == 'vat_flat_basic') { return 'T1'; }
-        if($tax_system == 'vat_flat_cash') { return 'T1'; }       
+        if($tax_system == 'vat_flat_cash') { return 'T1'; }
 
     }
 
@@ -173,9 +173,9 @@ class Company extends Components {
                 FROM ".PRFX."company_vat_tax_codes
                 WHERE tax_key = ".$this->app->db->qStr($vat_tax_code);
 
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->fields['enabled'];          
+        return $rs->fields['enabled'];
 
     }
 
@@ -188,7 +188,7 @@ class Company extends Components {
     public function getOpeningHours($event, $type, $date = null, $date_format = null) {
 
         // Convert Date to time stamp
-        if($date) { 
+        if($date) {
             $date_timestamp = $this->app->system->general->dateToTimestamp($date, $date_format);
         }
 
@@ -203,7 +203,7 @@ class Company extends Components {
             // return closing time in correct format for smartytime builder
             if($event == 'closing_time') {
                 return $this->getRecord('closing_hour').':'.$this->getRecord('closing_minute').':00';
-            }   
+            }
 
         }
 
@@ -211,16 +211,16 @@ class Company extends Components {
         if($type == 'datetime') {
 
             // return opening time in correct format for smarty time builder
-            if($event == 'opening_time') {            
-                //return $date.' '.$this->get_company_details('opening_hour').':'.$this->get_company_details('opening_minute');  // This only allows the use of DATE and not DATETIME            
-                return $this->app->system->general->buildMysqlDatetime($this->getRecord('opening_hour'), $this->getRecord('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));            
+            if($event == 'opening_time') {
+                //return $date.' '.$this->get_company_details('opening_hour').':'.$this->get_company_details('opening_minute');  // This only allows the use of DATE and not DATETIME
+                return $this->app->system->general->buildMysqlDatetime($this->getRecord('opening_hour'), $this->getRecord('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
             }
 
             // return closing time in correct format for smarty time builder
             if($event == 'closing_time') {
                 //return $date.' '.$this->get_company_details('closing_hour').':'.$this->get_company_details('closing_minute');  // This only allows the use of DATE and not DATETIME
 
-                return $this->app->system->general->buildMysqlDatetime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));                    
+                return $this->app->system->general->buildMysqlDatetime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
             }
         }
 
@@ -235,9 +235,9 @@ class Company extends Components {
             // return closing time in correct format for smarty time builder
             if($event == 'closing_time') {
                 return mktime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
-            }   
+            }
 
-        }    
+        }
 
     }
 
@@ -248,7 +248,7 @@ class Company extends Components {
     #############################
 
     public function updateRecord($qform) {
-            
+
         $sql = null;
 
         // Update VAT rates
@@ -256,14 +256,14 @@ class Company extends Components {
 
         // Prevent undefined variable errors
         $qform['delete_logo'] = $qform['delete_logo'] ?? null;
-        
+
         // Delete logo if selected and no new logo is presented
         if($qform['delete_logo'] && !$_FILES['logo']['name']) {
-            $this->deleteLogo();        
+            $this->deleteLogo();
         }
 
         // A new logo is supplied, delete old and upload new
-        if($_FILES['logo']['name']) {            
+        if($_FILES['logo']['name']) {
             $new_logo_filepath = $this->uploadLogo();
         }
 
@@ -286,28 +286,28 @@ class Company extends Components {
                 primary_phone           =". $this->app->db->qStr( $qform['primary_phone']                    ).",
                 mobile_phone            =". $this->app->db->qStr( $qform['mobile_phone']                     ).",
                 fax                     =". $this->app->db->qStr( $qform['fax']                              ).",
-                email                   =". $this->app->db->qStr( $qform['email']                            ).",    
+                email                   =". $this->app->db->qStr( $qform['email']                            ).",
                 website                 =". $this->app->db->qStr( $this->app->system->general->processInputtedUrl($qform['website'])    ).",
-                company_number          =". $this->app->db->qStr( $qform['company_number']                   ).",                                        
+                company_number          =". $this->app->db->qStr( $qform['company_number']                   ).",
                 tax_system              =". $this->app->db->qStr( $qform['tax_system']                       ).",
                 sales_tax_rate          =". $this->app->db->qStr( $qform['sales_tax_rate']                   ).",
                 vat_number              =". $this->app->db->qStr( $qform['vat_number']                       ).",
-                vat_flat_rate           =". $this->app->db->qStr( $qform['vat_flat_rate']                    ).",   
+                vat_flat_rate           =". $this->app->db->qStr( $qform['vat_flat_rate']                    ).",
                 year_start              =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['year_start'])   ).",
                 year_end                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['year_end'])     ).",
-                voucher_expiry_offset   =". $this->app->db->qStr( $qform['voucher_expiry_offset']            ).",  
+                voucher_expiry_offset   =". $this->app->db->qStr( $qform['voucher_expiry_offset']            ).",
                 welcome_msg             =". $this->app->db->qStr( $qform['welcome_msg']                      ).",
                 currency_symbol         =". $this->app->db->qStr( htmlentities($qform['currency_symbol'])    ).",
                 currency_code           =". $this->app->db->qStr( $qform['currency_code']                    ).",
-                date_format             =". $this->app->db->qStr( $qform['date_format']                      ).",            
+                date_format             =". $this->app->db->qStr( $qform['date_format']                      ).",
                 email_signature         =". $this->app->db->qStr( $qform['email_signature']                  ).",
                 email_signature_active  =". $this->app->db->qStr( $qform['email_signature_active']           ).",
                 email_msg_invoice       =". $this->app->db->qStr( $qform['email_msg_invoice']                ).",
-                email_msg_workorder     =". $this->app->db->qStr( $qform['email_msg_workorder']              ).",   
-                email_msg_voucher       =". $this->app->db->qStr( $qform['email_msg_voucher']                );                          
+                email_msg_workorder     =". $this->app->db->qStr( $qform['email_msg_workorder']              ).",
+                email_msg_voucher       =". $this->app->db->qStr( $qform['email_msg_voucher']                );
 
 
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}     
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Refresh company logo
         //$this->app->smarty->assign('company_logo', QW_MEDIA_DIR . $this->get_company_details('logo'));
@@ -315,10 +315,10 @@ class Company extends Components {
         // Assign success message
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
 
-        // Log activity        
+        // Log activity
         $this->app->system->general->writeRecordToActivityLog(_gettext("Company details updated."));
 
-        return;        
+        return;
 
     }
 
@@ -339,10 +339,10 @@ class Company extends Components {
         // Assign success message
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Business hours have been updated."));
 
-        // Log activity        
-        $this->app->system->general->writeRecordToActivityLog(_gettext("Business hours have been updated."));        
+        // Log activity
+        $this->app->system->general->writeRecordToActivityLog(_gettext("Business hours have been updated."));
 
-        return true;        
+        return true;
 
     }
 
@@ -354,29 +354,29 @@ class Company extends Components {
 
         // Cycle through the submitted VAT rates and update the database
         foreach ($vat_rates as $tax_key => $rate) {
-            
+
             $sql =  "UPDATE ".PRFX."company_vat_tax_codes SET
                     rate = ".$this->app->db->qStr($rate)."
                     WHERE tax_key = ".$this->app->db->qStr($tax_key);
 
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-            
+
         }
-        
+
         // Assign success message
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("VAT rates have been updated."));
 
-        // Log activity        
-        //$this->app->system->general->writeRecordToActivityLog(_gettext("VAT rates have been updated."));        
+        // Log activity
+        //$this->app->system->general->writeRecordToActivityLog(_gettext("VAT rates have been updated."));
 
-        return true;        
+        return true;
 
     }
 
     /** Close Functions **/
 
     /** Delete Functions **/
-    
+
     ##########################
     #  Delete Company Logo   #
     ##########################
@@ -393,16 +393,16 @@ class Company extends Components {
             if(file_exists($logo_file)) {
 
                 // Perform the deletion
-                unlink($logo_file);        
+                unlink($logo_file);
 
             }
 
         }
 
     }
-    
+
     /** Check Functions **/
-    
+
     ##########################################
     #  Check Start and End times are valid   #
     ##########################################
@@ -410,13 +410,13 @@ class Company extends Components {
     public function checkOpeningHoursValid($start_time, $end_time) {
 
         // If start time is before end time
-        if($start_time > $end_time) {        
+        if($start_time > $end_time) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Start Time is after End Time."));
             return false;
         }
 
-        // If the start and end time are the same    
-        if($start_time ==  $end_time) {        
+        // If the start and end time are the same
+        if($start_time ==  $end_time) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Start Time is the same as End Time."));
             return false;
         }
@@ -433,29 +433,29 @@ class Company extends Components {
     ##########################
 
     public function uploadLogo() {
-        
+
         $error_flag = false;
-        
+
         // Allowed extensions
         $allowedExt = array('png', 'jpg', 'jpeg', 'gif');
-        
+
         // Allowed mime types
         $allowedMime = array('image/gif', 'image/jpeg', 'image/jpg', 'image/pjpeg', 'image/x-png', 'image/png');
-        
+
         // Max Allowed Size (bytes) (2097152 = 2MB)
         $maxAllowedSize = 2097152;
-        
+
         // Check there is an uplaoded file
-        if($_FILES['logo']['size'] = 0) {            
+        if($_FILES['logo']['size'] = 0) {
             $error_flag = true;
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("There was no logo uploaded.")); 
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("There was no logo uploaded."));
         }
 
         // Check for file submission errors
         if ($_FILES['logo']['error'] > 0 ) {
             $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Files submission error with Return Code").': ' . $_FILES['logo']['error'] . '<br />');
-        }   
+        }
 
         // Get file extension
         $filename_info = pathinfo($_FILES['logo']['name']);
@@ -468,32 +468,32 @@ class Company extends Components {
         }
 
         // Validate the uploaded file is allowed mime type
-        if (!in_array($_FILES['logo']['type'], $allowedMime)) {          
+        if (!in_array($_FILES['logo']['type'], $allowedMime)) {
             $error_flag = true;
-            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it does not have an allowed mime type."));            
-        }       
-        
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it does not have an allowed mime type."));
+        }
+
         // Validate the uploaded file is not to big
         if ($_FILES['logo']['size'] > $maxAllowedSize) {
             $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it is too large.").' '._gettext("The maximum size is ").' '.($maxAllowedSize/1024/1024).'MB');
         }
-                    
+
         // If no errors
-        if(!$error_flag) {                
-                    
+        if(!$error_flag) {
+
             // Delete old logo
             $this->deleteLogo();
 
             // New Logo Filename logo.xxx (keeps original image extension)
-            $new_logo_filename = 'logo.' . $fileExtension;  
+            $new_logo_filename = 'logo.' . $fileExtension;
 
             // Move the file from the PHP temporary storage to the logo location
             move_uploaded_file($_FILES['logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);
 
             // Return the filename with a random query to bypass caching issues
             return $new_logo_filename . '?' . strtolower(\Joomla\CMS\User\UserHelper::genRandomPassword(3));
-                    
+
         } else {
 
                 /*
@@ -502,11 +502,11 @@ class Company extends Components {
                 echo "Size: "      . ($_FILES['company_logo']['size'] / 1024)  . ' Kb<br />';
                 echo "Temp file: " . $_FILES['company_logo']['tmp_name']       . '<br />';
                 echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
-                 */   
+                 */
 
-                //$this->app->system->variables->systemMessagesWrite('danger', _gettext("Failed to update logo because the submitted file was invalid."));                    
+                //$this->app->system->variables->systemMessagesWrite('danger', _gettext("Failed to update logo because the submitted file was invalid."));
                 $this->app->system->variables->systemMessagesWrite('warning', _gettext("The logo has not been changed."));
-                
+
                 // Return the orginal logo storage string
                 return $this->app->components->company->getRecord('logo');
 
@@ -514,6 +514,6 @@ class Company extends Components {
 
         }
 
-    
+
 
 }

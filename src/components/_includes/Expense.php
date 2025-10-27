@@ -295,7 +295,7 @@ class Expense extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if($item === null){
+        if(!$item){
 
             $results = $rs->GetRowAssoc();
             $results['display_name'] = $results['supplier_id'] ? $this->app->components->supplier->getRecord($results['supplier_id'], 'display_name') : $results['payee'];
