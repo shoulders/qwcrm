@@ -276,6 +276,14 @@ class OtherIncome extends Components {
 
         } else {
 
+            // Return the dynamically created 'display_name'
+            if($item == 'display_name') {
+                $results = $rs->GetRowAssoc();
+                $results['display_name'] = $results['supplier_id'] ? $this->app->components->supplier->getRecord($results['supplier_id'], 'display_name') : $results['payee'];
+                return $results;
+            }
+
+            // Return the whole record
             return $rs->fields[$item];
 
         }
