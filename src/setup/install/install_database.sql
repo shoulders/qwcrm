@@ -670,6 +670,7 @@ CREATE TABLE `#__otherincome_items` (
 CREATE TABLE `#__otherincome_records` (
   `otherincome_id` int(10) UNSIGNED NOT NULL,
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
+  `supplier_id` int(10) UNSIGNED DEFAULT NULL,
   `payee` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date DEFAULT NULL,
   `due_date` date DEFAULT NULL,

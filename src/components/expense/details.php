@@ -35,7 +35,6 @@ $this->app->smarty->assign('display_payments',         $this->app->components->p
 
 // Misc
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($expense_details['employee_id'], 'display_name'));
-$this->app->smarty->assign('supplier_display_name', $this->app->components->supplier->getRecord($expense_details['supplier_id'] ?? null, 'display_name'));
 
 // Build the page
 $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses()            );

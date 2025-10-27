@@ -363,9 +363,9 @@
                                             </tr>
                                             <tr class="olotd4">
                                                 <td>{$expense_id}</td>
-                                                <td>
+                                                <td id="supplierIdLink">
                                                     {if $expense_details.supplier_id}
-                                                        <a id="supplierIdLink" href="index.php?component=supplier&page_tpl=details&supplier_id={$expense_details.supplier_id}">{$expense_details.supplier_id}</a><br>
+                                                        <a href="index.php?component=supplier&page_tpl=details&supplier_id={$expense_details.supplier_id}">{$expense_details.supplier_id}</a><br>
                                                     {/if}
                                                 </td>
                                                 <td>
@@ -413,7 +413,7 @@
                                                             <td>
                                                                 <!-- Payee Input -->
                                                                 <input id="qform[payee]" name="qform[payee]" class="olotd5" value="{$expense_details.payee}" size="25" type="text" maxlength="50" {if $expense_details.supplier_id}hidden{else}required{/if} onkeydown="return onlyName(event);">
-                                                                <input id="supplierAutosuggestNameDummy" class="olotd5" value="{$supplier_display_name}" size="25" type="text" maxlength="50" readonly {if !$expense_details.supplier_id}hidden{/if}>
+                                                                <input id="supplierAutosuggestNameDummy" class="olotd5" value="{$expense_details.display_name}" size="25" type="text" maxlength="50" readonly {if !$expense_details.supplier_id}hidden{/if}>
                                                                 <input id="assignToSupplier" name="assignToSupplier" type="checkbox" {if $expense_details.supplier_id}checked{/if}>{t}Assign to Supplier{/t}
 
                                                                 <!-- Autosuggest -->
@@ -428,6 +428,7 @@
                                                                 <div>
                                                             </td>
                                                         </tr>
+                                                        <tr>
                                                             <td><strong>{t}Reference{/t}:</strong></td>
                                                             <td>
                                                                 <input name="qform[reference]" class="olotd5" value="{$expense_details.reference}" size="25" type="text" maxlength="50" onkeydown="return onlyAlphaNumericPunctuation(event);">

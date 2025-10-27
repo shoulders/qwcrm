@@ -25,10 +25,10 @@ class OtherIncome extends Components {
     /** Insert Functions **/
 
     ##########################################
-    #      Insert Otherincome                #
+    #      Insert Otherincome                #  //supplier_id is a variable so I can create an otherincome directly from a supplier page.
     ##########################################
 
-    public function insertRecord() {
+    public function insertRecord($supplier_id = null) {
 
         // Unify Dates and Times
         $timestamp = time();
@@ -38,6 +38,7 @@ class OtherIncome extends Components {
 
         $sql = "INSERT INTO ".PRFX."otherincome_records SET
                 employee_id     =". $this->app->db->qStr($this->app->user->login_user_id).",
+                supplier_id     =". $this->app->db->qStr($supplier_id).",
                 date            =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
                 due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
@@ -133,16 +134,20 @@ class OtherIncome extends Components {
     #  Display otherincomes       #
     ###############################
 
-    public function getRecords($order_by, $direction, $records_per_page = null, $use_pages = false, $page_no = null, $search_category = 'otherincome_id', $search_term = null, $type = null, $status = null) {
+    public function getRecords($order_by, $direction, $records_per_page = null, $use_pages = false, $page_no = null, $search_category = 'otherincome_id', $search_term = null, $type = null, $status = null, $supplier_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";
+        $havingTheseRecords = '';
+
+        // Restrict results by search category (display_name/payee) and search term
+        if($search_category == 'display_name') { $havingTheseRecords .= " HAVING display_name LIKE ".$this->app->db->qStr('%'.$search_term.'%'); }
 
         // Restrict results by search category and search term
-        if($search_term) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
         // Restrict by Type
         if($type) { $whereTheseRecords .= " AND ".PRFX."otherincome_records.type= ".$this->app->db->qStr($type);}
@@ -172,6 +177,16 @@ class OtherIncome extends Components {
         // The SQL code
         $sql = "SELECT ".PRFX."otherincome_records.*,
 
+                IF(
+                    ".PRFX."supplier_records.supplier_id !='',
+                    IF(
+                        ".PRFX."supplier_records.company_name !='',
+                        ".PRFX."supplier_records.company_name,
+                        CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name)
+                        ),
+                    payee
+                ) AS display_name,
+
                 items.combined as otherincome_items
 
                 FROM ".PRFX."otherincome_records
@@ -191,8 +206,11 @@ class OtherIncome extends Components {
                 ) AS items
                 ON ".PRFX."otherincome_records.otherincome_id = items.otherincome_id
 
+                LEFT JOIN ".PRFX."supplier_records ON ".PRFX."otherincome_records.supplier_id = ".PRFX."supplier_records.supplier_id
+
                 ".$whereTheseRecords."
                 GROUP BY ".PRFX."otherincome_records.".$order_by."
+                ".$havingTheseRecords."
                 ORDER BY ".PRFX."otherincome_records.".$order_by."
                 ".$direction;
 
@@ -261,22 +279,16 @@ class OtherIncome extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // I have only done this record check here not currently in other components
-        if($rs->recordCount())
-        {
-            if(!$item)
-            {
-                return $rs->GetRowAssoc();
+        if($item === null){
 
-            } else {
+            $results = $rs->GetRowAssoc();
+            $results['display_name'] = $results['supplier_id'] ? $this->app->components->supplier->getRecord($results['supplier_id'], 'display_name') : $results['payee'];
+            return $results;
 
-                return $rs->fields[$item];
+        } else {
 
-            }
-        }
-        else
-        {
-            return null;
+            return $rs->fields[$item];
+
         }
 
     }
@@ -398,6 +410,7 @@ class OtherIncome extends Components {
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
                 employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                supplier_id         =". $this->app->db->qStr( $qform['supplier_id'] ?: null      ).",
                 payee            =". $this->app->db->qStr( $qform['payee']                   ).",
                 date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 due_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",

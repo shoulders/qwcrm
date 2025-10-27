@@ -25,7 +25,7 @@ class Expense extends Components {
     /** Insert Functions **/
 
     ##########################################
-    #      Insert Expense                    #  //supplier_id is a variable so I can allow creating an expense directly from a supplier page.
+    #      Insert Expense                    #  //supplier_id is a variable so I can create an expense directly from a supplier page.
     ##########################################
 
     public function insertRecord($supplier_id = null) {

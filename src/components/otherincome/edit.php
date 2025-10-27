@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
     $this->app->system->page->forcePage('otherincome', 'search');
-} 
+}
 
 // Check if otherincome is deleted
 if($this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id'], 'status') === 'deleted') {
@@ -40,41 +40,41 @@ $otherincome_items = \CMSApplication::$VAR['qform']['otherincome_items'] ?? $thi
 
 // Update otherincome (if submited)
 if(isset(\CMSApplication::$VAR['submit']))
-{    
+{
     // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
     if($this->app->components->otherincome->checkRecordCanBeSubmitted($otherincome_details))
-    {    
-        // Update the record        
+    {
+        // Update the record
         $this->app->components->otherincome->updateRecord($otherincome_details);
         $this->app->components->otherincome->insertItems($otherincome_details['otherincome_id'], $otherincome_items);
         $this->app->components->otherincome->recalculateTotals($otherincome_details['otherincome_id']);
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense updated successfully."));
-        
-        // Load the new otherincome page      
+
+        // Load the new otherincome page
         if (\CMSApplication::$VAR['submit'] == 'submitandnew')
-        {                     
-           $this->app->system->page->forcePage('otherincome', 'new');
+        {
+            $this->app->system->page->forcePage('otherincome', 'new');
         }
-        
-        // Load the new payment page for otherincome   
+
+        // Load the new payment page for otherincome
         elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment')
-        {                    
+        {
             $this->app->system->page->forcePage('payment', 'new&type=otherincome&otherincome_id='.$otherincome_details['otherincome_id']);
         }
-        
+
         // Refresh otherincome record - this makes sure any calculations are taken into account such as balance and status after record update
         else
-        {            
-            $otherincome_details = $this->app->components->otherincome->getRecord($otherincome_details['otherincome_id']); 
+        {
+            $otherincome_details = $this->app->components->otherincome->getRecord($otherincome_details['otherincome_id']);
         }
-    }      
+    }
 }
 
 // Build the page
 
 // Expense Details
 $this->app->smarty->assign('otherincome_details',       $otherincome_details);
-$this->app->smarty->assign('otherincome_items_json',    json_encode($otherincome_items));                                            
+$this->app->smarty->assign('otherincome_items_json',    json_encode($otherincome_items));
 
 // Misc
 $this->app->smarty->assign('otherincome_statuses',         $this->app->components->otherincome->getStatuses());

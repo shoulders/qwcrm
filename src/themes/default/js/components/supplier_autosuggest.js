@@ -41,6 +41,7 @@ function supplierAutosuggestNameLookup(inputtedStringToBeSearched) {
 function supplierAutosuggestNameIdFill(display_name, supplier_id) {
     $('#supplierAutosuggestNameDummy').val(display_name);       // set the Payee name, this will be discarded and is just for the user
     $('#qform\\[supplier_id\\]').val(supplier_id);              // Set the supplier_id used for real addressing.
+    $('#supplierIdLink').html(supplier_id);                     // Set the supplier_id to show users onscreen
     supplierAutosuggestNameClose();
 }
 
@@ -60,7 +61,7 @@ $(document).ready(function() {
       $('#supplierAutosuggestNameDummy').prop('hidden', false);
       $('#supplierAutosuggestBlock').prop('hidden', false);
     } else {
-      $('#supplierIdLink').remove();
+      $('#supplierIdLink').html('');
       //$('#qform\\[payee\\]').val('');
       $('#qform\\[payee\\]').prop('hidden', false);
       $('#qform\\[payee\\]').prop('required', true);

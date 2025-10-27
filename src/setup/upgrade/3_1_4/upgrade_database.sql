@@ -1172,3 +1172,4 @@ UPDATE `#__expense_records` SET `type` = 'other' WHERE `#__expense_records`.`typ
 -- Add Autosuggest for Supplier Name --
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
 ('supplier:autosuggest_name', 1, 1, 1, 1, 0, 1, 0, 0, 0);
+ALTER TABLE `#__otherincome_records` ADD `supplier_id` int(10) UNSIGNED DEFAULT NULL AFTER `employee_id`;

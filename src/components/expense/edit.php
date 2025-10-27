@@ -82,4 +82,3 @@ $this->app->smarty->assign('expense_types',            $this->app->components->e
 $this->app->smarty->assign('vat_tax_codes',            $this->app->components->company->getVatTaxCodes(false));
 $this->app->smarty->assign('default_vat_tax_code',     $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']));
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($expense_details['employee_id'], 'display_name'));
-$this->app->smarty->assign('supplier_display_name', $this->app->components->supplier->getRecord($expense_details['supplier_id'] ?? null, 'display_name'));

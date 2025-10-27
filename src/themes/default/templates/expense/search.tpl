@@ -32,7 +32,7 @@
                                                         <table border="0">
                                                             <tr>
                                                                 <td align="left" valign="top"><b>{t}Search Expenses{/t}</b>
-                                                                   <br />
+                                                                    <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Payee{/t}</option>
                                                                         <option value="expense_id"{if $search_category == 'expense_id'} selected{/if}>{t}Expense ID{/t}</option>

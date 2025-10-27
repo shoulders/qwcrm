@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Create the otherincome record and return the new otherincome_id
-\CMSApplication::$VAR['otherincome_id'] = $this->app->components->otherincome->insertRecord();
+\CMSApplication::$VAR['otherincome_id'] = $this->app->components->otherincome->insertRecord(\CMSApplication::$VAR['supplier_id'] ?? null);
 
 // Load the newly created invoice edit page
 $this->app->system->page->forcePage('otherincome', 'edit&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);

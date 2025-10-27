@@ -24,30 +24,31 @@
                                 <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
-                                            
+
                                             <!-- Category Search -->
                                             <td valign="top">
                                                 <form method="post" action="index.php?component=otherincome&page_tpl=search" name="otherincome_search" id="otherincome_search" class="remove-empty-values">
-                                                    <div>                                                       
+                                                    <div>
                                                         <table border="0">
                                                             <tr>
                                                                 <td align="left" valign="top"><b>{t}Other Income Search{/t}</b>
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
-                                                                        <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
-                                                                        <option value="otherincome_id"{if $search_category == 'otherincome_id'} selected{/if}>{t}Other Income ID{/t}</option>                                                                        
+                                                                        <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Payee{/t}</option>
+                                                                        <option value="otherincome_id"{if $search_category == 'otherincome_id'} selected{/if}>{t}Other Income ID{/t}</option>
+                                                                        <option value="supplier_id"{if $search_category == 'supplier_id'} selected{/if}>{t}Supplier ID{/t}</option>
                                                                         <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>
-                                                                        <option disabled>----------</option> 
+                                                                        <option disabled>----------</option>
                                                                         <option value="otherincome_items"{if $search_category == 'otherincome_items'} selected{/if}>{t}Items{/t}</option>
-                                                                        <option disabled>----------</option> 
+                                                                        <option disabled>----------</option>
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>
                                                                     </select>
-                                                                   <br />
-                                                                   <b>{t}for{/t}</b>
-                                                                   <br />
-                                                                   <input class="olotd4" name="search_term" value="{$search_term}" type="text" maxlength="20" onkeydown="return onlySearch(event);" />
-                                                                   <button type="submit" name="submit" value="search">{t}Search{/t}</button>
-                                                                   <button type="button" class="olotd4" onclick="window.location.href='index.php?component=otherincome&page_tpl=search';">{t}Reset{/t}</button>
+                                                                    <br />
+                                                                    <b>{t}for{/t}</b>
+                                                                    <br />
+                                                                    <input class="olotd4" name="search_term" value="{$search_term}" type="text" maxlength="20" onkeydown="return onlySearch(event);" />
+                                                                    <button type="submit" name="submit" value="search">{t}Search{/t}</button>
+                                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=otherincome&page_tpl=search';">{t}Reset{/t}</button>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -58,9 +59,9 @@
                                                                     <b>{t}Filter By Type{/t}</b><br>
                                                                     <select class="olotd5" id="filter_type" name="filter_type">
                                                                         <option value=""{if !$filter_type} selected{/if}>{t}None{/t}</option>
-                                                                        <option disabled>----------</option>                                                                        
-                                                                        {section name=t loop=$otherincome_types}    
-                                                                            <option value="{$otherincome_types[t].type_key}"{if $filter_type == $otherincome_types[t].type_key} selected{/if}>{t}{$otherincome_types[t].display_name}{/t}</option>        
+                                                                        <option disabled>----------</option>
+                                                                        {section name=t loop=$otherincome_types}
+                                                                            <option value="{$otherincome_types[t].type_key}"{if $filter_type == $otherincome_types[t].type_key} selected{/if}>{t}{$otherincome_types[t].display_name}{/t}</option>
                                                                         {/section}
                                                                     </select>
                                                                 </td>
@@ -71,40 +72,40 @@
                                                                     <select class="olotd5" id="filter_status" name="filter_status">
                                                                         <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>
-                                                                        <option value="open"{if $filter_status == 'open'} selected{/if}>{t}Open{/t}</option> 
+                                                                        <option value="open"{if $filter_status == 'open'} selected{/if}>{t}Open{/t}</option>
                                                                         <option value="closed"{if $filter_status == 'closed'} selected{/if}>{t}Closed{/t}</option>
-                                                                        <option disabled>----------</option>                                                                     
-                                                                        {section name=s loop=$otherincome_statuses}    
-                                                                            <option value="{$otherincome_statuses[s].status_key}"{if $filter_status == $otherincome_statuses[s].status_key} selected{/if}>{t}{$otherincome_statuses[s].display_name}{/t}</option>        
-                                                                        {/section} 
+                                                                        <option disabled>----------</option>
+                                                                        {section name=s loop=$otherincome_statuses}
+                                                                            <option value="{$otherincome_statuses[s].status_key}"{if $filter_status == $otherincome_statuses[s].status_key} selected{/if}>{t}{$otherincome_statuses[s].display_name}{/t}</option>
+                                                                        {/section}
                                                                     </select>
                                                                 </td>
-                                                            </tr>                                                                                                                                                                                  
+                                                            </tr>
                                                         </table>
                                                     </div>
                                                 </form>
-                                            </td>                                                              
-                                                                            
+                                            </td>
+
                                             <!-- Navigation -->
                                             <td valign="top" nowrap align="right">
-                                                <form id="navigation">                                                    
+                                                <form id="navigation">
                                                     <table>
                                                         <tr>
-                                                            
+
                                                             <!-- Left Side Buttons -->
-                                                            <td>    
+                                                            <td>
                                                                 {if $display_otherincomes.previous_page_no && $display_otherincomes.records}
-                                                                    <a href="index.php?component=otherincome&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                    <a href="index.php?component=otherincome&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
                                                                     <a href="index.php?component=otherincome&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_otherincomes.previous_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
-                                                            </td>                                                   
-                                                    
+                                                            </td>
+
                                                             <!-- Dropdown Menu -->
-                                                            <td>                                                                    
+                                                            <td>
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$display_otherincomes.total_pages start=1}
                                                                         <option value="index.php?component=otherincome&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $display_otherincomes.page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_otherincomes.total_pages} 
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_otherincomes.total_pages}
                                                                         </option>
                                                                     {/section}
                                                                     <option value="index.php?component=otherincome&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_otherincomes.total_pages}" {if $display_otherincomes.page_no == $display_otherincomes.total_pages} selected {/if}>
@@ -112,15 +113,15 @@
                                                                     </option>
                                                                 </select>
                                                             </td>
-                                                            
-                                                            <!-- Right Side Buttons --> 
+
+                                                            <!-- Right Side Buttons -->
                                                             <td>
                                                                 {if $display_otherincomes.next_page_no && $display_otherincomes.records}
-                                                                    <a href="index.php?component=otherincome&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_otherincomes.next_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=otherincome&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_otherincomes.next_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>
                                                                     <a href="index.php?component=otherincome&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_otherincomes.total_pages}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
-                                                            </td>                                                                                             
-                                                    
+                                                            </td>
+
                                                         </tr>
                                                         <tr>
 
@@ -129,21 +130,21 @@
                                                             <td>
                                                                 <p style="text-align: center;">{$display_otherincomes.total_results} {t}records found.{/t}</p>
                                                             </td>
-                                                            
-                                                        </tr>                                                    
-                                                    </table>                                                    
-                                                </form>                                                
+
+                                                        </tr>
+                                                    </table>
+                                                </form>
                                             </td>
-                                            
+
                                         </tr>
-                                        
+
                                         <!-- Records Table -->
-                                        <tr>                                            
-                                            <td valign="top" colspan="2">                                                
+                                        <tr>
+                                            <td valign="top" colspan="2">
                                                 {include file='otherincome/blocks/display_otherincomes_block.tpl' display_vouchers=$display_otherincomes.records block_title=''}
                                             </td>
                                         </tr>
-                                        
+
                                     </table>
                                 </td>
                             </tr>

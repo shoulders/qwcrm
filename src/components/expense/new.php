@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Create the expense record and return the new expense_id
-\CMSApplication::$VAR['expense_id'] = $this->app->components->expense->insertRecord(\CMSApplication::$VAR['supplier_id']);
+\CMSApplication::$VAR['expense_id'] = $this->app->components->expense->insertRecord(\CMSApplication::$VAR['supplier_id'] ?? null);
 
 // Load the newly created invoice edit page
 $this->app->system->page->forcePage('expense', 'edit&expense_id='.\CMSApplication::$VAR['expense_id']);
