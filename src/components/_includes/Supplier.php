@@ -159,7 +159,7 @@ class Supplier extends Components {
     #   Get supplier details   #
     ############################
 
-    public function getRecord($supplier_id, $item = null) {
+    public function getRecord($supplier_id = null, $item = null) {
 
         // This allows blank calls (i.e. payment:details, not all records have a client_id)
         if(!$supplier_id) {

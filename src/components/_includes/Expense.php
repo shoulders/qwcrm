@@ -283,7 +283,7 @@ class Expense extends Components {
     #  Get Expense Details   #
     ##########################
 
-    public function getRecord($expense_id, $item = null) {
+    public function getRecord($expense_id = null, $item = null) {
 
         // This allows for blank calls
         if(!$expense_id)

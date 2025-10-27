@@ -356,7 +356,7 @@ defined('_QWEXEC') or die;
     #   Get invoice details             #
     #####################################
 
-    public function getRecord($invoice_id, $item = null) {
+    public function getRecord($invoice_id = null, $item = null) {
 
         // This allows for blank calls
         if(!$invoice_id){

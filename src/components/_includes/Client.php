@@ -192,7 +192,7 @@ class Client extends Components {
     #  Get Client Details          #
     ################################
 
-    public function getRecord($client_id, $item = null) {
+    public function getRecord($client_id = null, $item = null) {
 
         // This allows blank calls (i.e. payment:details, not all records have a client_id)
         if(!$client_id) {

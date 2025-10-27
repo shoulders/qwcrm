@@ -267,7 +267,7 @@ class OtherIncome extends Components {
     #   Get otherincome details   #
     ###############################
 
-    public function getRecord($otherincome_id, $item = null)
+    public function getRecord($otherincome_id = null, $item = null)
     {
         // This allows for blank calls
         if(!$otherincome_id)
