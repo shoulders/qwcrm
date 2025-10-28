@@ -144,24 +144,15 @@
                                         <!-- Reference -->
                                         <tr>
                                             <td colspan="10" valign="top" align="left">
-                                                <b>{t}Reference{/t}: </b>
-                                                {if $creditnote_details.reference}
-                                                    {$creditnote_details.reference}
-                                                {else}
-                                                    {t}n/a{/t}
-                                                {/if}
+                                                <b>{t}Reference{/t}: </b>{$creditnote_details.reference}
                                             </td>
                                         </tr>
 
                                         <!-- Reason for Credit Note -->
                                         <tr>
                                             <td colspan="10" valign="top" align="left">
-                                                <b>{t}Reason for Credit Note{/t}: </b>
-                                                {if $creditnote_details.note}
-                                                    <div style="width: 300px; word-wrap: break-word;">{$creditnote_details.note}</div>
-                                                {else}
-                                                    {t}n/a{/t}
-                                                {/if}
+                                                <b>{t}Note{/t}: </b>
+                                                <div style="width: 300px; word-wrap: break-word;">{$creditnote_details.note}</div>
                                             </td>
                                         </tr>
 

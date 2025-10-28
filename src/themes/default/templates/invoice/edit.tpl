@@ -246,6 +246,9 @@
     // Refresh all dynamic items onscreen
     function refreshPage(applyDiscountRate = false) {
 
+        // Only run once the page is fully loaded
+        if(pageBuilding) { return; }
+
         // Disable some function buttons because there is a change
         $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
 
@@ -294,7 +297,8 @@
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
 
             // Update Row Totals onscreen
-            if(applyDiscountRate) { $(this).find("input[id$='\\[unit_discount\\]']").val(parseFloat(rowUnitDiscount).toFixed(2)); }
+            //if(applyDiscountRate) { $(this).find("input[id$='\\[unit_discount\\]']").val(parseFloat(rowUnitDiscount).toFixed(2)); }
+            $(this).find("input[id$='\\[unit_discount\\]']").val(parseFloat(rowUnitDiscount).toFixed(2));
             $(this).find("input[id$='\\[subtotal_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));
@@ -402,7 +406,7 @@
                                                                 trigger     : "date_button",
                                                                 inputField  : "date",
                                                                 dateFormat  : "{$date_format}",
-                                                                onChange    : function() { refreshPage(); }
+                                                                onChange    : function() { refreshPage('1'); }
                                                             } );
                                                         </script>
                                                     {else}
@@ -418,7 +422,7 @@
                                                                 trigger     : "due_date_button",
                                                                 inputField  : "due_date",
                                                                 dateFormat  : "{$date_format}",
-                                                                onChange    : function() { refreshPage(); }
+                                                                onChange    : function() { refreshPage('2'); }
                                                             });
                                                         </script>
                                                     {else}
@@ -481,21 +485,25 @@
                                                 </td>
 
                                             </tr>
+
+                                            <!-- Terms -->
                                             <tr>
-
-                                                <!-- Terms and Discount -->
                                                 <td colspan="7" valign="top" align="left">
-                                                    <p><b>{t}Credit Terms{/t}: </b>{if $client_details.credit_terms}{$client_details.credit_terms}{else}{t}n/a{/t}{/if}</p>
-                                                    <b>{t}Discount{/t}:</b><br>
-                                                    {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
-                                                        <input type="number" class="olotd4" size="6" id="client_discount_rate" value="{$client_details.discount_rate|string_format:"%.2f"}"> %<br>
-                                                        <button type="button" onclick="applyDiscountRate();">{t}Apply Discount{/t}</button>
-                                                        <br>
-                                                        ** {t}The default value shown is the client's standard discount rate, but can be changed for this invoice.{/t} **<br>
-                                                        ** {t}This will alter all items.{/t} **
-                                                    {/if}
+                                                    <b>{t}Credit Terms{/t}: </b>{if $client_details.credit_terms}{$client_details.credit_terms}{else}{t}n/a{/t}{/if}
                                                 </td>
+                                            </tr>
 
+                                            <!-- Discount -->
+                                            <tr{if !$invoice_details.client_id} hidden{/if}>
+                                                <td valign="top" align="left">
+                                                    <b>{t}Client Discount{/t}:</b>
+                                                </td>
+                                                <td colspan="6" valign="top" align="left">
+                                                    <input type="number" class="olotd4" size="6" id="client_discount_rate" value="{$client_details.discount_rate|string_format:"%.2f"}" min="0" max="99.99" step="0.01"> %
+                                                    <button type="button" onclick="applyDiscountRate();">{t}Apply Discount{/t}</button><br>
+                                                    * {t}The default value shown is the client's standard discount rate, but can be changed for this invoice.{/t}<br>
+                                                    * {t}This will alter all item Unit Discounts.{/t}
+                                                </td>
                                             </tr>
                                         </table>
                                     </td>

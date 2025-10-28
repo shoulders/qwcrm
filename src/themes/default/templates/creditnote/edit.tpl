@@ -233,6 +233,9 @@
             refreshPage();
         });
 
+
+
+
         /* Cleaning Up */
 
         // Refresh the page
@@ -244,37 +247,21 @@
     }
 
     // Refresh all dynamic items onscreen
-    function refreshPage(applyDiscountRate = false) {
+    function refreshPage() {
 
-        // if not initial page build
-        if(pageBuilding === false) {
+        // Only run once the page is fully loaded
+        if(pageBuilding) { return; }
 
-            // Disable some function buttons because there is a change
-            $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
+        // Disable some function buttons because there is a change
+        $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
 
-            // Refresh Credit Note Totals
-            refreshTotals(applyDiscountRate);
-        }
+        // Refresh Invoice Totals
+        refreshTotals();
 
-    }
-
-    // Apply a discount rate to all items via the 'Apply Discount' button
-    function applyDiscountRate() {
-
-        let clientDiscountRate = +$("#client_discount_rate").val();
-
-        if (clientDiscountRate < 0 || clientDiscountRate > 99.99) {
-            alert("{t}The discount rate must be within the range of 0 and 99.99{/t}");
-        } else {
-            refreshPage(true);
-        }
     }
 
     // Recalculate and then refresh all onscreen credit note totals
-    function refreshTotals(applyDiscountRate = false) {
-
-        // Get the client discount rate
-        var clientDiscountRate = +$("#client_discount_rate").val();
+    function refreshTotals() {
 
         /* Credit Note Item Rows */
 
@@ -290,7 +277,7 @@
             // Unit Values (not used onscreen)
             rowUnitQty                  = +$(this).find("input[id$='\\[unit_qty\\]']").val();
             rowUnitNet                  = +$(this).find("input[id$='\\[unit_net\\]']").val();
-            rowUnitDiscount             = applyDiscountRate ? rowUnitNet * (clientDiscountRate / 100) : +$(this).find("input[id$='\\[unit_discount\\]']").val();
+            rowUnitDiscount             = +$(this).find("input[id$='\\[unit_discount\\]']").val();
             rowUnitTaxRate              = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
 
             // Row Totals
@@ -299,7 +286,6 @@
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
 
             // Update Row Totals onscreen
-            if(applyDiscountRate) { $(this).find("input[id$='\\[unit_discount\\]']").val(parseFloat(rowUnitDiscount).toFixed(2)); }
             $(this).find("input[id$='\\[subtotal_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));
@@ -513,21 +499,13 @@
 
                                             </tr>
 
-                                            <!-- Discount -->
-                                            {if $creditnote_details.client_id}
-                                                <tr>
-                                                    <td colspan="7" valign="top" align="left">
-                                                        <b>{t}Discount{/t}:</b><br>
-                                                        {if $creditnote_details.status == 'pending' || $creditnote_details.status == 'unused'}
-                                                            <input type="number" class="olotd4" size="6" id="client_discount_rate" value="{$client_details.discount_rate|string_format:"%.2f"}"> %<br>
-                                                            <button type="button" onclick="applyDiscountRate();">{t}Apply Discount{/t}</button>
-                                                            <br>
-                                                            ** {t}The default value shown is the client's standard discount rate.{/t} **<br>
-                                                            ** {t}This will alter all items.{/t} **
-                                                        {/if}
-                                                    </td>
-                                                </tr>
-                                            {/if}
+                                            <!-- Reference -->
+                                            <tr>
+                                                <td><strong>{t}Reference{/t}:</strong></td>
+                                                <td>
+                                                    <input name="qform[reference]" class="olotd5" value="{$creditnote_details.reference}" size="25" type="text" maxlength="50" onkeydown="return onlyAlphaNumericPunctuation(event);">
+                                                </td>
+                                            </tr>
 
                                         </table>
                                     </td>
@@ -657,28 +635,12 @@
                                     </td>
                                 </tr>
 
-                                <!-- Credit Note Reference -->
-                                <tr>
-                                    <td>
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0">
-                                            <tr>
-                                                <td class="menuhead2">&nbsp;{t}Reference{/t}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menutd2">
-                                                    <input name="qform[reference]" class="olotd5" value="{$creditnote_details.reference}" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumericPunctuation(event);">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-
                                 <!-- Reason for Credit Note -->
                                 <tr>
                                     <td>
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
-                                                <td class="menuhead2">&nbsp;{t}Reason for Credit Note{/t}</td>
+                                                <td class="menuhead2">&nbsp;{t}Note{/t}</td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">

@@ -10,23 +10,23 @@
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
-        <td>            
+        <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>
                     <td class="menuhead2" width="680">&nbsp;{t}Edit{/t} - {$client_details.display_name}</td>
                     <td class="menuhead2" width="20" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}CLIENT_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}CLIENT_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
-                </tr>                
+                </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">                    
+                    <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
-                                <td width="100%" valign="top">                                   
+                                <td width="100%" valign="top">
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                         <tr>
-                                            <td class="menutd">                                                                                                 
-                                                <form action="index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}" method="post" name="edit_client" id="edit_client">                                                    
+                                            <td class="menutd">
+                                                <form action="index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}" method="post" name="edit_client" id="edit_client">
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">
@@ -57,8 +57,8 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><input name="qform[discount_rate]" class="olotd5" size="4" value="{$client_details.discount_rate|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
-                                                                        </tr>                                                                                  
+                                                                            <td><input name="qform[discount_rate]" class="olotd5" size="4" value="{$client_details.discount_rate|string_format:"%.2f"}" min="0" max="99.99" step="0.01" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
+                                                                        </tr>
                                                                     </table>
                                                                 </td>
                                                             </tr>
@@ -71,22 +71,22 @@
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Type{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                             <td>
-                                                                                <select id="type" name="qform[type]" class="olotd5" required> 
-                                                                                    {section name=s loop=$client_types}    
+                                                                                <select id="type" name="qform[type]" class="olotd5" required>
+                                                                                    {section name=s loop=$client_types}
                                                                                         <option value="{$client_types[s].type_key}"{if $client_details.type == $client_types[s].type_key} selected{/if}>{t}{$client_types[s].display_name}{/t}</option>
-                                                                                    {/section}    
-                                                                                </select>                                                                                   
+                                                                                    {/section}
+                                                                                </select>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Active{/t}</b></td>
                                                                             <td>
-                                                                                <select class="olotd5" id="active" name="qform[active]" required>                                                       
+                                                                                <select class="olotd5" id="active" name="qform[active]" required>
                                                                                     <option value="0"{if $client_details.active == '0'} selected{/if}>{t}No{/t}</option>
                                                                                     <option value="1"{if $client_details.active == '1'} selected{/if}>{t}Yes{/t}</option>
-                                                                                </select>                                                                                
-                                                                            </td>                        
-                                                                        </tr>                                                                        
+                                                                                </select>
+                                                                            </td>
+                                                                        </tr>
                                                                     </tbody>
                                                                 </table>
                                                             </td>
@@ -155,8 +155,8 @@
                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_id}';">{t}Cancel{/t}</button>
                                                             </td>
                                                         </tr>
-                                                    </table>                                                    
-                                                </form>                                                
+                                                    </table>
+                                                </form>
                                             </td>
                                         </tr>
                                     </table>
