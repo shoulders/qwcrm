@@ -13,7 +13,7 @@
                     <td class="menuhead2" width="80%">{t}Payment Details{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a href="index.php?component=payment&page_tpl=edit&payment_id={$payment_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" height="16" border="0">{t}Edit{/t}</a>
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}PAYMENT_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}PAYMENT_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">                        
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}PAYMENT_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}PAYMENT_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -42,7 +42,7 @@
                                             <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$payment_details.client_id}">{$client_display_name}</a></td>
                                             <td class="menutd"><b>{t}Supplier{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=supplier&page_tpl=details&supplier_id={$payment_details.supplier_id}">{$supplier_display_name}</a></td>
-                                            
+
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
@@ -69,33 +69,27 @@
                                                 <b>{t}Creditenote ID{/t}</b><br>
                                                 <b>{t}Credit Note Action{/t}<b>
                                             </td>
-                                            <td class="menutd">
-                                                <a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$payment_details.creditnote_id}">{$payment_details.creditnote_id}</a><br>
-                                                {section name=c loop=$payment_creditnote_action_types}    
-                                                    {if $payment_details.creditnote_action == $payment_types[c].type_key}{t}{$payment_types[c].display_name}{/t}{/if}                    
-                                                {/section}
-                                            </td>
-                                            
+                                            <td class="menutd"></td>
                                         </tr>
-                                        <tr>                                            
+                                        <tr>
                                             <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd">
-                                                {section name=t loop=$payment_types}    
-                                                    {if $payment_details.type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}                    
+                                                {section name=t loop=$payment_types}
+                                                    {if $payment_details.type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}
                                                 {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Method{/t}</b></td>
                                             <td class="menutd">
-                                                {section name=s loop=$payment_methods}    
-                                                    {if $payment_details.method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}   
+                                                {section name=s loop=$payment_methods}
+                                                    {if $payment_details.method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}
                                                 {/section}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Direction{/t}</b></td>
                                             <td class="menutd">
-                                                {section name=d loop=$payment_directions}    
-                                                    {if $payment_details.direction == $payment_directions[d].key}{t}{$payment_directions[d].display_name}{/t}{/if}                         
+                                                {section name=d loop=$payment_directions}
+                                                    {if $payment_details.direction == $payment_directions[d].key}{t}{$payment_directions[d].display_name}{/t}{/if}
                                                 {/section}
                                             </td>
                                             <td class="menutd"></td>
@@ -104,8 +98,8 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Status{/t}</b></td>
                                             <td class="menutd">
-                                                {section name=t loop=$payment_statuses}    
-                                                    {if $payment_details.status == $payment_statuses[t].status_key}{t}{$payment_statuses[t].display_name}{/t}{/if}                    
+                                                {section name=t loop=$payment_statuses}
+                                                    {if $payment_details.status == $payment_statuses[t].status_key}{t}{$payment_statuses[t].display_name}{/t}{/if}
                                                 {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Amount{/t}</b></td>
@@ -116,7 +110,7 @@
                                             <td class="menutd">{if $payment_details.additional_info|paymentadinfodisplay}{$payment_details.additional_info|paymentadinfodisplay}{else}{t}none{/t}{/if}</td>
                                             <td class="menutd"></td>
                                             <td class="menutd"></td>
-                                        </tr> 
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Note{/t}</b></td>
                                             <td class="menutd" colspan="3"></td>
@@ -124,7 +118,7 @@
                                         <tr>
                                             <td class="menutd" colspan="3">{$payment_details.note}</td>
                                             <td class="menutd"></td>
-                                        </tr>                                        
+                                        </tr>
                                     </table>
                                 </td>
                             </tr>

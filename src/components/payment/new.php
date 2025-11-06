@@ -96,17 +96,22 @@ if(!\CMSApplication::$VAR['qpayment']['name_on_card'])
         \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['qpayment']['otherincome_id'], 'display_name');
     }
 
-    // Creditnote
+    // Creditnote  - for money that is going to be attached to a creditnote
     elseif (\CMSApplication::$VAR['qpayment']['type'] == 'creditnote')
     {
-        if(\CMSApplication::$VAR['qpayment']['creditnote_action'] == 'sales_refund')
+
+        $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id']);
+
+        // Debit (When sending money to Client / Against Invoice)
+        if($creditnote_details['type'] == 'sales')
         {
             \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
         }
-        elseif(\CMSApplication::$VAR['qpayment']['creditnote_action'] == 'purchase_refund')
+
+        // Credit (When receiving money from a Supplier / Against Expense)
+        elseif($creditnote_details['type'] == 'purchase')
         {
-            $supplier_id = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id'], 'supplier_id');
-            \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->supplier->getRecord($supplier_id, 'display_name');
+            \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'display_name');
         }
     }
     else
@@ -122,7 +127,6 @@ $this->app->smarty->assign('payment_type',                      \CMSApplication:
 $this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes()                                                             );
 $this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods()                                                           );
 $this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses()                                                          );
-$this->app->smarty->assign('payment_creditnote_action_types',   $this->app->components->payment->getCreditnoteActionTypes());
 $this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes()                                                 );
 $this->app->smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
 $this->app->smarty->assign('voucher_code',                      \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null);

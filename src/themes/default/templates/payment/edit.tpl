@@ -32,9 +32,9 @@
                                 <td width="100%" valign="top" >
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                      <tr>
-                                         <td>                                                                                           
-                                            <form method="post" action="index.php?component=payment&page_tpl=edit&payment_id={$payment_details.payment_id}" name="edit_payment" id="edit_payment">                                                
-                                                <table width="100%" cellpadding="2" cellspacing="2" border="0">                                                    
+                                         <td>
+                                            <form method="post" action="index.php?component=payment&page_tpl=edit&payment_id={$payment_details.payment_id}" name="edit_payment" id="edit_payment">
+                                                <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                     <tr>
                                                         <td align="right"><b>{t}Payment ID{/t}</b></td>
                                                         <td colspan="3">{$payment_details.payment_id}</td>
@@ -48,78 +48,73 @@
                                                     <tr>
                                                         <td align="right"><b>{t}Client{/t}</b></td>
                                                         <td colspan="3">
-                                                            <a href="index.php?component=client&page_tpl=details&client_id={$payment_details.client_id}">{$client_display_name}</a>                                                            
+                                                            <a href="index.php?component=client&page_tpl=details&client_id={$payment_details.client_id}">{$client_display_name}</a>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Supplier{/t}</b></td>
                                                         <td colspan="3">
-                                                            <a href="index.php?component=supplier&page_tpl=details&supplier_id={$payment_details.supplier_id}">{$supplier_display_name}</a>                                                            
+                                                            <a href="index.php?component=supplier&page_tpl=details&supplier_id={$payment_details.supplier_id}">{$supplier_display_name}</a>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Invoice ID{/t}</b></td>
                                                         <td colspan="3">
-                                                            <a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a>                                                            
+                                                            <a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Expense ID{/t}</b></td>
                                                         <td colspan="3">
-                                                            <a href="index.php?component=expense&page_tpl=details&expense_id={$payment_details.expense_id}">{$payment_details.expense_id}</a>                                                            
+                                                            <a href="index.php?component=expense&page_tpl=details&expense_id={$payment_details.expense_id}">{$payment_details.expense_id}</a>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Otherincome ID{/t}</b></td>
                                                         <td colspan="3">
-                                                            <a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$payment_details.otherincome_id}">{$payment_details.otherincome_id}</a>                                                            
+                                                            <a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$payment_details.otherincome_id}">{$payment_details.otherincome_id}</a>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Credit Note ID{/t}</b></td>
                                                         <td colspan="3">
-                                                            <a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$payment_details.creditnote_id}">{$payment_details.creditnote_id}</a>                                                            
+                                                            <a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$payment_details.creditnote_id}">{$payment_details.creditnote_id}</a>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Credit Note Action{/t}</b></td>
-                                                        <td colspan="3">
-                                                            {section name=c loop=$payment_creditnote_action_types}    
-                                                                {if $payment_details.creditnote_action == $payment_types[c].type_key}{t}{$payment_types[c].display_name}{/t}{/if}                    
-                                                            {/section}
-                                                        </td>
+                                                        <td align="right" colspan="4"></td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Voucher ID{/t}</b></td>
                                                         <td colspan="3">
-                                                            <a href="index.php?component=voucher&page_tpl=details&voucher_id={$payment_details.voucher_id}">{$payment_details.voucher_id}</a>                                                            
+                                                            <a href="index.php?component=voucher&page_tpl=details&voucher_id={$payment_details.voucher_id}">{$payment_details.voucher_id}</a>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Parent Record Balance{/t}</b></td>
                                                         <td>{$currency_sym}{$parent_record_balance|string_format:"%.2f"} ({t}As if this payment has not been applied{/t})</td>
-                                                        
+
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td>
                                                             <input id="date" name="qpayment[date]" class="olotd5" size="10" value="{$payment_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                             <button type="button" id="date_button">+</button>
-                                                            <script>                                                                
+                                                            <script>
                                                                 Calendar.setup( {
                                                                     trigger     : "date_button",
                                                                     inputField  : "date",
-                                                                    dateFormat  : "{$date_format}"                                                                                            
-                                                                } );                                                                  
-                                                            </script>                                                            
+                                                                    dateFormat  : "{$date_format}"
+                                                                } );
+                                                            </script>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Type{/t}</b></td>
                                                         <td colspan="3">
-                                                            {section name=t loop=$payment_types}    
-                                                                {if $payment_details.type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}                    
-                                                            {/section}                                                            
+                                                            {section name=t loop=$payment_types}
+                                                                {if $payment_details.type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}
+                                                            {/section}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -127,7 +122,7 @@
                                                         <td>
                                                             {section name=s loop=$payment_methods}
                                                                 {if $payment_details.method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}
-                                                            {/section}                                                            
+                                                            {/section}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -135,17 +130,17 @@
                                                         <td>
                                                             {section name=d loop=$payment_directions}
                                                                 {if $payment_details.direction == $payment_directions[d].key}{t}{$payment_directions[d].display_name}{/t}{/if}
-                                                            {/section}                                                            
+                                                            {/section}
                                                         </td>
-                                                    </tr> 
+                                                    </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Status{/t}</b></td>
                                                         <td colspan="3">
-                                                            {section name=t loop=$payment_statuses}    
-                                                                {if $payment_details.status == $payment_statuses[t].status_key}{t}{$payment_statuses[t].display_name}{/t}{/if}                    
-                                                            {/section}                                                            
+                                                            {section name=t loop=$payment_statuses}
+                                                                {if $payment_details.status == $payment_statuses[t].status_key}{t}{$payment_statuses[t].display_name}{/t}{/if}
+                                                            {/section}
                                                         </td>
-                                                    </tr>                                                    
+                                                    </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td>{$currency_sym}<input name="qpayment[amount]" class="olotd5" size="10" value="{$payment_details.amount|string_format:"%.2f"}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
@@ -153,19 +148,19 @@
                                                     <tr>
                                                         <td align="right"><b>{t}Additional Info{/t}</b></td>
                                                         <td>{if $payment_details.additional_info|paymentadinfodisplay}{$payment_details.additional_info|paymentadinfodisplay}{else}{t}none{/t}{/if}</td>
-                                                    </tr> 
+                                                    </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Note{/t}</b></td>
                                                         <td><textarea name="qpayment[note]" class="olotd5" cols="50" rows="15">{$payment_details.note}</textarea></td>
-                                                    </tr>                                                    
+                                                    </tr>
                                                     <tr>
                                                         <td colspan="2">
                                                             <button type="submit" name="submit" value="submit">{t}Update{/t}</button>
                                                             <button type="button" class="olotd4" onclick="window.location.href='index.php?component=payment&page_tpl=details&payment_id={$payment_id}';">{t}Cancel{/t}</button>
                                                         </td>
-                                                    </tr>                                        
+                                                    </tr>
                                                 </table>
-                                            </form>                                            
+                                            </form>
                                          </td>
                                      </tr>
                                  </table>

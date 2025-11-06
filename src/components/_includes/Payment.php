@@ -57,7 +57,6 @@ class Payment extends Components {
                 expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?: null          ).",
                 otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",
                 creditnote_id   = ".$this->app->db->qStr( $qpayment['creditnote_id'] ?: null       ).",
-                creditnote_action  = ".$this->app->db->qStr( $qpayment['creditnote_action'] ?: null).",
                 voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?: null          ).",
                 date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date'])    ).",
                 tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",
@@ -98,7 +97,7 @@ class Payment extends Components {
     #  Display all payments the given status            #
     #####################################################
 
-    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $paymentDirection = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $creditnote_action = null, $voucher_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no =  null, $search_category = 'payment_id', $search_term = null, $type = null, $method = null, $paymentDirection = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
@@ -154,12 +153,6 @@ class Payment extends Components {
 
         // Restrict by Credit Note
         if($creditnote_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_id=".$this->app->db->qStr($creditnote_id);}
-
-        // Restrict by Credit Note Action
-        $whereTheseRecords .= $this->app->components->report->paymentBuildFilterByCreditnoteAction($creditnote_action);
-        /*if($creditnote_action) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.creditnote_action=".$this->app->db->qStr($creditnote_action);
-        }*/
 
         // Restrict by Voucher
         if($voucher_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.voucher_id=".$this->app->db->qStr($voucher_id);}
@@ -344,21 +337,6 @@ class Payment extends Components {
     }
 
     #############################################
-    #    Get Credit Note Action Types           #
-    #############################################
-
-
-    public function getCreditnoteActionTypes() {
-
-        $sql = "SELECT * FROM ".PRFX."payment_creditnote_action_types";
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        return $rs->GetArray();
-
-    }
-
-    #############################################
     #    Get Payment Directions                 #
     #############################################
 
@@ -518,7 +496,7 @@ class Payment extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], null, $qpayment['invoice_id']);
 
         // Update last active record
-        $this->updateLastActive($payment_id, $this::$timestamp);
+        $this->updateLastActive($qpayment['payment_id'], $this::$timestamp);
         $this->app->components->client->updateLastActive($qpayment['client_id'], $this::$timestamp);
         $this->app->components->invoice->updateLastActive($qpayment['invoice_id'], $this::$timestamp);
         $this->app->components->supplier->updateLastActive($qpayment['supplier_id'], $this::$timestamp);
@@ -975,7 +953,6 @@ class Payment extends Components {
             \CMSApplication::$VAR['qpayment']['expense_id']         = \CMSApplication::$VAR['expense_id'] ?? \CMSApplication::$VAR['qpayment']['expense_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['otherincome_id']     = \CMSApplication::$VAR['otherincome_id'] ?? \CMSApplication::$VAR['qpayment']['otherincome_id'] ?? null;
             \CMSApplication::$VAR['qpayment']['creditnote_id']      = \CMSApplication::$VAR['creditnote_id'] ?? \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['creditnote_action']  = null;
             \CMSApplication::$VAR['qpayment']['voucher_id']         = null;
             \CMSApplication::$VAR['qpayment']['voucher_code']       = \CMSApplication::$VAR['voucher_code'] ?? \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null;
             \CMSApplication::$VAR['qpayment']['name_on_card']       = \CMSApplication::$VAR['qpayment']['name_on_card'] ?? null;
@@ -1004,7 +981,6 @@ class Payment extends Components {
             \CMSApplication::$VAR['qpayment']['expense_id'] = Payment::$payment_details['expense_id'];
             \CMSApplication::$VAR['qpayment']['otherincome_id'] = Payment::$payment_details['otherincome_id'];
             \CMSApplication::$VAR['qpayment']['creditnote_id'] = Payment::$payment_details['creditnote_id'];
-            \CMSApplication::$VAR['qpayment']['creditnote_action'] = Payment::$payment_details['creditnote_action'];
             \CMSApplication::$VAR['qpayment']['voucher_id'] = Payment::$payment_details['voucher_id'];
         }
 

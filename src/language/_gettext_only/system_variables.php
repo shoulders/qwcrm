@@ -155,12 +155,6 @@ _gettext("Expense");
 _gettext("Other Income");
 _gettext("Credit Note");
 
-/* Payment Cedit Note Action Types*/
-_gettext("Sales Apply");
-_gettext("Sales Refund");
-_gettext("Purchase Apply");
-_gettext("Purchase Refund");
-
 /* Supplier Statuses */
 _gettext("Valid");
 _gettext("Cancelled");

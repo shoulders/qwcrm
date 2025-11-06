@@ -38,18 +38,12 @@ class PaymentMethodCreditnote extends PaymentMethod
             // Set Action and Direction of payment
             if($this->creditnote_details['type'] == 'sales')
             {
-                // Apply a Client's credit note
-                $this->VAR['qpayment']['creditnote_action'] = 'sales_apply';
-
                 // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
                 $this->VAR['qpayment']['direction'] = 'debit';
 
             }
             else
             {
-                // Apply a Supplier's credit note
-                $this->VAR['qpayment']['creditnote_action'] = 'purchase_apply';
-
                 // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
                 $this->VAR['qpayment']['direction'] = 'credit';
             }

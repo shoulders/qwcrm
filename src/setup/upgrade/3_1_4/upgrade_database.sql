@@ -891,24 +891,6 @@ INSERT INTO `#__creditnote_types` (`id`, `type_key`, `display_name`) VALUES
 ALTER TABLE `#__creditnote_types` ADD PRIMARY KEY (`id`);
 
 --
--- Table structure for table `#__payment_creditnote_action_types`
---
-
-CREATE TABLE `#__payment_creditnote_action_types` (
-  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `#__payment_creditnote_action_types` (`id`, `type_key`, `display_name`) VALUES
-(1, 'sales_apply', 'Sales Apply'),
-(2, 'sales_refund', 'Sales Refund'),
-(3, 'purchase_apply', 'Purchase Apply'),
-(4, 'purchase_refund', 'Purchase Refund');
-
-ALTER TABLE `#__payment_creditnote_action_types` ADD PRIMARY KEY (`id`);
-
---
 
 INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
 ('9', 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');
@@ -948,7 +930,6 @@ UPDATE `#__payment_options` SET `creditnote_footer_msg` = '<p>This is a footer m
 --
 
 ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against / Refunded against' AFTER `otherincome_id`;
-ALTER TABLE `#__payment_records` ADD `creditnote_action` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `creditnote_id`;
 
 --
 

@@ -20,21 +20,15 @@ class PaymentTypeCreditnote extends PaymentType
         Payment::$payment_details['type'] = 'creditnote';
         $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']); // only needed for smarty?
 
-        // Set Creditnote action and direction
+        // Set Payment direction
         if($this->creditnote_details['type'] == 'sales')
         {
-            // Client refund
-            $this->VAR['qpayment']['creditnote_action'] = 'sales_refund';
-
-            // Set Payment direction
+            // Sending a Payment
             $this->VAR['qpayment']['direction'] = 'debit';
         }
         else
         {
-            // Refund from Supplier
-            $this->VAR['qpayment']['creditnote_action'] = 'purchase_refund';
-
-            // Set Payment direction
+            // Receiving a Payment
             $this->VAR['qpayment']['direction'] = 'credit';
         }
 
@@ -52,12 +46,17 @@ class PaymentTypeCreditnote extends PaymentType
         // Assign Payment Type specific template variables
         if($this->creditnote_details['type'] == 'sales')
         {
+            // show payment methods to send money (debit)
             $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, Payment::$disabledMethods));
+
             $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->creditnote_details['client_id']));
         }
+        // type == purchase
         else
         {
+            // show payment methods to receive money (credit)
             $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));
+
             $this->app->smarty->assign('supplier_details', $this->app->components->supplier->getRecord($this->creditnote_details['supplier_id']));
         }
         $this->app->smarty->assign('creditnote_details', $this->creditnote_details);

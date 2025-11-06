@@ -62,7 +62,6 @@ class Upgrade3_1_4 extends Setup {
         $this->copyColumnAToColumnB('payment_records', 'refund_id', 'creditnote_id');
         $this->updateColumnValues(PRFX.'payment_records', 'type', 'refund', 'creditnote');
         $this->updateColumnValues(PRFX.'payment_records', 'direction', '', 'credit', 'type', 'creditnote');
-        $this->updateColumnValues(PRFX.'payment_records', 'creditnote_action', '', 'sales_refund', 'type', 'creditnote');
 
         // Convert Expense to use items
         $this->expenseConvertToUseItems();
@@ -144,7 +143,7 @@ class Upgrade3_1_4 extends Setup {
                     expense_id      =". $this->app->db->qStr(null).",
                     date            =". $this->app->db->qStr($rs->fields['date']).",
                     expiry_date     =". $this->app->db->qStr($rs->fields['date']).",
-                    type            =". $this->app->db->qStr($rs->fields['sales_refund']).",
+                    type            =". $this->app->db->qStr('sales').",
                     tax_system      =". $this->app->db->qStr($rs->fields['tax_system']).",
                     unit_net        =". $this->app->db->qStr($rs->fields['unit_net']).",
                     unit_discount   =". $this->app->db->qStr($rs->fields[0.00]).",

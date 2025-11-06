@@ -997,7 +997,7 @@ class Creditnote extends Components {
                 = is there any real money left?*/
 
                 // Calculate real monies paid on this invoice by the client
-                $moniesIn
+                /////////$moniesIn
 
             }
 

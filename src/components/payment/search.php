@@ -19,15 +19,15 @@ defined('_QWEXEC') or die;
 
 // If a search is submitted
 if(isset(\CMSApplication::$VAR['submit'])) {
-    
+
     // Log activity
     $record = _gettext("A search of payments has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
     $this->app->system->general->writeRecordToActivityLog($record);
-    
+
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
     $this->app->system->page->forcePage('payment', 'search', \CMSApplication::$VAR, 'get');
-    
+
 }
 
 // Build the page
@@ -41,5 +41,4 @@ $this->app->smarty->assign('payment_types',    $this->app->components->payment->
 $this->app->smarty->assign('payment_methods',  $this->app->components->payment->getMethods()                                                                               );
 $this->app->smarty->assign('payment_directions',  $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses', $this->app->components->payment->getStatuses()                                                                              );
-$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
 $this->app->smarty->assign('display_payments', $this->app->components->payment->getRecords('payment_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_method'], null, \CMSApplication::$VAR['filter_status']));

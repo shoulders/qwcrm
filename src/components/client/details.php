@@ -45,7 +45,6 @@ $this->app->smarty->assign('payment_types',            $this->app->components->p
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods());
 $this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
-$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
 
 //$this->app->smarty->assign('payments_received',      $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'monies_received', null, 'monies_received', null, null, \CMSApplication::$VAR['client_id'], null, null, null, null, null, 'monies_received'));
 //$this->app->smarty->assign('payments_sent',          $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'monies_sent', null, 'monies_sent', null, null, \CMSApplication::$VAR['client_id'], null, null, null, null, null, 'monies_sent'));

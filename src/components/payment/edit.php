@@ -12,13 +12,13 @@ defined('_QWEXEC') or die;
 if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
     $this->app->system->page->forcePage('payment', 'search');
-}   
+}
 
 // Check if payment can be edited
 if(!$this->app->components->payment->checkRecordAllowsEdit(\CMSApplication::$VAR['payment_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this payment because its status does not allow it."));
     $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
-}  
+}
 
 // Build the Payment Environment
 $this->app->components->payment->buildPaymentEnvironment('edit');
@@ -38,6 +38,5 @@ $this->app->smarty->assign('payment_types',            $this->app->components->p
 $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods());
 $this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
-$this->app->smarty->assign('payment_creditnote_action_types', $this->app->components->payment->getCreditnoteActionTypes());
 $this->app->smarty->assign('payment_details',          Payment::$payment_details);
 $this->app->smarty->assign('parent_record_balance',    Payment::$record_balance + Payment::$payment_details['amount']);
