@@ -87,7 +87,7 @@ class PaymentMethodCreditnote extends PaymentMethod
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against an invoice belonging to the client it is linked with.").' '._gettext("Client").': '.$this->creditnote_details['client_id']);
                 }
 
-                // If this CR was created from an invoice, you can only apply this credit note against that client and invoice it was linked with
+                // If this CR was created from an invoice, you can only apply this credit note against that client and the invoice it was linked with
                 if($this->creditnote_details['invoice_id'] && $this->creditnote_details['invoice_id'] != $this->VAR['qpayment']['invoice_id'])
                 {
                     Payment::$payment_valid = false;
@@ -200,7 +200,7 @@ class PaymentMethodCreditnote extends PaymentMethod
         if(Payment::$action === 'delete')
         {
             // Recalculate record totals
-        $this->app->components->creditnote->recalculateTotals($this->VAR['qpayment']['creditnote_id']);
+            $this->app->components->creditnote->recalculateTotals($this->VAR['qpayment']['creditnote_id']);
         }
 
         return;

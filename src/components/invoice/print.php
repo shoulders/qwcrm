@@ -63,45 +63,33 @@ $this->app->smarty->assign('invoice_statuses',                 $this->app->compo
 
 // Invoice Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'invoice')
-{    
+{
     $templateFile = 'invoice/printing/print_invoice.tpl';
     $filename = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'];
-    
+
     // Print HTML Invoice
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
-    {        
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as html.");       
+    {
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as html.");
     }
-    
+
     // Print PDF Invoice
     if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
-    {        
+    {
         $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as a PDF.");
-    } 
-    
+    }
+
     // Download PDF Invoice
     if (\CMSApplication::$VAR['commType'] == 'pdfDownload')
-    {        
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been dowloaded as a PDF.");      
-    } 
-    
+    {
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been dowloaded as a PDF.");
+    }
+
+    // Log activity
+    $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+
+    // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
+    $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename, $client_details, $emailSubject ?? null, $emailBody ?? null);
+
 }
 
-// Client Envelope Print Routine
-if(\CMSApplication::$VAR['commContent'] == 'client_envelope')
-{    
-    $templateFile = 'client/printing/print_client_envelope.tpl';
-    $filename = _gettext("Invoice Envelope").' '.\CMSApplication::$VAR['invoice_id'];
-    
-    // Print HTML Client Envelope
-    if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
-    {        
-        $record = _gettext("Invoice Envelope").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
-    }    
-}
-
-// Log activity
-$this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
-
-// Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
-$this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename ?? null, $client_details ?? null, $emailSubject ?? null, $emailBody ?? null);

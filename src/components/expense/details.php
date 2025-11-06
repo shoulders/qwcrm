@@ -35,6 +35,7 @@ $this->app->smarty->assign('display_payments',         $this->app->components->p
 
 // Misc
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($expense_details['employee_id'], 'display_name'));
+$this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, null, $expense_details['supplier_id']));
 
 // Build the page
 $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses()            );

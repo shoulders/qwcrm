@@ -32,6 +32,7 @@ class Client extends Components {
     public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."client_records SET
+                employee_id    =". $this->app->db->qStr( $this->app->user->login_user_id ).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()         ).",
                 company_name    =". $this->app->db->qStr( $qform['company_name']     ).",
                 first_name      =". $this->app->db->qStr( $qform['first_name']       ).",
@@ -58,7 +59,7 @@ class Client extends Components {
 
         // Log activity
         $record = _gettext("New client").', '.$this->getRecord($client_id, 'display_name').', '._gettext("has been created.");
-        $this->app->system->general->writeRecordToActivityLog($record, null, $this->app->db->Insert_ID());
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $this->app->db->Insert_ID());
 
         return $client_id;
 
@@ -306,6 +307,7 @@ class Client extends Components {
     public function updateRecord($qform) {
 
         $sql = "UPDATE ".PRFX."client_records SET
+                employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id ).",
                 company_name    =". $this->app->db->qStr( $qform['company_name']     ).",
                 first_name      =". $this->app->db->qStr( $qform['first_name']       ).",
                 last_name       =". $this->app->db->qStr( $qform['last_name']        ).",
@@ -330,7 +332,7 @@ class Client extends Components {
 
         // Log activity
         $record = _gettext("The client").' '.$this->getRecord($qform['client_id'], 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, null, $qform['client_id']);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qform['client_id']);
 
         // Update last active record
         $this->updateLastActive($qform['client_id']);
@@ -363,8 +365,6 @@ class Client extends Components {
 
         // Update last active record
         $this->updateLastActive($client_id);
-
-
 
     }
 
@@ -415,7 +415,7 @@ class Client extends Components {
 
         // Write the record to the activity log
         $record = _gettext("The client").' '.$client_details['display_name'].' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, null, $client_id);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id);
 
         return true;
 
@@ -429,7 +429,6 @@ class Client extends Components {
 
         // Get information before deleting the record
         $client_id = $this->getNote($client_note_id, 'client_id');
-        $employee_id = $this->getNote($client_note_id, 'employee_id');
 
         $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$this->app->db->qStr($client_note_id);
 
@@ -439,7 +438,7 @@ class Client extends Components {
 
         // Log activity
         $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for Client").' '.$client_details['display_name'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id);
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id);
 
         // Update last active record
         $this->updateLastActive($client_id);

@@ -2172,7 +2172,7 @@ class Report extends Components {
 
     ##########################################
     #  Build payment direction filter SQL    # // Restrict by direction
-    ##########################################
+    ##########################################  TODO: do i need to transpose monies_sent here, can i not just use debit/credit, monies_sent shopuld be used for real money
 
     public function paymentBuildFilterByPaymentDirection($paymentDirection = null) {
 
@@ -2197,7 +2197,7 @@ class Report extends Components {
 
     ###################################################
     #  Build payment Creditnote Action filter SQL     # // Restrict by Creditnote Action
-    ###################################################
+    ################################################### TODO: this is wrong, mixing $paymentDirection and $creditnote_action
 
     public function paymentBuildFilterByCreditnoteAction($creditnote_action = null) {
 

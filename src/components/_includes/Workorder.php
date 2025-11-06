@@ -199,7 +199,9 @@ class WorkOrder extends Components {
                 ".PRFX."client_records.mobile_phone AS client_mobile_phone,
                 ".PRFX."client_records.fax AS client_fax,
 
-                ".PRFX."workorder_records.workorder_id, employee_id, invoice_id,
+                ".PRFX."workorder_records.workorder_id,
+                ".PRFX."workorder_records.employee_id,
+                ".PRFX."workorder_records.invoice_id,
                 ".PRFX."workorder_records.opened_on AS workorder_opened_on,
                 ".PRFX."workorder_records.closed_on AS workorder_closed_on,
                 ".PRFX."workorder_records.scope AS workorder_scope,

@@ -107,6 +107,11 @@
                                                         <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=expense&expense_id={$expense_details.expense_id}';">{t}Apply Payment{/t}</button>
                                                     {/if}
 
+                                                    <!-- Credit Note Button -->
+                                                    {if $allowed_to_create_creditnote}
+                                                        <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}', '_self');">{t}Add Purchase Credit Note (Expense){/t}</button>
+                                                    {/if}
+
                                                 </td>
                                             </tr>
                                         </table>

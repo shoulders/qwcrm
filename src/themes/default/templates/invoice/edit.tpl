@@ -501,8 +501,9 @@
                                                 <td colspan="6" valign="top" align="left">
                                                     <input type="number" class="olotd4" size="6" id="client_discount_rate" value="{$client_details.discount_rate|string_format:"%.2f"}" min="0" max="99.99" step="0.01"> %
                                                     <button type="button" onclick="applyDiscountRate();">{t}Apply Discount{/t}</button><br>
-                                                    * {t}The default value shown is the client's standard discount rate, but can be changed for this invoice.{/t}<br>
-                                                    * {t}This will alter all item Unit Discounts.{/t}
+                                                    * {t}The default value shown is the client's standard discount rate.{/t}<br>
+                                                    * {t}This will alter all item's Unit Discount to apply the discount at the specified rate.{/t}
+                                                    * {t}The specified rate is not stored in the invoice.{/t}
                                                 </td>
                                             </tr>
                                         </table>
@@ -525,7 +526,7 @@
                                                         <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=pdfBrowser');"><img src="{$theme_images_dir}icons/pdf_small.png" height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                         <button type="button" class="userButton" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=pdfDownload');"><img src="{$theme_images_dir}icons/pdf_small.png" height="14" alt="pdf">{t}Download PDF{/t}</button>
                                                         <button type="button" class="userButton" onclick="confirm('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=email&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
-                                                        <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=client_envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
+                                                        <button type="button" onclick="window.open('index.php?component=client&page_tpl=print&client_id={$client_details.client_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
                                                         <br>
                                                         <br>
                                                     {/if}

@@ -77,27 +77,30 @@ $this->app->components->payment->paymentType->buildButtons();
 // Autofill the name on the card payment if not present - this code should perhaps be moved the the methods?
 if(!\CMSApplication::$VAR['qpayment']['name_on_card'])
 {
+    // Invoice
     if (\CMSApplication::$VAR['qpayment']['type'] == 'invoice')
     {
         $client_id = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id'], 'client_id');
         \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->client->getRecord($client_id, 'display_name');
     }
 
+    // Expense
     elseif(\CMSApplication::$VAR['qpayment']['type'] == 'expense')
     {
         \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
     }
 
+    // Other Income
     elseif(\CMSApplication::$VAR['qpayment']['type'] == 'otherincome')
     {
         \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['qpayment']['otherincome_id'], 'display_name');
     }
 
+    // Creditnote
     elseif (\CMSApplication::$VAR['qpayment']['type'] == 'creditnote')
     {
         if(\CMSApplication::$VAR['qpayment']['creditnote_action'] == 'sales_refund')
         {
-            $client_id = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id'], 'client_id');
             \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
         }
         elseif(\CMSApplication::$VAR['qpayment']['creditnote_action'] == 'purchase_refund')

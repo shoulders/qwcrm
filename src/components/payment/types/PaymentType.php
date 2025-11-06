@@ -7,6 +7,8 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
+// Payment Types control the specific logic for the target of the payment eg: Creditnote, Expense, Invoice, Otherincome
+
 defined('_QWEXEC') or die;
 
 class PaymentType

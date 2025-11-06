@@ -64,6 +64,7 @@ INSERT INTO `#__client_notes` (`client_note_id`, `employee_id`, `client_id`, `da
 
 CREATE TABLE `#__client_records` (
   `client_id` int(10) UNSIGNED NOT NULL,
+  `employee_id` int(10) UNSIGNED NOT NULL,
   `opened_on` datetime NOT NULL,
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
@@ -632,11 +633,14 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
-(5, 'in_dispute', 'In Dispute'),
-(6, 'overdue', 'Overdue'),
-(7, 'collections', 'Collections'),
-(9, 'cancelled', 'Cancelled'),
-(9, 'deleted', 'Deleted');
+(5, 'partially_refunded', 'Partially Refunded'),
+(6, 'refunded', 'Refunded'),
+(7, 'paid', 'Paid'),
+(8, 'in_dispute', 'In Dispute'),
+(9, 'overdue', 'Overdue'),
+(10, 'collections', 'Collections'),
+(11, 'cancelled', 'Cancelled'),
+(12, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -1114,6 +1118,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('client:note_delete', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('client:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('client:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('client:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('company:business_hours', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('company:edit', 1, 1, 0, 0, 0, 0, 0, 0, 0),
@@ -1192,6 +1197,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('supplier:details', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('supplier:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('supplier:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('supplier:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('supplier:search', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('supplier:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('user:delete', 1, 1, 0, 0, 0, 0, 0, 0, 0),
@@ -1405,13 +1411,13 @@ CREATE TABLE `#__voucher_statuses` (
 INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'unpaid', 'Unpaid'),
 (2, 'partially_paid', 'Partially Paid'),
-(3, 'paid_unused', 'Paid Unused'),
+(3, 'paid', 'Paid (Unused)'),
+(4, 'refunded', 'Refunded'),
 (4, 'partially_redeemed', 'Partially Redeemed'),
-(5, 'fully_redeemed', 'Fully Redeemed'),
+(5, 'redeemed', 'Redeemed'),
 (6, 'suspended', 'Suspended'),
-(7, 'expired_unused', 'Expired Unused'),
-(8, 'cancelled', 'Cancelled'),
-(9, 'deleted', 'Deleted');
+(7, 'cancelled', 'Cancelled'),
+(8, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 

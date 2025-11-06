@@ -171,36 +171,53 @@
                                             <td class="menutd2">
 
                                                 <!-- Print Buttons -->
-                                                {if $creditnote_details.unit_gross > 0 && $creditnote_details.client_id}
+                                                {if $creditnote_details.unit_gross > 0}
                                                     <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=htmlBrowser');">{t}Print HTML{/t}</button>
                                                     <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfBrowser');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                     <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfDownload');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Download PDF{/t}</button>
-                                                    <button type="button" onclick="confirm('Are you sure you want to email this credit note to the client?') && $.ajax( { url:'index.php?component=creditnote&page_tpl=email&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
-                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=client_envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
-                                                    <br>
-                                                    <br>
+
+                                                    {if $creditnote_details.client_id}
+                                                        <button type="button" onclick="confirm('Are you sure you want to email this credit note to the client?') && $.ajax( { url:'index.php?component=creditnote&page_tpl=email&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
+                                                        <button type="button" onclick="window.open('index.php?component=client&page_tpl=print&client_id={$creditnote_details.client_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
+                                                        <br>
+                                                        <br>
+                                                    {elseif $creditnote_details.supplier_id}
+                                                        <button type="button" onclick="confirm('Are you sure you want to email this credit note to the supplier?') && $.ajax( { url:'index.php?component=creditnote&page_tpl=email&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
+                                                        <button type="button" onclick="window.open('index.php?component=supplier&page_tpl=print&supplier_id={$creditnote_details.supplier_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Supplier Envelope{/t}</button>
+                                                        <br>
+                                                        <br>
+                                                    {/if}
                                                 {/if}
 
                                                 <!-- Edit Button -->
                                                 {if $creditnote_details.status == 'pending' || $creditnote_details.status == 'unused'}
                                                     <button type="button" onclick="location.href='index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_details.creditnote_id}';">{t}Edit Credit Note{/t}</button>
+                                                    <br>
+                                                    <br>
                                                 {/if}
 
-                                                <!-- Record Refund Button -->
-                                                {if ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used') && $creditnote_details.client_id}
-                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Refund{/t} / {t}Refund to Client{/t}</button>
-                                                {/if}
+                                                <!-- Apply CR to things-->
 
-                                                <!-- Apply Payment Buttons -->
-                                                {if $creditnote_details.balance > 0 && $creditnote_details.supplier_id}
-                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Payment from Supplier{/t}</button>
-                                                {/if}
-
+                                                <!-- Apply Credit Note to Invoice Button -->
                                                 {if $creditnote_details.status == 'unused' && $creditnote_details.invoice_id}
                                                     <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&method=credit_note&invoice_id={$creditnote_details.invoice_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Invoice{/t}</button>
                                                 {/if}
+
+                                                <!-- Apply Credit Note to Expense Button -->
                                                 {if $creditnote_details.status == 'unused' && $creditnote_details.expense_id}
                                                     <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=expense&method=credit_note&expense_id={$creditnote_details.expense_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Expense{/t}</button>
+                                                {/if}
+
+                                                <!-- send real money -->
+
+                                                <!-- Record Payment to Client Button -->
+                                                {if ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used') && $creditnote_details.client_id}
+                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Payment to Client{/t}</button>
+                                                {/if}
+
+                                                <!-- Apply Payment from Suppler Buttons -->
+                                                {if $creditnote_details.balance > 0 && $creditnote_details.supplier_id}
+                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Payment from Supplier{/t}</button>
                                                 {/if}
 
                                             </td>

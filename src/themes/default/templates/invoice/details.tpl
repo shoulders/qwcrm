@@ -140,7 +140,7 @@
                                                     <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=pdfBrowser');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                     <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=pdfDownload');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Download PDF{/t}</button>
                                                     <button type="button" onclick="confirm('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=email&invoice_id={$invoice_details.invoice_id}&commContent=invoice&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
-                                                    <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&commContent=client_envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
+                                                    <button type="button" onclick="window.open('index.php?component=client&page_tpl=print&client_id={$invoice_details.client_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
                                                     <br>
                                                     <br>
                                                 {/if}
@@ -156,8 +156,10 @@
                                                 {/if}
 
                                                 <!-- Credit Note Button -->
-                                                {if $allowed_to_create_creditnote}
-                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}');">{t}Add Sales Credit Note{/t}</button>
+                                                {if $invoice_details.status == 'partially_paid' && $allowed_to_create_creditnote}
+                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}');">{t}Close invoice with CR{/t} / {t}Create Sales Credit Note (Invoice){/t}</button>
+                                                {elseif ($invoice_details.status == 'paid' || $invoice_details.status == 'partially_refunded') && $allowed_to_create_creditnote}
+                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}');">{t}Refund invoice with CR{/t} {t}Create Sales Credit Note (Invoice){/t}</button>
                                                 {/if}
 
                                             </td>

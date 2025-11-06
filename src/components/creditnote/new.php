@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Prevent direct access to this page
 if(!$this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'new')
     && !$this->app->system->security->checkPageAccessedViaQwcrm('client', 'details')
-    && !$this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details') // not currently used, but all code in place, disabled in checkRecordCanBeCreated()
+    && !$this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details')
     && !$this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details')
     && !$this->app->system->security->checkPageAccessedViaQwcrm('supplier', 'details')
 ) {
@@ -20,9 +20,11 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'new')
 }
 
 // Check CR can be created (this check is also do on the buttons but silently)
-if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] ?? null, \CMSApplication::$VAR['invoice_id'] ?? null, \CMSApplication::$VAR['supplier_id'] ?? null, \CMSApplication::$VAR['expense_id'] ?? null, false))
+if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] = null, \CMSApplication::$VAR['invoice_id'] = null, \CMSApplication::$VAR['supplier_id'] = null, \CMSApplication::$VAR['expense_id'] = null, false))
 {
-    // From Client details - Create a 'Sales Credit Note (Standalone)'
+    /* Sales Credit Notes */
+
+    // Sales Credit Note (Client) - (client:details)
     if(\CMSApplication::$VAR['client_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('client', 'details'))
     {
         $client_id = \CMSApplication::$VAR['client_id'];
@@ -31,9 +33,9 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $reference = '';
     }
 
-    // From Invoice details - Create a 'Sales Credit Note'
+    // Sales Credit Note (Invoice) - (invoice:details)
     if(\CMSApplication::$VAR['invoice_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details'))
-    {    
+    {
         $invoice_id = \CMSApplication::$VAR['invoice_id'];
         $client_id = $this->app->components->invoice->getRecord($invoice_id, 'client_id');
         $type = 'sales';
@@ -47,10 +49,12 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
         $creditnote_items = json_encode($creditnote_items);
         $creditnote_items = str_replace('invoice_item_id', 'creditnote_item_id', $creditnote_items);
-        $creditnote_items = json_decode($creditnote_items, true);    
+        $creditnote_items = json_decode($creditnote_items, true);
     }
 
-    // From Supplier details - create a 'Supplier Credit Note (Standalone)'
+    /* Purchase Credit Notes */
+
+    // Purchase Credit Note (Supplier) - (supplier:details)
     if(\CMSApplication::$VAR['supplier_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('supplier', 'details'))
     {
         $supplier_id = \CMSApplication::$VAR['supplier_id'];
@@ -59,7 +63,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $reference = '';
     }
 
-    // From Expense details - create a 'Supplier Credit Note' - Not all expenses have an supplier_id, but this will be failed on the 'We have a valid request'
+    // Purchase Credit Note (Expense) - (expense:details)
     if(\CMSApplication::$VAR['expense_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details'))
     {
         $expense_id = \CMSApplication::$VAR['expense_id'];
@@ -68,8 +72,8 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $type = 'purchase';
         //$reference = _gettext("Expense").': '.$expense_id ;
         $reference = '';
-        
-        // Build a single item to match the expense record - this is a workaround whilst expenses does not use items
+
+        /* Build a single item to match the expense record - this is a workaround whilst expenses does not use items
         $creditnote_items = array();
         $creditnote_items[0]['creditnote_item_id'] = 1;
         $creditnote_items[0]['expense_id'] = $expense_details['expense_id'];
@@ -85,12 +89,21 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $creditnote_items[0]['unit_gross'] = $expense_details['unit_gross'];
         $creditnote_items[0]['subtotal_net'] = $expense_details['unit_net'];
         $creditnote_items[0]['subtotal_tax'] = $expense_details['unit_tax'];
-        $creditnote_items[0]['subtotal_gross'] = $expense_details['unit_gross'];        
+        $creditnote_items[0]['subtotal_gross'] = $expense_details['unit_gross'];
+        */
+
+        // Get invoice items with voucher records merged as standard items
+        $creditnote_items = $this->app->components->expense->getItems($expense_id);
+
+        // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
+        $creditnote_items = json_encode($creditnote_items);
+        $creditnote_items = str_replace('expense_item_id', 'creditnote_item_id', $creditnote_items);
+        $creditnote_items = json_decode($creditnote_items, true);
     }
 
     // We have a valid request
     if($client_id ?? $supplier_id ?? false)
-    {    
+    {
         // Build variables to be used to populate creditnote
         $record['client_id'] = $client_id ?? null;
         $record['invoice_id'] = $invoice_id ?? null;
@@ -103,12 +116,12 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         // Create the credit note and return the new creditnote_id
         $creditnote_id = $this->app->components->creditnote->insertRecord($record);
 
-        // Get invoice items to populate the credit note      
+        // Get invoice items to populate the credit note
         $variables['qform']['creditnote_items'] = $creditnote_items ?? array();
 
         // Load the newly created credit note edit page but populate with invoice items
         $this->app->system->page->forcePage('creditnote', 'edit&creditnote_id='.$creditnote_id, $variables);
-    }  
+    }
 
 }
 

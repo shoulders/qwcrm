@@ -602,7 +602,7 @@ class Payment extends Components {
         }
 
         $sql = "UPDATE ".PRFX."payment_records SET
-                status               =". $this->app->db->qStr( $new_status      ).",
+                status               =". $this->app->db->qStr( $new_status      )."
                 WHERE payment_id     =". $this->app->db->qStr( $payment_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}

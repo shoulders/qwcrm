@@ -22,7 +22,7 @@ class Security extends System {
     public function forceSsl($force_ssl_config) {
 
         // Force SSL/HTTPS if enabled - add base path stuff here
-        if($force_ssl_config >= 1 && !isset($_SERVER['HTTPS'])) {   
+        if($force_ssl_config >= 1 && !isset($_SERVER['HTTPS'])) {
             $this->app->system->page->forcePage($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
         }
 
@@ -41,8 +41,8 @@ class Security extends System {
 
         // Override - Return true always
         if($access_rule == 'override') {
-            return true;        
-        }    
+            return true;
+        }
 
         // Index - Allows the specified page and homepage
         if($access_rule == 'index_allowed') {
@@ -50,7 +50,7 @@ class Security extends System {
             // Allow the referer to be the homepage (sef/nonsef)
             if(preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index\.php)?$|U', $referer)) {
                 return true;
-            }   
+            }
 
         }
 
@@ -58,10 +58,10 @@ class Security extends System {
         if($access_rule == 'setup') {
 
             if(defined('QWCRM_SETUP') && !$this->confirmDirectAccess($component, $page_tpl)) {
-                return true;            
+                return true;
             } else {
-                return false;        
-            }        
+                return false;
+            }
 
         }
 
@@ -69,10 +69,10 @@ class Security extends System {
         if($access_rule == 'root_only') {
 
             // Allow direct access during setup
-            if($_SERVER['REQUEST_URI'] == QWCRM_BASE_PATH || $_SERVER['REQUEST_URI'] == QWCRM_BASE_PATH.'index.php') {             
-                return true;            
-            } else {            
-                return false;            
+            if($_SERVER['REQUEST_URI'] == QWCRM_BASE_PATH || $_SERVER['REQUEST_URI'] == QWCRM_BASE_PATH.'index.php') {
+                return true;
+            } else {
+                return false;
             }
 
         }
@@ -83,20 +83,20 @@ class Security extends System {
         if($access_rule == 'no_referer') {
 
             // Allow direct access during setup
-            if(!$referer) { return true; } 
+            if(!$referer) { return true; }
 
         }
 
-        // Only allow access if the routing variables match the accpeted refering page
+        // Only allow access if the routing variables match the accepted refering page
         if($access_rule == 'no_referer-route_matched') {
 
             // Allow direct access during setup
-            if($referer) { return false; } 
+            if($referer) { return false; }
 
             // Check to see if the routing variables match the expected page
             if($component == $var_component && $page_tpl == $var_page_tpl) {
-                return false;          
-            }      
+                return false;
+            }
 
             return true;
 
@@ -107,7 +107,7 @@ class Security extends System {
 
             // Check to see if the routing variables match the expected referering page
             if($var_component && $var_page_tpl) {
-                return false;          
+                return false;
             } else {
                 return true;
             }
@@ -117,12 +117,12 @@ class Security extends System {
         /* Refered Rules */
 
         // Routing variables Match the accepted referering page and has been refered by any QWcrm page
-        if($access_rule == 'refered-index_allowed-route_matched') {               
+        if($access_rule == 'refered-index_allowed-route_matched') {
 
             // Check to see if the routing variables match the expected referering page
             if($component != $var_component || $page_tpl != $var_page_tpl) {
-                return false;          
-            }      
+                return false;
+            }
 
             // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
             return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', $referer);
@@ -130,11 +130,11 @@ class Security extends System {
         }
 
         // Routing variables must match the specified routing variables (not currently used)
-        if($access_rule == 'refered-index_allowed-route_unmatched') {               
+        if($access_rule == 'refered-index_allowed-route_unmatched') {
 
             // Check to see if the routing variables match the expected referering page
             if($man_component != $var_component || $man_page_tpl != $var_page_tpl) {
-                return false;          
+                return false;
             }
 
             // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
@@ -145,22 +145,22 @@ class Security extends System {
         /* Default Rules */
 
         // If no referer (direct access) and if a setup procedure is not occuring block access
-        if(!$referer) { return false; }   
+        if(!$referer) { return false; }
 
         // Allow the referer to be the homepage (sef/nonsef)
-        if($component == 'index.php' && !$page_tpl) {        
-            return preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index\.php)?$|U', $referer);            
+        if($component == 'index.php' && !$page_tpl) {
+            return preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index\.php)?$|U', $referer);
         }
 
         // Check if a 'SPECIFIC' QWcrm page is the referer
-        if($component && $page_tpl) {       
+        if($component && $page_tpl) {
 
             // If 'Referring Page' matches the specified page (returns true/false as needed)
             return preg_match('/^'.preg_quote($this->app->system->router->buildUrlFromVariables($component, $page_tpl, 'absolute', 'auto'), '/').'/U', $referer);
 
         // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
-        } else {        
-            return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', $referer);        
+        } else {
+            return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', $referer);
         }
 
         return false;
@@ -181,7 +181,7 @@ class Security extends System {
 
             return false;
 
-        }   
+        }
 
     }
 
@@ -190,23 +190,23 @@ class Security extends System {
     ################################################
 
     /*
-     * This attempts to get the real IP address of the user 
+     * This attempts to get the real IP address of the user
      */
 
-    public function getVisitorIpAddress() {    
+    public function getVisitorIpAddress() {
 
         $http_client_ip = $_SERVER['HTTP_CLIENT_IP'] ?? null;
         $http_x_forwarded_for = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? null;
-        $remote_addr = $_SERVER['REMOTE_ADDR'] ?? null;    
+        $remote_addr = $_SERVER['REMOTE_ADDR'] ?? null;
 
         if($http_client_ip) {
-            $ip_address = $http_client_ip;        
+            $ip_address = $http_client_ip;
         }
         elseif($http_x_forwarded_for) {
-            $ip_address = $http_x_forwarded_for;        
+            $ip_address = $http_x_forwarded_for;
         }
         elseif($remote_addr) {
-            $ip_address = $remote_addr;        
+            $ip_address = $remote_addr;
         }
         else {$ip_address = 'UNKNOWN';}
 
@@ -249,7 +249,7 @@ class Security extends System {
             $keychar    =   substr($secret_key, ($i % strlen($secret_key))-1, 1);
             $char       =   chr(ord($char)+ord($keychar));
             $deresult  .=   $char;
-        }    
+        }
 
         return base64_encode($deresult);
 
@@ -314,5 +314,5 @@ class Security extends System {
 
     }
     */
-    
+
 }

@@ -7,7 +7,7 @@
 *}
 <table width="100%" border="0" cellpadding="5" cellspacing="5">
     <tr>
-        <td>            
+        <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Client Details{/t} {t}for{/t} {$client_details.display_name}</td>
@@ -17,7 +17,7 @@
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
-                                <td class="menutd">                                                           
+                                <td class="menutd">
                                     <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Client Contact">
                                         <tr>
                                             <td class="olohead" colspan="4">
@@ -38,7 +38,7 @@
                                             <td></td>
                                             <td></td>
                                             <td class="menutd"><b>{t}Email{/t}</b></td>
-                                            <td class="menutd"><a href="mailto:{$client_details.email}">{$client_details.email}</a></td>                                                                    
+                                            <td class="menutd"><a href="mailto:{$client_details.email}">{$client_details.email}</a></td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Credit Terms{/t}</b></td>
@@ -78,10 +78,10 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Client Type{/t}</b></td>
-                                            <td class="menutd">              
-                                                {section name=s loop=$client_types}    
-                                                    {if $client_details.type == $client_types[s].type_key}{t}{$client_types[s].display_name}{/t}{/if}        
-                                                {/section}   
+                                            <td class="menutd">
+                                                {section name=s loop=$client_types}
+                                                    {if $client_details.type == $client_types[s].type_key}{t}{$client_types[s].display_name}{/t}{/if}
+                                                {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Active{/t}</b></td>
                                             <td class="menutd">{if $client_details.active == 1}{t}Active{/t}{else}{t}Blocked{/t}{/if}</td>
@@ -100,13 +100,19 @@
                                             <td class="menutd" colspan="3">{$client_details.note}</td>
                                         </tr>
                                     </table>
-
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
-            </table>                   
+
+                <tr>
+                    <td colspan="2">
+                        <button type="button" onclick="window.open('index.php?component=client&page_tpl=print&client_id={$client_details.client_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
+                    </td>
+                </tr>
+
+            </table>
         </td>
     </tr>
 </table>

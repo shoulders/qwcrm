@@ -695,7 +695,7 @@ TRUNCATE TABLE `#__voucher_statuses`;
 INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'unpaid', 'Unpaid'),
 (2, 'partially_paid', 'Partially Paid'),
-(3, 'paid_unused', 'Paid Unused'),
+(3, 'paid_unused', 'Paid (Unused)'),
 (4, 'partially_redeemed', 'Partially Redeemed'),
 (5, 'fully_redeemed', 'Fully Redeemed'),
 (6, 'suspended', 'Suspended'),
@@ -1021,23 +1021,30 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
-(5, 'in_dispute', 'In Dispute'),
-(6, 'overdue', 'Overdue'),
-(7, 'collections', 'Collections'),
-(9, 'cancelled', 'Cancelled'),
-(9, 'deleted', 'Deleted');
+(5, 'partially_refunded', 'Partially Refunded'),
+(6, 'refunded', 'Refunded'),
+(7, 'paid', 'Paid'),
+(8, 'in_dispute', 'In Dispute'),
+(9, 'overdue', 'Overdue'),
+(10, 'collections', 'Collections'),
+(11, 'cancelled', 'Cancelled'),
+(12, 'deleted', 'Deleted');
 
 TRUNCATE TABLE `#__voucher_statuses`;
 INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'unpaid', 'Unpaid'),
 (2, 'partially_paid', 'Partially Paid'),
-(3, 'paid_unused', 'Paid Unused'),
+(3, 'paid', 'Paid (Unused)'),
+(4, 'refunded', 'Refunded'),
 (4, 'partially_redeemed', 'Partially Redeemed'),
-(5, 'fully_redeemed', 'Fully Redeemed'),
+(5, 'redeemed', 'Redeemed'),
 (6, 'suspended', 'Suspended'),
-(7, 'expired_unused', 'Expired Unused'),
-(8, 'cancelled', 'Cancelled'),
-(9, 'deleted', 'Deleted');
+(7, 'cancelled', 'Cancelled'),
+(8, 'deleted', 'Deleted');
+UPDATE `#__voucher_records` SET `status` = 'refunded' WHERE `status` = 'fully_refunded';
+UPDATE `#__voucher_records` SET `status` = 'redeemed' WHERE `status` = 'fully_redeemed';
+-- Expiry check is not done by status anymore --
+UPDATE `#__voucher_records` SET `status` = 'paid' WHERE `status` = 'expired_unused';
 
 ALTER TABLE `#__invoice_records` DROP `refund_id`;
 ALTER TABLE `#__voucher_records` DROP `refund_id`;
@@ -1176,3 +1183,11 @@ ALTER TABLE `#__otherincome_records` ADD `supplier_id` int(10) UNSIGNED DEFAULT 
 
 -- Note field for invoice --
 ALTER TABLE `#__invoice_records` ADD`note` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `additional_info`;
+
+-- Move printing envelope to client and adding to supplier --
+INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
+('client:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('supplier:print', 1, 1, 1, 1, 1, 1, 0, 0, 0);
+
+-- Add employee traacking to client --
+ALTER TABLE `#__client_records` ADD `employee_id` INT(10) UNSIGNED NULL AFTER `client_id`;

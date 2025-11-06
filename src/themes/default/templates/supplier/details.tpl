@@ -143,18 +143,26 @@
         </td>
     </tr>
 
-    <!-- Buttons -->
-    <tr>
-
-    </tr>
-
+    <!-- Function Buttons -->
     <tr>
         <td>
-            <button type="button" onclick="window.open('index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Expense{/t}</button>
-            <button type="button" onclick="window.open('index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Other Income{/t}</button>
-        {if $allowed_to_create_creditnote}
-            <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Purchase Credit Note (Standalone){/t}</button>
-        {/if}
+            <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
+                <tr>
+                    <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
+                </tr>
+                <tr>
+                    <td class="menutd2">
+                        <button type="button" onclick="window.open('index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Expense{/t}</button>
+                        <button type="button" onclick="window.open('index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Other Income{/t}</button>
+                        {if $allowed_to_create_creditnote}
+                            <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Create Purchase Credit Note (Supplier){/t}</button>
+                        {/if}
+                        <br>
+                        <br>
+                        <button type="button" onclick="window.open('index.php?component=supplier&page_tpl=print&supplier_id={$supplier_details.supplier_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Supplier Envelope{/t}</button>
+                    </td>
+                </tr>
+            </table>
         </td>
     </tr>
 

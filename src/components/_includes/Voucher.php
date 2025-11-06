@@ -350,7 +350,7 @@ class Voucher extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restrict_statuses) {
-            $sql .= "\nWHERE status_key IN ('paid_unused', 'suspended')";
+            $sql .= "\nWHERE status_key IN ('paid', 'suspended')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -511,14 +511,14 @@ class Voucher extends Components {
         //$redeemed_on = ($new_status == 'redeemed') ? $this->app->system->general->mysqlDatetime($timestamp) : null;
 
         // Update voucher 'closed_on' boolean for the new status
-        if(in_array($new_status, array('redeemed', 'expired_unused', 'cancelled'))) {
+        if(in_array($new_status, array('fully_redeemed', 'cancelled'))) {
             $closed_on = $this->app->system->general->mysqlDatetime($timestamp);
         } else {
             $closed_on = null;
         }
 
         // Update voucher 'blocked' boolean for the new status
-        if(in_array($new_status, array('paid_unused', 'partially_redeemed'))) {
+        if(in_array($new_status, array('paid', 'partially_redeemed'))) {
             $blocked = 0;
         } else {
             $blocked = 1;
@@ -610,9 +610,9 @@ class Voucher extends Components {
         }
 
         // Balance is unused
-        if($voucher_details['balance'] == $voucher_details['unit_net'] && $voucher_details['status'] != 'paid_unused')
+        if($voucher_details['balance'] == $voucher_details['unit_net'] && $voucher_details['status'] != 'paid')
         {
-            $this->updateStatus($voucher_id, 'paid_unused');
+            $this->updateStatus($voucher_id, 'paid');
         }
 
         return;
@@ -653,7 +653,17 @@ class Voucher extends Components {
 
         // Is Paid
         if($invoice_new_status == 'paid') {
-            $vouchers_new_status = 'paid_unused';
+            $vouchers_new_status = 'paid';
+        }
+
+        /* Is Partially Refunded = NOT SUPPORTED
+        if($invoice_new_status == 'partially_refunded') {
+            $vouchers_new_status = 'partially_refuned';
+        }*/
+
+        // Is Refunded
+        if($invoice_new_status == 'fully_refunded') {
+            $vouchers_new_status = 'fully_refuned';
         }
 
         // In Dispute
@@ -913,10 +923,11 @@ class Voucher extends Components {
                 WHERE voucher_id    =". $this->app->db->qstr( $voucher_id          );
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
+            /* dont update the voucher status when expired they are different things - remove this later.
             // Update the voucher status (silenty)
             if ($voucher_details['status'] == 'paid_unused' || $voucher_details['status'] == 'suspended') {
                 $this->updateStatus($voucher_id, 'expired_unused', true);
-            }
+            }*/
 
             // Process the Voucher for the purposes of Tax
             $this->processNewlyExpiredVoucher($voucher_id);
@@ -1154,8 +1165,13 @@ class Voucher extends Components {
         }
 
         // Is Paid Unused
-        if($voucher_details['status'] == 'paid_unused') {
+        if($voucher_details['status'] == 'paid') {
             $state_flag = true;
+        }
+
+        // Is Fully Refunded
+        if($voucher_details['status'] == 'fully_refunded') {
+            $state_flag = false;
         }
 
         // Is Partially Redeemed
@@ -1165,7 +1181,7 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
+        if($voucher_details['status'] == 'fully_redeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has been fully redeemed."));
             $state_flag = false;
         }
@@ -1237,15 +1253,15 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been fully redeemed."));
+        // Is Paid (Unused)
+        if($voucher_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has has been paid."));
             $state_flag = false;
         }
 
-        // Is Unused
-        if($voucher_details['status'] == 'paid_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has has been paid."));
+        // Is Fully Refunded
+        if($voucher_details['status'] == 'fully_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been fully refunded."));
             $state_flag = false;
         }
 
@@ -1256,8 +1272,8 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been redeemed."));
+        if($voucher_details['status'] == 'fully_redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been fully redeemed."));
             $state_flag = false;
         }
 
@@ -1316,8 +1332,14 @@ class Voucher extends Components {
         }
 
         // Is Unused
-        if($voucher_details['status'] == 'paid_unused') {
+        if($voucher_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been paid."));
+            $state_flag = false;
+        }
+
+        // Is Partially Redeemed
+        if($voucher_details['status'] == 'fully_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been fully refunded."));
             $state_flag = false;
         }
 
@@ -1328,7 +1350,7 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
+        if($voucher_details['status'] == 'fully_redeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been fully redeemed."));
             $state_flag = false;
         }
@@ -1389,8 +1411,14 @@ class Voucher extends Components {
         }
 
         // Is Unused
-        if($voucher_details['status'] == 'paid_unused') {
+        if($voucher_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been paid."));
+            $state_flag = false;
+        }
+
+        // Is Fully refunded
+        if($voucher_details['status'] == 'fully_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been fully refunded."));
             $state_flag = false;
         }
 
@@ -1401,7 +1429,7 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
+        if($voucher_details['status'] == 'fully_redeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been fully redeemed."));
             $state_flag = false;
         }
@@ -1476,13 +1504,23 @@ class Voucher extends Components {
         }
 
         // Is Paid Unused
-        if($voucher_details['status'] == 'paid_unused') {
+        if($voucher_details['status'] == 'paid') {
             $state_flag = true;
+        }
+
+        // Is Fully Refunded
+        if($voucher_details['status'] == 'fully_refunded') {
+            $state_flag = false;
         }
 
         // Is Partially Redeemed
         if($voucher_details['status'] == 'partially_redeemed') {
             $state_flag = true;
+        }
+
+        // Is Fully Redeemed
+        if($voucher_details['status'] == 'fully_redeemed') {
+            $state_flag = false;
         }
 
         // Is Suspended
@@ -1542,8 +1580,14 @@ class Voucher extends Components {
         }
 
         // Is Paid Unused
-        if($voucher_details['status'] == 'paid_unused') {
+        if($voucher_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it's invoice has been paid."));
+            $state_flag = false;
+        }
+
+        // Is Fully Refunded
+        if($voucher_details['status'] == 'fully_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it's invoice has been fully refunded."));
             $state_flag = false;
         }
 
@@ -1554,7 +1598,7 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
+        if($voucher_details['status'] == 'fully_redeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been fully redeemed."));
             $state_flag = false;
         }
@@ -1616,7 +1660,7 @@ class Voucher extends Components {
         }
 
         // Is Paid Unused
-        if($voucher_details['status'] == 'paid_unused') {
+        if($voucher_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it's invoice has been paid."));
             $state_flag = false;
         }
@@ -1628,7 +1672,7 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
+        if($voucher_details['status'] == 'fully_redeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been fully redeemed."));
             $state_flag = false;
         }
@@ -1701,15 +1745,15 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been fully redeemed."));
+        // Is Paid (Unused)
+        if($voucher_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's invoice has been paid."));
             $state_flag = false;
         }
 
-        // Is Paid Unused
-        if($voucher_details['status'] == 'paid_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's invoice has been paid."));
+        // Is Fully Refunded
+        if($voucher_details['status'] == 'fully_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's invoice has been fully refunded."));
             $state_flag = false;
         }
 
@@ -1720,8 +1764,8 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been redeemed."));
+        if($voucher_details['status'] == 'fully_redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been fully redeemed."));
             $state_flag = false;
         }
 
@@ -1798,6 +1842,12 @@ public function checkInvoiceAllowsSingleVoucherStatusChange($invoice_id) {
             $state_flag = false;
         }
 
+        // Is the Parent Invoice Fully refunded
+        if($invoice_details['status'] == 'fully_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is fully refunded."));
+            $state_flag = false;
+        }
+
         // Is the Parent Invoice In dispute
         if($invoice_details['status'] == 'in_dispute') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in dispute."));
@@ -1867,6 +1917,12 @@ private function checkInvoiceAllowsSingleVoucherChanges($invoice_id) {
         // Is the Parent Invoice Paid
         if($invoice_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice is paid."));
+            $state_flag = false;
+        }
+
+        // Is the Parent Invoice Fully Refunded
+        if($invoice_details['status'] == 'fully_refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice is fully refunded."));
             $state_flag = false;
         }
 
