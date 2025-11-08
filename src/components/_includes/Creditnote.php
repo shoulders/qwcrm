@@ -609,7 +609,7 @@ class Creditnote extends Components {
         $sql = "UPDATE ".PRFX."creditnote_records SET
                 employee_id         =". $this->app->db->qStr($employee_id).",
                 status              =". $this->app->db->qStr($new_status).",";
-        if($new_status == 'fully_used' || $new_status == 'expired_unused' || $new_status == 'cancelled' || $new_status == 'deleted') {
+        if($new_status == 'fully_used' || $new_status == 'cancelled' || $new_status == 'deleted') {
              $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) ).",
                       is_closed =". $this->app->db->qStr(1);
         } else {
@@ -854,16 +854,11 @@ class Creditnote extends Components {
         {
             $expired_status = true;
 
-            // Update the creditnote record
+            // Update the creditnote record (we dont update the status when they are expired, these are different things)
             $sql = "UPDATE ".PRFX."creditnote_records SET
                 closed_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime())."
                 WHERE creditnote_id    =". $this->app->db->qstr( $creditnote_id          );
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-            // Update the creditnote status (silenty)
-            if ($creditnote_details['status'] == 'pending' || $creditnote_details['status'] == 'unused') {
-                $this->updateStatus($creditnote_id, 'expired_unused', true);
-            }
 
         }
 
@@ -959,7 +954,7 @@ class Creditnote extends Components {
             }*/
 
             // Check there are no pending credit notes attached to the invoice
-            if($this->app->components->report->countCreditnotes(null, null, null, null, 'pending', null, null, null, null, $invoice_details['invoice_id']))
+            if($this->app->components->report->countCreditnotes(null, null, null, null, 'pending', null, null, null, null, null, $invoice_details['invoice_id']))
             {
                 if(!$silent)
                 {
@@ -969,7 +964,7 @@ class Creditnote extends Components {
             }
 
             // Check there is are unused credit notes attached to the invoice
-            if($this->app->components->report->countCreditnotes(null, null, null, null, 'unused', null, null, null, null, $invoice_details['invoice_id']))
+            if($this->app->components->report->countCreditnotes(null, null, null, null, 'unused', null, null, null, null, null, $invoice_details['invoice_id']))
             {
                 if(!$silent)
                 {
@@ -1205,12 +1200,6 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        // Is Expired Unused
-        if($creditnote_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote is unused and has expired."));
-            $state_flag = false;
-        }
-
         // Is Cancelled
         if($creditnote_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has been cancelled."));
@@ -1280,12 +1269,6 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        // Is Expired Unused
-        if($creditnote_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it is unused and has expired."));
-            $state_flag = false;
-        }
-
         // Is Cancelled
         if($creditnote_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has already been cancelled."));
@@ -1351,12 +1334,6 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        // Is Expired Unused
-        if($creditnote_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it is unused and has expired."));
-            $state_flag = false;
-        }
-
         // Is Cancelled
         if($creditnote_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has been cancelled."));
@@ -1419,12 +1396,6 @@ class Creditnote extends Components {
         // Is Fully Used
         if($creditnote_details['status'] == 'fully_used') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is fully used."));
-            $state_flag = false;
-        }
-
-        // Is Expired Unused
-        if($creditnote_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is unused and has expired."));
             $state_flag = false;
         }
 

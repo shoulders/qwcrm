@@ -917,17 +917,11 @@ class Voucher extends Components {
         {
             $expired_status = true;
 
-            // Update the voucher record
+            // Update the voucher record (we dont update the status when they are expired, these are different things)
             $sql = "UPDATE ".PRFX."voucher_records SET
                 closed_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime())."
                 WHERE voucher_id    =". $this->app->db->qstr( $voucher_id          );
             if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-            /* dont update the voucher status when expired they are different things - remove this later.
-            // Update the voucher status (silenty)
-            if ($voucher_details['status'] == 'paid_unused' || $voucher_details['status'] == 'suspended') {
-                $this->updateStatus($voucher_id, 'expired_unused', true);
-            }*/
 
             // Process the Voucher for the purposes of Tax
             $this->processNewlyExpiredVoucher($voucher_id);
@@ -1191,12 +1185,6 @@ class Voucher extends Components {
             $state_flag = true;
         }
 
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it is expired."));
-            $state_flag = false;
-        }*/
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has been cancelled."));
@@ -1283,12 +1271,6 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been expired."));
-            $state_flag = false;
-        }*/
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $state_flag = true;
@@ -1360,12 +1342,6 @@ class Voucher extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been suspended."));
             $state_flag = false;
         }
-
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been expired."));
-            $state_flag = false;
-        }*/
 
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
@@ -1439,12 +1415,6 @@ class Voucher extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been suspended."));
             $state_flag = false;
         }
-
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been expired."));
-            $state_flag = false;
-        }*/
 
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
@@ -1529,12 +1499,6 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has expired."));
-            $state_flag = false;
-        }*/
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been cancelled."));
@@ -1609,12 +1573,6 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been expired."));
-            $state_flag = false;
-        }*/
-
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has already been cancelled."));
@@ -1682,12 +1640,6 @@ class Voucher extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been suspended."));
             $state_flag = false;
         }
-
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been expired."));
-            $state_flag = false;
-        }*/
 
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {
@@ -1774,12 +1726,6 @@ class Voucher extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been suspended."));
             $state_flag = false;
         }
-
-        /* Is Expired Unused - done above with live check
-        if($voucher_details['status'] == 'expired_unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been expired."));
-            $state_flag = false;
-        }*/
 
         // Is Cancelled
         if($voucher_details['status'] == 'cancelled') {

@@ -695,21 +695,19 @@ TRUNCATE TABLE `#__voucher_statuses`;
 INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'unpaid', 'Unpaid'),
 (2, 'partially_paid', 'Partially Paid'),
-(3, 'paid_unused', 'Paid (Unused)'),
-(4, 'partially_redeemed', 'Partially Redeemed'),
-(5, 'fully_redeemed', 'Fully Redeemed'),
-(6, 'suspended', 'Suspended'),
-(7, 'expired_unused', 'Expired Unused'),
-(8, 'refunded', 'Refunded'),
-(9, 'cancelled', 'Cancelled'),
-(10, 'deleted', 'Deleted');
+(3, 'paid', 'Paid (Unused)'),
+(4, 'refunded', 'Refunded'),
+(5, 'partially_redeemed', 'Partially Redeemed'),
+(6, 'redeemed', 'Redeemed'),
+(7, 'suspended', 'Suspended'),
+(8, 'cancelled', 'Cancelled'),
+(9, 'deleted', 'Deleted');
 ALTER TABLE `#__voucher_records` CHANGE `balance` `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 UPDATE `#__voucher_records` SET `type` = 'mpv' WHERE `type` = 'MPV';
 UPDATE `#__voucher_records` SET `type` = 'spv' WHERE `type` = 'SPV';
 UPDATE `#__voucher_records` SET `balance` = `unit_gross` WHERE `status` != 'redeemed';
-UPDATE `#__voucher_records` SET `status` = 'expired_unused' WHERE `status` = 'expired';
-UPDATE `#__voucher_records` SET `status` = 'paid_unused' WHERE `status` = 'unused';
-UPDATE `#__voucher_records` SET `status` = 'fully_redeemed' WHERE `status` = 'redeemed';
+UPDATE `#__voucher_records` SET `status` = 'paid' WHERE `status` = 'unused';
+UPDATE `#__voucher_records` SET `status` = 'paid' WHERE `status` = 'expired';
 ALTER TABLE `#__voucher_records` DROP `payment_id`;
 ALTER TABLE `#__voucher_records` DROP `redeemed_on`;
 ALTER TABLE `#__voucher_records` DROP `redeemed_client_id`;
@@ -867,9 +865,8 @@ INSERT INTO `#__creditnote_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'unused', 'Unused'),
 (3, 'partially_used', 'Partially Used'),
 (4, 'fully_used', 'Fully Used'),
-(5, 'expired_unused', 'Expired Unused'),
-(6, 'cancelled', 'Cancelled'),
-(7, 'deleted', 'Deleted');
+(5, 'cancelled', 'Cancelled'),
+(6, 'deleted', 'Deleted');
 
 ALTER TABLE `#__creditnote_statuses` ADD PRIMARY KEY (`id`);
 
@@ -1017,16 +1014,11 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'partially_paid', 'Partially Paid'),
 (3, 'paid', 'Paid (Unused)'),
 (4, 'refunded', 'Refunded'),
-(4, 'partially_redeemed', 'Partially Redeemed'),
-(5, 'redeemed', 'Redeemed'),
-(6, 'suspended', 'Suspended'),
-(7, 'cancelled', 'Cancelled'),
-(8, 'deleted', 'Deleted');
-UPDATE `#__voucher_records` SET `status` = 'refunded' WHERE `status` = 'fully_refunded';
-UPDATE `#__voucher_records` SET `status` = 'redeemed' WHERE `status` = 'fully_redeemed';
--- Expiry check is not done by status anymore --
-UPDATE `#__voucher_records` SET `status` = 'paid' WHERE `status` = 'expired_unused';
-
+(5, 'partially_redeemed', 'Partially Redeemed'),
+(6, 'redeemed', 'Redeemed'),
+(7, 'suspended', 'Suspended'),
+(8, 'cancelled', 'Cancelled'),
+(9, 'deleted', 'Deleted');
 ALTER TABLE `#__invoice_records` DROP `refund_id`;
 ALTER TABLE `#__voucher_records` DROP `refund_id`;
 DROP TABLE `#__refund_statuses`;

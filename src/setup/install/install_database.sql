@@ -336,9 +336,8 @@ INSERT INTO `#__creditnote_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'unused', 'Unused'),
 (3, 'partially_used', 'Partially Used'),
 (4, 'fully_used', 'Fully Used'),
-(5, 'expired_unused', 'Expired Unused'),
-(6, 'cancelled', 'Cancelled'),
-(7, 'deleted', 'Deleted');
+(5, 'cancelled', 'Cancelled'),
+(6, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -1390,11 +1389,11 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'partially_paid', 'Partially Paid'),
 (3, 'paid', 'Paid (Unused)'),
 (4, 'refunded', 'Refunded'),
-(4, 'partially_redeemed', 'Partially Redeemed'),
-(5, 'redeemed', 'Redeemed'),
-(6, 'suspended', 'Suspended'),
-(7, 'cancelled', 'Cancelled'),
-(8, 'deleted', 'Deleted');
+(5, 'partially_redeemed', 'Partially Redeemed'),
+(6, 'redeemed', 'Redeemed'),
+(7, 'suspended', 'Suspended'),
+(8, 'cancelled', 'Cancelled'),
+(9, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 

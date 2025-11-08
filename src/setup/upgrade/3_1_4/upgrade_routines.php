@@ -71,7 +71,7 @@ class Upgrade3_1_4 extends Setup {
         $this->otherincomeConvertToUseItems();
         $this->otherincomeTidyDatabase();
 
-        // Fix invoice and Voucher statuses (CR system)
+        // Fix invoice and Voucher statuses
         // this is now added in the SQL - $this->updateColumnValues(PRFX.'invoice_records', 'status', 'refunded', 'paid');
         // this is now added in the SQL - $this->updateColumnValues(PRFX.'voucher_records', 'status', 'refunded', 'paid');
 
