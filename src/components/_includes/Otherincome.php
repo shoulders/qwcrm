@@ -316,9 +316,9 @@ class OtherIncome extends Components {
 
     public function getItemsSubtotals($otherincome_id) {
 
-        // I could use $this->app->components->report->sumCreditnoteItems() - with additional calculation for subtotal_discount
+        // I could use $this->app->components->report->creditnoteItemSum() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
-        // $otherincome_items_subtotals = $this->app->components->report->getExpensesStats('items', null, null, null, null, null, $supplier_id);
+        // $otherincome_items_subtotals = $this->app->components->report->expenseGetStats('items', null, null, null, null, null, $supplier_id);
 
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
@@ -626,7 +626,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
             $state_flag = false;
         }*/
@@ -677,7 +677,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
             $state_flag = false;
         }*/
@@ -726,7 +726,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments."));
             $state_flag = false;
         }*/
@@ -781,7 +781,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has payments."));
             $state_flag = false;
         }*/
@@ -809,7 +809,7 @@ class OtherIncome extends Components {
     public function recalculateTotals($otherincome_id) {
 
         $items_subtotals        = $this->getItemsSubtotals($otherincome_id);
-        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];

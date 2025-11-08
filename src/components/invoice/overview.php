@@ -16,5 +16,5 @@ $this->app->smarty->assign('overview_invoices_in_dispute',         $this->app->c
 $this->app->smarty->assign('overview_invoices_overdue',            $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, false, null, null, null, 'overdue')           );
 $this->app->smarty->assign('overview_invoices_collections',        $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, false, null, null, null, 'collections')       );
 
-$this->app->smarty->assign('overview_invoice_stats',               $this->app->components->report->getInvoicesStats('current'));
+$this->app->smarty->assign('overview_invoice_stats',               $this->app->components->report->invoiceGetStats('current'));
 $this->app->smarty->assign('invoice_statuses',                     $this->app->components->invoice->getStatuses());

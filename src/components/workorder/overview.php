@@ -20,5 +20,5 @@ $this->app->smarty->assign('overview_workorders_with_client',       $this->app->
 $this->app->smarty->assign('overview_workorders_on_hold',           $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'on_hold')           );
 $this->app->smarty->assign('overview_workorders_management',        $this->app->components->workorder->getRecords('workorder_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, 'management')        );
 
-$this->app->smarty->assign('overview_workorder_stats', $this->app->components->report->getWorkordersStats('current'));
+$this->app->smarty->assign('overview_workorder_stats', $this->app->components->report->workorderGetStats('current'));
 $this->app->smarty->assign('workorder_statuses', $this->app->components->workorder->getStatuses());

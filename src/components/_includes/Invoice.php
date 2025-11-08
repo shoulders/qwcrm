@@ -466,9 +466,9 @@ defined('_QWEXEC') or die;
 
     public function getItemsSubtotals($invoice_id) {
 
-        // I could use $this->app->components->report->sumInvoiceItems() - with additional calculation for subtotal_discount
+        // I could use $this->app->components->report->invoiceItemSum() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
-        // $invoice_items_subtotals = $this->app->components->report->getInvoicesStats('items', null, null, null, null, null);
+        // $invoice_items_subtotals = $this->app->components->report->invoiceGetStats('items', null, null, null, null, null);
 
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
@@ -896,7 +896,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id))
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id))
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
             $state_flag = false;
         }*/
@@ -908,7 +908,7 @@ defined('_QWEXEC') or die;
         }
 
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has linked credit notes."));
             $state_flag = false;
         }
@@ -959,7 +959,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice has payments."));
             $state_flag = false;
         }*/
@@ -971,7 +971,7 @@ defined('_QWEXEC') or die;
         }
 
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has linked credit notes."));
             $state_flag = false;
         }
@@ -1028,7 +1028,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."));
             $state_flag = false;
         }*/
@@ -1048,7 +1048,7 @@ defined('_QWEXEC') or die;
         }
 
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it has linked credit notes."));
             $state_flag = false;
         }
@@ -1099,7 +1099,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
             $state_flag = false;
         }*/
@@ -1117,7 +1117,7 @@ defined('_QWEXEC') or die;
         }
 
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it has linked credit notes."));
             $state_flag = false;
         }
@@ -1137,7 +1137,7 @@ defined('_QWEXEC') or die;
 
         $items_subtotals        = $this->getItemsSubtotals($invoice_id);
         $voucher_subtotals      = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);
-        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'invoice', null, null, null, null, $invoice_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'invoice', null, null, null, null, $invoice_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net'];

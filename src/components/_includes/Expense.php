@@ -325,9 +325,9 @@ class Expense extends Components {
 
     public function getItemsSubtotals($expense_id) {
 
-        // I could use $this->app->components->report->sumCreditnoteItems() - with additional calculation for subtotal_discount
+        // I could use $this->app->components->report->creditnoteItemSum() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
-        // $expense_items_subtotals = $this->app->components->report->getExpensesStats('items', null, null, null, null, null, $supplier_id);
+        // $expense_items_subtotals = $this->app->components->report->expenseGetStats('items', null, null, null, null, null, $supplier_id);
 
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
@@ -678,13 +678,13 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id))
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id))
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."));
             $state_flag = false;
         }*/
 
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because it has linked credit notes."));
             return false;
         }
@@ -735,13 +735,13 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."));
             $state_flag = false;
         }*/
 
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because it has linked credit notes."));
             return false;
         }
@@ -790,13 +790,13 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."));
             $state_flag = false;
         }*/
 
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because it has linked credit notes."));
             return false;
         }
@@ -851,13 +851,13 @@ class Expense extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'expense', null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
             $state_flag = false;
         }*/
 
         // Has Credit notes
-        if($this->app->components->report->countCreditnotes(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."));
             return false;
         }
@@ -875,7 +875,7 @@ class Expense extends Components {
     public function recalculateTotals($expense_id) {
 
         $items_subtotals        = $this->getItemsSubtotals($expense_id);
-        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', 'expense', null, null, null, null, null, $expense_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'expense', null, null, null, null, null, $expense_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];

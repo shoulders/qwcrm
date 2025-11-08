@@ -444,9 +444,9 @@ class Creditnote extends Components {
 
     public function getItemsSubtotals($creditnote_id) {
 
-        // I could use $this->app->components->report->sumCreditnoteItems() - with additional calculation for subtotal_discount
+        // I could use $this->app->components->report->creditnoteItemSum() - with additional calculation for subtotal_discount
         // NB: i dont think i need the aliases
-        // $creditnote_items_subtotals = $this->app->components->report->getCreditnotesStats('items', null, null, null, null, null, $invoice_id);
+        // $creditnote_items_subtotals = $this->app->components->report->creditnoteGetStats('items', null, null, null, null, null, $invoice_id);
 
         $sql = "SELECT
                 SUM(unit_discount * unit_qty) AS subtotal_discount,
@@ -954,7 +954,7 @@ class Creditnote extends Components {
             }*/
 
             // Check there are no pending credit notes attached to the invoice
-            if($this->app->components->report->countCreditnotes(null, null, null, null, 'pending', null, null, null, null, null, $invoice_details['invoice_id']))
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, null, $invoice_details['invoice_id']))
             {
                 if(!$silent)
                 {
@@ -964,7 +964,7 @@ class Creditnote extends Components {
             }
 
             // Check there is are unused credit notes attached to the invoice
-            if($this->app->components->report->countCreditnotes(null, null, null, null, 'unused', null, null, null, null, null, $invoice_details['invoice_id']))
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'unused', null, null, null, null, null, $invoice_details['invoice_id']))
             {
                 if(!$silent)
                 {
@@ -1013,10 +1013,10 @@ class Creditnote extends Components {
                 // vouchers, cancell them or refund them?? do this in another function ??
 
                 // Calculate real monies paid on this invoice by the client
-                $moniesIn = $this->app->components->report->sumPayments(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, $invoice_details['invoice_id']);
+                $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, $invoice_details['invoice_id']);
 
                 // Get any real payments, vouchers and creditnotes paid out against this invoice  TODO: should i get these payments separately?
-                $moniesOut = $this->app->components->report->sumPayments(null, null, null, null, 'valid', 'invoice', null, 'debit', null, null, $invoice_details['invoice_id']);
+                $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', null, 'debit', null, null, $invoice_details['invoice_id']);
 
                 // How much real money is left that can be refunded.
                 $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
@@ -1213,7 +1213,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(countPayments('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
+        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because it has transactions against it."));
             $state_flag = false;
         }*/
@@ -1282,7 +1282,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(countPayments('', null, null, null, null, 'creditnote', null, null, null, null, null, null, $creditnote_id)) {
+        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has transactions against it."));
             $state_flag = false;
         }*/
@@ -1347,7 +1347,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(countPayments('', null, null, null, null, 'creditnote', null, null, null, null, null, null, $creditnote_id)) {
+        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has transactions against it."));
             $state_flag = false;
         }*/
@@ -1412,7 +1412,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(countPayments('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
+        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has transactions against it."));
             $state_flag = false;
         }*/
@@ -1436,7 +1436,7 @@ class Creditnote extends Components {
     public function recalculateTotals($creditnote_id) {
 
         $items_subtotals        = $this->getItemsSubtotals($creditnote_id);
-        $payments_subtotal      = $this->app->components->report->sumPayments('date', null, null, null, 'valid', null, null, null, null, null, null, null, null, $creditnote_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', null, null, null, null, null, null, null, null, $creditnote_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];

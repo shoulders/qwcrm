@@ -308,7 +308,7 @@ class Schedule extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // If there are no schedules left for this workorder
-        if($this->app->components->report->countSchedules($schedule_details['workorder_id']) == 0) {
+        if($this->app->components->report->scheduleCount($schedule_details['workorder_id']) == 0) {
 
             // if the workorder status is 'scheduled', change the status to 'assigned'
             if($this->app->components->workorder->getRecord($schedule_details['workorder_id'], 'status') == 'scheduled') {

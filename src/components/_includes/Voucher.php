@@ -712,7 +712,7 @@ class Voucher extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->countPayments('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
             $vouchers_new_status = '';
         }*/
 
