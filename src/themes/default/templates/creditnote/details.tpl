@@ -200,12 +200,12 @@
 
                                                 <!-- Apply Credit Note to Invoice Button -->
                                                 {if $creditnote_details.status == 'unused' && $creditnote_details.invoice_id}
-                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&method=credit_note&invoice_id={$creditnote_details.invoice_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Invoice{/t}</button>
+                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&method=creditnote&invoice_id={$creditnote_details.invoice_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Invoice{/t}</button>
                                                 {/if}
 
                                                 <!-- Apply Credit Note to Expense Button -->
                                                 {if $creditnote_details.status == 'unused' && $creditnote_details.expense_id}
-                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=expense&method=credit_note&expense_id={$creditnote_details.expense_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Expense{/t}</button>
+                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=expense&method=creditnote&expense_id={$creditnote_details.expense_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Expense{/t}</button>
                                                 {/if}
 
                                                 <!-- send real money -->

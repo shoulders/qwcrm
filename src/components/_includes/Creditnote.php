@@ -952,15 +952,29 @@ class Creditnote extends Components {
                 $state_flag = false;
             }*/
 
-            // Only allow these invoice statuses TODO: is this test actually needed? It does not harm though
+            /* Only allow these invoice statuses TODO: is this test actually needed? It does not harm though - Type one and Type 2 selection below does this
             if(!in_array($invoice_details['status'], array('partially_paid', 'paid', 'partially_refunded')))
             {
                 $state_flag = false;
-            }
+            }*/
 
-            // Check there is no pending credit notes attached to the invoice
+            // Check there are no pending credit notes attached to the invoice
             if($this->app->components->report->countCreditnotes(null, null, null, null, 'pending', null, null, null, null, $invoice_details['invoice_id']))
             {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has a pending creditnote assigned to it."));
+                }
+                $state_flag = false;
+            }
+
+            // Check there is are unused credit notes attached to the invoice
+            if($this->app->components->report->countCreditnotes(null, null, null, null, 'unused', null, null, null, null, $invoice_details['invoice_id']))
+            {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an unused creditnote assigned to it."));
+                }
                 $state_flag = false;
             }
 
@@ -975,13 +989,14 @@ class Creditnote extends Components {
             }
 
 
-            /* Type 1 - Used to clear invoice balance (invoices with no balance should be cancelled) */
+            /* Type 1 - Used to clear invoice balance (invoices with no balance should be cancelled and not cleared with a CR) */
 
             // Is this a Type 1 CR request
             if((float)$invoice_details['balance'] > 0 && $invoice_details['status'] == 'partially_paid')
             {
-                // Do nothing - we are just closing with fake money
+                // Do nothing (currentlt) - we are just closing with fake money
                 // TODO: do vouchers need handling here
+                //TODO: do i need to add any code here
             }
 
             /* Type 2 - Refund monies to clients */
@@ -996,8 +1011,20 @@ class Creditnote extends Components {
                 3) sum credit notes applied against this invoice
                 = is there any real money left?*/
 
+                // does this have any vouchers
+
+                // a partially paid invoice with vouchers cannot be refunded
+
+                // vouchers, cancell them or refund them?? do this in another function ??
+
                 // Calculate real monies paid on this invoice by the client
-                /////////$moniesIn
+                $moniesIn = $this->app->components->report->sumPayments(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, $invoice_details['invoice_id']);
+
+                // Get any real payments, vouchers and creditnotes paid out against this invoice  TODO: should i get these payments separately?
+                $moniesOut = $this->app->components->report->sumPayments(null, null, null, null, 'valid', 'invoice', null, 'debit', null, null, $invoice_details['invoice_id']);
+
+                // How much real money is left that can be refunded.
+                $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
 
             }
 
@@ -1479,6 +1506,10 @@ class Creditnote extends Components {
         elseif($creditnote_details['unit_gross'] > 0 && $creditnote_details['unit_gross'] == $payments_subtotal && $creditnote_details['status'] != 'fully_used') {
             $this->updateStatus($creditnote_id, 'fully_used');
         }
+
+        // cancelled?
+
+        // deleted //?
 
         return;
 

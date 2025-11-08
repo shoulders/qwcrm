@@ -12,14 +12,14 @@ class PaymentMethodCreditnote extends PaymentMethod
 {
     private $creditnote_details = array();
     private $currency_symbol = '';
-    private $credit_note_exists = false;
+    private $creditnote_exists = false;
 
     public function __construct()
     {
         parent::__construct();
 
         // Set class variables
-        Payment::$payment_details['method'] = 'credit_note';
+        Payment::$payment_details['method'] = 'creditnote';
 
         // Does this credit exist
         if(!$this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']))
@@ -27,13 +27,13 @@ class PaymentMethodCreditnote extends PaymentMethod
             // If there is no credit note with this ID, we cannot proceed
             Payment::$payment_valid = false;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no Credit Note with that ID."));
-            $this->credit_note_exists = false;
+            $this->creditnote_exists = false;
             return;
         }
         else
         {
             // Set CR exists flag
-            $this->credit_note_exists = true;
+            $this->creditnote_exists = true;
 
             // Set Action and Direction of payment
             if($this->creditnote_details['type'] == 'sales')
@@ -57,7 +57,7 @@ class PaymentMethodCreditnote extends PaymentMethod
     public function preProcess()
     {
         // If there is no credit note, do not continue
-        if(!$this->credit_note_exists) {return;}
+        if(!$this->creditnote_exists) {return;}
 
         parent::preProcess();
 
@@ -216,7 +216,7 @@ class PaymentMethodCreditnote extends PaymentMethod
         }
 
         // Refresh the Credit Note details
-        if($this->credit_note_exists)
+        if($this->creditnote_exists)
         {
             $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']);
 

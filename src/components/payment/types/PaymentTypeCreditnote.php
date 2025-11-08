@@ -33,7 +33,7 @@ class PaymentTypeCreditnote extends PaymentType
         }
 
         // Disable Unwanted Payment Methods
-        Payment::$disabledMethods[] = 'credit_note';
+        Payment::$disabledMethods[] = 'creditnote';
         Payment::$disabledMethods[] = 'voucher';
 
         // For logging and insertRecord()

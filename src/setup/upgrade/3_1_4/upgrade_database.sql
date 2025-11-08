@@ -893,7 +893,7 @@ ALTER TABLE `#__creditnote_types` ADD PRIMARY KEY (`id`);
 --
 
 INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
-('9', 'credit_note', 'Credit Note', '1', '1', '1', '1', '0');
+('9', 'creditnote', 'Credit Note', '1', '1', '1', '1', '0');
 ALTER TABLE `#__invoice_records` DROP `unit_discount_rate`;
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
 ('creditnote:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
