@@ -99,17 +99,17 @@
 
                                                     <!-- Edit Button -->
                                                     {if $expense_details.status == 'pending' || $expense_details.status == 'unpaid'}
-                                                        <button type="button" onclick="location.href='index.php?component=expense&page_tpl=edit&expense_id={$expense_details.expense_id}';">{t}Edit{/t}</button>
+                                                        <button type="button" onclick="window.location.href='index.php?component=expense&page_tpl=edit&expense_id={$expense_details.expense_id}';">{t}Edit{/t}</button>
                                                     {/if}
 
                                                     <!-- Apply Payment Button -->
                                                     {if $expense_details.status == 'unpaid' || $expense_details.status == 'partially_paid'}
-                                                        <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=expense&expense_id={$expense_details.expense_id}';">{t}Apply Payment{/t}</button>
+                                                        <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=expense&expense_id={$expense_details.expense_id}';">{t}Apply Payment{/t}</button>
                                                     {/if}
 
                                                     <!-- Credit Note Button -->
                                                     {if $allowed_to_create_creditnote}
-                                                        <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}', '_self');">{t}Add Purchase Credit Note (Expense){/t}</button>
+                                                        <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}';">{t}Add Purchase Credit Note (Expense){/t}</button>
                                                     {/if}
 
                                                 </td>

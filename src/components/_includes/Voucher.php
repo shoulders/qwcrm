@@ -511,7 +511,7 @@ class Voucher extends Components {
         //$redeemed_on = ($new_status == 'redeemed') ? $this->app->system->general->mysqlDatetime($timestamp) : null;
 
         // Update voucher 'closed_on' boolean for the new status
-        if(in_array($new_status, array('fully_redeemed', 'cancelled'))) {
+        if(in_array($new_status, array('redeemed', 'voided', 'cancelled'))) {
             $closed_on = $this->app->system->general->mysqlDatetime($timestamp);
         } else {
             $closed_on = null;
@@ -585,47 +585,52 @@ class Voucher extends Components {
             return false;
         }
 
-        // Update the balance in the database
+        // Update the voucher balance in the database
         $sql = "UPDATE ".PRFX."voucher_records SET
                 balance             =". $this->app->db->qStr( $new_balance )."
                 WHERE voucher_id    =". $this->app->db->qStr( $voucher_id );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        /* Update the Status */
-
         // Get fresh Voucher details
         $voucher_details = $this->app->components->voucher->getRecord($voucher_id);
 
-        // Balance is zero
-        if($voucher_details['balance'] == 0 && $voucher_details['status'] != 'redeemed')
+        /* Update the Status */
+
+        // Pending, Unpaid, Partially Paid, Suspended, Voided, Cancelled, Deleted
+        // Can only be set by $this->updateInvoiceVouchersStatuses() when the invoice is updated.
+        // This funciton should only ever be called for the statuses below
+
+        // Paid (Unused)
+        if($voucher_details['balance'] == $voucher_details['unit_net'])
         {
-            $this->updateStatus($voucher_id, 'redeemed');
+            $this->updateStatus($voucher_id, 'paid', true);
         }
 
-        // Balance Partially used
-        if(($voucher_details['balance'] > 0 && $voucher_details['balance'] != $voucher_details['unit_net']) && $voucher_details['status'] != 'redeemed')
+        // Partially Redeemed
+        elseif($voucher_details['balance'] > 0 && $voucher_details['balance'] < $voucher_details['unit_net'])
         {
-            $this->updateStatus($voucher_id, 'partially_redeemed');
+            $this->updateStatus($voucher_id, 'partially_redeemed', true);
         }
 
-        // Balance is unused
-        if($voucher_details['balance'] == $voucher_details['unit_net'] && $voucher_details['status'] != 'paid')
+        // Redeemed
+        elseif($voucher_details['balance'] == 0)
         {
-            $this->updateStatus($voucher_id, 'paid');
+            $this->updateStatus($voucher_id, 'redeemed', true);
         }
 
         return;
     }
 
-    ############################################
-    #  Invoice Totals have changed - process   #  // when i update an invoice and the totals are recalculated, the vouchers need their status recalculating and setting
     ############################################  // This is only triggered when there is a change in invoice status
+    #  Invoice Totals have changed - process   #  // when i update an invoice and the totals are recalculated, the vouchers need their status recalculating and setting
+    ############################################  // This should not be available once a voucher has been used
 
     public function updateInvoiceVouchersStatuses($invoice_id, $invoice_new_status)
     {
         $vouchers_new_status = null;
-        $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
+
+        //$invoice_details = $this->app->components->invoice->getRecord($invoice_id);
 
         // Get Invoice Vouchers (other method)
         //$invoice_vouchers_details = $this->app->components->voucher->getRecords('voucher_id', 'DESC', 0, false, null, null, null, null, null, null, null, $invoice_id);
@@ -637,8 +642,8 @@ class Voucher extends Components {
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Is Pending
-        if($invoice_details['status'] == 'pending') {
-            $vouchers_new_status = 'unpaid';
+        if($invoice_new_status == 'pending') {
+            $vouchers_new_status = 'pending';
         }
 
         // Is Unpaid
@@ -656,29 +661,19 @@ class Voucher extends Components {
             $vouchers_new_status = 'paid';
         }
 
-        /* Is Partially Refunded = NOT SUPPORTED
-        if($invoice_new_status == 'partially_refunded') {
-            $vouchers_new_status = 'partially_refuned';
-        }*/
-
-        // Is Refunded
-        if($invoice_new_status == 'fully_refunded') {
-            $vouchers_new_status = 'fully_refuned';
-        }
-
         // In Dispute
         if($invoice_new_status == 'in_dispute') {
-            $vouchers_new_status = 'unpaid';
+            $vouchers_new_status = 'suspended';
         }
 
         // Is Overdue
         if($invoice_new_status == 'overdue') {
-            $vouchers_new_status = 'unpaid';
+            $vouchers_new_status = 'suspended';
         }
 
         // In Collections
         if($invoice_new_status == 'collections') {
-            $vouchers_new_status = 'unpaid';
+            $vouchers_new_status = 'suspended';
         }
 
         // Is Cancelled (this happens when you cancel the invoice) - from cancelInvoiceVouchers()
@@ -725,7 +720,7 @@ class Voucher extends Components {
                 $this->updateStatus($rs->fields['voucher_id'], $vouchers_new_status, true);
 
                 // Update last active record
-                $this->updateLastActive($voucher_id);
+                $this->updateLastActive($rs->fields['voucher_id']);
 
                 // Advance the loop to the next record
                 $rs->MoveNext();
@@ -766,7 +761,7 @@ class Voucher extends Components {
 
         $voucher_details = $this->getRecord($voucher_id);
 
-        if(!$this->checkSingleVoucherAllowsCancel($voucher_id)) {
+        if(!$this->checkRecordAllowsCancel($voucher_id)) {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
@@ -806,7 +801,7 @@ class Voucher extends Components {
 
         $voucher_details = $this->getRecord($voucher_id);
 
-        if(!$this->checkSingleVoucherAllowsDelete($voucher_id)) {
+        if(!$this->checkRecordAllowsDelete($voucher_id)) {
 
             // Load the relevant invoice page with failed message
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
@@ -817,8 +812,8 @@ class Voucher extends Components {
             // Change the voucher status to deleted (I do this here to maintain log consistency)
             $this->updateStatus($voucher_id, 'deleted', true);
 
+            // The voucher_id and voucher_code are kept
             $sql = "UPDATE ".PRFX."voucher_records SET
-                voucher_code       =". $this->app->db->qStr( $voucher_details['voucher_code']   ).",
                 employee_id         =   NULL,
                 client_id           =   NULL,
                 workorder_id        =   NULL,
@@ -900,8 +895,14 @@ class Voucher extends Components {
 
         $voucher_details = $this->getRecord($voucher_id);
 
+        // This prevents vouchers (or parent invoice) being stuck on the pending or suspended status
+        if(in_array($voucher_details['status'], array('pending', 'suspended')))
+        {
+            $expired_status = false;
+        }
+
         // Is the voucher deleted
-        if($voucher_details['status'] === 'deleted')
+        elseif($voucher_details['status'] === 'deleted')
         {
             $expired_status = true;
         }
@@ -984,158 +985,89 @@ class Voucher extends Components {
         return;
     }
 
- ////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+// Standard Voucher/Record standard check functions (some required looping of other parent invoice and sibling voucher records to give a proper decision )
+///////////////////////////////////////////////////////////////////////
 
-
-    /* Standard Voucher/Record check functions */
     /* These functions: check the parent invoice status and it's vouchers for their statuses before making a descision about the specific voucher */
 
     ###########################################################
     #  Check if the voucher status is allowed to be changed   #  // used on voucher:status
-    ###########################################################
+    ###########################################################  // can only swap between `paid` and 'suspended`
 
-    public function checkRecordAllowsManualStatusChange($voucher_id) {
-
-         $state_flag = true;
-
-        // Get voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Check the specified voucher record allows change
-        if(!$this->checkSingleVoucherAllowsStatusChange($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher's status cannot be changed because it's status does not allow it."));
-            $state_flag = false;
-        }
-
-        // Check to see if the parent invoice allows changes to it's vouchers
-        if(!$this->checkInvoiceAllowsSingleVoucherStatusChange($voucher_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher's status cannot be changed because the invoice it is attached to, does not allow it."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-     }
-
-    ##############################################################
-    #  Check if a Voucher can be redeemed                        #
-    ##############################################################
-
-    public function checkRecordAllowsRedeem($voucher_id, $redeem_invoice_id) {
-
-        $state_flag = true;
-
-        // Check the specified voucher record allows redeem
-        if(!$this->checkSingleVoucherAllowsRedeem($voucher_id, $redeem_invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it's status does not allow it."));
-            $state_flag = false;
-        }
-
-        /* Notes for reference only
-         * Check to see if the parent invoice allows redemption of it's vouchers funciton would go here
-         * This is not the same as adding, removing or editing vouchers
-         * We dont need to check the parent invoice because we are not changing the invoice in anyway.
-         * Only the single voucher needs testing
-         */
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see a voucher can be cancelled                   #  // not currently used - Needed for cancellation via button on voucher:status (checks parent invoice aswell)
-    ###############################################################
-
-    public function checkRecordAllowsCancel($voucher_id) {
+    public function checkRecordAllowsManualStatusChange($voucher_id, $checkParentInvoice = true) {
 
         $state_flag = true;
 
         // Get voucher details
         $voucher_details = $this->getRecord($voucher_id);
 
-        // Check the specified voucher record allows cancel
-        if(!$this->checkSingleVoucherAllowsCancel($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it's status does not allow it."));
-            $state_flag = false;
+        // Check to see if the parent invoice allows manually changing of it's vouchers status.
+        if($checkParentInvoice)
+        {
+            // Get the invoice details
+            $invoice_details = $this->app->components->invoice->getRecord($voucher_details['invoice_id']);
+
+            // Is on a different tax system
+            if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is on a different Tax system."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Pending
+            if($invoice_details['status'] == 'pending') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is pending."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Unpaid
+            if($invoice_details['status'] == 'unpaid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is pending."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Partially Paid
+            if($invoice_details['status'] == 'partially_paid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is partially paid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Paid
+            if($invoice_details['status'] == 'paid') {
+            }
+
+            // Is the Parent Invoice In dispute
+            if($invoice_details['status'] == 'in_dispute') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in dispute."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Overdue
+            if($invoice_details['status'] == 'overdue') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice payment is overdue."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice in Collections
+            if($invoice_details['status'] == 'collections') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in collections."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Cancelled
+            if($invoice_details['status'] == 'cancelled') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice has been cancelled."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Deleted (might not need this check)
+            if($invoice_details['status'] == 'deleted') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice has been deleted."));
+                $state_flag = false;
+            }
         }
 
-        // Check to see if the parent invoice allows changes to it's vouchers
-        if(!$this->checkInvoiceAllowsSingleVoucherChanges($voucher_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because the invoice it is attached to, does not allow it."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the voucher can be deleted                #
-    ###############################################################
-
-    public function checkRecordAllowsDelete($voucher_id) {
-
-        $state_flag = true;
-
-        // Get voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Check the specified voucher record allows delete
-        if(!$this->checkSingleVoucherAllowsDelete($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it's status does not allow it."));
-            $state_flag = false;
-        }
-
-        // Check to see if the parent invoice allows changes to it's vouchers
-        if(!$this->checkInvoiceAllowsSingleVoucherChanges($voucher_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the voucher can be edited                 #
-    ###############################################################
-
-    public function checkRecordAllowsEdit($voucher_id) {
-
-        $state_flag = true;
-
-        // Get voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Check the specified voucher record allows edit
-        if(!$this->checkSingleVoucherAllowsEdit($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's status does not allow it."));
-            $state_flag = false;
-        }
-
-        // Check to see if the parent invoice allows changes to it's vouchers
-        if(!$this->checkInvoiceAllowsSingleVoucherChanges($voucher_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because the invoice it is attached to, does not allow it."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-
- //////////////////////////////////////////////////////////////////////
-
-    /* These are looped through when checking Vouchers on invoices */
-    /* They only act on the individual vouchers and are not aware of anything else. */
-
-    ###########################################################
-    #  Check if the voucher status is allowed to be changed   #  // used on voucher:status
-    ###########################################################
-
-    private function checkSingleVoucherAllowsStatusChange($voucher_id) {
-
-        $state_flag = false;
+        /*  Check the specified voucher record allows change */
 
         // Is Expired (Live Check)
         if($this->checkVoucherIsExpired($voucher_id)) {
@@ -1143,8 +1075,11 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Get the voucher details
-        $voucher_details = $this->getRecord($voucher_id);
+        // Is Pending
+        if($voucher_details['status'] == 'pending') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it is pending."));
+            $state_flag = false;
+        }
 
         // Is Unpaid
         if($voucher_details['status'] == 'unpaid') {
@@ -1160,12 +1095,6 @@ class Voucher extends Components {
 
         // Is Paid Unused
         if($voucher_details['status'] == 'paid') {
-            $state_flag = true;
-        }
-
-        // Is Fully Refunded
-        if($voucher_details['status'] == 'fully_refunded') {
-            $state_flag = false;
         }
 
         // Is Partially Redeemed
@@ -1175,14 +1104,19 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'fully_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has been fully redeemed."));
+        if($voucher_details['status'] == 'redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has been redeemed."));
             $state_flag = false;
         }
 
         // Is Suspended
         if($voucher_details['status'] == 'suspended') {
-            $state_flag = true;
+        }
+
+        // Is Voided
+        if($voucher_details['status'] == 'voided') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it has been voided."));
+            $state_flag = false;
         }
 
         // Is Cancelled
@@ -1202,8 +1136,737 @@ class Voucher extends Components {
     }
 
     ###############################################################
-    #   Check to see if the voucher status allows Editing         #
+    #   Check to see if the voucher can be edited                 #
     ###############################################################
+
+    public function checkRecordAllowsEdit($voucher_id, $checkParentInvoice = true) {
+
+        $state_flag = true;
+
+        // Get voucher details
+        $voucher_details = $this->getRecord($voucher_id);
+
+        // Check to see if the parent invoice allows editing of it's vouchers
+        if($checkParentInvoice)
+        {
+            // Get the invoice details
+            $invoice_details = $this->app->components->invoice->getRecord($voucher_details['$invoice_id']);
+
+            // Is on a different tax system
+            if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is on a different Tax system."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Pending
+            if($invoice_details['status'] == 'pending') {
+            }
+
+            // Is the Parent Invoice Unpaid
+            if($invoice_details['status'] == 'unpaid') {
+            }
+
+            // Is the Parent Invoice Partially Paid
+            if($invoice_details['status'] == 'partially_paid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is partially paid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Paid
+            if($invoice_details['status'] == 'paid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is paid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice In dispute
+            if($invoice_details['status'] == 'in_dispute') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is in dispute."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Overdue
+            if($invoice_details['status'] == 'overdue') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice payment is overdue."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice in Collections
+            if($invoice_details['status'] == 'collections') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is in collections."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Cancelled
+            if($invoice_details['status'] == 'cancelled') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice has been cancelled."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Deleted (might not need this check)
+            if($invoice_details['status'] == 'deleted') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice has been deleted."));
+                $state_flag = false;
+            }
+
+        }
+
+        /* Check the specified voucher record allows edit */
+
+        // Is Expired (Live Check)
+        if($this->checkVoucherIsExpired($voucher_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has expired."));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($voucher_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it is on a different Tax system."));
+            $state_flag = false;
+        }
+
+        // Is the record's VAT code is enabled
+        if(!$this->app->components->company->getVatTaxCodeStatus($voucher_details['vat_tax_code'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's current VAT Tax Code is not enabled."));
+            $state_flag = false;
+        }
+
+        // Is Unpaid
+        if($voucher_details['status'] == 'pending') {
+        }
+
+        // Is Unpaid
+        if($voucher_details['status'] == 'unpaid') {
+        }
+
+        // Is Partially Paid
+        if($voucher_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's invoice has been partially paid."));
+            $state_flag = false;
+        }
+
+        // Is Paid (Unused)
+        if($voucher_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's invoice has been paid."));
+            $state_flag = false;
+        }
+
+        // Is Partially Redeemed
+        if($voucher_details['status'] == 'partially_redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been partially redeemed."));
+            $state_flag = false;
+        }
+
+        // Is Redeemed
+        if($voucher_details['status'] == 'redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been redeemed."));
+            $state_flag = false;
+        }
+
+        // Is Suspended
+        if($voucher_details['status'] == 'suspended') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been suspended."));
+            $state_flag = false;
+        }
+
+        // Is Voided
+        if($voucher_details['status'] == 'voided') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been voided."));
+            $state_flag = false;
+        }
+
+        // Is Cancelled
+        if($voucher_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been cancelled."));
+            $state_flag = false;
+        }
+
+        // Is Deleted
+        if($voucher_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been deleted."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+        // $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's status does not allow it."));
+
+    }
+
+    ##############################################################
+    #  Check if a Voucher can be redeemed                        #
+    ##############################################################
+
+    public function checkRecordAllowsRedeem($voucher_id, $redeem_invoice_id, $checkParentInvoice = true) {
+
+        $state_flag = true;
+
+        // Get the voucher details
+        $voucher_details = $this->getRecord($voucher_id);
+
+        // Check to see if the parent invoice allows redemption of it's vouchers
+        if($checkParentInvoice)
+        {
+            // Get the invoice details
+            $invoice_details = $this->app->components->invoice->getRecord($voucher_details['$invoice_id']);
+
+            // Is on a different tax system
+            if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is on a different Tax system."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Pending
+            if($invoice_details['status'] == 'pending') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is pending."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Unpaid
+            if($invoice_details['status'] == 'unpaid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is unpaid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Partially Paid
+            if($invoice_details['status'] == 'partially_paid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is partially paid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Paid
+            if($invoice_details['status'] == 'paid') {
+            }
+
+            // Is the Parent Invoice In dispute
+            if($invoice_details['status'] == 'in_dispute') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because the parent invoice is in dispute."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Overdue
+            if($invoice_details['status'] == 'overdue') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice payment is overdue."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice in Collections
+            if($invoice_details['status'] == 'collections') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is in collections."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Cancelled
+            if($invoice_details['status'] == 'cancelled') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice has been cancelled."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Deleted (might not need this check)
+            if($invoice_details['status'] == 'deleted') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice has been deleted."));
+                $state_flag = false;
+            }
+
+        }
+
+
+        /* Check the specified voucher record allows redeem */
+
+        // Is Expired (Live Check)
+        if($this->checkVoucherIsExpired($voucher_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has expired."));
+            $state_flag = false;
+        }
+
+        // Voucher can not be used to pay for itself
+        if($voucher_details['invoice_id'] == $redeem_invoice_id) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be used to pay for itself."));
+            $state_flag = false;
+        }
+
+        // Check if blocked
+        if($voucher_details['blocked']) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it is blocked."));
+            $state_flag = false;
+        }
+
+        // Is Pending
+        if($voucher_details['status'] == 'pending') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it's invoice is pending and not paid.."));
+            $state_flag = false;
+        }
+
+        // Is Unpaid
+        if($voucher_details['status'] == 'unpaid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it's invoice has not been paid."));
+            $state_flag = false;
+        }
+
+        // Is Partially Paid
+        if($voucher_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it's invoice has been partially paid."));
+            $state_flag = false;
+        }
+
+        // Is Paid (Unused)
+        if($voucher_details['status'] == 'paid') {
+        }
+
+        // Is Partially Redeemed
+        if($voucher_details['status'] == 'partially_redeemed') {
+        }
+
+        // Is Redeemed
+        if($voucher_details['status'] == 'redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher has been redeemed so cannot be used anymore."));
+            $state_flag = false;
+        }
+
+        // Is Suspended
+        if($voucher_details['status'] == 'suspended') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been suspended."));
+            $state_flag = false;
+        }
+
+        // Is Voided
+        if($voucher_details['status'] == 'voided') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been voided."));
+            $state_flag = false;
+        }
+
+        // Is Cancelled
+        if($voucher_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been cancelled."));
+            $state_flag = false;
+        }
+
+        // Is Deleted
+        if($voucher_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been deleted."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+        //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it's status does not allow it."));
+
+    }
+
+
+    ###############################################################
+    #   Check to see a voucher can be cancelled                   #  // not currently used - Needed for cancellation via button on voucher:status (checks parent invoice aswell)
+    ###############################################################
+
+    public function checkRecordAllowsCancel($voucher_id, $checkParentInvoice = true) {
+
+        $state_flag = true;
+
+        // Get voucher details
+        $voucher_details = $this->getRecord($voucher_id);
+
+        // Check to see if the parent invoice allows cancelling of it's vouchers
+        if($checkParentInvoice)
+        {
+            // Get the invoice details
+            $invoice_details = $this->app->components->invoice->getRecord($voucher_details['$invoice_id']);
+
+            // Is on a different tax system
+            if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because the parent invoice is on a different Tax system."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Pending
+            if($invoice_details['status'] == 'pending') {
+            }
+
+            // Is the Parent Invoice Unpaid
+            if($invoice_details['status'] == 'unpaid') {
+            }
+
+            // Is the Parent Invoice Partially Paid
+            if($invoice_details['status'] == 'partially_paid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because the parent invoice is partially paid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Paid
+            if($invoice_details['status'] == 'paid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because the parent invoice is paid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice In dispute
+            if($invoice_details['status'] == 'in_dispute') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because the parent invoice is in dispute."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Overdue
+            if($invoice_details['status'] == 'overdue') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because the parent invoice payment is overdue."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice in Collections
+            if($invoice_details['status'] == 'collections') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because the parent invoice is in collections."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Cancelled
+            if($invoice_details['status'] == 'cancelled') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because the parent invoice has been cancelled."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Deleted (might not need this check)
+            if($invoice_details['status'] == 'deleted') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be cancelled because the parent invoice has been deleted."));
+                $state_flag = false;
+            }
+        }
+
+        /* Check the specified voucher record allows cancel */
+
+        // Is Expired (Live Check)
+        if($this->checkVoucherIsExpired($voucher_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has expired."));
+            $state_flag = false;
+        }
+
+        // Is Pending
+        if($voucher_details['status'] == 'pending') {
+        }
+
+        // Is Unpaid
+        if($voucher_details['status'] == 'unpaid') {
+        }
+
+        // Is Partially Paid
+        if($voucher_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it's invoice has been partially paid."));
+            $state_flag = false;
+        }
+
+        // Is Paid (Unused)
+        if($voucher_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it's invoice has been paid."));
+            $state_flag = false;
+        }
+
+        // Is Partially Redeemed
+        if($voucher_details['status'] == 'partially_redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been partially redeemed."));
+            $state_flag = false;
+        }
+
+        // Is Redeemed
+        if($voucher_details['status'] == 'redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been redeemed."));
+            $state_flag = false;
+        }
+
+        // Is Suspended
+        if($voucher_details['status'] == 'suspended') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been suspended."));
+            $state_flag = false;
+        }
+
+        // Is Voided
+        if($voucher_details['status'] == 'voided') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been voided."));
+            $state_flag = false;
+        }
+
+        // Is Cancelled
+        if($voucher_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has already been cancelled."));
+            $state_flag = false;
+        }
+
+        // Is Deleted
+        if($voucher_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been deleted."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
+    ###############################################################
+    #   Check to see if the voucher can be deleted                #  //add a `check parent = false` test? = false
+    ###############################################################
+
+    public function checkRecordAllowsDelete($voucher_id, $checkParentInvoice = true) {
+
+        $state_flag = true;
+
+        // Get voucher details
+        $voucher_details = $this->getRecord($voucher_id);
+
+        // Check to see if the parent invoice allows deleting of it's vouchers
+        if($checkParentInvoice)
+        {
+            // Get the invoice details
+            $invoice_details = $this->app->components->invoice->getRecord($voucher_details['invoice_id']);
+
+            // Is on a different tax system
+            if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is on a different Tax system."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Pending
+            if($invoice_details['status'] == 'pending') {
+            }
+
+            // Is the Parent Invoice Unpaid
+            if($invoice_details['status'] == 'unpaid') {
+            }
+
+            // Is the Parent Invoice Partially Paid
+            if($invoice_details['status'] == 'partially_paid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is partially paid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Paid
+            if($invoice_details['status'] == 'paid') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is paid."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice In dispute
+            if($invoice_details['status'] == 'in_dispute') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is in dispute."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Overdue
+            if($invoice_details['status'] == 'overdue') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice payment is overdue."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice in Collections
+            if($invoice_details['status'] == 'collections') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is in collections."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Cancelled
+            if($invoice_details['status'] == 'cancelled') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice has been cancelled."));
+                $state_flag = false;
+            }
+
+            // Is the Parent Invoice Deleted (might not need this check)
+            if($invoice_details['status'] == 'deleted') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice has been deleted."));
+                $state_flag = false;
+            }
+        }
+
+        /* Check the specified voucher record allows delete */
+
+        // Is Expired (Live Check)
+        if($this->checkVoucherIsExpired($voucher_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has expired."));
+            $state_flag = false;
+        }
+
+        // Is Pending
+        if($voucher_details['status'] == 'pending') {
+        }
+
+        // Is Unpaid
+        if($voucher_details['status'] == 'unpaid') {
+        }
+
+        // Is Partially Paid
+        if($voucher_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it's invoice has been partially paid."));
+            $state_flag = false;
+        }
+
+        // Is Paid (Unused)
+        if($voucher_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it's invoice has been paid."));
+            $state_flag = false;
+        }
+
+        // Is Partially Redeemed
+        if($voucher_details['status'] == 'partially_redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been partially redeemed."));
+            $state_flag = false;
+        }
+
+        // Is Redeemed
+        if($voucher_details['status'] == 'redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been redeemed."));
+            $state_flag = false;
+        }
+
+        // Is Suspended
+        if($voucher_details['status'] == 'suspended') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been suspended."));
+            $state_flag = false;
+        }
+
+        // Is Voided
+        if($voucher_details['status'] == 'voided') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been voided."));
+            $state_flag = false;
+        }
+
+        // Is Cancelled
+        if($voucher_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been cancelled."));
+            $state_flag = false;
+        }
+
+        // Is Deleted
+        if($voucher_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has already been deleted."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
+///////////////////////////////////////////////////////////////////////
+// These functions check if the vouchers prevent certain operations on their parent invoice
+///////////////////////////////////////////////////////////////////////
+
+
+    ############################################################################
+    # Check an invoice's vouchers do not prevent the invoice getting edited    #  // move into the invpoice::check function
+    ############################################################################
+
+    public function checkAllInvoiceSiblingVouchersAllowEdit($invoice_id) {
+
+        $state_flag = true;
+
+        $sql = "SELECT *
+                FROM ".PRFX."voucher_records
+                WHERE invoice_id = ".$invoice_id;
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        while(!$rs->EOF) {
+
+            // Check the Voucher to see if it can be Edited
+            if(!$this->checkRecordAllowsEdit($rs->fields['voucher_id'], false)) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Voucher").': '.$rs->fields['voucher_id']);
+                $state_flag = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();
+
+        }
+
+        return $state_flag;
+
+    }
+
+    ############################################################################
+    # Check an invoices vouchers do not prevent the invoice getting cancelled  #  // move into the invpoice::check function
+    ############################################################################
+
+    public function checkAllInvoiceSiblingVouchersAllowCancel($invoice_id) {
+
+        $state_flag = true;
+
+        $sql = "SELECT *
+                FROM ".PRFX."voucher_records
+                WHERE invoice_id = ".$invoice_id;
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        while(!$rs->EOF) {
+
+            //$voucher_details = $rs->GetRowAssoc();
+
+            // Check the Voucher to see if it can be cancelled
+            if(!$this->checkRecordAllowsCancel($rs->fields['voucher_id'], false)) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']);
+                $state_flag = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();
+
+        }
+
+        return $state_flag;
+
+    }
+
+    ###########################################################################
+    # Check an invoice's vouchers do not prevent the invoice getting deleted  #  // move into the invpoice::check function
+    ###########################################################################
+
+    public function checkAllInvoiceSiblingVouchersAllowDelete($invoice_id) {
+
+        $state_flag = true;
+
+        $sql = "SELECT *
+                FROM ".PRFX."voucher_records
+                WHERE invoice_id = ".$invoice_id;
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        // Check all of the Vouchers to see if they can be deleted
+        while(!$rs->EOF) {
+
+            if(!$this->checkRecordAllowsDelete($rs->fields['voucher_id'], false)) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Voucher").': '.$rs->fields['voucher_id']);
+                $state_flag = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();
+
+        }
+
+        return $state_flag;
+
+    }
+
+///////////////////////////////////////////////////////////////////////
+// Single voucher record checks
+///////////////////////////////////////////////////////////////////////
+
+    /* These are looped through by other functions in this class only, note they are private functions */
+    /* These only act on the individual vouchers and are not aware of anything else. */
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////
+// Parent Invoice voucher checking routines - does the parent invoice allow change/edit/cancel of a single voucher
+///////////////////////////////////////////////////////////////////////
+
+/* is this the best place for these ??? - these are used when perfomring actions on an ivoice and reports back to the invoice module*/
+
+
+
+
+
+/*
+///////////////////////////////////////////////////////////////////////
+// Does a single voucher prevent the change/editing/cancel/delete of a parent invoice  - this section might be old code
+///////////////////////////////////////////////////////////////////////
+
+- These additional tests would assume the vouchers can become out of sync with their invoices and this is not allowed.
+- vouchers are in sync with their invoice until paid at which point they can diverege, intentionally.
+
+    #######################################################################
+    #   Check to see if the voucher status allows invoice Editing         #
+    #######################################################################
 
     private function checkSingleVoucherAllowsInvoiceEdit($voucher_id) {
 
@@ -1230,6 +1893,12 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
+        // Is Pending
+        if($voucher_details['status'] == 'pending') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher is pending."));
+            $state_flag = false;
+        }
+
         // Is Unpaid
         if($voucher_details['status'] == 'unpaid') {
             $state_flag = true;
@@ -1247,12 +1916,6 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Fully Refunded
-        if($voucher_details['status'] == 'fully_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been fully refunded."));
-            $state_flag = false;
-        }
-
         // Is Partially Redeemed
         if($voucher_details['status'] == 'partially_redeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been partially redeemed."));
@@ -1260,14 +1923,20 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'fully_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been fully redeemed."));
+        if($voucher_details['status'] == 'redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been redeemed."));
             $state_flag = false;
         }
 
         // Is Suspended
         if($voucher_details['status'] == 'suspended') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been suspended."));
+            $state_flag = false;
+        }
+
+        // Is Voided
+        if($voucher_details['status'] == 'voided') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been voided."));
             $state_flag = false;
         }
 
@@ -1285,9 +1954,9 @@ class Voucher extends Components {
 
     }
 
-    ###############################################################
-    #   Check to see if the voucher status allows cancelling      #
-    ###############################################################
+    #######################################################################
+    #   Check to see if the voucher status allows invpice cancelling      #
+    #######################################################################
 
     private function checkSingleVoucherAllowsInvoiceCancel($voucher_id) {
 
@@ -1301,6 +1970,11 @@ class Voucher extends Components {
 
         // Get the voucher details
         $voucher_details = $this->getRecord($voucher_id);
+
+        // Is Unpaid
+        if($voucher_details['status'] == 'pending') {
+            $state_flag = true;
+        }
 
         // Is Unpaid
         if($voucher_details['status'] == 'unpaid') {
@@ -1320,26 +1994,26 @@ class Voucher extends Components {
         }
 
         // Is Partially Redeemed
-        if($voucher_details['status'] == 'fully_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been fully refunded."));
-            $state_flag = false;
-        }
-
-        // Is Partially Redeemed
         if($voucher_details['status'] == 'partially_redeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been partially redeemed."));
             $state_flag = false;
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'fully_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been fully redeemed."));
+        if($voucher_details['status'] == 'redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been redeemed."));
             $state_flag = false;
         }
 
         // Is Suspended
         if($voucher_details['status'] == 'suspended') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been suspended."));
+            $state_flag = false;
+        }
+
+        // Is Voided
+        if($voucher_details['status'] == 'suspended') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been voided."));
             $state_flag = false;
         }
 
@@ -1358,9 +2032,9 @@ class Voucher extends Components {
 
     }
 
-    ###############################################################
-    #   Check to see if the voucher status allows Deleting        #
-    ###############################################################
+    #######################################################################
+    #   Check to see if the voucher status allows invoice Deleting        #
+    #######################################################################
 
     private function checkSingleVoucherAllowsInvoiceDelete($voucher_id) {
 
@@ -1375,6 +2049,11 @@ class Voucher extends Components {
         // Get the voucher details
         $voucher_details = $this->getRecord($voucher_id);
 
+        // Is Pending
+        if($voucher_details['status'] == 'pending') {
+            $state_flag = true;
+        }
+
         // Is Unpaid
         if($voucher_details['status'] == 'unpaid') {
             $state_flag = true;
@@ -1386,15 +2065,9 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Unused
+        // Is Paid (Unused)
         if($voucher_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been paid."));
-            $state_flag = false;
-        }
-
-        // Is Fully refunded
-        if($voucher_details['status'] == 'fully_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been fully refunded."));
             $state_flag = false;
         }
 
@@ -1405,14 +2078,20 @@ class Voucher extends Components {
         }
 
         // Is Redeemed
-        if($voucher_details['status'] == 'fully_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been fully redeemed."));
+        if($voucher_details['status'] == 'redeemed') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been redeemed."));
             $state_flag = false;
         }
 
         // Is Suspended
         if($voucher_details['status'] == 'suspended') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been suspended."));
+            $state_flag = false;
+        }
+
+        // Is Voided
+        if($voucher_details['status'] == 'voided') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been voided."));
             $state_flag = false;
         }
 
@@ -1431,574 +2110,11 @@ class Voucher extends Components {
         return $state_flag;
 
     }
+*/
 
-    ##############################################################
-    #  Check if the Voucher can be redeemed                      #
-    ##############################################################
 
-    private function checkSingleVoucherAllowsRedeem($voucher_id, $redeem_invoice_id) {
+    /** Other Functions **/
 
-        $state_flag = false;
-
-        // Is Expired (Live Check)
-        if($this->checkVoucherIsExpired($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has expired."));
-            $state_flag = false;
-        }
-
-        // Get the voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Voucher can not be used to pay for itself
-        if($voucher_details['invoice_id'] == $redeem_invoice_id) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be used to pay for itself."));
-            $state_flag = false;
-        }
-
-        // Check if blocked
-        if($voucher_details['blocked']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it is blocked."));
-            $state_flag = false;
-        }
-
-        // Is Unpaid
-        if($voucher_details['status'] == 'unpaid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher has not been paid for so cannot be redeemed"));
-            $state_flag = false;
-        }
-
-        // Is Partially Paid
-        if($voucher_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it's invoice has been partially paid."));
-            $state_flag = false;
-        }
-
-        // Is Paid Unused
-        if($voucher_details['status'] == 'paid') {
-            $state_flag = true;
-        }
-
-        // Is Fully Refunded
-        if($voucher_details['status'] == 'fully_refunded') {
-            $state_flag = false;
-        }
-
-        // Is Partially Redeemed
-        if($voucher_details['status'] == 'partially_redeemed') {
-            $state_flag = true;
-        }
-
-        // Is Fully Redeemed
-        if($voucher_details['status'] == 'fully_redeemed') {
-            $state_flag = false;
-        }
-
-        // Is Suspended
-        if($voucher_details['status'] == 'suspended') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been suspended."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($voucher_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($voucher_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been deleted."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the voucher status allows cancellation    #
-    ###############################################################
-
-    private function checkSingleVoucherAllowsCancel($voucher_id) {
-
-        $state_flag = false;
-
-        // Is Expired (Live Check)
-        if($this->checkVoucherIsExpired($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has expired."));
-            $state_flag = false;
-        }
-
-        // Get the voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Is Unpaid
-        if($voucher_details['status'] == 'unpaid') {
-            $state_flag = true;
-        }
-
-        // Is Partially Paid
-        if($voucher_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it's invoice has been partially paid."));
-            $state_flag = false;
-        }
-
-        // Is Paid Unused
-        if($voucher_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it's invoice has been paid."));
-            $state_flag = false;
-        }
-
-        // Is Fully Refunded
-        if($voucher_details['status'] == 'fully_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it's invoice has been fully refunded."));
-            $state_flag = false;
-        }
-
-        // Is Partially Redeemed
-        if($voucher_details['status'] == 'partially_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been partially redeemed."));
-            $state_flag = false;
-        }
-
-        // Is Redeemed
-        if($voucher_details['status'] == 'fully_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been fully redeemed."));
-            $state_flag = false;
-        }
-
-        // Is Suspended
-        if($voucher_details['status'] == 'suspended') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been suspended."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($voucher_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has already been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($voucher_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been deleted."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the voucher status allows deletion        # /* These are looped through when checking Vouchers on invoices and if they effect anything */
-    ###############################################################
-
-    private function checkSingleVoucherAllowsDelete($voucher_id) {
-
-        $state_flag = false;
-
-        // Is Expired (Live Check)
-        if($this->checkVoucherIsExpired($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has expired."));
-            $state_flag = false;
-        }
-
-        // Get the voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Is Unpaid
-        if($voucher_details['status'] == 'unpaid') {
-            $state_flag = true;
-        }
-
-        // Is Partially Paid
-        if($voucher_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it's invoice has been partially paid."));
-            $state_flag = false;
-        }
-
-        // Is Paid Unused
-        if($voucher_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it's invoice has been paid."));
-            $state_flag = false;
-        }
-
-        // Is Partially Redeemed
-        if($voucher_details['status'] == 'partially_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been partially redeemed."));
-            $state_flag = false;
-        }
-
-        // Is Redeemed
-        if($voucher_details['status'] == 'fully_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been fully redeemed."));
-            $state_flag = false;
-        }
-
-        // Is Suspended
-        if($voucher_details['status'] == 'suspended') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been suspended."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($voucher_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($voucher_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has already been deleted."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-    ##########################################################
-    #  Check if the voucher status allows editing            #
-    ##########################################################
-
-    private function checkSingleVoucherAllowsEdit($voucher_id) {
-
-        $state_flag = false;
-
-        // Is Expired (Live Check)
-        if($this->checkVoucherIsExpired($voucher_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has expired."));
-            $state_flag = false;
-        }
-
-        // Get the voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
-        // Is on a different tax system
-        if($voucher_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it is on a different Tax system."));
-            $state_flag = false;
-        }
-
-        // Is the record's VAT code is enabled
-        if(!$this->app->components->company->getVatTaxCodeStatus($voucher_details['vat_tax_code'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's current VAT Tax Code is not enabled."));
-            $state_flag = false;
-        }
-
-        // Is Unpaid
-        if($voucher_details['status'] == 'unpaid') {
-            $state_flag = true;
-        }
-
-        // Is Partially Paid
-        if($voucher_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's invoice has been partially paid."));
-            $state_flag = false;
-        }
-
-        // Is Paid (Unused)
-        if($voucher_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's invoice has been paid."));
-            $state_flag = false;
-        }
-
-        // Is Fully Refunded
-        if($voucher_details['status'] == 'fully_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it's invoice has been fully refunded."));
-            $state_flag = false;
-        }
-
-        // Is Partially Redeemed
-        if($voucher_details['status'] == 'partially_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been partially redeemed."));
-            $state_flag = false;
-        }
-
-        // Is Redeemed
-        if($voucher_details['status'] == 'fully_redeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been fully redeemed."));
-            $state_flag = false;
-        }
-
-        // Is Suspended
-        if($voucher_details['status'] == 'suspended') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been suspended."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($voucher_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($voucher_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been deleted."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
- //////////////////////////////////////////////////////////////////////
-
-  /* Invoice voucher checking routines - is this the best place for these ??? - these are used when perfomring actions on an ivoice and reports back to the invoice module*/
-
-#########################################################################
-#   Check to see if the invoice allows voucher status change            #  // Check to see if the parent invoice allows status changes to it's vouchers
-#########################################################################  // used on voucher:status
-
-public function checkInvoiceAllowsSingleVoucherStatusChange($invoice_id) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
-
-        // Is on a different tax system
-        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is on a different Tax system."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Pending
-        if($invoice_details['status'] == 'pending') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is pending."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Unpaid
-        if($invoice_details['status'] == 'unpaid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is pending."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Partially Paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is partially paid."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is paid."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Fully refunded
-        if($invoice_details['status'] == 'fully_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is fully refunded."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice In dispute
-        if($invoice_details['status'] == 'in_dispute') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in dispute."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Overdue
-        if($invoice_details['status'] == 'overdue') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice payment is overdue."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice in Collections
-        if($invoice_details['status'] == 'collections') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in collections."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Deleted (might not need this check)
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice has been deleted."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-}
-
-#########################################################################  // Check to see if the parent invoice allows changes to it's vouchers add/edit/delete/cancel not reedeem
-#   Check to see if the invoice allows voucher changes                  #
-#########################################################################
-
-private function checkInvoiceAllowsSingleVoucherChanges($invoice_id) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
-
-        // Is the Parent Invoice Pending
-        if($invoice_details['status'] == 'pending') {
-            $state_flag = true;
-        }
-
-        // Is the Parent Invoice Unpaid
-        if($invoice_details['status'] == 'unpaid') {
-            $state_flag = true;
-        }
-
-        // Is on a different tax system
-        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice is on a different Tax system."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Partially Paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice is partially paid."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice is paid."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Fully Refunded
-        if($invoice_details['status'] == 'fully_refunded') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice is fully refunded."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice In dispute
-        if($invoice_details['status'] == 'in_dispute') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice is in dispute."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Overdue
-        if($invoice_details['status'] == 'overdue') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice payment is overdue."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice in Collections
-        if($invoice_details['status'] == 'collections') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice is in collections."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is the Parent Invoice Deleted (might not need this check)
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's vouchers cannot be changed because the parent invoice has been deleted."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
- }
-
-    ############################################################################
-    # Check an invoices vouchers do not prevent the invoice getting cancelled  #
-    ############################################################################
-
-    public function checkInvoiceVouchersAllowsInvoiceCancel($invoice_id) {
-
-        $state_flag = true;
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {
-
-            //$voucher_details = $rs->GetRowAssoc();
-
-            // Check the Voucher to see if it can be deleted
-            if(!$this->checkSingleVoucherAllowsCancel($rs->fields['voucher_id'])) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$rs->fields['voucher_id']);
-                $state_flag = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();
-
-        }
-
-        return $state_flag;
-
-    }
-
-    ###########################################################################
-    # Check an invoice's vouchers do not prevent the invoice getting deleted  #
-    ###########################################################################
-
-    public function checkInvoiceVouchersAllowsInvoiceDelete($invoice_id) {
-
-        $state_flag = true;
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {
-
-            // Check the Voucher to see if it can be deleted
-            if(!$this->checkSingleVoucherAllowsDelete($rs->fields['voucher_id'])) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Voucher").': '.$rs->fields['voucher_id']);
-                $state_flag = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();
-
-        }
-
-        return $state_flag;
-
-    }
-
-    ############################################################################
-    # Check an invoice's vouchers do not prevent the invoice getting edited    #
-    ############################################################################
-
-    public function checkInvoiceVouchersAllowsInvoiceEdit($invoice_id) {
-
-        $state_flag = true;
-
-        $sql = "SELECT *
-                FROM ".PRFX."voucher_records
-                WHERE invoice_id = ".$invoice_id;
-
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        while(!$rs->EOF) {
-
-            // Check the Voucher to see if it can be deleted
-            if(!$this->checkSingleVoucherAllowsEdit($rs->fields['voucher_id'])) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Voucher").': '.$rs->fields['voucher_id']);
-                $state_flag = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();
-
-        }
-
-        return $state_flag;
-
-    }
 
     ############################################  // this could be put in general with date stuff
     #  Check Voucher Expiry is valid           #
@@ -2027,8 +2143,6 @@ private function checkInvoiceAllowsSingleVoucherChanges($invoice_id) {
         return true;
 
     }
-
-    /** Other Functions **/
 
     ############################################
     #  Generate Random Voucher code            #

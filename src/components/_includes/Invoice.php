@@ -643,12 +643,12 @@ defined('_QWEXEC') or die;
         if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
         {
             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) ).",
-                     is_closed =". $this->app->db->qStr(1);
+                    is_closed =". $this->app->db->qStr(1);
         }
         else
         {
             $sql .= "closed_on = NULL,
-                     is_closed   =". $this->app->db->qStr(0);
+                    is_closed   =". $this->app->db->qStr(0);
         }
         $sql .= "WHERE invoice_id =". $this->app->db->qStr($invoice_id);
 
@@ -854,9 +854,9 @@ defined('_QWEXEC') or die;
 
     /** Check Functions **/
 
-    ##########################################################
-    #  Check if the invoice status is allowed to be changed  #
-    ##########################################################
+    ###################################################################
+    #  Check if the invoice status is allowed to be manually changed  #
+    ###################################################################
 
      public function checkRecordAllowsManualStatusChange($invoice_id) {
 
@@ -902,20 +902,91 @@ defined('_QWEXEC') or die;
         }*/
 
         // Does the invoice have any Vouchers preventing changing the invoice status
-        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceEdit($invoice_id)) {
+        if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowEdit($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because of Vouchers on it prevent this."));
             $state_flag = false;
         }
 
         // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has linked credit notes."));
             $state_flag = false;
         }
 
         return $state_flag;
 
-     }
+    }
+
+
+    ##########################################################
+    #  Check if the invoice status is allowed to be Edited   #
+    ##########################################################
+
+     public function checkRecordAllowsEdit($invoice_id) {
+
+        $state_flag = true;
+
+        // Get the invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Is on a different tax system
+        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it is on a different Tax system."));
+            $state_flag = false;
+        }
+
+        // Is partially paid
+        if($invoice_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."));
+            $state_flag = false;
+        }
+
+        // Is paid
+        if($invoice_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."));
+            $state_flag = false;
+        }
+
+        // Is cancelled
+        if($invoice_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been cancelled."));
+            $state_flag = false;
+        }
+
+        // Is deleted
+        if($invoice_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."));
+            $state_flag = false;
+        }
+
+        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
+            $state_flag = false;
+        }*/
+
+        // Does the invoice have any Vouchers preventing changing the invoice status
+        if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowEdit($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."));
+            $state_flag = false;
+        }
+
+        // The current record VAT code is enabled
+        if(!$this->checkVatTaxCodeStatuses($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."));
+            $state_flag = false;
+        }
+
+        // Has Credit notes
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it has linked credit notes."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
 
     ###############################################################
     #   Check to see if the invoice can be cancelled              #
@@ -965,13 +1036,13 @@ defined('_QWEXEC') or die;
         }*/
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceCancel($invoice_id)) {
+        if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowCancel($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
             $state_flag = false;
         }
 
         // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has linked credit notes."));
             $state_flag = false;
         }
@@ -1041,84 +1112,15 @@ defined('_QWEXEC') or die;
         }
         */
 
-        // Does the invoice have any Vouchers preventing deletion of the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceDelete($invoice_id)) {
+        // Does the invoice have any Vouchers preventing deletion of the invoice (i.e. any that have been used) TODO: the name is wrong it should be:  checkAllInvoiceSiblingVouchersAllowDelete()
+        if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowDelete($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
             $state_flag = false;
         }
 
         // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it has linked credit notes."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-    ##########################################################
-    #  Check if the invoice status is allowed to be Edited   #
-    ##########################################################
-
-     public function checkRecordAllowsEdit($invoice_id) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->getRecord($invoice_id);
-
-        // Is on a different tax system
-        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it is on a different Tax system."));
-            $state_flag = false;
-        }
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."));
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."));
-            $state_flag = false;
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."));
-            $state_flag = false;
-        }
-
-        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
-            $state_flag = false;
-        }*/
-
-        // Does the invoice have any Vouchers preventing changing the invoice status
-        if(!$this->app->components->voucher->checkInvoiceVouchersAllowsInvoiceEdit($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."));
-            $state_flag = false;
-        }
-
-        // The current record VAT code is enabled
-        if(!$this->checkVatTaxCodeStatuses($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."));
-            $state_flag = false;
-        }
-
-        // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it has linked credit notes."));
             $state_flag = false;
         }
 

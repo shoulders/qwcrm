@@ -152,10 +152,10 @@
                 </tr>
                 <tr>
                     <td class="menutd2">
-                        <button type="button" onclick="window.open('index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Expense{/t}</button>
-                        <button type="button" onclick="window.open('index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Add Supplier Other Income{/t}</button>
+                        <button type="button" onclick="window.location.href='index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Expense{/t}</button>
+                        <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Other Income{/t}</button>
                         {if $allowed_to_create_creditnote}
-                            <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}', '_self');">{t}Create Purchase Credit Note (Supplier){/t}</button>
+                            <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Create Purchase Credit Note (Supplier){/t}</button>
                         {/if}
                         <br>
                         <br>

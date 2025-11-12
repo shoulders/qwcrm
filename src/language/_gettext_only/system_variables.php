@@ -45,8 +45,7 @@ _gettext("Flat Rate Capital Asset");
 _gettext("Pending");
 _gettext("Unused");
 _gettext("Partially Used");
-_gettext("Fully Used");
-_gettext("Expired Unused");
+_gettext("Used");
 _gettext("Cancelled");
 _gettext("Deleted");
 
@@ -92,8 +91,6 @@ _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
-_gettext("Partially Refunded");
-_gettext("Refunded");
 _gettext("In Dispute");
 _gettext("Overdue");
 _gettext("Collections");
@@ -196,14 +193,14 @@ _gettext("Multi Purpose (MPV)");
 _gettext("Single Purpose (SPV)");
 
 /* Voucher Statuses */
+_gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid (Unused)");
-_gettext("Refunded");
 _gettext("Partially Redeemed");
 _gettext("Redeemed");
+_gettext("Voided");
 _gettext("Suspended");
-_gettext("Expired Unused");
 _gettext("Cancelled");
 _gettext("Deleted");
 

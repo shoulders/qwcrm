@@ -684,7 +684,7 @@ class Expense extends Components {
         }*/
 
         // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because it has linked credit notes."));
             return false;
         }
@@ -741,7 +741,7 @@ class Expense extends Components {
         }*/
 
         // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because it has linked credit notes."));
             return false;
         }
@@ -796,7 +796,7 @@ class Expense extends Components {
         }*/
 
         // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because it has linked credit notes."));
             return false;
         }
@@ -857,7 +857,7 @@ class Expense extends Components {
         }*/
 
         // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."));
             return false;
         }

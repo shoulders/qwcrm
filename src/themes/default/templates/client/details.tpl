@@ -11,14 +11,14 @@
             <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Client Details for{/t} {$client_details.display_name}</td>
-                    <td class="menuhead2" width="20%" align="right" valign="middle">                        
+                    <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}CLIENT_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}CLIENT_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         <a href="index.php?component=client&page_tpl=edit&client_id={$client_id}"><img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit client details{/t}');" onMouseOut="hideddrivetip();"></a>
                     </td>
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="2">
-                        <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">                            
+                        <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td>
                                     <div id="tabs_container">
@@ -29,9 +29,9 @@
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Vouchers{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Payments{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Credit Notes{/t}</a></li>                                            
+                                            <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Credit Notes{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_8_contents" class="tab">{t}Account{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_9_contents" class="tab">{t}Notes{/t}</a></li>                    
+                                            <li><a href="javascript:void(0)" rel="#tab_9_contents" class="tab">{t}Notes{/t}</a></li>
                                         </ul>
 
                                         <!-- This is used so the contents don't appear to the right of the tabs -->
@@ -51,11 +51,11 @@
                                                 <br>
                                                 {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$workorders_closed block_title=_gettext("Closed")}
                                             </div>
-                                            
+
                                             <!-- Tab 3 Contents (Schedules) -->
                                             <div id="tab_3_contents" class="tab_contents">
-                                                {include file='schedule/blocks/display_schedules_block.tpl' display_schedules=$display_schedules block_title=_gettext("All Schedules")}                                                
-                                            </div>                                            
+                                                {include file='schedule/blocks/display_schedules_block.tpl' display_schedules=$display_schedules block_title=_gettext("All Schedules")}
+                                            </div>
 
                                             <!-- Tab 4 Contents (Invoices) -->
                                             <div id="tab_4_contents" class="tab_contents">
@@ -68,33 +68,33 @@
                                             <div id="tab_5_contents" class="tab_contents">
                                                 {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$vouchers_purchased block_title=_gettext("Purchased")}
                                                 <br>
-                                                {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$vouchers_claimed block_title=_gettext("Claimed")}                                                
+                                                {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$vouchers_claimed block_title=_gettext("Claimed")}
                                             </div>
-                                            
+
                                             <!-- Tab 6 Contents (Payments) -->
                                             <div id="tab_6_contents" class="tab_contents">
                                                 {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_credits block_title=_gettext("Credits")}
                                                 <br>
                                                 {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_debits block_title=_gettext("Debits")}
                                             </div>
-                                            
+
                                             <!-- Tab 7 Contents (Credit Notes) -->
                                             <div id="tab_7_contents" class="tab_contents">
-                                                {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotess=$display_creditnotes block_title=_gettext("Credit Notes")}                                                
+                                                {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes")}
                                             </div>
-                                            
+
                                             <!-- Tab 8 Contents (Account) -->
                                             <div id="tab_8_contents" class="tab_contents">
                                                 {include file='client/blocks/details_account_block.tpl'}
                                             </div>
 
                                             <!-- Tab 9 Contents (Client Notes) -->
-                                            <div id="tab_9_contents" class="tab_contents">                        
-                                                {include file='client/blocks/details_notes_block.tpl'}   
-                                            </div>                                            
+                                            <div id="tab_9_contents" class="tab_contents">
+                                                {include file='client/blocks/details_notes_block.tpl'}
+                                            </div>
 
                                         </div>
-                                    </div>                                                                                
+                                    </div>
                                 </td>
                             </tr>
                         </table>

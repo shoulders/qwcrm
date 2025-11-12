@@ -71,9 +71,9 @@ class Upgrade3_1_4 extends Setup {
         $this->otherincomeConvertToUseItems();
         $this->otherincomeTidyDatabase();
 
-        // Fix invoice and Voucher statuses
-        // this is now added in the SQL - $this->updateColumnValues(PRFX.'invoice_records', 'status', 'refunded', 'paid');
-        // this is now added in the SQL - $this->updateColumnValues(PRFX.'voucher_records', 'status', 'refunded', 'paid');
+        // Fix Invoice and Voucher statuses
+        $this->updateColumnValues(PRFX.'invoice_records', 'status', 'refunded', 'paid');
+        $this->updateColumnValues(PRFX.'voucher_records', 'status', 'refunded', 'voided');
 
         // Update database version number
         $this->updateRecordValue(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
@@ -128,7 +128,7 @@ class Upgrade3_1_4 extends Setup {
                 $status = array(
                                 'unpaid' => 'unused',
                                 'partially_paid' => 'partially_used',
-                                'paid' => 'fully_used',
+                                'paid' => 'used',
                                 'cancelled' => 'cancelled',
                                 'deleted' => 'deleted'
                                 );

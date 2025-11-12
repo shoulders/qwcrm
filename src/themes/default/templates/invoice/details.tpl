@@ -147,19 +147,19 @@
 
                                                 <!-- Edit Button -->
                                                 {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
-                                                    <button type="button" onclick="location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_details.invoice_id}';">{t}Edit Invoice{/t}</button>
+                                                    <button type="button" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_details.invoice_id}';">{t}Edit Invoice{/t}</button>
                                                 {/if}
 
                                                 <!-- Receive Payment Button -->
                                                 {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}
-                                                    <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                    <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                 {/if}
 
                                                 <!-- Credit Note Button -->
                                                 {if $invoice_details.status == 'partially_paid' && $allowed_to_create_creditnote}
-                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}');">{t}Close invoice with CR{/t} / {t}Create Sales Credit Note (Invoice){/t}</button>
-                                                {elseif ($invoice_details.status == 'paid' || $invoice_details.status == 'partially_refunded') && $allowed_to_create_creditnote}
-                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}');">{t}Refund invoice with CR{/t} {t}Create Sales Credit Note (Invoice){/t}</button>
+                                                    <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Close invoice with CR{/t} / {t}Create Sales Credit Note (Invoice){/t}</button>
+                                                {elseif ($invoice_details.status == 'paid') && $allowed_to_create_creditnote}
+                                                    <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Refund invoice via CR{/t} / {t}Create Sales Credit Note (Invoice){/t}</button>
                                                 {/if}
 
                                             </td>
@@ -172,6 +172,13 @@
                             <tr>
                                 <td>
                                     {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
+                                </td>
+                            </tr>
+
+                            <!-- Credit Notes -->
+                            <tr>
+                                <td>
+                                    {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes (Refunds are provided via CR as store credit or real monies.)")}
                                 </td>
                             </tr>
 

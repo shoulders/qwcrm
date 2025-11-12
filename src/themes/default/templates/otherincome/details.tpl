@@ -99,12 +99,12 @@
 
                                                     <!-- Edit Button -->
                                                     {if $otherincome_details.status == 'pending' || $otherincome_details.status == 'unpaid'}
-                                                        <button type="button" onclick="location.href='index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_details.otherincome_id}';">{t}Edit{/t}</button>
+                                                        <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_details.otherincome_id}';">{t}Edit{/t}</button>
                                                     {/if}
 
                                                     <!-- Apply Payment Button -->
                                                     {if $otherincome_details.status == 'unpaid' || $otherincome_details.status == 'partially_paid'}
-                                                        <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=otherincome&otherincome_id={$otherincome_details.otherincome_id}';">{t}Apply Payment{/t}</button>
+                                                        <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=otherincome&otherincome_id={$otherincome_details.otherincome_id}';">{t}Apply Payment{/t}</button>
                                                     {/if}
 
                                                 </td>

@@ -49,8 +49,13 @@ $this->app->smarty->assign('payment_directions',       $this->app->components->p
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses()                                                                              );
 $this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']));
 
+// Credit notes
+$this->app->smarty->assign('creditnote_types',        $this->app->components->creditnote->getTypes());
+$this->app->smarty->assign('creditnote_statuses',     $this->app->components->creditnote->getStatuses());
+$this->app->smarty->assign('display_creditnotes',         $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 0, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']));
+
 // Misc
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($invoice_details['employee_id'], 'display_name')  );
 $this->app->smarty->assign('invoice_statuses',         $this->app->components->invoice->getStatuses()                                                                   );
 $this->app->smarty->assign('voucher_statuses',        $this->app->components->voucher->getStatuses()                                                                   );
-$this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, \CMSApplication::$VAR['invoice_id']));
+$this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, \CMSApplication::$VAR['invoice_id'], null, null, null, false));

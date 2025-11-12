@@ -827,13 +827,13 @@ class Report extends Components {
         // Filter by expired vouchers
         if($expired === true)
         {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date != NULL;";
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date IS NOT NULL";
         }
 
         // Filter by active vouchers
         elseif($expired === false)
         {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date == NULL;";
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date IS NULL";
         }
 
         return $whereTheseRecords;
@@ -1553,7 +1553,7 @@ class Report extends Components {
             $stats['sum_pending_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_unused_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unused', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_partially_used_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_used', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
-            $stats['sum_fully_used_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'fully_used', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
+            $stats['sum_fully_used_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'used', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_cancelled_unit_gross'] = $this->creditnoteSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'cancelled', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_open_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);
             $stats['sum_discounted_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'discounted', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id);  // Cannot remove cancelled with discount
@@ -1790,13 +1790,13 @@ class Report extends Components {
         // Filter by expired credit notes
         if($expired === true)
         {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expiry_date != NULL;";
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expiry_date IS NOT NULL";
         }
 
         // Filter by active credit notes
         elseif($expired === false)
         {
-            $whereTheseRecords .= " AND ".PRFX."credit_records.expiry_date == NULL;";
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expiry_date IS NULL";
         }
 
         return $whereTheseRecords;

@@ -11,7 +11,7 @@
     <tr class="olotd4">
         <td class="row2"><b>{t}Opened{/t}</b></td>
         <td class="row2"><b>{t}Closed{/t}</b></td>
-        <td class="row2"><b>{t}Fully Used{/t}</b></td>
+        <td class="row2"><b>{t}Used{/t}</b></td>
         <td class="row2"><b>{t}Expired Unused{/t}</b></td>
         <td class="row2"><b>{t}Cancelled{/t}</b></td>
         <td class="row2"><b>{t}Deleted{/t}</b></td>

@@ -864,7 +864,7 @@ INSERT INTO `#__creditnote_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'pending', 'Pending'),
 (2, 'unused', 'Unused'),
 (3, 'partially_used', 'Partially Used'),
-(4, 'fully_used', 'Fully Used'),
+(4, 'used', 'Used'),
 (5, 'cancelled', 'Cancelled'),
 (6, 'deleted', 'Deleted');
 
@@ -999,26 +999,24 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
-(5, 'partially_refunded', 'Partially Refunded'),
-(6, 'refunded', 'Refunded'),
-(7, 'paid', 'Paid'),
-(8, 'in_dispute', 'In Dispute'),
-(9, 'overdue', 'Overdue'),
-(10, 'collections', 'Collections'),
-(11, 'cancelled', 'Cancelled'),
-(12, 'deleted', 'Deleted');
+(5, 'in_dispute', 'In Dispute'),
+(6, 'overdue', 'Overdue'),
+(7, 'collections', 'Collections'),
+(8, 'cancelled', 'Cancelled'),
+(9, 'deleted', 'Deleted');
 
 TRUNCATE TABLE `#__voucher_statuses`;
 INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'unpaid', 'Unpaid'),
-(2, 'partially_paid', 'Partially Paid'),
-(3, 'paid', 'Paid (Unused)'),
-(4, 'refunded', 'Refunded'),
+(1, 'pending', 'Pending'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'paid', 'Paid (Unused)'),
 (5, 'partially_redeemed', 'Partially Redeemed'),
 (6, 'redeemed', 'Redeemed'),
 (7, 'suspended', 'Suspended'),
-(8, 'cancelled', 'Cancelled'),
-(9, 'deleted', 'Deleted');
+(8, 'voided', 'Voided'),
+(9, 'cancelled', 'Cancelled'),
+(10, 'deleted', 'Deleted');
 ALTER TABLE `#__invoice_records` DROP `refund_id`;
 ALTER TABLE `#__voucher_records` DROP `refund_id`;
 DROP TABLE `#__refund_statuses`;

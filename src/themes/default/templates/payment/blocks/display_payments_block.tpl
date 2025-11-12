@@ -16,7 +16,6 @@
         <td class="olohead"><b>{t}Expense{/t}</b></td>
         <td class="olohead"><b>{t}Otherincome{/t}</b></td>
         <td class="olohead"><b>{t}Credit Note{/t}</b></td>
-        <td class="olohead"><b>{t}Credit Action{/t}</b></td>
         <td class="olohead"><b>{t}Voucher{/t}</b></td>
         <td class="olohead"><b>{t}Date{/t}</b></td>
         <td class="olohead"><b>{t}Type{/t}</b></td>
@@ -38,7 +37,6 @@
             <td class="olotd4"><a href="index.php?component=expense&page_tpl=details&expense_id={$display_payments.records[p].expense_id}">{$display_payments.records[p].expense_id}</a></td>
             <td class="olotd4"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_payments.records[p].otherincome_id}">{$display_payments.records[p].otherincome_id}</a></td>
             <td class="olotd4"><a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$display_payments.records[p].creditnote_id}">{$display_payments.records[p].creditnote_id}</a></td>
-            <td class="olotd4" align="center"></td>
             <td class="olotd4"><a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_payments.records[p].voucher_id}">{$display_payments.records[p].voucher_id}</a></td>
             <td class="olotd4"> {$display_payments.records[p].date|date_format:$date_format}</td>
             <td class="olotd4" align="center">

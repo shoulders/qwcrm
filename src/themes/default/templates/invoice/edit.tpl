@@ -502,8 +502,8 @@
                                                     <input type="number" class="olotd4" size="6" id="client_discount_rate" value="{$client_details.discount_rate|string_format:"%.2f"}" min="0" max="99.99" step="0.01"> %
                                                     <button type="button" onclick="applyDiscountRate();">{t}Apply Discount{/t}</button><br>
                                                     * {t}The default value shown is the client's standard discount rate.{/t}<br>
-                                                    * {t}This will alter all item's Unit Discount to apply the discount at the specified rate.{/t}
-                                                    * {t}The specified rate is not stored in the invoice.{/t}
+                                                    * {t}This will alter all item's Unit Discount to apply the discount at the specified rate.{/t}<br>
+                                                    * {t}The specified rate is not stored in the invoice's record.{/t}
                                                 </td>
                                             </tr>
                                         </table>
@@ -533,12 +533,12 @@
 
                                                     <!-- Add Voucher Button -->
                                                     {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
-                                                        <button type="button" class="userButton" onclick="location.href='index.php?component=voucher&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Voucher{/t}</button>
+                                                        <button type="button" class="userButton" onclick="window.location.href='index.php?component=voucher&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Voucher{/t}</button>
                                                     {/if}
 
                                                     <!-- Receive Payment Button -->
                                                     {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}
-                                                        <button type="button" class="userButton" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                        <button type="button" class="userButton" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                     {/if}
 
                                                 </td>
