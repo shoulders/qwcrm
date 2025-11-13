@@ -1212,7 +1212,7 @@ class WorkOrder extends Components {
 
         return $state_flag;
 
-     }
+    }
 
 
     /** Other Functions **/

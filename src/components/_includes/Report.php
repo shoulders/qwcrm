@@ -679,7 +679,7 @@ class Report extends Components {
 
         // Filter by Invoice
         if($invoice_id) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->app->db->qStr($invoice_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->app->db->qStr($invoice_id);
         }
 
         // Build the SQL

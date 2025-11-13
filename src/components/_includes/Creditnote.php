@@ -1585,7 +1585,7 @@ class Creditnote extends Components {
     #  Build additional_info JSON           #
     #########################################  done
 
-     public function buildAdditionalInfoJson($creditnote_id, $reason_for_cancelling = null) {
+    public function buildAdditionalInfoJson($creditnote_id, $reason_for_cancelling = null) {
 
         // Make sure we merge current data from the database - decodes as an array even if empty
         $additional_info = json_decode($this->app->components->creditnote->getRecord($creditnote_id, 'additional_info'), true);

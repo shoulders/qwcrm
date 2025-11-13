@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.1.4\n"
-"POT-Creation-Date: 2025-10-31 18:41+0000\n"
-"PO-Revision-Date: 2025-10-31 18:43+0000\n"
+"POT-Creation-Date: 2025-11-09 09:46+0000\n"
+"PO-Revision-Date: 2025-11-09 09:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -251,17 +251,17 @@ msgstr ""
 #: themes/default/templates/administrator/acl.tpl:31
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:114
 #: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:119
-#: language/_gettext_only/system_variables.php:188
+#: language/_gettext_only/system_variables.php:184
 msgid "Administrator"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:32
-#: language/_gettext_only/system_variables.php:189
+#: language/_gettext_only/system_variables.php:185
 msgid "Manager"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:33
-#: language/_gettext_only/system_variables.php:190
+#: language/_gettext_only/system_variables.php:186
 msgid "Supervisor"
 msgstr ""
 
@@ -269,17 +269,17 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:182
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:214
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:289
-#: language/_gettext_only/system_variables.php:191
+#: language/_gettext_only/system_variables.php:187
 msgid "Technician"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:35
-#: language/_gettext_only/system_variables.php:192
+#: language/_gettext_only/system_variables.php:188
 msgid "Clerical"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:36
-#: language/_gettext_only/system_variables.php:193
+#: language/_gettext_only/system_variables.php:189
 msgid "Counter"
 msgstr ""
 
@@ -316,18 +316,18 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:52
 #: themes/default/templates/workorder/search.tpl:39
 #: components/_includes/User.php:68
-#: components/payment/methods/PaymentMethodCreditnote.php:87
-#: language/_gettext_only/system_variables.php:194
+#: components/payment/methods/PaymentMethodCreditnote.php:81
+#: language/_gettext_only/system_variables.php:190
 msgid "Client"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:38
-#: language/_gettext_only/system_variables.php:195
+#: language/_gettext_only/system_variables.php:191
 msgid "Guest"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:39
-#: language/_gettext_only/system_variables.php:196
+#: language/_gettext_only/system_variables.php:192
 msgid "Public"
 msgstr ""
 
@@ -433,7 +433,7 @@ msgstr ""
 #: themes/default/templates/company/edit.tpl:439
 #: themes/default/templates/company/edit.tpl:471
 #: themes/default/templates/company/edit.tpl:503
-#: themes/default/templates/creditnote/details.tpl:254
+#: themes/default/templates/creditnote/details.tpl:248
 #: themes/default/templates/cronjob/blocks/display_cronjobs_block.tpl:33
 #: themes/default/templates/cronjob/blocks/display_cronjobs_block.tpl:34
 #: themes/default/templates/cronjob/blocks/display_cronjobs_block.tpl:37
@@ -445,7 +445,7 @@ msgstr ""
 #: themes/default/templates/cronjob/edit.tpl:162
 #: themes/default/templates/cronjob/overview.tpl:51
 #: themes/default/templates/expense/details.tpl:133
-#: themes/default/templates/invoice/details.tpl:195
+#: themes/default/templates/invoice/details.tpl:197
 #: themes/default/templates/otherincome/details.tpl:128
 #: themes/default/templates/setup/blocks/choice_compatibility_test_block.tpl:37
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:134
@@ -526,7 +526,7 @@ msgstr ""
 #: themes/default/templates/otherincome/edit.tpl:613
 #: themes/default/templates/otherincome/status.tpl:25
 #: themes/default/templates/otherincome/status.tpl:62
-#: themes/default/templates/payment/edit.tpl:164
+#: themes/default/templates/payment/edit.tpl:159
 #: themes/default/templates/payment/options.tpl:126
 #: themes/default/templates/payment/status.tpl:25
 #: themes/default/templates/payment/status.tpl:62
@@ -549,8 +549,8 @@ msgstr ""
 #: themes/default/templates/workorder/new.tpl:94
 #: themes/default/templates/workorder/note_edit.tpl:51
 #: themes/default/templates/workorder/note_new.tpl:34
-#: components/payment/types/PaymentTypeCreditnote.php:253
-#: components/payment/types/PaymentTypeCreditnote.php:258
+#: components/payment/types/PaymentTypeCreditnote.php:252
+#: components/payment/types/PaymentTypeCreditnote.php:257
 #: components/payment/types/PaymentTypeExpense.php:219
 #: components/payment/types/PaymentTypeInvoice.php:229
 #: components/payment/types/PaymentTypeInvoice.php:234
@@ -723,10 +723,10 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:108
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:339
 #: language/_gettext_only/system_variables.php:77
-#: language/_gettext_only/system_variables.php:114
-#: language/_gettext_only/system_variables.php:132
-#: language/_gettext_only/system_variables.php:140
-#: language/_gettext_only/system_variables.php:178
+#: language/_gettext_only/system_variables.php:116
+#: language/_gettext_only/system_variables.php:134
+#: language/_gettext_only/system_variables.php:142
+#: language/_gettext_only/system_variables.php:174
 msgid "Other"
 msgstr ""
 
@@ -1121,7 +1121,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:25
 #: themes/default/templates/invoice/prefill_items.tpl:233
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:25
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:29
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:28
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:19
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:18
 #: themes/default/templates/user/blocks/display_users_block.tpl:20
@@ -1681,7 +1681,7 @@ msgstr ""
 #: themes/default/templates/invoice/status.tpl:42
 #: themes/default/templates/invoice/status.tpl:60
 #: themes/default/templates/otherincome/status.tpl:42
-#: themes/default/templates/payment/edit.tpl:163
+#: themes/default/templates/payment/edit.tpl:158
 #: themes/default/templates/payment/status.tpl:42
 #: themes/default/templates/supplier/edit.tpl:137
 #: themes/default/templates/supplier/status.tpl:42
@@ -1788,37 +1788,37 @@ msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:32
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:16
-#: language/_gettext_only/system_variables.php:215
+#: language/_gettext_only/system_variables.php:212
 msgid "Assigned"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:36
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:17
-#: language/_gettext_only/system_variables.php:216
+#: language/_gettext_only/system_variables.php:213
 msgid "Waiting for Parts"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:40
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:18
-#: language/_gettext_only/system_variables.php:217
+#: language/_gettext_only/system_variables.php:214
 msgid "Scheduled"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:44
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:19
-#: language/_gettext_only/system_variables.php:218
+#: language/_gettext_only/system_variables.php:215
 msgid "With Client"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:48
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:20
-#: language/_gettext_only/system_variables.php:219
+#: language/_gettext_only/system_variables.php:216
 msgid "On Hold"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:52
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:21
-#: language/_gettext_only/system_variables.php:220
+#: language/_gettext_only/system_variables.php:217
 msgid "Management"
 msgstr ""
 
@@ -1872,13 +1872,13 @@ msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:70
 #: themes/default/templates/workorder/blocks/display_workorder_historic_stats_block.tpl:14
-#: language/_gettext_only/system_variables.php:221
+#: language/_gettext_only/system_variables.php:218
 msgid "Closed without Invoice"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:74
 #: themes/default/templates/workorder/blocks/display_workorder_historic_stats_block.tpl:15
-#: language/_gettext_only/system_variables.php:222
+#: language/_gettext_only/system_variables.php:219
 msgid "Closed with Invoice"
 msgstr ""
 
@@ -1908,7 +1908,7 @@ msgstr ""
 #: language/_gettext_only/system_variables.php:45
 #: language/_gettext_only/system_variables.php:58
 #: language/_gettext_only/system_variables.php:91
-#: language/_gettext_only/system_variables.php:102
+#: language/_gettext_only/system_variables.php:104
 msgid "Pending"
 msgstr ""
 
@@ -1916,8 +1916,8 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:14
 #: language/_gettext_only/system_variables.php:59
 #: language/_gettext_only/system_variables.php:92
-#: language/_gettext_only/system_variables.php:103
-#: language/_gettext_only/system_variables.php:203
+#: language/_gettext_only/system_variables.php:105
+#: language/_gettext_only/system_variables.php:199
 msgid "Unpaid"
 msgstr ""
 
@@ -1925,26 +1925,26 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:15
 #: language/_gettext_only/system_variables.php:60
 #: language/_gettext_only/system_variables.php:93
-#: language/_gettext_only/system_variables.php:104
-#: language/_gettext_only/system_variables.php:204
+#: language/_gettext_only/system_variables.php:106
+#: language/_gettext_only/system_variables.php:200
 msgid "Partially Paid"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:116
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:16
-#: language/_gettext_only/system_variables.php:95
+#: language/_gettext_only/system_variables.php:97
 msgid "In Dispute"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:121
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:17
-#: language/_gettext_only/system_variables.php:96
+#: language/_gettext_only/system_variables.php:98
 msgid "Overdue"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:126
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:18
-#: language/_gettext_only/system_variables.php:97
+#: language/_gettext_only/system_variables.php:99
 msgid "Collections"
 msgstr ""
 
@@ -1957,13 +1957,13 @@ msgstr ""
 #: themes/default/templates/client/blocks/display_client_details_block.tpl:46
 #: themes/default/templates/client/edit.tpl:59
 #: themes/default/templates/client/new.tpl:62
-#: themes/default/templates/creditnote/details.tpl:320
+#: themes/default/templates/creditnote/details.tpl:314
 #: themes/default/templates/creditnote/edit.tpl:601
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:200
 #: themes/default/templates/expense/details.tpl:199
 #: themes/default/templates/expense/edit.tpl:542
-#: themes/default/templates/invoice/details.tpl:247
-#: themes/default/templates/invoice/details.tpl:300
+#: themes/default/templates/invoice/details.tpl:249
+#: themes/default/templates/invoice/details.tpl:302
 #: themes/default/templates/invoice/edit.tpl:629
 #: themes/default/templates/invoice/edit.tpl:673
 #: themes/default/templates/invoice/printing/print_invoice.tpl:209
@@ -1983,7 +1983,7 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:153
 #: language/_gettext_only/system_variables.php:61
 #: language/_gettext_only/system_variables.php:94
-#: language/_gettext_only/system_variables.php:105
+#: language/_gettext_only/system_variables.php:107
 msgid "Paid"
 msgstr ""
 
@@ -2001,11 +2001,11 @@ msgstr ""
 #: themes/default/templates/voucher/blocks/display_voucher_revenue_stats_block.tpl:14
 #: language/_gettext_only/system_variables.php:50
 #: language/_gettext_only/system_variables.php:62
-#: language/_gettext_only/system_variables.php:98
-#: language/_gettext_only/system_variables.php:106
-#: language/_gettext_only/system_variables.php:147
-#: language/_gettext_only/system_variables.php:164
-#: language/_gettext_only/system_variables.php:210
+#: language/_gettext_only/system_variables.php:100
+#: language/_gettext_only/system_variables.php:108
+#: language/_gettext_only/system_variables.php:149
+#: language/_gettext_only/system_variables.php:160
+#: language/_gettext_only/system_variables.php:207
 msgid "Cancelled"
 msgstr ""
 
@@ -2020,12 +2020,13 @@ msgid "Unused"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:186
-#: language/_gettext_only/system_variables.php:208
+#: language/_gettext_only/system_variables.php:205
 msgid "Suspended"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:191
 #: themes/default/templates/report/financial.tpl:182
+#: language/_gettext_only/system_variables.php:204
 msgid "Redeemed"
 msgstr ""
 
@@ -2035,7 +2036,7 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:570
 #: themes/default/templates/voucher/blocks/display_voucher_revenue_stats_block.tpl:13
 #: language/_gettext_only/system_variables.php:49
-#: language/_gettext_only/system_variables.php:209
+#: language/_gettext_only/system_variables.php:206
 msgid "Expired Unused"
 msgstr ""
 
@@ -2084,9 +2085,9 @@ msgstr ""
 #: themes/default/templates/client/blocks/details_account_block.tpl:269
 #: themes/default/templates/creditnote/blocks/display_creditnote_balance_block.tpl:20
 #: themes/default/templates/creditnote/blocks/display_creditnotes_block.tpl:23
-#: themes/default/templates/creditnote/details.tpl:266
-#: themes/default/templates/creditnote/details.tpl:267
-#: themes/default/templates/creditnote/details.tpl:329
+#: themes/default/templates/creditnote/details.tpl:260
+#: themes/default/templates/creditnote/details.tpl:261
+#: themes/default/templates/creditnote/details.tpl:323
 #: themes/default/templates/creditnote/edit.tpl:531
 #: themes/default/templates/creditnote/edit.tpl:532
 #: themes/default/templates/creditnote/edit.tpl:615
@@ -2103,11 +2104,11 @@ msgstr ""
 #: themes/default/templates/expense/edit.tpl:558
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:16
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:22
-#: themes/default/templates/invoice/details.tpl:207
-#: themes/default/templates/invoice/details.tpl:208
-#: themes/default/templates/invoice/details.tpl:250
-#: themes/default/templates/invoice/details.tpl:281
-#: themes/default/templates/invoice/details.tpl:309
+#: themes/default/templates/invoice/details.tpl:209
+#: themes/default/templates/invoice/details.tpl:210
+#: themes/default/templates/invoice/details.tpl:252
+#: themes/default/templates/invoice/details.tpl:283
+#: themes/default/templates/invoice/details.tpl:311
 #: themes/default/templates/invoice/edit.tpl:567
 #: themes/default/templates/invoice/edit.tpl:568
 #: themes/default/templates/invoice/edit.tpl:631
@@ -2143,9 +2144,9 @@ msgstr ""
 #: themes/default/templates/client/blocks/details_account_block.tpl:269
 #: themes/default/templates/creditnote/blocks/display_creditnote_balance_block.tpl:20
 #: themes/default/templates/creditnote/blocks/display_creditnotes_block.tpl:23
-#: themes/default/templates/creditnote/details.tpl:266
-#: themes/default/templates/creditnote/details.tpl:267
-#: themes/default/templates/creditnote/details.tpl:329
+#: themes/default/templates/creditnote/details.tpl:260
+#: themes/default/templates/creditnote/details.tpl:261
+#: themes/default/templates/creditnote/details.tpl:323
 #: themes/default/templates/creditnote/edit.tpl:531
 #: themes/default/templates/creditnote/edit.tpl:532
 #: themes/default/templates/creditnote/edit.tpl:533
@@ -2162,11 +2163,11 @@ msgstr ""
 #: themes/default/templates/expense/edit.tpl:561
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:16
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:22
-#: themes/default/templates/invoice/details.tpl:207
-#: themes/default/templates/invoice/details.tpl:208
-#: themes/default/templates/invoice/details.tpl:250
-#: themes/default/templates/invoice/details.tpl:281
-#: themes/default/templates/invoice/details.tpl:309
+#: themes/default/templates/invoice/details.tpl:209
+#: themes/default/templates/invoice/details.tpl:210
+#: themes/default/templates/invoice/details.tpl:252
+#: themes/default/templates/invoice/details.tpl:283
+#: themes/default/templates/invoice/details.tpl:311
 #: themes/default/templates/invoice/edit.tpl:567
 #: themes/default/templates/invoice/edit.tpl:568
 #: themes/default/templates/invoice/edit.tpl:569
@@ -2341,9 +2342,9 @@ msgstr ""
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:346
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:385
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:425
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:21
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:20
 #: themes/default/templates/payment/details.tpl:48
-#: themes/default/templates/payment/edit.tpl:104
+#: themes/default/templates/payment/edit.tpl:99
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:15
 #: themes/default/templates/schedule/details.tpl:26
 #: themes/default/templates/workorder/blocks/details_history_block.tpl:25
@@ -2395,9 +2396,9 @@ msgstr ""
 #: themes/default/templates/voucher/status.tpl:13
 #: themes/default/templates/workorder/search.tpl:47
 #: themes/default/templates/workorder/status.tpl:13
-#: components/_includes/Client.php:361 components/_includes/Schedule.php:843
-#: components/client/print.php:45 components/schedule/icalendar.php:49
-#: components/supplier/print.php:45
+#: components/_includes/Client.php:363 components/_includes/Schedule.php:843
+#: components/client/print.php:44 components/schedule/icalendar.php:49
+#: components/supplier/print.php:44
 #: setup/migrate/myitcrm/migrate_routines.php:63
 msgid "for"
 msgstr ""
@@ -2671,7 +2672,7 @@ msgstr ""
 #: themes/default/templates/expense/details.tpl:228
 #: themes/default/templates/expense/edit.tpl:593
 #: themes/default/templates/expense/search.tpl:44
-#: themes/default/templates/invoice/details.tpl:329
+#: themes/default/templates/invoice/details.tpl:331
 #: themes/default/templates/invoice/edit.tpl:715
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:24
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:57
@@ -2687,10 +2688,10 @@ msgstr ""
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:365
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:406
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:446
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:28
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:76
-#: themes/default/templates/payment/details.tpl:121
-#: themes/default/templates/payment/edit.tpl:158
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:27
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:70
+#: themes/default/templates/payment/details.tpl:115
+#: themes/default/templates/payment/edit.tpl:153
 #: themes/default/templates/payment/search.tpl:43
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:18
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:52
@@ -2725,6 +2726,13 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
+#: themes/default/templates/client/blocks/display_client_details_block.tpl:111
+#: themes/default/templates/creditnote/details.tpl:181
+#: themes/default/templates/invoice/details.tpl:143
+#: themes/default/templates/invoice/edit.tpl:529
+msgid "Print Client Envelope"
+msgstr ""
+
 #: themes/default/templates/client/blocks/display_client_historic_stats_block.tpl:13
 msgid "New This Calendar Month"
 msgstr ""
@@ -2755,9 +2763,9 @@ msgstr ""
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:15
 #: themes/default/templates/otherincome/details.tpl:75
 #: themes/default/templates/otherincome/edit.tpl:438
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:22
-#: themes/default/templates/payment/details.tpl:81
-#: themes/default/templates/payment/edit.tpl:118
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:21
+#: themes/default/templates/payment/details.tpl:75
+#: themes/default/templates/payment/edit.tpl:113
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:13
 #: themes/default/templates/supplier/details.tpl:49
 #: themes/default/templates/supplier/edit.tpl:65
@@ -2817,7 +2825,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:75
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:76
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:75
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:92
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:86
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:68
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:55
 #: themes/default/templates/user/blocks/display_users_block.tpl:59
@@ -2832,7 +2840,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:75
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:76
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:75
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:92
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:86
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:68
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:55
 #: themes/default/templates/user/blocks/display_users_block.tpl:59
@@ -2847,7 +2855,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:75
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:76
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:75
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:92
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:86
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:68
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:55
 #: themes/default/templates/user/blocks/display_users_block.tpl:59
@@ -2862,7 +2870,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:75
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:76
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:75
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:92
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:86
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:68
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:55
 #: themes/default/templates/user/blocks/display_users_block.tpl:59
@@ -3066,13 +3074,13 @@ msgstr ""
 
 #: themes/default/templates/client/note_edit.tpl:24
 #: themes/default/templates/workorder/note_edit.tpl:24
-#: language/_gettext_only/pages.php:764
+#: language/_gettext_only/pages.php:771
 msgid "WORKORDER_NOTE_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/client/note_edit.tpl:24
 #: themes/default/templates/workorder/note_edit.tpl:24
-#: language/_gettext_only/pages.php:765
+#: language/_gettext_only/pages.php:772
 msgid "WORKORDER_NOTE_EDIT_HELP_CONTENT"
 msgstr "You can edit a work order note here."
 
@@ -3277,12 +3285,12 @@ msgid "Business Hours"
 msgstr ""
 
 #: themes/default/templates/company/business_hours.tpl:15
-#: language/_gettext_only/pages.php:134
+#: language/_gettext_only/pages.php:141
 msgid "COMPANY_BUSINESS_HOURS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/company/business_hours.tpl:15
-#: language/_gettext_only/pages.php:135
+#: language/_gettext_only/pages.php:142
 msgid "COMPANY_BUSINESS_HOURS_HELP_CONTENT"
 msgstr "Configure your business hours. This affects your schedules."
 
@@ -3311,14 +3319,14 @@ msgstr ""
 #: themes/default/templates/company/edit.tpl:88
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:87
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:45
-#: language/_gettext_only/pages.php:141
+#: language/_gettext_only/pages.php:148
 msgid "COMPANY_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/company/edit.tpl:88
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:87
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:45
-#: language/_gettext_only/pages.php:142
+#: language/_gettext_only/pages.php:149
 msgid "COMPANY_EDIT_HELP_CONTENT"
 msgstr "Configure your company information."
 
@@ -3774,9 +3782,9 @@ msgstr ""
 #: themes/default/templates/otherincome/edit.tpl:361
 #: themes/default/templates/otherincome/status.tpl:13
 #: themes/default/templates/otherincome/status.tpl:24
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:25
-#: themes/default/templates/payment/details.tpl:105
-#: themes/default/templates/payment/edit.tpl:142
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:24
+#: themes/default/templates/payment/details.tpl:99
+#: themes/default/templates/payment/edit.tpl:137
 #: themes/default/templates/payment/status.tpl:13
 #: themes/default/templates/payment/status.tpl:24
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:119
@@ -3849,7 +3857,7 @@ msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:135
 #: themes/default/templates/otherincome/blocks/display_otherincome_balance_block.tpl:8
-#: language/_gettext_only/system_variables.php:153
+#: language/_gettext_only/system_variables.php:155
 msgid "Other Income"
 msgstr ""
 
@@ -3870,7 +3878,7 @@ msgid "Basic Stats"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:165
-#: language/_gettext_only/system_variables.php:170
+#: language/_gettext_only/system_variables.php:166
 msgid "Financial"
 msgstr ""
 
@@ -3965,13 +3973,13 @@ msgstr ""
 
 #: themes/default/templates/core/dashboard_customer.tpl:20
 #: themes/default/templates/core/dashboard_employee.tpl:20
-#: language/_gettext_only/pages.php:164
+#: language/_gettext_only/pages.php:171
 msgid "CORE_DASHBOARD_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/core/dashboard_customer.tpl:20
 #: themes/default/templates/core/dashboard_employee.tpl:20
-#: language/_gettext_only/pages.php:165
+#: language/_gettext_only/pages.php:172
 msgid "CORE_DASHBOARD_HELP_CONTENT"
 msgstr ""
 "This page gives you an overview of what is going on in QWcrm and is also "
@@ -4023,11 +4031,11 @@ msgstr ""
 #: components/_includes/Creditnote.php:633
 #: components/_includes/Creditnote.php:702
 #: components/_includes/Creditnote.php:775
-#: components/_includes/Creditnote.php:1469 components/creditnote/email.php:55
+#: components/_includes/Creditnote.php:1533 components/creditnote/email.php:55
 #: components/creditnote/email.php:60 components/creditnote/email.php:62
 #: components/creditnote/print.php:50
-#: language/_gettext_only/system_variables.php:143
-#: language/_gettext_only/system_variables.php:154
+#: language/_gettext_only/system_variables.php:145
+#: language/_gettext_only/system_variables.php:156
 msgid "Credit Note"
 msgstr ""
 
@@ -4038,8 +4046,8 @@ msgstr ""
 #: themes/default/templates/payment/status.tpl:13
 #: themes/default/templates/report/financial.tpl:769
 #: themes/default/templates/report/financial.tpl:867
-#: components/_includes/Payment.php:81 components/_includes/Payment.php:517
-#: components/_includes/Payment.php:723
+#: components/_includes/Payment.php:80 components/_includes/Payment.php:495
+#: components/_includes/Payment.php:701
 msgid "Payment"
 msgstr ""
 
@@ -4063,14 +4071,14 @@ msgstr ""
 #: themes/default/templates/payment/edit.tpl:55
 #: themes/default/templates/supplier/status.tpl:13
 #: components/_includes/Supplier.php:389
-#: components/payment/methods/PaymentMethodCreditnote.php:112
+#: components/payment/methods/PaymentMethodCreditnote.php:106
 msgid "Supplier"
 msgstr ""
 
 #: themes/default/templates/creditnote/blocks/display_creditnote_balance_block.tpl:19
 #: themes/default/templates/creditnote/blocks/display_creditnotes_block.tpl:22
-#: themes/default/templates/creditnote/details.tpl:264
-#: themes/default/templates/creditnote/details.tpl:325
+#: themes/default/templates/creditnote/details.tpl:258
+#: themes/default/templates/creditnote/details.tpl:319
 #: themes/default/templates/creditnote/edit.tpl:529
 #: themes/default/templates/creditnote/edit.tpl:608
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:158
@@ -4083,10 +4091,10 @@ msgstr ""
 #: themes/default/templates/expense/edit.tpl:549
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:15
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:21
-#: themes/default/templates/invoice/details.tpl:205
-#: themes/default/templates/invoice/details.tpl:249
-#: themes/default/templates/invoice/details.tpl:280
-#: themes/default/templates/invoice/details.tpl:305
+#: themes/default/templates/invoice/details.tpl:207
+#: themes/default/templates/invoice/details.tpl:251
+#: themes/default/templates/invoice/details.tpl:282
+#: themes/default/templates/invoice/details.tpl:307
 #: themes/default/templates/invoice/edit.tpl:565
 #: themes/default/templates/invoice/edit.tpl:630
 #: themes/default/templates/invoice/edit.tpl:650
@@ -4122,8 +4130,8 @@ msgstr ""
 #: themes/default/templates/creditnote/blocks/display_creditnote_balance_block.tpl:22
 #: themes/default/templates/creditnote/blocks/display_creditnotes_block.tpl:25
 #: themes/default/templates/creditnote/details.tpl:50
-#: themes/default/templates/creditnote/details.tpl:269
-#: themes/default/templates/creditnote/details.tpl:334
+#: themes/default/templates/creditnote/details.tpl:263
+#: themes/default/templates/creditnote/details.tpl:328
 #: themes/default/templates/creditnote/edit.tpl:373
 #: themes/default/templates/creditnote/edit.tpl:534
 #: themes/default/templates/creditnote/edit.tpl:622
@@ -4142,10 +4150,10 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:18
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:24
 #: themes/default/templates/invoice/details.tpl:43
-#: themes/default/templates/invoice/details.tpl:210
-#: themes/default/templates/invoice/details.tpl:252
-#: themes/default/templates/invoice/details.tpl:283
-#: themes/default/templates/invoice/details.tpl:314
+#: themes/default/templates/invoice/details.tpl:212
+#: themes/default/templates/invoice/details.tpl:254
+#: themes/default/templates/invoice/details.tpl:285
+#: themes/default/templates/invoice/details.tpl:316
 #: themes/default/templates/invoice/edit.tpl:387
 #: themes/default/templates/invoice/edit.tpl:570
 #: themes/default/templates/invoice/edit.tpl:632
@@ -4198,16 +4206,16 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/display_workorder_historic_stats_block.tpl:16
 #: language/_gettext_only/system_variables.php:51
 #: language/_gettext_only/system_variables.php:63
-#: language/_gettext_only/system_variables.php:99
-#: language/_gettext_only/system_variables.php:107
-#: language/_gettext_only/system_variables.php:148
-#: language/_gettext_only/system_variables.php:211
-#: language/_gettext_only/system_variables.php:223
+#: language/_gettext_only/system_variables.php:101
+#: language/_gettext_only/system_variables.php:109
+#: language/_gettext_only/system_variables.php:150
+#: language/_gettext_only/system_variables.php:208
+#: language/_gettext_only/system_variables.php:220
 msgid "Deleted"
 msgstr ""
 
 #: themes/default/templates/creditnote/blocks/display_creditnote_revenue_stats_block.tpl:12
-#: themes/default/templates/creditnote/details.tpl:314
+#: themes/default/templates/creditnote/details.tpl:308
 #: themes/default/templates/creditnote/edit.tpl:592
 msgid "Credit Note Total"
 msgstr ""
@@ -4267,7 +4275,7 @@ msgstr ""
 
 #: themes/default/templates/creditnote/blocks/display_creditnotes_block.tpl:27
 #: themes/default/templates/creditnote/blocks/display_creditnotes_block.tpl:81
-#: themes/default/templates/creditnote/details.tpl:247
+#: themes/default/templates/creditnote/details.tpl:241
 #: themes/default/templates/creditnote/edit.tpl:519
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:142
 #: themes/default/templates/creditnote/search.tpl:52
@@ -4278,7 +4286,7 @@ msgstr ""
 #: themes/default/templates/expense/search.tpl:42
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:17
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:48
-#: themes/default/templates/invoice/details.tpl:188
+#: themes/default/templates/invoice/details.tpl:190
 #: themes/default/templates/invoice/edit.tpl:555
 #: themes/default/templates/invoice/search.tpl:44
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:23
@@ -4290,8 +4298,8 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:364
 #: themes/default/templates/report/financial.tpl:398
 #: themes/default/templates/report/financial.tpl:432
-#: setup/upgrade/3_1_4/upgrade_routines.php:395
-#: setup/upgrade/3_1_4/upgrade_routines.php:535
+#: setup/upgrade/3_1_4/upgrade_routines.php:394
+#: setup/upgrade/3_1_4/upgrade_routines.php:534
 msgid "Items"
 msgstr ""
 
@@ -4306,10 +4314,10 @@ msgstr ""
 #: themes/default/templates/creditnote/blocks/display_creditnotes_block.tpl:91
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:26
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:69
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:27
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:71
-#: themes/default/templates/payment/details.tpl:115
-#: themes/default/templates/payment/edit.tpl:154
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:26
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:65
+#: themes/default/templates/payment/details.tpl:109
+#: themes/default/templates/payment/edit.tpl:149
 #: themes/default/templates/payment/search.tpl:42
 msgid "Additional Info"
 msgstr ""
@@ -4429,40 +4437,38 @@ msgid "Download PDF"
 msgstr ""
 
 #: themes/default/templates/creditnote/details.tpl:180
-#: themes/default/templates/creditnote/details.tpl:187
+#: themes/default/templates/creditnote/details.tpl:185
 #: themes/default/templates/invoice/details.tpl:142
 #: themes/default/templates/invoice/edit.tpl:528
 msgid "Email PDF"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:181
-#: themes/default/templates/creditnote/details.tpl:188
-#: themes/default/templates/invoice/details.tpl:143
-#: themes/default/templates/invoice/edit.tpl:529
-msgid "Print Client Envelope"
+#: themes/default/templates/creditnote/details.tpl:186
+#: themes/default/templates/supplier/details.tpl:162
+msgid "Print Supplier Envelope"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:198
+#: themes/default/templates/creditnote/details.tpl:194
 msgid "Edit Credit Note"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:209
+#: themes/default/templates/creditnote/details.tpl:203
 msgid "Apply Credit Note to Invoice"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:214
+#: themes/default/templates/creditnote/details.tpl:208
 msgid "Apply Credit Note to Expense"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:221
+#: themes/default/templates/creditnote/details.tpl:215
 msgid "Record Payment to Client"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:226
+#: themes/default/templates/creditnote/details.tpl:220
 msgid "Apply Payment from Supplier"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:255
+#: themes/default/templates/creditnote/details.tpl:249
 #: themes/default/templates/creditnote/edit.tpl:525
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:147
 #: themes/default/templates/cronjob/blocks/display_cronjobs_block.tpl:13
@@ -4471,7 +4477,7 @@ msgstr ""
 #: themes/default/templates/cronjob/edit.tpl:130
 #: themes/default/templates/expense/details.tpl:134
 #: themes/default/templates/expense/edit.tpl:468
-#: themes/default/templates/invoice/details.tpl:196
+#: themes/default/templates/invoice/details.tpl:198
 #: themes/default/templates/invoice/edit.tpl:561
 #: themes/default/templates/invoice/prefill_items.tpl:230
 #: themes/default/templates/invoice/printing/print_invoice.tpl:134
@@ -4501,12 +4507,12 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:256
+#: themes/default/templates/creditnote/details.tpl:250
 #: themes/default/templates/creditnote/edit.tpl:526
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:148
 #: themes/default/templates/expense/details.tpl:135
 #: themes/default/templates/expense/edit.tpl:469
-#: themes/default/templates/invoice/details.tpl:197
+#: themes/default/templates/invoice/details.tpl:199
 #: themes/default/templates/invoice/edit.tpl:562
 #: themes/default/templates/invoice/printing/print_invoice.tpl:162
 #: themes/default/templates/otherincome/details.tpl:130
@@ -4514,12 +4520,12 @@ msgstr ""
 msgid "Unit Qty"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:258
+#: themes/default/templates/creditnote/details.tpl:252
 #: themes/default/templates/creditnote/edit.tpl:527
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:151
 #: themes/default/templates/expense/details.tpl:137
 #: themes/default/templates/expense/edit.tpl:470
-#: themes/default/templates/invoice/details.tpl:199
+#: themes/default/templates/invoice/details.tpl:201
 #: themes/default/templates/invoice/edit.tpl:563
 #: themes/default/templates/invoice/prefill_items.tpl:231
 #: themes/default/templates/invoice/printing/print_invoice.tpl:165
@@ -4529,21 +4535,21 @@ msgstr ""
 msgid "Unit Net"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:260
+#: themes/default/templates/creditnote/details.tpl:254
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:153
 #: themes/default/templates/expense/details.tpl:139
-#: themes/default/templates/invoice/details.tpl:201
+#: themes/default/templates/invoice/details.tpl:203
 #: themes/default/templates/invoice/printing/print_invoice.tpl:167
 #: themes/default/templates/otherincome/details.tpl:134
 msgid "Unit Gross"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:262
+#: themes/default/templates/creditnote/details.tpl:256
 #: themes/default/templates/creditnote/edit.tpl:528
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:156
 #: themes/default/templates/expense/details.tpl:141
 #: themes/default/templates/expense/edit.tpl:471
-#: themes/default/templates/invoice/details.tpl:203
+#: themes/default/templates/invoice/details.tpl:205
 #: themes/default/templates/invoice/edit.tpl:564
 #: themes/default/templates/invoice/printing/print_invoice.tpl:170
 #: themes/default/templates/otherincome/details.tpl:136
@@ -4551,23 +4557,23 @@ msgstr ""
 msgid "Unit Discount"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:265
+#: themes/default/templates/creditnote/details.tpl:259
 #: themes/default/templates/creditnote/edit.tpl:530
 #: themes/default/templates/expense/details.tpl:144
 #: themes/default/templates/expense/edit.tpl:473
-#: themes/default/templates/invoice/details.tpl:206
+#: themes/default/templates/invoice/details.tpl:208
 #: themes/default/templates/invoice/edit.tpl:566
 #: themes/default/templates/otherincome/details.tpl:139
 #: themes/default/templates/otherincome/edit.tpl:473
 msgid "VAT Tax Code"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:266
+#: themes/default/templates/creditnote/details.tpl:260
 #: themes/default/templates/creditnote/edit.tpl:531
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:159
 #: themes/default/templates/expense/details.tpl:145
 #: themes/default/templates/expense/edit.tpl:474
-#: themes/default/templates/invoice/details.tpl:207
+#: themes/default/templates/invoice/details.tpl:209
 #: themes/default/templates/invoice/edit.tpl:567
 #: themes/default/templates/invoice/printing/print_invoice.tpl:173
 #: themes/default/templates/otherincome/details.tpl:140
@@ -4575,16 +4581,16 @@ msgstr ""
 msgid "Rate"
 msgstr ""
 
-#: themes/default/templates/creditnote/details.tpl:281
-#: themes/default/templates/creditnote/details.tpl:283
+#: themes/default/templates/creditnote/details.tpl:275
+#: themes/default/templates/creditnote/details.tpl:277
 #: themes/default/templates/creditnote/edit.tpl:533
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:174
 #: themes/default/templates/creditnote/printing/print_creditnote.tpl:176
 #: themes/default/templates/expense/details.tpl:160
 #: themes/default/templates/expense/details.tpl:162
 #: themes/default/templates/expense/edit.tpl:476
-#: themes/default/templates/invoice/details.tpl:222
 #: themes/default/templates/invoice/details.tpl:224
+#: themes/default/templates/invoice/details.tpl:226
 #: themes/default/templates/invoice/edit.tpl:569
 #: themes/default/templates/invoice/printing/print_invoice.tpl:188
 #: themes/default/templates/invoice/printing/print_invoice.tpl:190
@@ -4729,12 +4735,16 @@ msgid "Expense ID redeemed against"
 msgstr ""
 
 #: themes/default/templates/creditnote/status.tpl:16
+#: language/_gettext_only/pages.php:132
 msgid "CREDITNOTE_STATUS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/creditnote/status.tpl:16
+#: language/_gettext_only/pages.php:133
 msgid "CREDITNOTE_STATUS_HELP_CONTENT"
-msgstr "View and change a Credit Note's status here."
+msgstr ""
+"View and change a Credit Note's status here. You can also perform other "
+"actions on the record on this page."
 
 #: themes/default/templates/creditnote/status.tpl:25
 #: themes/default/templates/invoice/status.tpl:25
@@ -4906,12 +4916,12 @@ msgid "Cronjob Details"
 msgstr ""
 
 #: themes/default/templates/cronjob/details.tpl:17
-#: language/_gettext_only/pages.php:194
+#: language/_gettext_only/pages.php:201
 msgid "CRONJOB_DETAILS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/cronjob/details.tpl:17
-#: language/_gettext_only/pages.php:195
+#: language/_gettext_only/pages.php:202
 msgid "CRONJOB_DETAILS_HELP_CONTENT"
 msgstr "View the cronjobs details here."
 
@@ -4937,12 +4947,12 @@ msgid "Cronjob Edit"
 msgstr ""
 
 #: themes/default/templates/cronjob/edit.tpl:106
-#: language/_gettext_only/pages.php:201
+#: language/_gettext_only/pages.php:208
 msgid "CRONJOB_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/cronjob/edit.tpl:106
-#: language/_gettext_only/pages.php:202
+#: language/_gettext_only/pages.php:209
 msgid "CRONJOB_EDIT_HELP_CONTENT"
 msgstr "Edit the cronjobs details here."
 
@@ -5150,12 +5160,12 @@ msgid "Cronjobs Overview"
 msgstr ""
 
 #: themes/default/templates/cronjob/overview.tpl:16
-#: language/_gettext_only/pages.php:208
+#: language/_gettext_only/pages.php:215
 msgid "CRONJOB_OVERVIEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/cronjob/overview.tpl:16
-#: language/_gettext_only/pages.php:209
+#: language/_gettext_only/pages.php:216
 msgid "CRONJOB_OVERVIEW_HELP_CONTENT"
 msgstr "View information about the QWcrm cron system and individual cronjobs."
 
@@ -5167,9 +5177,9 @@ msgstr ""
 #: themes/default/templates/expense/status.tpl:13
 #: themes/default/templates/payment/blocks/display_payments_block.tpl:16
 #: components/_includes/Expense.php:499 components/_includes/Expense.php:556
-#: components/_includes/Payment.php:621 components/_includes/Payment.php:669
-#: components/payment/methods/PaymentMethodCreditnote.php:119
-#: language/_gettext_only/system_variables.php:152
+#: components/_includes/Payment.php:599 components/_includes/Payment.php:647
+#: components/payment/methods/PaymentMethodCreditnote.php:113
+#: language/_gettext_only/system_variables.php:154
 msgid "Expense"
 msgstr ""
 
@@ -5208,13 +5218,13 @@ msgstr ""
 
 #: themes/default/templates/expense/details.tpl:19
 #: themes/default/templates/expense/edit.tpl:338
-#: language/_gettext_only/pages.php:238
+#: language/_gettext_only/pages.php:245
 msgid "EXPENSE_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/expense/details.tpl:19
 #: themes/default/templates/expense/edit.tpl:338
-#: language/_gettext_only/pages.php:239
+#: language/_gettext_only/pages.php:246
 msgid "EXPENSE_EDIT_HELP_CONTENT"
 msgstr ""
 "This page allows you to edit an Expense Record. Once you have made your "
@@ -5257,8 +5267,8 @@ msgid "Start typing a Supplier's name"
 msgstr ""
 
 #: themes/default/templates/expense/edit.tpl:533
-#: themes/default/templates/invoice/details.tpl:246
-#: themes/default/templates/invoice/details.tpl:278
+#: themes/default/templates/invoice/details.tpl:248
+#: themes/default/templates/invoice/details.tpl:280
 #: themes/default/templates/invoice/edit.tpl:628
 #: themes/default/templates/invoice/edit.tpl:649
 #: themes/default/templates/invoice/printing/print_invoice.tpl:208
@@ -5292,12 +5302,12 @@ msgid "Expense Search"
 msgstr ""
 
 #: themes/default/templates/expense/search.tpl:16
-#: language/_gettext_only/pages.php:252
+#: language/_gettext_only/pages.php:259
 msgid "EXPENSE_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/expense/search.tpl:16
-#: language/_gettext_only/pages.php:253
+#: language/_gettext_only/pages.php:260
 msgid "EXPENSE_SEARCH_HELP_CONTENT"
 msgstr ""
 "You can search by any category by using the dropdown box. Apart from Expense "
@@ -5316,12 +5326,12 @@ msgid "Search Expenses"
 msgstr ""
 
 #: themes/default/templates/expense/status.tpl:16
-#: language/_gettext_only/pages.php:259
+#: language/_gettext_only/pages.php:266
 msgid "EXPENSE_STATUS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/expense/status.tpl:16
-#: language/_gettext_only/pages.php:260
+#: language/_gettext_only/pages.php:267
 msgid "EXPENSE_STATUS_HELP_CONTENT"
 msgstr "You can perform certain actions on the record on this page."
 
@@ -5367,8 +5377,8 @@ msgstr ""
 #: components/invoice/email.php:83 components/invoice/print.php:68
 #: components/invoice/print.php:73 components/invoice/print.php:79
 #: components/invoice/print.php:85
-#: components/payment/methods/PaymentMethodCreditnote.php:94
-#: language/_gettext_only/system_variables.php:151
+#: components/payment/methods/PaymentMethodCreditnote.php:88
+#: language/_gettext_only/system_variables.php:153
 msgid "Invoice"
 msgstr ""
 
@@ -5416,12 +5426,12 @@ msgid "There are no invoices."
 msgstr ""
 
 #: themes/default/templates/invoice/details.tpl:18
-#: language/_gettext_only/pages.php:305
+#: language/_gettext_only/pages.php:312
 msgid "INVOICE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/invoice/details.tpl:18
-#: language/_gettext_only/pages.php:306
+#: language/_gettext_only/pages.php:313
 msgid "INVOICE_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page shows you the details of the invoice selected. You can print or "
@@ -5434,15 +5444,15 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:135
 #: themes/default/templates/workorder/details.tpl:44
 #: components/_includes/Schedule.php:843 components/_includes/Schedule.php:852
-#: components/_includes/Workorder.php:55 components/_includes/Workorder.php:496
-#: components/_includes/Workorder.php:529
-#: components/_includes/Workorder.php:562
-#: components/_includes/Workorder.php:654
-#: components/_includes/Workorder.php:791
-#: components/_includes/Workorder.php:868
-#: components/_includes/Workorder.php:914
-#: components/_includes/Workorder.php:1275
-#: components/_includes/Workorder.php:1278
+#: components/_includes/Workorder.php:55 components/_includes/Workorder.php:498
+#: components/_includes/Workorder.php:531
+#: components/_includes/Workorder.php:564
+#: components/_includes/Workorder.php:656
+#: components/_includes/Workorder.php:793
+#: components/_includes/Workorder.php:870
+#: components/_includes/Workorder.php:916
+#: components/_includes/Workorder.php:1277
+#: components/_includes/Workorder.php:1280
 msgid "Work Order"
 msgstr ""
 
@@ -5470,10 +5480,19 @@ msgid "Receive Payment"
 msgstr ""
 
 #: themes/default/templates/invoice/details.tpl:160
+msgid "Close invoice with CR"
+msgstr ""
+
+#: themes/default/templates/invoice/details.tpl:160
+#: themes/default/templates/invoice/details.tpl:162
 msgid "Create Sales Credit Note (Invoice)"
 msgstr ""
 
-#: themes/default/templates/invoice/details.tpl:246
+#: themes/default/templates/invoice/details.tpl:162
+msgid "Refund invoice with CR"
+msgstr ""
+
+#: themes/default/templates/invoice/details.tpl:248
 #: themes/default/templates/invoice/edit.tpl:628
 #: themes/default/templates/invoice/printing/print_invoice.tpl:156
 #: themes/default/templates/invoice/printing/print_invoice.tpl:208
@@ -5482,31 +5501,31 @@ msgstr ""
 msgid "Invoice Items"
 msgstr ""
 
-#: themes/default/templates/invoice/details.tpl:278
+#: themes/default/templates/invoice/details.tpl:280
 #: themes/default/templates/invoice/edit.tpl:649
 #: themes/default/templates/invoice/printing/print_invoice.tpl:226
 #: themes/default/templates/invoice/printing/print_invoice.tpl:249
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:297
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:20
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:19
 #: themes/default/templates/voucher/details.tpl:13
 #: themes/default/templates/voucher/details.tpl:23
 #: themes/default/templates/voucher/search.tpl:13
 #: themes/default/templates/voucher/status.tpl:13
 #: components/_includes/Invoice.php:416 components/_includes/Voucher.php:80
 #: components/_includes/Voucher.php:479 components/_includes/Voucher.php:545
-#: components/_includes/Voucher.php:762 components/_includes/Voucher.php:771
-#: components/_includes/Voucher.php:802 components/_includes/Voucher.php:837
+#: components/_includes/Voucher.php:772 components/_includes/Voucher.php:781
+#: components/_includes/Voucher.php:812 components/_includes/Voucher.php:847
 #: components/voucher/details.php:21 components/voucher/email.php:48
 #: components/voucher/email.php:53 components/voucher/email.php:55
 #: components/voucher/new.php:39 components/voucher/print.php:47
 #: components/voucher/print.php:52 components/voucher/print.php:58
 #: language/_gettext_only/system_variables.php:87
-#: language/_gettext_only/system_variables.php:142
-#: setup/upgrade/3_1_4/upgrade_routines.php:320
+#: language/_gettext_only/system_variables.php:144
+#: setup/upgrade/3_1_4/upgrade_routines.php:319
 msgid "Voucher"
 msgstr ""
 
-#: themes/default/templates/invoice/details.tpl:294
+#: themes/default/templates/invoice/details.tpl:296
 #: themes/default/templates/invoice/edit.tpl:664
 msgid "Invoice Total"
 msgstr ""
@@ -5516,12 +5535,12 @@ msgid "The discount rate must be within the range of 0 and 99.99"
 msgstr ""
 
 #: themes/default/templates/invoice/edit.tpl:363
-#: language/_gettext_only/pages.php:312
+#: language/_gettext_only/pages.php:319
 msgid "INVOICE_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/invoice/edit.tpl:363
-#: language/_gettext_only/pages.php:313
+#: language/_gettext_only/pages.php:320
 msgid "INVOICE_EDIT_HELP_CONTENT"
 msgstr ""
 "This page allows you to create invoices for your clients. You can add labour "
@@ -5564,12 +5583,12 @@ msgid "Invoices Overview"
 msgstr ""
 
 #: themes/default/templates/invoice/overview.tpl:16
-#: language/_gettext_only/pages.php:319
+#: language/_gettext_only/pages.php:326
 msgid "INVOICE_OVERVIEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/invoice/overview.tpl:16
-#: language/_gettext_only/pages.php:320
+#: language/_gettext_only/pages.php:327
 msgid "INVOICE_OVERVIEW_HELP_CONTENT"
 msgstr "Navigate through the open invoices by using the navigation arrows."
 
@@ -5586,12 +5605,12 @@ msgid "Edit Invoice Prefill Items"
 msgstr ""
 
 #: themes/default/templates/invoice/prefill_items.tpl:211
-#: language/_gettext_only/pages.php:326
+#: language/_gettext_only/pages.php:333
 msgid "INVOICE_PREFILL_ITEMS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/invoice/prefill_items.tpl:211
-#: language/_gettext_only/pages.php:327
+#: language/_gettext_only/pages.php:334
 msgid "INVOICE_PREFILL_ITEMS_HELP_CONTENT"
 msgstr ""
 "On this page you can add/edit/remove invoice prefill items either "
@@ -5652,17 +5671,17 @@ msgid "Empty Prefill Table"
 msgstr ""
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:14
-#: language/_gettext_only/pages.php:330
+#: language/_gettext_only/pages.php:337
 msgid "INVOICE_PRINT_INVOICE_PAGE_TITLE"
 msgstr "QWCRM - Invoice"
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:17
-#: language/_gettext_only/pages.php:331
+#: language/_gettext_only/pages.php:338
 msgid "INVOICE_PRINT_INVOICE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:20
-#: language/_gettext_only/pages.php:332
+#: language/_gettext_only/pages.php:339
 msgid "INVOICE_PRINT_INVOICE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
@@ -5689,7 +5708,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:281
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:85
 #: themes/default/templates/payment/options.tpl:106
-#: language/_gettext_only/system_variables.php:135
+#: language/_gettext_only/system_variables.php:137
 msgid "Bank Transfer"
 msgstr ""
 
@@ -5722,7 +5741,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:316
 #: themes/default/templates/payment/options.tpl:94
 #: themes/default/templates/payment/options.tpl:97
-#: language/_gettext_only/system_variables.php:141
+#: language/_gettext_only/system_variables.php:143
 msgid "PayPal"
 msgstr ""
 
@@ -5735,12 +5754,12 @@ msgid "Invoice Search"
 msgstr ""
 
 #: themes/default/templates/invoice/search.tpl:16
-#: language/_gettext_only/pages.php:340
+#: language/_gettext_only/pages.php:347
 msgid "INVOICE_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/invoice/search.tpl:16
-#: language/_gettext_only/pages.php:341
+#: language/_gettext_only/pages.php:348
 msgid "INVOICE_SEARCH_HELP_CONTENT"
 msgstr "nothing to help with yet!"
 
@@ -5752,12 +5771,12 @@ msgid "Work Order ID"
 msgstr ""
 
 #: themes/default/templates/invoice/status.tpl:16
-#: language/_gettext_only/pages.php:347
+#: language/_gettext_only/pages.php:354
 msgid "INVOICE_STATUS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/invoice/status.tpl:16
-#: language/_gettext_only/pages.php:348
+#: language/_gettext_only/pages.php:355
 msgid "INVOICE_STATUS_HELP_CONTENT"
 msgstr ""
 "You can change the status of a n invoice and who the work order is assigned "
@@ -5836,13 +5855,13 @@ msgstr ""
 
 #: themes/default/templates/otherincome/details.tpl:19
 #: themes/default/templates/otherincome/edit.tpl:338
-#: language/_gettext_only/pages.php:377
+#: language/_gettext_only/pages.php:384
 msgid "OTHERINCOME_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/otherincome/details.tpl:19
 #: themes/default/templates/otherincome/edit.tpl:338
-#: language/_gettext_only/pages.php:378
+#: language/_gettext_only/pages.php:385
 msgid "OTHERINCOME_EDIT_HELP_CONTENT"
 msgstr "This page allows you to edit an Other Income record"
 
@@ -5855,12 +5874,12 @@ msgid "Search Other Incomes"
 msgstr ""
 
 #: themes/default/templates/otherincome/search.tpl:16
-#: language/_gettext_only/pages.php:391
+#: language/_gettext_only/pages.php:398
 msgid "OTHERINCOME_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/otherincome/search.tpl:16
-#: language/_gettext_only/pages.php:392
+#: language/_gettext_only/pages.php:399
 msgid "OTHERINCOME_SEARCH_HELP_CONTENT"
 msgstr "Use this page to search all of the Other Income records."
 
@@ -5880,12 +5899,12 @@ msgid "Otherincome"
 msgstr ""
 
 #: themes/default/templates/otherincome/status.tpl:16
-#: language/_gettext_only/pages.php:398
+#: language/_gettext_only/pages.php:405
 msgid "OTHERINCOME_STATUS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/otherincome/status.tpl:16
-#: language/_gettext_only/pages.php:399
+#: language/_gettext_only/pages.php:406
 msgid "OTHERINCOME_STATUS_HELP_CONTENT"
 msgstr "You can perform certain actions on the record on this page."
 
@@ -5938,31 +5957,31 @@ msgstr ""
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:347
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:387
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:427
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:26
-#: themes/default/templates/payment/details.tpl:111
-#: themes/default/templates/payment/edit.tpl:150
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:25
+#: themes/default/templates/payment/details.tpl:105
+#: themes/default/templates/payment/edit.tpl:145
 #: themes/default/templates/payment/search.tpl:41
 msgid "Amount"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:126
-#: language/_gettext_only/system_variables.php:137
+#: language/_gettext_only/system_variables.php:139
 msgid "Cash"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:165
 #: themes/default/templates/payment/options.tpl:110
-#: language/_gettext_only/system_variables.php:138
+#: language/_gettext_only/system_variables.php:140
 msgid "Cheque"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:173
-#: language/_gettext_only/system_variables.php:123
+#: language/_gettext_only/system_variables.php:125
 msgid "Cheque Number"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:206
-#: language/_gettext_only/system_variables.php:136
+#: language/_gettext_only/system_variables.php:138
 msgid "Card"
 msgstr ""
 
@@ -5971,12 +5990,12 @@ msgid "type"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:215
-#: language/_gettext_only/system_variables.php:122
+#: language/_gettext_only/system_variables.php:124
 msgid "Name on Card"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:256
-#: language/_gettext_only/system_variables.php:139
+#: language/_gettext_only/system_variables.php:141
 msgid "Direct Debit"
 msgstr ""
 
@@ -6014,37 +6033,33 @@ msgstr ""
 msgid "Payment ID"
 msgstr ""
 
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:19
-msgid "Credit Action"
-msgstr ""
-
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:23
-#: themes/default/templates/payment/details.tpl:87
-#: themes/default/templates/payment/edit.tpl:126
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:22
+#: themes/default/templates/payment/details.tpl:81
+#: themes/default/templates/payment/edit.tpl:121
 msgid "Method"
 msgstr ""
 
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:24
-#: themes/default/templates/payment/details.tpl:95
-#: themes/default/templates/payment/edit.tpl:134
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:23
+#: themes/default/templates/payment/details.tpl:89
+#: themes/default/templates/payment/edit.tpl:129
 msgid "Direction"
 msgstr ""
 
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:81
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:75
 msgid "View the payment."
 msgstr ""
 
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:83
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:77
 msgid ""
 "Are you Sure you want to delete this Payment Record? This will permanently "
 "remove the record from the database."
 msgstr ""
 
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:84
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:78
 msgid "Delete Payment Record"
 msgstr ""
 
-#: themes/default/templates/payment/blocks/display_payments_block.tpl:97
+#: themes/default/templates/payment/blocks/display_payments_block.tpl:91
 msgid "There are no payments."
 msgstr ""
 
@@ -6053,12 +6068,12 @@ msgid "Payment Details"
 msgstr ""
 
 #: themes/default/templates/payment/details.tpl:16
-#: language/_gettext_only/pages.php:421
+#: language/_gettext_only/pages.php:428
 msgid "PAYMENT_DETAILS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/payment/details.tpl:16
-#: language/_gettext_only/pages.php:422
+#: language/_gettext_only/pages.php:429
 msgid "PAYMENT_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page allows you to view a Payment Record without having to edit it.<br /"
@@ -6066,7 +6081,7 @@ msgstr ""
 "this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
 #: themes/default/templates/payment/details.tpl:56
-#: themes/default/templates/payment/edit.tpl:93
+#: themes/default/templates/payment/edit.tpl:88
 #: themes/default/templates/voucher/details.tpl:47
 #: themes/default/templates/voucher/edit.tpl:34
 #: themes/default/templates/voucher/search.tpl:37
@@ -6078,12 +6093,11 @@ msgid "Creditenote ID"
 msgstr ""
 
 #: themes/default/templates/payment/details.tpl:70
-#: themes/default/templates/payment/edit.tpl:85
 msgid "Credit Note Action"
 msgstr ""
 
-#: themes/default/templates/payment/details.tpl:116
-#: themes/default/templates/payment/edit.tpl:155
+#: themes/default/templates/payment/details.tpl:110
+#: themes/default/templates/payment/edit.tpl:150
 msgid "none"
 msgstr ""
 
@@ -6092,23 +6106,23 @@ msgid "Payment Edit Page"
 msgstr ""
 
 #: themes/default/templates/payment/edit.tpl:24
-#: language/_gettext_only/pages.php:428
+#: language/_gettext_only/pages.php:435
 msgid "PAYMENT_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/payment/edit.tpl:24
-#: language/_gettext_only/pages.php:429
+#: language/_gettext_only/pages.php:436
 msgid "PAYMENT_EDIT_HELP_CONTENT"
 msgstr ""
 "You can edit the payment record on this page. This is useful when the data "
 "has been edited incorrectly. This page should be restricted to only those "
 "who need access."
 
-#: themes/default/templates/payment/edit.tpl:99
+#: themes/default/templates/payment/edit.tpl:94
 msgid "Parent Record Balance"
 msgstr ""
 
-#: themes/default/templates/payment/edit.tpl:100
+#: themes/default/templates/payment/edit.tpl:95
 msgid "As if this payment has not been applied"
 msgstr ""
 
@@ -6117,12 +6131,12 @@ msgid "Add a New Payment"
 msgstr ""
 
 #: themes/default/templates/payment/new.tpl:21
-#: language/_gettext_only/pages.php:435
+#: language/_gettext_only/pages.php:442
 msgid "PAYMENT_NEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/payment/new.tpl:21
-#: language/_gettext_only/pages.php:436
+#: language/_gettext_only/pages.php:443
 msgid "PAYMENT_NEW_HELP_CONTENT"
 msgstr ""
 "Select the payment method the customer has used, fill in the required "
@@ -6135,12 +6149,12 @@ msgid "Payment Options"
 msgstr ""
 
 #: themes/default/templates/payment/options.tpl:18
-#: language/_gettext_only/pages.php:442
+#: language/_gettext_only/pages.php:449
 msgid "PAYMENT_OPTIONS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/payment/options.tpl:18
-#: language/_gettext_only/pages.php:443
+#: language/_gettext_only/pages.php:450
 msgid "PAYMENT_OPTIONS_HELP_CONTENT"
 msgstr ""
 "On this page you can enable or disable your required payment options. Some "
@@ -6193,12 +6207,12 @@ msgid "Payments Search"
 msgstr ""
 
 #: themes/default/templates/payment/search.tpl:16
-#: language/_gettext_only/pages.php:449
+#: language/_gettext_only/pages.php:456
 msgid "PAYMENT_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/payment/search.tpl:16
-#: language/_gettext_only/pages.php:450
+#: language/_gettext_only/pages.php:457
 msgid "PAYMENT_SEARCH_HELP_CONTENT"
 msgstr "Search through all of the payments that has been registered on QWcrm."
 
@@ -6221,12 +6235,12 @@ msgid "Filter By Direction"
 msgstr ""
 
 #: themes/default/templates/payment/status.tpl:16
-#: language/_gettext_only/pages.php:456
+#: language/_gettext_only/pages.php:463
 msgid "PAYMENT_STATUS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/payment/status.tpl:16
-#: language/_gettext_only/pages.php:457
+#: language/_gettext_only/pages.php:464
 msgid "PAYMENT_STATUS_HELP_CONTENT"
 msgstr "You can perform certain actions on the record on this page."
 
@@ -6270,12 +6284,12 @@ msgid "system"
 msgstr ""
 
 #: themes/default/templates/report/basic_stats.tpl:16
-#: language/_gettext_only/pages.php:465
+#: language/_gettext_only/pages.php:472
 msgid "REPORT_BASIC_STATS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/report/basic_stats.tpl:16
-#: language/_gettext_only/pages.php:466
+#: language/_gettext_only/pages.php:473
 msgid "REPORT_BASIC_STATS_HELP_CONTENT"
 msgstr ""
 "Get basic information about work orders, invoices and your employees "
@@ -6291,12 +6305,12 @@ msgid "Financial Report"
 msgstr ""
 
 #: themes/default/templates/report/financial.tpl:21
-#: language/_gettext_only/pages.php:472
+#: language/_gettext_only/pages.php:479
 msgid "REPORT_FINANCIAL_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/report/financial.tpl:21
-#: language/_gettext_only/pages.php:473
+#: language/_gettext_only/pages.php:480
 msgid "REPORT_FINANCIAL_HELP_CONTENT"
 msgstr ""
 "Set a start and end date and then click submit. A financial report for the "
@@ -6321,6 +6335,8 @@ msgstr ""
 
 #: themes/default/templates/report/financial.tpl:157
 #: themes/default/templates/report/financial.tpl:190
+#: language/_gettext_only/system_variables.php:96
+#: language/_gettext_only/system_variables.php:202
 msgid "Refunded"
 msgstr ""
 
@@ -6609,12 +6625,12 @@ msgid "Viewing schedule for"
 msgstr ""
 
 #: themes/default/templates/schedule/day.tpl:21
-#: language/_gettext_only/pages.php:481
+#: language/_gettext_only/pages.php:488
 msgid "SCHEDULE_DAY_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/schedule/day.tpl:21
-#: language/_gettext_only/pages.php:482
+#: language/_gettext_only/pages.php:489
 msgid "SCHEDULE_DAY_HELP_CONTENT"
 msgstr ""
 "Daily schedules for all employees can be viewed here. All the jobs for that "
@@ -6651,12 +6667,12 @@ msgid "Details for Schedule ID"
 msgstr ""
 
 #: themes/default/templates/schedule/details.tpl:15
-#: language/_gettext_only/pages.php:495
+#: language/_gettext_only/pages.php:502
 msgid "SCHEDULE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/schedule/details.tpl:15
-#: language/_gettext_only/pages.php:496
+#: language/_gettext_only/pages.php:503
 msgid "SCHEDULE_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page shows you the details for one schedule item. There are also action "
@@ -6673,12 +6689,12 @@ msgid "Edit Schedule"
 msgstr ""
 
 #: themes/default/templates/schedule/edit.tpl:23
-#: language/_gettext_only/pages.php:502
+#: language/_gettext_only/pages.php:509
 msgid "SCHEDULE_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/schedule/edit.tpl:23
-#: language/_gettext_only/pages.php:503
+#: language/_gettext_only/pages.php:510
 msgid "SCHEDULE_EDIT_HELP_CONTENT"
 msgstr ""
 "When editing a schedule item you can change the time of the job, the notes "
@@ -6693,12 +6709,12 @@ msgid "New Schedule"
 msgstr ""
 
 #: themes/default/templates/schedule/new.tpl:23
-#: language/_gettext_only/pages.php:509
+#: language/_gettext_only/pages.php:516
 msgid "SCHEDULE_NEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/schedule/new.tpl:23
-#: language/_gettext_only/pages.php:510
+#: language/_gettext_only/pages.php:517
 msgid "SCHEDULE_NEW_HELP_CONTENT"
 msgstr ""
 "Creating a new schedulke item is easy. QWcrm will stop you from creating a "
@@ -6715,13 +6731,13 @@ msgstr ""
 
 #: themes/default/templates/schedule/search.tpl:16
 #: themes/default/templates/workorder/search.tpl:16
-#: language/_gettext_only/pages.php:813
+#: language/_gettext_only/pages.php:820
 msgid "WORKORDER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/schedule/search.tpl:16
 #: themes/default/templates/workorder/search.tpl:16
-#: language/_gettext_only/pages.php:814
+#: language/_gettext_only/pages.php:821
 msgid "WORKORDER_SEARCH_HELP_CONTENT"
 msgstr "nothing to help with yet!"
 
@@ -6811,14 +6827,14 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:18
 #: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:19
 #: themes/default/templates/user/new.tpl:18
-#: language/_gettext_only/pages.php:641
+#: language/_gettext_only/pages.php:648
 msgid "USER_NEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:18
 #: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:19
 #: themes/default/templates/user/new.tpl:18
-#: language/_gettext_only/pages.php:642
+#: language/_gettext_only/pages.php:649
 msgid "USER_NEW_HELP_CONTENT"
 msgstr ""
 "Create a new user by filling in the details and then by clicking submit."
@@ -7227,12 +7243,12 @@ msgid "QWcrm Installation / MyITCRM Migration / QWcrm Upgrade"
 msgstr ""
 
 #: themes/default/templates/setup/choice.tpl:121
-#: language/_gettext_only/pages.php:525
+#: language/_gettext_only/pages.php:532
 msgid "SETUP_CHOICE_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/setup/choice.tpl:121
-#: language/_gettext_only/pages.php:526
+#: language/_gettext_only/pages.php:533
 msgid "SETUP_CHOICE_HELP_CONTENT"
 msgstr ""
 "Decide if you want to do a fresh installation of QWcrm or migrate from "
@@ -7408,14 +7424,14 @@ msgstr ""
 #: themes/default/templates/setup/install.tpl:25
 #: themes/default/templates/setup/migrate.tpl:24
 #: themes/default/templates/setup/upgrade.tpl:25
-#: language/_gettext_only/pages.php:532
+#: language/_gettext_only/pages.php:539
 msgid "SETUP_INSTALL_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/setup/install.tpl:25
 #: themes/default/templates/setup/migrate.tpl:24
 #: themes/default/templates/setup/upgrade.tpl:25
-#: language/_gettext_only/pages.php:533
+#: language/_gettext_only/pages.php:540
 msgid "SETUP_INSTALL_HELP_CONTENT"
 msgstr "Follow these easy steps to install QWcrm."
 
@@ -7442,12 +7458,12 @@ msgid "There are no suppliers."
 msgstr ""
 
 #: themes/default/templates/supplier/details.tpl:17
-#: language/_gettext_only/pages.php:569
+#: language/_gettext_only/pages.php:576
 msgid "SUPPLIER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/supplier/details.tpl:17
-#: language/_gettext_only/pages.php:570
+#: language/_gettext_only/pages.php:577
 msgid "SUPPLIER_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page allows you to view an Supplier Record without having to edit it."
@@ -7476,12 +7492,12 @@ msgid "Supplier Edit"
 msgstr ""
 
 #: themes/default/templates/supplier/edit.tpl:24
-#: language/_gettext_only/pages.php:576
+#: language/_gettext_only/pages.php:583
 msgid "SUPPLIER_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/supplier/edit.tpl:24
-#: language/_gettext_only/pages.php:577
+#: language/_gettext_only/pages.php:584
 msgid "SUPPLIER_EDIT_HELP_CONTENT"
 msgstr ""
 "This page allows you to edit an Supplier Record. Once you have made your "
@@ -7502,12 +7518,12 @@ msgid "New Supplier"
 msgstr ""
 
 #: themes/default/templates/supplier/new.tpl:24
-#: language/_gettext_only/pages.php:583
+#: language/_gettext_only/pages.php:590
 msgid "SUPPLIER_NEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/supplier/new.tpl:24
-#: language/_gettext_only/pages.php:584
+#: language/_gettext_only/pages.php:591
 msgid "SUPPLIER_NEW_HELP_CONTENT"
 msgstr ""
 "This page is used to add a New Supplier Record for your company.<br /><br /"
@@ -7522,17 +7538,17 @@ msgid "Contact Last Name"
 msgstr ""
 
 #: themes/default/templates/supplier/printing/print_envelope.tpl:14
-#: language/_gettext_only/pages.php:587
+#: language/_gettext_only/pages.php:594
 msgid "SUPPLIER_PRINT_ENVELOPE_PAGE_TITLE"
 msgstr "-"
 
 #: themes/default/templates/supplier/printing/print_envelope.tpl:17
-#: language/_gettext_only/pages.php:588
+#: language/_gettext_only/pages.php:595
 msgid "SUPPLIER_PRINT_ENVELOPE_META_DESCRIPTION"
 msgstr "-"
 
 #: themes/default/templates/supplier/printing/print_envelope.tpl:20
-#: language/_gettext_only/pages.php:589
+#: language/_gettext_only/pages.php:596
 msgid "SUPPLIER_PRINT_ENVELOPE_META_KEYWORDS"
 msgstr "-"
 
@@ -7542,12 +7558,12 @@ msgid "Supplier Search"
 msgstr ""
 
 #: themes/default/templates/supplier/search.tpl:16
-#: language/_gettext_only/pages.php:597
+#: language/_gettext_only/pages.php:604
 msgid "SUPPLIER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/supplier/search.tpl:16
-#: language/_gettext_only/pages.php:598
+#: language/_gettext_only/pages.php:605
 msgid "SUPPLIER_SEARCH_HELP_CONTENT"
 msgstr ""
 "You can search by any category by using the dropdown box. Apart from "
@@ -7566,12 +7582,12 @@ msgid "reset"
 msgstr ""
 
 #: themes/default/templates/supplier/status.tpl:16
-#: language/_gettext_only/pages.php:604
+#: language/_gettext_only/pages.php:611
 msgid "SUPPLIER_STATUS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/supplier/status.tpl:16
-#: language/_gettext_only/pages.php:605
+#: language/_gettext_only/pages.php:612
 msgid "SUPPLIER_STATUS_HELP_CONTENT"
 msgstr "You can perform certain actions on the record on this page."
 
@@ -7674,12 +7690,12 @@ msgid "User Details for"
 msgstr ""
 
 #: themes/default/templates/user/details.tpl:15
-#: language/_gettext_only/pages.php:620
+#: language/_gettext_only/pages.php:627
 msgid "USER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/user/details.tpl:15
-#: language/_gettext_only/pages.php:621
+#: language/_gettext_only/pages.php:628
 msgid "USER_DETAILS_HELP_CONTENT"
 msgstr ""
 "You can see the selected employees details and what  jobs he has worked on."
@@ -7697,12 +7713,12 @@ msgid "Open Work Orders"
 msgstr ""
 
 #: themes/default/templates/user/edit.tpl:18
-#: language/_gettext_only/pages.php:627
+#: language/_gettext_only/pages.php:634
 msgid "USER_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/user/edit.tpl:18
-#: language/_gettext_only/pages.php:628
+#: language/_gettext_only/pages.php:635
 msgid "USER_EDIT_HELP_CONTENT"
 msgstr ""
 "You can edit an users's details here as well as resetting their password if "
@@ -7729,13 +7745,13 @@ msgid "User Search"
 msgstr ""
 
 #: themes/default/templates/user/search.tpl:16
-#: language/_gettext_only/pages.php:655
+#: language/_gettext_only/pages.php:662
 msgid "USER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/user/search.tpl:16
 #: themes/default/templates/voucher/search.tpl:15
-#: language/_gettext_only/pages.php:656
+#: language/_gettext_only/pages.php:663
 msgid "USER_SEARCH_HELP_CONTENT"
 msgstr ""
 "You can search by the user's name only. By default all employees are listed. "
@@ -7780,12 +7796,12 @@ msgid "There are no vouchers."
 msgstr ""
 
 #: themes/default/templates/voucher/details.tpl:16
-#: language/_gettext_only/pages.php:678
+#: language/_gettext_only/pages.php:685
 msgid "VOUCHER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/voucher/details.tpl:16
-#: language/_gettext_only/pages.php:679
+#: language/_gettext_only/pages.php:686
 msgid "VOUCHER_DETAILS_HELP_CONTENT"
 msgstr "View details about the voucher"
 
@@ -7817,12 +7833,12 @@ msgid "Edit Voucher"
 msgstr ""
 
 #: themes/default/templates/voucher/edit.tpl:23
-#: language/_gettext_only/pages.php:685
+#: language/_gettext_only/pages.php:692
 msgid "VOUCHER_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/voucher/edit.tpl:23
-#: language/_gettext_only/pages.php:686
+#: language/_gettext_only/pages.php:693
 msgid "VOUCHER_EDIT_HELP_CONTENT"
 msgstr "You can edit an vouchers's details here."
 
@@ -7832,28 +7848,28 @@ msgstr ""
 
 #: themes/default/templates/voucher/new.tpl:23
 #: themes/default/templates/voucher/search.tpl:15
-#: language/_gettext_only/pages.php:706
+#: language/_gettext_only/pages.php:713
 msgid "VOUCHER_SEARCH_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/voucher/new.tpl:23
-#: language/_gettext_only/pages.php:707
+#: language/_gettext_only/pages.php:714
 msgid "VOUCHER_SEARCH_HELP_CONTENT"
 msgstr ""
 "Search Vouchers. You can browse the results using the navigation arrows."
 
 #: themes/default/templates/voucher/printing/print_voucher.tpl:14
-#: language/_gettext_only/pages.php:696
+#: language/_gettext_only/pages.php:703
 msgid "VOUCHER_PRINT_VOUCHER_PAGE_TITLE"
 msgstr "QWCRM - Voucher"
 
 #: themes/default/templates/voucher/printing/print_voucher.tpl:17
-#: language/_gettext_only/pages.php:697
+#: language/_gettext_only/pages.php:704
 msgid "VOUCHER_PRINT_VOUCHER_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: themes/default/templates/voucher/printing/print_voucher.tpl:20
-#: language/_gettext_only/pages.php:698
+#: language/_gettext_only/pages.php:705
 msgid "VOUCHER_PRINT_VOUCHER_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
@@ -7876,12 +7892,12 @@ msgid "Redeemed on Invoice ID"
 msgstr ""
 
 #: themes/default/templates/voucher/status.tpl:16
-#: language/_gettext_only/pages.php:713
+#: language/_gettext_only/pages.php:720
 msgid "VOUCHER_STATUS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/voucher/status.tpl:16
-#: language/_gettext_only/pages.php:714
+#: language/_gettext_only/pages.php:721
 msgid "VOUCHER_STATUS_HELP_CONTENT"
 msgstr "You can perform certain actions on the record on this page."
 
@@ -7994,8 +8010,8 @@ msgstr ""
 
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:14
 #: components/_includes/Invoice.php:1391
-#: components/_includes/Workorder.php:1266
-#: language/_gettext_only/system_variables.php:214
+#: components/_includes/Workorder.php:1268
+#: language/_gettext_only/system_variables.php:211
 msgid "Unassigned"
 msgstr ""
 
@@ -8042,12 +8058,12 @@ msgid "Technician Work Order Job Sheet"
 msgstr ""
 
 #: themes/default/templates/workorder/details.tpl:29
-#: language/_gettext_only/pages.php:729
+#: language/_gettext_only/pages.php:736
 msgid "WORKORDER_DETAILS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/workorder/details.tpl:29
-#: language/_gettext_only/pages.php:730
+#: language/_gettext_only/pages.php:737
 msgid "WORKORDER_DETAILS_HELP_CONTENT"
 msgstr ""
 "You can edit the Work Order comments, notes, and set schedule by clicking "
@@ -8066,12 +8082,12 @@ msgid "Edit Work Order Comment"
 msgstr ""
 
 #: themes/default/templates/workorder/details_edit_comment.tpl:19
-#: language/_gettext_only/pages.php:736
+#: language/_gettext_only/pages.php:743
 msgid "WORKORDER_DETAILS_EDIT_COMMENT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/workorder/details_edit_comment.tpl:19
-#: language/_gettext_only/pages.php:737
+#: language/_gettext_only/pages.php:744
 msgid "WORKORDER_DETAILS_EDIT_COMMENT_HELP_CONTENT"
 msgstr "You can edit the comments attached to the work order here."
 
@@ -8080,12 +8096,12 @@ msgid "Edit Work Order Description"
 msgstr ""
 
 #: themes/default/templates/workorder/details_edit_description.tpl:20
-#: language/_gettext_only/pages.php:743
+#: language/_gettext_only/pages.php:750
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/workorder/details_edit_description.tpl:20
-#: language/_gettext_only/pages.php:744
+#: language/_gettext_only/pages.php:751
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_HELP_CONTENT"
 msgstr "You can edit the description attached to the work order here."
 
@@ -8095,12 +8111,12 @@ msgid "Edit Work Order Resolution"
 msgstr ""
 
 #: themes/default/templates/workorder/details_edit_resolution.tpl:19
-#: language/_gettext_only/pages.php:750
+#: language/_gettext_only/pages.php:757
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/workorder/details_edit_resolution.tpl:19
-#: language/_gettext_only/pages.php:751
+#: language/_gettext_only/pages.php:758
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_HELP_CONTENT"
 msgstr "You can edit or close the resolution attached to the work order here."
 
@@ -8121,12 +8137,12 @@ msgid "New Work Order for"
 msgstr ""
 
 #: themes/default/templates/workorder/new.tpl:20
-#: language/_gettext_only/pages.php:757
+#: language/_gettext_only/pages.php:764
 msgid "WORKORDER_NEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/workorder/new.tpl:20
-#: language/_gettext_only/pages.php:758
+#: language/_gettext_only/pages.php:765
 msgid "WORKORDER_NEW_HELP_CONTENT"
 msgstr "Create new Work Orders here."
 
@@ -8147,12 +8163,12 @@ msgid "Add A New Note For Work Order ID"
 msgstr ""
 
 #: themes/default/templates/workorder/note_new.tpl:18
-#: language/_gettext_only/pages.php:771
+#: language/_gettext_only/pages.php:778
 msgid "WORKORDER_NOTE_NEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/workorder/note_new.tpl:18
-#: language/_gettext_only/pages.php:772
+#: language/_gettext_only/pages.php:779
 msgid "WORKORDER_NOTE_NEW_HELP_CONTENT"
 msgstr "You can create a single work order note here."
 
@@ -8161,12 +8177,12 @@ msgid "Work Orders Overview"
 msgstr ""
 
 #: themes/default/templates/workorder/overview.tpl:16
-#: language/_gettext_only/pages.php:785
+#: language/_gettext_only/pages.php:792
 msgid "WORKORDER_OVERVIEW_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/workorder/overview.tpl:16
-#: language/_gettext_only/pages.php:786
+#: language/_gettext_only/pages.php:793
 msgid "WORKORDER_OVERVIEW_HELP_CONTENT"
 msgstr ""
 "Double Click on an empty space in each row to go directly to the work order. "
@@ -8187,17 +8203,17 @@ msgid "Blank"
 msgstr ""
 
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:14
-#: language/_gettext_only/pages.php:789
+#: language/_gettext_only/pages.php:796
 msgid "WORKORDER_PRINT_CLIENT_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "QWcrm - Customer Work Order Slip"
 
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:17
-#: language/_gettext_only/pages.php:790
+#: language/_gettext_only/pages.php:797
 msgid "WORKORDER_PRINT_CLIENT_WORKORDER_SLIP_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:20
-#: language/_gettext_only/pages.php:791
+#: language/_gettext_only/pages.php:798
 msgid "WORKORDER_PRINT_CLIENT_WORKORDER_SLIP_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
@@ -8288,17 +8304,17 @@ msgid "This Work Order is confidential and contains privileged information."
 msgstr ""
 
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:14
-#: language/_gettext_only/pages.php:796
+#: language/_gettext_only/pages.php:803
 msgid "WORKORDER_PRINT_TECHNICIAN_JOB_SHEET_PAGE_TITLE"
 msgstr "QWcrm - Technician Work Order Job Sheet"
 
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:17
-#: language/_gettext_only/pages.php:797
+#: language/_gettext_only/pages.php:804
 msgid "WORKORDER_PRINT_TECHNICIAN_JOB_SHEET_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:20
-#: language/_gettext_only/pages.php:798
+#: language/_gettext_only/pages.php:805
 msgid "WORKORDER_PRINT_TECHNICIAN_JOB_SHEET_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
@@ -8313,17 +8329,17 @@ msgid "Parts Used"
 msgstr ""
 
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:14
-#: language/_gettext_only/pages.php:803
+#: language/_gettext_only/pages.php:810
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_PAGE_TITLE"
 msgstr "QWcrm - Technician Work Order Slip"
 
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:17
-#: language/_gettext_only/pages.php:804
+#: language/_gettext_only/pages.php:811
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:20
-#: language/_gettext_only/pages.php:805
+#: language/_gettext_only/pages.php:812
 msgid "WORKORDER_PRINT_TECHNICIAN_WORKORDER_SLIP_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
@@ -8384,12 +8400,12 @@ msgid "Work order"
 msgstr ""
 
 #: themes/default/templates/workorder/status.tpl:16
-#: language/_gettext_only/pages.php:820
+#: language/_gettext_only/pages.php:827
 msgid "WORKORDER_STATUS_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/workorder/status.tpl:16
-#: language/_gettext_only/pages.php:821
+#: language/_gettext_only/pages.php:828
 msgid "WORKORDER_STATUS_HELP_CONTENT"
 msgstr ""
 "You can change the status of a work order and who the work order is assigned "
@@ -8485,69 +8501,69 @@ msgstr ""
 msgid "ACL permissions reset to default settings."
 msgstr ""
 
-#: components/_includes/Client.php:60
+#: components/_includes/Client.php:61
 msgid "New client"
 msgstr ""
 
-#: components/_includes/Client.php:60
+#: components/_includes/Client.php:61
 msgid "has been created."
 msgstr ""
 
-#: components/_includes/Client.php:84
+#: components/_includes/Client.php:85
 msgid "A new client note was added to the client"
 msgstr ""
 
-#: components/_includes/Client.php:84 components/_includes/Creditnote.php:633
-#: components/_includes/Creditnote.php:1469
+#: components/_includes/Client.php:85 components/_includes/Creditnote.php:633
+#: components/_includes/Creditnote.php:1533
 #: components/_includes/Expense.php:499 components/_includes/Invoice.php:58
 #: components/_includes/Invoice.php:667 components/_includes/Invoice.php:670
 #: components/_includes/Invoice.php:1400 components/_includes/Invoice.php:1403
 #: components/_includes/Otherincome.php:471
-#: components/_includes/Payment.php:621 components/_includes/Schedule.php:71
+#: components/_includes/Payment.php:599 components/_includes/Schedule.php:71
 #: components/_includes/Setup.php:75 components/_includes/Setup.php:93
 #: components/_includes/Supplier.php:389 components/_includes/Voucher.php:542
 #: components/_includes/Voucher.php:545 components/_includes/Workorder.php:92
-#: components/_includes/Workorder.php:651
-#: components/_includes/Workorder.php:654
-#: components/_includes/Workorder.php:1275
-#: components/_includes/Workorder.php:1278
+#: components/_includes/Workorder.php:653
+#: components/_includes/Workorder.php:656
+#: components/_includes/Workorder.php:1277
+#: components/_includes/Workorder.php:1280
 msgid "by"
 msgstr ""
 
-#: components/_includes/Client.php:332 components/_includes/Client.php:417
+#: components/_includes/Client.php:334 components/_includes/Client.php:417
 msgid "The client"
 msgstr ""
 
-#: components/_includes/Client.php:332 components/_includes/Client.php:361
+#: components/_includes/Client.php:334 components/_includes/Client.php:363
 #: components/_includes/Creditnote.php:544 components/_includes/Invoice.php:571
 #: components/_includes/Invoice.php:574 components/_includes/Schedule.php:278
 #: components/_includes/Schedule.php:281 components/_includes/Voucher.php:479
-#: components/_includes/Workorder.php:595
+#: components/_includes/Workorder.php:597
 msgid "was updated by"
 msgstr ""
 
-#: components/_includes/Client.php:361 components/_includes/Client.php:441
+#: components/_includes/Client.php:363 components/_includes/Client.php:440
 msgid "Client Note"
 msgstr ""
 
-#: components/_includes/Client.php:417 components/_includes/Workorder.php:791
-#: components/_includes/Workorder.php:818
+#: components/_includes/Client.php:417 components/_includes/Workorder.php:793
+#: components/_includes/Workorder.php:820
 msgid "has been deleted by"
 msgstr ""
 
-#: components/_includes/Client.php:441
+#: components/_includes/Client.php:440
 msgid "for Client"
 msgstr ""
 
-#: components/_includes/Client.php:441 components/_includes/Creditnote.php:776
+#: components/_includes/Client.php:440 components/_includes/Creditnote.php:776
 #: components/_includes/Invoice.php:815 components/_includes/Invoice.php:823
 #: components/_includes/Schedule.php:321 components/_includes/Schedule.php:324
-#: components/_includes/Supplier.php:464 components/_includes/Voucher.php:837
-#: components/_includes/Workorder.php:821
+#: components/_includes/Supplier.php:464 components/_includes/Voucher.php:847
+#: components/_includes/Workorder.php:823
 msgid "was deleted by"
 msgstr ""
 
-#: components/_includes/Client.php:497
+#: components/_includes/Client.php:496
 msgid "The client cannot be deleted because it has linked credit notes."
 msgstr ""
 
@@ -8676,23 +8692,29 @@ msgstr ""
 #: components/_includes/Creditnote.php:633 components/_includes/Expense.php:499
 #: components/_includes/Invoice.php:670
 #: components/_includes/Otherincome.php:471
-#: components/_includes/Payment.php:621 components/_includes/Supplier.php:389
-#: components/_includes/Voucher.php:545 components/_includes/Workorder.php:651
-#: components/_includes/Workorder.php:654
+#: components/_includes/Payment.php:599 components/_includes/Supplier.php:389
+#: components/_includes/Voucher.php:545 components/_includes/Workorder.php:653
+#: components/_includes/Workorder.php:656
 msgid "Status updated to"
 msgstr ""
 
 #: components/_includes/Creditnote.php:702 components/_includes/Expense.php:556
 #: components/_includes/Invoice.php:747
 #: components/_includes/Otherincome.php:515
-#: components/_includes/Payment.php:669 components/_includes/Supplier.php:436
-#: components/_includes/Voucher.php:771
+#: components/_includes/Payment.php:647 components/_includes/Supplier.php:436
+#: components/_includes/Voucher.php:781
 msgid "was cancelled by"
 msgstr ""
 
-#: components/_includes/Creditnote.php:889
-#: components/_includes/Voucher.php:2015
+#: components/_includes/Creditnote.php:884
+#: components/_includes/Voucher.php:2017
 msgid "The expiry date is invalid because it is in the past."
+msgstr ""
+
+#: components/_includes/Creditnote.php:912
+msgid ""
+"More than one datasource was provided so validation cannot take place and so "
+"the credit note creation will not be allowed."
 msgstr ""
 
 #: components/_includes/Creditnote.php:937
@@ -8701,226 +8723,215 @@ msgid ""
 "tax system."
 msgstr ""
 
-#: components/_includes/Creditnote.php:947
+#: components/_includes/Creditnote.php:961
+msgid "This invoice already has a pending creditnote assigned to it."
+msgstr ""
+
+#: components/_includes/Creditnote.php:971
+msgid "This invoice already has an unused creditnote assigned to it."
+msgstr ""
+
+#: components/_includes/Creditnote.php:981
 msgid "An invoice needs a balance to be able to generate a linked credit note."
 msgstr ""
 
-#: components/_includes/Creditnote.php:973
+#: components/_includes/Creditnote.php:1055
 msgid ""
 "The credit note cannot be created because the supplied expense is on another "
 "tax system."
 msgstr ""
 
-#: components/_includes/Creditnote.php:983
+#: components/_includes/Creditnote.php:1065
 msgid "An expense needs a balance to be able to generate a linked credit note."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1004
+#: components/_includes/Creditnote.php:1086
 msgid ""
 "The creditnote cannot be submitted because there is an issue with the expiry "
 "date."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1014
+#: components/_includes/Creditnote.php:1096
 msgid "The credit note cannot have a negative or zero gross amount."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1026
+#: components/_includes/Creditnote.php:1114
 msgid ""
 "The creditnote cannot be submitted because it's gross amount is greater than "
 "the linked invoices's gross amount."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1033
+#: components/_includes/Creditnote.php:1121
 msgid ""
 "The creditnote cannot be submitted because it's gross amount is greater than "
 "the linked invoices's remaining balance."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1046
+#: components/_includes/Creditnote.php:1134
 msgid ""
 "The creditnote cannot be submitted because it's gross amount is greater than "
 "the linked expenses's gross amount."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1053
+#: components/_includes/Creditnote.php:1141
 msgid ""
 "The creditnote cannot be submitted because it's gross amount is greater than "
 "the linked expenses's remaining balance."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1084
+#: components/_includes/Creditnote.php:1172
 msgid "The creditnote status cannot be changed because it has expired."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1093
+#: components/_includes/Creditnote.php:1181
 msgid ""
 "The creditnote status cannot be changed because it is on a different Tax "
 "system."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1099
+#: components/_includes/Creditnote.php:1187
 msgid ""
 "The creditnote status cannot be changed because the creditnote is pending."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1105
+#: components/_includes/Creditnote.php:1193
 msgid ""
 "The creditnote status cannot be changed because the creditnote is unused."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1111
+#: components/_includes/Creditnote.php:1199
 msgid ""
 "The creditnote status cannot be changed because the creditnote has payments "
 "and is partially used."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1117
+#: components/_includes/Creditnote.php:1205
 msgid ""
 "The creditnote status cannot be changed because the creditnote has payments "
 "and is fully used."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1123
-msgid ""
-"The creditnote status cannot be changed because the creditnote is unused and "
-"has expired."
-msgstr ""
-
-#: components/_includes/Creditnote.php:1129
+#: components/_includes/Creditnote.php:1211
 msgid ""
 "The creditnote status cannot be changed because the creditnote has been "
 "cancelled."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1135
+#: components/_includes/Creditnote.php:1217
 msgid ""
 "The creditnote status cannot be changed because the creditnote has been "
 "deleted."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1161
+#: components/_includes/Creditnote.php:1243
 msgid "The creditnote cannot be cancelled because it has expired."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1170
+#: components/_includes/Creditnote.php:1252
 msgid ""
 "The creditnote cannot be cancelled because it is on a different Tax system."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1176
+#: components/_includes/Creditnote.php:1258
 msgid "The creditnote cannot be cancelled because it is pending."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1186
+#: components/_includes/Creditnote.php:1268
 msgid "This creditnote cannot be cancelled because it is partially used."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1192
+#: components/_includes/Creditnote.php:1274
 msgid "The creditnote cannot be cancelled because it is fully used."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1198
-msgid ""
-"The creditnote cannot be cancelled because it is unused and has expired."
-msgstr ""
-
-#: components/_includes/Creditnote.php:1204
+#: components/_includes/Creditnote.php:1280
 msgid ""
 "The creditnote cannot be cancelled because it has already been cancelled."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1210
+#: components/_includes/Creditnote.php:1286
 msgid "The creditnote cannot be cancelled because it has been deleted."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1234
+#: components/_includes/Creditnote.php:1310
 msgid "The creditnote cannot be deleted because it has expired."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1243
+#: components/_includes/Creditnote.php:1319
 msgid ""
 "The creditnote cannot be deleted because it is on a different Tax system."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1257
+#: components/_includes/Creditnote.php:1333
 msgid "This creditnote cannot be deleted because it is partially used."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1263
+#: components/_includes/Creditnote.php:1339
 msgid "The creditnote cannot be deleted because it is fully used."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1269
-msgid "The creditnote cannot be deleted because it is unused and has expired."
-msgstr ""
-
-#: components/_includes/Creditnote.php:1275
+#: components/_includes/Creditnote.php:1345
 msgid "The creditnote cannot be deleted because it has been cancelled."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1281
+#: components/_includes/Creditnote.php:1351
 msgid "The creditnote cannot be deleted because it has already been deleted."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1305
+#: components/_includes/Creditnote.php:1375
 msgid "The creditnote cannot be edited because it has expired."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1314
+#: components/_includes/Creditnote.php:1384
 msgid ""
 "The creditnote cannot be edited because it is on a different Tax system."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1328
+#: components/_includes/Creditnote.php:1398
 msgid "This creditnote cannot be edited because it is partially used."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1334
+#: components/_includes/Creditnote.php:1404
 msgid "The creditnote cannot be edited because it is fully used."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1340
-msgid "The creditnote cannot be edited because it is unused and has expired."
-msgstr ""
-
-#: components/_includes/Creditnote.php:1346
+#: components/_includes/Creditnote.php:1410
 msgid "The creditnote cannot be edited because it has been cancelled."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1352
+#: components/_includes/Creditnote.php:1416
 msgid "The creditnote cannot be edited because it has been deleted."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1364
+#: components/_includes/Creditnote.php:1428
 msgid ""
 "This creditnote cannot be edited because one or more of it's items have a "
 "VAT Tax Code that is not enabled."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1442
+#: components/_includes/Creditnote.php:1506
 #: components/_includes/Invoice.php:1357
-#: components/_includes/Workorder.php:1232
+#: components/_includes/Workorder.php:1234
 msgid "Nothing done. The new employee is the same as the current employee."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1454
+#: components/_includes/Creditnote.php:1518
 #: components/_includes/Invoice.php:1381
-#: components/_includes/Workorder.php:1256
+#: components/_includes/Workorder.php:1258
 msgid "Assigned employee updated."
 msgstr ""
 
-#: components/_includes/Creditnote.php:1469
+#: components/_includes/Creditnote.php:1533
 #: components/_includes/Invoice.php:1400 components/_includes/Invoice.php:1403
-#: components/_includes/Workorder.php:1275
-#: components/_includes/Workorder.php:1278
+#: components/_includes/Workorder.php:1277
+#: components/_includes/Workorder.php:1280
 msgid "has been assigned to"
 msgstr ""
 
-#: components/_includes/Creditnote.php:1469
+#: components/_includes/Creditnote.php:1533
 #: components/_includes/Invoice.php:1400 components/_includes/Invoice.php:1403
-#: components/_includes/Workorder.php:1275
-#: components/_includes/Workorder.php:1278
+#: components/_includes/Workorder.php:1277
+#: components/_includes/Workorder.php:1280
 msgid "from"
 msgstr ""
 
@@ -8930,7 +8941,7 @@ msgstr ""
 
 #: components/_includes/Cronjob.php:111 components/_includes/Expense.php:442
 #: components/_includes/Otherincome.php:423
-#: components/_includes/Payment.php:517 components/_includes/Supplier.php:344
+#: components/_includes/Payment.php:495 components/_includes/Supplier.php:344
 #: components/_includes/User.php:373
 msgid "updated."
 msgstr ""
@@ -8989,13 +9000,13 @@ msgid "Expense Record"
 msgstr ""
 
 #: components/_includes/Expense.php:63 components/_includes/Otherincome.php:55
-#: components/_includes/Payment.php:81 components/_includes/Supplier.php:57
+#: components/_includes/Payment.php:80 components/_includes/Supplier.php:57
 msgid "created."
 msgstr ""
 
 #: components/_includes/Expense.php:467 components/_includes/Invoice.php:632
 #: components/_includes/Otherincome.php:447
-#: components/_includes/Payment.php:600 components/_includes/Supplier.php:368
+#: components/_includes/Payment.php:578 components/_includes/Supplier.php:368
 #: components/_includes/Voucher.php:506
 msgid "Nothing done. The new status is the same as the current status."
 msgstr ""
@@ -9109,8 +9120,8 @@ msgstr ""
 
 #: components/_includes/Invoice.php:62 components/_includes/Invoice.php:747
 #: components/_includes/Invoice.php:821 components/_includes/Schedule.php:324
-#: components/_includes/Workorder.php:595
-#: components/_includes/Workorder.php:821
+#: components/_includes/Workorder.php:597
+#: components/_includes/Workorder.php:823
 msgid "for Work Order"
 msgstr ""
 
@@ -9400,75 +9411,75 @@ msgstr ""
 msgid "The otherincome cannot be edited because it has been deleted."
 msgstr ""
 
-#: components/_includes/Payment.php:611
+#: components/_includes/Payment.php:589
 msgid "Payment status updated."
 msgstr ""
 
-#: components/_includes/Payment.php:723
+#: components/_includes/Payment.php:701
 msgid "has been deleted."
 msgstr ""
 
-#: components/_includes/Payment.php:746
+#: components/_includes/Payment.php:724
 msgid "You can not enter a payment with a negative amount."
 msgstr ""
 
-#: components/_includes/Payment.php:755
+#: components/_includes/Payment.php:733
 msgid "You can not enter a payment with a zero (0.00) amount."
 msgstr ""
 
-#: components/_includes/Payment.php:764
+#: components/_includes/Payment.php:742
 msgid ""
 "You can not enter an payment with an amount greater than the outstanding "
 "balance."
 msgstr ""
 
-#: components/_includes/Payment.php:819
+#: components/_includes/Payment.php:797
 msgid ""
 "The payment status cannot be changed because it's current payment method is "
 "not available."
 msgstr ""
 
-#: components/_includes/Payment.php:825
+#: components/_includes/Payment.php:803
 msgid ""
 "The payment status cannot be changed because the payment has been deleted."
 msgstr ""
 
-#: components/_includes/Payment.php:846
+#: components/_includes/Payment.php:824
 msgid "The payment cannot be edited because it is on a different Tax system."
 msgstr ""
 
-#: components/_includes/Payment.php:852
+#: components/_includes/Payment.php:830
 msgid "The payment cannot be edited because it has been cancelled."
 msgstr ""
 
-#: components/_includes/Payment.php:858
+#: components/_includes/Payment.php:836
 msgid "The payment cannot be edited because it has been deleted."
 msgstr ""
 
-#: components/_includes/Payment.php:879
+#: components/_includes/Payment.php:857
 msgid ""
 "The payment cannot be cancelled because it is on a different Tax system."
 msgstr ""
 
-#: components/_includes/Payment.php:885
+#: components/_includes/Payment.php:863
 msgid ""
 "The payment cannot be cancelled because the payment has already been "
 "cancelled."
 msgstr ""
 
-#: components/_includes/Payment.php:891
+#: components/_includes/Payment.php:869
 msgid "The payment cannot be cancelled because the payment has been deleted."
 msgstr ""
 
-#: components/_includes/Payment.php:912
+#: components/_includes/Payment.php:890
 msgid "The payment cannot be deleted because it is on a different Tax system."
 msgstr ""
 
-#: components/_includes/Payment.php:918
+#: components/_includes/Payment.php:896
 msgid "This payment cannot be deleted because it has been cancelled."
 msgstr ""
 
-#: components/_includes/Payment.php:924
+#: components/_includes/Payment.php:902
 msgid "This payment cannot be deleted because it already been deleted."
 msgstr ""
 
@@ -10045,457 +10056,486 @@ msgstr ""
 msgid "Voucher Status updated to"
 msgstr ""
 
-#: components/_includes/Voucher.php:762
+#: components/_includes/Voucher.php:772
 msgid "cannot be cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:802
+#: components/_includes/Voucher.php:812
 msgid "cannot be deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1001
+#: components/_includes/Voucher.php:1006
 msgid ""
 "The voucher's status cannot be changed because it's status does not allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1007
+#: components/_includes/Voucher.php:1012
 msgid ""
 "The voucher's status cannot be changed because the invoice it is attached "
 "to, does not allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1025
+#: components/_includes/Voucher.php:1030
 msgid "The voucher cannot be redeemed because it's status does not allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1053
+#: components/_includes/Voucher.php:1058
 msgid "The voucher cannot be cancelled because it's status does not allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1059
+#: components/_includes/Voucher.php:1064
 msgid ""
 "The voucher cannot be cancelled because the invoice it is attached to, does "
 "not allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1080
+#: components/_includes/Voucher.php:1085
 msgid "The voucher cannot be deleted because it's status does not allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1086
+#: components/_includes/Voucher.php:1091
 msgid ""
 "The voucher cannot be deleted because the invoice it is attached to, does "
 "not allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1107
+#: components/_includes/Voucher.php:1112
 msgid "The voucher cannot be edited because it's status does not allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1113
+#: components/_includes/Voucher.php:1118
 msgid ""
 "The voucher cannot be edited because the invoice it is attached to, does not "
 "allow it."
 msgstr ""
 
-#: components/_includes/Voucher.php:1137
+#: components/_includes/Voucher.php:1142
 msgid "The voucher status cannot be changed because it has expired."
 msgstr ""
 
-#: components/_includes/Voucher.php:1146
+#: components/_includes/Voucher.php:1151
 msgid "The voucher status cannot be changed because it is unpaid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1152
+#: components/_includes/Voucher.php:1157
 msgid "The voucher status cannot be changed because it is partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1163
+#: components/_includes/Voucher.php:1173
 msgid "The voucher status cannot be changed because it is partially redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1169
+#: components/_includes/Voucher.php:1179
 msgid ""
 "The voucher status cannot be changed because it has been fully redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1186
+#: components/_includes/Voucher.php:1190
 msgid "The voucher status cannot be changed because it has been cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1192
+#: components/_includes/Voucher.php:1196
 msgid "The voucher status cannot be changed because it has been deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1210
+#: components/_includes/Voucher.php:1214
 msgid "The invoice cannot be edited because this voucher has expired."
 msgstr ""
 
-#: components/_includes/Voucher.php:1219
+#: components/_includes/Voucher.php:1223
 msgid ""
 "The invoice cannot be edited because this voucher is on a different Tax "
 "system."
 msgstr ""
 
-#: components/_includes/Voucher.php:1225
+#: components/_includes/Voucher.php:1229
 msgid ""
 "The invoice cannot be edited because this voucher's current VAT Tax Code is "
 "not enabled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1236
+#: components/_includes/Voucher.php:1240
 msgid ""
 "The invoice cannot be edited because this voucher has been partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1242
-msgid ""
-"The invoice cannot be edited because this voucher has been fully redeemed."
-msgstr ""
-
-#: components/_includes/Voucher.php:1248
+#: components/_includes/Voucher.php:1246
 msgid "The invoice cannot be edited because this voucher has has been paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1254
+#: components/_includes/Voucher.php:1252
+msgid ""
+"The invoice cannot be edited because this voucher has been fully refunded."
+msgstr ""
+
+#: components/_includes/Voucher.php:1258
 msgid ""
 "The invoice cannot be edited because this voucher has been partially "
 "redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1260
-msgid "The invoice cannot be edited because this voucher has been redeemed."
+#: components/_includes/Voucher.php:1264
+msgid ""
+"The invoice cannot be edited because this voucher has been fully redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1266
+#: components/_includes/Voucher.php:1270
 msgid "The invoice cannot be edited because this voucher has been suspended."
 msgstr ""
 
-#: components/_includes/Voucher.php:1300
+#: components/_includes/Voucher.php:1298
 msgid "The invoice cannot be cancelled because this voucher has expired."
 msgstr ""
 
-#: components/_includes/Voucher.php:1314
+#: components/_includes/Voucher.php:1312
 msgid ""
 "The invoice cannot be cancelled because this voucher has been partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1320
+#: components/_includes/Voucher.php:1318
 msgid "The invoice cannot be cancelled because this voucher has been paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1326
+#: components/_includes/Voucher.php:1324
+msgid ""
+"The invoice cannot be cancelled because this voucher has been fully refunded."
+msgstr ""
+
+#: components/_includes/Voucher.php:1330
 msgid ""
 "The invoice cannot be cancelled because this voucher has been partially "
 "redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1332
+#: components/_includes/Voucher.php:1336
 msgid ""
 "The invoice cannot be cancelled because this voucher has been fully redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1338
+#: components/_includes/Voucher.php:1342
 msgid ""
 "The invoice cannot be cancelled because this voucher has been suspended."
 msgstr ""
 
-#: components/_includes/Voucher.php:1350
+#: components/_includes/Voucher.php:1348
 msgid ""
 "The invoice cannot be cancelled because this voucher has been cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1373
+#: components/_includes/Voucher.php:1371
 msgid "The invoice cannot be deleted because this voucher has expired."
 msgstr ""
 
-#: components/_includes/Voucher.php:1387
+#: components/_includes/Voucher.php:1385
 msgid ""
 "The invoice cannot be deleted because this voucher has been partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1393
+#: components/_includes/Voucher.php:1391
 msgid "The invoice cannot be deleted because this voucher has been paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1399
+#: components/_includes/Voucher.php:1397
+msgid ""
+"The invoice cannot be deleted because this voucher has been fully refunded."
+msgstr ""
+
+#: components/_includes/Voucher.php:1403
 msgid ""
 "The invoice cannot be deleted because this voucher has been partially "
 "redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1405
+#: components/_includes/Voucher.php:1409
 msgid ""
 "The invoice cannot be deleted because this voucher has been fully redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1411
+#: components/_includes/Voucher.php:1415
 msgid "The invoice cannot be deleted because this voucher has been suspended."
 msgstr ""
 
-#: components/_includes/Voucher.php:1423
+#: components/_includes/Voucher.php:1421
 msgid "The invoice cannot be deleted because this voucher has been cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1429
+#: components/_includes/Voucher.php:1427
 msgid ""
 "The invoice cannot be deleted because this voucher has already been deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1447
+#: components/_includes/Voucher.php:1445
 msgid "The voucher cannot be redeemed because it has expired."
 msgstr ""
 
-#: components/_includes/Voucher.php:1456
+#: components/_includes/Voucher.php:1454
 msgid "The voucher cannot be used to pay for itself."
 msgstr ""
 
-#: components/_includes/Voucher.php:1462
+#: components/_includes/Voucher.php:1460
 msgid "The voucher cannot be redeemed because it is blocked."
 msgstr ""
 
-#: components/_includes/Voucher.php:1468
+#: components/_includes/Voucher.php:1466
 msgid "The voucher has not been paid for so cannot be redeemed"
 msgstr ""
 
-#: components/_includes/Voucher.php:1474
+#: components/_includes/Voucher.php:1472
 msgid ""
 "The voucher cannot be redeemed because it's invoice has been partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1490
+#: components/_includes/Voucher.php:1498
 msgid "The voucher cannot be redeemed because it has been suspended."
 msgstr ""
 
-#: components/_includes/Voucher.php:1502
+#: components/_includes/Voucher.php:1504
 msgid "The voucher cannot be redeemed because it has been cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1508
+#: components/_includes/Voucher.php:1510
 msgid "The voucher cannot be redeemed because it has been deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1526
+#: components/_includes/Voucher.php:1528
 msgid "The voucher cannot be cancelled because it has expired."
 msgstr ""
 
-#: components/_includes/Voucher.php:1540
+#: components/_includes/Voucher.php:1542
 msgid ""
 "The voucher cannot be cancelled because it's invoice has been partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1546
+#: components/_includes/Voucher.php:1548
 msgid "The voucher cannot be cancelled because it's invoice has been paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1552
+#: components/_includes/Voucher.php:1554
+msgid ""
+"The voucher cannot be cancelled because it's invoice has been fully refunded."
+msgstr ""
+
+#: components/_includes/Voucher.php:1560
 msgid "The voucher cannot be cancelled because it has been partially redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1558
+#: components/_includes/Voucher.php:1566
 msgid "The voucher cannot be cancelled because it has been fully redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1564
+#: components/_includes/Voucher.php:1572
 msgid "The voucher cannot be cancelled because it has been suspended."
 msgstr ""
 
-#: components/_includes/Voucher.php:1576
+#: components/_includes/Voucher.php:1578
 msgid "The voucher cannot be cancelled because it has already been cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1582
+#: components/_includes/Voucher.php:1584
 msgid "The voucher cannot be cancelled because it has been deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1600
+#: components/_includes/Voucher.php:1602
 msgid "The voucher cannot be deleted because it has expired."
 msgstr ""
 
-#: components/_includes/Voucher.php:1614
+#: components/_includes/Voucher.php:1616
 msgid ""
 "The voucher cannot be deleted because it's invoice has been partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1620
+#: components/_includes/Voucher.php:1622
 msgid "The voucher cannot be deleted because it's invoice has been paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1626
+#: components/_includes/Voucher.php:1628
 msgid "The voucher cannot be deleted because it has been partially redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1632
+#: components/_includes/Voucher.php:1634
 msgid "The voucher cannot be deleted because it has been fully redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1638
+#: components/_includes/Voucher.php:1640
 msgid "The voucher cannot be deleted because it has been suspended."
 msgstr ""
 
-#: components/_includes/Voucher.php:1650
+#: components/_includes/Voucher.php:1646
 msgid "The voucher cannot be deleted because it has been cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1656
+#: components/_includes/Voucher.php:1652
 msgid "The voucher cannot be deleted because it has already been deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1674
+#: components/_includes/Voucher.php:1670
 msgid "The voucher cannot be edited because it has expired."
 msgstr ""
 
-#: components/_includes/Voucher.php:1683
+#: components/_includes/Voucher.php:1679
 msgid "The voucher cannot be edited because it is on a different Tax system."
 msgstr ""
 
-#: components/_includes/Voucher.php:1689
+#: components/_includes/Voucher.php:1685
 msgid ""
 "The voucher cannot be edited because it's current VAT Tax Code is not "
 "enabled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1700
+#: components/_includes/Voucher.php:1696
 msgid ""
 "The voucher cannot be edited because it's invoice has been partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1706
-msgid "The voucher cannot be edited because it has been fully redeemed."
-msgstr ""
-
-#: components/_includes/Voucher.php:1712
+#: components/_includes/Voucher.php:1702
 msgid "The voucher cannot be edited because it's invoice has been paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1718
+#: components/_includes/Voucher.php:1708
+msgid ""
+"The voucher cannot be edited because it's invoice has been fully refunded."
+msgstr ""
+
+#: components/_includes/Voucher.php:1714
 msgid "The voucher cannot be edited because it has been partially redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1724
-msgid "The voucher cannot be edited because it has been redeemed."
+#: components/_includes/Voucher.php:1720
+msgid "The voucher cannot be edited because it has been fully redeemed."
 msgstr ""
 
-#: components/_includes/Voucher.php:1730
+#: components/_includes/Voucher.php:1726
 msgid "The voucher cannot be edited because it has been suspended."
 msgstr ""
 
-#: components/_includes/Voucher.php:1742
+#: components/_includes/Voucher.php:1732
 msgid "The voucher cannot be edited because it has been cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1748
+#: components/_includes/Voucher.php:1738
 msgid "The voucher cannot be edited because it has been deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1773
+#: components/_includes/Voucher.php:1763
 msgid ""
 "The voucher status cannot be changed because the parent invoice is on a "
 "different Tax system."
 msgstr ""
 
-#: components/_includes/Voucher.php:1779 components/_includes/Voucher.php:1785
+#: components/_includes/Voucher.php:1769 components/_includes/Voucher.php:1775
 msgid ""
 "The voucher status cannot be changed because the parent invoice is pending."
 msgstr ""
 
-#: components/_includes/Voucher.php:1791
+#: components/_includes/Voucher.php:1781
 msgid ""
 "The voucher status cannot be changed because the parent invoice is partially "
 "paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1797
+#: components/_includes/Voucher.php:1787
 msgid ""
 "The voucher status cannot be changed because the parent invoice is paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1803
+#: components/_includes/Voucher.php:1793
+msgid ""
+"The voucher status cannot be changed because the parent invoice is fully "
+"refunded."
+msgstr ""
+
+#: components/_includes/Voucher.php:1799
 msgid ""
 "The voucher status cannot be changed because the parent invoice is in "
 "dispute."
 msgstr ""
 
-#: components/_includes/Voucher.php:1809
+#: components/_includes/Voucher.php:1805
 msgid ""
 "The voucher status cannot be changed because the parent invoice payment is "
 "overdue."
 msgstr ""
 
-#: components/_includes/Voucher.php:1815
+#: components/_includes/Voucher.php:1811
 msgid ""
 "The voucher status cannot be changed because the parent invoice is in "
 "collections."
 msgstr ""
 
-#: components/_includes/Voucher.php:1821
+#: components/_includes/Voucher.php:1817
 msgid ""
 "The voucher status cannot be changed because the parent invoice has been "
 "cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1827
+#: components/_includes/Voucher.php:1823
 msgid ""
 "The voucher status cannot be changed because the parent invoice has been "
 "deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1857
+#: components/_includes/Voucher.php:1853
 msgid ""
 "The invoice's vouchers cannot be changed because the parent invoice is on a "
 "different Tax system."
 msgstr ""
 
-#: components/_includes/Voucher.php:1863
+#: components/_includes/Voucher.php:1859
 msgid ""
 "The invoice's vouchers cannot be changed because the parent invoice is "
 "partially paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1869
+#: components/_includes/Voucher.php:1865
 msgid ""
 "The invoice's vouchers cannot be changed because the parent invoice is paid."
 msgstr ""
 
-#: components/_includes/Voucher.php:1875
+#: components/_includes/Voucher.php:1871
+msgid ""
+"The invoice's vouchers cannot be changed because the parent invoice is fully "
+"refunded."
+msgstr ""
+
+#: components/_includes/Voucher.php:1877
 msgid ""
 "The invoice's vouchers cannot be changed because the parent invoice is in "
 "dispute."
 msgstr ""
 
-#: components/_includes/Voucher.php:1881
+#: components/_includes/Voucher.php:1883
 msgid ""
 "The invoice's vouchers cannot be changed because the parent invoice payment "
 "is overdue."
 msgstr ""
 
-#: components/_includes/Voucher.php:1887
+#: components/_includes/Voucher.php:1889
 msgid ""
 "The invoice's vouchers cannot be changed because the parent invoice is in "
 "collections."
 msgstr ""
 
-#: components/_includes/Voucher.php:1893
+#: components/_includes/Voucher.php:1895
 msgid ""
 "The invoice's vouchers cannot be changed because the parent invoice has been "
 "cancelled."
 msgstr ""
 
-#: components/_includes/Voucher.php:1899
+#: components/_includes/Voucher.php:1901
 msgid ""
 "The invoice's vouchers cannot be changed because the parent invoice has been "
 "deleted."
 msgstr ""
 
-#: components/_includes/Voucher.php:1926
+#: components/_includes/Voucher.php:1928
 msgid "The invoice cannot be cancelled because of Voucher"
 msgstr ""
 
-#: components/_includes/Voucher.php:1957
+#: components/_includes/Voucher.php:1959
 msgid "The invoice cannot be deleted because of Voucher"
 msgstr ""
 
-#: components/_includes/Voucher.php:1988
+#: components/_includes/Voucher.php:1990
 msgid "The invoice cannot be edited because of Voucher"
 msgstr ""
 
@@ -10504,10 +10544,10 @@ msgid "Created by"
 msgstr ""
 
 #: components/_includes/Workorder.php:89 components/_includes/Workorder.php:92
-#: components/_includes/Workorder.php:592
-#: components/_includes/Workorder.php:595
-#: components/_includes/Workorder.php:818
-#: components/_includes/Workorder.php:821
+#: components/_includes/Workorder.php:594
+#: components/_includes/Workorder.php:597
+#: components/_includes/Workorder.php:820
+#: components/_includes/Workorder.php:823
 msgid "Work Order Note"
 msgstr ""
 
@@ -10519,136 +10559,136 @@ msgstr ""
 msgid "added to Work Order"
 msgstr ""
 
-#: components/_includes/Workorder.php:493
-#: components/_includes/Workorder.php:496
+#: components/_includes/Workorder.php:495
+#: components/_includes/Workorder.php:498
 msgid "Scope and Description updated by"
 msgstr ""
 
-#: components/_includes/Workorder.php:526
-#: components/_includes/Workorder.php:529
+#: components/_includes/Workorder.php:528
+#: components/_includes/Workorder.php:531
 msgid "Comment updated by"
 msgstr ""
 
-#: components/_includes/Workorder.php:559
-#: components/_includes/Workorder.php:562
+#: components/_includes/Workorder.php:561
+#: components/_includes/Workorder.php:564
 msgid "Resolution updated by"
 msgstr ""
 
-#: components/_includes/Workorder.php:592
+#: components/_includes/Workorder.php:594
 msgid "updated by"
 msgstr ""
 
-#: components/_includes/Workorder.php:618
+#: components/_includes/Workorder.php:620
 msgid ""
 "Nothing done. The new work order status is the same as the current work "
 "order status."
 msgstr ""
 
-#: components/_includes/Workorder.php:645
+#: components/_includes/Workorder.php:647
 msgid "Work order status updated."
 msgstr ""
 
-#: components/_includes/Workorder.php:741
+#: components/_includes/Workorder.php:743
 msgid "This workorder cannot be deleted because it has an invoice."
 msgstr ""
 
-#: components/_includes/Workorder.php:747
+#: components/_includes/Workorder.php:749
 msgid "This workorder cannot be deleted because its status does not allow it."
 msgstr ""
 
-#: components/_includes/Workorder.php:865
+#: components/_includes/Workorder.php:867
 msgid "Closed without invoice by"
 msgstr ""
 
-#: components/_includes/Workorder.php:868
+#: components/_includes/Workorder.php:870
 msgid "has been closed without invoice by"
 msgstr ""
 
-#: components/_includes/Workorder.php:911
+#: components/_includes/Workorder.php:913
 msgid "Closed with invoice by"
 msgstr ""
 
-#: components/_includes/Workorder.php:914
+#: components/_includes/Workorder.php:916
 msgid "has been closed with invoice by"
 msgstr ""
 
-#: components/_includes/Workorder.php:990
+#: components/_includes/Workorder.php:992
 msgid ""
 "This workorder status cannot be changed because it has been closed with an "
 "invoice."
 msgstr ""
 
-#: components/_includes/Workorder.php:996
+#: components/_includes/Workorder.php:998
 msgid ""
 "This workorder status cannot be changed because it has already been deleted."
 msgstr ""
 
-#: components/_includes/Workorder.php:1017
+#: components/_includes/Workorder.php:1019
 msgid "This workorder does not have a description, so it cannot be closed."
 msgstr ""
 
-#: components/_includes/Workorder.php:1023
+#: components/_includes/Workorder.php:1025
 msgid "This workorder does not have a resolution, so it cannot be closed."
 msgstr ""
 
-#: components/_includes/Workorder.php:1050
+#: components/_includes/Workorder.php:1052
 msgid "This workorder cannot be deleted because it is assigned"
 msgstr ""
 
-#: components/_includes/Workorder.php:1056
+#: components/_includes/Workorder.php:1058
 msgid "This workorder cannot be deleted because it is waiting for parts."
 msgstr ""
 
-#: components/_includes/Workorder.php:1062
+#: components/_includes/Workorder.php:1064
 msgid "This workorder cannot be deleted because it is scheduled."
 msgstr ""
 
-#: components/_includes/Workorder.php:1068
+#: components/_includes/Workorder.php:1070
 msgid "This workorder cannot be deleted because it is with the client."
 msgstr ""
 
-#: components/_includes/Workorder.php:1074
+#: components/_includes/Workorder.php:1076
 msgid "This workorder cannot be deleted because it is on hold."
 msgstr ""
 
-#: components/_includes/Workorder.php:1086
+#: components/_includes/Workorder.php:1088
 msgid ""
 "This workorder cannot be deleted because it has been closed without an "
 "invoice."
 msgstr ""
 
-#: components/_includes/Workorder.php:1092
+#: components/_includes/Workorder.php:1094
 msgid ""
 "This workorder cannot be deleted because it has been closed with an invoice."
 msgstr ""
 
-#: components/_includes/Workorder.php:1098
+#: components/_includes/Workorder.php:1100
 msgid "The workorder cannot be deleted because it has already been deleted."
 msgstr ""
 
-#: components/_includes/Workorder.php:1118
+#: components/_includes/Workorder.php:1120
 msgid "Cannot edit the resolution because the work order is already closed."
 msgstr ""
 
-#: components/_includes/Workorder.php:1125
+#: components/_includes/Workorder.php:1127
 msgid ""
 "Can not close a work order if it is Waiting for Parts. Please Adjust the "
 "status."
 msgstr ""
 
-#: components/_includes/Workorder.php:1189
+#: components/_includes/Workorder.php:1191
 msgid ""
 "This workorder employee cannot be changed because it has been closed without "
 "an invoice."
 msgstr ""
 
-#: components/_includes/Workorder.php:1195
+#: components/_includes/Workorder.php:1197
 msgid ""
 "This workorder employee cannot be changed because it has been closed with an "
 "invoice."
 msgstr ""
 
-#: components/_includes/Workorder.php:1201
+#: components/_includes/Workorder.php:1203
 msgid ""
 "This workorder employee cannot be changed because it has already been "
 "deleted."
@@ -10693,7 +10733,7 @@ msgstr ""
 #: components/client/delete.php:19 components/client/details.php:16
 #: components/client/edit.php:13 components/client/note_new.php:13
 #: components/client/print.php:13 components/creditnote/email.php:19
-#: components/supplier/print.php:13 components/workorder/new.php:16
+#: components/workorder/new.php:16
 msgid "No Client ID supplied."
 msgstr ""
 
@@ -10727,16 +10767,12 @@ msgstr ""
 msgid "The print request is not valid."
 msgstr ""
 
-#: components/client/print.php:40 components/supplier/print.php:40
-msgid "Invoice Envelope"
-msgstr ""
-
-#: components/client/print.php:45 components/supplier/print.php:45
+#: components/client/print.php:44
 msgid "Client Envelope"
 msgstr ""
 
-#: components/client/print.php:45 components/creditnote/print.php:55
-#: components/invoice/print.php:73 components/supplier/print.php:45
+#: components/client/print.php:44 components/creditnote/print.php:55
+#: components/invoice/print.php:73 components/supplier/print.php:44
 #: components/voucher/print.php:52 components/workorder/print.php:118
 #: components/workorder/print.php:137 components/workorder/print.php:156
 msgid "has been printed as html."
@@ -11059,58 +11095,58 @@ msgstr ""
 msgid "There is no Credit Note with that ID."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:80
+#: components/payment/methods/PaymentMethodCreditnote.php:74
 msgid ""
 "This is not a sales credit note and cannot be applied against an invoice."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:87
+#: components/payment/methods/PaymentMethodCreditnote.php:81
 msgid ""
 "You can only apply this credit note against an invoice belonging to the "
 "client it is linked with."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:94
+#: components/payment/methods/PaymentMethodCreditnote.php:88
 msgid ""
 "You can only apply this credit note against the invoice it is linked with."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:105
+#: components/payment/methods/PaymentMethodCreditnote.php:99
 msgid ""
 "This is not a purchase credit note and cannot be applied against an expense."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:112
+#: components/payment/methods/PaymentMethodCreditnote.php:106
 msgid ""
 "You can only apply this credit note against an expense belonging to the "
 "supplier it is linked with."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:119
+#: components/payment/methods/PaymentMethodCreditnote.php:113
 msgid ""
 "You can only apply this credit note against the expense it is linked with."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:127
+#: components/payment/methods/PaymentMethodCreditnote.php:121
 msgid "You can only apply this credit note against an invoice or an expense."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:134
-#: components/payment/methods/PaymentMethodCreditnote.php:145
+#: components/payment/methods/PaymentMethodCreditnote.php:128
+#: components/payment/methods/PaymentMethodCreditnote.php:139
 msgid ""
 "This Credit Note does not have a sufficient balance to cover the submitted "
 "payment amount."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:217
+#: components/payment/methods/PaymentMethodCreditnote.php:211
 msgid "Credit Note applied successfully."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:221
+#: components/payment/methods/PaymentMethodCreditnote.php:215
 msgid "Credit Note was not applied successfully."
 msgstr ""
 
-#: components/payment/methods/PaymentMethodCreditnote.php:230
+#: components/payment/methods/PaymentMethodCreditnote.php:224
 msgid "The balance left on the credit note is"
 msgstr ""
 
@@ -11197,21 +11233,21 @@ msgstr ""
 msgid "was cancelled."
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:154
+#: components/payment/types/PaymentTypeCreditnote.php:153
 #: components/payment/types/PaymentTypeExpense.php:122
 #: components/payment/types/PaymentTypeInvoice.php:130
 #: components/payment/types/PaymentTypeOtherincome.php:127
 msgid "The balance has been cleared."
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:161
+#: components/payment/types/PaymentTypeCreditnote.php:160
 msgid "Payment added successfully and Credit Note"
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:161
-#: components/payment/types/PaymentTypeCreditnote.php:168
-#: components/payment/types/PaymentTypeCreditnote.php:175
-#: components/payment/types/PaymentTypeCreditnote.php:182
+#: components/payment/types/PaymentTypeCreditnote.php:160
+#: components/payment/types/PaymentTypeCreditnote.php:167
+#: components/payment/types/PaymentTypeCreditnote.php:174
+#: components/payment/types/PaymentTypeCreditnote.php:181
 #: components/payment/types/PaymentTypeExpense.php:129
 #: components/payment/types/PaymentTypeExpense.php:136
 #: components/payment/types/PaymentTypeExpense.php:143
@@ -11227,32 +11263,32 @@ msgstr ""
 msgid "has been updated to reflect this change."
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:168
+#: components/payment/types/PaymentTypeCreditnote.php:167
 msgid "Payment updated successfully and Credit Note"
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:175
+#: components/payment/types/PaymentTypeCreditnote.php:174
 msgid "Payment cancelled successfully and Credit Note"
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:182
+#: components/payment/types/PaymentTypeCreditnote.php:181
 msgid "Payment deleted successfully and Credit Note"
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:227
+#: components/payment/types/PaymentTypeCreditnote.php:226
 msgid ""
 "The creditnote cannot receive a payment because it is on a different tax "
 "system."
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:244
+#: components/payment/types/PaymentTypeCreditnote.php:243
 #: components/payment/types/PaymentTypeExpense.php:211
 #: components/payment/types/PaymentTypeInvoice.php:220
 #: components/payment/types/PaymentTypeOtherincome.php:217
 msgid "Submit Payment"
 msgstr ""
 
-#: components/payment/types/PaymentTypeCreditnote.php:267
+#: components/payment/types/PaymentTypeCreditnote.php:266
 #: components/payment/types/PaymentTypeExpense.php:227
 #: components/payment/types/PaymentTypeInvoice.php:243
 #: components/payment/types/PaymentTypeOtherincome.php:233
@@ -11558,7 +11594,7 @@ msgstr ""
 
 #: components/supplier/cancel.php:19 components/supplier/delete.php:19
 #: components/supplier/details.php:13 components/supplier/edit.php:13
-#: components/supplier/status.php:13
+#: components/supplier/print.php:13 components/supplier/status.php:13
 msgid "No Supplier ID supplied."
 msgstr ""
 
@@ -11580,6 +11616,10 @@ msgstr ""
 
 #: components/supplier/new.php:20 components/supplier/new.php:26
 msgid "Supplier added successfully."
+msgstr ""
+
+#: components/supplier/print.php:44
+msgid "supplier Envelope"
 msgstr ""
 
 #: components/supplier/search.php:22
@@ -11894,244 +11934,256 @@ msgstr "-"
 msgid "CREDITNOTE_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:131
-msgid "COMPANY_BUSINESS_HOURS_PAGE_TITLE"
-msgstr "Business Hours"
+#: language/_gettext_only/pages.php:129
+msgid "CREDITNOTE_STATUS_PAGE_TITLE"
+msgstr "Credit Note Status"
 
-#: language/_gettext_only/pages.php:132
-msgid "COMPANY_BUSINESS_HOURS_META_DESCRIPTION"
+#: language/_gettext_only/pages.php:130
+msgid "CREDITNOTE_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:133
-msgid "COMPANY_BUSINESS_HOURS_META_KEYWORDS"
+#: language/_gettext_only/pages.php:131
+msgid "CREDITNOTE_STATUS_META_KEYWORDS"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:138
-msgid "COMPANY_EDIT_PAGE_TITLE"
-msgstr "Edit Company Details"
+msgid "COMPANY_BUSINESS_HOURS_PAGE_TITLE"
+msgstr "Business Hours"
 
 #: language/_gettext_only/pages.php:139
-msgid "COMPANY_EDIT_META_DESCRIPTION"
+msgid "COMPANY_BUSINESS_HOURS_META_DESCRIPTION"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:140
-msgid "COMPANY_EDIT_META_KEYWORDS"
+msgid "COMPANY_BUSINESS_HOURS_META_KEYWORDS"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:145
+msgid "COMPANY_EDIT_PAGE_TITLE"
+msgstr "Edit Company Details"
+
+#: language/_gettext_only/pages.php:146
+msgid "COMPANY_EDIT_META_DESCRIPTION"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:147
+msgid "COMPANY_EDIT_META_KEYWORDS"
+msgstr "-"
+
+#: language/_gettext_only/pages.php:154
 msgid "CORE_403_PAGE_TITLE"
 msgstr ""
 "403 - Forbidden or No Permission to Access - QWcrm - The Best Open Source "
 "Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:148
+#: language/_gettext_only/pages.php:155
 msgid "CORE_403_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:149
+#: language/_gettext_only/pages.php:156
 msgid "CORE_403_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:150
+#: language/_gettext_only/pages.php:157
 msgid "CORE_403_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:151
+#: language/_gettext_only/pages.php:158
 msgid "CORE_403_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:154
+#: language/_gettext_only/pages.php:161
 msgid "CORE_404_PAGE_TITLE"
 msgstr ""
 "404 - Page Not Found - QWcrm - The Best Open Source Repairs Business CRM "
 "program available!"
 
-#: language/_gettext_only/pages.php:155
+#: language/_gettext_only/pages.php:162
 msgid "CORE_404_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:156
+#: language/_gettext_only/pages.php:163
 msgid "CORE_404_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:157
+#: language/_gettext_only/pages.php:164
 msgid "CORE_404_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:158
+#: language/_gettext_only/pages.php:165
 msgid "CORE_404_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:161
+#: language/_gettext_only/pages.php:168
 msgid "CORE_DASHBOARD_PAGE_TITLE"
 msgstr "QWcrm Dashboard"
 
-#: language/_gettext_only/pages.php:162
+#: language/_gettext_only/pages.php:169
 msgid "CORE_DASHBOARD_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:163
+#: language/_gettext_only/pages.php:170
 msgid "CORE_DASHBOARD_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:168
+#: language/_gettext_only/pages.php:175
 msgid "CORE_ERROR_PAGE_TITLE"
 msgstr "QWcrm Error Page"
 
-#: language/_gettext_only/pages.php:169
+#: language/_gettext_only/pages.php:176
 msgid "CORE_ERROR_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:170
+#: language/_gettext_only/pages.php:177
 msgid "CORE_ERROR_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:171
+#: language/_gettext_only/pages.php:178
 msgid "CORE_ERROR_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:172
+#: language/_gettext_only/pages.php:179
 msgid "CORE_ERROR_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:175
+#: language/_gettext_only/pages.php:182
 msgid "CORE_HOME_PAGE_TITLE"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:176
+#: language/_gettext_only/pages.php:183
 msgid "CORE_HOME_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:177
+#: language/_gettext_only/pages.php:184
 msgid "CORE_HOME_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:178
+#: language/_gettext_only/pages.php:185
 msgid "CORE_HOME_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:179
+#: language/_gettext_only/pages.php:186
 msgid "CORE_HOME_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:182
+#: language/_gettext_only/pages.php:189
 msgid "CORE_MAINTENANCE_PAGE_TITLE"
 msgstr "QWcrm - Maintenance Mode"
 
-#: language/_gettext_only/pages.php:183
+#: language/_gettext_only/pages.php:190
 msgid "CORE_MAINTENANCE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:184
+#: language/_gettext_only/pages.php:191
 msgid "CORE_MAINTENANCE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:185
+#: language/_gettext_only/pages.php:192
 msgid "CORE_MAINTENANCE_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:186
+#: language/_gettext_only/pages.php:193
 msgid "CORE_MAINTENANCE_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:191
+#: language/_gettext_only/pages.php:198
 msgid "CRONJOB_DETAILS_PAGE_TITLE"
 msgstr "Cronjob Details"
 
-#: language/_gettext_only/pages.php:192
+#: language/_gettext_only/pages.php:199
 msgid "CRONJOB_DETAILS_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:193
+#: language/_gettext_only/pages.php:200
 msgid "CRONJOB_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:198
+#: language/_gettext_only/pages.php:205
 msgid "CRONJOB_EDIT_PAGE_TITLE"
 msgstr "Edit Cronjob"
 
-#: language/_gettext_only/pages.php:199
+#: language/_gettext_only/pages.php:206
 msgid "CRONJOB_EDIT_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:200
+#: language/_gettext_only/pages.php:207
 msgid "CRONJOB_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:205
+#: language/_gettext_only/pages.php:212
 msgid "CRONJOB_OVERVIEW_PAGE_TITLE"
 msgstr "Cronjob Overview"
 
-#: language/_gettext_only/pages.php:206
+#: language/_gettext_only/pages.php:213
 msgid "CRONJOB_OVERVIEW_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:207
+#: language/_gettext_only/pages.php:214
 msgid "CRONJOB_OVERVIEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:228
+#: language/_gettext_only/pages.php:235
 msgid "EXPENSE_DETAILS_PAGE_TITLE"
 msgstr "Expense Details"
 
-#: language/_gettext_only/pages.php:229
+#: language/_gettext_only/pages.php:236
 msgid "EXPENSE_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:230
+#: language/_gettext_only/pages.php:237
 msgid "EXPENSE_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:231
+#: language/_gettext_only/pages.php:238
 msgid "EXPENSE_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:232
+#: language/_gettext_only/pages.php:239
 msgid "EXPENSE_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page allows you to view an Expense Record without having to edit it."
 "<br /><br /> To edit this record you can click on the <b>Edit Details</b> "
 "next to this Tooltip or on the Edit link in the Main Nav Menu on the left."
 
-#: language/_gettext_only/pages.php:235
+#: language/_gettext_only/pages.php:242
 msgid "EXPENSE_EDIT_PAGE_TITLE"
 msgstr "Edit Expense"
 
-#: language/_gettext_only/pages.php:236
+#: language/_gettext_only/pages.php:243
 msgid "EXPENSE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:237
+#: language/_gettext_only/pages.php:244
 msgid "EXPENSE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:242
+#: language/_gettext_only/pages.php:249
 msgid "EXPENSE_NEW_PAGE_TITLE"
 msgstr "New Expense"
 
-#: language/_gettext_only/pages.php:243
+#: language/_gettext_only/pages.php:250
 msgid "EXPENSE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:244
+#: language/_gettext_only/pages.php:251
 msgid "EXPENSE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:245
+#: language/_gettext_only/pages.php:252
 msgid "EXPENSE_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:246
+#: language/_gettext_only/pages.php:253
 msgid "EXPENSE_NEW_HELP_CONTENT"
 msgstr ""
 "This page is used to add a new Expense Record for your company.<br /><br /"
@@ -12153,616 +12205,616 @@ msgstr ""
 "Rate and VAT Amount should be zero. For VATable expenses all values should "
 "be filled in appropriately."
 
-#: language/_gettext_only/pages.php:249
+#: language/_gettext_only/pages.php:256
 msgid "EXPENSE_SEARCH_PAGE_TITLE"
 msgstr "Search Expenses"
 
-#: language/_gettext_only/pages.php:250
+#: language/_gettext_only/pages.php:257
 msgid "EXPENSE_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:251
+#: language/_gettext_only/pages.php:258
 msgid "EXPENSE_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:256
+#: language/_gettext_only/pages.php:263
 msgid "EXPENSE_STATUS_PAGE_TITLE"
 msgstr "Expense Status"
 
-#: language/_gettext_only/pages.php:257
+#: language/_gettext_only/pages.php:264
 msgid "EXPENSE_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:258
+#: language/_gettext_only/pages.php:265
 msgid "EXPENSE_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:265
+#: language/_gettext_only/pages.php:272
 msgid "HELP_ABOUT_PAGE_TITLE"
 msgstr "About QWcrm"
 
-#: language/_gettext_only/pages.php:266
+#: language/_gettext_only/pages.php:273
 msgid "HELP_ABOUT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:267
+#: language/_gettext_only/pages.php:274
 msgid "HELP_ABOUT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:268
+#: language/_gettext_only/pages.php:275
 msgid "HELP_ABOUT_DETAILS_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:269
+#: language/_gettext_only/pages.php:276
 msgid "HELP_ABOUT_DETAILS_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:272
+#: language/_gettext_only/pages.php:279
 msgid "HELP_ATTRIBUTION_PAGE_TITLE"
 msgstr "QWcrm Attributions"
 
-#: language/_gettext_only/pages.php:273
+#: language/_gettext_only/pages.php:280
 msgid "HELP_ATTRIBUTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:274
+#: language/_gettext_only/pages.php:281
 msgid "HELP_ATTRIBUTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:275
+#: language/_gettext_only/pages.php:282
 msgid "HELP_ATTRIBUTION_DETAILS_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:276
+#: language/_gettext_only/pages.php:283
 msgid "HELP_ATTRIBUTION_DETAILS_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:279
+#: language/_gettext_only/pages.php:286
 msgid "HELP_LICENSE_PAGE_TITLE"
 msgstr "QWcrm License"
 
-#: language/_gettext_only/pages.php:280
+#: language/_gettext_only/pages.php:287
 msgid "HELP_LICENSE_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:281
+#: language/_gettext_only/pages.php:288
 msgid "HELP_LICENSE_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:282
+#: language/_gettext_only/pages.php:289
 msgid "HELP_LICENSE_DETAILS_HELP_TITLE"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:283
+#: language/_gettext_only/pages.php:290
 msgid "HELP_LICENSE_DETAILS_HELP_CONTENT"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:302
+#: language/_gettext_only/pages.php:309
 msgid "INVOICE_DETAILS_PAGE_TITLE"
 msgstr "Invoice Details"
 
-#: language/_gettext_only/pages.php:303
+#: language/_gettext_only/pages.php:310
 msgid "INVOICE_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:304
+#: language/_gettext_only/pages.php:311
 msgid "INVOICE_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:309
+#: language/_gettext_only/pages.php:316
 msgid "INVOICE_EDIT_PAGE_TITLE"
 msgstr "Edit Invoice"
 
-#: language/_gettext_only/pages.php:310
+#: language/_gettext_only/pages.php:317
 msgid "INVOICE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:311
+#: language/_gettext_only/pages.php:318
 msgid "INVOICE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:316
+#: language/_gettext_only/pages.php:323
 msgid "INVOICE_OVERVIEW_PAGE_TITLE"
 msgstr "Invoice Overview"
 
-#: language/_gettext_only/pages.php:317
+#: language/_gettext_only/pages.php:324
 msgid "INVOICE_OVERVIEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:318
+#: language/_gettext_only/pages.php:325
 msgid "INVOICE_OVERVIEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:323
+#: language/_gettext_only/pages.php:330
 msgid "INVOICE_PREFILL_ITEMS_PAGE_TITLE"
 msgstr "Invoice Prefill Items"
 
-#: language/_gettext_only/pages.php:324
+#: language/_gettext_only/pages.php:331
 msgid "INVOICE_PREFILL_ITEMS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:325
+#: language/_gettext_only/pages.php:332
 msgid "INVOICE_PREFILL_ITEMS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:337
+#: language/_gettext_only/pages.php:344
 msgid "INVOICE_SEARCH_PAGE_TITLE"
 msgstr "Search Invoices"
 
-#: language/_gettext_only/pages.php:338
+#: language/_gettext_only/pages.php:345
 msgid "INVOICE_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:339
+#: language/_gettext_only/pages.php:346
 msgid "INVOICE_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:344
+#: language/_gettext_only/pages.php:351
 msgid "INVOICE_STATUS_PAGE_TITLE"
 msgstr "Invoice Status"
 
-#: language/_gettext_only/pages.php:345
+#: language/_gettext_only/pages.php:352
 msgid "INVOICE_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:346
+#: language/_gettext_only/pages.php:353
 msgid "INVOICE_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:367
+#: language/_gettext_only/pages.php:374
 msgid "OTHERINCOME_DETAILS_PAGE_TITLE"
 msgstr "Other Income Details"
 
-#: language/_gettext_only/pages.php:368
+#: language/_gettext_only/pages.php:375
 msgid "OTHERINCOME_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:369
+#: language/_gettext_only/pages.php:376
 msgid "OTHERINCOME_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:370
+#: language/_gettext_only/pages.php:377
 msgid "OTHERINCOME_DETAILS_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:371
+#: language/_gettext_only/pages.php:378
 msgid "OTHERINCOME_DETAILS_HELP_CONTENT"
 msgstr ""
 "This page shows you the details of the other income record selected. You can "
 "print or email the invoice if you have the required permissions but you "
 "cannot edit the invoice here."
 
-#: language/_gettext_only/pages.php:374
+#: language/_gettext_only/pages.php:381
 msgid "OTHERINCOME_EDIT_PAGE_TITLE"
 msgstr "Edit Other Income"
 
-#: language/_gettext_only/pages.php:375
+#: language/_gettext_only/pages.php:382
 msgid "OTHERINCOME_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:376
+#: language/_gettext_only/pages.php:383
 msgid "OTHERINCOME_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:381
+#: language/_gettext_only/pages.php:388
 msgid "OTHERINCOME_NEW_PAGE_TITLE"
 msgstr "New Other Income"
 
-#: language/_gettext_only/pages.php:382
+#: language/_gettext_only/pages.php:389
 msgid "OTHERINCOME_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:383
+#: language/_gettext_only/pages.php:390
 msgid "OTHERINCOME_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:384
+#: language/_gettext_only/pages.php:391
 msgid "OTHERINCOME_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:385
+#: language/_gettext_only/pages.php:392
 msgid "OTHERINCOME_NEW_HELP_CONTENT"
 msgstr "Add a new Other Income record here."
 
-#: language/_gettext_only/pages.php:388
+#: language/_gettext_only/pages.php:395
 msgid "OTHERINCOME_SEARCH_PAGE_TITLE"
 msgstr "Search Other Incomes"
 
-#: language/_gettext_only/pages.php:389
+#: language/_gettext_only/pages.php:396
 msgid "OTHERINCOME_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:390
+#: language/_gettext_only/pages.php:397
 msgid "OTHERINCOME_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:395
+#: language/_gettext_only/pages.php:402
 msgid "OTHERINCOME_STATUS_PAGE_TITLE"
 msgstr "Other Income Status"
 
-#: language/_gettext_only/pages.php:396
+#: language/_gettext_only/pages.php:403
 msgid "OTHERINCOME_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:397
+#: language/_gettext_only/pages.php:404
 msgid "OTHERINCOME_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:418
+#: language/_gettext_only/pages.php:425
 msgid "PAYMENT_DETAILS_PAGE_TITLE"
 msgstr "Payment Details"
 
-#: language/_gettext_only/pages.php:419
+#: language/_gettext_only/pages.php:426
 msgid "PAYMENT_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:420
+#: language/_gettext_only/pages.php:427
 msgid "PAYMENT_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:425
+#: language/_gettext_only/pages.php:432
 msgid "PAYMENT_EDIT_PAGE_TITLE"
 msgstr "Edit Payment"
 
-#: language/_gettext_only/pages.php:426
+#: language/_gettext_only/pages.php:433
 msgid "PAYMENT_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:427
+#: language/_gettext_only/pages.php:434
 msgid "PAYMENT_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:432
+#: language/_gettext_only/pages.php:439
 msgid "PAYMENT_NEW_PAGE_TITLE"
 msgstr "New Payment"
 
-#: language/_gettext_only/pages.php:433
+#: language/_gettext_only/pages.php:440
 msgid "PAYMENT_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:434
+#: language/_gettext_only/pages.php:441
 msgid "PAYMENT_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:439
+#: language/_gettext_only/pages.php:446
 msgid "PAYMENT_OPTIONS_PAGE_TITLE"
 msgstr "Payment Options"
 
-#: language/_gettext_only/pages.php:440
+#: language/_gettext_only/pages.php:447
 msgid "PAYMENT_OPTIONS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:441
+#: language/_gettext_only/pages.php:448
 msgid "PAYMENT_OPTIONS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:446
+#: language/_gettext_only/pages.php:453
 msgid "PAYMENT_SEARCH_PAGE_TITLE"
 msgstr "Search Payments"
 
-#: language/_gettext_only/pages.php:447
+#: language/_gettext_only/pages.php:454
 msgid "PAYMENT_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:448
+#: language/_gettext_only/pages.php:455
 msgid "PAYMENT_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:453
+#: language/_gettext_only/pages.php:460
 msgid "PAYMENT_STATUS_PAGE_TITLE"
 msgstr "Payment Status"
 
-#: language/_gettext_only/pages.php:454
+#: language/_gettext_only/pages.php:461
 msgid "PAYMENT_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:455
+#: language/_gettext_only/pages.php:462
 msgid "PAYMENT_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:462
+#: language/_gettext_only/pages.php:469
 msgid "REPORT_BASIC_STATS_PAGE_TITLE"
 msgstr "Basic Statistics"
 
-#: language/_gettext_only/pages.php:463
+#: language/_gettext_only/pages.php:470
 msgid "REPORT_BASIC_STATS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:464
+#: language/_gettext_only/pages.php:471
 msgid "REPORT_BASIC_STATS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:469
+#: language/_gettext_only/pages.php:476
 msgid "REPORT_FINANCIAL_PAGE_TITLE"
 msgstr "Financial Report"
 
-#: language/_gettext_only/pages.php:470
+#: language/_gettext_only/pages.php:477
 msgid "REPORT_FINANCIAL_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:471
+#: language/_gettext_only/pages.php:478
 msgid "REPORT_FINANCIAL_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:478
+#: language/_gettext_only/pages.php:485
 msgid "SCHEDULE_DAY_PAGE_TITLE"
 msgstr "Daily Schedules"
 
-#: language/_gettext_only/pages.php:479
+#: language/_gettext_only/pages.php:486
 msgid "SCHEDULE_DAY_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:480
+#: language/_gettext_only/pages.php:487
 msgid "SCHEDULE_DAY_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:492
+#: language/_gettext_only/pages.php:499
 msgid "SCHEDULE_DETAILS_PAGE_TITLE"
 msgstr "Schedule Details"
 
-#: language/_gettext_only/pages.php:493
+#: language/_gettext_only/pages.php:500
 msgid "SCHEDULE_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:494
+#: language/_gettext_only/pages.php:501
 msgid "SCHEDULE_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:499
+#: language/_gettext_only/pages.php:506
 msgid "SCHEDULE_EDIT_PAGE_TITLE"
 msgstr "Edit Schedule"
 
-#: language/_gettext_only/pages.php:500
+#: language/_gettext_only/pages.php:507
 msgid "SCHEDULE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:501
+#: language/_gettext_only/pages.php:508
 msgid "SCHEDULE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:506
+#: language/_gettext_only/pages.php:513
 msgid "SCHEDULE_NEW_PAGE_TITLE"
 msgstr "New Schedule"
 
-#: language/_gettext_only/pages.php:507
+#: language/_gettext_only/pages.php:514
 msgid "SCHEDULE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:508
+#: language/_gettext_only/pages.php:515
 msgid "SCHEDULE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:513
+#: language/_gettext_only/pages.php:520
 msgid "SCHEDULE_SEARCH_PAGE_TITLE"
 msgstr "Search Schedules"
 
-#: language/_gettext_only/pages.php:514
+#: language/_gettext_only/pages.php:521
 msgid "SCHEDULE_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:515
+#: language/_gettext_only/pages.php:522
 msgid "SCHEDULE_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:516
+#: language/_gettext_only/pages.php:523
 msgid "SCHEDULE_SEARCH_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:517
+#: language/_gettext_only/pages.php:524
 msgid "SCHEDULE_SEARCH_HELP_CONTENT"
 msgstr "nothing to help with yet!"
 
-#: language/_gettext_only/pages.php:522
+#: language/_gettext_only/pages.php:529
 msgid "SETUP_CHOICE_PAGE_TITLE"
 msgstr "QWcrm - Choose fresh install or migrate from MyITCRM"
 
-#: language/_gettext_only/pages.php:523
+#: language/_gettext_only/pages.php:530
 msgid "SETUP_CHOICE_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:524
+#: language/_gettext_only/pages.php:531
 msgid "SETUP_CHOICE_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:529
+#: language/_gettext_only/pages.php:536
 msgid "SETUP_INSTALL_PAGE_TITLE"
 msgstr "Install QWcrm"
 
-#: language/_gettext_only/pages.php:530
+#: language/_gettext_only/pages.php:537
 msgid "SETUP_INSTALL_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:531
+#: language/_gettext_only/pages.php:538
 msgid "SETUP_INSTALL_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:536
+#: language/_gettext_only/pages.php:543
 msgid "SETUP_MIGRATE_PAGE_TITLE"
 msgstr "Migrate to QWcrm from MyITCRM"
 
-#: language/_gettext_only/pages.php:537
+#: language/_gettext_only/pages.php:544
 msgid "SETUP_MIGRATE_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:538
+#: language/_gettext_only/pages.php:545
 msgid "SETUP_MIGRATE_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:539
+#: language/_gettext_only/pages.php:546
 msgid "SETUP_MIGRATE_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:540
+#: language/_gettext_only/pages.php:547
 msgid "SETUP_MIGRATE_HELP_CONTENT"
 msgstr ""
 "Follow these easy steps to migrate your data from MyITCRM to the newer and "
 "better QWcrm."
 
-#: language/_gettext_only/pages.php:543
+#: language/_gettext_only/pages.php:550
 msgid "SETUP_UPGRADE_PAGE_TITLE"
 msgstr "Upgrade QWcrm"
 
-#: language/_gettext_only/pages.php:544
+#: language/_gettext_only/pages.php:551
 msgid "SETUP_UPGRADE_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:545
+#: language/_gettext_only/pages.php:552
 msgid "SETUP_UPGRADE_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:546
+#: language/_gettext_only/pages.php:553
 msgid "SETUP_UPGRADE_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:547
+#: language/_gettext_only/pages.php:554
 msgid "SETUP_UPGRADE_HELP_CONTENT"
 msgstr ""
 "Follow these easy steps to upgrade to the latest version of QWcrm. This "
 "process can only be triggered by QWcrm when it notices you have uploaded the "
 "new version."
 
-#: language/_gettext_only/pages.php:566
+#: language/_gettext_only/pages.php:573
 msgid "SUPPLIER_DETAILS_PAGE_TITLE"
 msgstr "Supplier Details"
 
-#: language/_gettext_only/pages.php:567
+#: language/_gettext_only/pages.php:574
 msgid "SUPPLIER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:568
+#: language/_gettext_only/pages.php:575
 msgid "SUPPLIER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:573
+#: language/_gettext_only/pages.php:580
 msgid "SUPPLIER_EDIT_PAGE_TITLE"
 msgstr "Edit Supplier"
 
-#: language/_gettext_only/pages.php:574
+#: language/_gettext_only/pages.php:581
 msgid "SUPPLIER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:575
+#: language/_gettext_only/pages.php:582
 msgid "SUPPLIER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:580
+#: language/_gettext_only/pages.php:587
 msgid "SUPPLIER_NEW_PAGE_TITLE"
 msgstr "New Supplier"
 
-#: language/_gettext_only/pages.php:581
+#: language/_gettext_only/pages.php:588
 msgid "SUPPLIER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:582
+#: language/_gettext_only/pages.php:589
 msgid "SUPPLIER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:594
+#: language/_gettext_only/pages.php:601
 msgid "SUPPLIER_SEARCH_PAGE_TITLE"
 msgstr "Search Suppliers"
 
-#: language/_gettext_only/pages.php:595
+#: language/_gettext_only/pages.php:602
 msgid "SUPPLIER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:596
+#: language/_gettext_only/pages.php:603
 msgid "SUPPLIER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:601
+#: language/_gettext_only/pages.php:608
 msgid "SUPPLIER_STATUS_PAGE_TITLE"
 msgstr "Supplier Status"
 
-#: language/_gettext_only/pages.php:602
+#: language/_gettext_only/pages.php:609
 msgid "SUPPLIER_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:603
+#: language/_gettext_only/pages.php:610
 msgid "SUPPLIER_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:617
+#: language/_gettext_only/pages.php:624
 msgid "USER_DETAILS_PAGE_TITLE"
 msgstr "User Details"
 
-#: language/_gettext_only/pages.php:618
+#: language/_gettext_only/pages.php:625
 msgid "USER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:619
+#: language/_gettext_only/pages.php:626
 msgid "USER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:624
+#: language/_gettext_only/pages.php:631
 msgid "USER_EDIT_PAGE_TITLE"
 msgstr "Edit User"
 
-#: language/_gettext_only/pages.php:625
+#: language/_gettext_only/pages.php:632
 msgid "USER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:626
+#: language/_gettext_only/pages.php:633
 msgid "USER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:631
+#: language/_gettext_only/pages.php:638
 msgid "USER_LOGIN_PAGE_TITLE"
 msgstr "User Login"
 
-#: language/_gettext_only/pages.php:632
+#: language/_gettext_only/pages.php:639
 msgid "USER_LOGIN_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:633
+#: language/_gettext_only/pages.php:640
 msgid "USER_LOGIN_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:634
+#: language/_gettext_only/pages.php:641
 msgid "USER_LOGIN_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:635
+#: language/_gettext_only/pages.php:642
 msgid "USER_LOGIN_HELP_CONTENT"
 msgstr ""
 "Both employees and customers can login in to QWcrm here. Just enter your "
 "username and password, then click submit. If reCAPTCHA has been enabled you "
 "might have to complete a few verification tasks."
 
-#: language/_gettext_only/pages.php:638
+#: language/_gettext_only/pages.php:645
 msgid "USER_NEW_PAGE_TITLE"
 msgstr "New User"
 
-#: language/_gettext_only/pages.php:639
+#: language/_gettext_only/pages.php:646
 msgid "USER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:640
+#: language/_gettext_only/pages.php:647
 msgid "USER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:645
+#: language/_gettext_only/pages.php:652
 msgid "USER_RESET_PAGE_TITLE"
 msgstr "Reset Password"
 
-#: language/_gettext_only/pages.php:646
+#: language/_gettext_only/pages.php:653
 msgid "USER_RESET_META_DESCRIPTION"
 msgstr "QWcrm - The Best Open Source Repairs Business CRM program available!"
 
-#: language/_gettext_only/pages.php:647
+#: language/_gettext_only/pages.php:654
 msgid "USER_RESET_META_KEYWORDS"
 msgstr ""
 "CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment "
 "Processing, Simple to use"
 
-#: language/_gettext_only/pages.php:648
+#: language/_gettext_only/pages.php:655
 msgid "USER_RESET_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:649
+#: language/_gettext_only/pages.php:656
 msgid "USER_RESET_HELP_CONTENT"
 msgstr ""
 "You will be able to reset your user account password if you have forgotten "
@@ -12770,244 +12822,244 @@ msgstr ""
 "email account you used to setup the account. If you are unable to complete "
 "this process you will need to contact an administrator."
 
-#: language/_gettext_only/pages.php:652
+#: language/_gettext_only/pages.php:659
 msgid "USER_SEARCH_PAGE_TITLE"
 msgstr "Search Users"
 
-#: language/_gettext_only/pages.php:653
+#: language/_gettext_only/pages.php:660
 msgid "USER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:654
+#: language/_gettext_only/pages.php:661
 msgid "USER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:675
+#: language/_gettext_only/pages.php:682
 msgid "VOUCHER_DETAILS_PAGE_TITLE"
 msgstr "Voucher Details"
 
-#: language/_gettext_only/pages.php:676
+#: language/_gettext_only/pages.php:683
 msgid "VOUCHER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:677
+#: language/_gettext_only/pages.php:684
 msgid "VOUCHER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:682
+#: language/_gettext_only/pages.php:689
 msgid "VOUCHER_EDIT_PAGE_TITLE"
 msgstr "Edit Voucher"
 
-#: language/_gettext_only/pages.php:683
+#: language/_gettext_only/pages.php:690
 msgid "VOUCHER_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:684
+#: language/_gettext_only/pages.php:691
 msgid "VOUCHER_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:689
+#: language/_gettext_only/pages.php:696
 msgid "VOUCHER_NEW_PAGE_TITLE"
 msgstr "New Voucher"
 
-#: language/_gettext_only/pages.php:690
+#: language/_gettext_only/pages.php:697
 msgid "VOUCHER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:691
+#: language/_gettext_only/pages.php:698
 msgid "VOUCHER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:692
+#: language/_gettext_only/pages.php:699
 msgid "VOUCHER_NEW_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:693
+#: language/_gettext_only/pages.php:700
 msgid "VOUCHER_NEW_HELP_CONTENT"
 msgstr ""
 "Create a new voucher by filling in the details and then by clicking submit."
 
-#: language/_gettext_only/pages.php:703
+#: language/_gettext_only/pages.php:710
 msgid "VOUCHER_SEARCH_PAGE_TITLE"
 msgstr "Search Vouchers"
 
-#: language/_gettext_only/pages.php:704
+#: language/_gettext_only/pages.php:711
 msgid "VOUCHER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:705
+#: language/_gettext_only/pages.php:712
 msgid "VOUCHER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:710
+#: language/_gettext_only/pages.php:717
 msgid "VOUCHER_STATUS_PAGE_TITLE"
 msgstr "Voucher Status"
 
-#: language/_gettext_only/pages.php:711
+#: language/_gettext_only/pages.php:718
 msgid "VOUCHER_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:712
+#: language/_gettext_only/pages.php:719
 msgid "VOUCHER_STATUS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:719
+#: language/_gettext_only/pages.php:726
 msgid "WORKORDER_CLOSED_PAGE_TITLE"
 msgstr "Closed Work Orders"
 
-#: language/_gettext_only/pages.php:720
+#: language/_gettext_only/pages.php:727
 msgid "WORKORDER_CLOSED_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:721
+#: language/_gettext_only/pages.php:728
 msgid "WORKORDER_CLOSED_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:722
+#: language/_gettext_only/pages.php:729
 msgid "WORKORDER_CLOSED_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:723
+#: language/_gettext_only/pages.php:730
 msgid "WORKORDER_CLOSED_HELP_CONTENT"
 msgstr "You can view all closed work orders here."
 
-#: language/_gettext_only/pages.php:726
+#: language/_gettext_only/pages.php:733
 msgid "WORKORDER_DETAILS_PAGE_TITLE"
 msgstr "Work Order Details"
 
-#: language/_gettext_only/pages.php:727
+#: language/_gettext_only/pages.php:734
 msgid "WORKORDER_DETAILS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:728
+#: language/_gettext_only/pages.php:735
 msgid "WORKORDER_DETAILS_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:733
+#: language/_gettext_only/pages.php:740
 msgid "WORKORDER_DETAILS_EDIT_COMMENT_PAGE_TITLE"
 msgstr "Edit Work Order Comments"
 
-#: language/_gettext_only/pages.php:734
+#: language/_gettext_only/pages.php:741
 msgid "WORKORDER_DETAILS_EDIT_COMMENT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:735
+#: language/_gettext_only/pages.php:742
 msgid "WORKORDER_DETAILS_EDIT_COMMENT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:740
+#: language/_gettext_only/pages.php:747
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_PAGE_TITLE"
 msgstr "Edit Work Order Description"
 
-#: language/_gettext_only/pages.php:741
+#: language/_gettext_only/pages.php:748
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:742
+#: language/_gettext_only/pages.php:749
 msgid "WORKORDER_DETAILS_EDIT_DESCRIPTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:747
+#: language/_gettext_only/pages.php:754
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_PAGE_TITLE"
 msgstr "Edit Work Order Resolution"
 
-#: language/_gettext_only/pages.php:748
+#: language/_gettext_only/pages.php:755
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:749
+#: language/_gettext_only/pages.php:756
 msgid "WORKORDER_DETAILS_EDIT_RESOLUTION_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:754
+#: language/_gettext_only/pages.php:761
 msgid "WORKORDER_NEW_PAGE_TITLE"
 msgstr "New Workorder"
 
-#: language/_gettext_only/pages.php:755
+#: language/_gettext_only/pages.php:762
 msgid "WORKORDER_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:756
+#: language/_gettext_only/pages.php:763
 msgid "WORKORDER_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:761
+#: language/_gettext_only/pages.php:768
 msgid "WORKORDER_NOTE_EDIT_PAGE_TITLE"
 msgstr "Edit a Work Order Note"
 
-#: language/_gettext_only/pages.php:762
+#: language/_gettext_only/pages.php:769
 msgid "WORKORDER_NOTE_EDIT_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:763
+#: language/_gettext_only/pages.php:770
 msgid "WORKORDER_NOTE_EDIT_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:768
+#: language/_gettext_only/pages.php:775
 msgid "WORKORDER_NOTE_NEW_PAGE_TITLE"
 msgstr "New Work Order Note"
 
-#: language/_gettext_only/pages.php:769
+#: language/_gettext_only/pages.php:776
 msgid "WORKORDER_NOTE_NEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:770
+#: language/_gettext_only/pages.php:777
 msgid "WORKORDER_NOTE_NEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:775
+#: language/_gettext_only/pages.php:782
 msgid "WORKORDER_OPEN_PAGE_TITLE"
 msgstr "Open work Orders"
 
-#: language/_gettext_only/pages.php:776
+#: language/_gettext_only/pages.php:783
 msgid "WORKORDER_OPEN_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:777
+#: language/_gettext_only/pages.php:784
 msgid "WORKORDER_OPEN_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:778
+#: language/_gettext_only/pages.php:785
 msgid "WORKORDER_OPEN_HELP_TITLE"
 msgstr "Help"
 
-#: language/_gettext_only/pages.php:779
+#: language/_gettext_only/pages.php:786
 msgid "WORKORDER_OPEN_HELP_CONTENT"
 msgstr "This page shows all work orders with an open status."
 
-#: language/_gettext_only/pages.php:782
+#: language/_gettext_only/pages.php:789
 msgid "WORKORDER_OVERVIEW_PAGE_TITLE"
 msgstr "Work Orders Overview"
 
-#: language/_gettext_only/pages.php:783
+#: language/_gettext_only/pages.php:790
 msgid "WORKORDER_OVERVIEW_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:784
+#: language/_gettext_only/pages.php:791
 msgid "WORKORDER_OVERVIEW_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:810
+#: language/_gettext_only/pages.php:817
 msgid "WORKORDER_SEARCH_PAGE_TITLE"
 msgstr "Search Work Orders"
 
-#: language/_gettext_only/pages.php:811
+#: language/_gettext_only/pages.php:818
 msgid "WORKORDER_SEARCH_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:812
+#: language/_gettext_only/pages.php:819
 msgid "WORKORDER_SEARCH_META_KEYWORDS"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:817
+#: language/_gettext_only/pages.php:824
 msgid "WORKORDER_STATUS_PAGE_TITLE"
 msgstr "Work Order Status"
 
-#: language/_gettext_only/pages.php:818
+#: language/_gettext_only/pages.php:825
 msgid "WORKORDER_STATUS_META_DESCRIPTION"
 msgstr "-"
 
-#: language/_gettext_only/pages.php:819
+#: language/_gettext_only/pages.php:826
 msgid "WORKORDER_STATUS_META_KEYWORDS"
 msgstr "-"
 
@@ -13124,17 +13176,17 @@ msgid "Credit Card"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:70
-#: language/_gettext_only/system_variables.php:112
+#: language/_gettext_only/system_variables.php:114
 msgid "Donation"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:71
-#: language/_gettext_only/system_variables.php:169
+#: language/_gettext_only/system_variables.php:165
 msgid "Equipment"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:72
-#: language/_gettext_only/system_variables.php:171
+#: language/_gettext_only/system_variables.php:167
 msgid "Fuel"
 msgstr ""
 
@@ -13143,22 +13195,22 @@ msgid "Loan"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:74
-#: language/_gettext_only/system_variables.php:175
+#: language/_gettext_only/system_variables.php:171
 msgid "Marketing"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:75
-#: language/_gettext_only/system_variables.php:176
+#: language/_gettext_only/system_variables.php:172
 msgid "Office Supplies"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:76
-#: language/_gettext_only/system_variables.php:177
+#: language/_gettext_only/system_variables.php:173
 msgid "Online"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:78
-#: language/_gettext_only/system_variables.php:179
+#: language/_gettext_only/system_variables.php:175
 msgid "Parts"
 msgstr ""
 
@@ -13171,32 +13223,32 @@ msgid "Rent"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:81
-#: language/_gettext_only/system_variables.php:116
+#: language/_gettext_only/system_variables.php:118
 msgid "Royalties"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:82
-#: language/_gettext_only/system_variables.php:180
+#: language/_gettext_only/system_variables.php:176
 msgid "Services"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:83
-#: language/_gettext_only/system_variables.php:181
+#: language/_gettext_only/system_variables.php:177
 msgid "Software"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:84
-#: language/_gettext_only/system_variables.php:182
+#: language/_gettext_only/system_variables.php:178
 msgid "TelCo"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:85
-#: language/_gettext_only/system_variables.php:183
+#: language/_gettext_only/system_variables.php:179
 msgid "Transport"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:86
-#: language/_gettext_only/system_variables.php:184
+#: language/_gettext_only/system_variables.php:180
 msgid "Utilities"
 msgstr ""
 
@@ -13204,121 +13256,105 @@ msgstr ""
 msgid "Wages"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:110
+#: language/_gettext_only/system_variables.php:95
+msgid "Partially Refunded"
+msgstr ""
+
+#: language/_gettext_only/system_variables.php:112
 msgid "Cancelled Services"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:111
+#: language/_gettext_only/system_variables.php:113
 msgid "Commision"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:113
+#: language/_gettext_only/system_variables.php:115
 msgid "Interest"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:115
+#: language/_gettext_only/system_variables.php:117
 msgid "Returned Goods"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:117
+#: language/_gettext_only/system_variables.php:119
 msgid "Tips"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:120
+#: language/_gettext_only/system_variables.php:122
 msgid "Bank Transfer Reference"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:121
+#: language/_gettext_only/system_variables.php:123
 msgid "Card Type"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:124
+#: language/_gettext_only/system_variables.php:126
 msgid "Direct Debit Reference"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:125
+#: language/_gettext_only/system_variables.php:127
 msgid "PayPal Transaction ID"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:128
+#: language/_gettext_only/system_variables.php:130
 msgid "Visa"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:129
+#: language/_gettext_only/system_variables.php:131
 msgid "MasterCard"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:130
+#: language/_gettext_only/system_variables.php:132
 msgid "American Express"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:131
+#: language/_gettext_only/system_variables.php:133
 msgid "Debit Card"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:146
-#: language/_gettext_only/system_variables.php:163
+#: language/_gettext_only/system_variables.php:148
+#: language/_gettext_only/system_variables.php:159
 msgid "Valid"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:157
-msgid "Sales Apply"
-msgstr ""
-
-#: language/_gettext_only/system_variables.php:158
-msgid "Sales Refund"
-msgstr ""
-
-#: language/_gettext_only/system_variables.php:159
-msgid "Purchase Apply"
-msgstr ""
-
-#: language/_gettext_only/system_variables.php:160
-msgid "Purchase Refund"
-msgstr ""
-
-#: language/_gettext_only/system_variables.php:167
+#: language/_gettext_only/system_variables.php:163
 msgid "Courier"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:168
+#: language/_gettext_only/system_variables.php:164
 msgid "Drop Shipping"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:172
+#: language/_gettext_only/system_variables.php:168
 msgid "General"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:173
+#: language/_gettext_only/system_variables.php:169
 msgid "Human Resources"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:174
+#: language/_gettext_only/system_variables.php:170
 msgid "Landlord"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:185
+#: language/_gettext_only/system_variables.php:181
 msgid "Wholesale"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:199
+#: language/_gettext_only/system_variables.php:195
 msgid "Multi Purpose (MPV)"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:200
+#: language/_gettext_only/system_variables.php:196
 msgid "Single Purpose (SPV)"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:205
-msgid "Paid Unused"
+#: language/_gettext_only/system_variables.php:201
+msgid "Paid (Unused)"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:206
+#: language/_gettext_only/system_variables.php:203
 msgid "Partially Redeemed"
-msgstr ""
-
-#: language/_gettext_only/system_variables.php:207
-msgid "Fully Redeemed"
 msgstr ""
 
 #: setup/migrate/myitcrm/migrate_routines.php:63
@@ -13395,7 +13431,7 @@ msgstr ""
 #: setup/upgrade/3_1_1/upgrade_routines.php:59
 #: setup/upgrade/3_1_2/upgrade_routines.php:62
 #: setup/upgrade/3_1_3/upgrade_routines.php:57
-#: setup/upgrade/3_1_4/upgrade_routines.php:83
+#: setup/upgrade/3_1_4/upgrade_routines.php:82
 msgid "Database has now been upgraded to"
 msgstr ""
 
@@ -13450,9 +13486,9 @@ msgstr ""
 #: setup/upgrade/3_1_0/upgrade_routines.php:1103
 #: setup/upgrade/3_1_0/upgrade_routines.php:1270
 #: setup/upgrade/3_1_0/upgrade_routines.php:1420
-#: setup/upgrade/3_1_4/upgrade_routines.php:109
-#: setup/upgrade/3_1_4/upgrade_routines.php:375
-#: setup/upgrade/3_1_4/upgrade_routines.php:515
+#: setup/upgrade/3_1_4/upgrade_routines.php:108
+#: setup/upgrade/3_1_4/upgrade_routines.php:374
+#: setup/upgrade/3_1_4/upgrade_routines.php:514
 msgid "Failed to select all the records from the table"
 msgstr ""
 
@@ -13552,52 +13588,52 @@ msgstr ""
 msgid "Successfully completed converting otherincome records."
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:160
+#: setup/upgrade/3_1_4/upgrade_routines.php:159
 msgid "Migrated from Refund"
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:174
+#: setup/upgrade/3_1_4/upgrade_routines.php:173
 msgid "Failed to migrate the refund record"
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:234
+#: setup/upgrade/3_1_4/upgrade_routines.php:233
 msgid "Failed to migrate items for the converted refund record"
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:259
+#: setup/upgrade/3_1_4/upgrade_routines.php:258
 msgid "Failed to complete conversion of refunds to credit notes."
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:274
+#: setup/upgrade/3_1_4/upgrade_routines.php:273
 msgid "Successfully completed conversion of refunds to credit notes."
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:405
-#: setup/upgrade/3_1_4/upgrade_routines.php:545
+#: setup/upgrade/3_1_4/upgrade_routines.php:404
+#: setup/upgrade/3_1_4/upgrade_routines.php:544
 msgid "Item(s) - Full list in notes"
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:428
+#: setup/upgrade/3_1_4/upgrade_routines.php:427
 msgid "Failed to create item for the expense record"
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:455
+#: setup/upgrade/3_1_4/upgrade_routines.php:454
 msgid "Failed to complete conversion of Expenses using items."
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:470
+#: setup/upgrade/3_1_4/upgrade_routines.php:469
 msgid "Successfully completed conversion of Expenses using items."
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:568
+#: setup/upgrade/3_1_4/upgrade_routines.php:567
 msgid "Failed to create item for the otherincome record"
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:595
+#: setup/upgrade/3_1_4/upgrade_routines.php:594
 msgid "Failed to complete conversion of Otherincome using items."
 msgstr ""
 
-#: setup/upgrade/3_1_4/upgrade_routines.php:610
+#: setup/upgrade/3_1_4/upgrade_routines.php:609
 msgid "Successfully completed conversion of Otherincome using items."
 msgstr ""
 

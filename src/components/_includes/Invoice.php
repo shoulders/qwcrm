@@ -873,25 +873,25 @@ defined('_QWEXEC') or die;
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments and is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been partially paid."));
             $state_flag = false;
         }
 
         // Is paid
         if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments and is paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been is paid."));
             $state_flag = false;
         }
 
         // Is cancelled
         if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been cancelled."));
             $state_flag = false;
         }
 
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been deleted."));
             $state_flag = false;
         }
 
@@ -902,8 +902,8 @@ defined('_QWEXEC') or die;
         }*/
 
         // Does the invoice have any Vouchers preventing changing the invoice status
-        if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowEdit($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because of Vouchers on it prevent this."));
+        if($this->app->components->report->voucherCount('date', null, null, null, null, null, null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has Vouchers."));
             $state_flag = false;
         }
 
@@ -967,7 +967,7 @@ defined('_QWEXEC') or die;
 
         // Does the invoice have any Vouchers preventing changing the invoice status
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowEdit($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."));
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this.")); - messages handled downstream
             $state_flag = false;
         }
 
@@ -1037,7 +1037,7 @@ defined('_QWEXEC') or die;
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowCancel($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this.")); - messages handled downstream
             $state_flag = false;
         }
 
@@ -1076,13 +1076,13 @@ defined('_QWEXEC') or die;
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments and is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been partially paid."));
             $state_flag = false;
         }
 
         // Is paid
         if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments and is paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."));
             $state_flag = false;
         }
 
@@ -1114,7 +1114,7 @@ defined('_QWEXEC') or die;
 
         // Does the invoice have any Vouchers preventing deletion of the invoice (i.e. any that have been used) TODO: the name is wrong it should be:  checkAllInvoiceSiblingVouchersAllowDelete()
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowDelete($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this.")); - messages handled downstream
             $state_flag = false;
         }
 
