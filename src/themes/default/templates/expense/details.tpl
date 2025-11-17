@@ -108,13 +108,29 @@
                                                     {/if}
 
                                                     <!-- Credit Note Button -->
-                                                    {if $allowed_to_create_creditnote}
-                                                        <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}';">{t}Add Purchase Credit Note (Expense){/t}</button>
+                                                    {if $expense_details.status == 'partially_paid' && $allowed_to_create_creditnote}
+                                                        <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}';">{t}Close expense with CR{/t} / {t}Create Sales Credit Note (Expense){/t}</button>
+                                                    {elseif ($expense_details.status == 'paid') && $allowed_to_create_creditnote}
+                                                        <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}';">{t}Refund expense via CR{/t} / {t}Create Sales Credit Note (Expense){/t}</button>
                                                     {/if}
 
                                                 </td>
                                             </tr>
                                         </table>
+                                    </td>
+                                </tr>
+
+                                <!-- Payments -->
+                                <tr>
+                                    <td>
+                                        {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
+                                    </td>
+                                </tr>
+
+                                <!-- Credit Notes -->
+                                <tr>
+                                    <td>
+                                        {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes (Refunds are provided via CR as store credit or real monies.)")}
                                     </td>
                                 </tr>
 

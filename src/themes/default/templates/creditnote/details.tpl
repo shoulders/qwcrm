@@ -196,27 +196,27 @@
                                                     <br>
                                                 {/if}
 
-                                                <!-- Apply CR to things-->
+                                                <!-- Apply CR to Invoice or Expense (credit) -->
 
                                                 <!-- Apply Credit Note to Invoice Button -->
-                                                {if $creditnote_details.status == 'unused' && $creditnote_details.invoice_id}
+                                                {if $creditnote_details.invoice_id && ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used')}
                                                     <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=invoice&method=creditnote&invoice_id={$creditnote_details.invoice_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Invoice{/t}</button>
                                                 {/if}
 
                                                 <!-- Apply Credit Note to Expense Button -->
-                                                {if $creditnote_details.status == 'unused' && $creditnote_details.expense_id}
+                                                {if $creditnote_details.expense_id && ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used')}
                                                     <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=expense&method=creditnote&expense_id={$creditnote_details.expense_id}&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Credit Note to Expense{/t}</button>
                                                 {/if}
 
-                                                <!-- send real money -->
+                                                <!-- Send real money to Client or Supplier (debit) -->
 
                                                 <!-- Record Payment to Client Button -->
-                                                {if ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used') && $creditnote_details.client_id}
+                                                {if $creditnote_details.client_id && ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used')}
                                                     <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Payment to Client{/t}</button>
                                                 {/if}
 
                                                 <!-- Apply Payment from Suppler Buttons -->
-                                                {if $creditnote_details.balance > 0 && $creditnote_details.supplier_id}
+                                                {if $creditnote_details.supplier_id && ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used')}
                                                     <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Payment from Supplier{/t}</button>
                                                 {/if}
 

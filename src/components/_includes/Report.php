@@ -957,7 +957,7 @@ class Report extends Components {
 
         // Filter by supplier_id
         if($supplier_id) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.invoice_id=".$this->app->db->qStr($supplier_id);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.supplier_id=".$this->app->db->qStr($supplier_id);
         }
 
         // Execute the SQL
@@ -1003,7 +1003,7 @@ class Report extends Components {
 
         // Filter by supplier_id
         if($supplier_id) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.invoice_id=".$this->app->db->qStr($supplier_id);
+            $whereTheseRecords .= " AND ".PRFX."expense_records.supplier_id=".$this->app->db->qStr($supplier_id);
         }
 
         $sql = "SELECT SUM(".PRFX."expense_records.$value_name) AS sum
@@ -1951,40 +1951,40 @@ class Report extends Components {
     /** Payments **/
 
     #####################################
-    #   Get All payments stats          #
+    #   Get All payments stats          #  // currently only client uses the "extended" filters here
     #####################################
 
-    public function paymentGetStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
+    public function paymentGetStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
 
         $stats = array();
 
         // Current
         if($record_set == 'current' || $record_set == 'all') {
 
-            $stats['count_valid'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, 'valid', null, null, $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['count_valid'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, 'valid', null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
 
         }
 
         // Historic TODO: credit notes are not included here, how should i handle them
         if($record_set == 'historic' || $record_set == 'all') {
 
-            $stats['count_invoice'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, 'invoice', 'real_monies', null, $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
-            $stats['count_expense'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, 'expense', 'real_monies', null, $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
-            $stats['count_otherincome'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, 'otherincome', 'real_monies', null, $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['count_invoice'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, 'invoice', 'real_monies', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['count_expense'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, 'expense', 'real_monies', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['count_otherincome'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, 'otherincome', 'real_monies', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
 
-            $stats['count_sent'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, null, 'real_monies', 'debit', $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
-            $stats['count_received'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, null, 'real_monies', 'credit', $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['count_sent'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, null, 'real_monies', 'debit', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['count_received'] = $this->paymentCount('date', $start_date, $end_date, $tax_system, null, null, 'real_monies', 'credit', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
 
         }
 
         // Revenue TODO: credit notes are not included here, how should i handle them. Sent and received are correct though becasue that is what real money I have sent and received.
         if($record_set == 'revenue' || $record_set == 'all') {
-            $stats['sum_invoice'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, 'invoice', 'real_monies', null, $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
-            $stats['sum_expense'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, 'expense', 'real_monies', null, $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
-            $stats['sum_otherincome'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, 'otherincome', 'real_monies', null, $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['sum_invoice'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, 'invoice', 'real_monies', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['sum_expense'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, 'expense', 'real_monies', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['sum_otherincome'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, 'otherincome', 'real_monies', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
 
-            $stats['sum_sent'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, null, 'real_monies', 'debit', $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
-            $stats['sum_received'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, null, 'real_monies', 'credit', $employee_id, $client_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['sum_sent'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, null, 'real_monies', 'debit', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
+            $stats['sum_received'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, null, 'real_monies', 'credit', $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
 
         }
 
@@ -1993,10 +1993,10 @@ class Report extends Components {
     }
 
     ####################################################
-    #     Count Payments                               #
+    #     Count Payments                               #  // currently only client uses the "extended" filters here
     ####################################################
 
-    public function paymentCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $payDirection = null, $employee_id = null, $client_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
+    public function paymentCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $payDirection = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
@@ -2029,6 +2029,11 @@ class Report extends Components {
         // Filter by Client
         if($client_id) {
             $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);
+        }
+
+        // Filter by Supplier
+        if($supplier_id) {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.supplier_id=".$this->app->db->qStr($supplier_id);
         }
 
         // Filter by Invoice
@@ -2071,7 +2076,7 @@ class Report extends Components {
     #  Sum selected value of payments       #
     #########################################
 
-    public function paymentSum($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $payDirection = null, $employee_id = null, $client_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
+    public function paymentSum($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $payDirection = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
@@ -2104,6 +2109,11 @@ class Report extends Components {
         // Filter by Client
         if($client_id) {
             $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->app->db->qStr($client_id);
+        }
+
+        // Filter by Supplier
+        if($supplier_id) {
+            $whereTheseRecords .= " AND ".PRFX."payment_records.supplier_id=".$this->app->db->qStr($supplier_id);
         }
 
         // Filter by Invoice

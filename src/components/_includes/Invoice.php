@@ -896,7 +896,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id))
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, null, $invoice_id))
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
             $state_flag = false;
         }*/
@@ -960,7 +960,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
             $state_flag = false;
         }*/
@@ -1030,7 +1030,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice has payments."));
             $state_flag = false;
         }*/
@@ -1099,7 +1099,7 @@ defined('_QWEXEC') or die;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, $invoice_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."));
             $state_flag = false;
         }*/

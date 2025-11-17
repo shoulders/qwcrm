@@ -626,7 +626,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
             $state_flag = false;
         }*/
@@ -677,7 +677,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
             $state_flag = false;
         }*/
@@ -726,7 +726,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments."));
             $state_flag = false;
         }*/
@@ -781,7 +781,7 @@ class OtherIncome extends Components {
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has payments."));
             $state_flag = false;
         }*/

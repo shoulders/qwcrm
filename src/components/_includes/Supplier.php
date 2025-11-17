@@ -210,7 +210,7 @@ class Supplier extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key NOT IN ('invalid')";  // NB: 'invalid' does not currently exist
+            $sql .= "\nWHERE status_key IN ('active', 'suspended')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -373,7 +373,7 @@ class Supplier extends Components {
         $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime($timestamp) : null;
 
         $sql = "UPDATE ".PRFX."supplier_records SET
-                status             =". $this->app->db->qStr( $new_status   )."
+                status             =". $this->app->db->qStr( $new_status   ).",
                 closed_on          =". $this->app->db->qStr( $closed_on    )."
                 WHERE supplier_id  =". $this->app->db->qStr( $supplier_id  );
 
@@ -427,7 +427,7 @@ class Supplier extends Components {
         }
 
         // Get supplier details
-        $supplier_details = $this->get_supplier_details($supplier_id);
+        $supplier_details = $this->getRecord($supplier_id);
 
         // Change the supplier status to cancelled (I do this here to maintain consistency)
         $this->updateStatus($supplier_id, 'cancelled');
@@ -454,7 +454,7 @@ class Supplier extends Components {
         }
 
         // Get supplier details
-        $supplier_details = $this->get_supplier_details($supplier_id);
+        $supplier_details = $this->getRecord($supplier_id);
 
         // Run the SQL
         $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);
@@ -479,13 +479,24 @@ class Supplier extends Components {
         $state_flag = true;
 
         // Get the supplier details
-        //$supplier_details = $this->get_supplier_details($supplier_id);
+        $supplier_details = $this->getRecord($supplier_id);
 
-        /* Is cancelled
-        if($supplier_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be changed because the supplier has been deleted."));
-            $state_flag = false;
-        }*/
+        // status checks
+        switch ($supplier_details['status']) {
+            case 'active':
+                break;
+            case 'suspended':
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be changed because the supplier has been cancelled."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be changed because the supplier has been deleted."));
+                $state_flag = false;
+                break;
+
+        }
 
         return $state_flag;
 
@@ -493,7 +504,7 @@ class Supplier extends Components {
 
 
     ###############################################################
-    #   Check to see if the supplier can be cancelled             #  // not currently used
+    #   Check to see if the supplier can be cancelled             #
     ###############################################################
 
     public function checkRecordAllowsCancel($supplier_id) {
@@ -503,17 +514,25 @@ class Supplier extends Components {
         // Get the supplier details
         $supplier_details = $this->getRecord($supplier_id);
 
-        // Is cancelled
-        if($supplier_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
-            $state_flag = false;
+        // status checks
+        switch ($supplier_details['status']) {
+            case 'active':
+                break;
+            case 'suspended':
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because it is already cancelled."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because the supplier has been cancelled."));
+                $state_flag = false;
+                break;
         }
 
-        // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because it has linked credit notes."));
-            return false;
-        }
+        // Disable this feature for now. may enable or remove in future versions.
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled at this time because the feature is not available in this version of QWcrm. Suspend the supplier instead."));
+        $state_flag = false;
 
         return $state_flag;
 
@@ -528,18 +547,34 @@ class Supplier extends Components {
         $state_flag = true;
 
         // Get the supplier details
-        $supplier_details = $this->get_supplier_details($supplier_id);
+        $supplier_details = $this->getRecord($supplier_id);
 
-        // Is cancelled
-        if($supplier_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has been cancelled."));
+        // status checks
+        switch ($supplier_details['status']) {
+            case 'active':
+                break;
+            case 'suspended':
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it is already deleted."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because the supplier has already been cancelled."));
+                $state_flag = false;
+                break;
+        }
+
+        // Has Expenses
+        if($this->app->components->report->expenseCount(null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked expenses."));
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked credit notes."));
-            return false;
+            $state_flag = false;
         }
 
         return $state_flag;

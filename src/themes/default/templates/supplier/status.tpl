@@ -29,30 +29,21 @@
 
                                 <!-- Update Status Button -->
                                 <td class="olotd4" align="center" width="33%">
+                                    <p><b>{t}Current Status{/t}:</b> {$supplier_status_display_name}</p>
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>
                                         <form action="index.php?component=supplier&page_tpl=status&supplier_id={$supplier_id}" method="post">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
-                                                {section name=s loop=$supplier_selectable_statuses}
-                                                    <option value="{$supplier_selectable_statuses[s].status_key}"{if $supplier_status == $supplier_selectable_statuses[s].status_key} selected{/if}>{t}{$supplier_selectable_statuses[s].display_name}{/t}</option>
+                                                {section name=s loop=$supplier_statuses}
+                                                    <option value="{$supplier_statuses[s].status_key}"{if $supplier_status == $supplier_statuses[s].status_key} selected{/if}>{t}{$supplier_statuses[s].display_name}{/t}</option>
                                                 {/section}
                                             </select>
                                             <p>&nbsp;</p>
                                             <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />
                                         </form>
                                     {else}
-                                        <br />
-                                        <b>{t}Current Status{/t} =
-                                        {section name=s loop=$supplier_statuses}
-                                            {if $supplier_status == $supplier_statuses[s].status_key}{$supplier_statuses[s].display_name}{/if}
-                                        {/section}
-                                        </b>
-                                        <br />
-                                        <br />
                                         {t}This Supplier cannot have it's status changed because it's current state does not allow it.{/t}
-                                        <br />
-                                        <br />
                                     {/if}
                                 </td>
 

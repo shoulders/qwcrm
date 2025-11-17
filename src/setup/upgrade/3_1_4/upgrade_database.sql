@@ -1162,3 +1162,12 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 
 -- Add employee traacking to client --
 ALTER TABLE `#__client_records` ADD `employee_id` INT(10) UNSIGNED NULL AFTER `client_id`;
+
+-- Alter Supplier status to something better --
+TRUNCATE TABLE `#__supplier_statuses`;
+INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'active', 'Active'),
+(2, 'suspended', 'Suspended'),
+(3, 'cancelled', 'Cancelled'),
+(4, 'deleted', 'Deleted');
+UPDATE `#__supplier_records` SET `status` = 'active' WHERE `#__supplier_records`.`status` = 'valid';

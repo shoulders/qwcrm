@@ -71,7 +71,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     elseif(\CMSApplication::$VAR['expense_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details'))
     {
         $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
-        $record['supplier_id'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'client_id');
+        $record['supplier_id'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'supplier_id');
 
         $record['type'] = 'purchase';
         $record['reference'] = _gettext("Expense").': '.\CMSApplication::$VAR['expense_id'] ;
@@ -109,24 +109,22 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         */
     }
 
-    // We have a valid request
-    if($client_id ?? $supplier_id ?? false)
-    {
-        // compensate for multiple entry points
-        $record['client_id'] ?? null;
-        $record['invoice_id'] ?? null;
-        $record['supplier_id'] ?? null;
-        $record['expense_id'] ?? null;
 
-        // Create the credit note and return the new creditnote_id (this has no items)
-        $creditnote_id = $this->app->components->creditnote->insertRecord($record);
+    // Compensate for multiple entry points
+    $record['client_id'] ??= null;
+    $record['invoice_id'] ??= null;
+    $record['supplier_id'] ??= null;
+    $record['expense_id'] ??= null;
 
-        // Get invoice/expense items to populate the credit notes item fields
-        $variables['qform']['creditnote_items'] = $creditnote_items;
+    // Create the credit note and return the new creditnote_id (this has no items)
+    $creditnote_id = $this->app->components->creditnote->insertRecord($record);
 
-        // Edit the newly created credit populating with CR items
-        $this->app->system->page->forcePage('creditnote', 'edit&creditnote_id='.$creditnote_id, $variables);
-    }
+    // Get invoice/expense items to populate the credit notes item fields
+    $variables['qform']['creditnote_items'] = $creditnote_items;
+
+    // Edit the newly created credit note populating with items on page load
+    $this->app->system->page->forcePage('creditnote', 'edit&creditnote_id='.$creditnote_id, $variables);
+
 
 }
 

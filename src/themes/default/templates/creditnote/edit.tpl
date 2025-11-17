@@ -644,7 +644,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
-                                                    <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300" placeholder="{t}You must leave a reason for this Credit Note{/t}" onkeydown="return onlyAddress(event);" required/>{$creditnote_details.note}</textarea>
+                                                    <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300" placeholder="{t}Leave a reason for this Credit Note{/t}" onkeydown="return onlyAddress(event);">{$creditnote_details.note}</textarea>
                                                 </td>
                                             </tr>
                                         </table>

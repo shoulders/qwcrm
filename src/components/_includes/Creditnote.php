@@ -903,29 +903,35 @@ class Creditnote extends Components {
 
         $state_flag = true;
 
-        // Only allow one source ID for a creditnote check
-        // This prevents submission errors
+        // Only allow one source ID for a creditnote check (This prevents submission errors)
         if(((bool)$client_id + (bool)$invoice_id + (bool)$supplier_id + (bool)$expense_id) > 1)
         {
-            if(!$silent)
-            {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("More than one datasource was provided so validation cannot take place and so the credit note creation will not be allowed."));
-            }
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("More than one datasource was provided so validation cannot take place and so the credit note creation will not be allowed."));
             $state_flag = false;
+            return $state_flag;
         }
-
 
         /** Sales Credit Note (Client) - (client:details) **/
 
         // Used to refund real money to a client without an invoice, or they can use the credit to purchase other items
         if($client_id)
         {
+            // Is the client active
+            if(!$this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'active'))
+            {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a credit note against it."));
+                }
+                $state_flag = false;
+            }
+
             // Check there are no pending credit notes attached to the client
             if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, $client_id,))
             {
                 if(!$silent)
                 {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a pending creditnote assigned to it."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client already has a pending creditnote assigned to it."));
                 }
                 $state_flag = false;
             }
@@ -949,84 +955,73 @@ class Creditnote extends Components {
             if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
                 if(!$silent)
                 {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the supplied invoice is on another tax system."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be created because the invoice is on another tax system."));
                 }
                 $state_flag = false;
             }
 
-            // Check there are no pending credit notes attached to the invoice
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, null, $invoice_details['invoice_id']))
+            // Is the client active
+            if(!$invoice_details['client_id'])
             {
                 if(!$silent)
                 {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has a pending creditnote assigned to it."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a credit note against it."));
                 }
                 $state_flag = false;
             }
 
-            // Check if there are unused credit notes attached to the invoice
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'unused', null, null, null, null, null, $invoice_details['invoice_id']))
+            // Check if there are any open credit notes issued against this invoice (Only 1 open credit note is allowed against this invoice at any time)
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, $invoice_id))
             {
                 if(!$silent)
                 {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an unused creditnote assigned to it."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an open credit note assigned to it."));
                 }
                 $state_flag = false;
             }
 
-            // Invoice needs to have a billable amount / positive balance
-            if(!(float)$invoice_details['unit_gross'] > 0)
+            // Type 1 CR request (Credit) (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
+            if($invoice_details['status'] == 'partially_paid')
             {
-                if(!$silent)
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("An invoice needs a balance to be able to generate a linked credit note. Invoices with no balance should be cancelled and not cleared with a CR."));
+                // Do nothing
+                // We are just closing with fake money
+                // All vouchers on invoices with this state are blocked and have never been used or activated
+                // When the CR is created the vouchers will be voided
+            }
+
+            // Type 2 CR request (Debit) (Refund monies to Clients)
+            elseif($invoice_details['status'] == 'paid')
+            {
+                // Are there any vouchers present, that are not voided, cancelled or deleted (cancelled and deleted are excluded by default from the count)
+                $voidedVouchersCount = $this->app->components->report->voucherCount('date', null, null, null, null, null, 'voided', null, null, null, $invoice_id);
+                $totalVouchersCount = $this->app->components->report->voucherCount('date', null, null, null, null, null, null, null, null, null, $invoice_id);
+                if($totalVouchersCount - $voidedVouchersCount){
+                    if(!$silent)
+                    {
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has vouchers that are not voided or cancelled on it so you cannot issue a refund."));
+                    }
+                    $state_flag = false;
                 }
-                $state_flag = false;
-            }
 
+                // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a Type 1 CR and not gove free money to a client)
+                $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, null, $invoice_id);
 
-            /***** vouchers how do i handle */
+                // Get all payments against this invoice (real monies via credit notes)
+                $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', null, 'debit', null, null, null, $invoice_id);
 
-
-
-            // Type 1 Type 1 CR request (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
-            if((float)$invoice_details['balance'] > 0 && $invoice_details['status'] == 'partially_paid')
-            {
-                // Do nothing (currentlt) - we are just closing with fake money
-                // TODO: do vouchers need handling here i.e. cancell or suspend the vouchers?
-                //TODO: do i need to add any code here
-
-                // can vouchers be voided
-            }
-
-            // Type 2 CR request (Refund monies to clients)
-            elseif((float)$invoice_details['balance'] == 0 && $invoice_details['status'] == 'paid')
-            {
-                // is there any real payments/money on this invoice that can be refunded - make sure I account for vouchers and vouchers that have been paid
-
-                /* 1) sum real payments paid onto the invoice
-                2) sum used vouchers bought by this invoice
-                3) sum credit notes applied against this invoice
-                = is there any real money left?*/
-
-                // does this have any vouchers = cannot refund back monies.
-
-                // a partially paid invoice with vouchers cannot be refunded
-
-                // vouchers, cancell them or refund them?? do this in another function ??
-
-                // Calculate real monies paid on this invoice by the client
-                $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, $invoice_details['invoice_id']);
-
-                // Get any real payments and creditnotes paid out against this invoice as they both count against the balance
-                $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', null, 'debit', null, null, $invoice_details['invoice_id']);
-
-                // How much real money is left that can be refunded.
+                // How much real money is there left which can then be refunded.
                 $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
+                if($moniesThatCanBeRefunded <= 0){
+                    if(!$silent)
+                        {
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has no valid real monies left that can be refunded."));
+                        }
+                        $state_flag = false;
+                }
 
             }
 
-            // all Back - I don't think this will ever be called, but safety first.
+            // Status Fall Back - I don't think this will ever be called, but safety first.
             else
             {
                 $state_flag = false;
@@ -1041,6 +1036,16 @@ class Creditnote extends Components {
         // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
         elseif($supplier_id)
         {
+            // Is the Supplier active
+            if($this->app->components->supplier->getRecord(\CMSApplication::$VAR['supplier_id'], 'status') != 'active')
+            {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier is not active so you cannot create a credit note against it."));
+                }
+                $state_flag = false;
+            }
+
             // Check there are no pending credit notes attached to the supplier
             if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $supplier_id))
             {
@@ -1062,110 +1067,268 @@ class Creditnote extends Components {
         // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
         elseif($expense_id)
         {
+            /* Common Tests */
+
             $expense_details = $this->app->components->expense->getRecord($expense_id);
 
             // Is on a different tax system
             if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
                 if(!$silent)
                 {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the supplied expense is on another tax system."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the expense is on another tax system."));
                 }
                 $state_flag = false;
             }
 
-            // Expense needs an outstanding balance
-            if((float)$expense_details['balance'] == 0)
+            // Is the Supplier active (only check if it is a supplier expense)
+            if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord(\CMSApplication::$VAR['supplier_id'], 'status') != 'active')
             {
                 if(!$silent)
                 {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("An expense needs a balance to be able to generate a linked credit note."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier is not active so you cannot create a credit note against it."));
                 }
+                $state_flag = false;
+            }
+
+            // Check if there are any open credit notes issued against this expense (Only 1 open credit note is allowed against this exepsne at any time)
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, $expense_id))
+            {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense already has an open credit note assigned to it."));
+                }
+                $state_flag = false;
+            }
+
+            // Type 1 CR request (Credit) (Used to clear expense balance) (expenses with no balance should be cancelled and not cleared with a CR)
+            if($expense_details['status'] == 'partially_paid')
+            {
+                // Do nothing
+                // We are just closing with fake money
+            }
+
+            // Type 2 CR request (Debit) (Refund monies to Suppliers)
+            elseif($expense_details['status'] == 'paid')
+            {
+                // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a Type 1 CR and not gove free money to a client)
+                $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', 'real_monies', 'debit', null, null, null, null, $expense_id);
+
+                // Get all payments against this invoice (real monies via credit notes)
+                $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', null, 'credit', null, null, null, null, $expense_id);
+
+                // How much real money is there left which can then be refunded.
+                $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
+                if($moniesThatCanBeRefunded <= 0){
+                    if(!$silent)
+                        {
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense has no valid real monies left that can be refunded."));
+                        }
+                        $state_flag = false;
+                }
+
+            }
+
+            // Status Fall Back - I don't think this will ever be called, but safety first.
+            else
+            {
                 $state_flag = false;
             }
         }
 
         return $state_flag;
-
     }
 
     ############################################################# done
-    # Validate submitted information before allowing submission #
+    # Validate submitted information before allowing submission #  TODO: do i need silents on this code, probably not
     #############################################################
 
     public function checkRecordCanBeSubmitted($qform)
     {
+
         $state_flag = true;
 
-        // Check the submission is valid,
-        if(!$this->checkCreditnoteExpiryIsValid($qform['expiry_date']))
+        /** Sales Credit Note (Client) - (client:details) **/
+
+        // Used to refund real money to a client without an invoice, or they can use the credit to purchase other items
+        if($client_id && !$invoice)
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be submitted because there is an issue with the expiry date."));
+            // Check there are no pending credit notes attached to the client
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, $client_id,))
+            {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a pending creditnote assigned to it."));
+                }
+                $state_flag = false;
+            }
+
+            // Dont allow this type of credit note (for now)
+            $state_flag = false;
+
+        }
+
+
+        /** Sales Credit Note (Invoice) - (invoice:details) **/
+
+        // Used to close invoices with outstanding balances without accepting or sending real money
+        elseif($client && $invoice_id)
+        {
+            /* Common Tests */
+
+            $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
+
+            // Is on a different tax system
+            if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the invoice is on another tax system."));
+                }
+                $state_flag = false;
+            }
+
+            // Check if there are any open credit notes issued against this invoice (Only 1 open credit note is allowed against this invoice at any time)
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, $invoice_id))
+            {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an open credit note assigned to it."));
+                }
+                $state_flag = false;
+            }
+
+            // Type 1 CR request (Credit) (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
+            if($invoice_details['status'] == 'partially_paid')
+            {
+                // Do nothing
+                // We are just closing with fake money
+                // All vouchers on invoices with this state are blocked and have never been used or activated
+                // When the CR is created the vouchers will be voided
+            }
+
+            // Type 2 CR request (Debit) (Refund monies to Clients)
+            elseif($invoice_details['status'] == 'paid')
+            {
+                // Are there any vouchers present, that are not voided, cancelled or deleted (cancelled and deleted are excluded by default from the count)
+                $voidedVouchersCount = $this->app->components->report->voucherCount('date', null, null, null, null, null, 'voided', null, null, null, $invoice_id);
+                $totalVouchersCount = $this->app->components->report->voucherCount('date', null, null, null, null, null, null, null, null, null, $invoice_id);
+                if($totalVouchersCount - $voidedVouchersCount){
+                    if(!$silent)
+                    {
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has vouchers that are not voided or cancelled on it so you cannot issue a refund."));
+                    }
+                    $state_flag = false;
+                }
+
+                // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a Type 1 CR and not gove free money to a client)
+                $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, null, $invoice_id);
+
+                // Get all payments against this invoice (real monies via credit notes)
+                $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', null, 'debit', null, null, null, $invoice_id);
+
+                // How much real money is there left which can then be refunded.
+                $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
+                if($moniesThatCanBeRefunded <= 0){
+                    if(!$silent)
+                        {
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has no valid real monies left that can be refunded."));
+                        }
+                        $state_flag = false;
+                }
+
+            }
+
+            // Status Fall Back - I don't think this will ever be called, but safety first.
+            else
+            {
+                $state_flag = false;
+            }
+
+        }
+
+
+        /** Purchase Credit Note (Supplier) - (supplier:details) **/
+
+        // Used to reduce the amount you owe your supplier, or record a refund received from a supplier.
+        // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
+        elseif($supplier_id && !$expense_id)
+        {
+            // Check there are no pending credit notes attached to the supplier
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $supplier_id))
+            {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a pending creditnote assigned to it."));
+                }
+                $state_flag = false;
+            }
+
+            // Dont allow this type of credit note (for now)
             $state_flag = false;
         }
 
-        // Current credit note details stored in the database
-        $creditnote_details = $this->app->components->creditnote->getRecord($qform['creditnote_id']);
 
-        // Check there is a positive unit_gross
-        if($qform['unit_gross'] <= 0)
+        /** Purchase Credit Note (Expense) - (expense:details) **/
+
+        // Used to reduce the amount you owe on an expense, or record a refund received from a supplier against an expense.
+        // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
+        elseif(!$supplier && $expense_id)
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot have a negative or zero gross amount."));
-            $state_flag = false;
-        }
+            /* Common Tests */
 
+            $expense_details = $this->app->components->expense->getRecord($expense_id);
 
-
-        // TODO: in this section i figure out whihc type of CR it is and how this relates to the Type
-        // NB: some of this work is already done in can CR be created. whihc needs finishing
-
-
-        // If CR is created from an Invoice
-        if($qform['invoice_id'])
-        {
-            $invoice_details = $this->app->components->invoice->getRecord($qform['invoice_id']);
-
-            // Submitted unit_gross cannot be greater than the invoice unit_gross
-            if($qform['unit_gross'] > $invoice_details['unit_gross'])
-            {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be submitted because it's gross amount is greater than the linked invoices's gross amount."));
+            // Is on a different tax system
+            if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the expense is on another tax system."));
+                }
                 $state_flag = false;
             }
 
-            // Submitted unit_gross cannot be greater that outstanding balance on invoice
-            if($qform['unit_gross'] > $invoice_details['balance'] + $creditnote_details['unit_gross'])
+            // Check if there are any open credit notes issued against this expense (Only 1 open credit note is allowed against this exepsne at any time)
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, $expense_id))
             {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be submitted because it's gross amount is greater than the linked invoices's remaining balance."));
-                $state_flag = false;
-            }
-        }
-
-        // If CR is created from an Expense
-        elseif($qform['expense_id'])
-        {
-            $expense_details = $this->app->components->expense->getRecord($qform['expense_id']);
-
-            // Submitted unit_gross cannot be greater than the expense unit_gross
-            if($qform['unit_gross'] > $expense_details['unit_gross'])
-            {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be submitted because it's gross amount is greater than the linked expenses's gross amount."));
+                if(!$silent)
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense already has an open credit note assigned to it."));
+                }
                 $state_flag = false;
             }
 
-            // Submitted unit_gross cannot be greater that outstanding balance on expense
-            if($qform['unit_gross'] > $expense_details['balance'] + $creditnote_details['unit_gross'])
+            // Type 1 CR request (Credit) (Used to clear expense balance) (expenses with no balance should be cancelled and not cleared with a CR)
+            if($expense_details['status'] == 'partially_paid')
             {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be submitted because it's gross amount is greater than the linked expenses's remaining balance."));
+                // Do nothing
+                // We are just closing with fake money
+            }
+
+            // Type 2 CR request (Debit) (Refund monies to Suppliers)
+            elseif($expense_details['status'] == 'paid')
+            {
+                // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a Type 1 CR and not gove free money to a client)
+                $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', 'real_monies', 'debit', null, null, null, null, $expense_id);
+
+                // Get all payments against this invoice (real monies via credit notes)
+                $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', null, 'credit', null, null, null, null, $expense_id);
+
+                // How much real money is there left which can then be refunded.
+                $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
+                if($moniesThatCanBeRefunded <= 0){
+                    if(!$silent)
+                        {
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense has no valid real monies left that can be refunded."));
+                        }
+                        $state_flag = false;
+                }
+
+            }
+
+            // Status Fall Back - I don't think this will ever be called, but safety first.
+            else
+            {
                 $state_flag = false;
             }
-        }
-        // Standalone CR
-        else
-        {
-            // If CR is created from a Client
-            if($qform['client_id']){}
-
-            // If CR is created from a Supplier
-            if($qform['supplier_id']){}
         }
 
         return $state_flag;
@@ -1235,7 +1398,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
+        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because it has transactions against it."));
             $state_flag = false;
         }*/
@@ -1277,8 +1440,6 @@ class Creditnote extends Components {
 
         // Is Pending
         if($creditnote_details['status'] == 'pending') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it is pending."));
-            $state_flag = false;
         }
 
         // Is Unused
@@ -1310,7 +1471,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, $creditnote_id)) {
+        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has transactions against it."));
             $state_flag = false;
         }*/
@@ -1375,7 +1536,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, $creditnote_id)) {
+        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null,  null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has transactions against it."));
             $state_flag = false;
         }*/
@@ -1440,7 +1601,7 @@ class Creditnote extends Components {
         }
 
         /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
+        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has transactions against it."));
             $state_flag = false;
         }*/
