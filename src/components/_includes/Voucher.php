@@ -350,6 +350,7 @@ class Voucher extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restrict_statuses) {
+            //$sql .= "\nWHERE status_key NOT IN ('pending', 'unpaid', 'partially_paid', 'partially_redeemed', 'suspended', 'voided', 'cancelled', 'deleted')";
             $sql .= "\nWHERE status_key IN ('paid', 'suspended')";
         }
 
@@ -622,9 +623,9 @@ class Voucher extends Components {
         return;
     }
 
-    ############################################  // This is only triggered when there is a change in invoice status
-    #  Invoice Totals have changed - process   #  // when i update an invoice and the totals are recalculated, the vouchers need their status recalculating and setting
-    ############################################  // This should not be available once a voucher has been used
+    ############################################  // This is only triggered when there is a change in invoice status, or voiding vouchers
+    #  Invoice Totals have changed - process   #
+    ############################################
 
     public function updateInvoiceVouchersStatuses($invoice_id, $invoice_new_status = null, $vouchers_new_status = null)
     {
@@ -659,42 +660,46 @@ class Voucher extends Components {
                 case 'collections':
                     $vouchers_new_status = 'suspended';
                     break;
+                case 'cancelled':
+                    // Cancel vouchers (this happens when you cancel the invoice) - from cancelInvoiceVouchers() - records have already been checked that they allow cancellation
+                    while(!$rs->EOF)
+                    {
+                        // Cancel Voucher
+                        $this->cancelRecord($rs->fields['voucher_id']);
+
+                        // Advance the loop to the next record
+                        $rs->MoveNext();
+                    }
+                    break;
+                case 'deleted':
+                    // Delete vouchers (this happens when you delete the invoice) - from deleteInvoiceVouchers() - records have already been checked that they allow deletion
+                    while(!$rs->EOF)
+                    {
+                        // Delete Voucher
+                        $this->deleteRecord($rs->fields['voucher_id']);
+
+                        // Advance the loop to the next record
+                        $rs->MoveNext();
+                    }
+                    break;
             }
         }
 
-        // Is Cancelled (this happens when you cancel the invoice) - from cancelInvoiceVouchers() - records have already beend checked that they allow cancellation
-        if($invoice_new_status == 'cancelled') {
+        // Void Vouchers (called from creditnote:new)
+        if($vouchers_new_status == 'voided') {
 
             while(!$rs->EOF)
             {
-                // Cancel Voucher
-                $this->cancelRecord($rs->fields['voucher_id']);
+                // Void Voucher
+                $this->voidRecord($rs->fields['voucher_id']);
 
                 // Advance the loop to the next record
                 $rs->MoveNext();
             }
 
-            return;
-
         }
 
-        // Is Deleted (this happens when you delete the invoice) - from deleteInvoiceVouchers() - records have already beend checked that they allow deletion
-        elseif($invoice_new_status == 'deleted') {
-
-            while(!$rs->EOF)
-            {
-                // Delete Voucher
-                $this->deleteRecord($rs->fields['voucher_id']);
-
-                // Advance the loop to the next record
-                $rs->MoveNext();
-            }
-
-            return;
-
-        }
-
-        // Default Status change handler - this is when the vouchers have not been processed above with special routines but still need status changing
+        // Default Status change handler - this is when the vouchers have not been processed above (voided/cancelled/deleted) but still need status changing (eg pending/partially_paid/paid)
         elseif($vouchers_new_status)
         {
             while(!$rs->EOF)
@@ -709,8 +714,9 @@ class Voucher extends Components {
                 $rs->MoveNext();
             }
 
-            return;
         }
+
+        return;
 
     }
 
@@ -910,7 +916,7 @@ class Voucher extends Components {
     #   Check to see if the voucher is expired      # // This function will update the voucher status as required
     ################################################# // This will update the voucher for the purposes of tax and profit if newly expired
                                                       // This will all closed as expired, which is the same really
-    public function checkVoucherIsExpired($voucher_id) {
+    private function checkVoucherIsExpired($voucher_id) {
 
         $expired_status = false;
 
@@ -1014,7 +1020,7 @@ class Voucher extends Components {
 
     ###########################################################  // used by invoice manual status change routine
     #  Check if the voucher status is allowed to be changed   #  // used on voucher:status
-    ###########################################################  // can only swap between `paid` and 'suspended`
+    ###########################################################  // can only swap between `paid` and 'suspended`, and parent invoice must be paid
 
     public function checkRecordAllowsManualStatusChange($voucher_id, $checkParentInvoice = true, $silent = false) {
 
@@ -1052,6 +1058,8 @@ class Voucher extends Components {
                 case 'partially_paid':
                     $invoiceStatusMsg = _gettext("The voucher status cannot be changed because the parent invoice is partially paid.");
                     $state_flag = false;
+                    break;
+                case 'paid':
                     break;
                 case 'in_dispute':
                     $invoiceStatusMsg = _gettext("The voucher status cannot be changed because the parent invoice is in dispute.");
@@ -1288,7 +1296,7 @@ class Voucher extends Components {
     #  Check if a Voucher can be redeemed                        #
     ##############################################################  // $checkParentInvoice might not be invoked so is alway true
 
-    public function checkRecordAllowsRedeem($voucher_id, $redeem_invoice_id, $checkParentInvoice = true, $silent = false) {
+    public function checkMethodAllowsSubmit($voucher_id, $redeem_invoice_id, $checkParentInvoice = true, $silent = false) {
 
         $state_flag = true;
 
@@ -1432,11 +1440,8 @@ class Voucher extends Components {
     }
 
     ###############################################################
-    #   Check to see a voucher can be voided                      #  // Needed for voiding via button on voucher:status (checks parent invoice aswell)
-    ###############################################################  // used by invoice voiding routine
-
-    // ToDO: check all of these voiding descisions, I am not 100% they fully match cancelling
-    // should i add a manually voiding button = no
+    #   Check to see a voucher can be voided                      #
+    ###############################################################  // used by invoice voiding routine when you generate a CR
 
     public function checkRecordAllowsVoid($voucher_id, $checkParentInvoice = true, $silent = false) {
 
@@ -1464,16 +1469,16 @@ class Voucher extends Components {
             switch ($invoice_details['status'])
             {
                 case 'pending':
+                    $invoiceStatusMsg = _gettext("This voucher cannot be voided because the parent invoice is pending.");
+                    $state_flag = false;
                     break;
                 case 'unpaid':
+                    $invoiceStatusMsg = _gettext("This voucher cannot be voided because the parent invoice is unpaid.");
+                    $state_flag = false;
                     break;
                 case 'partially_paid':
-                    $invoiceStatusMsg = _gettext("This voucher cannot be voided because the parent invoice is partially paid.");
-                    $state_flag = false;
                     break;
                 case 'paid':
-                    $invoiceStatusMsg = _gettext("This voucher cannot be voided because the parent invoice is paid.");
-                    $state_flag = false;
                     break;
                 case 'in_dispute':
                     $invoiceStatusMsg = _gettext("This voucher cannot be voided because the parent invoice is in dispute.");
@@ -1487,7 +1492,7 @@ class Voucher extends Components {
                     $invoiceStatusMsg = _gettext("This voucher cannot be voided because the parent invoice is in collections.");
                     $state_flag = false;
                     break;
-                case 'voided':
+                case 'cancelled':
                     $invoiceStatusMsg = _gettext("This voucher cannot be cancelled because the parent invoice has been voided.");
                     $state_flag = false;
                     break;
@@ -1517,39 +1522,39 @@ class Voucher extends Components {
         switch ($voucher_details['status'])
         {
             case 'pending':
+                $voucherStatusMsg = _gettext("The voucher cannot be voided because it it pending.");
+                $state_flag = false;
                 break;
             case 'unpaid':
+                $voucherStatusMsg = _gettext("The voucher cannot be voided because it is unpaid.");
+                $state_flag = false;
                 break;
             case 'partially_paid':
-                $voucherStatusMsg = _gettext("The voucher cannot be voided because it has been partially paid.");
-                $state_flag = false;
                 break;
             case 'paid':
-                $voucherStatusMsg = _gettext("The voucher cannot be voided because it has been paid.");
-                $state_flag = false;
                 break;
             case 'partially_redeemed':
-                $voucherStatusMsg = _gettext("The voucher cannot be voided because it has been partially redeemed.");
+                $voucherStatusMsg = _gettext("This voucher cannot be voided because it has been partially redeemed.");
                 $state_flag = false;
                 break;
             case 'redeemed':
-                $voucherStatusMsg = _gettext("The voucher cannot be voided because it has been redeemed.");
+                $voucherStatusMsg = _gettext("This voucher cannot be voided because it has been redeemed.");
                 $state_flag = false;
                 break;
             case 'suspended':
-                $voucherStatusMsg = _gettext("The voucher cannot be voided because it has been suspended.");
+                $voucherStatusMsg = _gettext("This voucher cannot be voided because it has been suspended.");
                 $state_flag = false;
                 break;
             case 'voided':
-                $voucherStatusMsg = _gettext("The voucher cannot be voided because it has been voided.");
+                $voucherStatusMsg = _gettext("This voucher cannot be voided because it has been voided.");
                 $state_flag = false;
                 break;
             case 'cancelled':
-                $voucherStatusMsg = _gettext("The voucher cannot be voided because it has already been cancelled.");
+                $voucherStatusMsg = _gettext("This voucher cannot be voided because it has already been cancelled.");
                 $state_flag = false;
                 break;
             case 'deleted':
-                $voucherStatusMsg = _gettext("The voucher cannot be voided because it has been deleted.");
+                $voucherStatusMsg = _gettext("This voucher cannot be voided because it has been deleted.");
                 $state_flag = false;
                 break;
         }

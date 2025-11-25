@@ -32,13 +32,13 @@ class Payment extends Components {
     public static $disabledMethods = array();
     public static $timestamp = null;
 
-
     public function __construct()
     {
         // Unify Dates and Times
         $this::$timestamp = time();
 
         parent::__construct();
+
     }
 
     /** Insert Functions **/
@@ -1024,12 +1024,17 @@ class Payment extends Components {
         // Log activity here if the payment activity failed (otherwise activity would not get logged)
         if(!Payment::$payment_successful)
         {
-            // Update last active record
-            $this->updateLastActive(Payment::$payment_details['payment_id'], Payment::$timestamp);
-            $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'], Payment::$timestamp);
-            $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'], Payment::$timestamp);
-            $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'], Payment::$timestamp);
-
+            // Update last active records
+            if(Payment::$payment_details['payment_id'] ?? null) {
+                // if it is a new payment, then the payment record will not exist so it cannot be updated, but when you edit a payment it can be
+                $this->updateLastActive(Payment::$payment_details['payment_id'], Payment::$timestamp);
+            }
+            $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'] ?? null, Payment::$timestamp);
+            $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'] ?? null, Payment::$timestamp);
+            $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'] ?? null, Payment::$timestamp);
+            $this->app->components->expense->updateLastActive(Payment::$payment_details['expense_id'] ?? null, Payment::$timestamp);
+            $this->app->components->creditnote->updateLastActive(Payment::$payment_details['creditnote_id'] ?? null, Payment::$timestamp);
+            $this->app->components->otherincome->updateLastActive(Payment::$payment_details['otherincome_id'] ?? null, Payment::$timestamp);
         }
 
     }

@@ -65,11 +65,8 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Otherincome ID{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$payment_details.otherincome_id}">{$payment_details.otherincome_id}</a></td>
-                                            <td class="menutd">
-                                                <b>{t}Creditenote ID{/t}</b><br>
-                                                <b>{t}Credit Note Action{/t}<b>
-                                            </td>
-                                            <td class="menutd"></td>
+                                            <td class="menutd"><b>{t}Credit Note ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$payment_details.creditnote_id}">{$payment_details.creditnote_id}</a><br></td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Type{/t}</b></td>

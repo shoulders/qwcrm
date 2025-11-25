@@ -831,7 +831,7 @@ class Creditnote extends Components {
     #   Check to see if the creditnote is expired   # // This function will update the credit note status as required
     ################################################# done
 
-    public function checkCreditnoteIsExpired($creditnote_id) {
+    private function checkCreditnoteIsExpired($creditnote_id) {
 
         $expired_status = false;
 
@@ -960,16 +960,6 @@ class Creditnote extends Components {
                 $state_flag = false;
             }
 
-            // Is the client active
-            if(!$invoice_details['client_id'])
-            {
-                if(!$silent)
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a credit note against it."));
-                }
-                $state_flag = false;
-            }
-
             // Check if there are any open credit notes issued against this invoice (Only 1 open credit note is allowed against this invoice at any time)
             if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, $invoice_id))
             {
@@ -992,13 +982,32 @@ class Creditnote extends Components {
             // Type 2 CR request (Debit) (Refund monies to Clients)
             elseif($invoice_details['status'] == 'paid')
             {
-                // Are there any vouchers present, that are not voided, cancelled or deleted (cancelled and deleted are excluded by default from the count)
+                // Is the client active
+                if(!$invoice_details['client_id'])
+                {
+                    if(!$silent)
+                    {
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a credit note against it."));
+                    }
+                    $state_flag = false;
+                }
+
+                /* Are there any vouchers present, that are not voided, cancelled or deleted (cancelled and deleted are excluded by default from the count)
                 $voidedVouchersCount = $this->app->components->report->voucherCount('date', null, null, null, null, null, 'voided', null, null, null, $invoice_id);
                 $totalVouchersCount = $this->app->components->report->voucherCount('date', null, null, null, null, null, null, null, null, null, $invoice_id);
                 if($totalVouchersCount - $voidedVouchersCount){
                     if(!$silent)
                     {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has vouchers that are not voided or cancelled on it so you cannot issue a refund."));
+                    }
+                    $state_flag = false;
+                }*/
+
+                // Check all the parent invoice's vouchers can be voided
+                if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowVoid($invoice_id)){
+                    if(!$silent)
+                    {
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has vouchers that cannot be voided so you cannot issue a refund."));
                     }
                     $state_flag = false;
                 }
@@ -1144,8 +1153,8 @@ class Creditnote extends Components {
 
     public function checkRecordCanBeSubmitted($qform)
     {
-
         $state_flag = true;
+
 
         /** Sales Credit Note (Client) - (client:details) **/
 
@@ -1153,12 +1162,9 @@ class Creditnote extends Components {
         if($client_id && !$invoice)
         {
             // Check there are no pending credit notes attached to the client
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, $client_id,))
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, $client_id))
             {
-                if(!$silent)
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a pending creditnote assigned to it."));
-                }
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a pending creditnote assigned to it."));
                 $state_flag = false;
             }
 
@@ -1179,20 +1185,14 @@ class Creditnote extends Components {
 
             // Is on a different tax system
             if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-                if(!$silent)
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the invoice is on another tax system."));
-                }
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the invoice is on another tax system."));
                 $state_flag = false;
             }
 
             // Check if there are any open credit notes issued against this invoice (Only 1 open credit note is allowed against this invoice at any time)
             if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, $invoice_id))
             {
-                if(!$silent)
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an open credit note assigned to it."));
-                }
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an open credit note assigned to it."));
                 $state_flag = false;
             }
 
@@ -1208,7 +1208,7 @@ class Creditnote extends Components {
             // Type 2 CR request (Debit) (Refund monies to Clients)
             elseif($invoice_details['status'] == 'paid')
             {
-                // Are there any vouchers present, that are not voided, cancelled or deleted (cancelled and deleted are excluded by default from the count)
+                /* Are there any vouchers present, that are not voided, cancelled or deleted (cancelled and deleted are excluded by default from the count)
                 $voidedVouchersCount = $this->app->components->report->voucherCount('date', null, null, null, null, null, 'voided', null, null, null, $invoice_id);
                 $totalVouchersCount = $this->app->components->report->voucherCount('date', null, null, null, null, null, null, null, null, null, $invoice_id);
                 if($totalVouchersCount - $voidedVouchersCount){
@@ -1216,6 +1216,12 @@ class Creditnote extends Components {
                     {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has vouchers that are not voided or cancelled on it so you cannot issue a refund."));
                     }
+                    $state_flag = false;
+                }*/
+
+                // Check all the parent invoice's vouchers can be voided
+                if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowVoid($invoice_id)){
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has vouchers that cannot be voided so you cannot issue a refund."));
                     $state_flag = false;
                 }
 
@@ -1228,11 +1234,8 @@ class Creditnote extends Components {
                 // How much real money is there left which can then be refunded.
                 $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
                 if($moniesThatCanBeRefunded <= 0){
-                    if(!$silent)
-                        {
-                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has no valid real monies left that can be refunded."));
-                        }
-                        $state_flag = false;
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has no valid real monies left that can be refunded."));
+                    $state_flag = false;
                 }
 
             }
@@ -1255,10 +1258,7 @@ class Creditnote extends Components {
             // Check there are no pending credit notes attached to the supplier
             if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $supplier_id))
             {
-                if(!$silent)
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a pending creditnote assigned to it."));
-                }
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a pending credit note assigned to it."));
                 $state_flag = false;
             }
 
@@ -1279,20 +1279,14 @@ class Creditnote extends Components {
 
             // Is on a different tax system
             if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
-                if(!$silent)
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the expense is on another tax system."));
-                }
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the expense is on another tax system."));
                 $state_flag = false;
             }
 
             // Check if there are any open credit notes issued against this expense (Only 1 open credit note is allowed against this exepsne at any time)
             if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, $expense_id))
             {
-                if(!$silent)
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense already has an open credit note assigned to it."));
-                }
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense already has an open credit note assigned to it."));
                 $state_flag = false;
             }
 
@@ -1315,11 +1309,8 @@ class Creditnote extends Components {
                 // How much real money is there left which can then be refunded.
                 $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
                 if($moniesThatCanBeRefunded <= 0){
-                    if(!$silent)
-                        {
-                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense has no valid real monies left that can be refunded."));
-                        }
-                        $state_flag = false;
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense has no valid real monies left that can be refunded."));
+                    $state_flag = false;
                 }
 
             }
@@ -1346,14 +1337,14 @@ class Creditnote extends Components {
 
         $state_flag = true;
 
+        // Get the creditnote details
+        $creditnote_details = $this->getRecord($creditnote_id);
+
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because it has expired."));
             $state_flag = false;
         }
-
-        // Get the creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -1361,48 +1352,33 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        // Is Pending
-        if($creditnote_details['status'] == 'pending') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote is pending."));
-            $state_flag = false;
+        // Status checks
+        switch($creditnote_details['status']) {
+            case 'pending':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote is pending."));
+                $state_flag = false;
+                break;
+            case 'unused':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote is unused."));
+                $state_flag = false;
+                break;
+            case 'partially_used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has payments and is partially used."));
+                $state_flag = false;
+                break;
+            case 'used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has payments and is used."));
+                $state_flag = false;
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has been cancelled."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has been deleted."));
+                $state_flag = false;
+                break;
         }
-
-        // Is Unused
-        if($creditnote_details['status'] == 'unused') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote is unused."));
-            $state_flag = false;
-        }
-
-        // Is Partially Used
-        if($creditnote_details['status'] == 'partially_used') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has payments and is partially used."));
-            $state_flag = false;
-        }
-
-        // Is Used
-        if($creditnote_details['status'] == 'used') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has payments and is used."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($creditnote_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($creditnote_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because the creditnote has been deleted."));
-            $state_flag = false;
-        }
-
-        /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote status cannot be changed because it has transactions against it."));
-            $state_flag = false;
-        }*/
-
 
         return $state_flag;
 
@@ -1417,14 +1393,14 @@ class Creditnote extends Components {
 
         $state_flag = true;
 
+        // Get the creditnote details
+        $creditnote_details = $this->getRecord($creditnote_id);
+
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has expired."));
             $state_flag = false;
         }
-
-        // Get the creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -1438,43 +1414,29 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        // Is Pending
-        if($creditnote_details['status'] == 'pending') {
+        // Status checks
+        switch($creditnote_details['status']) {
+            case 'pending':
+                break;
+            case 'unused':
+                break;
+            case 'partially_used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be cancelled because it is partially used."));
+                $state_flag = false;
+                break;
+            case 'used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it is used."));
+                $state_flag = false;
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has already been cancelled."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has been deleted."));
+                $state_flag = false;
+                break;
         }
-
-        // Is Unused
-        if($creditnote_details['status'] == 'unused') {
-        }
-
-        // Is Partially Used
-        if($creditnote_details['status'] == 'partially_used') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be cancelled because it is partially used."));
-            $state_flag = false;
-        }
-
-        // Is Used
-        if($creditnote_details['status'] == 'used') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it is used."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($creditnote_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has already been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($creditnote_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has been deleted."));
-            $state_flag = false;
-        }
-
-        /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has transactions against it."));
-            $state_flag = false;
-        }*/
 
         return $state_flag;
 
@@ -1488,14 +1450,14 @@ class Creditnote extends Components {
 
         $state_flag = true;
 
+        // Get the creditnote details
+        $creditnote_details = $this->getRecord($creditnote_id);
+
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has expired."));
             $state_flag = false;
         }
-
-        // Get the creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -1503,43 +1465,29 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        // Is Pending
-        if($creditnote_details['status'] == 'pending') {
+        // Status checks
+        switch($creditnote_details['status']) {
+            case 'pending':
+                break;
+            case 'unused':
+                break;
+            case 'partially_used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it is partially used."));
+                $state_flag = false;
+                break;
+            case 'used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it is used."));
+                $state_flag = false;
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has been cancelled."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has already been deleted."));
+                $state_flag = false;
+                break;
         }
-
-        // Is Unused
-        if($creditnote_details['status'] == 'unused') {
-        }
-
-        // Is Partially Used
-        if($creditnote_details['status'] == 'partially_used') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it is partially used."));
-            $state_flag = false;
-        }
-
-        // Is Used
-        if($creditnote_details['status'] == 'used') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it is used."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($creditnote_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($creditnote_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has already been deleted."));
-            $state_flag = false;
-        }
-
-        /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null,  null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be deleted because it has transactions against it."));
-            $state_flag = false;
-        }*/
 
         return $state_flag;
 
@@ -1549,9 +1497,12 @@ class Creditnote extends Components {
     #  Check if the creditnote status allows it to be Edited    #
     #############################################################
 
-     public function checkRecordAllowsEdit($creditnote_id) {
+    public function checkRecordAllowsEdit($creditnote_id) {
 
         $state_flag = true;
+
+        // Get the creditnote details
+        $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
@@ -1559,52 +1510,11 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        // Get the creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
-
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is on a different Tax system."));
             $state_flag = false;
         }
-
-        // Is Pending
-        if($creditnote_details['status'] == 'pending') {
-        }
-
-        // Is Unused
-        if($creditnote_details['status'] == 'unused') {
-        }
-
-        // Is Partially Used
-        if($creditnote_details['status'] == 'partially_used') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it is partially used."));
-            $state_flag = false;
-        }
-
-        // Is Used
-        if($creditnote_details['status'] == 'used') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is used."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($creditnote_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($creditnote_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it has been deleted."));
-            $state_flag = false;
-        }
-
-        /* Has Transactions (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if(paymentCount('', null, null, null, null, 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be cancelled because it has transactions against it."));
-            $state_flag = false;
-        }*/
 
         // The current record VAT code is enabled
         if(!$this->checkVatTaxCodeStatuses($creditnote_id)) {
@@ -1612,7 +1522,303 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
+        // Status checks
+        switch($creditnote_details['status']) {
+            case 'pending':
+                break;
+            case 'unused':
+                break;
+            case 'partially_used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it is partially used."));
+                $state_flag = false;
+                break;
+            case 'used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it is used."));
+                $state_flag = false;
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it has been cancelled."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be edited because it has been deleted."));
+                $state_flag = false;
+                break;
+        }
+
         return $state_flag;
+
+    }
+
+    ##############################################################  // For (closing invoices and expenses | using store credit given to clients and suppliers)
+    #  Check if a CR can be used as a payment Method (credit)    #  // This does not handle balance and submitted payment values on purpose
+    ##############################################################  // $creditnote_details = the credit note being used, $payment_details = the payment method
+
+    public function checkMethodAllowsSubmit(array $creditnote_details, array $payment_details) {
+
+        $state_flag = true;
+
+        // Cannot be used to pay on another Credit Note - This should not be an issue here, but this is just incase
+        if($payment_details['creditnote_id'] ?? null) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be applied against another creditnote. You should not be seeing this message, report to admins."));
+            $state_flag = false;
+            return $state_flag;
+        }
+
+        /* Cannot be used to pay on itself - This should not be an issue here, but this is just incase
+        if($creditnote_details['creditnote_id'] ==  $payment_details['creditnote_id'] ?? null) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be applied against itself. You should not be seeing this message, report to admins."));
+            $state_flag = false;
+            return $state_flag;
+        }*/
+
+        // Is Expired (Live Check)
+        if($this->checkCreditnoteIsExpired($creditnote_details['creditnote_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be used because it has expired."));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be used because it is on a different Tax system."));
+            $state_flag = false;
+        }
+
+        // Status Checks (Credit Note)
+        switch ($creditnote_details['status']) {
+            case 'pending':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be used because it is pending."));
+                $state_flag = false;
+                break;
+            case 'unused':
+                break;
+            case 'partially_used':
+                break;
+            case 'used':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be used because it has already been used."));
+                $state_flag = false;
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be used because it has been cancelled."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be used because it has been deleted."));
+                $state_flag = false;
+                break;
+        }
+
+        /** Sales Credit Note **/
+
+        if($creditnote_details['client_id']) {
+
+            /* Common */
+
+            // Is the client active
+            if($this->app->components->client->getRecord($creditnote_details['client_id'], 'active')) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this client because they are not active."));
+                $state_flag = false;
+            }
+
+            // CR can only be applied to any of the specified client's invoices
+            if($creditnote_details['client_id'] != $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'client_id')){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this invoice. It can only be used against invoices belonging to the client this credit note was issued to."));
+                $state_flag = false;
+            }
+                /* Same function as above but slightly different
+                You can only apply a CR to an invoice belonging to the Client it was created from (standalone)
+                if($this->creditnote_details['client_id'] != $this->app->components->payment->paymentType->invoice_details['client_id'])
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against an invoice belonging to the client it is linked with.").' '._gettext("Client").': '.$this->creditnote_details['client_id']);
+                    Payment::$payment_valid = false;
+                }*/
+
+            /* Sales Credit Note (Client) - (client:details) */
+
+            // Used to refund real money to a client without an invoice, or they can use the credit to purchase other items **/
+            if(!$creditnote_details['invoice_id']) {
+
+                // Do Nothing TODO: currently - Is this correct?
+
+            }
+
+            /* Sales Credit Note (Invoice) - (invoice:details) */
+
+            // Used to close invoices with outstanding balances without accepting or sending real money to the client || Used to refund an invoice with real money or they can use the credit to purchase other items **/
+            elseif($creditnote_details['invoice_id']) {
+
+                // Invoice on a different tax system
+                if($this->app->components->invoice->getRecord($payment_details['invoice_id'], 'tax_system') != QW_TAX_SYSTEM) {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this invoice because it is on a different Tax system."));
+                    $state_flag = false;
+                }
+
+                // Status Checks (CR Parent Invoice)
+                switch ($this->app->components->invoice->getRecord($creditnote_details['invoice_id'], 'status')) {
+                    /*case 'pending':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice is pending and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'unpaid':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has no payments and should be cancelled, not closed with a credit note. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;*/
+                    case 'partially_paid':
+                        // Type 1 CR request (Credit) (Used to clear outstanding invoice balances) (invoices with no balance should be cancelled and not cleared with a CR)
+                        // A CR raised against an invoice with a partially paid balance is issued to close that invoice only, so it can only be used to close said invoice.
+                        // The target invoice must be the invoice the CR was raised against
+                        if($creditnote_details['invoice_id'] != $payment_details['invoice_id']) {
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this invoice. It must be used to close the invoice it was raised against."));
+                            $state_flag = false;
+                        }
+                            /* Same function as above but slightly different
+                            If this CR was created from an invoice, you can only apply this credit note against that client and the invoice it was linked with
+                            if($this->creditnote_details['invoice_id'] && $this->creditnote_details['invoice_id'] != $this->VAR['qpayment']['invoice_id'])
+                            {
+                                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against the invoice it is linked with.").' '._gettext("Invoice").': '.$this->creditnote_details['invoice_id']);
+                                Payment::$payment_valid = false;
+                            }*/
+                        break;
+                    case 'paid':
+                        // Type 2 CR request (Debit) (Refund monies to Clients or allow them to use the CR on another invoice, the code here only controls the use of the CR as a payment method)
+
+                        // Do Nothing TODO: currently - Is this correct?
+
+                        break;
+                    /*case 'in_dispute':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'overdue':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'collections':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'cancelled':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is cancelled and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'deleted':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is deleted and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;*/
+                    default:
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice status does not allow payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                }
+
+            }
+        }
+
+        /** Purchase Credit Note  **/
+
+        elseif($creditnote_details['supplier_id']){
+
+            /* Common */
+
+            // Is the supplier active
+            if($this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'status') != 'active') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this supplier because they are not active."));
+                $state_flag = false;
+            }
+
+            // CR can only be applied to any of the specified suppliers's expenses
+            if($creditnote_details['supplier_id'] != $this->app->components->expense->getRecord($payment_details['expense_id'], 'supplier_id')){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this expense. It can only be used against expense belonging to the supplier this credit note was issued to."));
+                $state_flag = false;
+            }
+                /* Same function as above but slightly different
+                You can only apply a CR to an expense belonging to the Supplier it was created from (standalone)
+                if($this->creditnote_details['supplier_id'] != $this->app->components->payment->paymentType->expense_details['supplier_id'])
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against an expense belonging to the supplier it is linked with.").' '._gettext("Supplier").': '.$this->creditnote_details['supplier_id']);
+                    Payment::$payment_valid = false;
+                }
+                */
+
+            /* Purchase Credit Note (Supplier) - (supplier:details) */
+
+            // Used to reduce the amount you owe your supplier, or record a refund received from a supplier.
+            // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
+            if(!$creditnote_details['expense_id']){
+
+                // Do Nothing TODO: currently - Is this correct?
+
+            }
+
+            /* Purchase Credit Note (Expense) - (expense:details) */
+
+            // Used to reduce the amount you owe on an expense, or record a refund received from a supplier against an expense.
+            // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
+            elseif($creditnote_details['expense_id']){
+
+                // Expense on a different tax system
+                if($this->app->components->expense->getRecord($payment_details['expense_id'], 'tax_system') != QW_TAX_SYSTEM) {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this expense because it is on a different Tax system."));
+                    $state_flag = false;
+                }
+
+                // TODO: is this valid herer - If this CR was created from an expense, you can only apply this credit note against that expense and supplier it was linked with
+                if($creditnote_details['expense_id'] && $creditnote_details['expense_id'] != $this->VAR['qpayment']['expense_id'])
+                {
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against the expense it is linked with.").' '._gettext("Expense").': '.$creditnote_details['expense_id']);
+                   $state_flag = false;
+                }
+
+                // Status Checks (CR Parent Expense)
+                switch ($this->app->components->expense->getRecord($creditnote_details['expense_id'], 'status')) {
+                    /*case 'pending':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense is pending and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'unpaid':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense has no payments and should be cancelled, not closed with a credit note. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;*/
+                    case 'partially_paid':
+                        // Type 1 CR request (Credit) (Used to clear outstanding expense balances) (expenses with no balance should be cancelled and not cleared with a CR)
+                        // A CR raised against an expense with a partially paid balance is issued to close that expense only, so it can only be used to close said expense.
+                        // The target expense must be the expense the CR was raised against
+                        if($creditnote_details['expense_id'] != $payment_details['expense_id']) {
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this expense. It must be used to close the expense it was raised against."));
+                            $state_flag = false;
+                        }
+                        break;
+                    case 'paid':
+                        // Type 2 CR request (Debit) (Refund monies to Suppliers or allow the CR to be used against another of their expenses) (the code here only controls the use of the CR as a payment method)
+
+                        // Do Nothing TODO: currenlty, is this this the best desicions
+
+                        break;
+                    /*case 'cancelled':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is cancelled and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'deleted':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is deleted and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;*/
+                    default:
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense status does not allow payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+            }
+
+        }
+
+        // Status Fall Back - I don't think this will ever be called, but safety first.
+        else
+        {
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+        }
 
     }
 

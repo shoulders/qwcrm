@@ -518,7 +518,8 @@ defined('_QWEXEC') or die;
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'in_dispute', 'overdue', 'collections', 'cancelled', 'deleted')";
+            $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'in_dispute', 'overdue', 'collections')";
+            //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid',  'cancelled', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -871,28 +872,34 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been partially paid."));
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been is paid."));
-            $state_flag = false;
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been deleted."));
-            $state_flag = false;
+        // Status checks
+        switch($invoice_details['status']) {
+            case'pending':
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been partially paid."));
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been is paid."));
+                $state_flag = false;
+                break;
+            case 'in_dispute':
+                break;
+            case 'overdue':
+                break;
+            case 'collections':
+                break;
+            case 'cancelled':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been cancelled."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been deleted."));
+                $state_flag = false;
+                break;
         }
 
         /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
@@ -901,11 +908,12 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }*/
 
-        // Does the invoice have any Vouchers preventing changing the invoice status
+        /* Does the invoice have any Vouchers preventing changing the invoice status
+        --> when you change the invoice status - once the invoice is paid, it's status cannot be manually changed
+            the vouchers status are now mirrored using updateInvoiceVouchersStatuses()
         if($this->app->components->report->voucherCount('date', null, null, null, null, null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has Vouchers."));
-            $state_flag = false;
-        }
+            $s*/
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {

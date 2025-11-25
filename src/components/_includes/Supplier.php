@@ -210,6 +210,7 @@ class Supplier extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
+            //$sql .= "\nWHERE status_key NOT IN ('cancelled', 'deleted')";
             $sql .= "\nWHERE status_key IN ('active', 'suspended')";
         }
 
@@ -474,25 +475,25 @@ class Supplier extends Components {
     #  Check if the supplier status is allowed to be changed  #  // not currently used
     ###########################################################
 
-     public function checkRecordAllowsManualStatusChange($supplier_id) {
+    public function checkRecordAllowsManualStatusChange($supplier_id) {
 
         $state_flag = true;
 
         // Get the supplier details
         $supplier_details = $this->getRecord($supplier_id);
 
-        // status checks
+        // Status checks
         switch ($supplier_details['status']) {
             case 'active':
                 break;
             case 'suspended':
                 break;
             case 'cancelled':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be changed because the supplier has been cancelled."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier's status cannot be changed because the supplier has been cancelled."));
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be changed because the supplier has been deleted."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier's status cannot be changed because the supplier has been deleted."));
                 $state_flag = false;
                 break;
 
@@ -500,7 +501,7 @@ class Supplier extends Components {
 
         return $state_flag;
 
-     }
+    }
 
 
     ###############################################################

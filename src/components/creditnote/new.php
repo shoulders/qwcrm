@@ -28,7 +28,6 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     if(\CMSApplication::$VAR['client_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('client', 'details'))
     {
         $record['client_id'] = \CMSApplication::$VAR['client_id'];
-
         $record['type'] = 'sales';
         $record['reference'] = _gettext("Client").': '.\CMSApplication::$VAR['client_id'];
         $record['sales_tax_rate'] = 0.00;
@@ -38,12 +37,16 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     // Sales Credit Note (Invoice) - (invoice:details)
     elseif(\CMSApplication::$VAR['invoice_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details'))
     {
-        $record['invoice_id'] = \CMSApplication::$VAR['invoice_id'];
-        $record['client_id'] = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'client_id');
+        $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
 
+        // Void all of the parent invoice's vouchers (their ability to voided has already been checked)
+        $this->app->components->voucher->updateInvoiceVouchersStatuses(\CMSApplication::$VAR['invoice_id'], null, 'voided');
+
+        $record['invoice_id'] = \CMSApplication::$VAR['invoice_id'];
+        $record['client_id'] = $invoice_details['client_id'];
         $record['type'] = 'sales';
         $record['reference'] = _gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'];
-        $record['sales_tax_rate'] = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'sales_tax_rate');
+        $record['sales_tax_rate'] = $invoice_details['sales_tax_rate'];
 
         // Get invoice items with voucher records merged as standard items
         $creditnote_items = $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'], true);
@@ -60,11 +63,10 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     elseif(\CMSApplication::$VAR['supplier_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('supplier', 'details'))
     {
         $record['supplier_id'] = \CMSApplication::$VAR['supplier_id'];
-
         $record['type'] = 'purchase';
         $record['reference'] = _gettext("Supplier").': '.\CMSApplication::$VAR['supplier_id'] ;
         $record['sales_tax_rate'] = 0.00;
-        $creditnote_items = array();    // This will not have items but i might add a single one manually
+        $creditnote_items = array();    // This will not have items, but i might add a single one manually
     }
 
     // Purchase Credit Note (Expense) - (expense:details)
@@ -72,7 +74,6 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     {
         $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
         $record['supplier_id'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'supplier_id');
-
         $record['type'] = 'purchase';
         $record['reference'] = _gettext("Expense").': '.\CMSApplication::$VAR['expense_id'] ;
         $record['sales_tax_rate'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'sales_tax_rate');
@@ -108,7 +109,6 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $creditnote_items[0]['subtotal_gross'] = $expense_details['unit_gross'];
         */
     }
-
 
     // Compensate for multiple entry points
     $record['client_id'] ??= null;
