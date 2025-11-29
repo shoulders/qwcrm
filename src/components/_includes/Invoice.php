@@ -1147,7 +1147,7 @@ defined('_QWEXEC') or die;
 
         $items_subtotals        = $this->getItemsSubtotals($invoice_id);
         $voucher_subtotals      = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);
-        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'invoice', null, null, null, null, $invoice_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'invoice', null, 'credit', null, null, null, $invoice_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net'];

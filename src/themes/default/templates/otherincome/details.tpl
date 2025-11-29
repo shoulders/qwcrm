@@ -41,6 +41,8 @@
                                                 <td class="row2"><b>{t}Due Date{/t}</b></td>
                                                 <td class="row2"><b>{t}Status{/t}</b></td>
                                                 <td class="row2"><b>{t}Gross{/t}</b></td>
+                                                <td class="row2"><b>{t}Balance{/t}</b></td>
+                                                <td class="row2"><b>{t}Date Closed{/t}</b></td>
                                             </tr>
                                             <tr class="olotd4">
                                                 <td>{$otherincome_id}</td>
@@ -58,6 +60,8 @@
                                                     {/section}
                                                 </td>
                                                 <td>{$currency_sym}{$otherincome_details.unit_gross|string_format:"%.2f"}</td>
+                                                <td><font color="#cc0000">{$currency_sym}{$otherincome_details.balance|string_format:"%.2f"}</font></td>
+                                                <td>{$otherincome_details.closed_on|date_format:$date_format}</td>
                                             </tr>
 
                                             <!-- Otherincome Details -->

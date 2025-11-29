@@ -875,7 +875,7 @@ class Expense extends Components {
     public function recalculateTotals($expense_id) {
 
         $items_subtotals        = $this->getItemsSubtotals($expense_id);
-        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'expense', null, null, null, null, null, $expense_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'expense', null, 'debit', null, null, null, null, $expense_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];

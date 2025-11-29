@@ -127,6 +127,7 @@ $this->app->smarty->assign('payment_type',                      \CMSApplication:
 $this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes()                                                             );
 $this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods()                                                           );
 $this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses()                                                          );
+$this->app->smarty->assign('payment_directions',                $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes()                                                 );
 $this->app->smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
 $this->app->smarty->assign('voucher_code',                      \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null);

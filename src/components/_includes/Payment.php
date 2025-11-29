@@ -1008,7 +1008,7 @@ class Payment extends Components {
         if(Payment::$payment_valid)
         {
             $this->paymentMethod->process();  // Insert/edit/cancel/delete database operations
-            $this->paymentType->process();    // Recalcualtion of type records
+            $this->paymentType->process();    // Recalculation of type records
         }
 
         // Final things like set messages and redirects based on results
