@@ -58,7 +58,7 @@
                 <tr>
                     <td>
                         <p>{t}Select Payment Method{/t}</p>
-                        <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required>
+                        <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required{if $creditNoteInputreadonly} readonly{/if}>
                             <option selected hidden disabled></option>
                             {section name=s loop=$payment_active_methods}
                                 <option value="{$payment_active_methods[s].method_key}"{if $payment_active_methods[s].method_key === $payment_method} selected{/if}>{t}{$payment_active_methods[s].display_name}{/t}</option>
@@ -439,8 +439,8 @@
                                                     } );
                                                 </script>
                                             </td>
-                                            <td><input name="qpayment[creditnote_id]" class="paymentInput olotd5" size="32" value="{$creditnote_id}" type="text" maxlength="16" required onkeydown="return onlyNumber(event);" disabled></td>
-                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                                <td><input name="qpayment[creditnote_id]" class="paymentInput olotd5" size="32" value="{$creditnote_id}" type="text" maxlength="16" required onkeydown="return onlyNumber(event);" disabled{if $creditNoteInputreadonly} readonly{/if}></td>
+                                            <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled{if $creditNoteInputreadonly} readonly{/if}></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>

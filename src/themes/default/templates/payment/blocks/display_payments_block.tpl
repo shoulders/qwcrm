@@ -64,12 +64,12 @@
                 {if $display_payments.records[p].additional_info|paymentadinfodisplay}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_payments.records[p].additional_info|paymentadinfodisplay|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
-             </td>
+            </td>
             <td class="olotd4" nowrap>
                 {if $display_payments.records[p].note}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_payments.records[p].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
-             </td>
+            </td>
             <td class="olotd4" align="center" nowrap>
                 <a href="index.php?component=payment&page_tpl=details&payment_id={$display_payments.records[p].payment_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View the payment.{/t}');" onMouseOut="hideddrivetip();">

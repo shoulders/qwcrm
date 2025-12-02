@@ -48,7 +48,7 @@
                                                 <td>{$expense_id}</td>
                                                 <td>
                                                     {if $expense_details.supplier_id}
-                                                        <a href="index.php?component=supplier&page_tpl=details&supplier_id={$expense_details.supplier_id}">{$expense_details.supplier_id}</a><br>
+                                                        <a href="index.php?component=supplier&page_tpl=details&supplier_id={$expense_details.supplier_id}">{$expense_details.supplier_id}</a>
                                                     {/if}
                                                 </td>
                                                 <td><a href="index.php?component=user&page_tpl=details&user_id={$expense_details.employee_id}">{$employee_display_name}</a></td>

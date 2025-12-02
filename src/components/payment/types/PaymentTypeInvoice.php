@@ -9,244 +9,396 @@
 defined('_QWEXEC') or die;
 
 class PaymentTypeInvoice extends PaymentType
-{    
-    public $invoice_details = array();
-    
+{
+    private $invoice_details = array();
+
     public function __construct()
-    {    
-        parent::__construct();       
-        
-        // Set class variables
-        Payment::$payment_details['type'] = 'invoice';        
-        $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']); // only needed for smarty?
-        
+    {
+        parent::__construct();
+
+        // Get invoice details
+        $this->invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id']);
+
+        // Get payment variables compensating for new and exisiting payment records as sources
+        Payment::$payment_details['invoice_id'] = Payment::$payment_details['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'];
+        Payment::$payment_details['client_id'] = Payment::$payment_details['client_id'] ?? $this->invoice_details['client_id'];
+        Payment::$payment_details['type'] = Payment::$payment_details['type'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'];
+
+        //Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];
+        //Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = $this->invoice_details['invoice_id'];
+
         // Set Payment direction
-        $this->VAR['qpayment']['direction'] = 'credit';
-        
+        $this->VAR['qpayment']['direction'] = 'credit';  //TODO: should this be in payment details ??????
+
         // Disable Unwanted Payment Methods
         //Payment::$disabledMethods[] = '';
-        
-        // For logging and insertRecord()
-        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];        
-        Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = $this->invoice_details['invoice_id'];
-        
+
         // Set initial record balance
         Payment::$record_balance = (float) $this->invoice_details['balance'];
-                       
+
         // Assign Payment Type specific template variables
         $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));
-        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->invoice_details['client_id']));        
+        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->invoice_details['client_id']));
         $this->app->smarty->assign('invoice_details', $this->invoice_details);
-        $this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->getStatuses());        
+        $this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->getStatuses());
     }
-        
+
     // Pre-Processing - Prep/validate the data
     public function preProcess()
     {
-        parent::preProcess();        
-        
+        parent::preProcess();
+
+        // TODO: do this on expenses
+
+        // Load credit note details (if required)
+        if(Payment::$payment_details['method'] == 'creditnote'){
+            $creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['creditnote_id']);
+        }
+
+        // If this payment is not a Credit note payment, make sure there are no open credit notes (Type 1) attached to this invoice that need applying to this invoice first.
+        // This prevents any non-creditnote payment actions on the invoice while there are open credit notes (Type 1) attached to this invoice when it has a remaining balance.
+        // There will always be a single open CR (Type 1) if you are going to use it as a payment to close an invoice.
+        /*if(
+            Payment::$payment_details['method'] != 'creditnote' &&
+            (float) $this->invoice_details['balance'] &&
+            $this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, Payment::$payment_details['invoice_id'])
+        ){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Payment actions cannot be performed by this method on this invoice because it has an open credit note attached which needs applying to this invoice to close it first."));
+            Payment::$payment_valid = false;
+        }*/
+
         // New
         if(Payment::$action === 'new')
-        {            
-            // Do nothing
-        }        
-        
+        {
+            // Credit Note Method
+            if(Payment::$payment_details['method'] == 'creditnote'){
+                // Type 1 CR Payment - A partially paid invoice generated a credit note to close itself using this payment (invoice:details)
+                // There should only ever be one CR created from the invoice that is applied to the same invoice, resulting in a zero balance (i.e. Type 1 CR)
+                if($this->invoice_details['invoice_id'] == $creditnote_details['invoice_id'] && $creditnote_details['invoice_id'] == Payment::$payment_details['invoice_id']){
+
+                    // The Payment must be the exact amount to close the invoice
+                    // A Type 1 CR payment will always close the invoice balance in one payment
+                    if(Payment::$payment_details['amount'] != Payment::$record_balance){
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice requires the credit note payment to be equal to the remaining balance on the invoice so it can be closed which is ").$this->app->components->company->getRecord('currency_symbol').number_format($this->invoice_details['balance'], 2, '.'));
+                        Payment::$payment_valid = false;
+                    }
+                }
+
+                // Type 2 CR Payments - From CR generated from other invoices owned by the client (invoice:details), Client Standalone CR method (client:details)
+                else{
+                    // Invoice and credit note need the same client
+                    if($this->invoice_details['client_id'] != $creditnote_details['client_id']){
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot apply this credit note against this invoice because they are not both owned by the same client."));
+                        Payment::$payment_valid = false;
+                    }
+                }
+            }
+
+            // All Other Methods (i.e. not Credit Notes)
+            else{
+                // Does this invoice have any credit notes generated against it (this should never be called because if the invoice was closed with a Cr, you cannot add anymore payments).
+                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add a new payment to this invoice because it has one or more credit notes generated against it."));
+                    //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add a new payment to this invoice because it has been closed by a credit note."));
+                    Payment::$payment_valid = false;
+                }
+            }
+        }
+
         // Edit
         if(Payment::$action === 'edit')
-        {            
-           // Do nothing                       
+        {
+            // Credit Note Method
+            if(Payment::$payment_details['method'] == 'creditnote'){
+
+                // Type 1 CR Payment - A partially paid invoice generated a credit note to close itself using this payment (invoice:details)
+                // There should only ever be one CR created from the invoice that is applied to the same invoice, resulting in a zero balance (i.e. Type 1 CR)
+                if($this->invoice_details['invoice_id'] == $creditnote_details['invoice_id'] && $creditnote_details['invoice_id'] == Payment::$payment_details['invoice_id']){
+
+                    // Prevent editing the CR (Type 1) that closed this invoice. You can only delete this CR payment.
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a credit note payment that was used to close an invoice. You can only delete this payment."));
+                    Payment::$payment_valid = false;
+                }
+
+                // Type 2 CR Payments - From CR generated from other invoices owned by the client (invoice:details), Client Standalone CR method (client:details)
+                else{
+                    // Invoice and credit note need the same client
+                    if($this->invoice_details['client_id'] != $creditnote_details['client_id']){
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot apply this credit note against this invoice because they are not both owned by the same client."));
+                        Payment::$payment_valid = false;
+                    }
+                }
+            }
+
+            // All Other Methods (i.e. not Credit Notes)
+            else{
+                // Does this invoice have any credit notes generated against it
+                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this payment because the invoice one or more credit notes have been generated against it."));
+                    Payment::$payment_valid = false;
+                }
+
+            }
         }
-        
+
         // Cancel
         if(Payment::$action === 'cancel')
-        {            
-            // Do nothing
+        {
+            // Credit Note Method
+            if(Payment::$payment_details['method'] == 'creditnote'){
+
+                // Type 1 CR Payment - A partially paid invoice generated a credit note to close itself using this payment (invoice:details)
+                // There should only ever be one CR created from the invoice that is applied to the same invoice, resulting in a zero balance (i.e. Type 1 CR)
+                if($this->invoice_details['invoice_id'] == $creditnote_details['invoice_id'] && $creditnote_details['invoice_id'] == Payment::$payment_details['invoice_id']
+                ){
+                    /* You can only cancel the CR payment (Type 1) if there are no other credit notes attached to this invoice (eg for refunds or store credit). - I might enable this functionality in the future if needed
+                    if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id']) > 1){
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this credit note payment that was used to close this invoice because one or more credit notes have been generated against this invoice for the purpose of refunding or store credit."));
+                        Payment::$payment_valid = false;
+                    }*/
+
+                    // Prevent cancelling the CR (Type 1) that closed this invoice. You can only delete this CR payment.
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel a credit note payment that was used to close an invoice. You can only delete this payment."));
+                    Payment::$payment_valid = false;
+                }
+
+                // Type 2 CR Payments - From CR generated from other invoices owned by the client (invoice:details), Client Standalone CR method (client:details)
+                else{
+                    // Invoice and credit note need the same client
+                    if($this->invoice_details['client_id'] != $creditnote_details['client_id']){
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot apply this credit note against this invoice because they are not both owned by the same client."));
+                        Payment::$payment_valid = false;
+                    }
+                }
+            }
+
+            // All Other Methods (i.e. not Credit Notes)
+            else{
+                // Does this invoice have any credit notes generated against it
+                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this payment because the invoice has one or more credit notes have been generated against it."));
+                    Payment::$payment_valid = false;
+                }
+            }
         }
-        
+
         // Delete
         if(Payment::$action === 'delete')
-        {            
-            // Do nothing
+        {
+            // Credit Note Method
+            if(Payment::$payment_details['method'] == 'creditnote'){
+
+                // Type 1 CR Payment - A partially paid invoice generated a credit note to close itself using this payment (invoice:details)
+                // There should only ever be one CR created from the invoice that is applied to the same invoice, resulting in a zero balance (i.e. Type 1 CR)
+                if($this->invoice_details['invoice_id'] == $creditnote_details['invoice_id'] && $creditnote_details['invoice_id'] == Payment::$payment_details['invoice_id']){
+
+                    // You can only delete the CR payment (Type 1) if there are no other credit notes attached to this invoice (eg for refunds or store credit).
+                    if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id']) > 1){
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete this credit note payment that was used to close this invoice because one or more credit notes have been generated against this invoice for the purpose of refunding or store credit."));
+                        Payment::$payment_valid = false;
+                    }
+
+                }
+
+                // Type 2 CR Payments - From CR generated from other invoices owned by the client (invoice:details), Client Standalone CR method (client:details)
+                else{
+                    // Invoice and credit note need the same client
+                    if($this->invoice_details['client_id'] != $creditnote_details['client_id']){
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot apply this credit note against this invoice because they are not both owned by the same client."));
+                        Payment::$payment_valid = false;
+                    }
+                }
+            }
+
+            // All Other Methods (i.e. not Credit Notes)
+            else{
+                // Does this invoice have any credit notes generated against it
+                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete this payment because the invoice has one or more credit notes have been generated against it."));
+                    Payment::$payment_valid = false;
+                }
+
+            }
         }
-        
+
         return;
     }
 
-    // Processing - Process the payment   
+    // Processing - Process the payment
     public function process()
-    {        
+    {
         parent::process();
-        
+
         // Recalculate record totals
-        $this->app->components->invoice->recalculateTotals($this->VAR['qpayment']['invoice_id']);
-        
-        // Refresh the record data        
-        $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']);
+        $this->app->components->invoice->recalculateTotals(Payment::$payment_details['invoice_id']);
+
+        // Refresh the record data
+        $this->invoice_details = $this->app->components->invoice->getRecord(Payment::$payment_details['invoice_id']);
         Payment::$record_balance = (float) $this->invoice_details['balance'];
-        
-        $this->app->smarty->assign('invoice_details', $this->invoice_details); 
-        
+
+        $this->app->smarty->assign('invoice_details', $this->invoice_details);
+
         // New
         if(Payment::$action === 'new')
         {
             // Do nothing
         }
-        
+
         // Edit
         if(Payment::$action === 'edit')
         {
             // Do nothing
         }
-        
+
         // Cancel
         if(Payment::$action === 'cancel')
-        {            
+        {
             // Do nothing
         }
-        
+
         // Delete
         if(Payment::$action === 'delete')
-        {            
+        {
             // Do nothing
         }
-       
+
         return;
     }
-    
-    // Post-Processing - Now do final things like set messages and redirects   
+
+    // Post-Processing - Now do final things like set messages and redirects
     public function postProcess()
-    {        
+    {
         parent::postProcess();
-        
-        // Refresh the record data        
-        $this->invoice_details = $this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id']); 
-        
+
+        // Refresh the record data
+        $this->invoice_details = $this->app->components->invoice->getRecord(Payment::$payment_details['invoice_id']);
+
         // Different actions depending on success
         if(Payment::$payment_successful)
-        {        
+        {
             // If the balance has been cleared
             if(Payment::$record_balance == 0)
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("The balance has been cleared."));
-                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
+                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.Payment::$payment_details['invoice_id']);
             }
-            
+
             // New
             if(Payment::$action === 'new')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment added successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment added successfully and Invoice").' '.Payment::$payment_details['invoice_id'].' '._gettext("has been updated to reflect this change."));
                 // No forcepage, this will reload the new payment page
             }
-            
+
             // Edit
             if(Payment::$action === 'edit')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Invoice").' '.Payment::$payment_details['invoice_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
-            
+
             // Cancel
             if(Payment::$action === 'cancel')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
-                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);                
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Invoice").' '.Payment::$payment_details['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.Payment::$payment_details['invoice_id']);
             }
-            
+
             // Delete
             if(Payment::$action === 'delete')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
-                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
-            }  
-              
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Invoice").' '.Payment::$payment_details['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->page->forcePage('invoice', 'details&invoice_id='.Payment::$payment_details['invoice_id']);
+            }
+
         }
-        
+
         else
-        {   
-            // The same page will be reloaded unless specified here, error messages is handled by methof
-            
+        {
+            // The same page will be reloaded unless specified here, error messages are handled by method
+
             // New
             if(Payment::$action === 'new')
             {
                 // Do nothing
             }
-            
+
             // Edit
             if(Payment::$action === 'edit')
             {
                 // Do nothing
             }
-            
+
             // Cancel
             if(Payment::$action === 'cancel')            {
-                
-                $this->app->system->page->forcePage('invoice', 'status&invoice_id='.$this->VAR['qpayment']['invoice_id']);                
+
+                $this->app->system->page->forcePage('invoice', 'status&invoice_id='.Payment::$payment_details['invoice_id']);
             }
-            
+
             // Delete
             if(Payment::$action === 'delete')
             {
-                $this->app->system->page->forcePage('invoice', 'status&invoice_id='.$this->VAR['qpayment']['invoice_id']);
-            } 
-        }        
-        
-        return;       
-    }
-      
-    // General payment checks
-    private function checkPaymentAllowed()
-    {        
-        $state_flag = parent::checkPaymentAllowed();
-                        
-        // Is on a different tax system
-        if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));            
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
-            $state_flag = false;            
+                $this->app->system->page->forcePage('invoice', 'status&invoice_id='.Payment::$payment_details['invoice_id']);
+            }
         }
 
-        return $state_flag;      
+        return;
     }
-    
+
+    // General payment checks
+    private function checkPaymentAllowed()
+    {
+        $state_flag = parent::checkPaymentAllowed();
+
+        // Is on a different tax system
+        if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));
+            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.Payment::$payment_details['invoice_id']);
+            $state_flag = false;
+        }
+
+        return $state_flag;
+    }
+
     // Build Buttons
     public function buildButtons()
-    {        
+    {
         parent::buildButtons();
-        
+
         // Submit
         if($this->invoice_details['balance'] > 0) {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
             Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
-        }        
-        
+        }
+
         // Cancel
         if(!$this->invoice_details['balance'] == 0)
-        {            
+        {
             if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit')) {
                 Payment::$buttons['cancel']['allowed'] = true;
-                Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+                Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.Payment::$payment_details['invoice_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
             if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details')) {
                 Payment::$buttons['cancel']['allowed'] = true;
-                Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+                Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.Payment::$payment_details['invoice_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
-            }            
+            }
         }
-        
+
         // Return To Record
         if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new'))
         {
             Payment::$buttons['returnToRecord']['allowed'] = true;
-            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.Payment::$payment_details['invoice_id'];
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
-        
-        // Add New Record        
+
+        // Add New Record
         Payment::$buttons['addNewRecord']['allowed'] = false;
-        Payment::$buttons['addNewRecord']['url'] = null; 
-        Payment::$buttons['addNewRecord']['title'] = null;        
+        Payment::$buttons['addNewRecord']['url'] = null;
+        Payment::$buttons['addNewRecord']['title'] = null;
     }
 
 }

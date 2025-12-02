@@ -36,6 +36,7 @@
 
                                             <td class="row2"><b>{t}Invoice ID{/t}</b></td>
                                             <td class="row2"><b>{t}Work Order{/t}</b></td>
+                                            <td class="row2"><b>{t}Client ID{/t}</b></td>
                                             <td class="row2"><b>{t}Employee{/t}</b></td>
                                             <td class="row2"><b>{t}Date{/t}</b></td>
                                             <td class="row2"><b>{t}Due Date{/t}</b></td>
@@ -54,6 +55,7 @@
                                                     {t}n/a{/t}
                                                 {/if}
                                             </td>
+                                            <td><a href="index.php?component=client&page_tpl=details&client_id={$invoice_details.client_id}">{$invoice_details.client_id}</a></td>
                                             <td><a href="index.php?component=user&page_tpl=details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td>
                                             <td>{$invoice_details.date|date_format:$date_format}</td>
                                             <td>{$invoice_details.due_date|date_format:$date_format}</td>
@@ -69,7 +71,7 @@
                                         <tr class="olotd4">
 
                                             <!-- Scope -->
-                                            <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
+                                            <td colspan="3"><b>{t}Work Order Scope{/t}:</b></td>
                                             <td colspan="8">{if $invoice_details.workorder_id}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
 
                                         </tr>

@@ -18,7 +18,7 @@ class PaymentTypeCreditnote extends PaymentType
 
         // Set class variables
         Payment::$payment_details['type'] = 'creditnote';
-        $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']); // only needed for smarty?
+        $this->creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['creditnote_id']);
 
         // Set Payment direction
         if($this->creditnote_details['type'] == 'sales')

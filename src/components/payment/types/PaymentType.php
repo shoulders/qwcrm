@@ -47,7 +47,7 @@ class PaymentType
         // Edit
         if(Payment::$action === 'edit')
         {
-            // Check payment Status allows record Edit  - This check is also done upstream on payment:status
+            // Check payment Status allows record Edit  - This check is also done upstream on payment:details
             if(!$this->app->components->payment->checkRecordAllowsEdit(Payment::$payment_details['payment_id']))
             {
                 Payment::$payment_valid = false;

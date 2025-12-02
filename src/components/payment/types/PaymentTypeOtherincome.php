@@ -18,7 +18,7 @@ class PaymentTypeOtherincome extends PaymentType
 
         // Set class variables
         Payment::$payment_details['type'] = 'other_income';
-        $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']); //only needed for smarty?
+        $this->otherincome_details = $this->app->components->otherincome->getRecord(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['otherincome_id']); //only needed for smarty?
 
         // Set Payment direction
         $this->VAR['qpayment']['direction'] = 'credit';

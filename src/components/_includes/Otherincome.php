@@ -625,111 +625,11 @@ class OtherIncome extends Components {
             $state_flag = false;
         }
 
-        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+        // Has payments
+        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
             $state_flag = false;
-        }*/
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the otherincome can be cancelled          #
-    ###############################################################
-
-    public function checkRecordAllowsCancel($otherincome_id) {
-
-        $state_flag = true;
-
-        // Get the otherincome details
-        $otherincome_details = $this->getRecord($otherincome_id);
-
-        // Is pending
-        if($otherincome_details['status'] == 'pending') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome is pending."));
-            $state_flag = false;
         }
-
-        // Is partially paid
-        if($otherincome_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome is partially paid."));
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($otherincome_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments and is paid."));
-            $state_flag = false;
-        }
-
-        // Is cancelled
-        if($otherincome_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be cancelled because the otherincome has already been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($otherincome_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be cancelled because the otherincome has been deleted."));
-            $state_flag = false;
-        }
-
-        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
-            $state_flag = false;
-        }*/
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the otherincome can be deleted            #
-    ###############################################################
-
-    public function checkRecordAllowsDelete($otherincome_id) {
-
-        $state_flag = true;
-
-        // Get the otherincome details
-        $otherincome_details = $this->getRecord($otherincome_id);
-
-        // Is Pending
-        if($otherincome_details['status'] == 'pending') {
-        }
-
-        // Is partially paid
-        if($otherincome_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments and is partially paid."));
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($otherincome_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments and is paid."));
-            $state_flag = false;
-        }
-
-        // Is cancelled
-        if($otherincome_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($otherincome_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it already been deleted."));
-            $state_flag = false;
-        }
-
-        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments."));
-            $state_flag = false;
-        }*/
 
         return $state_flag;
 
@@ -780,14 +680,13 @@ class OtherIncome extends Components {
             $state_flag = false;
         }
 
-        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+        // Has payments
+        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has payments."));
             $state_flag = false;
-        }*/
+        }
 
-        // Add tax code check for all current items + add this to credit notes, vouchgers? expense, invoices - the code should be present in on of the others
-
+        // TODO: Add tax code check for all current items + add this to credit notes, vouchgers? expense, invoices - the code should be present in on of the others
 
         /* The current record VAT code is enabled
         if(!$this->app->components->company->getVatTaxCodeStatus($otherincome_details['vat_tax_code'])) {
@@ -799,6 +698,105 @@ class OtherIncome extends Components {
 
     }
 
+    ###############################################################
+    #   Check to see if the otherincome can be cancelled          #
+    ###############################################################
+
+    public function checkRecordAllowsCancel($otherincome_id) {
+
+        $state_flag = true;
+
+        // Get the otherincome details
+        $otherincome_details = $this->getRecord($otherincome_id);
+
+        // Is pending
+        if($otherincome_details['status'] == 'pending') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome is pending."));
+            $state_flag = false;
+        }
+
+        // Is partially paid
+        if($otherincome_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome is partially paid."));
+            $state_flag = false;
+        }
+
+        // Is paid
+        if($otherincome_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments and is paid."));
+            $state_flag = false;
+        }
+
+        // Is cancelled
+        if($otherincome_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be cancelled because the otherincome has already been cancelled."));
+            $state_flag = false;
+        }
+
+        // Is deleted
+        if($otherincome_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be cancelled because the otherincome has been deleted."));
+            $state_flag = false;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
+    ###############################################################
+    #   Check to see if the otherincome can be deleted            #
+    ###############################################################
+
+    public function checkRecordAllowsDelete($otherincome_id) {
+
+        $state_flag = true;
+
+        // Get the otherincome details
+        $otherincome_details = $this->getRecord($otherincome_id);
+
+        // Is Pending
+        if($otherincome_details['status'] == 'pending') {
+        }
+
+        // Is partially paid
+        if($otherincome_details['status'] == 'partially_paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments and is partially paid."));
+            $state_flag = false;
+        }
+
+        // Is paid
+        if($otherincome_details['status'] == 'paid') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments and is paid."));
+            $state_flag = false;
+        }
+
+        // Is cancelled
+        if($otherincome_details['status'] == 'cancelled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has been cancelled."));
+            $state_flag = false;
+        }
+
+        // Is deleted
+        if($otherincome_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it already been deleted."));
+            $state_flag = false;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
 
     /** Other Functions **/
 
@@ -809,7 +807,7 @@ class OtherIncome extends Components {
     public function recalculateTotals($otherincome_id) {
 
         $items_subtotals        = $this->getItemsSubtotals($otherincome_id);
-        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'otherincome', null, 'credit', null, null, null, null, null, $otherincome_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, null, $otherincome_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];

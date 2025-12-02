@@ -64,10 +64,10 @@ $this->app->components->payment->buildPaymentEnvironment('new');
 // If the form is submitted
 if(isset(\CMSApplication::$VAR['submit']))
 {
-    // Wrap the submitted note - note is not wrapped in <p> by tinymce - this is popintless
+    // Wrap the submitted note - note is not wrapped in <p> by tinymce - this is pointless
     //if(\CMSApplication::$VAR['qpayment']['note']) {\CMSApplication::$VAR['qpayment']['note'] = '<p>'.\CMSApplication::$VAR['qpayment']['note'].'</p>';}
 
-    // Process the payment
+    // Process the payment (validations are done further in the process because of the different combinations of Types and Methods.)
     $this->app->components->payment->processPayment();
 }
 
@@ -131,7 +131,12 @@ $this->app->smarty->assign('payment_directions',                $this->app->comp
 $this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes()                                                 );
 $this->app->smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
 $this->app->smarty->assign('voucher_code',                      \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null);
-$this->app->smarty->assign('creditnote_id',                     \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null); // This is needed becasue of the dualality of the Credit Note system, only works for form reloads
+$this->app->smarty->assign('creditnote_id',                     \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null); // This is needed because of the dualality of the Credit Note system, only works for form reloads
 $this->app->smarty->assign('note',                              \CMSApplication::$VAR['qpayment']['note'] ?? null                                                    );
 $this->app->smarty->assign('record_balance',                    Payment::$record_balance);
 $this->app->smarty->assign('buttons',                           Payment::$buttons);
+
+// Make Credit note ID input readonly when closing an invoice or expense uses the presense of these variables in the URL
+// This is not 100% needed becasue if the user swaps the target CR in the input box it still uses the one from the URL and you cannot access payments directly
+// This just indicates to the user they cannot change the CR number
+$this->app->smarty->assign('creditNoteInputreadonly', (\CMSApplication::$VAR['creditnote_id'] ?? null && \CMSApplication::$VAR['creditnote_id'] ?? null) ? true : false);

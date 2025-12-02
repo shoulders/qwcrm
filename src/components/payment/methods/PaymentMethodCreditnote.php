@@ -99,7 +99,7 @@ class PaymentMethodCreditnote extends PaymentMethod
             // Does the credit note have enough balance to cover the payment amount submitted
             if($this->VAR['qpayment']['amount'] > $this->creditnote_details['balance'])
             {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This Credit Note does not have a sufficient balance to cover the submitted payment amount."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note does not have a sufficient balance to cover the submitted payment amount."));
                 Payment::$payment_valid = false;
             }
         }
@@ -107,18 +107,10 @@ class PaymentMethodCreditnote extends PaymentMethod
         // Edit
         if(Payment::$action === 'edit')
         {
-
-            // Can this credit note be used for a payment method / Is it a valid payment for this record?? TODO: get working for new and then make sure it applies here which I think it does.
-            if(!$this->app->components->creditnote->checkMethodAllowsSubmit($this->creditnote_details, Payment::$payment_details))
-            {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used as a payment method against this record and therefore cannot be edited."));
-                Payment::$payment_valid = false;
-            }
-
-            // Does the voucher have enough balance to cover the payment amount submitted (after removing this payments initial amount)
+            // Does the credit note have enough balance to cover the payment amount submitted (after removing this payments initial amount)
             if($this->VAR['qpayment']['amount'] > ($this->creditnote_details['balance'] + Payment::$payment_details['amount']))
             {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This Credit Note does not have a sufficient balance to cover the submitted payment amount."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note does not have a sufficient balance to cover the submitted payment amount."));
                 Payment::$payment_valid = false;
             }
         }

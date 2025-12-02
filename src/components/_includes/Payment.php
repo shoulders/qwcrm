@@ -51,14 +51,14 @@ class Payment extends Components {
 
         $sql = "INSERT INTO ".PRFX."payment_records SET
                 employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id          ).",
-                client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?: null           ).",
-                supplier_id     = ".$this->app->db->qStr( $qpayment['supplier_id'] ?: null         ).",
-                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?: null          ).",
-                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?: null          ).",
-                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?: null      ).",
-                creditnote_id   = ".$this->app->db->qStr( $qpayment['creditnote_id'] ?: null       ).",
-                voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?: null          ).",
-                date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date'])    ).",
+                client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?? null           ).",
+                supplier_id     = ".$this->app->db->qStr( $qpayment['supplier_id'] ?? null         ).",
+                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?? null          ).",
+                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?? null          ).",
+                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?? null      ).",
+                creditnote_id   = ".$this->app->db->qStr( $qpayment['creditnote_id'] ?? null       ).",
+                voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?? null          ).",
+                date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date'])).",
                 tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",
                 type            = ".$this->app->db->qStr( $qpayment['type']        ).",
                 method          = ".$this->app->db->qStr( $qpayment['method']      ).",
@@ -739,7 +739,7 @@ class Payment extends Components {
         // Is the payment larger than the outstanding balance, this is not allowed
         if($payment_amount > $record_balance){
 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not enter a payment with an amount greater than the outstanding balance."));
 
             return false;
 
@@ -781,11 +781,11 @@ class Payment extends Components {
 
     }
 
-    ##########################################################
-    #  Check if the payment status is allowed to be changed  #  // used on payment:status
-    ##########################################################  // This feature is not implemented, but present
+    ########################################################## used on payment:status
+    #  Check if the payment status is allowed to be changed  # This feature is not implemented, but present
+    ########################################################## This is applied to all payment records
 
-     public function checkRecordAllowsManualStatusChange($payment_id) {
+    public function checkRecordAllowsManualStatusChange($payment_id) {
 
         $state_flag = false; // Disable the ability to manually change status for now
 
@@ -806,13 +806,14 @@ class Payment extends Components {
 
         return $state_flag;
 
-     }
+    }
 
-    ##########################################################
-    #  Check if the payment status allows editing            #
-    ##########################################################
+    ##########################################################  Called in PaymentType::preProcess() , payment:details
+    #  Check if the payment status allows editing            #  This is applied to all payment records
+    ##########################################################  More checks are done upon submission because of the different combinations of Types and Methods
+                                                            //  These could be moved into PaymentType if I did not use them as a button Boolean
 
-     public function checkRecordAllowsEdit($payment_id) {
+    public function checkRecordAllowsEdit($payment_id) {
 
         $state_flag = true;
 
@@ -841,10 +842,10 @@ class Payment extends Components {
 
     }
 
-    ###############################################################
-    #   Check to see if the payment can be cancelled              #
-    ###############################################################
-
+    ###############################################################  Called in PaymentType::preProcess() , payment:status
+    #   Check to see if the payment can be cancelled              #  This is applied to all payment records
+    ###############################################################  More checks are done upon submission because fo the different combinations of Types and Methods
+                                                                 //  These could be moved into PaymentType if I did not use them as a button Boolean
     public function checkRecordAllowsCancel($payment_id) {
 
         $state_flag = true;
@@ -874,10 +875,10 @@ class Payment extends Components {
 
     }
 
-    ###############################################################
-    #   Check to see if the payment can be deleted                #
-    ###############################################################
-
+    ###############################################################  Called in PaymentType::preProcess() , payment:status
+    #   Check to see if the payment can be deleted                #  This is applied to all payment records
+    ###############################################################  More checks are done upon submission because fo the different combinations of Types and Methods
+                                                                 //  These could be moved into PaymentType if I did not use them as a button Boolean
     public function checkRecordAllowsDelete($payment_id) {
 
         $state_flag = true;

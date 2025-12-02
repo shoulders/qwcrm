@@ -23,6 +23,9 @@ if($creditnote_details['status'] === 'deleted') {
     $this->app->system->page->forcePage('creditnote', 'search');
 }
 
+// The parent record balance is needed to differentiate between a Type 1 (Close Record) and Type 2 (Refund Monies) Credit note
+$parent_record_balance = $this->app->components->invoice->getRecord($creditnote_details['invoice_id'], 'balance') ?: $this->app->components->expense->getRecord($creditnote_details['expense_id'], 'balance') ?: 0;
+
 // Credit Note Details
 $this->app->smarty->assign('company_details',          $this->app->components->company->getRecord());
 $this->app->smarty->assign('client_details',           $this->app->components->client->getRecord($creditnote_details['client_id']));
@@ -44,3 +47,4 @@ $this->app->smarty->assign('creditnote_statuses',      $this->app->components->c
 $this->app->smarty->assign('creditnote_types',         $this->app->components->creditnote->getTypes());
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($creditnote_details['employee_id'], 'display_name'));
 $this->app->smarty->assign('vat_tax_codes',            $this->app->components->company->getVatTaxCodes());
+$this->app->smarty->assign('parent_record_balance',    $parent_record_balance);

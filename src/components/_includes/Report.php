@@ -2180,8 +2180,13 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
+        // Do not filter records by any status - This status allows for the detection of records including cancelled. Deleted records are not linked to anything so are effectivey ignored.
+        if($status == 'all') {
+            return $whereTheseRecords;
+        }
+
         // Return records for the given status
-        if($status) {
+        elseif($status) {
             $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);
         }
 

@@ -902,11 +902,11 @@ defined('_QWEXEC') or die;
                 break;
         }
 
-        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, null, $invoice_id))
+        // Has payments
+        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
             $state_flag = false;
-        }*/
+        }
 
         /* Does the invoice have any Vouchers preventing changing the invoice status
         --> when you change the invoice status - once the invoice is paid, it's status cannot be manually changed
@@ -917,7 +917,7 @@ defined('_QWEXEC') or die;
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has linked credit notes."));
             $state_flag = false;
         }
 
@@ -967,11 +967,11 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, null, $invoice_id)) {
+        // Has payments
+        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
             $state_flag = false;
-        }*/
+        }
 
         // Does the invoice have any Vouchers preventing changing the invoice status
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowEdit($invoice_id)) {
@@ -1015,33 +1015,33 @@ defined('_QWEXEC') or die;
 
         // Does not have a balance
         if($invoice_details['balance'] == 0) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice does not have a balance."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it does not have a balance."));
             $state_flag = false;
         }
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it is partially paid."));
             $state_flag = false;
         }
 
         // Is cancelled
         if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has already been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has already been cancelled."));
             $state_flag = false;
         }
 
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because the invoice has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has been deleted."));
             $state_flag = false;
         }
 
-        /* Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because the invoice has payments."));
+        // Has payments
+        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it has payments."));
             $state_flag = false;
-        }*/
+        }
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowCancel($invoice_id)) {
@@ -1106,11 +1106,11 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        /* Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-        if($this->app->components->report->paymentCount('date', null, null, null, null, 'invoice', null, null, null, null, null, $invoice_id)) {
+        // Has payments
+        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."));
             $state_flag = false;
-        }*/
+        }
 
         /*
         // Has Items (these will get deleted anyway)
@@ -1147,7 +1147,7 @@ defined('_QWEXEC') or die;
 
         $items_subtotals        = $this->getItemsSubtotals($invoice_id);
         $voucher_subtotals      = $this->app->components->voucher->getInvoiceVouchersSubtotals($invoice_id);
-        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'invoice', null, 'credit', null, null, null, $invoice_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'invoice', null, null, null, null, null, $invoice_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'] + $voucher_subtotals['subtotal_net'];
