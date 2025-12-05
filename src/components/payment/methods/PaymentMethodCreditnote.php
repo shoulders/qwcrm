@@ -18,10 +18,10 @@ class PaymentMethodCreditnote extends PaymentMethod
         parent::__construct();
 
         // Set class variables
-        Payment::$payment_details['method'] = 'creditnote';
+        Payment::$method = Payment::$method ?? 'creditnote';
 
         // Does this credit exist
-        if(!$this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']))
+        if(!$this->creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id']))
         {
             // If there is no credit note with this ID, we cannot proceed
             Payment::$payment_valid = false;
@@ -61,14 +61,14 @@ class PaymentMethodCreditnote extends PaymentMethod
         if(Payment::$action === 'new')
         {
             // Can this credit note be used for a payment method / Is it a valid payment for this record??
-            if(!$this->app->components->creditnote->checkMethodAllowsSubmit($this->creditnote_details, Payment::$payment_details))
+            if(!$this->app->components->creditnote->checkMethodAllowsSubmit($this->creditnote_details, $this->VAR['qpayment']))
             {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used as a payment method against this record."));
                 Payment::$payment_valid = false;
             }
 
             // Apply credit note against an Invoice
-            if(Payment::$payment_details['type'] == 'invoice') {
+            if(Payment::$type== 'invoice') {
 
                 // Make sure this is a Sales Credit Note
                 if($this->creditnote_details['type'] != 'sales')
@@ -79,7 +79,7 @@ class PaymentMethodCreditnote extends PaymentMethod
             }
 
             // Apply credit note against an Expense
-            elseif(Payment::$payment_details['type'] == 'expense')
+            elseif(Payment::$type== 'expense')
             {
                 // Make sure this is a Purchase Credit Note
                 if($this->creditnote_details['type'] != 'purchase')
@@ -137,9 +137,6 @@ class PaymentMethodCreditnote extends PaymentMethod
 
         if(Payment::$action === 'new')
         {
-            // Build additional_info column
-            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson();
-
             // Insert the payment with the calculated information
             if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment']))
             {
@@ -153,7 +150,7 @@ class PaymentMethodCreditnote extends PaymentMethod
         if(Payment::$action === 'edit')
         {
             // Recalculate the Credit Note record totals
-            $this->app->components->creditnote->recalculateTotals($this->VAR['qpayment']['creditnote_id']);
+            $this->app->components->creditnote->recalculateTotals(Payment::$payment_details['creditnote_id']);
 
             Payment::$payment_successful = true;
         }
@@ -161,7 +158,7 @@ class PaymentMethodCreditnote extends PaymentMethod
         if(Payment::$action === 'cancel')
         {
             // Recalculate the Credit Note record totals
-            $this->app->components->creditnote->recalculateTotals($this->VAR['qpayment']['creditnote_id']);
+            $this->app->components->creditnote->recalculateTotals(Payment::$payment_details['creditnote_id']);
 
             Payment::$payment_successful = true;
         }
@@ -169,7 +166,7 @@ class PaymentMethodCreditnote extends PaymentMethod
         if(Payment::$action === 'delete')
         {
             // Recalculate the Credit Note record totals
-            $this->app->components->creditnote->recalculateTotals($this->VAR['qpayment']['creditnote_id']);
+            $this->app->components->creditnote->recalculateTotals(Payment::$payment_details['creditnote_id']);
         }
 
         return;
@@ -193,7 +190,7 @@ class PaymentMethodCreditnote extends PaymentMethod
         // Refresh the Credit Note details
         if($this->creditnote_exists)
         {
-            $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']);
+            $this->creditnote_details = $this->app->components->creditnote->getRecord($this->creditnote_details['creditnote_id']);
 
             // Balance remaining
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("The balance left on the credit note is").': '.$this->currency_symbol.$this->creditnote_details['balance']);

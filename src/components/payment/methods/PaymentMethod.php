@@ -29,7 +29,7 @@ class PaymentMethod
     protected function preProcess()
     {
         // Is this payment method active
-        if(!$this->app->components->payment->checkMethodActive(Payment::$payment_details['method'])) {
+        if(!$this->app->components->payment->checkMethodActive(Payment::$method)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be processed because it's current payment method is not available."));
             Payment::$payment_valid = false;
         }
@@ -72,7 +72,7 @@ class PaymentMethod
         if(Payment::$action === 'edit')
         {
             // Update the payment
-            if($this->app->components->payment->updateRecord($this->VAR['qpayment']))
+            if($this->app->components->payment->updateRecord($this->VAR['qpayment']))  //TODO: should this not be  Payment::$payment_details['payment_id']
             {
                 Payment::$payment_successful = true;
             }
@@ -82,7 +82,7 @@ class PaymentMethod
         if(Payment::$action === 'cancel')
         {
             // Cancel the payment
-            if($this->app->components->payment->cancelRecord($this->VAR['qpayment']['payment_id']))
+            if($this->app->components->payment->cancelRecord(Payment::$payment_details['payment_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling']))
             {
                 Payment::$payment_successful = true;
             }
@@ -92,7 +92,7 @@ class PaymentMethod
         if(Payment::$action === 'delete')
         {
             // Delete the payment
-            if($this->app->components->payment->deleteRecord($this->VAR['qpayment']['payment_id']))
+            if($this->app->components->payment->deleteRecord(Payment::$payment_details['payment_id']))
             {
                 Payment::$payment_successful = true;
             }

@@ -1,0 +1,12 @@
+"filename", "language", "PHP", "comment", "blank", "total"
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethod.php", "PHP", 74, 37, 19, 130
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodBankTransfer.php", "PHP", 39, 12, 11, 62
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodCard.php", "PHP", 39, 12, 11, 62
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodCash.php", "PHP", 51, 20, 16, 87
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodCheque.php", "PHP", 39, 12, 11, 62
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodCreditnote.php", "PHP", 145, 47, 38, 230
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodDirectdebit.php", "PHP", 39, 12, 12, 63
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodOther.php", "PHP", 39, 12, 11, 62
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodPaypal.php", "PHP", 39, 12, 12, 63
+"d:\websites\htdocs\projects\qwcrm\src\components\payment\methods\PaymentMethodVoucher.php", "PHP", 115, 39, 35, 189
+"Total", "-", 619, 215, 176, 1010

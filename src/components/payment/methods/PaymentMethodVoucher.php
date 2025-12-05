@@ -18,7 +18,7 @@ class PaymentMethodVoucher extends PaymentMethod
         parent::__construct();
 
         // Set class variables
-        Payment::$payment_details['method'] = 'voucher';
+        Payment::$method = Payment::$method ?? 'voucher';
 
     }
 
@@ -98,9 +98,6 @@ class PaymentMethodVoucher extends PaymentMethod
 
         if(Payment::$action === 'new')
         {
-            // Build additional_info column
-            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson();
-
             // Insert the payment with the calculated information
             if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment']))
             {

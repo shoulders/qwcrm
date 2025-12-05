@@ -9,57 +9,54 @@
 defined('_QWEXEC') or die;
 
 class PaymentMethodDirectdebit extends PaymentMethod
-{    
+{
     public function __construct()
-    {        
+    {
         parent::__constuct();
-        
+
         // Set class variables
-        Payment::$payment_details['method'] = 'direct_debit';
+        Payment::$method = Payment::$method ?? 'direct_debit';
     }
-    
+
     // Pre-Processing
     public function preProcess()
     {
         parent::preProcess();
-        return;            
+        return;
     }
 
     // Processing
     public function process()
     {
         parent::process();
-        
-        if(Payment::$action === 'new')
-        { 
-            // Build additional_info column
-            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson(null, null, null, null, $this->VAR['qpayment']['direct_debit_reference']);   
 
+        if(Payment::$action === 'new')
+        {
             // Insert the payment with the calculated information
-            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
-                Payment::$payment_successful = true;            
+            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {
+                Payment::$payment_successful = true;
             }
         }
-        
-        return;        
+
+        return;
     }
-    
-    // Post-Processing 
+
+    // Post-Processing
     public function postProcess()
-    { 
+    {
         parent::postProcess();
-        
+
         // Set success/failure message
         if(Payment::$payment_successful)
         {
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Direct Debit payment added successfully."));        
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Direct Debit payment added successfully."));
         }
         else
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Direct Debit payment was not successful."));
         }
-        
-        return;       
-    }  
+
+        return;
+    }
 
 }

@@ -18,10 +18,10 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'stat
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
     $this->app->system->page->forcePage('otherincome', 'search');
-} 
+}
 
-// Cancel the otherincome call
-$this->app->components->otherincome->cancelRecord(\CMSApplication::$VAR['otherincome_id']);
+// Cancel otherincome
+$this->app->components->otherincome->cancelRecord(\CMSApplication::$VAR['otherincome_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling']);
 
 // Load the otherincome search page
 $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome cancelled successfully."));

@@ -44,7 +44,8 @@ class Expense extends Components {
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
                 status          =". $this->app->db->qStr('pending').",
-                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp));
+                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp)).",
+                additional_info =". $this->app->db->qStr( '{}'                                 );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -524,13 +525,36 @@ class Expense extends Components {
 
     }
 
+    ###################################  if you send a new key/pair, it will be added
+    #    update additional info       #  if you send an existing key/pair the value will be updated
+    ###################################  if you send a key/pair with a null value, it will be removed
+
+    public function updateAdditionalInfo($expense_id, array $new_additional_info = array()) {
+
+        // Make sure we merge current data from the database, decode as an array even if empty
+        $current_additional_info = json_decode($this->getRecord($expense_id, 'additional_info'), true);
+
+        // Merge arrays
+        $additional_info = array_merge($current_additional_info, $new_additional_info);
+
+        // Remove all entries defined as null
+        $additional_info = array_filter($additional_info, function($var) {return ($var !== null);});
+
+        $sql = "UPDATE ".PRFX."expense_records SET
+                additional_info=".$this->app->db->qStr(json_encode($additional_info, JSON_FORCE_OBJECT))."
+                WHERE expense_id=".$this->app->db->qStr($expense_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+    }
+
     /** Close Functions **/
 
     #####################################
     #   Cancel Expense                  #
     #####################################
 
-    public function cancelRecord($expense_id) {
+    public function cancelRecord($expense_id, $reason_for_cancelling) {
 
         // Unify Dates and Times
         $timestamp = time();
@@ -543,23 +567,15 @@ class Expense extends Components {
         // Get expense details
         $expense_details = $this->getRecord($expense_id);
 
-        // Get related invoice details
-        //$invoice_details = $this->app->components->invoice->getRecord($expense_details['invoice_id']);
-
         // Change the expense status to cancelled (I do this here to maintain consistency)
         $this->updateStatus($expense_id, 'cancelled');
 
-        /*Create a Workorder History Note
-        $this->app->components->workorder->insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');*/
+        // Add Cancelled message to the additional info
+        $this->updateAdditionalInfo($expense_id, array('reason_for_cancelling' => $reason_for_cancelling));
 
         // Log activity
         $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        /* Log activity
-        $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
-        */
 
         // Update last active record
         $this->updateLastActive($expense_id, $timestamp);

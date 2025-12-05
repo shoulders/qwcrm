@@ -61,8 +61,8 @@
             </td>
             <td class="olotd4" nowrap>{$display_payments.records[p].amount|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>
-                {if $display_payments.records[p].additional_info|paymentadinfodisplay}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_payments.records[p].additional_info|paymentadinfodisplay|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {if $display_payments.records[p].additional_info|payment_addinfo_display}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_payments.records[p].additional_info|payment_addinfo_display|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4" nowrap>

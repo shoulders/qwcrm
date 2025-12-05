@@ -15,13 +15,13 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('payment', 'status')
 }
 
 // Check if we have an payment_id
-if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {    
+if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
     $this->app->system->page->forcePage('payment', 'search');
-}   
+}
 
 // Check if payment can be cancelled
-if(!$this->app->components->payment->checkRecordAllowsCancel(\CMSApplication::$VAR['payment_id'])) {
+if(!$this->app->components->payment->checkRecordAllowsCancel(\CMSApplication::$VAR['payment_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this payment because its status does not allow it."));
     $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
 }

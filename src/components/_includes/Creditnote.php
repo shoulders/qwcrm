@@ -656,14 +656,23 @@ class Creditnote extends Components {
 
     }
 
-    ###################################  done
-    #    update additional info       #
-    ###################################
+    ###################################  if you send a new key/pair, it will be added
+    #    update additional info       #  if you send an existing key/pair the value will be updated
+    ###################################  if you send a key/pair with a null value, it will be removed
 
-    public function updateAdditionalInfo($creditnote_id, $additional_info = null) {
+    public function updateAdditionalInfo($creditnote_id, array $new_additional_info = array()) {
+
+        // Make sure we merge current data from the database, decode as an array even if empty
+        $current_additional_info = json_decode($this->getRecord($creditnote_id, 'additional_info'), true);
+
+        // Merge arrays
+        $additional_info = array_merge($current_additional_info, $new_additional_info);
+
+        // Remove all entries defined as null
+        $additional_info = array_filter($additional_info, function($var) {return ($var !== null);});
 
         $sql = "UPDATE ".PRFX."creditnote_records SET
-                additional_info=".$this->app->db->qStr( $additional_info )."
+                additional_info=".$this->app->db->qStr(json_encode($additional_info, JSON_FORCE_OBJECT))."
                 WHERE creditnote_id=".$this->app->db->qStr($creditnote_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -676,7 +685,7 @@ class Creditnote extends Components {
     #   Cancel Credit Note              # // This does not delete information i.e. client went bust and did not pay
     #####################################
 
-    public function cancelRecord($creditnote_id, $reason_for_cancelling = null) {
+    public function cancelRecord($creditnote_id, $reason_for_cancelling) {
 
         // Unify Dates and Times
         $timestamp = time();
@@ -693,7 +702,7 @@ class Creditnote extends Components {
         $this->updateStatus($creditnote_id, 'cancelled');
 
         // Add Cancelled message to the additional info
-        $this->updateAdditionalInfo($creditnote_id, $this->buildAdditionalInfoJson($creditnote_id, $reason_for_cancelling));
+        $this->updateAdditionalInfo($creditnote_id, array('reason_for_cancelling' => $reason_for_cancelling));
 
         // Create a Workorder History Note  - this is an invoice
         //$this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
@@ -705,6 +714,9 @@ class Creditnote extends Components {
         // Update last active record
         $this->updateLastActive($creditnote_id, $timestamp);
         $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
+        $this->app->components->invoice->updateLastActive($creditnote_details['invoice_id'], $timestamp);
+        $this->app->components->supplier->updateLastActive($creditnote_details['supplier_id'], $timestamp);
+        $this->app->components->expense->updateLastActive($creditnote_details['expense_id'], $timestamp);
 
         return true;
 
@@ -1747,14 +1759,14 @@ class Creditnote extends Components {
 
     ##############################################################  // For (closing invoices and expenses | using store credit given to clients and suppliers)
     #  Check if a CR can be used as a payment Method (credit)    #  // This does not handle balance and submitted payment values on purpose
-    ##############################################################  // $creditnote_details = the credit note being used, $payment_details = the payment to be used
+    ##############################################################  // $creditnote_details = the credit note being used, $qpayment = the payment to be used
 
-    public function checkMethodAllowsSubmit(array $creditnote_details, array $payment_details) {
+    public function checkMethodAllowsSubmit(array $creditnote_details, array $qpayment) {
 
         $state_flag = true;
 
         // Cannot be used to pay on another Credit Note - This should not be an issue here, but this is just incase
-        if($payment_details['type'] == 'creditnote') {
+        if(Payment::$type == 'creditnote') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be applied against another credit note. You should not be seeing this message, report to admins."));
             $state_flag = false;
 
@@ -1763,7 +1775,7 @@ class Creditnote extends Components {
         }
 
         /* Cannot be used to pay on itself - This should not be an issue here because you cannot use a CR as a method on and CR record, but this is just incase I change my mind later
-        if($creditnote_details['creditnote_id'] ==  $payment_details['creditnote_id'] ?? null) {
+        if($creditnote_details['creditnote_id'] ==  $qpayment['creditnote_id'] ?? null) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be applied against itself. You should not be seeing this message, report to admins."));
             $state_flag = false;
             return $state_flag;
@@ -1818,7 +1830,7 @@ class Creditnote extends Components {
             }
 
             // CR can only be applied to any of the specified client's invoices
-            if($creditnote_details['client_id'] != $this->app->components->invoice->getRecord($payment_details['invoice_id'], 'client_id')){
+            if($creditnote_details['client_id'] != $this->app->components->invoice->getRecord($qpayment['invoice_id'], 'client_id')){
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this invoice. It can only be used against invoices belonging to the client this credit note was issued to."));
                 //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against an invoice belonging to the client it is linked with.").' '._gettext("Client").': '.$this->creditnote_details['client_id']);
                 $state_flag = false;
@@ -1838,7 +1850,7 @@ class Creditnote extends Components {
             elseif($creditnote_details['invoice_id']) {
 
                 // Invoice on a different tax system
-                if($this->app->components->invoice->getRecord($payment_details['invoice_id'], 'tax_system') != QW_TAX_SYSTEM) {
+                if($this->app->components->invoice->getRecord($qpayment['invoice_id'], 'tax_system') != QW_TAX_SYSTEM) {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this invoice because it is on a different Tax system."));
                     $state_flag = false;
                 }
@@ -1858,7 +1870,7 @@ class Creditnote extends Components {
                         // A CR raised against an invoice with a partially paid balance is issued to close that invoice only, so it can only be used to close said invoice.
 
                         // The target invoice must be the invoice the CR was raised against
-                        if($creditnote_details['invoice_id'] != $payment_details['invoice_id']) {
+                        if($creditnote_details['invoice_id'] != $qpayment['invoice_id']) {
                             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this invoice. It must be used to close the invoice it was raised against."));
                             //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against the invoice it is linked with.").' '._gettext("Invoice").': '.$this->creditnote_details['invoice_id']);
                             $state_flag = false;
@@ -1910,7 +1922,7 @@ class Creditnote extends Components {
             }
 
             // CR can only be applied to any of the specified suppliers's expenses
-            if($creditnote_details['supplier_id'] != $this->app->components->expense->getRecord($payment_details['expense_id'], 'supplier_id')){
+            if($creditnote_details['supplier_id'] != $this->app->components->expense->getRecord($qpayment['expense_id'], 'supplier_id')){
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this expense. It can only be used against expense belonging to the supplier this credit note was issued to."));
                 //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against an expense belonging to the supplier it is linked with.").' '._gettext("Supplier").': '.$this->creditnote_details['supplier_id']);
                 $state_flag = false;
@@ -1930,7 +1942,7 @@ class Creditnote extends Components {
             elseif($creditnote_details['expense_id']){
 
                 // Expense on a different tax system
-                if($this->app->components->expense->getRecord($payment_details['expense_id'], 'tax_system') != QW_TAX_SYSTEM) {
+                if($this->app->components->expense->getRecord($qpayment['expense_id'], 'tax_system') != QW_TAX_SYSTEM) {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this expense because it is on a different Tax system."));
                     $state_flag = false;
                 }
@@ -1949,7 +1961,7 @@ class Creditnote extends Components {
                         // Type 1 CR request (Credit) (Used to clear outstanding expense balances) (expenses with no balance should be cancelled and not cleared with a CR)
                         // A CR raised against an expense with a partially paid balance is issued to close that expense only, so it can only be used to close said expense.
                         // The target expense must be the expense the CR was raised against
-                        if($creditnote_details['expense_id'] != $payment_details['expense_id']) {
+                        if($creditnote_details['expense_id'] != $qpayment['expense_id']) {
                             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this expense. It must be used to close the expense it was raised against."));
                             //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against the expense it is linked with.").' '._gettext("Expense").': '.$creditnote_details['expense_id']);
                             $state_flag = false;
@@ -2120,26 +2132,6 @@ class Creditnote extends Components {
         }
 
         return $state_flag;
-
-    }
-
-    #########################################
-    #  Build additional_info JSON           #
-    #########################################  done
-
-    public function buildAdditionalInfoJson($creditnote_id, $reason_for_cancelling = null) {
-
-        // Make sure we merge current data from the database - decodes as an array even if empty
-        $additional_info = json_decode($this->app->components->creditnote->getRecord($creditnote_id, 'additional_info'), true);
-
-        // Add reason for cancelling
-        if($reason_for_cancelling)
-        {
-            $additional_info['reason_for_cancelling'] = $reason_for_cancelling;
-        }
-
-        // Return as a JSON object
-        return json_encode($additional_info, JSON_FORCE_OBJECT);
 
     }
 

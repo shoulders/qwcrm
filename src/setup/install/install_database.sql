@@ -312,7 +312,7 @@ CREATE TABLE `#__creditnote_records` (
   `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}'
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -461,7 +461,8 @@ CREATE TABLE `#__expense_records` (
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -607,8 +608,8 @@ CREATE TABLE `#__invoice_records` (
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}',
-  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -689,6 +690,7 @@ CREATE TABLE `#__otherincome_records` (
   `last_active` datetime DEFAULT NULL,
   `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -889,8 +891,8 @@ CREATE TABLE `#__payment_records` (
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL DEFAULT 0.00,
   `last_active` datetime DEFAULT NULL,
-  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

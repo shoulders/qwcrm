@@ -104,7 +104,7 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Additional Info{/t}</b></td>
-                                            <td class="menutd">{if $payment_details.additional_info|paymentadinfodisplay}{$payment_details.additional_info|paymentadinfodisplay}{else}{t}none{/t}{/if}</td>
+                                            <td class="menutd">{if $payment_details.additional_info|payment_addinfo_display}{$payment_details.additional_info|payment_addinfo_display}{else}{t}none{/t}{/if}</td>
                                             <td class="menutd"></td>
                                             <td class="menutd"></td>
                                         </tr>

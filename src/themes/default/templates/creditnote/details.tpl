@@ -104,7 +104,7 @@
                                                     </td>
                                                 {else if $creditnote_details.supplier_id}
                                                     <!-- Supplier Details -->
-                                                    <td colspan="5" valign="top" align="left">
+                                                    <td colspan="4" valign="top" align="left">
                                                         <b>{t}Supplier Details{/t}</b>
                                                         <table cellpadding="0" cellspacing="0">
                                                             <tr>
@@ -124,7 +124,7 @@
                                                 {/if}
 
                                             <!-- Unused -->
-                                            <td colspan="5" valign="top">
+                                            <td colspan="4" valign="top">
                                                 <table cellpadding="0" cellspacing="0" width="100%">
                                                     <tr>
                                                         <td valign="top">
@@ -134,6 +134,18 @@
                                                             {$company_details.state}<br>
                                                             {$company_details.zip}<br>
                                                             {$company_details.country}<br>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+
+                                            <!-- Additional Information -->
+                                            <td colspan="3" valign="top">
+                                                <b>{t}Additional Info{/t}</b>
+                                                <table cellpadding="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td valign="top">
+                                                            {if $creditnote_details.additional_info|creditnote_addinfo_display}{$creditnote_details.additional_info|creditnote_addinfo_display}{else}{t}none{/t}{/if}
                                                         </td>
                                                     </tr>
                                                 </table>

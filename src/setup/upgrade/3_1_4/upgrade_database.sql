@@ -1171,3 +1171,10 @@ INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
 (3, 'cancelled', 'Cancelled'),
 (4, 'deleted', 'Deleted');
 UPDATE `#__supplier_records` SET `status` = 'active' WHERE `#__supplier_records`.`status` = 'valid';
+
+-- Updating and adding addtional_info for record cancel status, other and future variables --
+ALTER TABLE `#__creditnote_records` CHANGE `additional_info` `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+ALTER TABLE `#__invoice_records` CHANGE `additional_info` `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
+ALTER TABLE `#__payment_records` CHANGE `additional_info` `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
+ALTER TABLE `#__expense_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
+ALTER TABLE `#__otherincome_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;

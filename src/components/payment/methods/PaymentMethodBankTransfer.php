@@ -9,56 +9,53 @@
 defined('_QWEXEC') or die;
 
 class PaymentMethodBanktransfer extends PaymentMethod
-{    
+{
     public function __construct()
-    {       
+    {
         parent::__construct();
-        
+
         // Set class variables
-        Payment::$payment_details['method'] = 'bank_transfer';
+        Payment::$method = Payment::$method ?? 'bank_transfer';
     }
-    
+
     // Pre-Processing
     public function preProcess()
     {
         parent::preProcess();
-        return;            
+        return;
     }
 
     // Processing
     public function process()
-    {        
+    {
         parent::process();
-        
-        if(Payment::$action === 'new')
-        { 
-            // Build additional_info column
-            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson($this->VAR['qpayment']['bank_transfer_reference']);     
 
+        if(Payment::$action === 'new')
+        {
             // Insert the payment with the calculated information
-            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
-                Payment::$payment_successful = true;            
+            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {
+                Payment::$payment_successful = true;
             }
         }
-        
-        return;        
+
+        return;
     }
-    
-    // Post-Processing 
+
+    // Post-Processing
     public function postProcess()
-    {        
+    {
         parent::postProcess();
-        
+
         // Set success/failure message
         if(Payment::$payment_successful)
         {
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Bank Transfer payment added successfully."));
         }
         else
-        {            
+        {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Bank Transfer payment was not successful."));
         }
-        
-        return;       
+
+        return;
     }
 }

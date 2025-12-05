@@ -31,8 +31,8 @@
                             <tr>
                                 <td width="100%" valign="top" >
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
-                                     <tr>
-                                         <td>
+                                    <tr>
+                                        <td>
                                             <form method="post" action="index.php?component=payment&page_tpl=edit&payment_id={$payment_details.payment_id}" name="edit_payment" id="edit_payment">
                                                 <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                     <tr>
@@ -147,7 +147,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Additional Info{/t}</b></td>
-                                                        <td>{if $payment_details.additional_info|paymentadinfodisplay}{$payment_details.additional_info|paymentadinfodisplay}{else}{t}none{/t}{/if}</td>
+                                                        <td>{if $payment_details.additional_info|payment_addinfo_display}{$payment_details.additional_info|payment_addinfo_display}{else}{t}none{/t}{/if}</td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Note{/t}</b></td>
@@ -161,10 +161,10 @@
                                                     </tr>
                                                 </table>
                                             </form>
-                                         </td>
-                                     </tr>
-                                 </table>
-                              </td>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
                             </tr>
                         </table>
                     </td>

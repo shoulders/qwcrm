@@ -406,7 +406,7 @@
 
                                             <!-- Otherincome Details -->
                                             <tr>
-                                                <td colspan="7">
+                                                <td colspan="4">
                                                     <table width="100%" cellpadding="4" cellspacing="0" border="0">
                                                         <tr>
                                                             <td><strong>{t}Payee{/t}:</strong></td>
@@ -444,6 +444,18 @@
                                                                     <option value="{$otherincome_types[s].type_key}"{if $otherincome_details.type == $otherincome_types[s].type_key} selected{/if}>{t}{$otherincome_types[s].display_name}{/t}</option>
                                                                 {/section}
                                                             </select>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+
+                                                <!-- Additional Information -->
+                                                <td colspan="2" valign="top">
+                                                    <b>{t}Additional Info{/t}</b>
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tr>
+                                                            <td valign="top">
+                                                                {if $otherincome_details.additional_info|otherincome_addinfo_display}{$otherincome_details.additional_info|otherincome_addinfo_display}{else}{t}none{/t}{/if}
                                                             </td>
                                                         </tr>
                                                     </table>

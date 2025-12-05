@@ -16,29 +16,26 @@ class PaymentTypeCreditnote extends PaymentType
     {
         parent::__construct();
 
-        // Set class variables
-        Payment::$payment_details['type'] = 'creditnote';
-        $this->creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['creditnote_id']);
+        // Get credit note details
+        $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']);
 
-        // Set Payment direction
-        if($this->creditnote_details['type'] == 'sales')
-        {
+        // Set Payment direction (inject into the submission)
+        if($this->creditnote_details['type'] == 'sales'){
             // Sending a Payment
             $this->VAR['qpayment']['direction'] = 'debit';
         }
-        else
-        {
+        else{
             // Receiving a Payment
             $this->VAR['qpayment']['direction'] = 'credit';
         }
 
+        // Additional Record References (inject into the submission)
+        $this->VAR['qpayment']['client_id'] = $this->creditnote_details['client_id'];
+        $this->VAR['qpayment']['supplier_id'] = $this->creditnote_details['supplier_id'];
+
         // Disable Unwanted Payment Methods
         Payment::$disabledMethods[] = 'creditnote';
         Payment::$disabledMethods[] = 'voucher';
-
-        // For logging and insertRecord()
-        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = $this->creditnote_details['client_id'];
-        Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = null;
 
         // Set initial record balance
         Payment::$record_balance = (float) $this->creditnote_details['balance'];
@@ -49,6 +46,7 @@ class PaymentTypeCreditnote extends PaymentType
             // show payment methods to send money (debit)
             $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, Payment::$disabledMethods));
 
+            // Client Details
             $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->creditnote_details['client_id']));
         }
         // type == purchase
@@ -57,6 +55,7 @@ class PaymentTypeCreditnote extends PaymentType
             // show payment methods to receive money (credit)
             $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));
 
+            // supplier Details
             $this->app->smarty->assign('supplier_details', $this->app->components->supplier->getRecord($this->creditnote_details['supplier_id']));
         }
         $this->app->smarty->assign('creditnote_details', $this->creditnote_details);
@@ -237,23 +236,18 @@ class PaymentTypeCreditnote extends PaymentType
         parent::buildButtons();
 
         // Submit
-        if($this->creditnote_details['balance'] > 0) {
+        if((float) $this->creditnote_details['balance']) {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
             Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }
 
         // Cancel
-        if(!$this->creditnote_details['balance'] == 0)
+        if(!(float) $this->creditnote_details['balance'])
         {
-            if($this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'edit')) {
+            if($this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'edit') || $this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'details')) {
                 Payment::$buttons['cancel']['allowed'] = true;
-                Payment::$buttons['cancel']['url'] = 'index.php?component=creditnote&page_tpl=edit&creditnote_id='.$this->VAR['qpayment']['creditnote_id'];
-                Payment::$buttons['cancel']['title'] = _gettext("Cancel");
-            }
-            if($this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'details')) {
-                Payment::$buttons['cancel']['allowed'] = true;
-                Payment::$buttons['cancel']['url'] = 'index.php?component=creditnote&page_tpl=details&creditnote_id='.$this->VAR['qpayment']['creditnote_id'];
+                Payment::$buttons['cancel']['url'] = 'index.php?component=creditnote&page_tpl=edit&creditnote_id='.$this->VAR['creditnote_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
         }
@@ -262,14 +256,14 @@ class PaymentTypeCreditnote extends PaymentType
         if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new'))
         {
             Payment::$buttons['returnToRecord']['allowed'] = true;
-            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=creditnote&page_tpl=details&creditnote_id='.$this->VAR['qpayment']['creditnote_id'];
+            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=creditnote&page_tpl=details&creditnote_id='.$this->VAR['creditnote_id'];
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
 
         // Add New Record
-        Payment::$buttons['addNewRecord']['allowed'] = false;
-        Payment::$buttons['addNewRecord']['url'] = null;
-        Payment::$buttons['addNewRecord']['title'] = null;
+        Payment::$buttons['addNewRecord']['allowed'] = true;
+        Payment::$buttons['addNewRecord']['url'] = 'index.php?component=invoice&page_tpl=new';
+        Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Credit Note Record");
     }
 
 }

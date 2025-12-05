@@ -78,7 +78,7 @@
                                         <tr>
 
                                             <!-- Client Details -->
-                                            <td colspan="5" valign="top" align="left">
+                                            <td colspan="4" valign="top" align="left">
                                                 <b>{t}Bill{/t}</b>
                                                 <table cellpadding="0" cellspacing="0">
                                                     <tr>
@@ -97,7 +97,7 @@
                                             </td>
 
                                             <!-- Company Details -->
-                                            <td colspan="5" valign="top" >
+                                            <td colspan="4" valign="top">
                                                 <b>{t}Pay To{/t}</b>
                                                 <table cellpadding="0" cellspacing="0" width="100%">
                                                     <tr>
@@ -108,6 +108,18 @@
                                                             {$company_details.state}<br>
                                                             {$company_details.zip}<br>
                                                             {$company_details.country}<br>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+
+                                            <!-- Additional Information -->
+                                            <td colspan="3" valign="top">
+                                                <b>{t}Additional Info{/t}</b>
+                                                <table cellpadding="0" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td valign="top">
+                                                            {if $invoice_details.additional_info|invoice_addinfo_display}{$invoice_details.additional_info|invoice_addinfo_display}{else}{t}none{/t}{/if}
                                                         </td>
                                                     </tr>
                                                 </table>

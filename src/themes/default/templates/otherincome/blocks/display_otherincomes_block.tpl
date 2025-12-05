@@ -22,6 +22,7 @@
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Items{/t}</td>
         <td class="olohead">{t}Note{/t}</td>
+        <td class="olohead">{t}Additional Info{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=e loop=$display_otherincomes.records}
@@ -55,6 +56,11 @@
             <td class="olotd4" nowrap>
                 {if $display_otherincomes.records[e].note}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_otherincomes.records[e].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {/if}
+            </td>
+            <td class="olotd4" nowrap>
+                {if $display_otherincomes.records[e].additional_info|otherincome_addinfo_display}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_otherincomes.records[e].additional_info|otherincome_addinfo_display|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4" nowrap>

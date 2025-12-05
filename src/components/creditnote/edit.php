@@ -56,8 +56,8 @@ if(isset(\CMSApplication::$VAR['submit']))
 // Credit Note Details
 $this->app->smarty->assign('creditnote_details',       $creditnote_details);
 $this->app->smarty->assign('company_details',          $this->app->components->company->getRecord());
-$this->app->smarty->assign('client_details',           $this->app->components->client->getRecord($creditnote_details['client_id'] ?? null));
-$this->app->smarty->assign('supplier_details',         $this->app->components->supplier->getRecord($creditnote_details['supplier_id'] ?? null));
+$this->app->smarty->assign('client_details',           $this->app->components->client->getRecord($creditnote_details['client_id']));
+$this->app->smarty->assign('supplier_details',         $this->app->components->supplier->getRecord($creditnote_details['supplier_id']));
 $this->app->smarty->assign('creditnote_items_json',    json_encode($creditnote_items));
 
 // Payment Details

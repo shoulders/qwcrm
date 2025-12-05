@@ -24,6 +24,7 @@ class PaymentType
         // Set class variables
         $this->app = \Factory::getApplication();
         $this->VAR = &\CMSApplication::$VAR;
+
     }
 
     // Pre-Processing - Prep/validate the data
@@ -126,10 +127,14 @@ class PaymentType
         // Different actions depending on success
         if(Payment::$payment_successful)
         {
+            // Refresh the record data (It is currently only used for logging below)
+            Payment::$payment_details = $this->app->components->payment->getRecord(Payment::$payment_details['payment_id']);
+
             // New
             if(Payment::$action === 'new')
             {
-                $record = _gettext(Payment::$payment_details['type']).' '._gettext("had a new").' '._gettext(Payment::$payment_details['method']).' '._gettext("payment made with the Payment ID").': '.Payment::$payment_details['payment_id'];
+                $record = _gettext(Payment::$type).' '._gettext("had a new").' '._gettext(Payment::$method).' '._gettext("payment made with the Payment ID").': '.Payment::$payment_details['payment_id'];
+
             }
 
             // Edit
@@ -153,11 +158,15 @@ class PaymentType
             // Log activity
             $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], null, Payment::$payment_details['invoice_id']);
 
-        }
-
-        else
-        {
-            // Do nothing, loads the same page
+        } else {
+            // Update last active records - If a new payment fails, then there will be no 'payment_id'
+            $this->app->components->payment->updateLastActive(Payment::$payment_details['payment_id'] ?? null, Payment::$timestamp);
+            $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'] ?? $this->VAR['qpayment']['client_id'] ?? null, Payment::$timestamp);
+            $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['invoice_id'] ?? null, Payment::$timestamp);
+            $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'] ?? $this->VAR['qpayment']['supplier_id'] ?? null, Payment::$timestamp);
+            $this->app->components->expense->updateLastActive(Payment::$payment_details['expense_id'] ?? $this->VAR['qpayment']['expense_id'] ?? null, Payment::$timestamp);
+            $this->app->components->creditnote->updateLastActive(Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id'] ?? null, Payment::$timestamp);
+            $this->app->components->otherincome->updateLastActive(Payment::$payment_details['otherincome_id'] ?? $this->VAR['qpayment']['otherincome_id'] ?? null, Payment::$timestamp);
         }
 
         return;
@@ -166,7 +175,7 @@ class PaymentType
     // General payment checks (placeholder for now)
     private function checkPaymentAllowed()
     {
-       return true;
+        return true;
     }
 
     // Build Buttons (placeholder for now)

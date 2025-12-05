@@ -15,9 +15,9 @@
  */
 
 /**
- * Smarty    Payment Additional Information modifier plugin
+ * Smarty    Invoice Additional Information modifier plugin
  * Type:     modifier
- * Name:     paymentadinfodisplay
+ * Name:     invoice_addinfo_display
  * Purpose:  convert an Additional Info JSON string to a viewable HTML block
  *
  * @link      http://quantumwarp.com
@@ -27,47 +27,45 @@
  *
  * @return string
  */
-function smarty_modifier_paymentadinfodisplay($string)
+function smarty_modifier_invoice_addinfo_display($string)
 {
     // Get the QWcrm Application
     $app = \Factory::getApplication();
-    
+
     // Convert into a standard PHP array or return null
-    if(!$additional_info = json_decode($string)) { return false; }
-    
-    // Get field names in an array for translation
-    $adNames = $app->components->payment->getAdditionalInfoTypes();
-    $cardNames = $app->components->payment->getCardTypes();
-    
+    if(!$additional_info = json_decode($string, true)) { return false; }
+
     // Build HTML
     $contentFlag = false;
     $html = '';
     foreach ($additional_info as $key => $value) {
-        
+
         // Make sure there is a value
         if(!$value) {continue;}
-        
+
         // Apply modifications as required
-        if($key == 'card_type_key') {
-            $html .= '<strong>'._gettext("$adNames[$key]").':</strong> '._gettext("$cardNames[$value]").'<br>';
-            $contentFlag = true;            
-        } elseif ($key == 'paypal_transaction_id') {                       
-            $html .= '<strong>'._gettext("$adNames[$key]").':</strong> <a href="https://www.paypal.com/myaccount/transaction/details/'.$value.'">'.$value.'</a><br>';
-            $contentFlag = true;            
-        } else {                        
-            $html .= '<strong>'._gettext("$adNames[$key]").':</strong> '.$value.'<br>';
-            $contentFlag = true;  
-        }   
-       
-    }  
-    
+        switch($key) {
+            case 'reason_for_cancelling' :
+                $html .= '<strong>'._gettext("Reason for Cancelling").':</strong> '.$value.'<br>';
+                break;
+            case 'closed_by_creditnote' :
+                $html .= '<strong>'._gettext("Closed by credit note").':</strong> <a href="index.php?component=creditnote&page_tpl=details&creditnote_id='.$value.'">'.$value.'</a><br>';
+                break;
+            default :
+                $html .= '<strong>'._gettext($key).':</strong> '.$value.'<br>';
+        }
+
+        $contentFlag = true;
+
+    }
+
     $html = rtrim($html, '<br>');   // Remove the last <br> if present
-    
+
     // If there is no additional info, return false
     if(!$contentFlag) {
         $html = false;
-    }    
-    
+    }
+
     return $html;
-    
+
 }

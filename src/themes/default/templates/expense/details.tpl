@@ -66,7 +66,7 @@
 
                                             <!-- Expense Details -->
                                             <tr>
-                                                <td colspan="7">
+                                                <td colspan="5">
                                                     <table width="100%" cellpadding="4" cellspacing="0" border="0">
                                                         <tr>
                                                             <td style="width:100px"><strong>{t}Payee{/t}:</strong></td>
@@ -81,6 +81,18 @@
                                                                 {section name=s loop=$expense_types}
                                                                     {if $expense_details.type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}
                                                                 {/section}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+
+                                                <!-- Additional Information -->
+                                                <td colspan="2" valign="top">
+                                                    <b>{t}Additional Info{/t}</b>
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tr>
+                                                            <td valign="top">
+                                                                {if $expense_details.additional_info|expense_addinfo_display}{$expense_details.additional_info|expense_addinfo_display}{else}{t}none{/t}{/if}
                                                             </td>
                                                         </tr>
                                                     </table>

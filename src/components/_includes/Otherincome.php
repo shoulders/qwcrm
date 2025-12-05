@@ -28,7 +28,7 @@ class OtherIncome extends Components {
     #      Insert Otherincome                #  //supplier_id is a variable so I can create an otherincome directly from a supplier page.
     ##########################################
 
-    public function insertRecord($supplier_id = null) {
+    public function insertRecord($otherincome_id = null) {
 
         // Unify Dates and Times
         $timestamp = time();
@@ -44,7 +44,8 @@ class OtherIncome extends Components {
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
                 status          =". $this->app->db->qStr('pending').",
-                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp));
+                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp)).",
+                additional_info =". $this->app->db->qStr( '{}'                                 );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -495,13 +496,36 @@ class OtherIncome extends Components {
 
     }
 
+    ###################################  if you send a new key/pair, it will be added
+    #    update additional info       #  if you send an existing key/pair the value will be updated
+    ###################################  if you send a key/pair with a null value, it will be removed
+
+    public function updateAdditionalInfo($otherincome_id, array $new_additional_info = array()) {
+
+        // Make sure we merge current data from the database, decode as an array even if empty
+        $current_additional_info = json_decode($this->getRecord($otherincome_id, 'additional_info'), true);
+
+        // Merge arrays
+        $additional_info = array_merge($current_additional_info, $new_additional_info);
+
+        // Remove all entries defined as null
+        $additional_info = array_filter($additional_info, function($var) {return ($var !== null);});
+
+        $sql = "UPDATE ".PRFX."otherincome_records SET
+                additional_info=".$this->app->db->qStr(json_encode($additional_info, JSON_FORCE_OBJECT))."
+                WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+    }
+
     /** Close Functions **/
 
     #####################################
     #   Cancel Otherincome              #
     #####################################
 
-    public function cancelRecord($otherincome_id) {
+    public function cancelRecord($otherincome_id, $reason_for_cancelling) {
 
         // Make sure the otherincome can be cancelled
         if(!$this->checkRecordAllowsCancel($otherincome_id)) {
@@ -510,6 +534,9 @@ class OtherIncome extends Components {
 
         // Change the otherincome status to cancelled (I do this here to maintain consistency)
         $this->updateStatus($otherincome_id, 'cancelled');
+
+        // Add Cancelled message to the additional info
+        $this->updateAdditionalInfo($otherincome_id, array('reason_for_cancelling' => $reason_for_cancelling));
 
         // Log activity
         $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';

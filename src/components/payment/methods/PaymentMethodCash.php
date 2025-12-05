@@ -9,56 +9,78 @@
 defined('_QWEXEC') or die;
 
 class PaymentMethodCash extends PaymentMethod
-{       
+{
     public function __construct()
-    {        
+    {
         parent::__construct();
-        
+
         // Set class variables
-        Payment::$payment_details['method'] = 'cash';
+        Payment::$method = Payment::$method ?? 'cash';
     }
-    
+
     // Pre-Processing
     public function preProcess()
     {
         parent::preProcess();
-        return;            
+
+        // New
+        if(Payment::$action === 'new')
+        {
+            // Do nothing
+        }
+
+        // Edit
+        if(Payment::$action === 'edit')
+        {
+            // Do nothing
+        }
+
+        // Cancel
+        if(Payment::$action === 'cancel')
+        {
+            // Do nothing
+        }
+
+        // Delete
+        if(Payment::$action === 'delete')
+        {
+            // Do nothing
+        }
+
+        return;
     }
 
     // Processing
     public function process()
-    {        
+    {
         parent::process();
-        
-        if(Payment::$action === 'new')
-        { 
-            // Build additional_info column
-            $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->buildAdditionalInfoJson();  
 
+        if(Payment::$action === 'new')
+        {
             // Insert the payment with the calculated information
-            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {            
-                Payment::$payment_successful = true;            
+            if(Payment::$payment_details['payment_id'] = $this->app->components->payment->insertRecord($this->VAR['qpayment'])) {
+                Payment::$payment_successful = true;
             }
         }
-        
-        return;        
+
+        return;
     }
-    
-    // Post-Processing 
+
+    // Post-Processing
     public function postProcess()
-    {    
+    {
         parent::postProcess();
-        
+
         // Set success/failure message
         if(Payment::$payment_successful)
-        {        
+        {
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Cash payment added successfully."));
         }
         else
-        {            
+        {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cash payment was not successful."));
         }
-        
-        return;       
+
+        return;
     }
 }

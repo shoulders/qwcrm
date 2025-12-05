@@ -15,7 +15,7 @@
                         <a href="index.php?component=voucher&page_tpl=edit&voucher_id={$voucher_details.voucher_id}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit{/t}</a>
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}VOUCHER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}VOUCHER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
-                </tr>                
+                </tr>
                 <tr>
                     <td class="olotd4" valign="top" colspan="2">
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
@@ -26,7 +26,7 @@
                         <hr>
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
-                                
+
                                 <!-- Client Details -->
                                 <td valign="top" width="50%">
                                     <p><b>{t}Client{/t} </b><a href="index.php?component=client&page_tpl=details&client_id={$voucher_details.client_id}">{$client_details.display_name}</a></p>
@@ -39,9 +39,9 @@
                                         {$client_details.country}
                                     </p>
                                 </td>
-                                
+
                                 <!-- Voucher Details -->
-                                <td valign="top" width="50%">                                    
+                                <td valign="top" width="50%">
                                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                         <tr>
                                             <td><b>{t}Voucher ID{/t}</b></td>
@@ -50,7 +50,7 @@
                                         <tr>
                                             <td><b>{t}Last Employee{/t}</b></td>
                                             <td>
-                                                <a href="index.php?component=user&page_tpl=details&user_id={$voucher_details.employee_id}">{$employee_display_name}</a>                                                
+                                                <a href="index.php?component=user&page_tpl=details&user_id={$voucher_details.employee_id}">{$employee_display_name}</a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -58,15 +58,15 @@
                                             <td><a href="index.php?component=workorder&page_tpl=details&workorder_id={$voucher_details.workorder_id}">{$voucher_details.workorder_id}</a></td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Invoice ID{/t}</b></td>                                            
-                                            <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$voucher_details.invoice_id}">{$voucher_details.invoice_id}</a></td>            
+                                            <td><b>{t}Invoice ID{/t}</b></td>
+                                            <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$voucher_details.invoice_id}">{$voucher_details.invoice_id}</a></td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Type{/t}</b></td>
                                             <td>
-                                                {section name=s loop=$voucher_types}    
-                                                    {if $voucher_details.type == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}        
-                                                {/section}              
+                                                {section name=s loop=$voucher_types}
+                                                    {if $voucher_details.type == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}
+                                                {/section}
                                             </td>
                                         </tr>
                                         <tr>
@@ -79,7 +79,7 @@
                                                 {if $voucher_details.blocked == '0'}{t}No{/t}{/if}
                                                 {if $voucher_details.blocked == '1'}{t}Yes{/t}{/if}
                                             </td>
-                                        </tr> 
+                                        </tr>
                                         {if $voucher_details.tax_system != 'no_tax'}
                                             <tr>
                                                 <td><b>{t}Net{/t}</b></td>
@@ -97,7 +97,7 @@
                                         <tr>
                                             <td><b>{t}Opened On{/t}</b></td>
                                             <td>{$voucher_details.opened_on|date_format:$date_format}</td>
-                                        </tr>                                        
+                                        </tr>
                                         <tr>
                                             <td><b>{t}Expires On{/t}</b></td>
                                             <td>{$voucher_details.expiry_date|date_format:$date_format}</td>
@@ -113,22 +113,22 @@
                                         <tr>
                                             <td><b>{t}Status{/t}</b></td>
                                             <td>
-                                                {section name=s loop=$voucher_statuses}   
-                                                    {if $voucher_details.status == $voucher_statuses[s].status_key}{t}{$voucher_statuses[s].display_name}{/t}{/if}        
-                                                {/section} 
+                                                {section name=s loop=$voucher_statuses}
+                                                    {if $voucher_details.status == $voucher_statuses[s].status_key}{t}{$voucher_statuses[s].display_name}{/t}{/if}
+                                                {/section}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Redemptions{/t}</b></td>
-                                            <td>                                                
-                                                {$voucher_details.redemptions|redemptions}
+                                            <td>
+                                                {$voucher_details.redemptions|voucher_redemptions}
                                             </td>
                                         </tr>
-                                        
-                                    </table>                                   
-                                </td>                                
+
+                                    </table>
+                                </td>
                             </tr>
-                        </table>                           
+                        </table>
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
                                 <td><b>{t}Note{/t}:</b></td>
@@ -136,7 +136,7 @@
                             <tr>
                                 <td>{$voucher_details.note}</td>
                             </tr>
-                        </table>                        
+                        </table>
                     </td>
                 </tr>
                 <tr>

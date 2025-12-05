@@ -698,14 +698,23 @@ defined('_QWEXEC') or die;
 
     }
 
-    ###################################
-    #    update additional info       #
-    ###################################
+    ###################################  if you send a new key/pair, it will be added
+    #    update additional info       #  if you send an existing key/pair the value will be updated
+    ###################################  if you send a key/pair with a null value, it will be removed
 
-    public function updateAdditionalInfo($invoice_id, $additional_info = null) {
+    public function updateAdditionalInfo($invoice_id, array $new_additional_info = array()) {
+
+        // Make sure we merge current data from the database, decode as an array even if empty
+        $current_additional_info = json_decode($this->getRecord($invoice_id, 'additional_info'), true);
+
+        // Merge arrays
+        $additional_info = array_merge($current_additional_info, $new_additional_info);
+
+        // Remove all entries defined as null
+        $additional_info = array_filter($additional_info, function($var) {return ($var !== null);});
 
         $sql = "UPDATE ".PRFX."invoice_records SET
-                additional_info=".$this->app->db->qStr( $additional_info )."
+                additional_info=".$this->app->db->qStr(json_encode($additional_info, JSON_FORCE_OBJECT))."
                 WHERE invoice_id=".$this->app->db->qStr($invoice_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -719,7 +728,7 @@ defined('_QWEXEC') or die;
     #   Cancel Invoice                  # // This does not delete information i.e. client went bust and did not pay
     #####################################
 
-    public function cancelRecord($invoice_id, $reason_for_cancelling = null) {
+    public function cancelRecord($invoice_id, $reason_for_cancelling) {
 
         // Unify Dates and Times
         $timestamp = time();
@@ -739,7 +748,7 @@ defined('_QWEXEC') or die;
         $this->updateStatus($invoice_id, 'cancelled');
 
         // Add Cancelled message to the additional info
-        $this->updateAdditionalInfo($invoice_id, $this->buildAdditionalInfoJson($invoice_id, $reason_for_cancelling));
+        $this->updateAdditionalInfo($invoice_id, array('reason_for_cancelling' => $reason_for_cancelling));
 
         // Create a Workorder History Note  - this is an invoice
         //$this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
@@ -1437,26 +1446,6 @@ defined('_QWEXEC') or die;
         }
 
         return $state_flag;
-
-    }
-
-    #########################################
-    #  Build additional_info JSON           #
-    #########################################
-
-     public function buildAdditionalInfoJson($invoice_id, $reason_for_cancelling = null) {
-
-        // Make sure we merge current data from the database - decodes as an array even if empty
-        $additional_info = json_decode($this->app->components->invoice->getRecord($invoice_id, 'additional_info'), true);
-
-        // Add reason for cancelling
-        if($reason_for_cancelling)
-        {
-            $additional_info['reason_for_cancelling'] = $reason_for_cancelling;
-        }
-
-        // Return as a JSON object
-        return json_encode($additional_info, JSON_FORCE_OBJECT);
 
     }
 

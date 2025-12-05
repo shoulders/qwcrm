@@ -23,6 +23,8 @@ defined('_QWEXEC') or die;
 class Payment extends Components {
 
     // Used for Payment Types and Methods
+    public static $type = '';
+    public static $method = '';
     public static $action = '';
     public static $buttons = array();
     public static $payment_details = array();
@@ -51,13 +53,13 @@ class Payment extends Components {
 
         $sql = "INSERT INTO ".PRFX."payment_records SET
                 employee_id     = ".$this->app->db->qStr( $this->app->user->login_user_id          ).",
-                client_id       = ".$this->app->db->qStr( $qpayment['client_id'] ?? null           ).",
-                supplier_id     = ".$this->app->db->qStr( $qpayment['supplier_id'] ?? null         ).",
-                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id'] ?? null          ).",
-                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id'] ?? null          ).",
-                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id'] ?? null      ).",
-                creditnote_id   = ".$this->app->db->qStr( $qpayment['creditnote_id'] ?? null       ).",
-                voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id'] ?? null          ).",
+                client_id       = ".$this->app->db->qStr( $qpayment['client_id']           ).",
+                supplier_id     = ".$this->app->db->qStr( $qpayment['supplier_id']         ).",
+                invoice_id      = ".$this->app->db->qStr( $qpayment['invoice_id']          ).",
+                expense_id      = ".$this->app->db->qStr( $qpayment['expense_id']         ).",
+                otherincome_id  = ".$this->app->db->qStr( $qpayment['otherincome_id']     ).",
+                creditnote_id   = ".$this->app->db->qStr( $qpayment['creditnote_id']      ).",
+                voucher_id      = ".$this->app->db->qStr( $qpayment['voucher_id']         ).",
                 date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date'])).",
                 tax_system      = ".$this->app->db->qStr( QW_TAX_SYSTEM                            ).",
                 type            = ".$this->app->db->qStr( $qpayment['type']        ).",
@@ -65,7 +67,7 @@ class Payment extends Components {
                 direction       = ".$this->app->db->qStr( $qpayment['direction']      ).",
                 status          = 'valid',
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                      ).",
-                additional_info = ".$this->app->db->qStr( $qpayment['additional_info']             ).",
+                additional_info = ".$this->app->db->qStr( json_encode($qpayment['additional_info'], JSON_FORCE_OBJECT) ).",
                 note            = ".$this->app->db->qStr( $qpayment['note']                        );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -74,7 +76,7 @@ class Payment extends Components {
         $payment_id = $this->app->db->Insert_ID();
 
         // Create a Workorder History Note - not a work order
-        //$this->app->components->workorder->insertHistory(Payment::$payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
+        //$this->app->components->workorder->insertHistory(Payment::$qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
 
         // Log activity
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
@@ -484,7 +486,7 @@ class Payment extends Components {
                 date            = ".$this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qpayment['date']) ).",
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                   ).",
                 note            = ".$this->app->db->qStr( $qpayment['note']                     )."
-                WHERE payment_id =". $this->app->db->qStr( $qpayment['payment_id']              );
+                WHERE payment_id =". $this->app->db->qStr( Payment::$payment_details['payment_id']              );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -492,14 +494,14 @@ class Payment extends Components {
         //$this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);
 
         // Log activity
-        $record = _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], null, $qpayment['invoice_id']);
+        $record = _gettext("Payment").' '.Payment::$payment_details['payment_id'].' '._gettext("updated.");
+        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], null, Payment::$payment_details['invoice_id']);
 
         // Update last active record
-        $this->updateLastActive($qpayment['payment_id'], $this::$timestamp);
-        $this->app->components->client->updateLastActive($qpayment['client_id'], $this::$timestamp);
-        $this->app->components->invoice->updateLastActive($qpayment['invoice_id'], $this::$timestamp);
-        $this->app->components->supplier->updateLastActive($qpayment['supplier_id'], $this::$timestamp);
+        $this->updateLastActive(Payment::$payment_details['payment_id'], $this::$timestamp);
+        $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'], $this::$timestamp);
+        $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'], $this::$timestamp);
+        $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'], $this::$timestamp);
 
         return true;
 
@@ -626,19 +628,45 @@ class Payment extends Components {
 
     }
 
+    ###################################  if you send a new key/pair, it will be added
+    #    update additional info       #  if you send an existing key/pair the value will be updated
+    ###################################  if you send a key/pair with a null value, it will be removed
+
+    public function updateAdditionalInfo($payment_id, array $new_additional_info = array()) {
+
+        // Make sure we merge current data from the database, decode as an array even if empty
+        $current_additional_info = json_decode($this->getRecord($payment_id, 'additional_info'), true);
+
+        // Merge arrays
+        $additional_info = array_merge($current_additional_info, $new_additional_info);
+
+        // Remove all entries defined as null
+        $additional_info = array_filter($additional_info, function($var) {return ($var !== null);});
+
+        $sql = "UPDATE ".PRFX."payment_records SET
+                additional_info=".$this->app->db->qStr(json_encode($additional_info, JSON_FORCE_OBJECT))."
+                WHERE payment_id=".$this->app->db->qStr($payment_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+    }
+
     /** Close Functions **/
 
     #####################################
     #    Cancel  Payment                #
     #####################################
 
-    public function cancelRecord($payment_id) {
+    public function cancelRecord($payment_id, $reason_for_cancelling) {
 
         // Get payment details
         $payment_details = $this->getRecord($payment_id);
 
         // Change the payment status to cancelled (I do this here to maintain consistency)
         $this->updateStatus($payment_id, 'cancelled');
+
+        // Add Cancelled message to the additional info
+        $this->updateAdditionalInfo($payment_id, array('reason_for_cancelling' => $reason_for_cancelling));
 
         // Create a Workorder History Note - not a work order
         //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
@@ -911,26 +939,6 @@ class Payment extends Components {
 
     /** Other Functions **/
 
-    #########################################
-    #  Build additional_info JSON           #
-    #########################################
-
-    public function buildAdditionalInfoJson($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
-
-        $additional_info = array();
-
-        // Build Array (not all types have all fields)
-        $additional_info['bank_transfer_reference'] = $bank_transfer_reference ?: '';
-        $additional_info['card_type_key'] = $card_type_key ?: '';
-        $additional_info['name_on_card'] = $name_on_card ?: '';
-        $additional_info['cheque_number'] = $cheque_number ?: '';
-        $additional_info['direct_debit_reference'] = $direct_debit_reference ?: '';
-        $additional_info['paypal_transaction_id'] = $paypal_transaction_id ?: '';
-
-        // Return the JSON data
-        return json_encode($additional_info);
-
-    }
 
     ##################################################################################
     #  Build the enviroment for for making payments - The relevant Type and Class    #
@@ -942,21 +950,34 @@ class Payment extends Components {
         Payment::$action = $action;
 
         // New
-        if($action === 'new')
-        {
-            // Prevent undefined variable errors (with and without submit)  - some of these vairables can be from page referrals (i.e. new) or page reloads or dont exists,
+        if($action === 'new'){
+
+            // Prevent undefined variable errors (with and without submit)  - some of these variables can be from page referrals (i.e. new) or page reloads or dont exist,
+            // Payement Type Ids, Type, Method will always use the URL (GET/POST) if present, this is intentional
+            \CMSApplication::$VAR['qpayment']['client_id']          = null;
+            \CMSApplication::$VAR['qpayment']['supplier_id']        = null;
+            \CMSApplication::$VAR['qpayment']['invoice_id']         = \CMSApplication::$VAR['invoice_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['expense_id']         = \CMSApplication::$VAR['expense_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['otherincome_id']     = \CMSApplication::$VAR['otherincome_id'] ?? null;
+            \CMSApplication::$VAR['qpayment']['creditnote_id']      = \CMSApplication::$VAR['creditnote_id'] ?? \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null;  // Credit notes are a Type amd a method
+            \CMSApplication::$VAR['qpayment']['voucher_id']         = null;
+            \CMSApplication::$VAR['qpayment']['voucher_code']       = \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null;
+            \CMSApplication::$VAR['qpayment']['date']               = \CMSApplication::$VAR['qpayment']['date'] ?? null;
             \CMSApplication::$VAR['qpayment']['type']               = \CMSApplication::$VAR['type'];
             \CMSApplication::$VAR['qpayment']['method']             = \CMSApplication::$VAR['method'] ?? \CMSApplication::$VAR['qpayment']['method'] ?? null;
             \CMSApplication::$VAR['qpayment']['direction']          = null;
-            \CMSApplication::$VAR['qpayment']['client_id']          = \CMSApplication::$VAR['client_id'] ?? \CMSApplication::$VAR['qpayment']['client_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['supplier_id']        = \CMSApplication::$VAR['supplier_id'] ?? \CMSApplication::$VAR['qpayment']['supplier_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['invoice_id']         = \CMSApplication::$VAR['invoice_id'] ?? \CMSApplication::$VAR['qpayment']['invoice_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['expense_id']         = \CMSApplication::$VAR['expense_id'] ?? \CMSApplication::$VAR['qpayment']['expense_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['otherincome_id']     = \CMSApplication::$VAR['otherincome_id'] ?? \CMSApplication::$VAR['qpayment']['otherincome_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['creditnote_id']      = \CMSApplication::$VAR['creditnote_id'] ?? \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null;
-            \CMSApplication::$VAR['qpayment']['voucher_id']         = null;
-            \CMSApplication::$VAR['qpayment']['voucher_code']       = \CMSApplication::$VAR['voucher_code'] ?? \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null;
-            \CMSApplication::$VAR['qpayment']['name_on_card']       = \CMSApplication::$VAR['qpayment']['name_on_card'] ?? null;
+            \CMSApplication::$VAR['qpayment']['amount']             = \CMSApplication::$VAR['qpayment']['amount'] ?? null;
+            \CMSApplication::$VAR['qpayment']['additional_info']    = \CMSApplication::$VAR['qpayment']['additional_info'] ?? array();
+            \CMSApplication::$VAR['qpayment']['note']               = \CMSApplication::$VAR['qpayment']['note'] ?? null;
+
+            // Additional Information fields (use to be in buildAdditionalInfoJson() )
+            \CMSApplication::$VAR['qpayment']['additional_info']['bank_transfer_reference']    = \CMSApplication::$VAR['qpayment']['bank_transfer_reference'] ?? '';
+            \CMSApplication::$VAR['qpayment']['additional_info']['card_type_key']              = \CMSApplication::$VAR['qpayment']['card_type_key'] ?? '';
+            \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card']               = \CMSApplication::$VAR['qpayment']['name_on_card']  ?? '';
+            \CMSApplication::$VAR['qpayment']['additional_info']['cheque_number']              = \CMSApplication::$VAR['qpayment']['cheque_number'] ?? '';
+            \CMSApplication::$VAR['qpayment']['additional_info']['direct_debit_reference']     = \CMSApplication::$VAR['qpayment']['direct_debit_reference'] ?? '';
+            \CMSApplication::$VAR['qpayment']['additional_info']['paypal_transaction_id']      = \CMSApplication::$VAR['qpayment']['paypal_transaction_id'] ?? '';
+            //\CMSApplication::$VAR['qpayment']['additional_info']['creditnote_closed_record'] = \CMSApplication::$VAR['qpayment']['creditnote_closed_record'] ?: '';
 
             // Build empty button array - to prevent undefined variable errors
             Payment::$buttons = array(
@@ -967,38 +988,31 @@ class Payment extends Components {
             );
         }
 
-        // For all actions that are not new
-        if($action !== 'new')
-        {
-            // Set Payment details
+        else{
+            // Load Payment Details into [qpayment] and Payment::$details
             Payment::$payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);
-
-            // Set Payment IDs into [qpayment]
-            \CMSApplication::$VAR['qpayment']['payment_id'] = Payment::$payment_details['payment_id'];
-            \CMSApplication::$VAR['qpayment']['type'] = Payment::$payment_details['type'];
-            \CMSApplication::$VAR['qpayment']['method'] = Payment::$payment_details['method'];
-            \CMSApplication::$VAR['qpayment']['direction'] = Payment::$payment_details['direction'];
-            \CMSApplication::$VAR['qpayment']['invoice_id'] = Payment::$payment_details['invoice_id'];
-            \CMSApplication::$VAR['qpayment']['expense_id'] = Payment::$payment_details['expense_id'];
-            \CMSApplication::$VAR['qpayment']['otherincome_id'] = Payment::$payment_details['otherincome_id'];
-            \CMSApplication::$VAR['qpayment']['creditnote_id'] = Payment::$payment_details['creditnote_id'];
-            \CMSApplication::$VAR['qpayment']['voucher_id'] = Payment::$payment_details['voucher_id'];
         }
+
+        // Define Type and Method
+        Payment::$type = Payment::$payment_details['type'] ?? \CMSApplication::$VAR['qpayment']['type'];
+        Payment::$method = Payment::$payment_details['method'] ?? \CMSApplication::$VAR['qpayment']['method'];
 
         // Load the Type and Method classes (files only, no store)
         \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/types/');
         \CMSApplication::classFilesLoad(COMPONENTS_DIR.'payment/methods/');
 
         // Set the payment type class (Capitalise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
-        $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['type']));
+        $typeClassName = 'PaymentType'.ucfirst(str_replace('_', '', Payment::$type));
         $this->paymentType = new $typeClassName;
+
+        return;
     }
 
     // Process the payment
     public function processPayment()
     {
         // Set the payment method class (Capitalise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
-        $methodClassName = 'PaymentMethod'.ucfirst(str_replace('_', '', \CMSApplication::$VAR['qpayment']['method']));
+        $methodClassName = 'PaymentMethod'.ucfirst(str_replace('_', '', Payment::$method));
         $this->paymentMethod = new $methodClassName;
 
         // Prep/Validate the data
@@ -1016,27 +1030,7 @@ class Payment extends Components {
         $this->paymentMethod->postProcess();  // Messages
         $this->paymentType->postProcess();    // Messages
 
-        // Refresh the payment details (used for page reloads) - if an insert fails, then there will be no payment_id
-        if(Payment::$payment_details['payment_id'] ?? false)
-        {
-            Payment::$payment_details = $this->app->components->payment->getRecord(Payment::$payment_details['payment_id']);
-        }
-
-        // Log activity here if the payment activity failed (otherwise activity would not get logged)
-        if(!Payment::$payment_successful)
-        {
-            // Update last active records
-            if(Payment::$payment_details['payment_id'] ?? null) {
-                // if it is a new payment, then the payment record will not exist so it cannot be updated, but when you edit a payment it can be
-                $this->updateLastActive(Payment::$payment_details['payment_id'], Payment::$timestamp);
-            }
-            $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'] ?? null, Payment::$timestamp);
-            $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'] ?? null, Payment::$timestamp);
-            $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'] ?? null, Payment::$timestamp);
-            $this->app->components->expense->updateLastActive(Payment::$payment_details['expense_id'] ?? null, Payment::$timestamp);
-            $this->app->components->creditnote->updateLastActive(Payment::$payment_details['creditnote_id'] ?? null, Payment::$timestamp);
-            $this->app->components->otherincome->updateLastActive(Payment::$payment_details['otherincome_id'] ?? null, Payment::$timestamp);
-        }
+        return;
 
     }
 

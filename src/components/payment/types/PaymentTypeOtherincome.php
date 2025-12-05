@@ -8,6 +8,8 @@
 
 defined('_QWEXEC') or die;
 
+//This is current
+
 class PaymentTypeOtherincome extends PaymentType
 {
     public $otherincome_details = array();
@@ -16,20 +18,18 @@ class PaymentTypeOtherincome extends PaymentType
     {
         parent::__construct();
 
-        // Set class variables
-        Payment::$payment_details['type'] = 'other_income';
-        $this->otherincome_details = $this->app->components->otherincome->getRecord(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['otherincome_id']); //only needed for smarty?
+        // Get otherincome details
+        $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']);
 
-        // Set Payment direction
+        // Set Payment direction (inject into the submission)
         $this->VAR['qpayment']['direction'] = 'credit';
+
+        // Additional Record References
+        $this->VAR['qpayment']['supplier_id'] = $this->otherincome_details['supplier_id'];
 
         // Disable Unwanted Payment Methods
         Payment::$disabledMethods[] = 'creditnote';
         Payment::$disabledMethods[] = 'voucher';
-
-        // For logging and insertRecord()
-        Payment::$payment_details['client_id'] = \CMSApplication::$VAR['qpayment']['client_id'] = null;
-        Payment::$payment_details['invoice_id'] = \CMSApplication::$VAR['qpayment']['invoice_id'] = null;
 
         // Set intial record balance
         Payment::$record_balance = (float) $this->otherincome_details['balance'];
@@ -211,17 +211,17 @@ class PaymentTypeOtherincome extends PaymentType
         parent::buildButtons();
 
         // Submit
-        if($this->otherincome_details['balance'] > 0) {
+        if((float) $this->otherincome_details['balance'] > 0) {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
             Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }
 
         // Cancel
-        if(!$this->otherincome_details['balance'] == 0) {
-            if($this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'new') || $this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'details')) {
+        if(!(float) $this->otherincome_details['balance']) {
+            if($this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'edit') || $this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'details')) {
                 Payment::$buttons['cancel']['allowed'] = true;
-                Payment::$buttons['cancel']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'];
+                Payment::$buttons['cancel']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['otherincome_id'];
                 Payment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
         }
@@ -229,16 +229,14 @@ class PaymentTypeOtherincome extends PaymentType
         // Return To Record
         if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new')) {
             Payment::$buttons['returnToRecord']['allowed'] = true;
-            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'];
+            Payment::$buttons['returnToRecord']['url'] = 'index.php?component=otherincome&page_tpl=details&otherincome_id='.$this->VAR['otherincome_id'];
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
 
-        // Add New Record
-        if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new')) {
-            Payment::$buttons['addNewRecord']['allowed'] = true;
-            Payment::$buttons['addNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new';
-            Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Other Income Record");
-        }
+          // Add New Record
+        Payment::$buttons['addNewRecord']['allowed'] = true;
+        Payment::$buttons['addNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new';
+        Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Other Income Record");
 
     }
 }

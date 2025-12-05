@@ -441,7 +441,7 @@
 
                                                 {if $client_details}
                                                     <!-- Client Details -->
-                                                    <td colspan="5" valign="top" align="left">
+                                                    <td colspan="3" valign="top" align="left">
                                                         <b>{t}Client Details{/t}</b>
                                                         <table cellpadding="0" cellspacing="0">
                                                             <tr>
@@ -460,7 +460,7 @@
                                                     </td>
                                                 {else}
                                                     <!-- Supplier Details -->
-                                                    <td colspan="5" valign="top" align="left">
+                                                    <td colspan="3" valign="top" align="left">
                                                         <b>{t}Supplier Details{/t}</b>
                                                         <table cellpadding="0" cellspacing="0">
                                                             <tr>
@@ -480,7 +480,7 @@
                                                 {/if}
 
                                                 <!-- Company Details -->
-                                                <td colspan="2" valign="top">
+                                                <td colspan="3" valign="top">
                                                     <table cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
                                                             <td valign="top">
@@ -492,6 +492,18 @@
                                                                 {$company_details.country}<br>
                                                                 {$company_details.primary_phone}<br>
                                                                 {$company_details.email}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+
+                                                <!-- Additional Information -->
+                                                <td colspan="1" valign="top">
+                                                    <b>{t}Additional Info{/t}</b>
+                                                    <table cellpadding="0" cellspacing="0" width="100%">
+                                                        <tr>
+                                                            <td valign="top">
+                                                                {if $creditnote_details.additional_info|creditnote_addinfo_display}{$creditnote_details.additional_info|creditnote_addinfo_display}{else}{t}none{/t}{/if}
                                                             </td>
                                                         </tr>
                                                     </table>

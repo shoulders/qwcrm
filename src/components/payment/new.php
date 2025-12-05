@@ -75,68 +75,56 @@ if(isset(\CMSApplication::$VAR['submit']))
 $this->app->components->payment->paymentType->buildButtons();
 
 // Autofill the name on the card payment if not present - this code should perhaps be moved the the methods?
-if(!\CMSApplication::$VAR['qpayment']['name_on_card'])
+if(!\CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'])
 {
-    // Invoice
-    if (\CMSApplication::$VAR['qpayment']['type'] == 'invoice')
-    {
-        $client_id = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id'], 'client_id');
-        \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->client->getRecord($client_id, 'display_name');
+    switch(\CMSApplication::$VAR['qpayment']['type']){
+
+        case 'invoice':
+            $client_id = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id'], 'client_id');
+            \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->client->getRecord($client_id, 'display_name');
+            break;
+        case 'expense':
+            \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->company->getRecord('company_name');
+            break;
+        case 'otherincome':
+            \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['qpayment']['otherincome_id'], 'display_name');
+            break;
+        case 'creditnote':
+            $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id']);
+
+            // Debit (When sending money to Client / Against Invoice)
+            if($creditnote_details['type'] == 'sales'){
+                \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->company->getRecord('company_name');
+            }
+
+            // Credit (When receiving money from a Supplier / Against Expense)
+            elseif($creditnote_details['type'] == 'purchase'){
+                \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'display_name');
+            }
+
+            break;
+        default:
+            \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = '';
+            break;
+
     }
 
-    // Expense
-    elseif(\CMSApplication::$VAR['qpayment']['type'] == 'expense')
-    {
-        \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
-    }
-
-    // Other Income
-    elseif(\CMSApplication::$VAR['qpayment']['type'] == 'otherincome')
-    {
-        \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['qpayment']['otherincome_id'], 'display_name');
-    }
-
-    // Creditnote  - for money that is going to be attached to a creditnote
-    elseif (\CMSApplication::$VAR['qpayment']['type'] == 'creditnote')
-    {
-
-        $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id']);
-
-        // Debit (When sending money to Client / Against Invoice)
-        if($creditnote_details['type'] == 'sales')
-        {
-            \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->company->getRecord('company_name');
-        }
-
-        // Credit (When receiving money from a Supplier / Against Expense)
-        elseif($creditnote_details['type'] == 'purchase')
-        {
-            \CMSApplication::$VAR['qpayment']['name_on_card'] = $this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'display_name');
-        }
-    }
-    else
-    {
-        \CMSApplication::$VAR['qpayment']['name_on_card'] = '';
-    }
 }
 
 // Build the page
 $this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'], \CMSApplication::$VAR['qpayment']['creditnote_id']));
-$this->app->smarty->assign('payment_method',                    \CMSApplication::$VAR['qpayment']['method']                                                      );
-$this->app->smarty->assign('payment_type',                      \CMSApplication::$VAR['qpayment']['type']                                                        );
-$this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes()                                                             );
-$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods()                                                           );
-$this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses()                                                          );
-$this->app->smarty->assign('payment_directions',                $this->app->components->payment->getDirections());
-$this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes()                                                 );
-$this->app->smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
-$this->app->smarty->assign('voucher_code',                      \CMSApplication::$VAR['qpayment']['voucher_code'] ?? null);
-$this->app->smarty->assign('creditnote_id',                     \CMSApplication::$VAR['qpayment']['creditnote_id'] ?? null); // This is needed because of the dualality of the Credit Note system, only works for form reloads
-$this->app->smarty->assign('note',                              \CMSApplication::$VAR['qpayment']['note'] ?? null                                                    );
+$this->app->smarty->assign('qpayment',                          \CMSApplication::$VAR['qpayment']);
+$this->app->smarty->assign('payment_type',                      Payment::$type);
+$this->app->smarty->assign('payment_method',                    Payment::$method);
 $this->app->smarty->assign('record_balance',                    Payment::$record_balance);
 $this->app->smarty->assign('buttons',                           Payment::$buttons);
+$this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes() );
+$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods());
+$this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses());
+$this->app->smarty->assign('payment_directions',                $this->app->components->payment->getDirections());
+$this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes());
 
-// Make Credit note ID input readonly when closing an invoice or expense uses the presense of these variables in the URL
-// This is not 100% needed becasue if the user swaps the target CR in the input box it still uses the one from the URL and you cannot access payments directly
-// This just indicates to the user they cannot change the CR number
+// Make Credit note ID inputs readonly when closing an invoice or expense. It uses the presense of these variables in the URL
+// This is not 100% needed because if the user swaps the target CR in the input box it still uses the one from the URL and you cannot access payments page directly
+// This just indicates to the user they cannot change the CR number so they don't try.
 $this->app->smarty->assign('creditNoteInputreadonly', (\CMSApplication::$VAR['creditnote_id'] ?? null && \CMSApplication::$VAR['creditnote_id'] ?? null) ? true : false);

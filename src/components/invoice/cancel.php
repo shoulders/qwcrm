@@ -20,18 +20,18 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
     $this->app->system->page->forcePage('invoice', 'search');
 }
 
-// Cancel Invoice --- add reasso9n for cancel here
-if(!$this->app->components->invoice->cancelRecord(\CMSApplication::$VAR['invoice_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling'])) {    
-    
+// Cancel Invoice
+if(!$this->app->components->invoice->cancelRecord(\CMSApplication::$VAR['invoice_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling'])) {
+
     // Load the invoice details page with error
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The invoice failed to be cancelled."));
     $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
-    
-    
-} else {   
-    
+
+
+} else {
+
     // Load the invoice search page with success message
     $this->app->system->variables->systemMessagesWrite('success', _gettext("The invoice has been cancelled successfully."));
     $this->app->system->page->forcePage('invoice', 'search');
-    
+
 }
