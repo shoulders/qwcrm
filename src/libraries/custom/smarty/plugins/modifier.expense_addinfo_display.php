@@ -49,7 +49,7 @@ function smarty_modifier_expense_addinfo_display($string)
                 $html .= '<strong>'._gettext("Reason for Cancelling").':</strong> '.$value.'<br>';
                 break;
             case 'closed_by_creditnote_payment_id' :
-                $html .= '<strong>'._gettext("Closed by Credit Note - Payment ID").':</strong> <a href="index.php?component=creditnote&page_tpl=details&creditnote_id='.$value.'">'.$value.'</a><br>';
+                $html .= '<strong>'._gettext("Closed by Credit Note - Payment ID").':</strong> <a href="index.php?component=payment&page_tpl=details&payment_id='.$value.'">'.$value.'</a><br>';
                 break;
             default :
                 $html .= '<strong>'._gettext($key).':</strong> '.$value.'<br>';
