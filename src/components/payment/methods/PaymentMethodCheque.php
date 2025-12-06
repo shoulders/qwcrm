@@ -13,9 +13,6 @@ class PaymentMethodCheque extends PaymentMethod
     public function __construct()
     {
         parent::__construct();
-
-        // Set class variables
-        Payment::$method = Payment::$method ?? 'cheque';
     }
 
     // Pre-Processing

@@ -18,9 +18,9 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('payment', 'status')
 if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
     $this->app->system->page->forcePage('payment', 'search');
-}   
+}
 
-// Check if payment can be deleted
+// Check if payment can be deleted - this only checks against the status of the payment - this function is also run in the payment process TODO: do i need this check here
 if(!$this->app->components->payment->checkRecordAllowsDelete(\CMSApplication::$VAR['payment_id'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete this payment because its status does not allow it."));
     $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);

@@ -17,9 +17,6 @@ class PaymentMethodCreditnote extends PaymentMethod
     {
         parent::__construct();
 
-        // Set class variables
-        Payment::$method = Payment::$method ?? 'creditnote';
-
         // Does this credit exist
         if(!$this->creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id']))
         {

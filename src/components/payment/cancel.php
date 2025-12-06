@@ -20,7 +20,7 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
     $this->app->system->page->forcePage('payment', 'search');
 }
 
-// Check if payment can be cancelled
+// Check if payment can be cancelled - this only checks against the status of the payment - this function is also run in the payment process TODO: do i need this check here
 if(!$this->app->components->payment->checkRecordAllowsCancel(\CMSApplication::$VAR['payment_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling'])) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this payment because its status does not allow it."));
     $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);

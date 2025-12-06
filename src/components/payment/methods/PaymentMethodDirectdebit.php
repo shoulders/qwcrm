@@ -13,9 +13,6 @@ class PaymentMethodDirectdebit extends PaymentMethod
     public function __construct()
     {
         parent::__constuct();
-
-        // Set class variables
-        Payment::$method = Payment::$method ?? 'direct_debit';
     }
 
     // Pre-Processing

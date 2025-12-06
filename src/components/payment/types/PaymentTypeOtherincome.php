@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 
 class PaymentTypeOtherincome extends PaymentType
 {
-    public $otherincome_details = array();
+    private $otherincome_details = array();
 
     public function __construct()
     {
@@ -52,19 +52,19 @@ class PaymentTypeOtherincome extends PaymentType
         }
 
         // Edit
-        if(Payment::$action === 'edit')
+        elseif(Payment::$action === 'edit')
         {
            // Do nothing
         }
 
         // Cancel
-        if(Payment::$action === 'cancel')
+        elseif(Payment::$action === 'cancel')
         {
             // Do nothing
         }
 
         // Delete
-        if(Payment::$action === 'delete')
+        elseif(Payment::$action === 'delete')
         {
             // Do nothing
         }
@@ -77,37 +77,68 @@ class PaymentTypeOtherincome extends PaymentType
     {
         parent::process();
 
-        // Recalculate record totals
-        $this->app->components->otherincome->recalculateTotals($this->VAR['qpayment']['otherincome_id']);
-
-        // Refresh the record data
-        $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']);
-        Payment::$record_balance = (float) $this->otherincome_details['balance'];
-
-        $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
-
-        // New
-        if(Payment::$action === 'new')
+        // Different actions depending on success
+        if(Payment::$payment_successful)
         {
-            // Do nothing
-        }
+            // New
+            if(Payment::$action === 'new')
+            {
+                // Do nothing
+            }
 
-        // Edit
-        if(Payment::$action === 'edit')
-        {
-            // Do nothing
-        }
+            // Edit
+            elseif(Payment::$action === 'edit')
+            {
+                // Do nothing
+            }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
-        {
-            // Do nothing
-        }
+            // Cancel
+            elseif(Payment::$action === 'cancel')
+            {
+                // Do nothing
+            }
 
-        // Delete
-        if(Payment::$action === 'delete')
-        {
-            // Do nothing
+            // Delete
+            elseif(Payment::$action === 'delete')
+            {
+                // Do nothing
+            }
+
+            // Recalculate record totals
+            $this->app->components->otherincome->recalculateTotals($this->VAR['qpayment']['otherincome_id']);
+
+            // Refresh the record data
+            $this->otherincome_details = $this->app->components->otherincome->getRecord($this->VAR['qpayment']['otherincome_id']);
+            Payment::$record_balance = (float) $this->otherincome_details['balance'];
+
+            $this->app->smarty->assign('otherincome_details', $this->otherincome_details);
+
+        } else {
+
+            // New
+            if(Payment::$action === 'new')
+            {
+                // Do nothing
+            }
+
+            // Edit
+            elseif(Payment::$action === 'edit')
+            {
+                // Do nothing
+            }
+
+            // Cancel
+            elseif(Payment::$action === 'cancel')
+            {
+                // Do nothing
+            }
+
+            // Delete
+            elseif(Payment::$action === 'delete')
+            {
+                // Do nothing
+            }
+
         }
 
         return;
@@ -136,30 +167,28 @@ class PaymentTypeOtherincome extends PaymentType
             }
 
             // Edit
-            if(Payment::$action === 'edit')
+            elseif(Payment::$action === 'edit')
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
             // Cancel
-            if(Payment::$action === 'cancel')
+            elseif(Payment::$action === 'cancel')
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }
 
             // Delete
-            if(Payment::$action === 'delete')
+            elseif(Payment::$action === 'delete')
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }
 
-        }
+        } else {
 
-        else
-        {
             // The same page will be reloaded unless specified here, error messages is handled by methof
 
             // New
@@ -169,19 +198,19 @@ class PaymentTypeOtherincome extends PaymentType
             }
 
             // Edit
-            if(Payment::$action === 'edit')
+            elseif(Payment::$action === 'edit')
             {
                 // Do nothing
             }
 
             // Cancel
-            if(Payment::$action === 'cancel')            {
+            elseif(Payment::$action === 'cancel')            {
 
                 $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }
 
             // Delete
-            if(Payment::$action === 'delete')
+            elseif(Payment::$action === 'delete')
             {
                 $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }

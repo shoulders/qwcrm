@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 class PaymentTypeCreditnote extends PaymentType
 {
-    public $creditnote_details = array();
+    private $creditnote_details = array();
 
     public function __construct()
     {
@@ -74,19 +74,19 @@ class PaymentTypeCreditnote extends PaymentType
         }
 
         // Edit
-        if(Payment::$action === 'edit')
+        elseif(Payment::$action === 'edit')
         {
            // Do nothing
         }
 
         // Cancel
-        if(Payment::$action === 'cancel')
+        elseif(Payment::$action === 'cancel')
         {
             // Do nothing
         }
 
         // Delete
-        if(Payment::$action === 'delete')
+       elseif(Payment::$action === 'delete')
         {
             // Do nothing
         }
@@ -99,37 +99,68 @@ class PaymentTypeCreditnote extends PaymentType
     {
         parent::process();
 
-        // Recalculate record totals
-        $this->app->components->creditnote->recalculateTotals($this->VAR['qpayment']['creditnote_id']);
-
-        // Refresh the record data
-        $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']);
-        Payment::$record_balance = (float) $this->creditnote_details['balance'];
-
-        $this->app->smarty->assign('creditnote_details', $this->creditnote_details);
-
-        // New
-        if(Payment::$action === 'new')
+        // Different actions depending on success
+        if(Payment::$payment_successful)
         {
-            // Do nothing
-        }
+            // New
+            if(Payment::$action === 'new')
+            {
+                // Do nothing
+            }
 
-        // Edit
-        if(Payment::$action === 'edit')
-        {
-            // Do nothing
-        }
+            // Edit
+            elseif(Payment::$action === 'edit')
+            {
+                // Do nothing
+            }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
-        {
-            // Do nothing
-        }
+            // Cancel
+            elseif(Payment::$action === 'cancel')
+            {
+                // Do nothing
+            }
 
-        // Delete
-        if(Payment::$action === 'delete')
-        {
-            // Do nothing
+            // Delete
+            elseif(Payment::$action === 'delete')
+            {
+                // Do nothing
+            }
+
+            // Recalculate record totals
+            $this->app->components->creditnote->recalculateTotals($this->VAR['qpayment']['creditnote_id']);
+
+            // Refresh the record data
+            $this->creditnote_details = $this->app->components->creditnote->getRecord($this->VAR['qpayment']['creditnote_id']);
+            Payment::$record_balance = (float) $this->creditnote_details['balance'];
+
+            $this->app->smarty->assign('creditnote_details', $this->creditnote_details);
+
+        } else {
+
+            // New
+            if(Payment::$action === 'new')
+            {
+                // Do nothing
+            }
+
+            // Edit
+            elseif(Payment::$action === 'edit')
+            {
+                // Do nothing
+            }
+
+            // Cancel
+            elseif(Payment::$action === 'cancel')
+            {
+                // Do nothing
+            }
+
+            // Delete
+            elseif(Payment::$action === 'delete')
+            {
+                // Do nothing
+            }
+
         }
 
         return;
@@ -154,37 +185,35 @@ class PaymentTypeCreditnote extends PaymentType
             }
 
             // New
-            if(Payment::$action === 'new')
+            elseif(Payment::$action === 'new')
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment added successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
                 // No forcepage, this will reload the new payment page
             }
 
             // Edit
-            if(Payment::$action === 'edit')
+            elseif(Payment::$action === 'edit')
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
             // Cancel
-            if(Payment::$action === 'cancel')
+            elseif(Payment::$action === 'cancel')
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             }
 
             // Delete
-            if(Payment::$action === 'delete')
+            elseif(Payment::$action === 'delete')
             {
                 $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             }
 
-        }
+        } else {
 
-        else
-        {
             // The same page will be reloaded unless specified here, error messages is handled by methof
 
             // New
@@ -194,19 +223,19 @@ class PaymentTypeCreditnote extends PaymentType
             }
 
             // Edit
-            if(Payment::$action === 'edit')
+            elseif(Payment::$action === 'edit')
             {
                 // Do nothing
             }
 
             // Cancel
-            if(Payment::$action === 'cancel')            {
+            elseif(Payment::$action === 'cancel')            {
 
                 $this->app->system->page->forcePage('creditnote', 'status&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             }
 
             // Delete
-            if(Payment::$action === 'delete')
+            elseif(Payment::$action === 'delete')
             {
                 $this->app->system->page->forcePage('creditnote', 'status&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             }

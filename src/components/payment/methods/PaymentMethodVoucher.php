@@ -17,9 +17,6 @@ class PaymentMethodVoucher extends PaymentMethod
     {
         parent::__construct();
 
-        // Set class variables
-        Payment::$method = Payment::$method ?? 'voucher';
-
     }
 
     // Pre-Processing

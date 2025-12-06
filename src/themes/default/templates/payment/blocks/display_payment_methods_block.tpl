@@ -58,12 +58,13 @@
                 <tr>
                     <td>
                         <p>{t}Select Payment Method{/t}</p>
-                        <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required{if $creditNoteInputreadonly} readonly{/if}>
+                        <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required>
                             <option selected hidden disabled></option>
                             {section name=s loop=$payment_active_methods}
-                                <option value="{$payment_active_methods[s].method_key}"{if $payment_active_methods[s].method_key === $payment_method} selected{/if}>{t}{$payment_active_methods[s].display_name}{/t}</option>
+                                <option {if $creditNoteInputreadonly && $payment_active_methods[s].method_key != 'creditnote'}hidden disabled>{/if} value="{$payment_active_methods[s].method_key}"{if $payment_active_methods[s].method_key === $payment_method} selected{/if}>{t}{$payment_active_methods[s].display_name}{/t}</option>
                             {/section}
                         </select>
+
                     </td>
                 </tr>
             {else}
