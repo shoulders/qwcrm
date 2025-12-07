@@ -464,7 +464,7 @@ class Administrator extends Components {
         // Get a fresh copy of the current settings as an array
         $current_config = $this->getQwcrmConfigAsArray();
 
-        // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error becasue the variable is not present yet
+        // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error because the variable is not present yet
         if(isset($new_config['google_server'])) { $new_config['google_server'] = $this->app->system->general->processInputtedUrl($new_config['google_server']); }
 
         // Purge the database session table if we are changing to the database handler.

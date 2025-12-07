@@ -1977,7 +1977,7 @@ class Report extends Components {
 
         }
 
-        // Revenue TODO: credit notes are not included here, how should i handle them. Sent and received are correct though becasue that is what real money I have sent and received.
+        // Revenue TODO: credit notes are not included here, how should i handle them. Sent and received are correct though because that is what real money I have sent and received.
         if($record_set == 'revenue' || $record_set == 'all') {
             $stats['sum_invoice'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, 'invoice', 'real_monies', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);
             $stats['sum_expense'] = $this->paymentSum('date', $start_date, $end_date, $tax_system, null, 'expense', 'real_monies', null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id, $otherincome_id, $creditnote_id, $voucher_id);

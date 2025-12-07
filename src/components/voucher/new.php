@@ -28,9 +28,9 @@ if(!$this->app->components->payment->checkMethodActive('voucher')) {
 
 // if information submitted
 if(isset(\CMSApplication::$VAR['submit'])) {
-    
+
     // Check the submission is valid, if not, load the page with an error message
-    if($this->app->components->voucher->checkVoucherExpiryIsValid(\CMSApplication::$VAR['qform']['expiry_date']))
+    if($this->app->components->voucher->checkVoucherExpiryDateIsValid(\CMSApplication::$VAR['qform']['expiry_date']))
     {
         // Create a new Voucher
         $voucher_id = $this->app->components->voucher->insertRecord(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['type'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['note']);
@@ -38,17 +38,17 @@ if(isset(\CMSApplication::$VAR['submit'])) {
         // Load the attached invoice Details page
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
         $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
-    
+
     } else {
-        
+
         // the reloaded page should have the submitted expiry date
         $voucher_expiry_date = \CMSApplication::$VAR['qform']['expiry_date'];
     }
-    
+
 } else {
 
     // Generate the Voucher expiry date
-    $dateObject = new DateTime();    
+    $dateObject = new DateTime();
     $dateObject->modify('+'.$this->app->components->company->getRecord('voucher_expiry_offset').' days');
     $voucher_expiry_date = $dateObject->format('Y-m-d');
 

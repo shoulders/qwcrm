@@ -605,19 +605,21 @@ class Creditnote extends Components {
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $creditnote_details['employee_id'];
 
-        // Build SQL
+        // Set closed statuses
+        if($new_status == 'used' || $new_status == 'cancelled' || $new_status == 'deleted') {
+            $closed_on = $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) );
+            $is_closed = $this->app->db->qStr(1);
+        } else {
+            $closed_on = null;
+            $is_closed = $this->app->db->qStr(0);
+        }
+
         $sql = "UPDATE ".PRFX."creditnote_records SET
                 employee_id         =". $this->app->db->qStr($employee_id).",
-                status              =". $this->app->db->qStr($new_status).",";
-        if($new_status == 'used' || $new_status == 'cancelled' || $new_status == 'deleted') {
-             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) ).",
-                      is_closed =". $this->app->db->qStr(1);
-        } else {
-             $sql .= "closed_on = NULL,
-                      is_closed   =". $this->app->db->qStr(0);
-        }
-        $sql .= "WHERE creditnote_id =". $this->app->db->qStr($creditnote_id);
-
+                status              =". $this->app->db->qStr( $new_status  ).",
+                closed_on           =". $this->app->db->qStr( $closed_on    ).",
+                is_closed           =". $this->app->db->qStr( $is_closed    )."
+                WHERE creditnote_id =". $this->app->db->qStr( $creditnote_id   );
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Status updated message
@@ -846,7 +848,6 @@ class Creditnote extends Components {
     public function checkCreditnoteIsExpired($creditnote_id) {
 
         $expired_status = false;
-
         $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is the creditnote deleted
@@ -855,22 +856,22 @@ class Creditnote extends Components {
             $expired_status = true;
         }
 
-        // Has the creditnote been closed already (same effect as expired)
-        elseif($creditnote_details['closed_on'])
-        {
-            $expired_status = true;
-        }
-
-        // Has the creditnote just expired and needs to be updated
+        // Has the creditnote expired
         elseif (time() > strtotime($creditnote_details['expiry_date'].' 23:59:59'))
         {
-            $expired_status = true;
+            // Has the credit note been closed, if not update `closed_on` to match expiry date
+            if(!$creditnote_details['closed_on']) {
 
-            // Update the creditnote record (we dont update the status when they are expired, these are different things)
-            $sql = "UPDATE ".PRFX."creditnote_records SET
-                closed_on           =". $this->app->db->qstr( $this->app->system->general->mysqlDatetime())."
-                WHERE creditnote_id    =". $this->app->db->qstr( $creditnote_id          );
-            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+                // Update the credit note record (we don't update the status when they are expired, these are different things)
+                // ('blocked' is a way of disabling the voucher without permanently closing it, i.e. for suspended status, and is controlled by Expiry and Status)
+                $sql = "UPDATE ".PRFX."voucher_records SET
+                    closed_on           =".$this->app->db->qstr($creditnote_details['expiry_date'].' 23:59:59')."
+                    WHERE voucher_id    =". $this->app->db->qstr( $creditnote_id          );
+                if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+            }
+
+            $expired_status = true;
 
         }
 
@@ -1494,20 +1495,28 @@ class Creditnote extends Components {
 
         $state_flag = true;
 
-        // Get the creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
-
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because it has expired."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the credit note has expired."));
             $state_flag = false;
         }
+
+        // Get the creditnote details
+        $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because it is on a different Tax system."));
             $state_flag = false;
         }
+
+        /* Is the credit note closed (This should not be needed because of expiry and status checks)
+        if($creditnote_details['closed_on'])
+        {
+            if(!$silent){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the credit note has been closed."));
+            }
+        }*/
 
         // Status checks
         switch($creditnote_details['status']) {
@@ -1563,14 +1572,14 @@ class Creditnote extends Components {
 
         $state_flag = true;
 
-        // Get the creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
-
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be edited because it has expired."));
             $state_flag = false;
         }
+
+        // Get the creditnote details
+        $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -1583,6 +1592,14 @@ class Creditnote extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."));
             $state_flag = false;
         }
+
+        /* Is the credit note closed (This should not be needed because of expiry and status checks)
+        if($creditnote_details['closed_on'])
+        {
+            if(!$silent){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be edited because it has been closed."));
+            }
+        }*/
 
         // Status checks
         switch($creditnote_details['status']) {
@@ -1632,14 +1649,14 @@ class Creditnote extends Components {
 
         $state_flag = true;
 
-        // Get the creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
-
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be cancelled because it has expired."));
             $state_flag = false;
         }
+
+        // Get the creditnote details
+        $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -1652,6 +1669,14 @@ class Creditnote extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be cancelled because it does not have an amount, you should delete instead."));
             $state_flag = false;
         }
+
+        /* Is the credit note closed (This should not be needed because of expiry and status checks)
+        if($creditnote_details['closed_on'])
+        {
+            if(!$silent){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be cancelled because it has been closed."));
+            }
+        }*/
 
         // Status checks
         switch($creditnote_details['status']) {
@@ -1701,20 +1726,28 @@ class Creditnote extends Components {
 
         $state_flag = true;
 
-        // Get the creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
-
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be deleted because it has expired."));
             $state_flag = false;
         }
 
+        // Get the creditnote details
+        $creditnote_details = $this->getRecord($creditnote_id);
+
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be deleted because it is on a different Tax system."));
             $state_flag = false;
         }
+
+        /* Is the credit note closed (This should not be needed because of expiry and status checks)
+        if($creditnote_details['closed_on'])
+        {
+            if(!$silent){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be deleted because it has been closed."));
+            }
+        }*/
 
         // Status checks
         switch($creditnote_details['status']) {
@@ -1792,6 +1825,14 @@ class Creditnote extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used because it is on a different Tax system."));
             $state_flag = false;
         }
+
+        /* Is the credit note closed (This should not be needed because of expiry and status checks)
+        if($creditnote_details['closed_on'])
+        {
+            if(!$silent){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used because it has been closed."));
+            }
+        }*/
 
         // Status Checks (Credit Note)
         switch ($creditnote_details['status']) {
