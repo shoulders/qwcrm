@@ -912,7 +912,7 @@ class Creditnote extends Components {
     #  Check if a credit note can be created      #  // Used to hide create CR buttons + in creditnote:new
     ###############################################
 
-    public function checkRecordCanBeCreated($client_id = null, $invoice_id = null, $supplier_id = null, $expense_id = null, $silent = true) {
+    public function checkRecordCanBeCreated($client_id = null, $invoice_id = null, $supplier_id = null, $expense_id = null, $silent = false) {
 
         $state_flag = true;
 

@@ -40,7 +40,7 @@ $this->app->smarty->assign('display_creditnotes',     $this->app->components->cr
 
 // Misc
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($expense_details['employee_id'], 'display_name'));
-$this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, null, null, \CMSApplication::$VAR['expense_id'], null, false));
+$this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, null, null, \CMSApplication::$VAR['expense_id']));
 
 // Build the page
 $this->app->smarty->assign('expense_statuses', $this->app->components->expense->getStatuses()            );

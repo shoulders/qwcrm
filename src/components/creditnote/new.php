@@ -20,7 +20,7 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'new')
 }
 
 // Check CR can be created (this check is also do on the buttons but silently)
-if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] ?? null, \CMSApplication::$VAR['invoice_id'] ?? null, \CMSApplication::$VAR['supplier_id'] ?? null, \CMSApplication::$VAR['expense_id'] ?? null, false))
+if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] ?? null, \CMSApplication::$VAR['invoice_id'] ?? null, \CMSApplication::$VAR['supplier_id'] ?? null, \CMSApplication::$VAR['expense_id'] ?? null))
 {
     /* Sales Credit Notes */
 

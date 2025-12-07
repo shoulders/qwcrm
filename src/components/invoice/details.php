@@ -58,4 +58,4 @@ $this->app->smarty->assign('display_creditnotes',         $this->app->components
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($invoice_details['employee_id'], 'display_name')  );
 $this->app->smarty->assign('invoice_statuses',         $this->app->components->invoice->getStatuses()                                                                   );
 $this->app->smarty->assign('voucher_statuses',        $this->app->components->voucher->getStatuses()                                                                   );
-$this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, \CMSApplication::$VAR['invoice_id'], null, null, null, false));
+$this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, \CMSApplication::$VAR['invoice_id']));
