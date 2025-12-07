@@ -22,7 +22,7 @@ class Variables extends System {
 
         // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
         if(!defined('QWCRM_SETUP')) {
-            
+
             $company_details = $this->app->components->company->getRecord();
             define('DATE_FORMAT',   $company_details['date_format']);
             define('QW_TAX_SYSTEM', $company_details['tax_system'] );
@@ -53,7 +53,7 @@ class Variables extends System {
         $this->app->smarty->assign('schedule_id', \CMSApplication::$VAR['schedule_id'] ?? null);
         $this->app->smarty->assign('invoice_id', \CMSApplication::$VAR['invoice_id'] ?? null);
         $this->app->smarty->assign('voucher_id', \CMSApplication::$VAR['voucher_id'] ?? null);
-        $this->app->smarty->assign('payment_id', \CMSApplication::$VAR['payment_id'] ?? null);        
+        $this->app->smarty->assign('payment_id', \CMSApplication::$VAR['payment_id'] ?? null);
         $this->app->smarty->assign('expense_id', \CMSApplication::$VAR['expense_id'] ?? null);
         $this->app->smarty->assign('otherincome_id', \CMSApplication::$VAR['otherincome_id'] ?? null);
         $this->app->smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'] ?? null);
@@ -71,7 +71,7 @@ class Variables extends System {
             } else {
                 $this->app->smarty->assign('company_logo', '');
             }
-            $this->app->smarty->assign('qw_tax_system', QW_TAX_SYSTEM                           ); 
+            $this->app->smarty->assign('qw_tax_system', QW_TAX_SYSTEM                           );
             $this->app->smarty->assign('date_format',   DATE_FORMAT                             );
         }
 
@@ -87,7 +87,7 @@ class Variables extends System {
     #  Set the User's Smarty Variables  #  // Empty if not logged in or installing (except for usergroup)
     #####################################
 
-    public function smartySetUserVariables() {     
+    public function smartySetUserVariables() {
 
         $this->app->smarty->assign('login_user_id',            $this->app->user->login_user_id          );
         $this->app->smarty->assign('login_username',           $this->app->user->login_username         );
@@ -144,7 +144,7 @@ class Variables extends System {
         $post_store = \Factory::getSession()->get('post_emulation_store');
 
         // Delete Stale Post Store - make sure the store is not an old one by putting a time limit on the validity
-        if(time() - \Factory::getSession()->get('post_emulation_timer') > 5 ) {        
+        if(time() - \Factory::getSession()->get('post_emulation_timer') > 5 ) {
 
             // Empty the registry store -  but keep it as an array
             \Factory::getSession()->set('post_emulation_store', array());
@@ -192,7 +192,7 @@ class Variables extends System {
         // Build the array in the correct order (for display purposes)
         $types = array('primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark');
 
-        // Loop through the different types or system message    
+        // Loop through the different types or system message
         foreach ($types as $type) {
 
             // Add this Message Type to the global System Message Store
@@ -204,10 +204,10 @@ class Variables extends System {
                 if(isset(\CMSApplication::$VAR['msg_'.$type])) {
                     \CMSApplication::$messages[$type][] = strip_tags(\CMSApplication::$VAR['msg_'.$type], '<br>');
                     unset(\CMSApplication::$VAR['msg_'.$type]);
-                }     
-            }   
+                }
+            }
 
-        } 
+        }
 
         if($grabVar) {
 
@@ -223,9 +223,12 @@ class Variables extends System {
     ########################################
     #  Write a system message to the store #
     ########################################
-    public function systemMessagesWrite($type, $message) {
 
-        \CMSApplication::$messages[$type][] = $message;
+    public function systemMessagesWrite($type, $message, $silent = false) {
+
+        if(!$silent){
+            \CMSApplication::$messages[$type][] = $message;
+        }
 
         return;
 
@@ -234,12 +237,12 @@ class Variables extends System {
     ###############################
     #  Return the Messages Store  #  //  in html format or array
     ###############################
-    
+
     public function systemMessagesReturnStore($keep_store = false, $format = 'html') {
 
         // Remove all empty message type holders (}not sure why i need this)
         \CMSApplication::$messages = array_filter(\CMSApplication::$messages);
-        
+
         // Return Message store as an array
         if($format === 'array') {
             $messages = \CMSApplication::$messages;
@@ -249,7 +252,7 @@ class Variables extends System {
         if($format === 'html') {
 
             // HTML holder
-            $html = '';    
+            $html = '';
 
             // Loop through the different types of message and build HTML
             foreach (\CMSApplication::$messages as $messageStoreType => $messages) {
@@ -258,7 +261,7 @@ class Variables extends System {
 
                     $html .= "<div class=\"alert alert-$messageStoreType\" role=\"alert\">$message</div>\n";
 
-                }        
+                }
 
             }
 
@@ -272,7 +275,7 @@ class Variables extends System {
         // Return selected format
         if($format === 'array') {
             return $messages;
-        } else {    
+        } else {
             return $html;
         }
 
@@ -285,7 +288,7 @@ class Variables extends System {
         if(isset(\CMSApplication::$VAR['forcePageSystemMessageStore']) && is_array(\CMSApplication::$VAR['forcePageSystemMessageStore'])) {
             $message_store = \CMSApplication::$VAR['forcePageSystemMessageStore'];
             unset(\CMSApplication::$VAR['forcePageSystemMessageStore']);
-        } else {        
+        } else {
             $message_store = array();
         }
 
@@ -294,7 +297,7 @@ class Variables extends System {
     }
 
     // This will parse the page payload and add the system messages, (only works on an empty HTML `system_messages` div)
-    public function systemMessagesParsePage(&$pagePayload) {    
+    public function systemMessagesParsePage(&$pagePayload) {
 
         if($systemMessageStore = $this->systemMessagesReturnStore()) {
             $search = '<div id="system_messages" style="display: none;"></div>';
@@ -304,5 +307,5 @@ class Variables extends System {
         }
 
     }
-    
+
 }
