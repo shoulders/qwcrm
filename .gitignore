@@ -1,6 +1,7 @@
 /localonly/
 /nbproject/
 /.vscode/
+/.VSCodeCounter/
 /src/cache/smarty/cache/
 /src/cache/smarty/compile/
 /src/libraries/vendor/
@@ -14,6 +15,6 @@
 /src/.htaccess
 /src/off.htaccess
 /src/themail.log
-src/language/en_GB/LC_MESSAGES/site.mo
-src/language/en_GB/LC_MESSAGES/site.po
+/src/language/en_GB/LC_MESSAGES/site.mo
+/src/language/en_GB/LC_MESSAGES/site.po
 
