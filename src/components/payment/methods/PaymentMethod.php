@@ -13,16 +13,12 @@ class PaymentMethod
 {
     protected $app = null;
     protected $VAR = null;
-    protected $currency_symbol = '';
 
     protected function __construct()
     {
         // Set class variables
         $this->app = \Factory::getApplication();
         $this->VAR = &\CMSApplication::$VAR;
-
-        // Set currency symbol (used for building messages)
-        $this->currency_symbol = $this->app->components->company->getRecord('currency_symbol');
     }
 
     // Pre-Processing - Prep/validate the data

@@ -1251,7 +1251,7 @@ class Creditnote extends Components {
 
                         // Make sure the submitted CR total is the same as the parent invoice's remaining balance
                         if($qform['unit_gross'] != $invoice_details['balance']){
-                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note requires that the amount is equal to the remaining balance on the parent invoice so it can be closed which is ").$this->app->components->company->getRecord('currency_symbol').number_format($invoice_details['balance'], 2, '.'));
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note requires that the amount is equal to the remaining balance on the parent invoice so it can be closed which is ").CURRENCY_SYMBOL.number_format($invoice_details['balance'], 2, '.'));
                             $state_flag = false;
                         }
 
@@ -1276,7 +1276,7 @@ class Creditnote extends Components {
 
                         // The submitted CR total is greater than real monies left on the parent invoice
                         if($qform['unit_gross'] > $moniesThatCanBeRefunded){
-                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot submit a credit note with an amount greater than the real monies left on the parent invoice, which is ").$this->app->components->company->getRecord('currency_symbol').number_format($moniesThatCanBeRefunded, 2, '.'));
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot submit a credit note with an amount greater than the real monies left on the parent invoice, which is ").CURRENCY_SYMBOL.number_format($moniesThatCanBeRefunded, 2, '.'));
                             $state_flag = false;
                         }
 
@@ -1381,7 +1381,7 @@ class Creditnote extends Components {
 
                         // Make sure the submitted CR total is the same as the parent expense's remaining balance
                         if($qform['unit_gross'] != $expense_details['balance']){
-                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note requires that the amount is equal to the remaining balance on the parent expense so it can be closed, which is ").$this->app->components->company->getRecord('currency_symbol').number_format($expense_details['balance'], 2, '.'));
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note requires that the amount is equal to the remaining balance on the parent expense so it can be closed, which is ").CURRENCY_SYMBOL.number_format($expense_details['balance'], 2, '.'));
                             $state_flag = false;
                         }
 
@@ -1404,7 +1404,7 @@ class Creditnote extends Components {
 
                         // The submitted CR total is greater than real monies left on the parent expense
                         if($qform['unit_gross'] > $moniesThatCanBeRefunded){
-                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot submit a credit note with an amount greater than the real monies left on the parent expense, which is ").$this->app->components->company->getRecord('currency_symbol').number_format($moniesThatCanBeRefunded, 2, '.'));
+                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot submit a credit note with an amount greater than the real monies left on the parent expense, which is ").CURRENCY_SYMBOL.number_format($moniesThatCanBeRefunded, 2, '.'));
                             $state_flag = false;
                         }
 

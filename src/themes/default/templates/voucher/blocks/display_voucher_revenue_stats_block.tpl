@@ -14,8 +14,8 @@
         <td class="row2"><b>{t}Cancelled{/t}</b></td>
     </tr>
     <tr class="olotd4">
-        <td><font color="green">{$currency_sym}{$voucher_stats.sum_unit_gross|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="green">{$currency_sym}{$voucher_stats.sum_expired_unused_unit_gross|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="cc0000">{$currency_sym}{$voucher_stats.sum_cancelled_unit_gross|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="green">{$currency_symbol}{$voucher_stats.sum_unit_gross|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="green">{$currency_symbol}{$voucher_stats.sum_expired_unused_unit_gross|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="cc0000">{$currency_symbol}{$voucher_stats.sum_cancelled_unit_gross|string_format:"%.2f"}</font> [G]</td>
     </tr>
 </table>

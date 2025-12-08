@@ -83,16 +83,16 @@
                                         {if $voucher_details.tax_system != 'no_tax'}
                                             <tr>
                                                 <td><b>{t}Net{/t}</b></td>
-                                                <td>{$currency_sym}{$voucher_details.unit_net|string_format:"%.2f"}</td>
+                                                <td>{$currency_symbol}{$voucher_details.unit_net|string_format:"%.2f"}</td>
                                             </tr>
                                             <tr>
                                                 <td><b>{if '/^vat_/'|preg_match:$voucher_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
-                                                <td>{$currency_sym}{$voucher_details.unit_tax|string_format:"%.2f"}</td>
+                                                <td>{$currency_symbol}{$voucher_details.unit_tax|string_format:"%.2f"}</td>
                                             </tr>
                                         {/if}
                                         <tr>
                                             <td><b>{t}Gross{/t}</b></td>
-                                            <td>{$currency_sym}{$voucher_details.unit_gross|string_format:"%.2f"}</td>
+                                            <td>{$currency_symbol}{$voucher_details.unit_gross|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Opened On{/t}</b></td>

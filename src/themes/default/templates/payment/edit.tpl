@@ -92,7 +92,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Parent Record Balance{/t}</b></td>
-                                                        <td>{$currency_sym}{$parent_record_balance|string_format:"%.2f"} ({t}As if this payment has not been applied{/t})</td>
+                                                        <td>{$currency_symbol}{$parent_record_balance|string_format:"%.2f"} ({t}As if this payment has not been applied{/t})</td>
 
                                                     </tr>
                                                     <tr>
@@ -143,7 +143,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                        <td>{$currency_sym}<input name="qpayment[amount]" class="olotd5" size="10" value="{$payment_details.amount|string_format:"%.2f"}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
+                                                        <td>{$currency_symbol}<input name="qpayment[amount]" class="olotd5" size="10" value="{$payment_details.amount|string_format:"%.2f"}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Additional Info{/t}</b></td>

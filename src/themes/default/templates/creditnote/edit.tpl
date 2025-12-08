@@ -433,7 +433,7 @@
                                                         {if $creditnote_details.status == $creditnote_statuses[s].status_key}{t}{$creditnote_statuses[s].display_name}{/t}{/if}
                                                     {/section}
                                                 </td>
-                                                <td>{$currency_sym}<span id="creditnoteTotalGrossTop">0.00</span></td>
+                                                <td>{$currency_symbol}<span id="creditnoteTotalGrossTop">0.00</span></td>
 
                                             </tr>
 
@@ -536,14 +536,14 @@
                                                         <tr class="olotd4">
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>
-                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $creditnote_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_sym})</b></td>
-                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_sym})</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_sym})</b></td>
+                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $creditnote_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_symbol})</b></td>
+                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_symbol})</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_symbol})</b></td>
                                                             <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
                                                             <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t} (%)</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} ({$currency_sym})</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} ({$currency_symbol})</b></td>
                                                             <td class="salesTaxSystem row2"  align="right" hidden><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>
-                                                            <td class="row2" align="right"><b>{t}Gross{/t} ({$currency_sym})</b></td>
+                                                            <td class="row2" align="right"><b>{t}Gross{/t} ({$currency_symbol})</b></td>
                                                             <td class="row2" align="right"><b>{t}Actions{/t}</b></td>
                                                         </tr>
 
@@ -612,28 +612,28 @@
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="creditnoteTotalDiscountText">0.00</span>
+                                                                            {$currency_symbol}<span id="creditnoteTotalDiscountText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="creditnoteTotalDiscount" name="qform[unit_discount]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
                                                                     <tr class="vatTaxSystem salesTaxSystem" hidden>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="creditnoteTotalNetText">0.00</span>
+                                                                            {$currency_symbol}<span id="creditnoteTotalNetText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="creditnoteTotalNet" name="qform[unit_net]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
                                                                     <tr class="vatTaxSystem salesTaxSystem" hidden>
                                                                         <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$creditnote_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="creditnoteTotalTaxText">0.00</span>
+                                                                            {$currency_symbol}<span id="creditnoteTotalTaxText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="creditnoteTotalTax" name="qform[unit_tax]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="creditnoteTotalGrossText">0.00</span>
+                                                                            {$currency_symbol}<span id="creditnoteTotalGrossText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="creditnoteTotalGross" name="qform[unit_gross]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>

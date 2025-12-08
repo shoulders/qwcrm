@@ -152,7 +152,7 @@ class PaymentMethodVoucher extends PaymentMethod
             $this->voucher_details = $this->app->components->voucher->getRecord($this->VAR['qpayment']['voucher_id']);
 
             // Balance remaining
-            $this->app->system->variables->systemMessagesWrite('warning', _gettext("The balance left on this voucher is").': '.$this->currency_symbol.$this->voucher_details['balance']);
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("The balance left on this voucher is").': '.CURRENCY_SYMBOL.$this->voucher_details['balance']);
 
         }
 

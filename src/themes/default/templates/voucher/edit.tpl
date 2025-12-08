@@ -24,16 +24,16 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="olotd5" colspan="2">     
+                    <td class="olotd5" colspan="2">
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
-                                <td class="olotd4">                                    
+                                <td class="olotd4">
                                     <form method="post" action="index.php?component=voucher&page_tpl=edit&voucher_id={$voucher_id}" name="voucher_edit" id="voucher_edit">
                                         <table>
                                             <tr>
                                                 <td><b>{t}Voucher ID{/t}</b></td>
                                                 <td>{$voucher_details.voucher_id}</td>
-                                            </tr>                                            
+                                            </tr>
                                             <tr>
                                                 <td><b>{t}Voucher Code{/t}</b></td>
                                                 <td>{$voucher_details.voucher_code}</td>
@@ -41,9 +41,9 @@
                                             <tr>
                                                 <td><b>{t}Type{/t}</b></td>
                                                 <td>
-                                                    {section name=s loop=$voucher_types}    
-                                                        {if $voucher_details.type == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}        
-                                                    {/section}              
+                                                    {section name=s loop=$voucher_types}
+                                                        {if $voucher_details.type == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}
+                                                    {/section}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -53,9 +53,9 @@
                                             <tr>
                                                 <td><b>{t}Status{/t}</b></td>
                                                 <td>
-                                                    {section name=s loop=$voucher_statuses}    
-                                                        {if $voucher_details.status == $voucher_statuses[s].status_key}{t}{$voucher_statuses[s].display_name}{/t}{/if}        
-                                                    {/section}              
+                                                    {section name=s loop=$voucher_statuses}
+                                                        {if $voucher_details.status == $voucher_statuses[s].status_key}{t}{$voucher_statuses[s].display_name}{/t}{/if}
+                                                    {/section}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -63,18 +63,18 @@
                                                 <td>
                                                     <input id="expiry_date" name="qform[expiry_date]" class="olotd4" size="10" value="{$voucher_details.expiry_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                     <button type="button" id="expiry_date_button">+</button>
-                                                    <script>                                                       
+                                                    <script>
                                                         Calendar.setup( {
                                                             trigger     : "expiry_date_button",
                                                             inputField  : "expiry_date",
                                                             dateFormat  : "{$date_format}"
-                                                        } );                                                     
-                                                    </script>                                                                                                        
+                                                        } );
+                                                    </script>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><b>{if $voucher_details.tax_system != 'no_tax'}{t}Net{/t}{else}{t}Gross{/t}{/if}</b></td>
-                                                <td>{$currency_sym}<input name="qform[unit_net]" class="olotd5" size="10" value="{$voucher_details.unit_net|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                <td>{$currency_symbol}<input name="qform[unit_net]" class="olotd5" size="10" value="{$voucher_details.unit_net|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><b>{t}Note{/t}:</b></td>
@@ -83,17 +83,17 @@
                                                 <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="qform[note]">{$voucher_details.note}</textarea></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">     
+                                                <td colspan="2">
                                                     <input type="hidden" name="qform[voucher_id]" value="{$voucher_details.voucher_id}">
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=voucher&page_tpl=details&voucher_id={$voucher_id}';">{t}Cancel{/t}</button>
                                                 </td>
                                             </tr>
                                         </table>
-                                    </form>                                    
+                                    </form>
                                 </td>
                             </tr>
-                        </table>                       
+                        </table>
                     </td>
                 </tr>
             </table>

@@ -190,7 +190,7 @@ class PaymentMethodCreditnote extends PaymentMethod
             $this->creditnote_details = $this->app->components->creditnote->getRecord($this->creditnote_details['creditnote_id']);
 
             // Balance remaining
-            $this->app->system->variables->systemMessagesWrite('warning', _gettext("The balance left on the credit note is").': '.$this->currency_symbol.$this->creditnote_details['balance']);
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("The balance left on the credit note is").': '.CURRENCY_SYMBOL.$this->creditnote_details['balance']);
         }
         else
         {

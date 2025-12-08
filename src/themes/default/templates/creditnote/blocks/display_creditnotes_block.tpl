@@ -71,11 +71,11 @@
                 {/section}
             </td>
             {if $qw_tax_system != 'no_tax'}
-                <td class="olotd4" nowrap>{$currency_sym}{$display_creditnotes.records[i].unit_net|string_format:"%.2f"}</td>
-                <td class="olotd4" nowrap>{$currency_sym}{$display_creditnotes.records[i].unit_tax|string_format:"%.2f"}</td>
+                <td class="olotd4" nowrap>{$currency_symbol}{$display_creditnotes.records[i].unit_net|string_format:"%.2f"}</td>
+                <td class="olotd4" nowrap>{$currency_symbol}{$display_creditnotes.records[i].unit_tax|string_format:"%.2f"}</td>
             {/if}
-            <td class="olotd4" nowrap>{$currency_sym}{$display_creditnotes.records[i].unit_gross|string_format:"%.2f"}</td>
-            <td class="olotd4" nowrap>{$currency_sym}{$display_creditnotes.records[i].balance|string_format:"%.2f"}</td>
+            <td class="olotd4" nowrap>{$currency_symbol}{$display_creditnotes.records[i].unit_gross|string_format:"%.2f"}</td>
+            <td class="olotd4" nowrap>{$currency_symbol}{$display_creditnotes.records[i].balance|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>
                 {if $display_creditnotes.records[i].creditnote_items}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_creditnotes.records[i].creditnote_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">

@@ -65,7 +65,7 @@ class PaymentTypeInvoice extends PaymentType
                     // The Payment must be the exact amount to close the invoice
                     // A Type 1 CR payment will always close the invoice balance in one payment
                     if($this->VAR['qpayment']['amount'] != Payment::$record_balance){
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice requires the credit note payment to be equal to the remaining balance on the invoice so it can be closed which is ").$this->app->components->company->getRecord('currency_symbol').number_format($this->invoice_details['balance'], 2, '.'));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice requires the credit note payment to be equal to the remaining balance on the invoice so it can be closed which is ").CURRENCY_SYMBOL.number_format($this->invoice_details['balance'], 2, '.'));
                         Payment::$payment_valid = false;
                     }
 

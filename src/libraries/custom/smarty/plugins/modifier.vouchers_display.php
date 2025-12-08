@@ -35,9 +35,6 @@ function smarty_modifier_vouchers_display($string)
     // Convert into a standard PHP array or return null
     if(!$vouchers = json_decode($string, true)) { return false; }
 
-    // Set currency symbol
-    $currency_symbol = $app->components->company->getRecord('currency_symbol');
-
     // Build HTML
     $contentFlag = false;
     $html = '';
@@ -63,12 +60,12 @@ function smarty_modifier_vouchers_display($string)
             }
             if($key == 'unit_net')
             {
-                $html .= '<strong>'._gettext("Net").':</strong> '.$currency_symbol.sprintf('%.2f', $value).'<br>';
+                $html .= '<strong>'._gettext("Net").':</strong> '.CURRENCY_SYMBOL.sprintf('%.2f', $value).'<br>';
                 $contentFlag = true;
             }
             if($key == 'balance')
             {
-                $html .= '<strong>'._gettext("Balance").':</strong> '.$currency_symbol.sprintf('%.2f', $value).'<br>';
+                $html .= '<strong>'._gettext("Balance").':</strong> '.CURRENCY_SYMBOL.sprintf('%.2f', $value).'<br>';
                 $contentFlag = true;
             }
         }

@@ -50,11 +50,11 @@
                 {if $display_vouchers.records[g].blocked == '1'}{t}Yes{/t}{/if}
             </td>
             {if $qw_tax_system != 'no_tax'}
-                <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_net}</td>
-                <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_tax}</td>
+                <td class="olotd4">{$currency_symbol}{$display_vouchers.records[g].unit_net}</td>
+                <td class="olotd4">{$currency_symbol}{$display_vouchers.records[g].unit_tax}</td>
             {/if}
-            <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].unit_gross}</td>
-            <td class="olotd4">{$currency_sym}{$display_vouchers.records[g].balance}</td>
+            <td class="olotd4">{$currency_symbol}{$display_vouchers.records[g].unit_gross}</td>
+            <td class="olotd4">{$currency_symbol}{$display_vouchers.records[g].balance}</td>
             <td class="olotd4" nowrap>
                 {if $display_vouchers.records[g].redemptions}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Voucher Redemptions{/t}</strong></div><hr><div>{$display_vouchers.records[g].redemptions|voucher_redemptions|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">

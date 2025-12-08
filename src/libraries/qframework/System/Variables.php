@@ -26,6 +26,7 @@ class Variables extends System {
             $company_details = $this->app->components->company->getRecord();
             define('DATE_FORMAT',   $company_details['date_format']);
             define('QW_TAX_SYSTEM', $company_details['tax_system'] );
+            define('CURRENCY_SYMBOL', $company_details['tax_system'] );
         }
 
         ##########################################################################
@@ -62,7 +63,7 @@ class Variables extends System {
 
         // Used throughout the site
         if(!defined('QWCRM_SETUP')) {
-            $this->app->smarty->assign('currency_sym',  $company_details['currency_symbol']     );
+            $this->app->smarty->assign('currency_symbol',  $company_details['currency_symbol'] );
             $this->app->smarty->assign('company_logo',  QW_MEDIA_DIR . $company_details['logo'] );
             // Only build the link if there is a logo set.
             if($this->app->components->company->getRecord('logo'))

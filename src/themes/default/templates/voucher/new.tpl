@@ -24,10 +24,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="olotd5" colspan="2">     
+                    <td class="olotd5" colspan="2">
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
-                                <td class="olotd4">                                    
+                                <td class="olotd4">
                                     <form method="post" action="index.php?component=voucher&page_tpl=new&invoice_id={$invoice_id}" name="voucher_new" id="voucher_new">
                                         <table>
                                             <tr>
@@ -42,31 +42,31 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Type{/t}</b></td>                                               
+                                                <td><b>{t}Type{/t}</b></td>
                                                 <td>
-                                                    {section name=s loop=$voucher_types}    
-                                                        {if $voucher_types[s].type_key == 'mpv'}{t} {$voucher_types[s].display_name}{/t}{/if}        
-                                                    {/section} 
-                                                    <input name="qform[type]" value="mpv" type="hidden" />            
-                                                </td>                                               
+                                                    {section name=s loop=$voucher_types}
+                                                        {if $voucher_types[s].type_key == 'mpv'}{t} {$voucher_types[s].display_name}{/t}{/if}
+                                                    {/section}
+                                                    <input name="qform[type]" value="mpv" type="hidden" />
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
                                                     <input id="expiry_date" name="qform[expiry_date]" class="olotd4" size="10" value="{$voucher_expiry_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                     <button type="button" id="expiry_date_button">+</button>
-                                                    <script>                                                       
+                                                    <script>
                                                         Calendar.setup( {
                                                             trigger     : "expiry_date_button",
                                                             inputField  : "expiry_date",
                                                             dateFormat  : "{$date_format}"
-                                                        } );                                                     
-                                                    </script>                                                                                                        
+                                                        } );
+                                                    </script>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><b>{if $voucher_tax_system != 'no_tax'}{t}Net{/t}{else}{t}Gross{/t}{/if}</b></td>                                                
-                                                <td>{$currency_sym}<input name="qform[unit_net]" class="olotd5" size="10" value="" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                <td><b>{if $voucher_tax_system != 'no_tax'}{t}Net{/t}{else}{t}Gross{/t}{/if}</b></td>
+                                                <td>{$currency_symbol}<input name="qform[unit_net]" class="olotd5" size="10" value="" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><b>{t}Note{/t}:</b></td>
@@ -75,17 +75,17 @@
                                                 <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="qform[note]"></textarea></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">   
+                                                <td colspan="2">
                                                     <input type="hidden" name="qform[invoice_id]" value="{$invoice_id}">
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>
                                                 </td>
                                             </tr>
                                         </table>
-                                    </form>                                    
+                                    </form>
                                 </td>
                             </tr>
-                        </table>                       
+                        </table>
                     </td>
                 </tr>
             </table>

@@ -9,41 +9,41 @@
 <html lang="en-GB">
 <head>
     <meta charset="utf-8">
-    
+
     <!-- PDF Title -->
-    <title>{t}CREDITNOTE_PRINT_CREDITNOTE_PAGE_TITLE{/t}</title>   
-        
+    <title>{t}CREDITNOTE_PRINT_CREDITNOTE_PAGE_TITLE{/t}</title>
+
     <!-- PDF Subject -->
     <meta name="description" content="{t}CREDITNOTE_PRINT_CREDITNOTE_META_DESCRIPTION{/t}">
-    
+
     <!-- PDF Keywords -->
     <meta name="keywords" content="{t}CREDITNOTE_PRINT_CREDITNOTE_META_KEYWORDS{/t}">
-    
+
     <!-- PDF Author -->
-    <meta name="author" content="QWcrm - QuantumWarp.com">       
-    
+    <meta name="author" content="QWcrm - QuantumWarp.com">
+
     <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" href="{$theme_css_dir}template.css">    
+    <link rel="stylesheet" href="{$theme_css_dir}template.css">
 </head>
 
 <body>
-    
+
     <!-- Margins - mPDF Workaround -->
     <div style="//padding-top: 55px;">
-    
-        <!-- Header Section 676px max + 55px margins width in mPDF -->        
+
+        <!-- Header Section 676px max + 55px margins width in mPDF -->
         <div style="height: 85px; width: 675px;">
 
             <!-- Logo -->
             <div id="logo" style="float: left; width: 150px;">
                 {if $company_logo}<img src="{$company_logo}" alt="" style="max-height: 75px; max-width: 150px;">{/if}
             </div>
-            
+
             <!-- Company Name -->
             <div id="company-name" style="float: left; width: 325px;">
                 <span style="font-size: 18px; font-weight: bold;"> <b>{$company_details.company_name}</b></span>
             </div>
-            
+
             <!-- Credit Note Details -->
             <div id="company-name" style="float: right; width: 200px;">
                 <table border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
@@ -52,17 +52,17 @@
                             <table width="180" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 <tr>
                                     <td>
-                                        <b>{t}Credit Note ID{/t} - </b>{$creditnote_details.creditnote_id}<br>                                                                                           
+                                        <b>{t}Credit Note ID{/t} - </b>{$creditnote_details.creditnote_id}<br>
                                         {if $creditnote_details.type == 'sales'}
                                             <b>{t}Invoice ID{/t} - </b>
-                                            {if $creditnote_details.invoice_id}{$creditnote_details.invoice_id}{else}{t}n/a{/t}{/if}</b><br>                                                       
+                                            {if $creditnote_details.invoice_id}{$creditnote_details.invoice_id}{else}{t}n/a{/t}{/if}</b><br>
                                         {else}
                                             <b>{t}Expense ID{/t} - </b>
-                                            {if $creditnote_details.expense_id}{$creditnote_details.expense_id}{else}{t}n/a{/t}{/if}</b><br>                                                   
-                                        {/if}                                        
+                                            {if $creditnote_details.expense_id}{$creditnote_details.expense_id}{else}{t}n/a{/t}{/if}</b><br>
+                                        {/if}
                                         <b>{t}Status{/t} - </b>
-                                        {section name=s loop=$creditnote_statuses}    
-                                            {if $creditnote_details.status == $creditnote_statuses[s].status_key}{t}{$creditnote_statuses[s].display_name}{/t}{/if}        
+                                        {section name=s loop=$creditnote_statuses}
+                                            {if $creditnote_details.status == $creditnote_statuses[s].status_key}{t}{$creditnote_statuses[s].display_name}{/t}{/if}
                                         {/section}<br>
                                         <b>{t}Date{/t} - </b>{$creditnote_details.date|date_format:$date_format}<br>
                                         <b>{t}Exipry Date{/t} - </b>{$creditnote_details.expiry_date|date_format:$date_format}<br>
@@ -76,30 +76,30 @@
             </div>
         </div>
         <div style="clear: both;"></div>
-        
-        <!-- Envelope Window Section -->        
+
+        <!-- Envelope Window Section -->
         <div style="width: 675px; height: 150px;">
-            
+
             <!-- Customer details (in Envelope Window) -->
             <div style="float: left; width: 310px; height: 110px; padding: 20px; background: lightgrey; border-radius: 5px; border: 1px solid black; overflow: hidden;">
-               <span style="font-size: 13px; font-weight: bold;">                   
-                    {$client_details.display_name}<br>               
+               <span style="font-size: 13px; font-weight: bold;">
+                    {$client_details.display_name}<br>
                     {$client_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
                     {$client_details.city}<br>
                     {$client_details.state}<br>
                     {$client_details.zip}<br>
-                    {$client_details.country}                   
+                    {$client_details.country}
                 </span>
-            </div>            
-            
+            </div>
+
             <!-- Company Details -->
             <div style="float: right; width: 320px; padding-top: 10px; margin: ">
                 <div style="width: 250px; margin-left: auto; overflow: hidden;">
                     <table border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                         <tr>
-                            <td valign="top" align="left">                
+                            <td valign="top" align="left">
                                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
-                                    <tr>                                        
+                                    <tr>
                                         <td valign="top"><b>{t}Address{/t} :&nbsp;</b></td>
                                         <td>
                                             {$company_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
@@ -125,7 +125,7 @@
                                         <td><b>{t}Company Number{/t} :&nbsp;</b></td>
                                         <td>{$company_details.company_number}</td>
                                     </tr>
-                                </table>     
+                                </table>
                             </td>
                         </tr>
                     </table>
@@ -143,7 +143,7 @@
                 </tr>
             </table>
             <table width="675" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-                <tr>                
+                <tr>
                     <td class="olohead"><b>{t}Description{/t}</b></td>
                     <td class="olohead" width="40" align="right"><b>{t}Unit Qty{/t}</b></td>
                     <td class="olohead" width="50" align="right">
@@ -155,20 +155,20 @@
                     </td>
                     <td class="olohead" width="50" align="right"><b>{t}Unit Discount{/t}</b></td>
                     {if $creditnote_details.tax_system != 'no_tax'}
-                        <td class="olohead" width="40" align="right"><b>{t}Net{/t}</b></td>                        
+                        <td class="olohead" width="40" align="right"><b>{t}Net{/t}</b></td>
                         <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                        <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>  
+                        <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                     {/if}
-                    <td class="olohead" width="40" align="right"><b>{t}Gross{/t}</b></td>                
-                </tr>            
+                    <td class="olohead" width="40" align="right"><b>{t}Gross{/t}</b></td>
+                </tr>
                 {section name=l loop=$creditnote_items}
-                    <tr class="olotd4">        
+                    <tr class="olotd4">
                         <td>{$creditnote_items[l].description}</td>
-                        <td>{$creditnote_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
-                        <td>{$currency_sym}{$creditnote_items[l].unit_net|string_format:"%.2f"}</td>
-                        <td>{$currency_sym}{$creditnote_items[l].unit_discount|string_format:"%.2f"}</td>                        
+                        <td>{$creditnote_items[l].unit_qty|string_format:"%.2f"}</td>
+                        <td>{$currency_symbol}{$creditnote_items[l].unit_net|string_format:"%.2f"}</td>
+                        <td>{$currency_symbol}{$creditnote_items[l].unit_discount|string_format:"%.2f"}</td>
                         {if $creditnote_details.tax_system != 'no_tax'}
-                            <td>{$currency_sym}{$creditnote_items[l].subtotal_net|string_format:"%.2f"}</td>
+                            <td>{$currency_symbol}{$creditnote_items[l].subtotal_net|string_format:"%.2f"}</td>
                             <td align="center">
                                 {if $creditnote_items[l].sales_tax_exempt}
                                     {t}Exempt{/t}
@@ -180,14 +180,14 @@
                                     {$creditnote_items[l].unit_tax_rate|string_format:"%.2f"}%
                                 {/if}
                             </td>
-                            <td>{$currency_sym}{$creditnote_items[l].subtotal_tax|string_format:"%.2f"}</td>
+                            <td>{$currency_symbol}{$creditnote_items[l].subtotal_tax|string_format:"%.2f"}</td>
                         {/if}
-                        <td>{$currency_sym}{$creditnote_items[l].subtotal_gross|string_format:"%.2f"}</td>                                                            
+                        <td>{$currency_symbol}{$creditnote_items[l].subtotal_gross|string_format:"%.2f"}</td>
                     </tr>
-                {/section} 
+                {/section}
             </table>
-            <br>            
-        {/if}      
+            <br>
+        {/if}
 
         <!-- Financial Section -->
         <table width="675" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
@@ -198,22 +198,22 @@
                     <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$creditnote_details.unit_discount|string_format:"%.2f"}</td>
+                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_discount|string_format:"%.2f"}</td>
                         </tr>
                         {if $creditnote_details.tax_system != 'no_tax'}
                             <tr>
                                 <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
-                                <td class="olotd4" width="20%" align="right">{$currency_sym}{$creditnote_details.unit_net|string_format:"%.2f"}</td>
+                                <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_net|string_format:"%.2f"}</td>
                             </tr>
-                            <tr>                                                            
+                            <tr>
                                 <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$creditnote_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
-                                <td class="olotd4" width="20%" align="right">{$currency_sym}{$creditnote_details.unit_tax|string_format:"%.2f"}</td>                                                            
+                                <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_tax|string_format:"%.2f"}</td>
                             </tr>
                         {/if}
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$creditnote_details.unit_gross|string_format:"%.2f"}</td>
-                        </tr> 
+                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_gross|string_format:"%.2f"}</td>
+                        </tr>
                     </table>
                 </td>
             </tr>
@@ -221,8 +221,8 @@
         <br>
         <br>
 
-        <!-- Footer Section -->    
-        <table width="675" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">            
+        <!-- Footer Section -->
+        <table width="675" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             {if '/^vat_/'|preg_match:$creditnote_details.tax_system}
                 <tr>
                     <td align="center"><b>{t}VAT Number{/t}:</b> {$company_details.vat_number}</td>
@@ -248,6 +248,6 @@
             </tr>
         </table>
 
-    </div>        
+    </div>
 </body>
 </html>

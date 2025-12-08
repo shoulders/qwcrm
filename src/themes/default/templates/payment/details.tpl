@@ -100,7 +100,7 @@
                                                 {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$payment_details.amount|string_format:"%.2f"}</td>
+                                            <td class="menutd">{$currency_symbol} {$payment_details.amount|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Additional Info{/t}</b></td>

@@ -38,11 +38,11 @@
                 {/section}
             </td>
             {if '/^vat_/'|preg_match:$qw_tax_system}
-                <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].unit_net|string_format:"%.2f"}</td>
-                <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].unit_tax|string_format:"%.2f"}</td>
+                <td class="olotd4" nowrap>{$currency_symbol}{$display_expenses.records[e].unit_net|string_format:"%.2f"}</td>
+                <td class="olotd4" nowrap>{$currency_symbol}{$display_expenses.records[e].unit_tax|string_format:"%.2f"}</td>
             {/if}
-            <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].unit_gross|string_format:"%.2f"}</td>
-            <td class="olotd4" nowrap>{$currency_sym}{$display_expenses.records[e].balance|string_format:"%.2f"}</td>
+            <td class="olotd4" nowrap>{$currency_symbol}{$display_expenses.records[e].unit_gross|string_format:"%.2f"}</td>
+            <td class="olotd4" nowrap>{$currency_symbol}{$display_expenses.records[e].balance|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>
                 {section name=s loop=$expense_statuses}
                     {if $display_expenses.records[e].status == $expense_statuses[s].status_key}{t}{$expense_statuses[s].display_name}{/t}{/if}

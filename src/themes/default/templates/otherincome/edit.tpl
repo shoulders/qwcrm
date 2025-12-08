@@ -400,7 +400,7 @@
                                                         {if $otherincome_details.status == $otherincome_statuses[s].status_key}{t}{$otherincome_statuses[s].display_name}{/t}{/if}
                                                     {/section}
                                                 </td>
-                                                <td>{$currency_sym}<span id="otherincomeTotalGrossTop">0.00</span></td>
+                                                <td>{$currency_symbol}<span id="otherincomeTotalGrossTop">0.00</span></td>
 
                                             </tr>
 
@@ -479,14 +479,14 @@
                                                         <tr class="olotd4">
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>
-                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $otherincome_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_sym})</b></td>
-                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_sym})</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_sym})</b></td>
+                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $otherincome_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_symbol})</b></td>
+                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_symbol})</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_symbol})</b></td>
                                                             <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
                                                             <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$otherincome_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t} (%)</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$otherincome_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} ({$currency_sym})</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$otherincome_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} ({$currency_symbol})</b></td>
                                                             <td class="salesTaxSystem row2"  align="right" hidden><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>
-                                                            <td class="row2" align="right"><b>{t}Gross{/t} ({$currency_sym})</b></td>
+                                                            <td class="row2" align="right"><b>{t}Gross{/t} ({$currency_symbol})</b></td>
                                                             <td class="row2" align="right"><b>{t}Actions{/t}</b></td>
                                                         </tr>
 
@@ -553,14 +553,14 @@
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="otherincomeTotalDiscountText">0.00</span>
+                                                                            {$currency_symbol}<span id="otherincomeTotalDiscountText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="otherincomeTotalDiscount" name="qform[unit_discount]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
                                                                     <tr class="vatTaxSystem salesTaxSystem" hidden>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="otherincomeTotalNetText">0.00</span>
+                                                                            {$currency_symbol}<span id="otherincomeTotalNetText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="otherincomeTotalNet" name="qform[unit_net]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
@@ -576,14 +576,14 @@
                                                                             {/if}
                                                                         </td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="otherincomeTotalTaxText">0.00</span>
+                                                                            {$currency_symbol}<span id="otherincomeTotalTaxText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="otherincomeTotalTax" name="qform[unit_tax]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="otherincomeTotalGrossText">0.00</span>
+                                                                            {$currency_symbol}<span id="otherincomeTotalGrossText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="otherincomeTotalGross" name="qform[unit_gross]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>

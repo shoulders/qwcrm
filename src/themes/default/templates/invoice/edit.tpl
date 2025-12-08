@@ -434,7 +434,7 @@
                                                         {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}
                                                     {/section}
                                                 </td>
-                                                <td>{$currency_sym}<span id="invoiceTotalGrossTop">0.00</span></td>
+                                                <td>{$currency_symbol}<span id="invoiceTotalGrossTop">0.00</span></td>
 
                                             </tr>
                                             <tr class="olotd4">
@@ -572,14 +572,14 @@
                                                         <tr class="olotd4">
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>
-                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $invoice_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_sym})</b></td>
-                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_sym})</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_sym})</b></td>
+                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $invoice_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_symbol})</b></td>
+                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_symbol})</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_symbol})</b></td>
                                                             <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
                                                             <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t} (%)</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} ({$currency_sym})</b></td>
+                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} ({$currency_symbol})</b></td>
                                                             <td class="salesTaxSystem row2"  align="right" hidden><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>
-                                                            <td class="row2" align="right"><b>{t}Gross{/t} ({$currency_sym})</b></td>
+                                                            <td class="row2" align="right"><b>{t}Gross{/t} ({$currency_symbol})</b></td>
                                                             <td class="row2" align="right"><b>{t}Actions{/t}</b></td>
                                                         </tr>
 
@@ -638,10 +638,10 @@
                                         <table class="olotable" style="margin-top: 10px;" width="500" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                             <tr style="background-color: #c3d9ea;">
                                                 <td style="text-align:right;"><b>{t}Invoice Items{/t} {t}Totals{/t} </b></td>
-                                                <td width="140" align="left">{t}Discount{/t}: {$currency_sym}<span id="invoice_items_subtotal_discount">0.00</span></td>
-                                                <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{t}Net{/t}: {$currency_sym}<span id="invoice_items_subtotal_net">0.00</span></td>
-                                                <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}<span id="invoice_items_subtotal_tax">0.00</sapn></td>
-                                                <td width="80" align="left">{t}Gross{/t}: {$currency_sym}<span id="invoice_items_subtotal_gross">0.00</span></td>
+                                                <td width="140" align="left">{t}Discount{/t}: {$currency_symbol}<span id="invoice_items_subtotal_discount">0.00</span></td>
+                                                <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{t}Net{/t}: {$currency_symbol}<span id="invoice_items_subtotal_net">0.00</span></td>
+                                                <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_symbol}<span id="invoice_items_subtotal_tax">0.00</sapn></td>
+                                                <td width="80" align="left">{t}Gross{/t}: {$currency_symbol}<span id="invoice_items_subtotal_gross">0.00</span></td>
                                             </tr>
                                         </table>
                                     </td>
@@ -659,9 +659,9 @@
                                             <table class="olotable" style="margin-top: 10px;" width="400" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                                 <tr style="background-color: #c3d9ea;">
                                                     <td style="text-align:right;"><b>{t}Voucher{/t} {t}Totals{/t}</b></td>
-                                                    <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{t}Net{/t}: {$currency_sym}<span id="vouchersTotalNet">{$voucher_items_subtotals.subtotal_net|string_format:"%.2f"}</span></td>
-                                                    <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}<span id="vouchersTotalTax">{$voucher_items_subtotals.subtotal_tax|string_format:"%.2f"}</span></td>
-                                                    <td width="80" align="left">{t}Gross{/t}: {$currency_sym}<span id="vouchersTotalGross">{$voucher_items_subtotals.subtotal_gross|string_format:"%.2f"}</span></td>
+                                                    <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{t}Net{/t}: {$currency_symbol}<span id="vouchersTotalNet">{$voucher_items_subtotals.subtotal_net|string_format:"%.2f"}</span></td>
+                                                    <td width="80" align="left" class="vatTaxSystem salesTaxSystem" hidden>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_symbol}<span id="vouchersTotalTax">{$voucher_items_subtotals.subtotal_tax|string_format:"%.2f"}</span></td>
+                                                    <td width="80" align="left">{t}Gross{/t}: {$currency_symbol}<span id="vouchersTotalGross">{$voucher_items_subtotals.subtotal_gross|string_format:"%.2f"}</span></td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -684,28 +684,28 @@
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="invoiceTotalDiscountText">0.00</span>
+                                                                            {$currency_symbol}<span id="invoiceTotalDiscountText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="invoiceTotalDiscount" name="qform[unit_discount]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
                                                                     <tr class="vatTaxSystem salesTaxSystem" hidden>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="invoiceTotalNetText">0.00</span>
+                                                                            {$currency_symbol}<span id="invoiceTotalNetText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="invoiceTotalNet" name="qform[unit_net]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
                                                                     <tr class="vatTaxSystem salesTaxSystem" hidden>
                                                                         <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$invoice_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="invoiceTotalTaxText">0.00</span>
+                                                                            {$currency_symbol}<span id="invoiceTotalTaxText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="invoiceTotalTax" name="qform[unit_tax]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_sym}<span id="invoiceTotalGrossText">0.00</span>
+                                                                            {$currency_symbol}<span id="invoiceTotalGrossText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="invoiceTotalGross" name="qform[unit_gross]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>

@@ -59,8 +59,8 @@
                                                         {if $expense_details.status == $expense_statuses[s].status_key}{t}{$expense_statuses[s].display_name}{/t}{/if}
                                                     {/section}
                                                 </td>
-                                                <td>{$currency_sym}{$expense_details.unit_gross|string_format:"%.2f"}</td>
-                                                <td><font color="#cc0000">{$currency_sym}{$expense_details.balance|string_format:"%.2f"}</font></td>
+                                                <td>{$currency_symbol}{$expense_details.unit_gross|string_format:"%.2f"}</td>
+                                                <td><font color="#cc0000">{$currency_symbol}{$expense_details.balance|string_format:"%.2f"}</font></td>
                                                 <td>{$expense_details.closed_on|date_format:$date_format}</td>
                                             </tr>
 
@@ -184,10 +184,10 @@
                                                                     <td>{$smarty.section.l.index + 1}</td>
                                                                     <td>{$expense_items[l].description}</td>
                                                                     <td>{$expense_items[l].unit_qty|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$expense_items[l].unit_net|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$expense_items[l].unit_discount|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_symbol}{$expense_items[l].unit_net|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_symbol}{$expense_items[l].unit_discount|string_format:"%.2f"}</td>
                                                                     {if $expense_details.tax_system != 'no_tax'}
-                                                                        <td>{$currency_sym}{$expense_items[l].subtotal_net|string_format:"%.2f"}</td>
+                                                                        <td>{$currency_symbol}{$expense_items[l].subtotal_net|string_format:"%.2f"}</td>
                                                                         {if $expense_items[l].sales_tax_exempt}
                                                                             <td colspan="2" align="center">{t}Exempt{/t}</td>
                                                                         {elseif $expense_items[l].vat_tax_code == 'T2'}
@@ -201,10 +201,10 @@
                                                                                 </td>
                                                                             {/if}
                                                                             <td>{$expense_items[l].unit_tax_rate|string_format:"%.2f"}%</td>
-                                                                            <td>{$currency_sym}{$expense_items[l].subtotal_tax|string_format:"%.2f"}</td>
+                                                                            <td>{$currency_symbol}{$expense_items[l].subtotal_tax|string_format:"%.2f"}</td>
                                                                         {/if}
                                                                     {/if}
-                                                                    <td>{$currency_sym}{$expense_items[l].subtotal_gross|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_symbol}{$expense_items[l].subtotal_gross|string_format:"%.2f"}</td>
                                                                 </tr>
                                                             {/section}
 
@@ -229,21 +229,21 @@
                                                     <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$expense_details.unit_discount|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$expense_details.unit_discount|string_format:"%.2f"}</td>
                                                         </tr>
                                                         {if $expense_details.tax_system != 'no_tax'}
                                                             <tr>
                                                                 <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
-                                                                <td class="olotd4" width="20%" align="right">{$currency_sym}{$expense_details.unit_net|string_format:"%.2f"}</td>
+                                                                <td class="olotd4" width="20%" align="right">{$currency_symbol}{$expense_details.unit_net|string_format:"%.2f"}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$expense_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$expense_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
-                                                                <td class="olotd4" width="20%" align="right">{$currency_sym}{$expense_details.unit_tax|string_format:"%.2f"}</td>
+                                                                <td class="olotd4" width="20%" align="right">{$currency_symbol}{$expense_details.unit_tax|string_format:"%.2f"}</td>
                                                             </tr>
                                                         {/if}
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$expense_details.unit_gross|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$expense_details.unit_gross|string_format:"%.2f"}</td>
                                                         </tr>
                                                     </table>
                                                 </td>

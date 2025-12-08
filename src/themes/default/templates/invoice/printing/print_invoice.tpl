@@ -179,10 +179,10 @@
                     <tr class="olotd4">
                         <td>{$invoice_items[l].description}</td>
                         <td>{$invoice_items[l].unit_qty|string_format:"%.2f"}</td>
-                        <td>{$currency_sym}{$invoice_items[l].unit_net|string_format:"%.2f"}</td>
-                        <td>{$currency_sym}{$invoice_items[l].unit_discount|string_format:"%.2f"}</td>
+                        <td>{$currency_symbol}{$invoice_items[l].unit_net|string_format:"%.2f"}</td>
+                        <td>{$currency_symbol}{$invoice_items[l].unit_discount|string_format:"%.2f"}</td>
                         {if $invoice_details.tax_system != 'no_tax'}
-                            <td>{$currency_sym}{$invoice_items[l].subtotal_net|string_format:"%.2f"}</td>
+                            <td>{$currency_symbol}{$invoice_items[l].subtotal_net|string_format:"%.2f"}</td>
                             <td align="center">
                                 {if $invoice_items[l].sales_tax_exempt}
                                     {t}Exempt{/t}
@@ -194,9 +194,9 @@
                                     {$invoice_items[l].unit_tax_rate|string_format:"%.2f"}%
                                 {/if}
                             </td>
-                            <td>{$currency_sym}{$invoice_items[l].subtotal_tax|string_format:"%.2f"}</td>
+                            <td>{$currency_symbol}{$invoice_items[l].subtotal_tax|string_format:"%.2f"}</td>
                         {/if}
-                        <td>{$currency_sym}{$invoice_items[l].subtotal_gross|string_format:"%.2f"}</td>
+                        <td>{$currency_symbol}{$invoice_items[l].subtotal_gross|string_format:"%.2f"}</td>
                     </tr>
                 {/section}
             </table>
@@ -206,12 +206,12 @@
             <table style="margin-top: 10px;" width="675" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                 <tr>
                     <td style="text-align:right;"><b>{t}Invoice Items{/t} {t}Totals{/t}</b></td>
-                    <td class="olotd4" width="80" align="right">{t}Discount{/t}: {$currency_sym}{$invoice_items_subtotals.subtotal_discount|string_format:"%.2f"}</td>
+                    <td class="olotd4" width="80" align="right">{t}Discount{/t}: {$currency_symbol}{$invoice_items_subtotals.subtotal_discount|string_format:"%.2f"}</td>
                     {if $invoice_details.tax_system != 'no_tax'}
-                        <td class="olotd4" width="80" align="right">{t}Net{/t}: {$currency_sym}{$invoice_items_subtotals.subtotal_net|string_format:"%.2f"}</td>
-                        <td class="olotd4" width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$invoice_items_subtotals.subtotal_tax|string_format:"%.2f"}</td>
+                        <td class="olotd4" width="80" align="right">{t}Net{/t}: {$currency_symbol}{$invoice_items_subtotals.subtotal_net|string_format:"%.2f"}</td>
+                        <td class="olotd4" width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_symbol}{$invoice_items_subtotals.subtotal_tax|string_format:"%.2f"}</td>
                     {/if}
-                    <td class="olotd4" width="80" align="right">{t}Gross{/t}: {$currency_sym}{$invoice_items_subtotals.subtotal_gross|string_format:"%.2f"}</td>
+                    <td class="olotd4" width="80" align="right">{t}Gross{/t}: {$currency_symbol}{$invoice_items_subtotals.subtotal_gross|string_format:"%.2f"}</td>
                 </tr>
             </table>*}
 
@@ -236,10 +236,10 @@
                         <td class="olotd4">{$display_vouchers.records[p].voucher_code}</td>
                         <td class="olotd4" align="right">{$display_vouchers.records[p].expiry_date|date_format:$date_format}</td>
                         {if $qw_tax_system != 'no_tax'}
-                            <td class="olotd4">{$currency_sym}{$display_vouchers.records[p].unit_net}</td>
-                            <td class="olotd4">{$currency_sym}{$display_vouchers.records[p].unit_tax}</td>
+                            <td class="olotd4">{$currency_symbol}{$display_vouchers.records[p].unit_net}</td>
+                            <td class="olotd4">{$currency_symbol}{$display_vouchers.records[p].unit_tax}</td>
                         {/if}
-                        <td class="olotd4" align="right">{$currency_sym}{$display_vouchers.records[p].unit_gross}</td>
+                        <td class="olotd4" align="right">{$currency_symbol}{$display_vouchers.records[p].unit_gross}</td>
                     </tr>
                 {/section}
             </table>
@@ -248,10 +248,10 @@
                 <tr>
                     <td style="text-align:right;"><b>{t}Voucher{/t} {t}Totals{/t}</b></td>
                     {if $invoice_details.tax_system != 'no_tax'}
-                        <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$voucher_subtotals.subtotal_net|string_format:"%.2f"}</td>
-                        <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$voucher_subtotals.subtotal_tax|string_format:"%.2f"}</td>
+                        <td width="80" align="right">{t}Net{/t}: {$currency_symbol}{$voucher_subtotals.subtotal_net|string_format:"%.2f"}</td>
+                        <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_symbol}{$voucher_subtotals.subtotal_tax|string_format:"%.2f"}</td>
                     {/if}
-                    <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$voucher_subtotals.subtotal_gross|string_format:"%.2f"}</td>
+                    <td width="80" align="right">{t}Gross{/t}: {$currency_symbol}{$voucher_subtotals.subtotal_gross|string_format:"%.2f"}</td>
                 </tr>
             </table>
             <br>
@@ -335,21 +335,21 @@
                     <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_discount|string_format:"%.2f"}</td>
+                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$invoice_details.unit_discount|string_format:"%.2f"}</td>
                         </tr>
                         {if $invoice_details.tax_system != 'no_tax'}
                             <tr>
                                 <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
-                                <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_net|string_format:"%.2f"}</td>
+                                <td class="olotd4" width="20%" align="right">{$currency_symbol}{$invoice_details.unit_net|string_format:"%.2f"}</td>
                             </tr>
                             <tr>
                                 <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$invoice_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
-                                <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_tax|string_format:"%.2f"}</td>
+                                <td class="olotd4" width="20%" align="right">{$currency_symbol}{$invoice_details.unit_tax|string_format:"%.2f"}</td>
                             </tr>
                         {/if}
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_gross|string_format:"%.2f"}</td>
+                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$invoice_details.unit_gross|string_format:"%.2f"}</td>
                         </tr>
                     </table>
                 </td>

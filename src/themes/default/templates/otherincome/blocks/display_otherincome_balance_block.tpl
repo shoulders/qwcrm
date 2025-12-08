@@ -25,12 +25,12 @@
         <td class="olotd4"><a href="index.php?component=supplier&page_tpl=details&supplier_id={$otherincome_details.supplier_id}">{$otherincome_details.supplier_id}</a></td>
         <td class="olotd4">{$otherincome_details.date|date_format:$date_format}</td>
         {if '/^vat_/'|preg_match:$otherincome_details.tax_system}
-            <td class="olotd4">{$currency_sym}{$otherincome_details.unit_net|string_format:"%.2f"}</td>
-            <td class="olotd4">{$currency_sym}{$otherincome_details.unit_tax|string_format:"%.2f"}</td>
+            <td class="olotd4">{$currency_symbol}{$otherincome_details.unit_net|string_format:"%.2f"}</td>
+            <td class="olotd4">{$currency_symbol}{$otherincome_details.unit_tax|string_format:"%.2f"}</td>
         {/if}
-        <td class="olotd4">{$currency_sym}{$otherincome_details.unit_gross|string_format:"%.2f"}</td>
-        <td class="olotd4">{$currency_sym}{($otherincome_details.unit_gross - $otherincome_details.balance)|string_format:"%.2f"}</td>
-        <td class="olotd4"><font color="#cc0000"><b>{$currency_sym}{$otherincome_details.balance|string_format:"%.2f"}</b></font></td>
+        <td class="olotd4">{$currency_symbol}{$otherincome_details.unit_gross|string_format:"%.2f"}</td>
+        <td class="olotd4">{$currency_symbol}{($otherincome_details.unit_gross - $otherincome_details.balance)|string_format:"%.2f"}</td>
+        <td class="olotd4"><font color="#cc0000"><b>{$currency_symbol}{$otherincome_details.balance|string_format:"%.2f"}</b></font></td>
         <td class="olotd4">
             {section name=s loop=$otherincome_statuses}
                 {if $otherincome_details.status == $otherincome_statuses[s].status_key}{t}{$otherincome_statuses[s].display_name}{/t}{/if}
