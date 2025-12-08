@@ -515,7 +515,7 @@ class Voucher extends Components {
         if(in_array($new_status, array('redeemed', 'voided', 'cancelled'))) {
             $closed_on = $this->app->system->general->mysqlDatetime($timestamp);
         } else {
-            $closed_on = null;
+            $closed_on = $voucher_details['closed_on'];
         }
 
         // Update voucher 'blocked' boolean for the new status ('blocked' is a way of disabling the voucher without permanently closing it, i.e. for suspended status, and is controlled by Expiry and Status)

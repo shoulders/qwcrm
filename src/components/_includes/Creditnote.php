@@ -610,8 +610,8 @@ class Creditnote extends Components {
             $closed_on = $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) );
             $is_closed = $this->app->db->qStr(1);
         } else {
-            $closed_on = null;
-            $is_closed = $this->app->db->qStr(0);
+            $closed_on = $creditnote_details['closed_on'];
+            $is_closed = $creditnote_details['is_closed'];
         }
 
         $sql = "UPDATE ".PRFX."creditnote_records SET
