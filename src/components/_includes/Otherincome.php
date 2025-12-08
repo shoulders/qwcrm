@@ -445,7 +445,7 @@ class OtherIncome extends Components {
 
         // if the new status is the same as the current one, exit
         if($new_status == $otherincome_details['status']) {
-            if (!$silent) { $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.", $silent));
             return false;
         }
 
@@ -466,7 +466,7 @@ class OtherIncome extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Status updated message
-        if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome status updated.")); }
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome status updated.", $silent));
 
         // Log activity
         $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';

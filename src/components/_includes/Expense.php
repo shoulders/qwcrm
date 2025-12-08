@@ -465,7 +465,7 @@ class Expense extends Components {
 
         // if the new status is the same as the current one, exit
         if($new_status == $expense_details['status']) {
-            if (!$silent) { $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.", $silent));
             return false;
         }
 

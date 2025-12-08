@@ -261,17 +261,13 @@ class Cronjob extends Components {
 
         // If Cronjob system is turned off
         if(!$this->app->config->get('cronjob_system')) {
-            if(!$silent) {
-                $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob System is disabled and cannot been run."));
-            }
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob System is disabled and cannot been run.", $silent));
             return false;
         }
 
         // If the cronjob system is locked
         if($cronjob_system_details['locked']) {
-            if(!$silent) {
-                $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob System is locked and cannot been run."));
-            }
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob System is locked and cannot been run.", $silent));
             return false;
         }
 
@@ -304,14 +300,10 @@ class Cronjob extends Components {
         // Cronjob System run messages
         if($state_flag) {
             // Success Message
-            if(!$silent) {
-               $this->app->system->variables->systemMessagesWrite('success', _gettext("The Cronjob System ran all enabled cronjobs successfully."));
-            }
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("The Cronjob System ran all enabled cronjobs successfully.", $silent));
         } else {
             // Fail Message
-            if(!$silent) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The Cronjob System did not run all cronjobs successfully."));
-            }
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The Cronjob System did not run all cronjobs successfully.", $silent));
         }
 
         return $state_flag;
@@ -328,9 +320,8 @@ class Cronjob extends Components {
 
         // Is the cronjob enabled
         if(!$cronjob_details['active']) {
-            if(!$silent) {
-                $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cron").' '.$cronjob_id.' '._gettext("is disabled and has not been run."));
-            }
+
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cron").' '.$cronjob_id.' '._gettext("is disabled and has not been run.", $silent));
 
             // Disabled single cronjobs should not fail the cron system, but manually run disabled cronjobs should fail
             if(defined('CRONJOB_SYSTEM_ACTIVE')) {
@@ -343,9 +334,7 @@ class Cronjob extends Components {
 
         // If the cronjob is locked
         if($cronjob_details['locked']) {
-            if(!$silent) {
-                $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob").' '.$cronjob_id.' '._gettext("is locked and cannot been run."));
-            }
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob").' '.$cronjob_id.' '._gettext("is locked and cannot been run.", $silent));
             return false;
         }
 
@@ -354,9 +343,7 @@ class Cronjob extends Components {
 
             // Is the cronjob allowed for pseudo cron
             if(!$cronjob_details['pseudo_allowed']) {
-                if(!$silent) {
-                    $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob").' '.$cronjob_id.' '._gettext("is not allowed for Pseudo Cronjob system execution."));
-                }
+                $this->app->system->variables->systemMessagesWrite('warning', _gettext("Cronjob").' '.$cronjob_id.' '._gettext("is not allowed for Pseudo Cronjob system execution.", $silent));
                 return false;
             }
 
@@ -380,15 +367,11 @@ class Cronjob extends Components {
         // Execute the cronjob
         if((new $cronjobClass)->$cronjobFunction()) {
             // true/passed
-            if(!$silent) {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Cron").' '.$cronjob_id.' '._gettext("has been run successfully."));
-            }
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Cron").' '.$cronjob_id.' '._gettext("has been run successfully.", $silent));
             $state_flag = true;
         } else {
             // false/failed
-            if(!$silent) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cron").' '.$cronjob_id.' '._gettext("has failed to run successfully."));
-            }
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cron").' '.$cronjob_id.' '._gettext("has failed to run successfully.", $silent));
             $state_flag = false;
         }
 

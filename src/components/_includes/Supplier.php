@@ -366,7 +366,7 @@ class Supplier extends Components {
 
         // if the new status is the same as the current one, exit
         if($new_status == $supplier_details['status']) {
-            if (!$silent) { $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.", $silent));
             return false;
         }
 
@@ -381,7 +381,7 @@ class Supplier extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Status updated message
-        if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("supplier status updated.")); }
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("supplier status updated.", $silent));
 
         // For writing message to log file, get supplier status display name
         $supplier_status_display_name = _gettext($this->getStatusDisplayName($new_status));

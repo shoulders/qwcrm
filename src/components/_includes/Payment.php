@@ -577,7 +577,7 @@ class Payment extends Components {
 
         // if the new status is the same as the current one, exit
         if($new_status == $payment_details['status']) {
-            if (!$silent) { $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.", $silent));
             return false;
         }
 
@@ -588,7 +588,7 @@ class Payment extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Status updated message
-        if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment status updated.")); }
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment status updated.", $silent));
 
         // For writing message to log file, get payment status display name
         $payment_status_names = $this->getStatusDisplayNames();
