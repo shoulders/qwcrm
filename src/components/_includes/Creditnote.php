@@ -763,7 +763,6 @@ class Creditnote extends Components {
                 date                = NULL,
                 expiry_date         = NULL,
                 type                = '',
-                reference           = '',
                 tax_system          = '',
                 unit_net            = 0.00,
                 unit_discount       = 0.00,

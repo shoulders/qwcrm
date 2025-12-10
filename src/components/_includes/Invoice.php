@@ -802,8 +802,8 @@ defined('_QWEXEC') or die;
                 date                = NULL,
                 due_date            = NULL,
                 tax_system          = '',
-                unit_discount       = 0.00,
                 unit_net            = 0.00,
+                unit_discount       = 0.00,
                 sales_tax_rate      = 0.00,
                 unit_tax            = 0.00,
                 unit_gross          = 0.00,
@@ -813,6 +813,7 @@ defined('_QWEXEC') or die;
                 closed_on           = NULL,
                 last_active         = NULL,
                 is_closed           = 1,
+                note                = '',
                 additional_info     = ''
                 WHERE invoice_id    =". $this->app->db->qStr( $invoice_id  );
 

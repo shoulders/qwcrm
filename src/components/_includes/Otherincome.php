@@ -567,6 +567,7 @@ class OtherIncome extends Components {
         // Delete Main record
         $sql = "UPDATE ".PRFX."otherincome_records SET
             employee_id         = NULL,
+            supplier_id         = NULL,
             payee               = '',
             date                = NULL,
             due_date            = NULL,
@@ -583,7 +584,8 @@ class OtherIncome extends Components {
             closed_on           = NULL,
             last_active         = NULL,
             reference           = '',
-            note                = ''
+            note                = '',
+            additional_info     = ''
             WHERE otherincome_id =". $this->app->db->qStr($otherincome_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 

@@ -715,9 +715,9 @@ class Payment extends Components {
                 direction       = '',
                 status          = 'deleted',
                 amount          = 0.00,
-                additional_info = '',
                 last_active     = NULL,
-                note            = ''
+                note            = '',
+                additional_info = '',
                 WHERE payment_id = ". $payment_id;
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
