@@ -578,6 +578,13 @@ class Supplier extends Components {
             $state_flag = false;
         }
 
+        // Has Other incomes
+
+        if(otherincomeCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null)){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked other incomes."));
+            $state_flag = false;
+        }
+
         return $state_flag;
 
     }

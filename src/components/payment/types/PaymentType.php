@@ -173,13 +173,13 @@ class PaymentType
     }
 
     // General payment checks (placeholder for now)
-    private function checkPaymentAllowed()
+    protected function checkPaymentAllowed()
     {
         return true;
     }
 
     // Build Buttons (placeholder for now)
-    public function buildButtons()
+    protected function buildButtons()
     {
         return;
     }

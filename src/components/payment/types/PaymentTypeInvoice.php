@@ -362,7 +362,7 @@ class PaymentTypeInvoice extends PaymentType
     }
 
     // General payment checks
-    private function checkPaymentAllowed()    //TODO: why is this disabled/not used also check other types
+    protected function checkPaymentAllowed()    //TODO: why is this disabled/not used also check other types
     {
         $state_flag = parent::checkPaymentAllowed();
 

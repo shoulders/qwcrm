@@ -594,7 +594,7 @@ class Expense extends Components {
     public function deleteRecord($expense_id) {
 
         // Get expense details before deleting the record
-        $invoice_details = $this->getRecord($expense_id);
+        $expense_details = $this->getRecord($expense_id);
 
         // Change the expense status to deleted (I do this here to maintain consistency)
         $this->updateStatus($expense_id, 'deleted');
@@ -632,7 +632,7 @@ class Expense extends Components {
         $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
 
         // Update last active record
-        $this->app->components->supplier->updateLastActive($supplier_id);
+        $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);
 
         return true;
 
