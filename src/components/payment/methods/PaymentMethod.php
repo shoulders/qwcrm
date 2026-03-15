@@ -68,7 +68,7 @@ class PaymentMethod
         if(Payment::$action === 'edit')
         {
             // Update the payment
-            if($this->app->components->payment->updateRecord($this->VAR['qpayment']))  //TODO: should this not be  Payment::$payment_details['payment_id']
+            if($this->app->components->payment->updateRecord($this->VAR['qpayment']))
             {
                 Payment::$payment_successful = true;
             }

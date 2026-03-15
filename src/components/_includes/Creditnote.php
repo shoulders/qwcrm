@@ -1168,8 +1168,8 @@ class Creditnote extends Components {
     }
 
     #############################################################
-    # Validate submitted information before allowing submission #  TODO: do i need silents on this code, probably not
-    #############################################################  TODO: change variable names + check the logic flow matchers method submitt
+    # Validate submitted information before allowing submission #
+    #############################################################
 
     public function checkRecordCanBeSubmitted($qform)
     {

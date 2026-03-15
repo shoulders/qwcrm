@@ -362,7 +362,7 @@ class PaymentTypeInvoice extends PaymentType
     }
 
     // General payment checks
-    protected function checkPaymentAllowed()    //TODO: why is this disabled/not used also check other types
+    protected function checkPaymentAllowed()
     {
         $state_flag = parent::checkPaymentAllowed();
 
@@ -408,15 +408,6 @@ class PaymentTypeInvoice extends PaymentType
         Payment::$buttons['addNewRecord']['allowed'] = true;
         Payment::$buttons['addNewRecord']['url'] = 'index.php?component=invoice&page_tpl=new';
         Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Invoice Record");
-
-
-        // TODO: are these page checks needed? they are about the variables used rather than security
-        //TODO: what is the difference between return to record and cance; one goes to edit and one goes to details.
-
-        // see buildPaymentEnvironment() for button stuff
-
-        // I was thingk about: Submit/Submit and NEw/Submit and Payment/Cancel  --> expense:edit - this buttons are coded in the expense:edit TPL and do not use this button logic.
-
 
     }
 

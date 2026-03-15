@@ -2310,7 +2310,7 @@ class Report extends Components {
     }
 
     ##############################################################################################  // cancelled payment records are ignored
-    #  Calulate the revenue and tax liability for a ALL payments against their parent record     #  // I dont use most of these filters at the minute (only start_date, end_date and tax_system)
+    #  Calulate the revenue and tax liability for ALL payments against their parent record       #  // I dont use most of these filters at the minute (only start_date, end_date and tax_system)
     ##############################################################################################  TODO: need to add in creditnotes and maybe vouchers for offsetting?
 
     // This is for calculating TAX liability from invoices and is aware of partially paid invoices.

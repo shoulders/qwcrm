@@ -715,7 +715,7 @@ class OtherIncome extends Components {
             $state_flag = false;
         }
 
-        // TODO: Add tax code check for all current items + add this to credit notes, vouchgers? expense, invoices - the code should be present in on of the others
+        // TODO: Add tax code check for all current items + add this to credit notes, vouchgers? expense, invoices - the code should be present in one of the others
 
         /* The current record VAT code is enabled
         if(!$this->app->components->company->getVatTaxCodeStatus($otherincome_details['vat_tax_code'])) {

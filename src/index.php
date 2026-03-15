@@ -30,9 +30,9 @@ const JPATH_PLATFORM = 1;
 
 // Get Root Folder and Physical path info (moved from index.php)
 define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);                         // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\ || /home/myuser/public_html/develop/qwcrm/
-define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');   // QWcrm Protocol - http:// || https://    
-define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST'] ?? null);                                      // QWcrm Domain - quantumwarp.com    
-define('QWCRM_BASE_PATH', str_replace(array('index.php', 'cron.php'), '', $_SERVER['PHP_SELF']));      // QWcrm Base Path - /develop/qwcrm/    
+define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');   // QWcrm Protocol - http:// || https://
+define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST'] ?? null);                                      // QWcrm Domain - quantumwarp.com
+define('QWCRM_BASE_PATH', str_replace(array('index.php', 'cron.php'), '', $_SERVER['PHP_SELF']));      // QWcrm Base Path - /develop/qwcrm/
 define('QWCRM_PART_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.'/');                          // QWcrm Part URL  - http(s)://quantumwarp.com/
 define('QWCRM_FULL_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.QWCRM_BASE_PATH);              // QWcrm Full URL  - http(s)://quantumwarp.com/develop/qwcrm/
 
@@ -41,7 +41,7 @@ define('QWCRM_FULL_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.QWCRM_BASE_PATH);          
 ################################################
 
 // Load the framework (session/user/database/template engine/system includes)
-define('QFRAMEWORK_DIR', 'libraries/qframework/'); 
+define('QFRAMEWORK_DIR', 'libraries/qframework/');
 require(QFRAMEWORK_DIR.'includes/loader.php');
 //\CMSApplication::loadQwcrm();
 
@@ -58,13 +58,13 @@ require(QFRAMEWORK_DIR.'includes/loader.php');
 ################################################
 
 /*if(!defined('QWCRM_SETUP')) {
-    
+
     // Start the QFramework
     $app = new \Factory;
-       
+
 }*/
 
-// Start the QFramework 
+// Start the QFramework
 //$app = new \CMSApplication();
 
 // Instantciate the application.
@@ -97,14 +97,14 @@ $app->system->page->loadPage('set_controller');
 #         Logging                              #
 ################################################
 
-if(!defined('QWCRM_SETUP')) { 
-    
+if(!defined('QWCRM_SETUP')) {
+
     // Update the Logged in User's Last Active Times
     $app->components->user->updateLastActive($app->user->login_user_id);
-    
+
     // Access Logging - This logs QWcrm page load details to the access log
-    if(!defined('SKIP_LOGGING') && $app->config->get('qwcrm_access_log')) {    
-        $app->system->general->writeRecordToAccessLog();    
+    if(!defined('SKIP_LOGGING') && $app->config->get('qwcrm_access_log')) {
+        $app->system->general->writeRecordToAccessLog();
     }
 
 }
@@ -114,13 +114,13 @@ if(!defined('QWCRM_SETUP')) {
 ################################################
 
 // Send optional Headers
-if(!isset($VAR['themeVar']) || $VAR['themeVar'] !== \CMSApplication::$VAR['rawHtml']) { 
+if(!isset($VAR['themeVar']) || $VAR['themeVar'] !== \CMSApplication::$VAR['rawHtml']) {
 
     // Compress page payload and send compression headers
     if (\Factory::getConfig()->get('gzip')) {
         \CMSApplication::$BuildPage = $app->system->page->compressPageOutput(\CMSApplication::$BuildPage);
     }
-        
+
 }
 
 ################################################

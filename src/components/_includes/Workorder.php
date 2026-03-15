@@ -109,8 +109,6 @@ class WorkOrder extends Components {
         // This prevents errors from such public functions as email.php where a workorder_id is not always present - not currently used
         if($workorder_id == null) { return; }
 
-        $this->db = \Factory::getDbo();
-
         // If Work Order History Notes are not enabled, exit
         if($this->app->config->get('workorder_history_notes') != true) { return; }
 
@@ -321,8 +319,6 @@ class WorkOrder extends Components {
     #####################################
 
     public function getNote($workorder_note_id, $item = null) {
-
-        $this->db = \Factory::getDbo();
 
         $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->app->db->qStr($workorder_note_id);
 
