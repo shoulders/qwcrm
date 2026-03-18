@@ -20,61 +20,69 @@ defined('_QWEXEC') or die;
 
 // Main Framework class
 class CMSApplication {
-    
+
     public static $BuildPage    = '';       // Holds the HTML page to be outputted
     public static $VAR          = array();  // Global Variable store
-    public static $messages     = array();  // Global System Message Store    
+    public static $messages     = array();  // Global System Message Store
     public static $clientId     = 0;        // The Client identifier. (0 = site, 1 = administrator) should this bee from the user???
-    public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )    
+    public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )
     public static $classes      = null;     // Store for classes that can be instanciated (needs to be Static so loader.php can load)
-    
-    // Context Variables    
-    public $config              = null;     // Config object    
+    public static $timestamp    = null;     // Unifed Dates and Times - A standard time when this PHP instance was started
+
+    // Context Variables
+    public $config              = null;     // Config object
     public $smarty              = null;     // Smarty Template System
-    public $db                  = null;     // Database instance    
+    public $db                  = null;     // Database instance
     public $system              = null;     // Hold all of the core framework classes
-    public $components          = null;     // Holds all of the loaded component classes        
+    public $components          = null;     // Holds all of the loaded component classes
     public $modules             = null;     // Holds all of the loaded module classes(not currently used)
     public $plugins             = null;     // Holds all of the loaded plugin classes (not currently used)
- 
+
 /****************** Load QWcrm enviroment, files, variables and dependencies ******************/
-    
+
+    public function __construct() {
+
+        // set Unified Dates and Times
+        self::$timestamp = time();
+
+    }
+
     public function execute() {
-           
+
         // Build and configure the Framework/Application
         self::$VAR = array_merge($_POST, $_GET, self::$VAR);                                // Merge Primary Arrays  - Merge the $_GET, $_POST and emulated $_POST ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
         self::classFilesExecuteStored('system');                                            // Instanciate the QWcrm Framework System Classes into $this->system
         $this->config = \Factory::getConfig();                                              // Load Global Config Object
-        $this->system->general->loadLanguage();                                            // Load Language
+        $this->system->general->loadLanguage();                                             // Load Language
         $this->db = \Factory::getDbo();                                                     // This is needed to make sure the setup loadsds the database
-        $this->system->qerror->configurePhpErrorReporting();                             // Configure PHP error reporting (Enable Error Reporting Immediately) (need to make static and first)----------- (has no dependencies so coulf go earlier)
-        $this->system->qerror->loadWhoops($this->config->get('error_handler_whoops'));     // Whoops Error Handler - Here so it can load ASAP       
+        $this->system->qerror->configurePhpErrorReporting();                                // Configure PHP error reporting (Enable Error Reporting Immediately) (need to make static and first)----------- (has no dependencies so coulf go earlier)
+        $this->system->qerror->loadWhoops($this->config->get('error_handler_whoops'));      // Whoops Error Handler - Here so it can load ASAP
         $this->smarty = \Factory::getSmarty();                                              // Load Global Smarty Object
-        $this->system->security->forceSsl($this->config->get('force_ssl'));                // Redirect to SSL (if enabled) 
-        $this->system->general->verifyQwcrmInstallState();                               // Verify Installation state (install/migrate/upgrade/complete) - This enables the DB if it checks the QWcrm database version (upgrade and migrate)
+        $this->system->security->forceSsl($this->config->get('force_ssl'));                 // Redirect to SSL (if enabled)
+        $this->system->general->verifyQwcrmInstallState();                                  // Verify Installation state (install/migrate/upgrade/complete) - This enables the DB if it checks the QWcrm database version (upgrade and migrate)
         self::classFilesExecuteStored('components');                                        // Instanciate the QWcrm Component Classes into $this->components
-        $this->system->variables->loadSystemVariables();                                  // Load the system variables
+        $this->system->variables->loadSystemVariables();                                    // Load the system variables
         self::classFilesExecuteStored('modules');                                           // Instanciate the QWcrm Module Classes into $this->modules - Not currently used
-        self::classFilesExecuteStored('plugins');                                           // Instanciate the QWcrm Plugin Classes into $this->plugins - Not currently used        
-        
+        self::classFilesExecuteStored('plugins');                                           // Instanciate the QWcrm Plugin Classes into $this->plugins - Not currently used
+
         // If there is a live/configured database connection, load the session
         if(!defined('QWCRM_SETUP')) // || (defined('PRFX') && $this->db)
-        {            
+        {
             // Load/Start/Create the session
-            $this->loadSession(); 
-        
+            $this->loadSession();
+
             // Try to automatically login - i.e. using the 'Remember me' feature, a silent login is instigated if a 'Remember me' cookie is found
             $PlgSystemRemember = new PlgSystemRemember;  // This allows silent login using 'Remember me' cookie after checking it exists - need to make sure it does not re-logon if already logged on
             $PlgSystemRemember->onAfterInitialise();
-            unset($PlgSystemRemember);        
+            unset($PlgSystemRemember);
 
-            // Merge the `Post Emulation Store`, `(stored in the session) to $VAR  ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)        
+            // Merge the `Post Emulation Store`, `(stored in the session) to $VAR  ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
             self::$VAR = array_merge(self::$VAR, $this->system->variables->postEmulationReturnStore());
-            
+
             // Get the Global user object here
             $this->user = \Factory::getUser();
-        }       
-        
+        }
+
     }
 
     /**
@@ -111,15 +119,15 @@ class CMSApplication {
          * https://github.com/joomla/joomla-cms/issues/12108 explains why things will crash and burn if you ever attempt to make this change
          * without a proper dependency injection container.
          */
-         
-        /* 
+
+        /*
          * This actually starts the session with the options defined in the array
          * get_class($this) always returns this class's name which then gets hashed to the same hash
          * so if i replace this with another fixed hash or string this causes everyone to be logged out as their session seems dependent on this hash
          * session_name is only used when shared sessions is enabled.
          * session_name is a randomly created hash that is created when shared session is enabled and deleted when disabled.
          * Both these hashes need to be fixed
-         */        
+         */
         $session = \Factory::getSession(
             array(
                 'name'      => self::getHash($this->config->get('session_name', get_class($this))),                       // If i use a random string instead of get_class($this), i can never login
@@ -130,7 +138,7 @@ class CMSApplication {
         );
 
         /////$session->initialise($this->input, $this->dispatcher);
-        
+
         // Get the session handler from the configuration.
         $handler = $this->config->get('session_handler', 'none');
 
@@ -139,7 +147,7 @@ class CMSApplication {
          *
          * 1) The database handler is in use and the session is new
          * 2) The database handler is not in use and the time is an even numbered second or the session is new
-         * 
+         *
          * This actually creates the session in the database
          */
         if (($handler !== 'database' && (time() % 2 || $session->isNew())) || ($handler === 'database' && $session->isNew()))
@@ -149,13 +157,13 @@ class CMSApplication {
 
         // Set the session object. the getSession() adds this to the static variable so i could remove this
         //\Factory::$session = $session;
-        
+
         // Check the session table for stale entries (replaces above)
         $this->removeExpiredSessions();
 
         return $this;
-    } 
-    
+    }
+
     /**                                             - not currently used
      * Gets the value of a user state variable.
      *
@@ -182,8 +190,8 @@ class CMSApplication {
         $this->setUserState($key, $new_state);
 
         return $new_state;
-    }  
-    
+    }
+
     /**                                             - not currently used
      * Sets the value of a user state variable.
      *
@@ -207,11 +215,11 @@ class CMSApplication {
         return;
     }
 
-    
+
 
 /****************** Client and Site checks ******************/
-    
-    
+
+
     /**
      * Gets the client id of the current running application.
      *
@@ -277,7 +285,7 @@ class CMSApplication {
 
         return false;
     }
-    
+
     /**
      * From Joomla 3.7.0 joomla/libraries/src/Application/WebApplication.php
      * Determine if we are using a secure (SSL) connection.
@@ -289,11 +297,11 @@ class CMSApplication {
     public static function isSSLConnection()
     {
         return (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION');
-    } 
-    
+    }
+
 /****************** Misc ******************/
-    
-    
+
+
    // joomla\libraries\cms\application\helper.php
    /**
      * Provides a secure hash based on a seed
@@ -305,12 +313,12 @@ class CMSApplication {
      * @since   3.2
      */
     public static function getHash($seed)
-    {        
+    {
         return md5(\Factory::getConfig()->get('secret_key') . $seed);
-    }      
-      
-    
-    /** 
+    }
+
+
+    /**
      * From Joomla 3.7.0 libraries/legacy/application/application.php
      * I wrote this one myself but based on code from line 999 -> 1012
      */
@@ -324,14 +332,14 @@ class CMSApplication {
        {
            // The modulus '% 2' introduces a little entropy, making the flushing less accurate
            // by firing the query less than half the time.
-           $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - \Factory::$session->getExpire());            
+           $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - \Factory::$session->getExpire());
            $this->db->execute($sql);
-       }  
-    }  
-    
+       }
+    }
+
     /**
      * based on discover() joomla/libraries/loader.php   - not currently used
-     * 
+     *
      * Method to discover and instanciate classes of a given type in a given path to a specific variable
      *
      * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
@@ -345,10 +353,10 @@ class CMSApplication {
     static public function classFilesLoadExecute($parentPath)
     {
         $classHolder = new stdClass();
-        
+
         try
         {
-            
+
             $iterator = new DirectoryIterator($parentPath);
 
             /** @type  $file  DirectoryIterator * /
@@ -362,40 +370,40 @@ class CMSApplication {
                     // Get the file
                     //require($parentPath.$fileName);
                     require($file->getPathname());
-                                        
+
                     // Get the class name for each file.
                     $className = preg_replace('#\.php$#', '', $fileName);
-                    
+
                     // If not in setup, skip 'Setup' class
                     if(!defined('QWCRM_SETUP') && $className === 'Setup' ) { continue; }
-                    
+
                     // Checks if the class is instantiable (needed because of 'Factory' is in main class load folder)
                     $checkClass = new ReflectionClass($className);
                     if(!$checkClass->isInstantiable()) { continue; }
-                    
+
                     // Get the lowercase version of the class name
                     $lowerClassName = strtolower($className);
-                    
+
                     // Load the class in to the relevant variable
-                    $classHolder->$lowerClassName = new $className();                     
-  
+                    $classHolder->$lowerClassName = new $className();
+
                 }
             }
-        }        
+        }
         catch (UnexpectedValueException $e)
         {
             // Exception will be thrown if the path is not a directory. Ignore it.
         }
-        
+
         return $classHolder;
-        
+
     }*/
 
 
 
     /**
      * based on discover() joomla/libraries/loader.php
-     * 
+     *
      * Method to discover and load class files classes of a given type in a given path to a specific variable
      *
      * This allows me to autoload the files without instantiating the classes
@@ -410,10 +418,10 @@ class CMSApplication {
      */
     static public function classFilesLoad($parentPath, $classGroup = null)
     {
-                
+
         try
         {
-            
+
             $iterator = new DirectoryIterator($parentPath);
 
             /** @type  $file  DirectoryIterator */
@@ -427,41 +435,41 @@ class CMSApplication {
                     // Get the file
                     //require($parentPath.$fileName);
                     require($file->getPathname());
-                                        
+
                     // Get the class name for each file.
                     $className = preg_replace('#\.php$#', '', $fileName);
-                    
+
                     // If not in setup, skip 'Setup' class
                     //if(!defined('QWCRM_SETUP') && $className === 'Setup' ) { continue; }
-                    
+
                     // Checks if the class is instantiable (needed because 'Factory' is in main class load folder)
                     $checkClass = new ReflectionClass($className);
                     if(!$checkClass->isInstantiable()) { continue; }
-                                     
+
                     // If no store is defined, skip adding the class reference to the Class Group Store/registry (useful for loading payment method and type classes)
                     if($classGroup) {
-                        
+
                         // Store the Class names for instaciating later
                         self::$classes[$classGroup][] = $className;
-                    
+
                     }
-  
+
                 }
             }
-        }        
+        }
         catch (UnexpectedValueException $e)
         {
             // Exception will be thrown if the path is not a directory. Ignore it.
         }
-  
+
     }
-    
+
     /**
      * Method to discover and load class files classes of a given type in a given path to a specific variable
      *
      * This instanciating the classes into their corresponding group variable (components/modules/plugins/system/etc....), this class holds the variable
      * $onlyThisGroup is currently optional but so far I always declare a group
-     * 
+     *
      * @param   string   $classGroup   Class Group being looked up
      * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
      *
@@ -472,40 +480,40 @@ class CMSApplication {
      */
     private function classFilesExecuteStored($onlyThisGroup = null)
     {
-        
+
         // Check if the store is empty
         if(empty(self::$classes)){ return; }
-        
+
         // Check if the specified store is empty, exit if empty
         if($onlyThisGroup && empty(self::$classes[$onlyThisGroup])){ return; }
-                
+
         // cycle through the different class groups
         foreach (self::$classes as $classGroup => $classNames)
         {
             // If a specific group is set, skip unless it matches the correct group
             if($onlyThisGroup && $onlyThisGroup !== $classGroup) { continue; }
-            
+
             // Create standard object for the group so it can accepts these sub-objects
             if(is_null($this->$classGroup)) {
                 $this->$classGroup = new stdClass();
             }
-            
+
             // cycle through each of the classes in this group
             foreach($classNames as $className)
             {
                 // If not in setup, skip 'Setup' class
                 if(!defined('QWCRM_SETUP') && $className === 'Setup' ) { continue; }
-                
+
                 // Get the lowercase version of the class name
                 $lowerClassName = strtolower($className);
-                
+
                 // Load the class in to the relevant variable (in this class)
-                $this->$classGroup->$lowerClassName = new $className();  
+                $this->$classGroup->$lowerClassName = new $className();
             }
-            
+
         }
-        
+
         return;
-    }        
-     
+    }
+
 }
