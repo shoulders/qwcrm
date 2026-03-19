@@ -1181,3 +1181,6 @@ ALTER TABLE `#__otherincome_records` ADD `additional_info` TEXT CHARACTER SET ut
 
 -- Add last_active to schedules --
 ALTER TABLE `#__schedule_records` ADD `last_active` DATETIME NULL DEFAULT NULL AFTER `end_time`;
+
+-- Convert `client_records` to utf8mb4_unicode_ci collation - might not be needed --
+ALTER TABLE `#__client_records` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
