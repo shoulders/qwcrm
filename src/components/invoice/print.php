@@ -70,23 +70,24 @@ if(\CMSApplication::$VAR['commContent'] == 'invoice')
     // Print HTML Invoice
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
     {
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as html.");
+        $logMessage = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as html.");
     }
 
     // Print PDF Invoice
     if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
     {
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as a PDF.");
+        $logMessage = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as a PDF.");
     }
 
     // Download PDF Invoice
     if (\CMSApplication::$VAR['commType'] == 'pdfDownload')
     {
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been dowloaded as a PDF.");
+        $logMessage = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been dowloaded as a PDF.");
     }
 
     // Log activity
-    $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+    $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+    $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
     // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
     $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename, $client_details, $emailSubject ?? null, $emailBody ?? null);

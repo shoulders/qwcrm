@@ -53,11 +53,14 @@ class Supplier extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Log activity
-        $record = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        $supplier_id = $this->app->db->Insert_ID();
 
-        return $this->app->db->Insert_ID();
+        // Log activity
+        $logMessage = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+
+        return $supplier_id;
 
     }
 
@@ -342,11 +345,10 @@ class Supplier extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($qform['supplier_id']);
+        $logMessage = _gettext("Supplier Record").' '.$qform['supplier_id'].' ('.$qform['company_name'].') '._gettext("updated.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $qform['supplier_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -358,9 +360,6 @@ class Supplier extends Components {
 
     public function updateStatus($supplier_id, $new_status, $silent = false) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Get supplier details
         $supplier_details = $this->getRecord($supplier_id);
 
@@ -371,7 +370,7 @@ class Supplier extends Components {
         }
 
         // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime($timestamp) : null;
+        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
 
         $sql = "UPDATE ".PRFX."supplier_records SET
                 status             =". $this->app->db->qStr( $new_status   ).",
@@ -387,11 +386,10 @@ class Supplier extends Components {
         $supplier_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
         // Log activity
-        $record = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($supplier_id, $timestamp);
+        $logMessage = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -434,8 +432,10 @@ class Supplier extends Components {
         $this->updateStatus($supplier_id, 'cancelled');
 
         // Log activity
-        $record = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -462,8 +462,10 @@ class Supplier extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 

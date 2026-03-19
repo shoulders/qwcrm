@@ -22,9 +22,6 @@ class Creditnote extends Components {
 
     public function insertRecord($qform) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Generate the creditnote expiry date
         $dateObject = new DateTime();
         $dateObject->modify('+'.$this->app->components->company->getRecord('creditnote_expiry_offset').' days');
@@ -36,32 +33,30 @@ class Creditnote extends Components {
                 invoice_id      =". $this->app->db->qStr( $qform['invoice_id']                         ).",
                 supplier_id     =". $this->app->db->qStr( $qform['supplier_id']                         ).",
                 expense_id      =". $this->app->db->qStr( $qform['expense_id']                         ).",
-                date            =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)).",
+                date            =". $this->app->db->qStr( $this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 expiry_date     =". $this->app->db->qStr( $expiry_date ).",
                 type            =". $this->app->db->qStr( $qform['type']                         ).",
                 reference       =". $this->app->db->qStr( $qform['reference']                         ).",
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                          ).",
                 sales_tax_rate  =". $this->app->db->qStr( $qform['sales_tax_rate']                      ).",
                 status          =". $this->app->db->qStr( 'pending'                            ).",
-                opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)           ).",
+                opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Get creditnote_id
+        // Get creditnote record
         $creditnote_id = $this->app->db->Insert_ID();
+        //$creditnote_details = $this->getRecord($creditnote_id);
 
         // Create a Workorder History Note - this is not a work order
         //$this->app->components->workorder->insertHistory($workorder_id, _gettext("Credit Note").' '.$creditnote_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qform['client_id'], null, $qform['invoice_id']);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($qform['client_id'], $timestamp);
-        $this->app->components->invoice->updateLastActive($qform['invoice_id'], $timestamp);
-        $this->app->components->supplier->updateLastActive($qform['supplier_id'], $timestamp);
+        $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $qform['client_id'], 'invoice_id' => $qform['invoice_id'], 'supplier_id' => $qform['supplier_id'], 'expense_id' => $qform['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return $creditnote_id;
 
@@ -519,9 +514,6 @@ class Creditnote extends Components {
 
     public function updateRecord($qform) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         $sql = "UPDATE ".PRFX."creditnote_records SET
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])     ).",
                 expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['expiry_date']) ).",
@@ -541,12 +533,10 @@ class Creditnote extends Components {
         //$this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Credit Note").' '.$creditnote_details['creditnote_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($this->getRecord($creditnote_details['creditnote_id'], 'client_id'), $timestamp);
-        $this->app->components->invoice->updateLastActive($this->getRecord($creditnote_details['creditnote_id'], 'invoice_id'), $timestamp);
+        $logMessage = _gettext("Credit Note").' '.$creditnote_details['creditnote_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return;
 
@@ -557,9 +547,6 @@ class Creditnote extends Components {
     ####################################
 
     public function updateStaticValues($invoice_id, $date, $due_date) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         $sql = "UPDATE ".PRFX."creditnote_records SET
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($date)     ).",
@@ -574,13 +561,10 @@ class Creditnote extends Components {
         $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-        // Update last active record
-        $this->updateLastActive($invoice_id);
-        $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'), $timestamp);
-        $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'), $timestamp);
+        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('add in here');
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
     }*/
 
@@ -589,9 +573,6 @@ class Creditnote extends Components {
     ################################
 
     public function updateStatus($creditnote_id, $new_status) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         // Get credit note details
         $creditnote_details = $this->getRecord($creditnote_id);
@@ -607,7 +588,7 @@ class Creditnote extends Components {
 
         // Set closed statuses
         if($new_status == 'used' || $new_status == 'cancelled' || $new_status == 'deleted') {
-            $closed_on = $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) );
+            $closed_on = $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
             $is_closed = $this->app->db->qStr(1);
         } else {
             $closed_on = $creditnote_details['closed_on'];
@@ -632,12 +613,10 @@ class Creditnote extends Components {
         //$this->app->components->workorder->insertHistory($creditnote_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
-        $this->app->components->invoice->updateLastActive($creditnote_details['invoice_id'], $timestamp);
+        $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
 
         return true;
@@ -649,6 +628,9 @@ class Creditnote extends Components {
     #################################
 
     public function updateLastActive($creditnote_id, $timestamp = null) {
+
+        // Allow null calls
+        if(!$creditnote_id) { return; }
 
         $sql = "UPDATE ".PRFX."creditnote_records SET
                 last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
@@ -689,9 +671,6 @@ class Creditnote extends Components {
 
     public function cancelRecord($creditnote_id, $reason_for_cancelling) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Make sure the creditnote can be cancelled
         if(!$this->checkRecordAllowsCancel($creditnote_id)) {
             return false;
@@ -710,15 +689,10 @@ class Creditnote extends Components {
         //$this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
-
-        // Update last active record
-        $this->updateLastActive($creditnote_id, $timestamp);
-        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
-        $this->app->components->invoice->updateLastActive($creditnote_details['invoice_id'], $timestamp);
-        $this->app->components->supplier->updateLastActive($creditnote_details['supplier_id'], $timestamp);
-        $this->app->components->expense->updateLastActive($creditnote_details['expense_id'], $timestamp);
+        $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -731,9 +705,6 @@ class Creditnote extends Components {
     #####################################
 
     public function deleteRecord($creditnote_id) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         // Make sure the creditnote can be deleted
         if(!$this->checkRecordAllowsDelete($creditnote_id)) {
@@ -785,15 +756,10 @@ class Creditnote extends Components {
         //$this->app->components->workorder->insertHistory($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Credit Note").' '.$creditnote_details['creditnote_id'].' ';
-        $record .= _gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
-
-        // Update last active record
-        $this->updateLastActive($creditnote_id, $timestamp);
-        $this->app->components->supplier->updateLastActive($creditnote_details['supplier_id'], $timestamp);
-        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
-
+        $logMessage = _gettext("Credit Note").' '.$creditnote_details['creditnote_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -2056,9 +2022,6 @@ class Creditnote extends Components {
 
     public function assignToEmployee($creditnote_id, $target_employee_id) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Get the creditnote details
         $creditnote_details = $this->getRecord($creditnote_id);
 
@@ -2091,14 +2054,10 @@ class Creditnote extends Components {
         //$this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$creditnote_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
 
         // Log activity
-        $record = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
-
-        // Update last active record
-        $this->updateLastActive($creditnote_id, $timestamp);
-        $this->app->components->user->updateLastActive($creditnote_details['employee_id'], $timestamp);
-        $this->app->components->user->updateLastActive($target_employee_id, $timestamp);
-        $this->app->components->client->updateLastActive($creditnote_details['client_id'], $timestamp);
+        $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
+        $recordIds = array('employee_id' => $target_employee_id, 'client' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'creditnote_id' => $creditnote_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 

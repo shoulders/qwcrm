@@ -41,13 +41,14 @@ if(\CMSApplication::$VAR['commContent'] == 'envelope')
     // Print HTML Client Envelope
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
     {
-        $record = _gettext("Client Envelope").' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
+        $logMessage = _gettext("Client Envelope").' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
     }
 
 }
 
 // Log activity
-$this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_details['client_id']);
+$recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
+$this->app->system->general->writeRecordToActivityLog($logMessage, $this->app->user->login_user_id, $recordIds);
 
 // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
 $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, null, $client_details, $emailSubject ?? null, $emailBody ?? null);

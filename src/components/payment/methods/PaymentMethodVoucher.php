@@ -143,7 +143,7 @@ class PaymentMethodVoucher extends PaymentMethod
         else
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher was not applied successfully."));
-            //$record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was redeemed by").' '.$this->app->components->client->getRecord($invoice_details['client_id'], 'display_name').'.';
+            //$logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was redeemed by").' '.$this->app->components->client->getRecord($invoice_details['client_id'], 'display_name').'.';
         }
 
         // Refresh the voucher details

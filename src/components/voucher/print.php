@@ -42,25 +42,26 @@ $this->app->smarty->assign('voucher_barcode',  $voucher_barcode                 
 
 // Voucher Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'voucher')
-{    
+{
     $templateFile = 'voucher/printing/print_voucher.tpl';
     $filename = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'];
-    
+
     // Print HTML
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
     {
-        $record = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been printed as html.");
+        $logMessage = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been printed as html.");
     }
-    
+
     // Print PDF (not currently used)
     if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
-    {        
-       $record = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been printed as a PDF.");   
+    {
+       $logMessage = _gettext("Voucher").' '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been printed as a PDF.");
     }
 }
 
 // Log activity
-$this->app->system->general->writeRecordToActivityLog($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_details['invoice_id']);
+$recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], $voucher_details['voucher_id'] => $voucher_id);
+$this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
 // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
 $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename ?? null, $client_details ?? null, $emailSubject ?? null, $emailBody ?? null);

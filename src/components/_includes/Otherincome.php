@@ -28,10 +28,7 @@ class OtherIncome extends Components {
     #      Insert Otherincome                #  //supplier_id is a variable so I can create an otherincome directly from a supplier page.
     ##########################################
 
-    public function insertRecord($otherincome_id = null) {
-
-        // Unify Dates and Times
-        $timestamp = time();
+    public function insertRecord($supplier_id = null) {
 
         // If QWcrm Tax system is set to Sales Tax, then set the rate
         $sales_tax_rate = (QW_TAX_SYSTEM === 'sales_tax_cash') ? $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
@@ -39,12 +36,12 @@ class OtherIncome extends Components {
         $sql = "INSERT INTO ".PRFX."otherincome_records SET
                 employee_id     =". $this->app->db->qStr($this->app->user->login_user_id).",
                 supplier_id     =". $this->app->db->qStr($supplier_id).",
-                date            =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
-                due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
+                date            =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
+                due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
                 status          =". $this->app->db->qStr('pending').",
-                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp)).",
+                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -53,11 +50,10 @@ class OtherIncome extends Components {
         $otherincome_id = $this->app->db->Insert_ID();
 
         // Log activity
-        $record = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($otherincome_id, $timestamp);
+        $logMessage = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("created.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_id, 'otherincome_id' => $otherincome_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return $otherincome_id;
 
@@ -408,7 +404,7 @@ class OtherIncome extends Components {
 
         $sql = "UPDATE ".PRFX."otherincome_records SET
                 employee_id      =". $this->app->db->qStr( $this->app->user->login_user_id ).",
-                supplier_id         =". $this->app->db->qStr( $qform['supplier_id'] ?: null      ).",
+                supplier_id      =". $this->app->db->qStr( $qform['supplier_id'] ?: null      ).",
                 payee            =". $this->app->db->qStr( $qform['payee']                   ).",
                 date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 due_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",
@@ -421,11 +417,10 @@ class OtherIncome extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("Otherincome Record").' '.$qform['otherincome_id'].' '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($qform['otherincome_id']);
+        $logMessage = _gettext("Otherincome Record").' '.$qform['otherincome_id'].' '._gettext("updated.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $qform['supplier_id'], 'otherincome_id' => $qform['otherincome_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -436,9 +431,6 @@ class OtherIncome extends Components {
     #############################
 
     public function updateStatus($otherincome_id, $new_status, $silent = false) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         // Get otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
@@ -451,11 +443,11 @@ class OtherIncome extends Components {
 
         // Build SQL
         $sql = "UPDATE ".PRFX."otherincome_records SET
-                employee_id         =". $this->app->db->qStr($otherincome_details['employee_id']).",
+                employee_id         =". $this->app->db->qStr($this->app->user->login_user_id).",
                 status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
         {
-            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) );
+            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp));
         }
         else
         {
@@ -469,11 +461,10 @@ class OtherIncome extends Components {
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome status updated.", $silent));
 
         // Log activity
-        $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($otherincome_id, $timestamp);
+        $logMessage = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $otherincome_details['supplier_id'], 'otherincome_id' => $otherincome_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -539,11 +530,10 @@ class OtherIncome extends Components {
         $this->updateAdditionalInfo($otherincome_id, array('reason_for_cancelling' => $reason_for_cancelling));
 
         // Log activity
-        $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($otherincome_id);
+        $logMessage = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $this->app->components->otherincome->getRecord($otherincome_id, 'supplier_id'), 'otherincome_id' => $otherincome_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -556,6 +546,9 @@ class OtherIncome extends Components {
     #####################################
 
     public function deleteRecord($otherincome_id) {
+
+        // Get record details for logging before we delete anything
+        $otherincome_details = $this->getRecord($otherincome_id);
 
         // Change the otherincome status to deleted (I do this here to maintain consistency)
         $this->updateStatus($otherincome_id, 'deleted');
@@ -594,8 +587,10 @@ class OtherIncome extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("deleted.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        $logMessage = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("deleted.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $otherincome_details['supplier_id'], 'otherincome_id' => $otherincome_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 

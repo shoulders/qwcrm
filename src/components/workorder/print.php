@@ -35,7 +35,7 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
                             'status' => '',
                             'last_active' => ''
                             );
-    
+
     $client_details = array(
                             'display_name' => '',
                             'address' => '',
@@ -50,7 +50,7 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
                             'fax' => '',
                             'email' => ''
                             );
-    
+
     $company_details = array(
                             'company_name' => '',
                             'address' => '',
@@ -64,24 +64,24 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
                             'website' => '',
                             'email' => ''
                             );
-    
+
     $employee_details = array(
                             'display_name' => ''
                             );
-    
+
     \CMSApplication::$VAR['workorder_id'] = null;
-    $this->app->smarty->assign('date_format',          '');    
+    $this->app->smarty->assign('date_format',          '');
     $this->app->smarty->assign('company_details',      $company_details);
     $this->app->smarty->assign('employee_details',     $employee_details);
     $this->app->smarty->assign('client_details',       $client_details);
     $this->app->smarty->assign('workorder_details',    array());
     $this->app->smarty->assign('client_types',         array());
-    $this->app->smarty->assign('workorder_details',    $workorder_details);        
+    $this->app->smarty->assign('workorder_details',    $workorder_details);
     $this->app->smarty->assign('workorder_statuses',   array());
     $this->app->smarty->assign('workorder_notes',      array());
     $this->app->smarty->assign('workorder_schedules',  array());
-    
-    
+
+
 } else {
 
     // Check if we have a workorder_id
@@ -89,8 +89,8 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
         $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
         $this->app->system->page->forcePage('workorder', 'search');
     }
-    
-    // Get Record Details    
+
+    // Get Record Details
     $workorder_details  = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id']);
     $client_details = $this->app->components->client->getRecord($workorder_details['client_id']);
 
@@ -108,64 +108,65 @@ if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMed
 
 // Technician Workorder Slip Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'technician_workorder_slip')
-{    
+{
     $templateFile = 'workorder/printing/print_technician_workorder_slip.tpl';
     $filename = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'];   // should i add pdf here? not if i offer different formats
-    
+
     // Print HTML
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
-    {        
-        $record = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html."); 
+    {
+        $logMessage = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
     }
-    
+
     // Print PDF (not currently used)
     if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
     {
-        $record = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");        
-    }   
+        $logMessage = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
+    }
 }
 
 // Client Workorder Slip Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'client_workorder_slip')
-{    
+{
     $templateFile = 'workorder/printing/print_client_workorder_slip.tpl';
-    $filename = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'];  
-    
+    $filename = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'];
+
     // Print HTML
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
     {
-        $record = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
-    }  
-        
+        $logMessage = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
+    }
+
     // Print PDF (not currently used)
     if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
-    {        
-        $record = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");     
-    }        
+    {
+        $logMessage = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
+    }
 }
 
 // Technician Job Sheet Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'technician_job_sheet')
-{        
+{
     $templateFile =  'workorder/printing/print_technician_job_sheet.tpl';
-    $filename = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'];    
-    
+    $filename = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'];
+
     // Print HTML
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
     {
-        $record = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
+        $logMessage = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
     }
-                
+
     // Print PDF (not currently used)
     if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
     {
-        $record = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
+        $logMessage = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
     }
 }
 
 // Log activity - Not if printing blank pages
 if(isset(\CMSApplication::$VAR['blankMedia']) && !\CMSApplication::$VAR['blankMedia']) {
-    $this->app->system->general->writeRecordToActivityLog($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
+    $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_details['workorder_id']);
+    $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 }
 
 // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)

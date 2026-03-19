@@ -52,23 +52,24 @@ if(\CMSApplication::$VAR['commContent'] == 'creditnote')
     // Print HTML Invoice
     if (\CMSApplication::$VAR['commType'] == 'htmlBrowser')
     {
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been printed as html.");
+        $logMessage = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been printed as html.");
     }
 
     // Print PDF Invoice
     if (\CMSApplication::$VAR['commType'] == 'pdfBrowser')
     {
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been printed as a PDF.");
+        $logMessage = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been printed as a PDF.");
     }
 
     // Download PDF Invoice
     if (\CMSApplication::$VAR['commType'] == 'pdfDownload')
     {
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been dowloaded as a PDF.");
+        $logMessage = _gettext("Invoice").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been dowloaded as a PDF.");
     }
 
     // Log activity
-    $this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
+    $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+    $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
     // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
     $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename, $record_details, $emailSubject ?? null, $emailBody ?? null);

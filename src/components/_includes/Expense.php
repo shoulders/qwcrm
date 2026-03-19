@@ -30,21 +30,18 @@ class Expense extends Components {
 
     public function insertRecord($supplier_id = null) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // If QWcrm Tax system is set to Sales Tax, then set the rate
         $sales_tax_rate = (QW_TAX_SYSTEM === 'sales_tax_cash') ? $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
 
         $sql = "INSERT INTO ".PRFX."expense_records SET
                 employee_id     =". $this->app->db->qStr($this->app->user->login_user_id).",
                 supplier_id     =". $this->app->db->qStr($supplier_id).",
-                date            =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
-                due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate($timestamp)).",
+                date            =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
+                due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
                 status          =". $this->app->db->qStr('pending').",
-                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp)).",
+                opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -61,13 +58,10 @@ class Expense extends Components {
         */
 
         // Log activity
-        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-
-        // Update last active record
-        $this->updateLastActive($expense_id, $timestamp);
-        $this->app->components->supplier->updateLastActive($supplier_id, $timestamp);
+        $logMessage = _gettext("Expense Record").' '.$expense_id.' '._gettext("created.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_id, 'expense_id' => $expense_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return $expense_id;
 
@@ -414,9 +408,6 @@ class Expense extends Components {
 
     public function updateRecord($qform) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         $sql = "UPDATE ".PRFX."expense_records SET
                 employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id    ).",
                 supplier_id         =". $this->app->db->qStr( $qform['supplier_id'] ?: null      ).",
@@ -440,12 +431,10 @@ class Expense extends Components {
         */
 
         // Log activity
-        $record = _gettext("Expense Record").' '.$qform['expense_id'].' '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($qform['expense_id'], $timestamp);
-        $this->app->components->supplier->updateLastActive($qform['supplier_id'], $timestamp);
+        $logMessage = _gettext("Expense Record").' '.$qform['expense_id'].' '._gettext("updated.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $qform['supplier_id'] ?: null, 'expense_id' => $qform['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -456,9 +445,6 @@ class Expense extends Components {
     ############################
 
     public function updateStatus($expense_id, $new_status, $silent = false) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         // Get expense details
         $expense_details = $this->getRecord($expense_id);
@@ -471,11 +457,11 @@ class Expense extends Components {
 
         // Build SQL
         $sql = "UPDATE ".PRFX."expense_records SET
-                employee_id         =". $this->app->db->qStr($expense_details['employee_id']).",
+                employee_id         =". $this->app->db->qStr($this->app->user->login_user_id).",
                 status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
         {
-            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) );
+            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
         }
         else
         {
@@ -497,12 +483,10 @@ class Expense extends Components {
         */
 
         // Log activity
-        $record = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($expense_id, $timestamp);
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id'], $timestamp);
+        $logMessage = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -556,9 +540,6 @@ class Expense extends Components {
 
     public function cancelRecord($expense_id, $reason_for_cancelling) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Make sure the expense can be cancelled
         if(!$this->checkRecordAllowsCancel($expense_id)) {
             return false;
@@ -574,12 +555,10 @@ class Expense extends Components {
         $this->updateAdditionalInfo($expense_id, array('reason_for_cancelling' => $reason_for_cancelling));
 
         // Log activity
-        $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->updateLastActive($expense_id, $timestamp);
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id'], $timestamp);
+        $logMessage = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -628,11 +607,10 @@ class Expense extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
-
-        // Update last active record
-        $this->app->components->supplier->updateLastActive($expense_details['supplier_id']);
+        $logMessage = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 

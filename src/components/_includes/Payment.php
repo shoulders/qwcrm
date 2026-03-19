@@ -32,13 +32,9 @@ class Payment extends Components {
     public static $payment_successful = false;
     public static $record_balance = null;
     public static $disabledMethods = array();
-    public static $timestamp = null;
 
     public function __construct()
     {
-        // Unify Dates and Times
-        $this::$timestamp = time();
-
         parent::__construct();
 
     }
@@ -79,14 +75,10 @@ class Payment extends Components {
         //$this->app->components->workorder->insertHistory(Payment::$qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
 
         // Log activity
-        $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qpayment['client_id'], null, $qpayment['invoice_id']);
-
-        // Update last active record
-        $this->updateLastActive($payment_id, $this::$timestamp);
-        $this->app->components->client->updateLastActive($qpayment['client_id'], $this::$timestamp);
-        $this->app->components->invoice->updateLastActive($qpayment['invoice_id'], $this::$timestamp);
-        $this->app->components->supplier->updateLastActive($qpayment['supplier_id'], $this::$timestamp);
+        $logMessage = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $qpayment['client_id'], 'invoice_id' => $qpayment['invoice_id'], 'voucher_id' => $qpayment['voucher_id'], 'supplier_id' => $qpayment['supplier_id'], 'expense_id' => $qpayment['expense_id'], 'otherincome_id' => $qpayment['otherincome_id'],  'payment_id' => $qpayment['payment_id'], 'creditnote_id' => $qpayment['creditnote_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         // Return the payment_id
         return $payment_id;
@@ -494,14 +486,10 @@ class Payment extends Components {
         //$this->app->components->workorder->insertHistory($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);
 
         // Log activity
-        $record = _gettext("Payment").' '.Payment::$payment_details['payment_id'].' '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], null, Payment::$payment_details['invoice_id']);
-
-        // Update last active record
-        $this->updateLastActive(Payment::$payment_details['payment_id'], $this::$timestamp);
-        $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'], $this::$timestamp);
-        $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'], $this::$timestamp);
-        $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'], $this::$timestamp);
+        $logMessage = _gettext("Payment").' '.Payment::$payment_details['payment_id'].' '._gettext("updated.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => Payment::$payment_details['client_id'], 'invoice_id' => Payment::$payment_details['invoice_id'], 'voucher_id' => Payment::$payment_details['voucher_id'], 'supplier_id' => Payment::$payment_details['supplier_id'], 'expense_id' => Payment::$payment_details['expense_id'], 'otherincome_id' => Payment::$payment_details['otherincome_id'],  'payment_id' => Payment::$payment_details['payment_id'], 'creditnote_id' => Payment::$payment_details['creditnote_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -598,14 +586,10 @@ class Payment extends Components {
         //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
-
-        // Update last active record
-        $this->updateLastActive($payment_id, $this::$timestamp);
-        $this->app->components->client->updateLastActive($payment_details['client_id'], $this::$timestamp);
-        $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this::$timestamp);
-        $this->app->components->supplier->updateLastActive($payment_details['supplier_id'], $this::$timestamp);
+        $logMessage = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $payment_details['client_id'], 'invoice_id' => $payment_details['invoice_id'], 'voucher_id' => $payment_details['voucher_id'], 'supplier_id' => $payment_details['supplier_id'], 'expense_id' => $payment_details['expense_id'], 'otherincome_id' => $payment_details['otherincome_id'],  'payment_id' => $payment_details['payment_id'], 'creditnote_id' => $payment_details['creditnote_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -672,14 +656,10 @@ class Payment extends Components {
         //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
-
-        // Update last active record
-        $this->updateLastActive($payment_id, $this::$timestamp);
-        $this->app->components->client->updateLastActive($payment_details['client_id'], $this::$timestamp);
-        $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this::$timestamp);
-        $this->app->components->supplier->updateLastActive($payment_details['supplier_id'], $this::$timestamp);
+        $logMessage = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $payment_details['client_id'], 'invoice_id' => $payment_details['invoice_id'], 'voucher_id' => $payment_details['voucher_id'], 'supplier_id' => $payment_details['supplier_id'], 'expense_id' => $payment_details['expense_id'], 'otherincome_id' => $payment_details['otherincome_id'],  'payment_id' => $payment_details['payment_id'], 'creditnote_id' => $payment_details['creditnote_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -726,13 +706,10 @@ class Payment extends Components {
         //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);
 
         // Log activity
-        $record = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $payment_details['client_id'], null, $payment_details['invoice_id']);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($payment_details['client_id'], $this::$timestamp);
-        $this->app->components->invoice->updateLastActive($payment_details['invoice_id'], $this::$timestamp);
-        $this->app->components->supplier->updateLastActive($payment_details['supplier_id'], $this::$timestamp);
+        $logMessage = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $payment_details['client_id'], 'invoice_id' => $payment_details['invoice_id'], 'voucher_id' => $payment_details['voucher_id'], 'supplier_id' => $payment_details['supplier_id'], 'expense_id' => $payment_details['expense_id'], 'otherincome_id' => $payment_details['otherincome_id'],  'payment_id' => $payment_details['payment_id'], 'creditnote_id' => $payment_details['creditnote_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 

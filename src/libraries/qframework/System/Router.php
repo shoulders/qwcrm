@@ -16,8 +16,8 @@ class Router extends System {
     #  Build path to relevant Page Controller  # // $mode = set_route/get_route
     ############################################
 
-    function pageController($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
-        
+    function pageController($mode = null, $component = null, $page_tpl = null, $themeVar = null) {
+
         // Set routing variables locally for analysis, either manually supplied or from the system
         $component = $component ?? \CMSApplication::$VAR['component'] ?? null;
         $page_tpl = $page_tpl ?? \CMSApplication::$VAR['page_tpl'] ?? null;
@@ -36,22 +36,22 @@ class Router extends System {
         // Maintenance Mode
         if($this->app->config->get('maintenance')) {
 
-            // Set to the maintenance page    
+            // Set to the maintenance page
             $component   = 'core';
-            $page_tpl    = 'maintenance';        
-            $themeVar    = 'printPreview';   
+            $page_tpl    = 'maintenance';
+            $themeVar    = 'printPreview';
 
             goto page_controller_acl_check;
 
-        }    
+        }
 
         // Check if URL is valid
         if(!$this->checkLinkIsValid($_SERVER['REQUEST_URI'])) {
 
-            // Set the error page    
+            // Set the error page
             $component   = 'core';
-            $page_tpl    = '404';        
-            $themeVar    = 'printPreview'; 
+            $page_tpl    = '404';
+            $themeVar    = 'printPreview';
 
             goto page_controller_acl_check;
 
@@ -63,27 +63,27 @@ class Router extends System {
 
             // Set 'component' and 'page_tpl' variables in \CMSApplication::$VAR for correct routing when using SEF
             $this->parseSefUrl($_SERVER['REQUEST_URI'], 'basic', 'set_var');
-            
+
             // Re-Grab the routing components
             $component = \CMSApplication::$VAR['component'] ?? null;
             $page_tpl = \CMSApplication::$VAR['page_tpl'] ?? null;
 
         }
-        
+
         // Check to see if the page exists otherwise send to the 404 page
         if (isset($component) && !$this->checkPageExists($component, $page_tpl)) {
 
-            // Set to the 404 error page       
+            // Set to the 404 error page
             $component   = 'core';
-            $page_tpl    = '404';            
+            $page_tpl    = '404';
             $themeVar    = 'printPreview';
 
             goto page_controller_acl_check;
 
-        }  
+        }
 
         // If no page specified, set page based on login status
-        if(!isset($component) && !isset($page_tpl) ) {    
+        if(!isset($component) && !isset($page_tpl) ) {
 
             if(isset($this->app->user->login_token)) {
 
@@ -99,20 +99,20 @@ class Router extends System {
 
             }
 
-        }    
+        }
 
-        page_controller_acl_check:    
+        page_controller_acl_check:
 
         // Check the requested page with the current usergroup against the ACL for authorisation, if it fails set page 403
         if(!$this->checkPageAcl($component, $page_tpl)) {
 
             // Log activity
-            $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$component.':'.$page_tpl.')';
-            $this->app->system->general->writeRecordToActivityLog($record); 
+            $logMessage = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$component.':'.$page_tpl.')';
+            $this->app->system->general->writeRecordToActivityLog($logMessage);
 
-            // Set to the 403 error page 
+            // Set to the 403 error page
             $component   = 'core';
-            $page_tpl    = '403';        
+            $page_tpl    = '403';
             $themeVar    = 'printPreview';
 
         }
@@ -139,22 +139,22 @@ class Router extends System {
 
         $sef_url_path = '';
         $sef_url_query = '';
-        $sef_url_fragement = '';    
+        $sef_url_fragement = '';
 
-        // Convert URL into an array 
+        // Convert URL into an array
         $parsed_url = parse_url($non_sef_url);
 
-        // Get URL Query Variables (if present    
+        // Get URL Query Variables (if present
         if(isset($parsed_url['query'])) {
 
             // Convert Query variables into an array
             parse_str($parsed_url['query'], $parsed_url_query);
 
             // Build URL 'Path' from query variables and then remove them as they are no longer needed
-            if(isset($parsed_url_query['component'], $parsed_url_query['page_tpl']) && $parsed_url_query['component'] && $parsed_url_query['page_tpl']) { 
+            if(isset($parsed_url_query['component'], $parsed_url_query['page_tpl']) && $parsed_url_query['component'] && $parsed_url_query['page_tpl']) {
                 $sef_url_path = $parsed_url_query['component'].'/'.$parsed_url_query['page_tpl'];
                 unset($parsed_url_query['component']);
-                unset($parsed_url_query['page_tpl']);    
+                unset($parsed_url_query['page_tpl']);
             }
 
             // Build URL 'Query' (if variables present)
@@ -173,14 +173,14 @@ class Router extends System {
 
         // Build URL 'Fragement'
         if(isset($parsed_url['fragment'])) {
-            $sef_url_fragement = '#'.$parsed_url['fragment'];        
+            $sef_url_fragement = '#'.$parsed_url['fragment'];
         }
 
         // The Basic Slug
         $slug = $sef_url_path . $sef_url_query . $sef_url_fragement;
 
         // Full URL (https://quantumwarp.com/develop/qwcrm/user/login)
-        if($url_length == 'absolute') {   
+        if($url_length == 'absolute') {
             $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH . $slug;
 
         // Relative URL (/develop/qwcrm/user/login)
@@ -200,11 +200,11 @@ class Router extends System {
     #  Convert a SEF url into a standard URL and (optionally) inject routing varibles into $VAR or return routing variables #  makes nonsef from sef
     #########################################################################################################################
 
-    function parseSefUrl($sef_url, $url_length = 'basic', $mode = null) {    
+    function parseSefUrl($sef_url, $url_length = 'basic', $mode = null) {
 
         $nonsef_url_path_variables = '';
         $nonsef_url_query = '';
-        $nonsef_url_fragment = '';    
+        $nonsef_url_fragment = '';
 
         // Move URL into an array
         $parsed_url = parse_url($sef_url);
@@ -218,7 +218,7 @@ class Router extends System {
             // QWcrm is in a sub-folder
             $parsed_url['path'] = str_replace(QWCRM_BASE_PATH, '', $parsed_url['path']);
         }
-		
+
         // Get URL segments from path
         $url_segments = array_filter(explode('/', $parsed_url['path']));
 
@@ -228,7 +228,7 @@ class Router extends System {
         // If there are routing variables
         if ($url_segments) {
 
-            // Set $_GET routing variables        
+            // Set $_GET routing variables
             $nonsef_url_path_variables .= '?';
             $nonsef_url_path_variables .= 'component='.$url_segments['0'];
             if(isset($url_segments['1'])) { $nonsef_url_path_variables .= '&page_tpl='.$url_segments['1']; }
@@ -251,7 +251,7 @@ class Router extends System {
         if ($mode == 'get_var') { return $onlyVar; }
 
         // No further processing needed with 'only_set_var'
-        if ($mode == 'set_var') { return; }    
+        if ($mode == 'set_var') { return; }
 
         // Build URL 'Query' (if variables present)
         if(isset($parsed_url['query'])) {
@@ -266,22 +266,22 @@ class Router extends System {
                 }
 
                 // Remove the first & and prepend a ?
-                $nonsef_url_query = '?'.ltrim($nonsef_url_query, '&');            
+                $nonsef_url_query = '?'.ltrim($nonsef_url_query, '&');
 
             }
 
-        }        
+        }
 
         // Build URL 'Fragement'
         if(isset($parsed_url['fragment'])) {
-            $nonsef_url_fragment = '#'.$parsed_url['fragment'];        
-        }    
+            $nonsef_url_fragment = '#'.$parsed_url['fragment'];
+        }
 
         // The Basic Slug
-        $slug = 'index.php' . $nonsef_url_path_variables . $nonsef_url_query . $nonsef_url_fragment;    
+        $slug = 'index.php' . $nonsef_url_path_variables . $nonsef_url_query . $nonsef_url_fragment;
 
         // Full URL (https://quantumwarp.com/develop/qwcrm/index.php?component=user&page_tpl=login)
-        if($url_length == 'absolute') {   
+        if($url_length == 'absolute') {
             $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH . $slug;
 
         // Relative URL (/develop/qwcrm/index.php?component=user&page_tpl=login) (Might not be needed)
@@ -307,8 +307,8 @@ class Router extends System {
         if(defined('QWCRM_SETUP')) { $sef = false; }
         elseif($url_sef == 'sef') { $sef = true; }
         elseif($url_sef == 'nonsef') { $sef = false; }
-        else { $sef = $this->app->config->get('sef'); }    
-        //else { $sef = $config->sef; } 
+        else { $sef = $this->app->config->get('sef'); }
+        //else { $sef = $config->sef; }
 
         // The Basic Slug
         $slug = 'index.php?component='.$component.'&page_tpl='.$page_tpl;
@@ -319,7 +319,7 @@ class Router extends System {
         } else {
 
             // Full URL (https://quantumwarp.com/develop/qwcrm/index.php?component=user&page_tpl=login)
-            if($url_length == 'absolute') {   
+            if($url_length == 'absolute') {
                 $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH . $slug;
 
             // Relative URL (/develop/qwcrm/index.php?component=user&page_tpl=login) (Might not be needed)
@@ -348,19 +348,19 @@ class Router extends System {
 
             return false;
 
-        } else {    
+        } else {
 
             // Running parse_sef_url only when the link is a SEF allows the use of Non-SEF URLS aswell
             if ($this->checkLinkIsSef($url)) {
 
-                // Get 'component' and 'page_tpl' variables from SEF URL           
+                // Get 'component' and 'page_tpl' variables from SEF URL
                 $routingVariables = $this->parseSefUrl($url, 'basic', 'get_var');
 
             // non-sef url
             } else {
 
                 // Get URL Query Variables
-                parse_str(parse_url($url, PHP_URL_QUERY), $parsed_url_query);            
+                parse_str(parse_url($url, PHP_URL_QUERY), $parsed_url_query);
 
                 // Set only routing variables if they exist
                 if(isset($parsed_url_query['component'])) { $routingVariables['component'] = $parsed_url_query['component']; }
@@ -385,7 +385,7 @@ class Router extends System {
 
                 }
 
-            }   
+            }
 
         }
 
@@ -407,7 +407,7 @@ class Router extends System {
 
         // Usergroup Error catching - you cannot use normal error logging as it will cause a loop (should not be needed now)
         if($user->login_usergroup_id == '') {
-            die(_gettext("The ACL has been supplied with no usergroup. QWcrm will now die."));                
+            die(_gettext("The ACL has been supplied with no usergroup. QWcrm will now die."));
         }
 
         // Get user's Group Name by login_usergroup_id
@@ -417,7 +417,7 @@ class Router extends System {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         $usergroup_display_name = $rs->fields['display_name'];
-       
+
         // Build the page name for the ACL lookup
         $page_name = $component.':'.$page_tpl;
 
@@ -468,7 +468,7 @@ class Router extends System {
 
             return false;
 
-        }  
+        }
 
     }
 
@@ -476,7 +476,7 @@ class Router extends System {
     #  Check to see if the link is valid  #
     #######################################
 
-    function checkLinkIsValid($url) {    
+    function checkLinkIsValid($url) {
 
         // Get URL path
         $url = parse_url($url, PHP_URL_PATH);
@@ -493,7 +493,7 @@ class Router extends System {
         }
 
         // is valid
-        return true;     
+        return true;
 
     }
 
@@ -511,16 +511,16 @@ class Router extends System {
 
         // If start with index.php == Non SEF
         if (preg_match('|^index\.php|U', $url)) {
-            return false;        
+            return false;
         }
 
         // if root '/' - This can be either SEF or Non SEF so return Non SEF
-        if($url == '') {        
+        if($url == '') {
             return false;
         }
 
         // Is SEF
-        return true;       
+        return true;
 
     }
 

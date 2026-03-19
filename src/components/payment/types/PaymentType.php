@@ -124,6 +124,7 @@ class PaymentType
     // Post-Processing - Now do final things like set messages and redirects
     protected function postProcess()
     {
+
         // Different actions depending on success
         if(Payment::$payment_successful)
         {
@@ -133,41 +134,50 @@ class PaymentType
             // New
             if(Payment::$action === 'new')
             {
-                $record = _gettext(Payment::$type).' '._gettext("had a new").' '._gettext(Payment::$method).' '._gettext("payment made with the Payment ID").': '.Payment::$payment_details['payment_id'];
-
+                $logMessage = _gettext(Payment::$type).' '._gettext("had a new").' '._gettext(Payment::$method).' '._gettext("payment made with the Payment ID").': '.Payment::$payment_details['payment_id'];
             }
 
             // Edit
             if(Payment::$action === 'edit')
             {
-                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was edited.");
+                $logMessage = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was edited.");
             }
 
             // Cancel
             if(Payment::$action === 'cancel')
             {
-                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was cancelled.");
+                $logMessage = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was cancelled.");
             }
 
             // Delete
             if(Payment::$action === 'delete')
             {
-                $record = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was deleted.");
+                $logMessage = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was deleted.");
             }
 
-            // Log activity
-            $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, Payment::$payment_details['client_id'], null, Payment::$payment_details['invoice_id']);
-
+        // The payment action has failed
         } else {
-            // Update last active records - If a new payment fails, then there will be no 'payment_id'
-            $this->app->components->payment->updateLastActive(Payment::$payment_details['payment_id'] ?? null, Payment::$timestamp);
-            $this->app->components->client->updateLastActive(Payment::$payment_details['client_id'] ?? $this->VAR['qpayment']['client_id'] ?? null, Payment::$timestamp);
-            $this->app->components->invoice->updateLastActive(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['invoice_id'] ?? null, Payment::$timestamp);
-            $this->app->components->supplier->updateLastActive(Payment::$payment_details['supplier_id'] ?? $this->VAR['qpayment']['supplier_id'] ?? null, Payment::$timestamp);
-            $this->app->components->expense->updateLastActive(Payment::$payment_details['expense_id'] ?? $this->VAR['qpayment']['expense_id'] ?? null, Payment::$timestamp);
-            $this->app->components->creditnote->updateLastActive(Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id'] ?? null, Payment::$timestamp);
-            $this->app->components->otherincome->updateLastActive(Payment::$payment_details['otherincome_id'] ?? $this->VAR['qpayment']['otherincome_id'] ?? null, Payment::$timestamp);
+
+            $logMessage = Payment::$payment_details['payment_id']
+            ? 'Payment Action of `'._gettext(Payment::$action).'` for Payment ID: `'.Payment::$payment_details['payment_id'].'` '._gettext("failed.")
+            : 'Payment Action of `'._gettext(Payment::$action).'` '._gettext("failed.");
         }
+
+        // Log activity
+        // If a new payment action fails, then there will be no 'payment_id' or valid Payment::$payment_details
+        $recordIds = array(
+            'employee_id' => $this->app->user->login_user_id,
+            'client_id' => Payment::$payment_details['client_id'] ?? $this->VAR['qpayment']['client_id'] ?? null,
+            'invoice_id' => Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['invoice_id'] ?? null,
+            'voucher_id' => Payment::$payment_details['voucher_id'] ?? $this->VAR['qpayment']['voucher_id'] ?? null,
+            'supplier_id' => Payment::$payment_details['supplier_id'] ?? $this->VAR['qpayment']['supplier_id'] ?? null,
+            'expense_id' => Payment::$payment_details['expense_id'] ?? $this->VAR['qpayment']['expense_id'] ?? null,
+            'otherincome_id' => Payment::$payment_details['otherincome_id'] ?? $this->VAR['qpayment']['otherincome_id'] ?? null,
+            'payment_id' => Payment::$payment_details['payment_id'] ?? null,
+            'creditnote_id' => Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id'] ?? null
+            );
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return;
     }

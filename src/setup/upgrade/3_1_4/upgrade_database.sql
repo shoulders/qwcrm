@@ -1178,3 +1178,6 @@ ALTER TABLE `#__invoice_records` CHANGE `additional_info` `additional_info` TEXT
 ALTER TABLE `#__payment_records` CHANGE `additional_info` `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
 ALTER TABLE `#__expense_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
 ALTER TABLE `#__otherincome_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
+
+-- Add last_active to schedules --
+ALTER TABLE `#__schedule_records` ADD `last_active` DATETIME NULL DEFAULT NULL AFTER `end_time`;

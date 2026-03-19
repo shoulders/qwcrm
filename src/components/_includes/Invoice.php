@@ -30,9 +30,6 @@ defined('_QWEXEC') or die;
 
     public function insertRecord($client_id, $workorder_id = null) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // If QWcrm Tax system is set to Sales Tax, then set the rate
         $sales_tax_rate = (QW_TAX_SYSTEM === 'sales_tax_cash') ? $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
 
@@ -40,12 +37,12 @@ defined('_QWEXEC') or die;
                 employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 client_id       =". $this->app->db->qStr( $client_id                           ).",
                 workorder_id    =". $this->app->db->qStr( $workorder_id ?: null                   ).",
-                date            =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",
-                due_date        =". $this->app->db->qStr( $this->app->system->general->mysqlDate($timestamp)               ).",
+                date            =". $this->app->db->qStr( $this->app->system->general->mysqlDate(\CMSApplication::$timestamp)               ).",
+                due_date        =". $this->app->db->qStr( $this->app->system->general->mysqlDate(\CMSApplication::$timestamp)               ).",
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                          ).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
                 status          =". $this->app->db->qStr( 'pending'                            ).",
-                opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)           ).",
+                opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)           ).",
                 is_closed       =". $this->app->db->qStr( 0                                    ).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
@@ -58,16 +55,12 @@ defined('_QWEXEC') or die;
         $this->app->components->workorder->insertHistory($workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        if($workorder_id) {
-            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
-        } else {
-            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Created with no Work Order").'.';
-        }
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id, $workorder_id, $invoice_id);
-
-        // Update last active record
-        $this->app->components->client->updateLastActive($client_id, $timestamp);
-        $this->app->components->workorder->updateLastActive($workorder_id, $timestamp);
+        $logMessage = $workorder_id
+            ? _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.'
+            : _gettext("Invoice").' '.$invoice_id.' '._gettext("Created with no Work Order").'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id, 'workorder_id' => $workorder_id, 'invoice_id' => $invoice_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return $invoice_id;
 
@@ -551,9 +544,6 @@ defined('_QWEXEC') or die;
 
     public function updateRecord($qform) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         $sql = "UPDATE ".PRFX."invoice_records SET
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])     ).",
                 due_date            =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['due_date']) ).",
@@ -572,13 +562,10 @@ defined('_QWEXEC') or die;
         $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
-
-        // Update last active record
-        $this->updateLastActive($invoice_details['invoice_id'], $timestamp);
-        $this->app->components->client->updateLastActive($this->getRecord($invoice_details['invoice_id'], 'client_id'), $timestamp);
-        $this->app->components->workorder->updateLastActive($this->getRecord($invoice_details['invoice_id'], 'workorder_id'), $timestamp);
+        $logMessage = _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return;
 
@@ -589,9 +576,6 @@ defined('_QWEXEC') or die;
     ####################################
 
     public function updateStaticValues($invoice_id, $date, $due_date) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         $sql = "UPDATE ".PRFX."invoice_records SET
                 date                =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($date)     ).",
@@ -606,13 +590,10 @@ defined('_QWEXEC') or die;
         $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-        // Update last active record
-        $this->updateLastActive($invoice_id);
-        $this->app->components->client->updateLastActive($this->getRecord($invoice_id, 'client_id'), $timestamp);
-        $this->app->components->workorder->updateLastActive($this->getRecord($invoice_id, 'workorder_id'), $timestamp);
+        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
     }*/
 
@@ -621,9 +602,6 @@ defined('_QWEXEC') or die;
     ############################
 
     public function updateStatus($invoice_id, $new_status) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         // Get invoice details
         $invoice_details = $this->getRecord($invoice_id);
@@ -643,7 +621,7 @@ defined('_QWEXEC') or die;
                 status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
         {
-            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime($timestamp) ).",
+            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) ).",
                     is_closed =". $this->app->db->qStr(1);
         }
         else
@@ -668,13 +646,10 @@ defined('_QWEXEC') or die;
         $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-        // Update last active record
-        $this->updateLastActive($invoice_id, $timestamp);
-        $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
-        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
+        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -687,7 +662,7 @@ defined('_QWEXEC') or die;
 
     public function updateLastActive($invoice_id = null, $timestamp = null) {
 
-        // Allow null calls (some Workorders do not have Invoices)
+        // Allow null calls
         if(!$invoice_id) { return; }
 
         $sql = "UPDATE ".PRFX."invoice_records SET
@@ -730,9 +705,6 @@ defined('_QWEXEC') or die;
 
     public function cancelRecord($invoice_id, $reason_for_cancelling) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Make sure the invoice can be cancelled
         if(!$this->checkRecordAllowsCancel($invoice_id)) {
             return false;
@@ -754,13 +726,10 @@ defined('_QWEXEC') or die;
         //$this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-        // Update last active record
-        $this->updateLastActive($invoice_id, $timestamp);
-        $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
-        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
+        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -773,9 +742,6 @@ defined('_QWEXEC') or die;
     #####################################
 
     public function deleteRecord($invoice_id) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         // Make sure the invoice can be deleted
         if(!$this->checkRecordAllowsDelete($invoice_id)) {
@@ -825,25 +791,19 @@ defined('_QWEXEC') or die;
         // Create a Workorder History Note
         $this->app->components->workorder->insertHistory($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
-        // Log activity
-        $record = _gettext("Invoice").' '.$invoice_details['invoice_id'].' ';
-        if($invoice_details['workorder_id'])
-        {
-            $record .= _gettext("for Work Order").' '.$invoice_details['workorder_id'].' ';
-        }
-        $record .= _gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
         // Update workorder status
         if($invoice_details['workorder_id'])
         {
             $this->app->components->workorder->updateStatus($invoice_details['workorder_id'], 'closed_without_invoice');
         }
 
-        // Update last active record
-        $this->updateLastActive($invoice_id, $timestamp);
-        $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
-        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
+        // Log activity
+        $logMessage = _gettext("Invoice").' '.$invoice_details['invoice_id'].' ';
+        if($invoice_details['workorder_id']){ $logMessage .= _gettext("for Work Order").' '.$invoice_details['workorder_id'].' ';}
+        $logMessage .= _gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -1366,9 +1326,6 @@ defined('_QWEXEC') or die;
 
     public function assignToEmployee($invoice_id, $target_employee_id) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // get the invoice details
         $invoice_details = $this->getRecord($invoice_id);
 
@@ -1420,15 +1377,10 @@ defined('_QWEXEC') or die;
         $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
 
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-
-        // Update last active record
-        $this->updateLastActive($invoice_id, $timestamp);
-        $this->app->components->user->updateLastActive($invoice_details['employee_id'], $timestamp);
-        $this->app->components->user->updateLastActive($target_employee_id, $timestamp);
-        $this->app->components->client->updateLastActive($invoice_details['client_id'], $timestamp);
-        $this->app->components->workorder->updateLastActive($invoice_details['workorder_id'], $timestamp);
+        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
+        $recordIds = array('employee_id' => $target_employee_id, 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 

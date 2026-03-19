@@ -951,6 +951,7 @@ CREATE TABLE `#__schedule_records` (
   `workorder_id` int(10) UNSIGNED NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
+  `last_active` datetime DEFAULT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

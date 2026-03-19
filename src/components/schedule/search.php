@@ -16,15 +16,15 @@ defined('_QWEXEC') or die;
 
 // If a search is submitted
 if(isset(\CMSApplication::$VAR['submit'])) {
-    
+
     // Log activity
-    $record = _gettext("A search of schedules has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    $this->app->system->general->writeRecordToActivityLog($record);
-    
+    $logMessage = _gettext("A search of schedules has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
+    $this->app->system->general->writeRecordToActivityLog($logMessage);
+
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
     $this->app->system->page->forcePage('schedule', 'search', \CMSApplication::$VAR, 'get');
-    
+
 }
 
 // Build the page

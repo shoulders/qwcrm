@@ -31,9 +31,6 @@ class Schedule extends Components {
 
     public function insertRecord($qform) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Validate the submitted dates
         if(!$this->checkRecordTimesValid($qform['start_time'], $qform['end_time'], $qform['employee_id'])) { return false; }
 
@@ -68,12 +65,10 @@ class Schedule extends Components {
         $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
-
-        // Update last active record
-        $this->app->components->workorder->updateLastActive($qform['workorder_id'], $timestamp);
-        $this->app->components->client->updateLastActive($qform['client_id'], $timestamp);
+        $logMessage = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $qform['employee_id'], 'client_id' => $qform['client_id'], 'workorder_id' => $qform['workorder_id'], 'schedule_id' => $schedule_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -256,9 +251,6 @@ class Schedule extends Components {
 
     public function updateRecord($qform) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Validate the submitted dates
         if(!$this->checkRecordTimesValid($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }
 
@@ -278,14 +270,29 @@ class Schedule extends Components {
         $this->app->components->workorder->insertHistory($qform['workorder_id'], _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
-
-        // Update last active record
-        $this->app->components->workorder->updateLastActive($qform['workorder_id'], $timestamp);
-        $this->app->components->client->updateLastActive($qform['client_id'], $timestamp);
+        $logMessage = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $qform['employee_id'], 'client_id' => $qform['client_id'], 'workorder_id' => $qform['workorder_id'], 'schedule_id' => $qform['schedule_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
+
+    }
+
+    #################################
+    #    Update Last Active         #
+    #################################
+
+    public function updateLastActive($schedule_id = null, $timestamp = null) {
+
+        // Allow null calls
+        if(!$schedule_id) { return; }
+
+        $sql = "UPDATE ".PRFX."schedule_records SET
+                last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
+                WHERE schedule_id=".$this->app->db->qStr($schedule_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
     }
 
@@ -296,9 +303,6 @@ class Schedule extends Components {
     ##################################
 
     public function deleteRecord($schedule_id) {
-
-        // Unify Dates and Times
-        $timestamp = time();
 
         // Get schedule details before deleting
         $schedule_details = $this->getRecord($schedule_id);
@@ -321,12 +325,10 @@ class Schedule extends Components {
         $this->app->components->workorder->insertHistory($schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $schedule_details['employee_id'], $schedule_details['client_id'], $schedule_details['workorder_id']);
-
-        // Update last active record
-        $this->app->components->workorder->updateLastActive($schedule_details['workorder_id'], $timestamp);
-        $this->app->components->client->updateLastActive($schedule_details['client_id'], $timestamp);
+        $logMessage = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $schedule_details['employee_id'], 'client_id' => $schedule_details['client_id'], 'workorder_id' => $schedule_details['workorder_id'], 'schedule_id' => $schedule_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -443,7 +445,7 @@ class Schedule extends Components {
 
         $start_datetime     = $this->mysqlDatetimeToIcsDatetime($schedule_details['start_time']);
         $end_datetime       = $this->mysqlDatetimeToIcsDatetime($schedule_details['end_time']);
-        $current_datetime   = $this->timestampToIcsDatetime( time() );
+        $current_datetime   = $this->timestampToIcsDatetime(\CMSApplication::$timestamp);
 
         $summary            = $this->prepareIcsStrings('SUMMARY', $client_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
         $description        = $this->prepareIcsStrings('DESCRIPTION', $this->buildIcsDescription('textarea', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));

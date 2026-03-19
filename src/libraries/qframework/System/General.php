@@ -500,6 +500,62 @@ class General extends System {
     /* Logging */
 
     ############################################
+    #  Update last active                      #  // Makes sure all records that are touched have their last_active updated
+    ############################################  // TODO: timestamp in the `function declaration` is not used and can probably be removed and just used `$timestamp = $timestamp ?? \CMSApplication::$VAR;`
+
+    function updateLastActive(array $recordIds, int $timestamp = null) {
+
+        // Unify Dates and Times
+        $timestamp = $timestamp ?? \CMSApplication::$timestamp;
+
+        // Sanitize Record IDs
+        $recordIds = $this->extractRecordIds($recordIds);
+
+        $this->app->components->user->updateLastActive($recordIds['user_id'], $timestamp);
+        //$this->app->components->user->updateLastActive($recordIds['employee_id'], $timestamp);  // employee_id will be removed
+        $this->app->components->client->updateLastActive($recordIds['client_id'], $timestamp);
+        $this->app->components->workorder->updateLastActive($recordIds['workorder_id'], $timestamp);
+        $this->app->components->schedule->updateLastActive($recordIds['schedule_id'], $timestamp);
+        $this->app->components->invoice->updateLastActive($recordIds['invoice_id'], $timestamp);
+        $this->app->components->voucher->updateLastActive($recordIds['voucher_id'], $timestamp);
+        $this->app->components->expense->updateLastActive($recordIds['expense_id'], $timestamp);
+        $this->app->components->otherincome->updateLastActive($recordIds['otherincome_id'], $timestamp);
+        $this->app->components->payment->updateLastActive($recordIds['payment_id'], $timestamp);
+        $this->app->components->creditnote->updateLastActive($recordIds['creditnote_id'], $timestamp);
+
+        return;
+
+    }
+
+
+
+    ############################################
+    #  Extract Record IDs from any record     #  // This neatly extracts record IDs and leaves placeholders for nes that dont exist to prevent errors
+    ############################################
+
+    function extractRecordIds(array $record) {
+
+        $recordIds = array();
+
+        // Prevent errors from missing IDs
+        $recordIds['user_id'] = $record['user_id'] ?? $recordIds['employee_id'] ?? $this->app->user->login_user_id ?? null;  // User and Employee are exactly the same. Employee will be removed
+        //$recordIds['employee_id'] = $record['employee_id'] ?? null;
+        $recordIds['client_id'] = $record['client_id'] ?? null;
+        $recordIds['workorder_id'] = $record['workorder_id'] ?? null;
+        $recordIds['schedule_id'] = $record['schedule_id'] ?? null;
+        $recordIds['invoice_id'] = $record['invoice_id'] ?? null;
+        $recordIds['voucher_id'] = $record['voucher_id'] ?? null;
+        $recordIds['supplier_id'] = $record['supplier_id'] ?? null;
+        $recordIds['expense_id'] = $record['expense_id'] ?? null;
+        $recordIds['otherincome_id'] = $record['otherincome_id'] ?? null;
+        $recordIds['payment_id'] = $record['payment'] ?? null;
+        $recordIds['creditnote_id'] = $record['creditnote_id'] ?? null;
+
+        return $recordIds;
+
+    }
+
+    ############################################
     #  Write a record to the Access Log        #  // This will create an apache compatible access log (Combined Log Format)
     ############################################
 
@@ -511,8 +567,8 @@ class General extends System {
         /* Combined Log Format - LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined */
         // $remote_host, $logname, $user, $time, $method, $request, $protocol, $status, $bytes, $referer, $user_agent
 
-        $remote_ip      = $_SERVER['REMOTE_ADDR'];                              // only using IP - not hostname lookup
-        $logname        = '-';                                                  //  This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
+        $remote_ip      = $_SERVER['REMOTE_ADDR'];                              // Only using IP - not hostname lookup
+        $logname        = '-';                                                  // This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
 
         // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
         if(!$this->app->user->login_username) {
@@ -563,26 +619,32 @@ class General extends System {
     #  Write a record to the Activity Log      #
     ############################################
 
-    function writeRecordToActivityLog($record, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null) {
+    function writeRecordToActivityLog(string $logMessage, array $recordIds = array()) {
 
         // if activity logging not enabled exit
         if($this->app->config->get('qwcrm_activity_log') != true) { return; }
 
-        /* Use any supplied IDs instead of $GLOBALS[] counterpart
-        if(!$employee_id)   { $employee_id  = $GLOBALS['employee_id'];  }
-        if(!$client_id)     { $client_id  = $GLOBALS['client_id'];      }
-        if(!$workorder_id)  { $workorder_id = $GLOBALS['workorder_id']; }
-        if(!$invoice_id)    { $invoice_id   = $GLOBALS['invoice_id'];   }*/
+        // Sanitize Record IDs
+        $recordIds = $this->extractRecordIds($recordIds);
+
+        // This allows me to use the "" for building the statement below
+        $user_id = $recordIds['user_id'];
+        $client_id = $recordIds['client_id'];
+        $workorder_id = $recordIds['workorder_id'];
+        $schedule_id = $record_id['schedule_id'];
+        $invoice_id = $recordIds['invoice_id'];
+        $voucher_id = $recordIds['voucher_id'];
+        $supplier_id = $recordIds['supplier_id'];
+        $expense_id = $recordIds['expense_id'];
+        $otherincome_id = $recordIds['otherincome_id'];
+        $payment_id = $recordIds['payment_id'];
+        $creditnote_id = $recordIds['creditnote_id'];
 
         // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
-        if(!$this->app->user->login_username) {
-            $username = '-';
-        } else {
-            $username = $this->app->user->login_username;
-        }
+        $username = $this->app->user->login_username ?? '-';
 
         // Build log entry
-        $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.$this->app->user->login_user_id.','.$employee_id.','.$client_id.','.$workorder_id.','.$invoice_id.','.'"'.$record.'"'."\r\n";
+        $log_entry = $_SERVER['REMOTE_ADDR'].",$username,".date("[d/M/Y:H:i:s O]", \CMSApplication::$timestamp).",$user_id,$client_id,$workorder_id,$schedule_id,$invoice_id,$voucher_id,$supplier_id,$expense_id,$otherincome_id,$payment_id,$creditnote_id,$logMessage\r\n";
 
         // Write log entry
         if(!$fp = fopen(ACTIVITY_LOG, 'a')) {

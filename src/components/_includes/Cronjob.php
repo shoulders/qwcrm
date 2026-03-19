@@ -108,8 +108,9 @@ class Cronjob extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("Cronjob Record").' '.$qform['cronjob_id'].' '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        $logMessage = _gettext("Cronjob Record").' '.$qform['cronjob_id'].' '._gettext("updated.");
+        $recordIds = array('user_id' => $this->app->user->login_user_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return true;
 

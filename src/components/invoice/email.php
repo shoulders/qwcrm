@@ -71,22 +71,23 @@ $this->app->smarty->assign('invoice_statuses',                 $this->app->compo
 
 // Invoice Print Routine
 if(\CMSApplication::$VAR['commContent'] == 'invoice')
-{    
+{
     $templateFile = 'invoice/printing/print_invoice.tpl';
-    $filename = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'];     
-        
+    $filename = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'];
+
     // Email PDF Invoice
     if(\CMSApplication::$VAR['commType'] == 'pdfEmail')
-    {  
+    {
         $emailSubject = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'];
         $emailBody = $this->app->system->email->getEmailMessageBody('invoice', $client_details['client_id']);
-        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");       
+        $logMessage = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");
     }
-  
+
 }
 
 // Log activity
-$this->app->system->general->writeRecordToActivityLog($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+$recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+$this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
 // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
 $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename ?? null, $client_details ?? null, $emailSubject ?? null, $emailBody ?? null);

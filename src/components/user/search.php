@@ -21,15 +21,15 @@ defined('_QWEXEC') or die;
 
 // If a search is submitted
 if(isset(\CMSApplication::$VAR['submit'])) {
-    
+
     // Log activity
-    $record = _gettext("A search of users has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    $this->app->system->general->writeRecordToActivityLog($record);
-    
+    $logMessage = _gettext("A search of users has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
+    $this->app->system->general->writeRecordToActivityLog($logMessage);
+
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
     $this->app->system->page->forcePage('user', 'search', \CMSApplication::$VAR, 'get');
-    
+
 }
 
 // Build the page with the results for the current search (if there is no search term, all results are returned)

@@ -58,12 +58,11 @@ class Client extends Components {
         $client_id = $this->app->db->Insert_ID();
 
         // Log activity
-        $record = _gettext("New client").', '.$this->getRecord($client_id, 'display_name').', '._gettext("has been created.");
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $this->app->db->Insert_ID());
+        $logMessage = _gettext("New client").', '.$this->getRecord($client_id, 'display_name').', '._gettext("has been created.");
+        $recordIds = array('employee_id' => $this->app->user->login_user_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return $client_id;
-
-
 
     }
 
@@ -82,11 +81,10 @@ class Client extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("A new client note was added to the client").' '.$this->getRecord($client_id, 'display_name').' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id);
-
-        // Update last active record
-        $this->updateLastActive($client_id);
+        $logMessage = _gettext("A new client note was added to the client").' '.$this->getRecord($client_id, 'display_name').' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -326,20 +324,17 @@ class Client extends Components {
                 zip             =". $this->app->db->qStr( $qform['zip']              ).",
                 country         =". $this->app->db->qStr( $qform['country']          ).",
                 note            =". $this->app->db->qStr( $qform['note']             )."
-                WHERE client_id  =". $this->app->db->qStr( $qform['client_id']       );
+                WHERE client_id =". $this->app->db->qStr( $qform['client_id']        );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("The client").' '.$this->getRecord($qform['client_id'], 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $qform['client_id']);
-
-        // Update last active record
-        $this->updateLastActive($qform['client_id']);
+        $logMessage = _gettext("The client").' '.$this->getRecord($qform['client_id'], 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $qform['client_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
-
-
 
     }
 
@@ -360,11 +355,10 @@ class Client extends Components {
         $client_id = $this->getNote($client_note_id, 'client_id');
 
         // Log activity
-        $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for").' '.$this->getRecord($client_id, 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id);
-
-        // Update last active record
-        $this->updateLastActive($client_id);
+        $logMessage = _gettext("Client Note").' '.$client_note_id.' '._gettext("for").' '.$this->getRecord($client_id, 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
     }
 
@@ -374,7 +368,7 @@ class Client extends Components {
 
     public function updateLastActive($client_id = null, $timestamp = null) {
 
-        // compensate for some operations not having a client_id - i.e. sending some emails
+        // Allow null calls
         if(!$client_id) { return; }
 
         $sql = "UPDATE ".PRFX."client_records SET
@@ -413,9 +407,10 @@ class Client extends Components {
         $sql = "DELETE FROM ".PRFX."client_records WHERE client_id=".$this->app->db->qStr($client_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Write the record to the activity log
-        $record = _gettext("The client").' '.$client_details['display_name'].' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id);
+        // Log activity
+        $logMessage = _gettext("The client").' '.$client_details['display_name'].' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return true;
 
@@ -437,11 +432,10 @@ class Client extends Components {
         $client_details = $this->getRecord($client_id);
 
         // Log activity
-        $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for Client").' '.$client_details['display_name'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id, $client_id);
-
-        // Update last active record
-        $this->updateLastActive($client_id);
+        $logMessage = _gettext("Client Note").' '.$client_note_id.' '._gettext("for Client").' '.$client_details['display_name'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
     }
 

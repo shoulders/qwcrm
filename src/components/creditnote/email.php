@@ -50,22 +50,23 @@ $this->app->smarty->assign('creditnote_footer_msg',               $this->app->co
 
 // Credit Note Email Routine
 if(\CMSApplication::$VAR['commContent'] == 'creditnote')
-{    
+{
     $templateFile = 'creditnote/printing/print_creditnote.tpl';
-    $filename = _gettext("Credit Note").' '.\CMSApplication::$VAR['creditnote_id'];     
-        
+    $filename = _gettext("Credit Note").' '.\CMSApplication::$VAR['creditnote_id'];
+
     // Email PDF Credit Note
     if(\CMSApplication::$VAR['commType'] == 'pdfEmail')
-    {  
+    {
         $emailSubject = _gettext("Credit Note").' '.\CMSApplication::$VAR['creditnote_id'];
         $emailBody = $this->app->system->email->getEmailMessageBody('creditnote', $client_details['client_id']);
-        $record = _gettext("Credit Note").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been emailed as a PDF.");       
+        $logMessage = _gettext("Credit Note").' '.\CMSApplication::$VAR['creditnote_id'].' '._gettext("has been emailed as a PDF.");
     }
-  
+
 }
 
 // Log activity
-$this->app->system->general->writeRecordToActivityLog($record, $creditnote_details['employee_id'], $creditnote_details['client_id'], null, $creditnote_details['invoice_id']);
+$recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+$this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
 // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
 $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename ?? null, $client_details ?? null, $emailSubject ?? null, $emailBody ?? null);

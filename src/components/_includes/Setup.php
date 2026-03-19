@@ -21,35 +21,35 @@
 defined('_QWEXEC') or die;
 
 /* Only allow the use of these public functions when the /setup/ folder exists.
-if (!is_dir(SETUP_DIR)) {      
-    die(_gettext("You cannot use these public functions without the setup folder."));        
+if (!is_dir(SETUP_DIR)) {
+    die(_gettext("You cannot use these public functions without the setup folder."));
 }*/
 
 class Setup extends Components {
 
     public static $setup_error_flag = null;     /// ??? should the be 'protected'?
     public static $executed_sql_results = null;
-    public static $split_database_upgrade = null;     
-    
+    public static $split_database_upgrade = null;
+
     public function __construct() {
-        
+
         parent::__construct();
-        
+
         // Create a User object without starting the Session
         // This prevents undefined errors in get_page_content()
         $this->app->user = new Joomla\CMS\User\User;
-        
+
         // Prevent undefined variable errors && Get 'stage' from the submit button
         \CMSApplication::$VAR['stage'] = \CMSApplication::$VAR['submit'] ?? null;
         $this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
         $this->app->smarty->assign('setup_error_flag', self::$setup_error_flag);
         $this->app->smarty->assign('executed_sql_results', self::$executed_sql_results);
-        
+
         // Set Max Execution time to 5 Minutes
         ini_set('max_execution_time', 300);
-        
+
     }
-   
+
     /** Database Common **/
 
     #########################################################
@@ -61,50 +61,50 @@ class Setup extends Components {
         $sql = "UPDATE $select_table SET
                 $select_column =". $this->app->db->qStr($record_new_value);
 
-        if($where_column) {    
+        if($where_column) {
             $sql .=  "\nWHERE $where_column ".$where_record_not_flag."=".$this->app->db->qStr($where_record);
         }
 
-        if(!$this->app->db->execute($sql)) { 
+        if(!$this->app->db->execute($sql)) {
 
             // Set the setup global error flag
             self::$setup_error_flag = true;
 
             // Log message
             if($where_column) {
-                $record = _gettext("Failed to update the record value").' `'.$select_column.'` '._gettext("where the records were matched in the column").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';
-            } else {            
-                $record = _gettext("Failed to update the value for the record").' `'.$select_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
+                $message = _gettext("Failed to update the record value").' `'.$select_column.'` '._gettext("where the records were matched in the column").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';
+            } else {
+                $message = _gettext("Failed to update the value for the record").' `'.$select_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
             }
 
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div style="color: red">'.$message.'</div>';
             self::$executed_sql_results .= '<div>&nbsp;</div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $message, $this->app->db->ErrorMsg(), $sql);
 
             return false;
 
         } else {
 
-            // Log message             
+            // Log message
             if($where_column) {
-                $record = _gettext("Successfully updated the record value").' `'.$select_column.'` '._gettext("where the records were matched in the column").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';            
-            } else {            
-                $record = _gettext("Successfully updated the value for the record").' `'.$select_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
+                $message = _gettext("Successfully updated the record value").' `'.$select_column.'` '._gettext("where the records were matched in the column").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';
+            } else {
+                $message = _gettext("Successfully updated the value for the record").' `'.$select_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
             }
 
             // Output message via smarty - to reduce onscreen output i have disabled success output, it is still logged
-            //self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            //self::$executed_sql_results .= '<div style="color: green">'.$message.'</div>';
             //self::$executed_sql_results .= '<div>&nbsp;</div>';
 
-            // Log message to setup log (if enabled this can cause setup to take much longer to run)   
-            //$this->write_record_to_setup_log('correction', $record);
+            // Log message to setup log (if enabled this can cause setup to take much longer to run)
+            //$this->write_record_to_setup_log('correction', $message);
 
             return true;
 
-        }    
+        }
 
     }
 
@@ -122,7 +122,7 @@ class Setup extends Components {
         else
         {
             $sql = "UPDATE $table SET
-                    $column         =". $this->app->db->qStr($new_value)."                      
+                    $column         =". $this->app->db->qStr($new_value)."
                     WHERE $column   =". $this->app->db->qStr($current_value);
             if($and_column && $and_value)
             {
@@ -131,41 +131,41 @@ class Setup extends Components {
 
         }
 
-        if(!$this->app->db->execute($sql)) { 
+        if(!$this->app->db->execute($sql)) {
 
             // Set the setup global error flag
             self::$setup_error_flag = true;
 
             // Log message
-            $record = _gettext("Failed to update the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the column").' `'.$column.'` '._gettext("from the table").' `'.$table.'` ';
+            $message = _gettext("Failed to update the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the column").' `'.$column.'` '._gettext("from the table").' `'.$table.'` ';
 
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-            self::$executed_sql_results .= '<div>&nbsp;</div>';        
+            self::$executed_sql_results .= '<div style="color: red">'.$message.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $message, $this->app->db->ErrorMsg(), $sql);
 
             return false;
 
-        } else {        
+        } else {
 
             // Affected Rows
             if(!$affected_rows = $this->app->db->affected_rows()) { $affected_rows = '0'; }
 
             // Log message
-            $record = _gettext("Successfully updated the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the column").' `'.$column.'` '._gettext("from the the table").' `'.$table.'` - '._gettext("Records Processed").': '.$affected_rows;
+            $message = _gettext("Successfully updated the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the column").' `'.$column.'` '._gettext("from the the table").' `'.$table.'` - '._gettext("Records Processed").': '.$affected_rows;
 
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div style="color: green">'.$message.'</div>';
             self::$executed_sql_results .= '<div>&nbsp;</div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('correction', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $message);
 
-            return true;        
+            return true;
 
-        }    
+        }
 
     }
 
@@ -177,13 +177,13 @@ class Setup extends Components {
 
     public function executeSqlFile($sql_file) {
 
-        $local_error_flag = null;    
+        $local_error_flag = null;
 
         // Load the SQL file into memory as string
         $sql_file = file_get_contents($sql_file);
 
         // Replace database prefix placeholder with required prefix
-        $sql_file = str_replace('#__', PRFX, $sql_file);    
+        $sql_file = str_replace('#__', PRFX, $sql_file);
 
         // Remove comment lines starting with /*
         $sql_file = preg_replace('/^\/\*.*\n/m', '', $sql_file);
@@ -195,7 +195,7 @@ class Setup extends Components {
         preg_match_all('/^[A-Z].*;\n/msU', $sql_file, $sql_statements);
 
         // Loop through preg_match() result
-        foreach ($sql_statements['0'] as $sql) {       
+        foreach ($sql_statements['0'] as $sql) {
 
             // Get rule name for output
             preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);
@@ -210,25 +210,25 @@ class Setup extends Components {
                 $local_error_flag = true;
 
                 // Log message
-                $record = _gettext("Error performing SQL query").' : '. $query_name['0'];
+                $message = _gettext("Error performing SQL query").' : '. $query_name['0'];
 
                 // Output message via smarty
-                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                self::$executed_sql_results .= '<div style="color: red">'.$message.'</div>';
 
-                // Log message to setup log            
-                $this->writeRecordToSetupLog('install', $record, $this->app->db->ErrorMsg(), $sql);
+                // Log message to setup log
+                $this->writeRecordToSetupLog('install', $message, $this->app->db->ErrorMsg(), $sql);
 
 
             } else {
 
                 // Log message
-                $record = _gettext("Performed SQL query successfully").' : '. $query_name['0'];
+                $message = _gettext("Performed SQL query successfully").' : '. $query_name['0'];
 
                 // Output message via smarty
-                self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+                self::$executed_sql_results .= '<div style="color: green">'.$message.'</div>';
 
-                // Log message to setup log            
-                $this->writeRecordToSetupLog('install', $record);
+                // Log message to setup log
+                $this->writeRecordToSetupLog('install', $message);
 
             }
 
@@ -238,30 +238,30 @@ class Setup extends Components {
         if($local_error_flag) {
 
             // Log message
-            $record = _gettext("One or more SQL rule has failed. Check the logs.");
+            $message = _gettext("One or more SQL rule has failed. Check the logs.");
 
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$message.'</strong></div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('install', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message);
 
             return false;
 
         } else {
 
             // Log message
-            $record = _gettext("All SQL rules have run successfully.");
+            $message = _gettext("All SQL rules have run successfully.");
 
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$message.'</strong></div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('install', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message);
 
             return true;
 
-        }           
+        }
 
     }
 
@@ -274,7 +274,7 @@ class Setup extends Components {
     public function executeSqlFileLines($sql_file) {
 
         // Prevent undefined variable errors
-        $local_error_flag = null; 
+        $local_error_flag = null;
         $sql = null;
         $query_name = null;
 
@@ -283,27 +283,27 @@ class Setup extends Components {
 
         // Loop through each line  - file() loads each line in one by one
         foreach ($lines as $line)
-        {        
+        {
             // Skip if the line is empty
             if ($line == '') {
                 continue;
             }
-            
+
             // Skip if the line just has newline characters
             if (preg_match("/^[\r|\n]+$/U", $line)) {
                 continue;
             }
-            
+
             // Skip if only spaces with optional newline characters
             if (preg_match('/^[ ]+[\r\n]$/U', $line)) {
                 continue;
             }
-            
+
             // Skip it if it's a comment ( -- or /* )
             if(substr($line, 0, 2) == '--' || substr($line, 1, 1) == '*' || substr($line, 2, 2) == '*/') {
-                continue;            
+                continue;
             }
-            
+
             // Replace new lines with a space
             $line = str_replace("\r", ' ', $line);
             $line = str_replace("\n", ' ', $line);
@@ -316,73 +316,73 @@ class Setup extends Components {
 
             // If it has a semicolon at the end, it's the end of the query
             if (substr(trim($line), -1, 1) == ';')
-            {            
-                
+            {
+
                 /* Build a Query Name from the SQL query  */
-                
+
                 // Generic - Gives short and neat Rule Names
                 if(preg_match('/^(DROP|RENAME|CREATE|INSERT|ALTER|UPDATE|DELETE)/U', $sql)) {
                     //$query_name = rtrim($sql, ';');  //'Unrecognised SQL Command' 'Unnamed SQL Query'
-                    $query_name = preg_match('/^.*`'.PRFX.'.*`/U', $sql, $matches) ? $matches[0] : _gettext("Unusual SQL Command");                    
+                    $query_name = preg_match('/^.*`'.PRFX.'.*`/U', $sql, $matches) ? $matches[0] : _gettext("Unusual SQL Command");
                     goto eof_query_name_building;
                 }
-                
+
                 /* Not using separate rule matching at the minute, I will delete this if i dont use it.
-                
+
                 // DROP
                 if(preg_match('/^DROP/U', $sql)) {
                     $query_name = $sql;
                     goto eof_query_name_building;
                 }
-                
+
                 // RENAME
                 if(preg_match('/^RENAME/U', $sql)) {
                     $query_name = $sql;
                     goto eof_query_name_building;
                 }
-                
+
                 // CREATE
                 if(preg_match('/^CREATE/U', $sql)) {
                     $query_name = $sql;
                     goto eof_query_name_building;
                 }
-                
+
                 // INSERT
                 if(preg_match('/^INSERT/U', $sql)) {
                     $query_name = $sql;
                     goto eof_query_name_building;
                 }
-                
+
                 // ALTER
                 if(preg_match('/^ALTER/U', $sql)) {
                     $query_name = $sql;
                     goto eof_query_name_building;
                 }
-                
+
                 // UPDATE
                 if(preg_match('/^UPDATE/U', $sql)) {
                     $query_name = $sql;
                     goto eof_query_name_building;
                 }
-                
+
                 // DELETE
                 if(preg_match('/^DELETE/U', $sql)) {
                     $query_name = $sql;
                     goto eof_query_name_building;
                 }
-                
+
                 // Default Rule Name
                 if(!isset($query_name)) {
-                    $query_name = _gettext("Unrecognised SQL Command");   
+                    $query_name = _gettext("Unrecognised SQL Command");
                 }*/
-                
+
                 eof_query_name_building:
-                    
-                /* EOF Rule Name Building */                
-                 
+
+                /* EOF Rule Name Building */
+
                 // Perform the query
                 if(!$this->app->db->execute($sql)) {
-                    
+
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
 
@@ -390,111 +390,111 @@ class Setup extends Components {
                     $local_error_flag = true;
 
                     // Log message
-                    $record = _gettext("Error performing SQL query").' : '. $query_name;
-                    
-                    // Output message via smarty
-                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
+                    $message = _gettext("Error performing SQL query").' : '. $query_name;
 
-                    // Log message to setup log                
-                    $this->writeRecordToSetupLog('upgrade', $record, $this->app->db->ErrorMsg(), $sql);
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$message.'</div>';
+
+                    // Log message to setup log
+                    $this->writeRecordToSetupLog('upgrade', $message, $this->app->db->ErrorMsg(), $sql);
 
                 } else {
 
                     // Log message
-                    $record = _gettext("Performed SQL query successfully").' : '. $query_name;
+                    $message = _gettext("Performed SQL query successfully").' : '. $query_name;
 
                     // Output message via smarty
-                    self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+                    self::$executed_sql_results .= '<div style="color: green">'.$message.'</div>';
 
-                    // Log message to setup log                
-                    $this->writeRecordToSetupLog('upgrade', $record);
+                    // Log message to setup log
+                    $this->writeRecordToSetupLog('upgrade', $message);
 
-                }            
+                }
 
                 // Reset temp SQL variable to empty ready for the next line
                 $sql = '';
-                
+
                 // Reset Query name
                 $query_name = '';
 
-            }        
+            }
 
             continue;
-            
-        } 
+
+        }
 
         // Closing result statement
         if($local_error_flag) {
 
             // Log message
-            $record = _gettext("One or more SQL rule has failed. Check the logs.");
+            $message = _gettext("One or more SQL rule has failed. Check the logs.");
 
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: red;">'.$record.'</div>';
+            self::$executed_sql_results .= '<div style="color: red;">'.$message.'</div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('upgrade', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('upgrade', $message);
 
             return false;
 
         } else {
 
             // Log message
-            $record = _gettext("All SQL rules have run successfully.");
+            $message = _gettext("All SQL rules have run successfully.");
 
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: green;">'.$record.'</div>';
+            self::$executed_sql_results .= '<div style="color: green;">'.$message.'</div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('upgrade', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('upgrade', $message);
 
             return true;
 
         }
 
     }
-    
+
     ############################################
     #   Execute SQL Comands from an array      #
     ############################################
-    
+
     public function executeSqlCommands(array $sqls) {
-        
+
         foreach($sqls as $sql)
         {
             if(!$this->app->db->execute($sql))
-            {       
+            {
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
-                    
-                // Log Message                    
-                $record = _gettext("Failed to run the SQL command");
+
+                // Log Message
+                $message = _gettext("Failed to run the SQL command");
 
                 // Output message via smarty
-                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                self::$executed_sql_results .= '<div style="color: red">'.$message.'</div>';
 
                 // Log message to setup log
-                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
-                
+                $this->writeRecordToSetupLog('correction', $message, $this->app->db->ErrorMsg(), $sql);
+
                 return false;
             }
             else
             {
                 // Log Message
-                $record = _gettext("Successfully ran the SQL command");
+                $message = _gettext("Successfully ran the SQL command");
 
                 // Output message via smarty
-                self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+                self::$executed_sql_results .= '<div style="color: green">'.$message.'</div>';
                 self::$executed_sql_results .= '<div>&nbsp;</div>';
 
                 // Log message to setup log
-                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
-                
+                $this->writeRecordToSetupLog('correction', $message, $this->app->db->ErrorMsg(), $sql);
+
                 return true;
             }
 
         }
-        
+
     }
 
     ############################################
@@ -511,7 +511,7 @@ class Setup extends Components {
             $prefix .= $acceptedChars[mt_rand(0, $max_offset)];
         }
 
-        $prefix .= '_';    
+        $prefix .= '_';
 
         // This is to prevent using the MyITCRM prefix
         if($not_this_prefix) {
@@ -523,38 +523,38 @@ class Setup extends Components {
         return $prefix;
 
     }
-    
+
     ############################
     # Get MySQL Column Comment #
     ############################
-    
+
     public function getColumnComment($table, $column) {
-        
+
         $sql = "SELECT column_comment
                 FROM information_schema.columns
                 WHERE table_name = '$table'
                 AND column_name LIKE '$column'";
-        
-        if(!$rs = $this->app->db->execute($sql)) { 
-            
+
+        if(!$rs = $this->app->db->execute($sql)) {
+
             // Set the setup global error flag
             self::$setup_error_flag = true;
 
             // Log message
-            $record = _gettext("Failed to get Database Column Comment");
+            $message = _gettext("Failed to get Database Column Comment");
 
-            // Log message to setup log            
-            $this->writeRecordToSetupLog('install', $record, $this->app->db->ErrorMsg(), $sql);
-            
-            return false;      
-            
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message, $this->app->db->ErrorMsg(), $sql);
+
+            return false;
+
         } else {
-            
+
             return $rs->fields['column_comment'];
-            
+
         }
-        
-    }    
+
+    }
 
     /** Install **/
 
@@ -573,28 +573,28 @@ class Setup extends Components {
         if(self::$setup_error_flag) {
 
             // Log message
-            $record = _gettext("The database installation process failed, check the logs.");
+            $message = _gettext("The database installation process failed, check the logs.");
 
             // Output message via smarty
             self::$executed_sql_results .= '<div>&nbsp;</div>';
-            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$message.'</strong></div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('install', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message);
 
         } else {
 
             // Log message
-            $record = _gettext("The database installation process was successful.");
+            $message = _gettext("The database installation process was successful.");
 
             // Output message via smarty
             self::$executed_sql_results .= '<div>&nbsp;</div>';
-            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$message.'</strong></div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('install', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message);
 
-        }    
+        }
 
         // Return reflecting the installation status
         if(self::$setup_error_flag) {
@@ -631,20 +631,20 @@ class Setup extends Components {
             self::$setup_error_flag = true;
 
             // Log message
-            $record = _gettext("Error setting Work Order Start Number.");
+            $message = _gettext("Error setting Work Order Start Number.");
 
-            // Log message to setup log            
-            $this->writeRecordToSetupLog('install', $record, $this->app->db->ErrorMsg(), $sql);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message, $this->app->db->ErrorMsg(), $sql);
 
         } else {
 
             // Log message
-            $record = _gettext("Work Order Start Number set successfully");
+            $message = _gettext("Work Order Start Number set successfully");
 
-            // Log message to setup log            
-            $this->writeRecordToSetupLog('install', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message);
 
-        }   
+        }
 
         return;
 
@@ -665,21 +665,21 @@ class Setup extends Components {
             self::$setup_error_flag = true;
 
             // Log message
-            $record = _gettext("Error setting Invoice Start Number.");
+            $message = _gettext("Error setting Invoice Start Number.");
 
-            // Log message to setup log            
-            $this->writeRecordToSetupLog('install', $record, $this->app->db->ErrorMsg(), $sql);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message, $this->app->db->ErrorMsg(), $sql);
 
         } else {
 
             // Log message
-            $record = _gettext("Invoice Start Number set successfully");
+            $message = _gettext("Invoice Start Number set successfully");
 
-            // Log message to setup log            
-            $this->writeRecordToSetupLog('install', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('install', $message);
 
         }
-        
+
         return;
 
     }
@@ -698,13 +698,13 @@ class Setup extends Components {
         self::$executed_sql_results .= '<div>&nbsp;</div>';
 
         // Log message
-        $record = _gettext("Beginning the migration of MyITCRM data into the QWcrm table").': `'.$qwcrm_table.'`';       
+        $message = _gettext("Beginning the migration of MyITCRM data into the QWcrm table").': `'.$qwcrm_table.'`';
 
         // Result message
-        self::$executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
+        self::$executed_sql_results .= '<div><strong><span style="color: green">'.$message.'</span></strong></div>';
 
-        // Log message to setup log                
-        $this->writeRecordToSetupLog('migrate', $record);        
+        // Log message to setup log
+        $this->writeRecordToSetupLog('migrate', $message);
 
        /* load the records from MyITCRM */
 
@@ -713,23 +713,23 @@ class Setup extends Components {
         if(!$rs = $this->app->db->execute($sql)) {
 
             // set error flag
-            $local_error_flag = true; 
+            $local_error_flag = true;
 
             // Log message
-            $record = _gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$this->app->db->ErrorMsg();        
+            $message = _gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$this->app->db->ErrorMsg();
 
             // Result message
-            self::$executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
+            self::$executed_sql_results .= '<div><span style="color: red">'.$message.'</span></div>';
 
-            // Log message to setup log                
-            $this->writeRecordToSetupLog('migrate', $record);        
+            // Log message to setup log
+            $this->writeRecordToSetupLog('migrate', $message);
 
             // output error, could not load table so all of this table was skipped
             return false;
 
         } else {
 
-            /* Load each single records and insert into QWcrm */ 
+            /* Load each single records and insert into QWcrm */
 
             // Record counters
             $records_processed  = 0;
@@ -737,7 +737,7 @@ class Setup extends Components {
             $records_successful = 0;
 
             // Loop through the MyITCRM records (single record, single insert)
-            while(!$rs->EOF) {               
+            while(!$rs->EOF) {
 
                 $myitcrm_record = $rs->GetRowAssoc();
 
@@ -745,9 +745,9 @@ class Setup extends Components {
 
                 $insert_sql = "INSERT INTO `$qwcrm_table` (";
                 foreach($column_mappings as $qwcrm_column => $myitcrm_column) {
-                    $insert_sql .= "`$qwcrm_column`, ";            
+                    $insert_sql .= "`$qwcrm_column`, ";
                 }
-                $insert_sql = rtrim($insert_sql, ', ');           // remove the last ', '        
+                $insert_sql = rtrim($insert_sql, ', ');           // remove the last ', '
                 $insert_sql .= ") VALUES" . "\n";
 
                 /* Build 'VALUES' part of the SQL statement by mapping the MyITCRM record data to the QWcrm values */
@@ -758,7 +758,7 @@ class Setup extends Components {
                     // Skip looking for data in MyITCRM record if there is no corresponding field
                     if($myitcrm_column == '') {
                         $values_sql .= "'', ";
-                        continue;                    
+                        continue;
                     }
 
                     foreach($myitcrm_record as $myitcrm_record_column => $myitcrm_record_val) {
@@ -772,15 +772,15 @@ class Setup extends Components {
                             $values_sql .= $this->app->db->qStr($myitcrm_record_val).', ';
                             break;
 
-                        }    
+                        }
 
-                    }                         
+                    }
 
                 }
 
                 // Close the 'VALUES' SQL statement
                 $values_sql = rtrim($values_sql, ', ');
-                $values_sql .= ");";                
+                $values_sql .= ");";
 
                 /* Build and execute statement */
 
@@ -788,7 +788,7 @@ class Setup extends Components {
                 $sql = $insert_sql.$values_sql;
 
                 // insert the migrated record into qwcrm
-                if(!$this->app->db->execute($sql)) {  
+                if(!$this->app->db->execute($sql)) {
 
                     /* Fail */
 
@@ -799,13 +799,13 @@ class Setup extends Components {
                     ++$records_failed;
 
                     // Log message
-                    $record = _gettext("Error migrating a MyITCRM record into QWcrm");
+                    $message = _gettext("Error migrating a MyITCRM record into QWcrm");
 
                     // Result message
-                    self::$executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$this->app->db->ErrorMsg().'</span></div>';                
+                    self::$executed_sql_results .= '<div><span style="color: red">'.$message.' - SQL Error: '.$this->app->db->ErrorMsg().'</span></div>';
 
-                    // Log message to setup log                
-                    $this->writeRecordToSetupLog('migrate', $record, $this->app->db->ErrorMsg(), $sql);                
+                    // Log message to setup log
+                    $this->writeRecordToSetupLog('migrate', $message, $this->app->db->ErrorMsg(), $sql);
 
 
 
@@ -816,33 +816,33 @@ class Setup extends Components {
 
                     // NO logging, otherwise log file would be huge
 
-                    /* success  
+                    /* success
 
                     // Log message
-                    $record = _gettext("Successfully migrated a MyITCRM record into QWcrm");
+                    $message = _gettext("Successfully migrated a MyITCRM record into QWcrm");
 
                     // Result message
-                    self::$executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
+                    self::$executed_sql_results .= '<div><span style="color: green">'.$message.'</span></div>';
 
-                    // Log message to setup log                
-                    $this->write_record_to_setup_log('migrate', $record);
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('migrate', $message);
 
-                    */                
+                    */
 
                 }
 
                 // Advance the records_processed counter
                 ++$records_processed;
 
-                // Advance the INSERT loop to the next record            
+                // Advance the INSERT loop to the next record
                 $rs->MoveNext();
 
             }// EOF While Loop
 
-            // Output Record counters        
+            // Output Record counters
             self::$executed_sql_results .= '<div><span style="color: blue">'._gettext("MyITCRM Records Processed").': '.$records_processed.'</span></div>';
             self::$executed_sql_results .= '<div><span style="color: red">'._gettext("Records Failed To Migrate").': '.$records_failed.'</span></div>';
-            self::$executed_sql_results .= '<div><span style="color: green">'._gettext("Records Successfuly Migrated").': '.$records_successful.'</span></div>';        
+            self::$executed_sql_results .= '<div><span style="color: green">'._gettext("Records Successfuly Migrated").': '.$records_successful.'</span></div>';
 
             // if there has been an error
             if($local_error_flag) {
@@ -851,17 +851,17 @@ class Setup extends Components {
                 self::$setup_error_flag = true;
 
                 // Log message
-                $record = _gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
+                $message = _gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
                 $record_additional = ' - '._gettext("MyITCRM Records Processed").': '.$records_processed.' - '._gettext("Records Failed To Migrate").': '.$records_failed.' - '._gettext("Records Successfuly Migrated").': '.$records_successful;
 
                 // Result message
-                self::$executed_sql_results .= '<div><strong><span style="color: red">'.$record.'</span></strong></div>';
+                self::$executed_sql_results .= '<div><strong><span style="color: red">'.$message.'</span></strong></div>';
 
                 // Add division to seperate table migration public function results
                 self::$executed_sql_results .= '<div>&nbsp;</div>';
 
-                // Log message to setup log                
-                $this->writeRecordToSetupLog('migrate', $record.$record_additional);
+                // Log message to setup log
+                $this->writeRecordToSetupLog('migrate', $message.$record_additional);
 
                 return false;
 
@@ -869,135 +869,135 @@ class Setup extends Components {
             } else {
 
                 // Log message
-                $record = _gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'`';
+                $message = _gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'`';
                 $record_additional = ' - '._gettext("MyITCRM Records Processed").': '.$records_processed.' - '._gettext("Records Failed To Migrate").': '.$records_failed.' - '._gettext("Records Successfuly Migrated").': '.$records_successful;
 
                 // Result message
-                self::$executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
+                self::$executed_sql_results .= '<div><strong><span style="color: green">'.$message.'</span></strong></div>';
 
                 // Add division to seperate table migration public function results
                 self::$executed_sql_results .= '<div>&nbsp;</div>';
 
-                // Log message to setup log                
-                $this->writeRecordToSetupLog('migrate', $record.$record_additional);
+                // Log message to setup log
+                $this->writeRecordToSetupLog('migrate', $message.$record_additional);
 
                 return true;
 
-            }             
+            }
 
         }
 
     }
 
-    /** Upgrade **/    
-        
+    /** Upgrade **/
+
     ############################################
     #   Get upgrade steps                      #
     ############################################
 
     public function getUpgradeSteps() {
-        
+
         $upgrade_steps = array();
         $current_db_version = $this->app->system->general->getQwcrmDatabaseVersionNumber();
         $targetVersion = null;
 
         // This pattern scans within the folder for objects (files and directories)
         $directories = glob(SETUP_DIR.'upgrade/' . '*', GLOB_ONLYDIR);
-        
+
         // Cycle through the directories discovered
         foreach ($directories as $directory) {
-            
+
             // Remove path from directory and just leave the directory name (aka version number)
             $stepVersionNumber = basename($directory);
-            
+
             // Convert version numbers from xx_xx_xx format to xx.xx.xx (this is so the numbers can be used through QWcrm. Comparison works for both formats)
             //$stepVersionNumber = str_replace('_', '.', $stepVersionNumber);
-            
+
             // Add only the required upgrade steps - Is the version number less than or equal to the Current DB Version
             if(version_compare($current_db_version, $stepVersionNumber, '<')) {
-                
+
                 // Add to the new array
                 $upgrade_steps[] = $stepVersionNumber;
-                
+
                 // Set the target version
                 $targetVersion = $stepVersionNumber;
-                
+
                 // If break.txt exists stop adding further stages (to prevent timeouts on large upgrades)
                 if(file_exists($directory.'/break.txt')) {
                     Setup::$split_database_upgrade = true;
-                    $record  = _gettext("The upgrade process has been split to prevent server timeouts.").'<br>';
-                    $record .= _gettext("This stage will upgrade QWcrm to version").' '.$targetVersion.'<br>';
-                    $record .= _gettext("If there are more upgrade stages to perform, they will start immediately after this one.");
-                    $this->writeRecordToSetupLog('upgrade', $record);
-                    $this->app->system->variables->systemMessagesWrite('success', $record);
+                    $message  = _gettext("The upgrade process has been split to prevent server timeouts.").'<br>';
+                    $message .= _gettext("This stage will upgrade QWcrm to version").' '.$targetVersion.'<br>';
+                    $message .= _gettext("If there are more upgrade stages to perform, they will start immediately after this one.");
+                    $this->writeRecordToSetupLog('upgrade', $message);
+                    $this->app->system->variables->systemMessagesWrite('success', $message);
                     break;
                 }
-           
+
             }
-            
+
         }
-        
+
         // Sort version numbers in to ascending order
         usort($upgrade_steps, 'version_compare');
-                
+
         return $upgrade_steps;
-        
+
     }
-    
+
     ############################################
     #   Process upgrade steps                  #
     ############################################
 
     public function processUpgradeSteps(&$VAR, $upgrade_steps = null) {
-        
+
         // Cycle through each step
-        foreach ($upgrade_steps as $upgrade_step) { 
-            
+        foreach ($upgrade_steps as $upgrade_step) {
+
             // Convert version numbers from xx.xx.xx format to xx_xx_xx (to allow building the correct file path)
             //$upgrade_step = str_replace('.', '_', $upgrade_step);
 
             // Include the upgrade.php
             require(SETUP_DIR.'upgrade/'.$upgrade_step.'/upgrade_routines.php');
-            
+
             // Build Class name
             $class_name = 'Upgrade'.$upgrade_step;
-            
+
             // Instantiate the step's class (this runs the upgrade routines)
             $upgrade_process = new $class_name($VAR);
-            
+
             // Unset the class to save memory
             unset($upgrade_process);
-           
+
         }
-        
+
         /* Final stuff */
 
         // Final statement
         if(self::$setup_error_flag) {
 
             // Log message
-            $record = _gettext("The database upgrade process failed, check the logs.");
+            $message = _gettext("The database upgrade process failed, check the logs.");
 
             // Output message via smarty
             self::$executed_sql_results .= '<div>&nbsp;</div>';
-            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$message.'</strong></div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('upgrade', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('upgrade', $message);
 
         } else {
 
             // Log message
-            $record = _gettext("The database upgrade process was successful.");
+            $message = _gettext("The database upgrade process was successful.");
 
             // Output message via smarty
             self::$executed_sql_results .= '<div>&nbsp;</div>';
-            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$message.'</strong></div>';
 
-            // Log message to setup log        
-            $this->writeRecordToSetupLog('upgrade', $record);
+            // Log message to setup log
+            $this->writeRecordToSetupLog('upgrade', $message);
 
-        }    
+        }
 
         // Return reflecting the installation status
         if(self::$setup_error_flag) {
@@ -1016,52 +1016,52 @@ class Setup extends Components {
             return true;
 
         }
-        
+
     }
-    
+
     #############################################
     #  Database - copy from ColumnA To ColumnB  #
     #############################################
 
     public function copyColumnAToColumnB($table, $columnA, $columnB) {
-        
+
         // Loop through all of the labour records
-        $sql = "UPDATE `".PRFX.$table."` SET `".$columnB."` = `".$columnA."`";          
+        $sql = "UPDATE `".PRFX.$table."` SET `".$columnB."` = `".$columnA."`";
 
         if(!$this->app->db->execute($sql)) {
-            
+
             // Set the setup global error flag
             self::$setup_error_flag = true;
-            
+
             // Log Message
-            $record = _gettext("Failed to copy ColumnA to ColumnB in the table").' `'.$table.'`.';
-            
+            $message = _gettext("Failed to copy ColumnA to ColumnB in the table").' `'.$table.'`.';
+
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div style="color: red">'.$message.'</div>';
             self::$executed_sql_results .= '<div>&nbsp;</div>';
-            
+
             // Log message to setup log
-            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
-            
+            $this->writeRecordToSetupLog('correction', $message, $this->app->db->ErrorMsg(), $sql);
+
             return false;
-            
+
         } else {
 
             // Log Message
-            $record = _gettext("Successfully copied ColumnA to ColumnB in the table").' `'.$table.'`.';
+            $message = _gettext("Successfully copied ColumnA to ColumnB in the table").' `'.$table.'`.';
 
             // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div style="color: green">'.$message.'</div>';
             self::$executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log message to setup log
-            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+            $this->writeRecordToSetupLog('correction', $message, $this->app->db->ErrorMsg(), $sql);
 
             return true;
 
-        }   
-                      
-    }    
+        }
+
+    }
 
     /** Insert **/
 
@@ -1078,9 +1078,9 @@ class Setup extends Components {
         }
 
     }
-    
+
     /** Delete Functions **/
-    
+
     ############################################
     #   Delete Setup Directory                 #
     ############################################
@@ -1088,11 +1088,10 @@ class Setup extends Components {
     public function deleteSetupFolder() {
 
         // Build a success or failure message
-        if($this->removeDirectory(SETUP_DIR)) {        
+        if($this->removeDirectory(SETUP_DIR)) {
 
-            // Build success messgae
-            $record = _gettext("The Setup folder has been deleted successfully.");
-            $message = $record;
+            // Build success message
+            $message = _gettext("The Setup folder has been deleted successfully.");
 
             // Hide the delete button
             $this->app->system->general->toggleElementById('delete_setup_folder', 'hide');
@@ -1107,20 +1106,19 @@ class Setup extends Components {
         } else {
 
             // Build failure message
-            $record = _gettext("The Setup folder failed to be deleted.");
-            $message = $record.' '._gettext("You need to delete the folder manually.");
+            $logMessage = _gettext("The Setup folder failed to be deleted.");
 
             // Hide the delete button
             $this->app->system->general->toggleElementById('delete_setup_folder_button', 'hide');
 
             // Output the system message to the browser
-            $this->app->system->variables->systemMessagesWrite('danger', $message);
+            $this->app->system->variables->systemMessagesWrite('danger', $logMessage.' '._gettext("You need to delete the folder manually."));
             $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
 
         }
 
         // Log activity
-        $this->app->system->general->writeRecordToActivityLog($record);    
+        $this->app->system->general->writeRecordToActivityLog($logMessage);
 
         // Ajax has been done so die
         die();
@@ -1135,26 +1133,26 @@ class Setup extends Components {
 
         // Safety first
         if(!$directory || $directory == '' || $directory == '/') {
-            die(_gettext("Do not delete the root folder and files!!!"));        
-        }            
+            die(_gettext("Do not delete the root folder and files!!!"));
+        }
 
         // This pattern scans within the folder for objects + GLOB_MARK adds a slash to directories returned
         $objects = glob($directory . '*', GLOB_MARK);
 
         // Cycle through the objects discovered in the directory
-        foreach ($objects as $object) {        
+        foreach ($objects as $object) {
 
             is_dir($object) ? $this->removeDirectory($object) : unlink($object);
 
         }
 
         // Remove the supplied directory now it is empty
-        return rmdir($directory) ? true : false;   
+        return rmdir($directory) ? true : false;
 
     }
-    
+
     /** Checks **/
-    
+
         /**
      * Gets PHP options.
      *
@@ -1172,7 +1170,7 @@ class Setup extends Components {
         $option->state  = version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '>=');
         $option->notice = null;
         $options[] = $option;
-        
+
         /* Check the maximum PHP Version is not exceeded
         $option = new stdClass;
         $option->label  = _gettext("PHP Version").' <= '.QWCRM_MAXIMUM_PHP;
@@ -1186,28 +1184,28 @@ class Setup extends Components {
         $option->state  = (ini_get('magic_quotes_gpc') == false);
         $option->notice = null;
         $options[] = $option;
-        
+
         // Check for register globals.
         $option = new stdClass;
         $option->label  = _gettext("Register Globals Off");
         $option->state  = (ini_get('register_globals') == false);
         $option->notice = null;
         $options[] = $option;
-        
+
         /* Check for zlib support.
         $option = new stdClass;
         $option->label  = _gettext("Native ZIP support");
         $option->state  = extension_loaded('zlib');
         $option->notice = null;
         $options[] = $option;*/
-        
+
         // Check for XML support.
         $option = new stdClass;
         $option->label  = _gettext("XML Support");
         $option->state  = extension_loaded('xml');
         $option->notice = null;
         $options[] = $option;
-        
+
         /* Check for database support.
         // We are satisfied if there is at least one database driver available.
         $available = JDatabaseDriver::getConnectors();
@@ -1259,57 +1257,57 @@ class Setup extends Components {
         $option->state  = $writable;
         $option->notice = $option->state ? null : _gettext("The 'configuration.php' file is either present and cannot be written too or you do not have permission to the 'configuration.php' in your QWcrm directory.");
         $options[] = $option;*/
-                
-        // MY Extensions        
-        
+
+        // MY Extensions
+
         // Check for OpenSSL (openssl)
         $option = new stdClass;
         $option->label  = _gettext("OpenSSL Support");
         $option->state  = extension_loaded('openssl');
         $option->notice = $option->state ? null : _gettext("The PHP Extension 'openssl' needs to be enabled. OpenSSL is required for https:// protocol. ");
         $options[] = $option;
-        
+
         // Check for cURL (curl)
         $option = new stdClass;
         $option->label  = _gettext("cURL Support");
         $option->state  = extension_loaded('curl');
         $option->notice = $option->state ? null : _gettext("The PHP Extension 'curl' needs to be enabled.");
-        $options[] = $option;        
-               
+        $options[] = $option;
+
         // MY Settings
-        
-        /* Check for allow_url_fopen support        
+
+        /* Check for allow_url_fopen support
         $option = new stdClass;
         $option->label  = _gettext("allow_url_fopen On");
         $option->state  = (bool) ini_get('allow_url_fopen');
         $option->notice = $option->state ? null : _gettext("The PHP Setting 'allow_url_fopen' needs to be enabled.");
         $options[] = $option;*/
-        
+
         /* Check for max_execution_time support (seconds)
         $minimum_max_execution_time = 300;
-        $option = new stdClass;        
+        $option = new stdClass;
         $option->label  = _gettext("max_execution_time").' >= '.$minimum_max_execution_time.'s';
         $option->state  = version_compare((int) ini_get('max_execution_time'), $minimum_max_execution_time, '>=');
         $option->notice = $option->state ? null : _gettext("The current Maximum Execution Time is").': '.(int) ini_get('max_execution_time').'s';
         $options[] = $option;*/
-        
+
         /* Check for Minimum RAM (MB)
         $minimum_memory_limit = 32;
-        $option = new stdClass;        
+        $option = new stdClass;
         $option->label  = _gettext("Minimum RAM").' >= '.$minimum_memory_limit.'MB';
         $option->state  = version_compare((int) ini_get('memory_limit'), $minimum_memory_limit, '>=');
         $option->notice = $option->state ? null : _gettext("The current Memory Limit is").': '.(int) ini_get('memory_limit').'MB';
-        $options[] = $option;*/  
-        
-        // MY Functions        
-        
+        $options[] = $option;*/
+
+        // MY Functions
+
         // Check for file_get_contents() support
         $option = new stdClass;
         $option->label  = _gettext("file_get_contents() Enabled");
         $option->state  = function_exists('file_get_contents');
         $option->notice = $option->state ? null : _gettext("The PHP Function 'file_get_contents()' needs to be enabled.");
         $options[] = $option;
-        
+
         return $options;
 
     }
@@ -1335,9 +1333,9 @@ class Setup extends Components {
         }
 
         return $result;
-        
+
     }
-    
+
     /**
      * Gets PHP Settings.
      *
@@ -1404,9 +1402,9 @@ class Setup extends Components {
         $setting->recommended = true;
         $setting->notice = null;
         $settings[] = $setting;
-        
+
         // My Extensions
-        
+
         // Check for Internationalization (intl)
         $setting = new stdClass;
         $setting->label  = _gettext("Internationalization Support");
@@ -1414,60 +1412,60 @@ class Setup extends Components {
         $setting->recommended = true;
         $setting->notice = $setting->state ? null : _gettext("Internationalization support is required for automatic language detection. ");
         $settings[] = $setting;
-        
+
         // My Settings
-        
+
         // My Functions
-        
+
         // Check for locale_accept_from_http() support
         $setting = new stdClass;
         $setting->label  = _gettext("locale_accept_from_http()");
-        $setting->state  = function_exists('locale_accept_from_http');        
+        $setting->state  = function_exists('locale_accept_from_http');
         $setting->recommended = true;
         $setting->notice = $setting->state ? null : _gettext("The PHP Function 'locale_accept_from_http()' is required for automatic language detection. ");
         $settings[] = $setting;
-        
+
         return $settings;
-        
+
     }
-    
+
     ###########################################################
     # Test Server Enviroment for compatibility to setup QWcrm #
     ###########################################################
-    
+
     public function checkServerEnviromentCompatibility() {
-        
+
         $compatibility_results = array();
-        
+
         // https://www.w3schools.com/php/func_array_walk.asp
-        
+
         // Walk through php_options and convert objects into arrays
         $php_options = $this->getPhpOptions();
         array_walk($php_options, function(&$value) {
             $value = get_object_vars($value);
         });
-        
+
         // Walk through php_options and convert objects into arrays
         $php_settings = $this->getPhpSettings();
         array_walk($php_settings, function(&$value) {
             $value = get_object_vars($value);
         });
-        
-        // Build the result to be returned       
+
+        // Build the result to be returned
         $compatibility_results['php_options'] = $php_options;
-        $compatibility_results['php_settings'] = $php_settings;        
+        $compatibility_results['php_settings'] = $php_settings;
         $compatibility_results['compatibility_status'] = $this->getPhpOptionsSufficient();
-        
+
         return $compatibility_results;
-        
+
     }
-    
+
     ####################################################################
     #  Verify the database connection works with the supplied details  #
     ####################################################################
 
     public function checkDatabaseConnectionDetailsValid($db_host, $db_user, $db_pass, $db_name) {
-        
+
         // This allows me to re-use config-registry to test the database connection
         $this->app->config->set('db_host', $db_host);
         $this->app->config->set('db_user', $db_user);
@@ -1476,7 +1474,7 @@ class Setup extends Components {
 
         // Set an error trap
         $this->app->config->set('test_db_connection', 'test');
-        
+
         // Restart the database
         \Factory::$database = null;
         $this->app->db = \Factory::getDbo();
@@ -1486,9 +1484,9 @@ class Setup extends Components {
 
             return true;
 
-        } else {  
+        } else {
 
-            return false;  
+            return false;
 
         }
 
@@ -1499,7 +1497,7 @@ class Setup extends Components {
     #########################################################
 
     public function checkQwcrmMinimumMysqlVersionValid() {
-        
+
         $mysqlVersion = $this->app->system->general->getMysqlVersion();
 
         if (version_compare($mysqlVersion, QWCRM_MINIMUM_MYSQL, '<')) {
@@ -1512,11 +1510,11 @@ class Setup extends Components {
         return true;
 
     }
-    
- 
-    
+
+
+
     /** Other **/
-    
+
 
 
     ############################################
@@ -1539,7 +1537,7 @@ class Setup extends Components {
     #  Write a record to the Setup Log         #  // Cannot be turned off - install/migrate/upgrade
     ############################################
 
-    public function writeRecordToSetupLog($setup_type, $record, $database_error = null, $sql_query = null) {
+    public function writeRecordToSetupLog($setup_type, $message, $database_error = null, $sql_query = null) {
 
         // Install and migrate does not have username or login_user_id available
         if(defined('QWCRM_SETUP')) {
@@ -1551,25 +1549,25 @@ class Setup extends Components {
         }
 
         // prepare database error for the log
-        $database_error = $this->app->system->general->prepareErrorData('error_database', $database_error);   
+        $database_error = $this->app->system->general->prepareErrorData('error_database', $database_error);
 
         // prepare SQL statement for the log (I have disabled logging SQL for security reasons)
-        //$sql_query = $this->app->system->general->prepare_error_data('sql_query_for_log', $sql_query);    
+        //$sql_query = $this->app->system->general->prepare_error_data('sql_query_for_log', $sql_query);
         $sql_query = '';
 
         // Build log entry - perhaps use the apache time stamp below
-        $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.$login_user_id.','.QWCRM_VERSION.','.$setup_type.',"'.$record.'","'.$database_error.'","'.$sql_query.'"'."\r\n";
+        $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.$login_user_id.','.QWCRM_VERSION.','.$setup_type.',"'.$message.'","'.$database_error.'","'.$sql_query.'"'."\r\n";
 
-        // Write log entry  
-        if(!$fp = fopen(SETUP_LOG, 'a')) {        
+        // Write log entry
+        if(!$fp = fopen(SETUP_LOG, 'a')) {
             $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
-        fclose($fp);    
+        fclose($fp);
 
         return;
 
     }
-    
+
 }

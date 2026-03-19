@@ -64,13 +64,10 @@ class User extends Components {
         $user_id = $this->app->db->Insert_ID();
 
         // Log activity
-        if($qform['client_id']) {
-            $user_type = _gettext("Client");
-        } else {
-            $user_type = _gettext("Employee");
-        }
-        $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
-        $this->app->system->general->writeRecordToActivityLog($record, $user_id);
+        $user_type = $qform['client_id'] ? _gettext("Client") : _gettext("Employee");
+        $logMessage = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
+        $recordIds = array('user_id' => $user_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return $user_id;
 
@@ -336,9 +333,6 @@ class User extends Components {
 
     public function updateRecord($qform) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         $sql = "UPDATE ".PRFX."user_records SET
                 username            =". $this->app->db->qStr( $qform['username']                             ).",
                 email               =". $this->app->db->qStr( $qform['email']                                ).",
@@ -369,13 +363,13 @@ class User extends Components {
             $this->resetPassword($qform['user_id'], $qform['password']);
         }
 
-        // Log activity
-        $record = _gettext("User Account").' '.$qform['user_id'].' ('.$this->getRecord($qform['user_id'], 'display_name').') '._gettext("updated.");
-        $this->app->system->general->writeRecordToActivityLog($record, $qform['user_id']);
+        $user_details = $this->getRecord($qform['user_id']);
 
-        // Update last active record
-        $this->updateLastActive($qform['user_id'], $timestamp);
-        $this->app->components->client->updateLastActive($this->getRecord($qform['user_id'], 'client_id'), $timestamp);
+        // Log activity
+        $logMessage = _gettext("User Account").' '.$user_details['user_id'].' ('.$user_details['display_name'].') '._gettext("updated.");
+        $recordIds = array('user_id' => $user_details['user_id']);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -387,7 +381,7 @@ class User extends Components {
 
     public function updateLastActive($user_id = null, $timestamp = null) {
 
-        // compensate for some operations not having a user_id
+        // Allow null calls
         if(!$user_id) { return; }
 
         $sql = "UPDATE ".PRFX."user_records SET last_active=".$this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp) )."
@@ -422,8 +416,9 @@ class User extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
-        $this->app->system->general->writeRecordToActivityLog($record, $user_id);
+        $logMessage = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
+        $recordIds = array('user_id' => $user_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return true;
 
@@ -621,28 +616,23 @@ class User extends Components {
 
     public function resetPassword($user_id, $password = null) {
 
-        // Unify Dates and Times
-        $timestamp = time();
-
         // if no password supplied generate a random one
         if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
 
         $sql = "UPDATE ".PRFX."user_records SET
                 password        =". $this->app->db->qStr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
                 require_reset   =". $this->app->db->qStr( 0                                    ).",
-                last_reset_time =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime($timestamp)                     ).",
+                last_reset_time =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)                     ).",
                 reset_count     =". $this->app->db->qStr( 0                                    )."
                 WHERE user_id   =". $this->app->db->qStr( $user_id                             );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $record = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("password has been reset.");
-        $this->app->system->general->writeRecordToActivityLog($record, $user_id);
-
-        // Update last active record
-        $this->updateLastActive($user_id, $timestamp);
-        $this->app->components->client->updateLastActive($this->getRecord($user_id, 'client_id'), $timestamp);
+        $logMessage = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("password has been reset.");
+        $recordIds = array('user_id' => $user_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return;
 
@@ -703,14 +693,13 @@ class User extends Components {
             $user = \Factory::getUser();
 
             // Log activity
-            $record = _gettext("Login successful for").' '.$user->login_username.'.';
-            $this->app->system->general->writeRecordToActivityLog($record, $user->login_user_id);
+            $logMessage = _gettext("Login successful for").' '.$user->login_username.'.';
+            $recordIds = array('user_id' => $user->login_user_id);
+            $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+            $this->app->system->general->updateLastActive($recordIds);
 
             // set success message to survice the login event
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Login successful."));
-
-            // Update last active record
-            $this->app->components->client->updateLastActive($user->login_client_id);
 
             return true;
 
@@ -734,22 +723,17 @@ class User extends Components {
 
     public function logout($silent = null)
     {
-
-        // Unify Dates and Times
-        $timestamp = time();
-
         // Build logout message (while user details exist)
-        $record = _gettext("Logout successful for").' '.$this->app->user->login_username.'.';
+        $logMessage = _gettext("Logout successful for").' '.$this->app->user->login_username.'.';
 
         // Logout
         \Factory::getAuth()->logout();
 
         // Log activity
-        $this->app->system->general->writeRecordToActivityLog($record, $this->app->user->login_user_id);
+        $recordIds = array('user_id' => $this->app->user->login_user_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
-        // Update last active record
-        $this->updateLastActive($this->app->user->login_user_id, $timestamp);
-        $this->app->components->client->updateLastActive($this->app->user->login_client_id, $timestamp);
 
         // Action after logout
         if($silent) {
@@ -916,8 +900,9 @@ class User extends Components {
         $this->app->system->email->send($recipient_email, $subject, $body, null, null, null, null, null, null, true);
 
         // Log activity
-        $record = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("reset email has been sent.");
-        $this->app->system->general->writeRecordToActivityLog($record, $user_id);
+        $logMessage = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("reset email has been sent.");
+        $recordIds = array('user_id' => $user_id);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return;
 

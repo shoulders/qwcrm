@@ -53,9 +53,9 @@ class Communication extends System {
         if($this->$action())
         {
            // Log Activity - not currently used by anything
-            if($logMessage)
+            if($this->$logMessage)
             {
-                $this->app->system->general->writeRecordToActivityLog($logMessage);
+                $this->app->system->general->writeRecordToActivityLog($this->$logMessage);
             }
         }
 

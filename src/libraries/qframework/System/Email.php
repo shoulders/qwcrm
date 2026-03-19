@@ -50,7 +50,7 @@ class Email extends System {
     #   Basic email wrapper function      #  // Silent option is need for password reset
     #######################################
 
-    function send($recipient_email, $subject, $body, $recipient_name = null, $attachments = array(), $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null, $silent = false) {
+    function send(string $recipient_email, string $subject, string $body, string $recipient_name = null, array $attachments = array(), array $recordIds = null, bool $silent = false) {
 
         // Unify Dates and Times
         $timestamp = time();
@@ -59,13 +59,12 @@ class Email extends System {
         if(!$this->app->config->get('email_online')) {
 
             // Log activity
-            $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
-            $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+            $logMessage = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
+            $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
-                $message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
-                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->system->variables->systemMessagesWrite('danger', $logMessage.'<br>'._gettext("The email system is not enabled, contact the administrators."));
                 $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
             }
 
@@ -77,13 +76,12 @@ class Email extends System {
         if(!$recipient_email) {
 
             // Log activity
-            $record = _gettext("Failed to send email to").' `'._gettext("Not Specified").'` ('.$recipient_name.')';
-            $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+            $logMessage = _gettext("Failed to send email to").' `'._gettext("Not Specified").'` ('.$recipient_name.')';
+            $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
-                $message = $record.'<br>'._gettext("There is no email address to send to.");
-                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->system->variables->systemMessagesWrite('danger', $logMessage.'<br>'._gettext("There is no email address to send to."));
                 $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
             }
 
@@ -167,15 +165,13 @@ class Email extends System {
             //var_dump($RfcCompliance_exception);
 
             // Log activity
-            $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
+            $logMessage = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
             $this->writeRecordToEmailErrorLog($RfcCompliance_exception->getMessage());
-            $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+            $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
-                $message = $record.'<br>'.$RfcCompliance_exception->getMessage();
-                //$this->app->system->variables->systemMessagesWrite('danger', $message);
-                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->system->variables->systemMessagesWrite('danger', $logMessage.'<br>'.$RfcCompliance_exception->getMessage());
                 $this->app->system->general->ajaxOutputSystemMessagesOnscreen();
 
             }
@@ -247,31 +243,29 @@ class Email extends System {
                 */
 
                 // Log activity
-                $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
-                $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+                $logMessage = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
+                $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
                 // Build System message
-                $message = $record;
-                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->system->variables->systemMessagesWrite('danger', $logMessage);
 
             } else {
 
                 // Successfully sent the email
 
                 // Log activity
-                $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject;
-                if($workorder_id) {$this->app->components->workorder->insertHistory($workorder_id, $record.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
-                $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+                $logMessage = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject;
+                if($recordIds['workorder_id']) {$this->app->components->workorder->insertHistory($recordIds['workorder_id'], $logMessage.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
+                $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
                 // Build System message
-                $message = $record;
-                $this->app->system->variables->systemMessagesWrite('success', $message);
+                $this->app->system->variables->systemMessagesWrite('success', $logMessage);
 
                 // Update last active record (will not error if no invoice_id sent )
-                $this->app->components->user->updateLastActive($employee_id, $timestamp);
-                if($client_id) {$this->app->components->client->updateLastActive($client_id, $timestamp);}
-                if($workorder_id) {$this->app->components->workorder->updateLastActive($workorder_id, $timestamp);}
-                if($invoice_id) {$this->app->components->invoice->updateLastActive($invoice_id, $timestamp);}
+                $this->app->components->user->updateLastActive($recordIds['employee_id'], $timestamp);
+                if($recordIds['client_id']) {$this->app->components->client->updateLastActive($recordIds['client_id'], $timestamp);}
+                if($recordIds['workorder_id']) {$this->app->components->workorder->updateLastActive($recordIds['workorder_id'], $timestamp);}
+                if($recordIds['invoice_id']) {$this->app->components->invoice->updateLastActive($recordIds['invoice_id'], $timestamp);}
 
             }
 
@@ -281,14 +275,13 @@ class Email extends System {
         catch(Swift_TransportException $transportException)
         {
             // Log activity
-            $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
+            $logMessage = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
             $this->writeRecordToEmailErrorLog($transportException->getMessage());
-            $this->app->system->general->writeRecordToActivityLog($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+            $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
             // Build System message
             preg_match('/^(.*)$/m', $transportException->getMessage(), $matches);  // output the first line of the error message only
-            $message = $record.'<br>'.$matches[0];
-            $this->app->system->variables->systemMessagesWrite('danger', $message);
+            $this->app->system->variables->systemMessagesWrite('danger', $logMessage.'<br>'.$matches[0]);
         }
 
         // Write the Email Transport Record to the log
