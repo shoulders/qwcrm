@@ -1189,3 +1189,6 @@ ALTER TABLE `#__client_records` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4
 ALTER TABLE `#__workorder_records` DROP `is_closed`;
 ALTER TABLE `#__invoice_records` DROP `is_closed`;
 ALTER TABLE `#__creditnote_records` DROP `is_closed`;
+
+-- Add reference to Invoices --
+ALTER TABLE `#__invoice_records` ADD `reference` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `last_active`;

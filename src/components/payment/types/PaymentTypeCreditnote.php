@@ -245,7 +245,7 @@ class PaymentTypeCreditnote extends PaymentType
     }
 
     // General payment checks
-    private function checkPaymentAllowed()
+    protected function checkPaymentAllowed()
     {
         $state_flag = parent::checkPaymentAllowed();
 

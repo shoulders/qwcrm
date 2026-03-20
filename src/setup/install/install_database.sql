@@ -605,6 +605,7 @@ CREATE TABLE `#__invoice_records` (
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

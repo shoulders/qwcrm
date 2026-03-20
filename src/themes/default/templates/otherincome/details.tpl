@@ -239,7 +239,7 @@
                                                 <td class="menuhead2">&nbsp;{t}Note{/t}</td>
                                             </tr>
                                             <tr>
-                                                <td class="menutd2">{$otherincome_details.note}</td>
+                                                <td class="olotd4">{$otherincome_details.note}</td>
                                             </tr>
                                         </table>
                                     </td>

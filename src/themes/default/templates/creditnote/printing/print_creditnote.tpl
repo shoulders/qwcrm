@@ -83,12 +83,12 @@
             <!-- Customer details (in Envelope Window) -->
             <div style="float: left; width: 310px; height: 110px; padding: 20px; background: lightgrey; border-radius: 5px; border: 1px solid black; overflow: hidden;">
                <span style="font-size: 13px; font-weight: bold;">
-                    {$client_details.display_name}<br>
-                    {$client_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                    {$client_details.city}<br>
-                    {$client_details.state}<br>
-                    {$client_details.zip}<br>
-                    {$client_details.country}
+                    {$cr_owner_details.display_name}<br>
+                    {$cr_owner_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                    {$cr_owner_details.city}<br>
+                    {$cr_owner_details.state}<br>
+                    {$cr_owner_details.zip}<br>
+                    {$cr_owner_details.country}
                 </span>
             </div>
 

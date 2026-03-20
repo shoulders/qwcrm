@@ -35,12 +35,15 @@
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Payee{/t}</option>
+                                                                        <option disabled>----------</option>
                                                                         <option value="expense_id"{if $search_category == 'expense_id'} selected{/if}>{t}Expense ID{/t}</option>
                                                                         <option value="supplier_id"{if $search_category == 'supplier_id'} selected{/if}>{t}Supplier ID{/t}</option>
+                                                                        <option disabled>----------</option>
                                                                         <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t}</option>
                                                                         <option disabled>----------</option>
                                                                         <option value="exepense_items"{if $search_category == 'expense_items'} selected{/if}>{t}Items{/t}</option>
                                                                         <option disabled>----------</option>
+                                                                        <option value="reference"{if $search_category == 'reference'} selected{/if}>{t}Reference{/t}</option>
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>
                                                                     </select>
                                                                     <br />

@@ -518,6 +518,15 @@
                                                     * {t}The specified rate is not stored in the invoice's record.{/t}
                                                 </td>
                                             </tr>
+
+                                            <!-- Reference -->
+                                            <tr>
+                                                <td><strong>{t}Reference{/t}:</strong></td>
+                                                <td>
+                                                    <input name="qform[reference]" class="olotd5" value="{$invoice_details.reference}" size="25" type="text" maxlength="50" onkeydown="return onlyAlphaNumericPunctuation(event);">
+                                                </td>
+                                            </tr>
+
                                         </table>
                                     </td>
                                 </tr>

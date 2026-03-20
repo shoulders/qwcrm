@@ -76,7 +76,7 @@ class Payment extends Components {
 
         // Log activity
         $logMessage = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $qpayment['client_id'], 'invoice_id' => $qpayment['invoice_id'], 'voucher_id' => $qpayment['voucher_id'], 'supplier_id' => $qpayment['supplier_id'], 'expense_id' => $qpayment['expense_id'], 'otherincome_id' => $qpayment['otherincome_id'],  'payment_id' => $qpayment['payment_id'], 'creditnote_id' => $qpayment['creditnote_id']);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $qpayment['client_id'], 'invoice_id' => $qpayment['invoice_id'], 'voucher_id' => $qpayment['voucher_id'], 'supplier_id' => $qpayment['supplier_id'], 'expense_id' => $qpayment['expense_id'], 'otherincome_id' => $qpayment['otherincome_id'],  'payment_id' => $payment_id, 'creditnote_id' => $qpayment['creditnote_id']);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -697,7 +697,7 @@ class Payment extends Components {
                 amount          = 0.00,
                 last_active     = NULL,
                 note            = '',
-                additional_info = '',
+                additional_info = ''
                 WHERE payment_id = ". $payment_id;
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -958,10 +958,10 @@ class Payment extends Components {
 
             // Build empty button array - to prevent undefined variable errors
             Payment::$buttons = array(
-                'submit' => array('allowed' => false, 'url' => null, 'title' => null),
-                'cancel' => array('allowed' => false, 'url' => null, 'title' => null),
+                'submit'         => array('allowed' => false, 'url' => null, 'title' => null),
+                'cancel'         => array('allowed' => false, 'url' => null, 'title' => null),
                 'returnToRecord' => array('allowed' => false, 'url' => null, 'title' => null),
-                'addNewRecord' => array('allowed' => false, 'url' => null, 'title' => null)
+                'addNewRecord'   => array('allowed' => false, 'url' => null, 'title' => null)
             );
         }
 

@@ -59,6 +59,7 @@
                                         {/section}<br>
                                         <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format}<br>
                                         <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
+                                        <b>{t}Reference{/t} - </b>{$invoice_details.reference}<br>
                                     </td>
                                 </tr>
                             </table>

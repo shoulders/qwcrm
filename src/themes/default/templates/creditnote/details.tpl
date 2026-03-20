@@ -160,14 +160,6 @@
                                             </td>
                                         </tr>
 
-                                        <!-- Reason for Credit Note -->
-                                        <tr>
-                                            <td colspan="10" valign="top" align="left">
-                                                <b>{t}Note{/t}: </b>
-                                                <div style="width: 300px; word-wrap: break-word;">{$creditnote_details.note}</div>
-                                            </td>
-                                        </tr>
-
                                     </table>
                                 </td>
                             </tr>
@@ -346,6 +338,19 @@
                                     </table>
                                 </td>
                             </tr>
+
+                            <!-- Note / Reason for Credit Note -->
+                            <tr>
+                                <td>
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                        <tr>
+                                            <td class="menuhead2">&nbsp;{t}Note{/t}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="olotd4">{$creditnote_details.note}</td>
+                                        </tr>
+                                    </table>
+                                </tr>
 
                         </table>
                     </td>

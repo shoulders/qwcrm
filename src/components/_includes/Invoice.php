@@ -550,7 +550,8 @@ defined('_QWEXEC') or die;
                 unit_net            =". $this->app->db->qStr( $qform['unit_net']            ).",
                 unit_tax            =". $this->app->db->qStr( $qform['unit_tax']            ).",
                 unit_gross          =". $this->app->db->qStr( $qform['unit_gross']          ).",
-                note                =". $this->app->db->qStr( $qform['note']                     )."
+                reference           =". $this->app->db->qStr( $qform['reference']           ).",
+                note                =". $this->app->db->qStr( $qform['note']                )."
                 WHERE invoice_id    =". $this->app->db->qStr( $qform['invoice_id']          );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -775,6 +776,7 @@ defined('_QWEXEC') or die;
                 opened_on           = NULL,
                 closed_on           = NULL,
                 last_active         = NULL,
+                reference           = '',
                 note                = '',
                 additional_info     = ''
                 WHERE invoice_id    =". $this->app->db->qStr( $invoice_id  );

@@ -36,7 +36,7 @@ $this->app->smarty->assign('display_payments',         $this->app->components->p
 // Credit notes
 $this->app->smarty->assign('creditnote_types',        $this->app->components->creditnote->getTypes());
 $this->app->smarty->assign('creditnote_statuses',     $this->app->components->creditnote->getStatuses());
-$this->app->smarty->assign('display_creditnotes',     $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['expense_id']));
+$this->app->smarty->assign('display_creditnotes',     $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['expense_id']));
 
 // Misc
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($expense_details['employee_id'], 'display_name'));

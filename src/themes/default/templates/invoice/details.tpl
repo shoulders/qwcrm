@@ -134,6 +134,13 @@
                                             </td>
                                         </tr>
 
+                                        <!-- Reference -->
+                                        <tr>
+                                            <td colspan="10" valign="top" align="left">
+                                                <b>{t}Reference{/t}: </b>{$invoice_details.reference}
+                                            </td>
+                                        </tr>
+
                                     </table>
                                 </td>
                             </tr>
@@ -345,7 +352,7 @@
                                             <td class="menuhead2">&nbsp;{t}Note{/t}</td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd2">{$invoice_details.note}</td>
+                                            <td class="olotd4">{$invoice_details.note}</td>
                                         </tr>
                                     </table>
                                 </td>

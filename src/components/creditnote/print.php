@@ -29,14 +29,14 @@ if
 // Get Record Details
 $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']);
 
-$client_details = $creditnote_details['client_id'] ?: $this->app->components->client->getRecord($creditnote_details['client_id']);
-$supplier_details = $creditnote_details['supplier_id'] ?: $this->app->components->supplier->getRecord($creditnote_details['supplier_id']);
-$record_details = $client_details ?? $supplier_details;
+$client_details = $creditnote_details['client_id'] ? $this->app->components->client->getRecord($creditnote_details['client_id']) : null;
+$supplier_details = $creditnote_details['supplier_id'] ? $this->app->components->supplier->getRecord($creditnote_details['supplier_id']) : null;
+$cr_owner_details = $client_details ?? $supplier_details;
 
 // Details
-$this->app->smarty->assign('company_details',                  $this->app->components->company->getRecord()                                      );
-$this->app->smarty->assign('record_details',                   $record_details                                            );
-$this->app->smarty->assign('creditnote_details',               $creditnote_details                                           );
+$this->app->smarty->assign('company_details',                  $this->app->components->company->getRecord());
+$this->app->smarty->assign('cr_owner_details',                $cr_owner_details);
+$this->app->smarty->assign('creditnote_details',               $creditnote_details);
 $this->app->smarty->assign('creditnote_items',                 $this->app->components->creditnote->getItems(\CMSApplication::$VAR['creditnote_id'])               );
 
 // Misc
@@ -72,7 +72,7 @@ if(\CMSApplication::$VAR['commContent'] == 'creditnote')
     $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
     // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
-    $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename, $record_details, $emailSubject ?? null, $emailBody ?? null);
+    $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename, $cr_owner_details, $emailSubject ?? null, $emailBody ?? null);
 
 }
 
