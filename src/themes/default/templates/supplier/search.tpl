@@ -26,18 +26,25 @@
                                         <tr>
                                             <!-- Category Search -->
                                             <td valign="top">
-                                                <form method="post" action="index.php?component=supplier&page_tpl=search" name="supplier_search" id="supplier_search" class="remove-empty-values">                                                        
+                                                <form method="post" action="index.php?component=supplier&page_tpl=search" name="supplier_search" id="supplier_search" class="remove-empty-values">
                                                     <table border="0">
                                                         <tr>
                                                             <td align="left" valign="top"><b>{t}Supplier Search{/t}</b>
                                                                 <br />
                                                                 <select class="olotd5" id="search_category" name="search_category">
                                                                     <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Name{/t}</option>
-                                                                    <option value="supplier_id"{if $search_category == 'supplier_id'} selected{/if}>{t}Supplier ID{/t}</option>                                                                    
+                                                                    <option disabled>----------</option>
                                                                     <option value="company_name"{if $search_category == 'company_name'} selected{/if}>{t}Company{/t}</option>
-                                                                    <option value="full_name"{if $search_category == 'full_name'} selected{/if}>{t}Contact{/t}</option>                                                                     
+                                                                    <option value="full_name"{if $search_category == 'full_name'} selected{/if}>{t}Contact{/t}</option>
+                                                                    <option disabled>----------</option>
+                                                                    <option value="company_number"{if $search_category == 'company_number'} selected{/if}>{t}Company Number{/t}</option>
+                                                                    <option value="vat_number"{if $search_category == 'vat_number'} selected{/if}>{t}VAT Number{/t}</option>
+                                                                    <option disabled>----------</option>
+                                                                    <option value="supplier_id"{if $search_category == 'supplier_id'} selected{/if}>{t}Supplier ID{/t}</option>
+                                                                    <option disabled>----------</option>
                                                                     <option value="zip"{if $search_category == 'zip'} selected{/if}>{t}Zip{/t}</option>
-                                                                    <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>                                                                    
+                                                                    <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>
+                                                                    <option disabled>----------</option>
                                                                     <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>
                                                                     <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>
                                                                 </select>
@@ -57,48 +64,48 @@
                                                                 <b>{t}Filter By Type{/t}</b><br>
                                                                 <select class="olotd5" id="filter_type" name="filter_type">
                                                                     <option value=""{if !$filter_type} selected{/if}>{t}None{/t}</option>
-                                                                    <option disabled>----------</option>                                                                        
-                                                                    {section name=t loop=$supplier_types}    
-                                                                        <option value="{$supplier_types[t].type_key}"{if $filter_type == $supplier_types[t].type_key} selected{/if}>{t}{$supplier_types[t].display_name}{/t}</option>        
+                                                                    <option disabled>----------</option>
+                                                                    {section name=t loop=$supplier_types}
+                                                                        <option value="{$supplier_types[t].type_key}"{if $filter_type == $supplier_types[t].type_key} selected{/if}>{t}{$supplier_types[t].display_name}{/t}</option>
                                                                     {/section}
                                                                 </select>
                                                             </td>
-                                                        </tr>    
+                                                        </tr>
                                                         <tr>
                                                             <td>
                                                                 <b>{t}Filter By Status{/t}</b><br>
                                                                 <select class="olotd5" id="filter_status" name="filter_status">
-                                                                    <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>                                                                        
-                                                                    {section name=s loop=$supplier_statuses}    
-                                                                        <option value="{$supplier_statuses[s].status_key}"{if $filter_status == $supplier_statuses[s].status_key} selected{/if}>{t}{$supplier_statuses[s].display_name}{/t}</option>        
-                                                                    {/section} 
+                                                                    <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>
+                                                                    {section name=s loop=$supplier_statuses}
+                                                                        <option value="{$supplier_statuses[s].status_key}"{if $filter_status == $supplier_statuses[s].status_key} selected{/if}>{t}{$supplier_statuses[s].display_name}{/t}</option>
+                                                                    {/section}
                                                                 </select>
                                                             </td>
-                                                        </tr> 
-                                                    </table>                                                        
-                                                </form>                                          
-                                            </td>                                                   
+                                                        </tr>
+                                                    </table>
+                                                </form>
+                                            </td>
 
                                             <!-- Navigation -->
                                             <td valign="top" nowrap align="right">
-                                                <form id="navigation">                                                    
+                                                <form id="navigation">
                                                     <table>
                                                         <tr>
-                                                            
+
                                                             <!-- Left Side Buttons -->
                                                             <td>
                                                                 {if $display_suppliers.previous_page_no && $display_suppliers.records}
-                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
                                                                     <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_suppliers.previous_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
-                                                            </td>                                                   
-                                                    
+                                                            </td>
+
                                                             <!-- Dropdown Menu -->
-                                                            <td>                                                                    
+                                                            <td>
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$display_suppliers.total_pages start=1}
                                                                         <option value="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $display_suppliers.page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_suppliers.total_pages} 
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_suppliers.total_pages}
                                                                         </option>
                                                                     {/section}
                                                                     <option value="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_suppliers.total_pages}" {if $display_suppliers.page_no == $display_suppliers.total_pages} selected {/if}>
@@ -106,15 +113,15 @@
                                                                     </option>
                                                                 </select>
                                                             </td>
-                                                            
-                                                            <!-- Right Side Buttons --> 
+
+                                                            <!-- Right Side Buttons -->
                                                             <td>
                                                                 {if $display_suppliers.next_page_no && $display_suppliers.records}
-                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_suppliers.next_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_suppliers.next_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>
                                                                     <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_suppliers.total_pages}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
-                                                            </td>                                                                                             
-                                                    
+                                                            </td>
+
                                                         </tr>
                                                         <tr>
 
@@ -123,12 +130,12 @@
                                                             <td>
                                                                 <p style="text-align: center;">{$display_suppliers.total_results} {t}records found.{/t}</p>
                                                             </td>
-                                                            
-                                                        </tr>                                                    
-                                                    </table>                                                    
-                                                </form>                                                
+
+                                                        </tr>
+                                                    </table>
+                                                </form>
                                             </td>
-                                            
+
                                         </tr>
                                         <tr>
                                             <!-- Records Table -->

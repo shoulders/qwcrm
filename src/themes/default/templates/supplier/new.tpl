@@ -15,7 +15,7 @@
 
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
-        <td>            
+        <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
                     <td class="menuhead2" width="80%">{t}New Supplier{/t}</td>
@@ -26,14 +26,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">                         
+                    <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
-                                <td class="menutd">                                   
+                                <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
-                                            <td>                                                
-                                                <form action="index.php?component=supplier&page_tpl=new" method="post" name="new_supplier" id="new_supplier" autocomplete="off">                                                
+                                            <td>
+                                                <form action="index.php?component=supplier&page_tpl=new" method="post" name="new_supplier" id="new_supplier" autocomplete="off">
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">
@@ -54,6 +54,14 @@
                                                                             <td><input name="qform[last_name]" class="olotd5" size="20" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
                                                                         </tr>
                                                                         <tr>
+                                                                            <td align="right"><b>{t}Company Number{/t}</b></td>
+                                                                            <td><input name="qform[company_number]" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td align="right"><b>{t}VAT Number{/t}</b></td>
+                                                                            <td><input name="qform[vat_number]" class="olotd5" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td align="right"><b>{t}Website{/t}</b></td>
                                                                             <td><input name="qform[website]" class="olotd5" size="50" type="text" maxlength="50" pattern="{literal}^(https?:\/\/)?([a-z0-9_\-]+\.?)+(\/([a-zA-Z0-9_\-~#]+)*\/?)?{/literal}" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
                                                                         </tr>
@@ -64,7 +72,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select id="type" name="qform[type]" class="olotd5" required>   
+                                                                                <select id="type" name="qform[type]" class="olotd5" required>
                                                                                     <option selected hidden disabled></option>
                                                                                     {section name=s loop=$supplier_types}
                                                                                         <option value="{$supplier_types[s].type_key}">{t}{$supplier_types[s].display_name}{/t}</option>
@@ -123,7 +131,7 @@
                                                                         <tr>
                                                                             <td align="right"></td>
                                                                             <td><textarea name="qform[note]" class="olotd5" cols="50" rows="20"></textarea></td>
-                                                                        </tr>                                                                        
+                                                                        </tr>
                                                                         <tr>
                                                                             <td></td>
                                                                             <td>
@@ -134,12 +142,12 @@
                                                                         </tr>
                                                                 </table>
                                                             </td>
-                                                        </tr>                                  
+                                                        </tr>
                                                     </table>
                                                 </form>
                                             </td>
                                         </tr>
-                                    </table>                                    
+                                    </table>
                                 </td>
                             </tr>
                         </table>

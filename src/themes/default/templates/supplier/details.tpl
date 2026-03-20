@@ -56,6 +56,12 @@
                                             <td class="menutd">{$supplier_details.fax}</td>
                                         </tr>
                                         <tr>
+                                            <td class="menutd"><b>{t}Company Number{/t}</b></td>
+                                            <td class="menutd">{$supplier_details.company_number}</td>
+                                            <td class="menutd"><b>{t}VAT Number{/t}</b></td>
+                                            <td class="menutd">{$supplier_details.vat_number}</td>
+                                        </tr>
+                                        <tr>
                                             <td class="menutd"><b>{t}Website{/t}</b></td>
                                             <td class="menutd"><a href="{$supplier_details.website}" target="_blank">{$supplier_details.website|regex_replace:"/^https?:\/\//":""|regex_replace:"/\/$/":""}</a></td>
                                             <td class="menutd"><b>{t}Email{/t}</b></td>

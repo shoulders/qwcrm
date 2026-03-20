@@ -1049,7 +1049,7 @@ class Creditnote extends Components {
             if(!$expense_id) {
 
                 // Dont allow this type of credit note (for now)
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is type of credit note for expenses is not currently allowed. You should not see this error, report to admins.", $silent));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is type of credit note for expenses is not currently allowed. You should not see this error, report to admins."), $silent);
                 $state_flag = false;
 
             }
@@ -1124,8 +1124,12 @@ class Creditnote extends Components {
         // Status Fall Back - I don't think this will ever be called, but safety first.
         else
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creation is invalid. You should not see this error, report to admins.", true));
+            $message = _gettext("Currently only invoices, and expenses attached to suppliers can have credit notes raised against them.");
+            $message .= '<br>';
+            $message .= _gettext("The creation of this credit note invalid. You should not see this error, report to admins.");
+            $this->app->system->variables->systemMessagesWrite('warning', $message, true);
             $state_flag = false;
+
         }
 
         return $state_flag;

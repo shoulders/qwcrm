@@ -32,8 +32,8 @@
                                 <td width="100%" valign="top" >
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                         <tr>
-                                            <td>                                                
-                                                <form action="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}" method="post" name="edit_supplier" id="edit_supplier" autocomplete="off">                                                
+                                            <td>
+                                                <form action="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}" method="post" name="edit_supplier" id="edit_supplier" autocomplete="off">
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                         <tr>
                                                             <td class="menuhead" colspan="2">{t}Contact{/t}</td>
@@ -49,9 +49,18 @@
                                                         <tr>
                                                             <td align="right"><strong>{t}Contact First Name{/t}</strong><span style="color: #ff0000"> *</span></td>
                                                             <td><input name="qform[first_name]" class="olotd5" size="20" value="{$supplier_details.first_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
+                                                        </tr>
                                                         <tr>
                                                             <td align="right"><strong>{t}Conact Last Name{/t}</strong><span style="color: #ff0000"> *</span></td>
                                                             <td><input name="qform[last_name]" class="olotd5" size="20" value="{$supplier_details.last_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}Company Number{/t}</b></td>
+                                                            <td><input name="qform[company_number]" class="olotd5" size="20" value="{$supplier_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}VAT Number{/t}</b></td>
+                                                            <td><input name="qform[vat_number]" class="olotd5" size="20" value="{$supplier_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Website{/t}</b></td>
@@ -64,7 +73,7 @@
                                                         <tr>
                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select id="type" name="qform[type]" class="olotd5">               
+                                                                <select id="type" name="qform[type]" class="olotd5">
                                                                     {section name=s loop=$supplier_types}
                                                                         <option value="{$supplier_types[s].type_key}"{if $supplier_details.type == $supplier_types[s].type_key} selected{/if}>{t}{$supplier_types[s].display_name}{/t}</option>
                                                                     {/section}
@@ -85,10 +94,10 @@
                                                         <tr>
                                                             <td align="right"><b>{t}Fax{/t}</b></td>
                                                             <td><input name="qform[fax]" class="olotd5" size="20" value="{$supplier_details.fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
-                                                        </tr>                                                        
+                                                        </tr>
                                                         <tr>
                                                             <td class="menuhead" colspan="2">{t}Address{/t}</td>
-                                                        </tr>                                                        
+                                                        </tr>
                                                         <tr>
                                                             <td align="right"><strong>{t}Address{/t}</strong></td>
                                                             <td><textarea name="qform[address]" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$supplier_details.address}</textarea></td>
@@ -112,32 +121,32 @@
                                                         <tr>
                                                             <td align="right"><b>{t}Status{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                {section name=s loop=$supplier_statuses}    
-                                                                    {if $supplier_details.status == $supplier_statuses[s].status_key}{t}{$supplier_statuses[s].display_name}{/t}{/if}        
-                                                                {/section} 
+                                                                {section name=s loop=$supplier_statuses}
+                                                                    {if $supplier_details.status == $supplier_statuses[s].status_key}{t}{$supplier_statuses[s].display_name}{/t}{/if}
+                                                                {/section}
                                                             </td>
                                                     </tr>
                                                         <tr>
                                                             <td class="menuhead" colspan="2"><b>{t}Description{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                        </tr> 
+                                                        </tr>
                                                         <tr>
                                                             <td align="right"></td>
                                                             <td><textarea class="olotd5 mceCheckForContent" name="qform[description]" cols="50" rows="20">{$supplier_details.description}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="menuhead" colspan="2"><b>{t}Note{/t}</b></td>
-                                                        </tr> 
+                                                        </tr>
                                                         <tr>
                                                             <td align="right"></td>
                                                             <td><textarea name="qform[note]" class="olotd5" cols="50" rows="20">{$supplier_details.note}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2">
-                                                                <input type="hidden" name="qform[supplier_id]" value="{$supplier_details.supplier_id}"> 
+                                                                <input type="hidden" name="qform[supplier_id]" value="{$supplier_details.supplier_id}">
                                                                 <button type="submit" name="submit" value="update">{t}Update{/t}</button>
                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=supplier&page_tpl=details&supplier_id={$supplier_id}';">{t}Cancel{/t}</button>
                                                             </td>
-                                                        </tr>                                                        
+                                                        </tr>
                                                     </table>
                                                 </form>
                                             </td>

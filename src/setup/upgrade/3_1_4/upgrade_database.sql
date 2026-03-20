@@ -1192,3 +1192,7 @@ ALTER TABLE `#__creditnote_records` DROP `is_closed`;
 
 -- Add reference to Invoices --
 ALTER TABLE `#__invoice_records` ADD `reference` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `last_active`;
+
+-- Add company and VAT number into Supp;ier --
+ALTER TABLE `#__supplier_records` ADD `company_number` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `last_name`;
+ALTER TABLE `#__supplier_records` ADD `vat_number` VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `company_number`;

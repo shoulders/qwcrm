@@ -981,6 +981,8 @@ CREATE TABLE `#__supplier_records` (
   `company_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `first_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_number` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `vat_number` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `website` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
