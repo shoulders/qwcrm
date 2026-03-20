@@ -77,7 +77,7 @@ class Schedule extends Components {
     /** Get Functions **/
 
     #####################################################
-    # Display all Work orders for the given status      # // Status is not currently used but it will be
+    # Display all schedules for the given status        # // Status is not currently used but it will be
     #####################################################
 
     public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'schedule_id', $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null) {
@@ -98,18 +98,18 @@ class Schedule extends Components {
         // Restrict results by search category and search term
         elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
-        // Restrict by Status
+        // Restrict by Status (not currently used because schedules do not have a status)
         if($status) {
 
             // All Open schedules
             if($status == 'open') {
 
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.is_closed != '1'";
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.closed_on IS NULL";
 
             // All Closed schedules
             } elseif($status == 'closed') {
 
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.is_closed = '1'";
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.closed_on IS NOT NULL";
 
             // Return schedules for the given status
             } else {
@@ -853,7 +853,7 @@ class Schedule extends Components {
                     // Links for schedule
                     $calendar_matrix .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
                     $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
-                    if(!$this->app->components->workorder->getRecord($scheduleObject[$i]['workorder_id'], 'is_closed')) {
+                    if(!$this->app->components->workorder->getRecord($scheduleObject[$i]['workorder_id'], 'closed_on')) {
                         $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ";
                         $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&themeVar=print\">"._gettext("Export")."</a></b> - ";
                         $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirm('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";

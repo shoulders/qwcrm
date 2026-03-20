@@ -43,7 +43,6 @@ defined('_QWEXEC') or die;
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
                 status          =". $this->app->db->qStr( 'pending'                            ).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)           ).",
-                is_closed       =". $this->app->db->qStr( 0                                    ).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -194,12 +193,12 @@ defined('_QWEXEC') or die;
             // All Open Invoices
             if($status == 'open') {
 
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.is_closed != '1'";
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";
 
             // All Closed Invoices
             } elseif($status == 'closed') {
 
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.is_closed = '1'";
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
 
             // Return Invoices for the given status
             } else {
@@ -621,15 +620,13 @@ defined('_QWEXEC') or die;
                 status              =". $this->app->db->qStr($new_status).",";
         if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
         {
-            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) ).",
-                    is_closed =". $this->app->db->qStr(1);
+            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
         }
         else
         {
-            $sql .= "closed_on = NULL,
-                    is_closed   =". $this->app->db->qStr(0);
+            $sql .= "closed_on = NULL";
         }
-        $sql .= "WHERE invoice_id =". $this->app->db->qStr($invoice_id);
+        $sql .= " WHERE invoice_id =". $this->app->db->qStr($invoice_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -778,7 +775,6 @@ defined('_QWEXEC') or die;
                 opened_on           = NULL,
                 closed_on           = NULL,
                 last_active         = NULL,
-                is_closed           = 1,
                 note                = '',
                 additional_info     = ''
                 WHERE invoice_id    =". $this->app->db->qStr( $invoice_id  );
@@ -1047,7 +1043,7 @@ defined('_QWEXEC') or die;
         }
 
         // Is closed
-        if($invoice_details['is_closed'] == true) {
+        if($invoice_details['closed_on']) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it is closed."));
             $state_flag = false;
         }

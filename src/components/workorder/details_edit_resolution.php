@@ -15,13 +15,13 @@ if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['work
 }
 
 // Check if we can edit the workorder resolution
-if($this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'is_closed')) {
+if($this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'closed_on')) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the resolution of a closed Work Order."));
     $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 }
 
 if(isset(\CMSApplication::$VAR['submit'])) {
-    
+
     // Update Work Resolution Only
     if(\CMSApplication::$VAR['submit'] == 'submitchangesonly') {
         $this->app->components->workorder->updateResolution(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
@@ -39,16 +39,16 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     // Close with invoice
     if(\CMSApplication::$VAR['submit'] == 'closewithinvoice') {
         $this->app->components->workorder->closeWithInvoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
-        
+
         // Create a new invoice attached to this work order
         $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed with an invoice."));
         $this->app->system->page->forcePage('invoice', 'new&workorder_id='.\CMSApplication::$VAR['workorder_id']);
     }
 
 }
-        
+
 // Build the page
 $this->app->smarty->assign('resolution', $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'resolution'));
 
-    
-    
+
+

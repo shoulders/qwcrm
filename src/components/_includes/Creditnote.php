@@ -174,12 +174,12 @@ class Creditnote extends Components {
             // All Open Credit Notes
             if($status == 'open') {
 
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.is_closed != '1'";
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NULL";
 
             // All Closed Credit Notes
             } elseif($status == 'closed') {
 
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.is_closed = '1'";
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NOT NULL";
 
             // Return Credit Notes for the given status
             } else {
@@ -589,17 +589,14 @@ class Creditnote extends Components {
         // Set closed statuses
         if($new_status == 'used' || $new_status == 'cancelled' || $new_status == 'deleted') {
             $closed_on = $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
-            $is_closed = $this->app->db->qStr(1);
         } else {
             $closed_on = $creditnote_details['closed_on'];
-            $is_closed = $creditnote_details['is_closed'];
         }
 
         $sql = "UPDATE ".PRFX."creditnote_records SET
                 employee_id         =". $this->app->db->qStr($employee_id).",
                 status              =". $this->app->db->qStr( $new_status  ).",
-                closed_on           =". $this->app->db->qStr( $closed_on    ).",
-                is_closed           =". $this->app->db->qStr( $is_closed    )."
+                closed_on           =". $this->app->db->qStr( $closed_on    )."
                 WHERE creditnote_id =". $this->app->db->qStr( $creditnote_id   );
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -744,8 +741,7 @@ class Creditnote extends Components {
                 status              = 'deleted',
                 opened_on           = NULL,
                 closed_on           = NULL,
-                last_active         = NULL,
-                is_closed           = 1,
+                last_active         = NULL
                 reference           = '',
                 note                = '',
                 additional_info     = ''

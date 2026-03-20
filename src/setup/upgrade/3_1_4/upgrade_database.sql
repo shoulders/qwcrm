@@ -1184,3 +1184,8 @@ ALTER TABLE `#__schedule_records` ADD `last_active` DATETIME NULL DEFAULT NULL A
 
 -- Convert `client_records` to utf8mb4_unicode_ci collation - might not be needed --
 ALTER TABLE `#__client_records` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Remove `is_closed` --
+ALTER TABLE `#__workorder_records` DROP `is_closed`;
+ALTER TABLE `#__invoice_records` DROP `is_closed`;
+ALTER TABLE `#__creditnote_records` DROP `is_closed`;

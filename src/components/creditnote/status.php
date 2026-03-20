@@ -19,13 +19,13 @@ $assigned_employee_id = $this->app->components->creditnote->getRecord(\CMSApplic
 
 // Update creditnote Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    $this->app->components->creditnote->updateStatus(\CMSApplication::$VAR['creditnote_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->components->creditnote->updateStatus(\CMSApplication::$VAR['creditnote_id'], \CMSApplication::$VAR['assign_status']);
     $this->app->system->page->forcePage('creditnote', 'status&creditnote_id='.\CMSApplication::$VAR['creditnote_id']);
 }
 
 // Assign Creditnote to another employee
 if(isset(\CMSApplication::$VAR['change_employee'])) {
-    $this->app->components->creditnote->assignToEmployee(\CMSApplication::$VAR['creditnote_id'], \CMSApplication::$VAR['target_employee_id']);    
+    $this->app->components->creditnote->assignToEmployee(\CMSApplication::$VAR['creditnote_id'], \CMSApplication::$VAR['target_employee_id']);
     $this->app->system->page->forcePage('creditnote', 'status&creditnote_id='.\CMSApplication::$VAR['creditnote_id']);
 }
 
@@ -34,7 +34,7 @@ $this->app->components->creditnote->checkCreditnoteIsExpired(\CMSApplication::$V
 
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',     $this->app->components->creditnote->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['creditnote_id']) );
-$this->app->smarty->assign('allowed_to_change_employee',   !$this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id'], 'is_closed')   );
+$this->app->smarty->assign('allowed_to_change_employee',   !$this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id'], 'closed_on')   );
 $this->app->smarty->assign('allowed_to_cancel',            $this->app->components->creditnote->checkRecordAllowsCancel(\CMSApplication::$VAR['creditnote_id'])      );
 $this->app->smarty->assign('allowed_to_delete',            $this->app->components->creditnote->checkRecordAllowsDelete(\CMSApplication::$VAR['creditnote_id'])        );
 $this->app->smarty->assign('active_employees',             $this->app->components->user->getActiveUsers('employees')                           );

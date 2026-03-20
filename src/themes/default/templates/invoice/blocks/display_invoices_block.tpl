@@ -26,7 +26,7 @@
         <td class="olohead" nowrap>{t}Additional Info{/t}</td>
     </tr>
     {section name=i loop=$display_invoices.records}
-        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_invoices.records[i].status != 'deleted'} onDblClick="window.location='index.php?component=invoice&page_tpl={if $display_invoices.records[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices.records[i].invoice_id}';"{/if}>
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_invoices.records[i].status != 'deleted'} onDblClick="window.location='index.php?component=invoice&page_tpl={if $display_invoices.records[i].closed_on}details{else}edit{/if}&invoice_id={$display_invoices.records[i].invoice_id}';"{/if}>
             <td class="olotd4" nowrap>
                 {if $display_invoices.records[i].status == 'deleted'}
                     {$display_invoices.records[i].invoice_id}

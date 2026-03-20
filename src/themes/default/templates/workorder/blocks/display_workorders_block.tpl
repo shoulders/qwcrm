@@ -18,12 +18,12 @@
         <td class="olohead"><b>{t}Employee{/t}</b></td>
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
-    {section name=w loop=$display_workorders.records}        
-        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_workorders.records[w].workorder_status != 'deleted'} onDblClick="window.location='index.php?component=workorder&page_tpl={if $display_workorders.records[w].workorder_is_closed}details{else}edit{/if}&workorder_id={$display_workorders.records[w].workorder_id}';"{/if}>
+    {section name=w loop=$display_workorders.records}
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_workorders.records[w].workorder_status != 'deleted'} onDblClick="window.location='index.php?component=workorder&page_tpl={if $display_workorders.records[w].workorder_closed_on}details{else}edit{/if}&workorder_id={$display_workorders.records[w].workorder_id}';"{/if}>
             <td class="olotd4" nowrap>
                 {if $display_workorders.records[w].workorder_status == 'deleted'}
                     {$display_workorders.records[w].workorder_id}
-                {else}                    
+                {else}
                     <a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_workorders.records[w].workorder_id}">{$display_workorders.records[w].workorder_id}</a>
                 {/if}
             </td>
@@ -43,29 +43,29 @@
                  {/if}
             </td>
             <td class="olotd4" align="center">
-                {section name=s loop=$workorder_statuses}    
-                    {if $display_workorders.records[w].workorder_status == $workorder_statuses[s].status_key}{t}{$workorder_statuses[s].display_name}{/t}{/if}        
-                {/section}                                                                     
+                {section name=s loop=$workorder_statuses}
+                    {if $display_workorders.records[w].workorder_status == $workorder_statuses[s].status_key}{t}{$workorder_statuses[s].display_name}{/t}{/if}
+                {/section}
             </td>
             <td class="olotd4" nowrap>
                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Employee Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$display_workorders.records[w].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$display_workorders.records[w].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$display_workorders.records[w].employee_home_primary_phone}<br><b>{t}Email{/t}: </b>{$display_workorders.records[w].employee_email}');" onMouseOut="hideddrivetip();">
                 <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_workorders.records[w].employee_id}">{$display_workorders.records[w].employee_display_name}</a>
-            </td>            
+            </td>
             <td class="olotd4" align="center" nowrap>
-                <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders.records[w].workorder_id}&commContent=technician_workorder_slip&commType=htmlBrowser" target="_blank">                                                    
+                <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders.records[w].workorder_id}&commContent=technician_workorder_slip&commType=htmlBrowser" target="_blank">
                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Technician Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />
                 </a>
-                <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders.records[w].workorder_id}&commContent=technician_job_sheet&commType=htmlBrowser" target="_blank">                                                    
+                <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders.records[w].workorder_id}&commContent=technician_job_sheet&commType=htmlBrowser" target="_blank">
                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Technician Job Sheet{/t}');" onMouseOut="hideddrivetip();" />
                 </a>
-                <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders.records[w].workorder_id}&commContent=client_workorder_slip&commType=htmlBrowser" target="_blank">                                                    
-                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Client Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />                                                        
+                <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders.records[w].workorder_id}&commContent=client_workorder_slip&commType=htmlBrowser" target="_blank">
+                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Client Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />
                 </a>
                 <a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_workorders.records[w].workorder_id}&client_id={$display_workorders.records[w].client_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View The Work Order{/t}');" onMouseOut="hideddrivetip();">
-                </a>    
+                </a>
             </td>
-        </tr>        
+        </tr>
     {/section}
     {if $display_workorders.restricted_records}
         <tr>
@@ -75,6 +75,6 @@
     {if !$display_workorders.records}
         <tr>
             <td colspan="9" class="error">{t}There are no work orders.{/t}</td>
-        </tr>        
-    {/if}    
+        </tr>
+    {/if}
 </table>

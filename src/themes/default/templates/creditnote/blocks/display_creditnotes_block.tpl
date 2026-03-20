@@ -29,7 +29,7 @@
         <td class="olohead" nowrap>{t}Additional Info{/t}</td>
     </tr>
     {section name=i loop=$display_creditnotes.records}
-        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_creditnotes.records[i].status != 'deleted'} onDblClick="window.location='index.php?component=creditnote&page_tpl={if $display_creditnotes.records[i].is_closed}details{else}edit{/if}&creditnote_id={$display_creditnotes.records[i].creditnote_id}';"{/if}>
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_creditnotes.records[i].status != 'deleted'} onDblClick="window.location='index.php?component=creditnote&page_tpl={if $display_creditnotes.records[i].closed_on}details{else}edit{/if}&creditnote_id={$display_creditnotes.records[i].creditnote_id}';"{/if}>
             <td class="olotd4" nowrap>
                 {if $display_creditnotes.records[i].status == 'deleted'}
                     {$display_creditnotes.records[i].creditnote_id}

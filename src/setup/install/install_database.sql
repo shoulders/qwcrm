@@ -309,7 +309,6 @@ CREATE TABLE `#__creditnote_records` (
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
-  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
@@ -605,9 +604,7 @@ CREATE TABLE `#__invoice_records` (
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime DEFAULT NULL,
-  `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
-  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1461,7 +1458,6 @@ CREATE TABLE `#__workorder_records` (
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
-  `is_closed` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `scope` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `comment` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',

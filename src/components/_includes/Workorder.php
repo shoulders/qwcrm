@@ -35,7 +35,6 @@ class WorkOrder extends Components {
                 created_by      =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 status          =". $this->app->db->qStr( 'unassigned'                         ).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)                     ).",
-                is_closed       =". $this->app->db->qStr( 0                                    ).",
                 scope           =". $this->app->db->qStr( $scope                               ).",
                 description     =". $this->app->db->qStr( $description                         ).",
                 comment         =". $this->app->db->qStr( $comment                             );
@@ -145,12 +144,12 @@ class WorkOrder extends Components {
             // All Open workorders
             if($status == 'open') {
 
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.is_closed != '1'";
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";
 
             // All Closed workorders
             } elseif($status == 'closed') {
 
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.is_closed = '1'";
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NOT NULL";
 
             // Return Workorders for the given status
             } else {
@@ -194,8 +193,7 @@ class WorkOrder extends Components {
                 ".PRFX."workorder_records.opened_on AS workorder_opened_on,
                 ".PRFX."workorder_records.closed_on AS workorder_closed_on,
                 ".PRFX."workorder_records.scope AS workorder_scope,
-                ".PRFX."workorder_records.status AS workorder_status,
-                ".PRFX."workorder_records.status AS workorder_is_closed
+                ".PRFX."workorder_records.status AS workorder_status
 
                 FROM ".PRFX."workorder_records
                 LEFT JOIN ".PRFX."user_records ON ".PRFX."workorder_records.employee_id = ".PRFX."user_records.user_id
@@ -591,7 +589,7 @@ class WorkOrder extends Components {
             $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
         }
 
-        // Update Workorder 'is_closed' boolean
+        // Update Workorder closed boolean
         if($new_status == 'closed_without_invoice' || $new_status == 'closed_with_invoice') {
             $this->updateClosedStatus($workorder_id, 'close');
         } else {
@@ -627,8 +625,7 @@ class WorkOrder extends Components {
 
             $sql = "UPDATE ".PRFX."workorder_records SET
                     closed_by           = NULL,
-                    closed_on           = NULL,
-                    is_closed           = 0
+                    closed_on           = NULL
                     WHERE workorder_id  = ".$workorder_id;
 
         }
@@ -636,8 +633,7 @@ class WorkOrder extends Components {
         if($new_closed_status == 'close') {
             $sql = "UPDATE ".PRFX."workorder_records SET
                     closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
-                    closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() ).",
-                    is_closed           =". $this->app->db->qStr( 1                                    )."
+                    closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime() )."
                     WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
 
         }
@@ -721,7 +717,6 @@ class WorkOrder extends Components {
             opened_on           = NULL,
             closed_on           = NULL,
             last_active         = NULL,
-            is_closed           = 1,
             scope               = '',
             description         = '',
             comment             = '',
@@ -790,7 +785,6 @@ class WorkOrder extends Components {
                 closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 status              =". $this->app->db->qStr( 'closed_without_invoice'             ).",
                 closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)  ).",
-                is_closed           =". $this->app->db->qStr( 1                                    ).",
                 resolution          =". $this->app->db->qStr( $resolution                          )."
                 WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
 
@@ -830,8 +824,7 @@ class WorkOrder extends Components {
         $sql = "UPDATE ".PRFX."workorder_records SET
                 closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 status              =". $this->app->db->qStr( 'closed_with_invoice'                ).",
-                closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
-                is_closed           =". $this->app->db->qStr( 1                                    ).",
+                closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp))."
                 resolution          =". $this->app->db->qStr( $resolution                          )."
                 WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
 
@@ -1048,11 +1041,11 @@ class WorkOrder extends Components {
 
     public function checkRecordAllowsResolutionUpdate($workorder_id) {
 
-        $wo_is_closed   = $this->getRecord($workorder_id, 'is_closed');
+        $wo_closed_on   = $this->getRecord($workorder_id, 'closed_on');
         $wo_status      = $this->getRecord($workorder_id, 'status');
 
         // Workorder is Closed
-        if($wo_is_closed == '1') {
+        if($wo_closed_on) {
 
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the resolution because the work order is already closed."));
             return false;
@@ -1142,8 +1135,8 @@ class WorkOrder extends Components {
         }
 
         /* Is Closed (old Fallback method)
-        if(!$this->get_workorder_details($workorder_details['workorder_id'], 'is_closed')) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closes."));
+        if($this->get_workorder_details($workorder_details['workorder_id'], 'closed_on')) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed."));
             $state_flag = false;
         }*/
 
