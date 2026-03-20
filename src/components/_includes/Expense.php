@@ -653,6 +653,10 @@ class Expense extends Components {
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
 
+        // Is Pending
+        if($expense_details['status'] == 'pending') {
+        }
+
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."));

@@ -909,6 +909,10 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
+        // Is Pending
+        if($invoice_details['status'] == 'pending') {
+        }
+
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."));
@@ -985,6 +989,10 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
+        // Is Pending
+        if($invoice_details['status'] == 'pending') {
+        }
+
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it is partially paid."));
@@ -1046,6 +1054,10 @@ defined('_QWEXEC') or die;
         if($invoice_details['closed_on']) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it is closed."));
             $state_flag = false;
+        }
+
+        // Is Pending
+        if($invoice_details['status'] == 'pending') {
         }
 
         // Is partially paid

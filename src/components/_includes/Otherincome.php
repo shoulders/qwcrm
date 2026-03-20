@@ -636,6 +636,10 @@ class Otherincome extends Components {
         // Get the otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
 
+        // Is Pending
+        if($otherincome_details['status'] == 'pending') {
+        }
+
         // Is partially paid
         if($otherincome_details['status'] == 'partially_paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the otherincome has payments and is partially paid."));

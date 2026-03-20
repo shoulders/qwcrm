@@ -2026,7 +2026,7 @@ class Voucher extends Components {
         // Get the voucher details
         $voucher_details = $this->getRecord($voucher_id);
 
-        // Is Unpaid
+        // Is Pending
         if($voucher_details['status'] == 'pending') {
         }
 
