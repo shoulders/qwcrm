@@ -20,7 +20,7 @@
 
 defined('_QWEXEC') or die;
 
-class OtherIncome extends Components {
+class Otherincome extends Components {
 
     /** Insert Functions **/
 
