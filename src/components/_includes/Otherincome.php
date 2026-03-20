@@ -547,6 +547,11 @@ class OtherIncome extends Components {
 
     public function deleteRecord($otherincome_id) {
 
+        // Make sure the otherincome can be deleted
+        if(!$this->checkRecordAllowsDelete($otherincome)) {
+            return false;
+        }
+
         // Get record details for logging before we delete anything
         $otherincome_details = $this->getRecord($otherincome_id);
 

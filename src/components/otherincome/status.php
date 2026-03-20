@@ -16,7 +16,7 @@ if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['ot
 
 // Update Otherincome Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    $this->app->components->otherincome->updateStatus(\CMSApplication::$VAR['otherincome_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->components->otherincome->updateStatus(\CMSApplication::$VAR['otherincome_id'], \CMSApplication::$VAR['assign_status']);
     $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
 }
 
