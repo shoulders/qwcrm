@@ -235,13 +235,13 @@ class Variables extends System {
 
     }
 
-    ###############################
-    #  Return the Messages Store  #  //  in html format or array
-    ###############################
+    ###############################  //  in html format or array
+    #  Return the Messages Store  #  // The array option allows the the Message Store to be passed and preserved between page loads, when required.
+    ###############################  // Grouped = group messages of same type (danger/warning...) into a single bubble, else display all separate. only works when returning HTML
 
-    public function systemMessagesReturnStore($keep_store = false, $format = 'html') {
+    public function systemMessagesReturnStore($keep_store = false, $format = 'html', $grouped = true) {
 
-        // Remove all empty message type holders (}not sure why i need this)
+        // Remove all empty message type holders
         \CMSApplication::$messages = array_filter(\CMSApplication::$messages);
 
         // Return Message store as an array
@@ -256,16 +256,32 @@ class Variables extends System {
             $html = '';
 
             // Loop through the different types of message and build HTML
-            foreach (\CMSApplication::$messages as $messageStoreType => $messages) {
+            foreach (\CMSApplication::$messages as $type => $messages) {
 
+                // Open grouped bubble
+                if($grouped){
+                    $html .= "<div class=\"alert alert-$type\" role=\"alert\"><ul>";
+                }
+
+                // Loop Messages
                 foreach ($messages as $message) {
 
-                    $html .= "<div class=\"alert alert-$messageStoreType\" role=\"alert\">$message</div>\n";
+                    // Show as each message in their own bubble
+                    if(!$grouped){
+                        $html .= "<div class=\"alert alert-$type\" role=\"alert\">$message</div>\n";
+
+                    // Show messages grouped by type, in a single bubble for each type
+                    } else {
+                        $html .= "<li>$message</li>\n";
+                    }
 
                 }
 
+                // Close group bubble
+                if($grouped){
+                    $html .= "</ul></div>\n";
+                }
             }
-
         }
 
         // Wipe the message store
