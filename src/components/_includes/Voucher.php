@@ -503,7 +503,7 @@ class Voucher extends Components {
         }
 
         // Update voucher 'blocked' boolean for the new status ('blocked' is a way of disabling the voucher without permanently closing it, i.e. for suspended status, and is controlled by Expiry and Status)
-        // If a voucher is suspended and thene expires, when you change the voucher status (e.g. suspended --> paid) it stays blocked.
+        // If a voucher is suspended and then expires, when you change the voucher status (e.g. suspended --> paid) it stays blocked.
         if(in_array($new_status, array('paid', 'partially_redeemed')) && !$voucher_details['closed_on']) {
             $blocked = 0;
         } else {
