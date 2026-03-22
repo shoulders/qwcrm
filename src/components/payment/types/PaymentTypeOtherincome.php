@@ -194,27 +194,25 @@ class PaymentTypeOtherincome extends PaymentType
             // New
             if(Payment::$action === 'new')
             {
-                // Do nothing
+                // Do nothing - This will reload the new payment page
             }
 
             // Edit
             elseif(Payment::$action === 'edit')
             {
-                // Do nothing
-                //$this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
+                $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
             // Cancel
             elseif(Payment::$action === 'cancel')
             {
-
-                $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
+                $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
             // Delete
             elseif(Payment::$action === 'delete')
             {
-                $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
+                $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
         }
 

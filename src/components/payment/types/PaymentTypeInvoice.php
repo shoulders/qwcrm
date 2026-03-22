@@ -336,14 +336,13 @@ class PaymentTypeInvoice extends PaymentType
             // New
             if(Payment::$action === 'new')
             {
-                // Do nothing - this will reload the new payment page
+                // Do nothing - This will reload the new payment page
             }
 
             // Edit
             elseif(Payment::$action === 'edit')
             {
-               $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
-
+                $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
             // Cancel
