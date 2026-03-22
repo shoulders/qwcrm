@@ -389,13 +389,6 @@ class Client extends Components {
 
     public function deleteRecord($client_id) {
 
-        // Make sure the client can be deleted
-        if(!$this->checkRecordAllowsDelete($client_id)) {
-            return false;
-        }
-
-        /* We can now delete the client */
-
         // Get client details for logging before we delete anything
         $client_details = $this->getRecord($client_id);
 
@@ -410,7 +403,9 @@ class Client extends Components {
         // Log activity
         $logMessage = _gettext("The client").' '.$client_details['display_name'].' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -441,12 +436,27 @@ class Client extends Components {
 
     /** Check Functions **/
 
+    ##########################################################
+    #  Check if the client allows editing                    #  // TODO: I will add more tests when needed
+    ##########################################################
+
+     public function checkRecordAllowsEdit($client_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the client details
+        //$client_details = $this->getRecord($client_id);
+
+        return $state_flag;
+
+    }
+
 
     ###############################################################
     #   Check to see if the client can be deleted                 #
     ###############################################################
 
-    public function checkRecordAllowsDelete($client_id) {
+    public function checkRecordAllowsDelete($client_id, $silent = false) {
 
         $state_flag = true;
 
@@ -457,7 +467,7 @@ class Client extends Components {
         $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$this->app->db->qStr($client_id);
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has work orders.');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has work orders."), $silent);
             $state_flag = false;
         }
 
@@ -465,7 +475,7 @@ class Client extends Components {
         $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE client_id=".$this->app->db->qStr($client_id);
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has invoices.');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has invoices."), $silent);
             $state_flag = false;
         }
 
@@ -473,7 +483,7 @@ class Client extends Components {
         $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE client_id=".$this->app->db->qStr($client_id);
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has Vouchers.');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has Vouchers."), $silent);
             $state_flag = false;
         }
 
@@ -481,13 +491,13 @@ class Client extends Components {
         $sql = "SELECT count(*) as count FROM ".PRFX."client_notes WHERE client_id=".$this->app->db->qStr($client_id);
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', 'You can not delete a client who has client notes.');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has client notes."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $client_details['client_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client cannot be deleted because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client cannot be deleted because it has linked credit notes."), $silent);
             return false;
         }
 

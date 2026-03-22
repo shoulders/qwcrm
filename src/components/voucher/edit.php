@@ -20,39 +20,39 @@ if(!$this->app->components->payment->checkMethodActive('voucher')) {
     $this->app->system->page->forcePage('index.php', 'null');
 }
 
-// Check if voucher can be edited
+// Load the edit page if allowed
 if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR['voucher_id'])) {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this Voucher because its status does not allow it."));
     $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
-}
+} else {
+    // if information submitted
+    if(isset(\CMSApplication::$VAR['submit'])) {
 
-// if information submitted
-if(isset(\CMSApplication::$VAR['submit'])) {
+        // Check the submission is valid, if not, load the page with an error message
+        if($this->app->components->voucher->checkVoucherExpiryDateIsValid(\CMSApplication::$VAR['qform']['expiry_date']))
+        {
+            // Update Voucher
+            $this->app->components->voucher->updateRecord(\CMSApplication::$VAR['qform']['voucher_id'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['note']);
 
-    // Check the submission is valid, if not, load the page with an error message
-    if($this->app->components->voucher->checkVoucherExpiryDateIsValid(\CMSApplication::$VAR['qform']['expiry_date']))
-    {
-        // Update Voucher
-        $this->app->components->voucher->updateRecord(\CMSApplication::$VAR['qform']['voucher_id'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['note']);
+            // Load the new Voucher's Details page
+            $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['qform']['voucher_id']);
 
-        // Load the new Voucher's Details page
-        $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['qform']['voucher_id']);
+        } else {
+            // The reloaded page should have the submitted expiry date
+            $voucher_expiry_date = \CMSApplication::$VAR['qform']['expiry_date'];
+        }
 
-    } else {
-        // The reloaded page should have the submitted expiry date
-        $voucher_expiry_date = \CMSApplication::$VAR['qform']['expiry_date'];
     }
 
+    // Get voucher details
+    $voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']);
+
+    // Build the page
+    $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($voucher_details['client_id']));
+    $this->app->smarty->assign('voucher_statuses', $this->app->components->voucher->getStatuses());
+    $this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
+
+    // Compensate for the page being reloaded after an error with the expiry date
+    if(isset($voucher_expiry_date)) {$voucher_details['expiry_date'] = $voucher_expiry_date;}
+    $this->app->smarty->assign('voucher_details', $voucher_details);
+
 }
-
-// Get voucher details
-$voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']);
-
-// Build the page
-$this->app->smarty->assign('client_details', $this->app->components->client->getRecord($voucher_details['client_id']));
-$this->app->smarty->assign('voucher_statuses', $this->app->components->voucher->getStatuses());
-$this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
-
-// Compensate for the page being reloaded after an error with the expiry date
-if(isset($voucher_expiry_date)) {$voucher_details['expiry_date'] = $voucher_expiry_date;}
-$this->app->smarty->assign('voucher_details', $voucher_details);

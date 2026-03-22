@@ -18,11 +18,12 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('supplier', 'status'
 if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
     $this->app->system->page->forcePage('supplier', 'search');
-}  
+}
 
-// Delete the supplier function call
-$this->app->components->supplier->deleteRecord(\CMSApplication::$VAR['supplier_id']);
-
-// Load the supplier search page
-$this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier deleted successfully."));
-$this->app->system->page->forcePage('supplier', 'search');
+// Run the delete function if allowed
+if(!$this->app->components->supplier->checkRecordAllowsDelete(\CMSApplication::$VAR['supplier_id'])) {
+    $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);
+} else {
+    $this->app->components->supplier->deleteRecord(\CMSApplication::$VAR['supplier_id']);
+    $this->app->system->page->forcePage('supplier', 'search');
+}

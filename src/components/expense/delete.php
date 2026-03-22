@@ -18,11 +18,12 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('expense', 'status')
 if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
     $this->app->system->page->forcePage('expense', 'search');
-}   
+}
 
-// Delete the expense
-$this->app->components->expense->deleteRecord(\CMSApplication::$VAR['expense_id']);
-
-// Load the expense search page
-$this->app->system->variables->systemMessagesWrite('success', _gettext("Expense deleted successfully."));
-$this->app->system->page->forcePage('expense', 'search');
+// Run the delete function if allowed
+if(!$this->app->components->expense->checkRecordAllowsDelete(\CMSApplication::$VAR['expense_id'])) {
+    $this->app->system->page->forcePage('expense', 'details&expense_id='.\CMSApplication::$VAR['expense_id']);
+} else {
+    $this->app->components->expense->deleteRecord(\CMSApplication::$VAR['expense_id']);
+    $this->app->system->page->forcePage('expense', 'search');
+}

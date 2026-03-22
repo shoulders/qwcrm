@@ -20,18 +20,10 @@ if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['work
     $this->app->system->page->forcePage('workorder', 'search');
 }
 
-// Delete the Workorder
-if(!$this->app->components->workorder->deleteRecord(\CMSApplication::$VAR['workorder_id'])) {
-    
-    // load the staus page
-    $this->app->system->page->forcePage('workorder', 'status', 'workorder_id='.\CMSApplication::$VAR['workorder_id']);
-    
+// Run the delete function if allowed
+if(!$this->app->components->workorder->checkRecordAllowsDelete(\CMSApplication::$VAR['workorder_id'])) {
+    $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 } else {
-    
-    
-    // load the workorder search page
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been deleted."));
+    $this->app->components->workorder->deleteRecord(\CMSApplication::$VAR['workorder_id']);
     $this->app->system->page->forcePage('workorder', 'search');
-    
 }
-    

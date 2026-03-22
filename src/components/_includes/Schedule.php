@@ -67,6 +67,7 @@ class Schedule extends Components {
         // Log activity
         $logMessage = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $qform['employee_id'], 'client_id' => $qform['client_id'], 'workorder_id' => $qform['workorder_id'], 'schedule_id' => $schedule_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -272,6 +273,7 @@ class Schedule extends Components {
         // Log activity
         $logMessage = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $qform['employee_id'], 'client_id' => $qform['client_id'], 'workorder_id' => $qform['workorder_id'], 'schedule_id' => $qform['schedule_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -299,7 +301,7 @@ class Schedule extends Components {
     /** Delete Functions **/
 
     ##################################
-    #        Delete Schedule         #
+    #        Delete record           #
     ##################################
 
     public function deleteRecord($schedule_id) {
@@ -327,6 +329,7 @@ class Schedule extends Components {
         // Log activity
         $logMessage = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $schedule_details['employee_id'], 'client_id' => $schedule_details['client_id'], 'workorder_id' => $schedule_details['workorder_id'], 'schedule_id' => $schedule_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -335,6 +338,36 @@ class Schedule extends Components {
     }
 
     /** Check Functions **/
+
+    ##########################################################
+    #  Check if the schedule can be deleted                  #  // TODO: I will add more tests when needed
+    ##########################################################
+
+     public function checkRecordAllowsEdit($schedule_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the schedule details
+        //$schedule_details = $this->getRecord($client_id);
+
+        return $state_flag;
+
+    }
+
+    ##########################################################
+    #  Check if the schedule can be deleted                  #  // TODO: I will add more tests when needed
+    ##########################################################
+
+     public function checkRecordAllowsDelete($schedule_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the schedule details
+        //$schedule_details = $this->getRecord($client_id);
+
+        return $state_flag;
+
+    }
 
     ############################################
     #   Validate schedule start and end time   #  // supply times in DATETIME

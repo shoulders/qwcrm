@@ -14,41 +14,40 @@ if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['work
     $this->app->system->page->forcePage('workorder', 'search');
 }
 
-// Check if we can edit the workorder resolution
-if($this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'closed_on')) {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the resolution of a closed Work Order."));
+// Load the edit page if allowed
+if(!$this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$VAR['workorder_id'])) {
     $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+} else {
+
+    if(isset(\CMSApplication::$VAR['submit'])) {
+
+        // Update Work Resolution Only
+        if(\CMSApplication::$VAR['submit'] == 'submitchangesonly') {
+            $this->app->components->workorder->updateResolution(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Resolution has been updated."));
+            $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+        }
+
+        // Close without invoice
+        if(\CMSApplication::$VAR['submit'] == 'closewithoutinvoice') {
+            $this->app->components->workorder->closeWithoutInvoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed without an invoice."));
+            $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+        }
+
+        // Close with invoice
+        if(\CMSApplication::$VAR['submit'] == 'closewithinvoice') {
+            $this->app->components->workorder->closeWithInvoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+
+            // Create a new invoice attached to this work order
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed with an invoice."));
+            $this->app->system->page->forcePage('invoice', 'new&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+        }
+
+    }
+
+    // Build the page
+    $this->app->smarty->assign('resolution', $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'resolution'));
 }
-
-if(isset(\CMSApplication::$VAR['submit'])) {
-
-    // Update Work Resolution Only
-    if(\CMSApplication::$VAR['submit'] == 'submitchangesonly') {
-        $this->app->components->workorder->updateResolution(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Resolution has been updated."));
-        $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
-    }
-
-    // Close without invoice
-    if(\CMSApplication::$VAR['submit'] == 'closewithoutinvoice') {
-        $this->app->components->workorder->closeWithoutInvoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed without an invoice."));
-        $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
-    }
-
-    // Close with invoice
-    if(\CMSApplication::$VAR['submit'] == 'closewithinvoice') {
-        $this->app->components->workorder->closeWithInvoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
-
-        // Create a new invoice attached to this work order
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed with an invoice."));
-        $this->app->system->page->forcePage('invoice', 'new&workorder_id='.\CMSApplication::$VAR['workorder_id']);
-    }
-
-}
-
-// Build the page
-$this->app->smarty->assign('resolution', $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'resolution'));
-
 
 

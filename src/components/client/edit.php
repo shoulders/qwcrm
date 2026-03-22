@@ -14,19 +14,24 @@ if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_
     $this->app->system->page->forcePage('client', 'search');
 }
 
-if(isset(\CMSApplication::$VAR['submit'])) {    
-        
-    // Update the Client's Details
-    $this->app->components->client->updateRecord(\CMSApplication::$VAR['qform']);
-    
-    // Load the client's details page
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("The Client's information was updated."));
+// Load the edit page if allowed
+if(!$this->app->components->client->checkRecordAllowsEdit(\CMSApplication::$VAR['client_id'])) {
     $this->app->system->page->forcePage('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
+} else {
+    if(isset(\CMSApplication::$VAR['submit'])) {
 
-} else {    
+        // Update the Client's Details
+        $this->app->components->client->updateRecord(\CMSApplication::$VAR['qform']);
 
-    // Build the page
-    $this->app->smarty->assign('client_types',   $this->app->components->client->getTypes());
-    $this->app->smarty->assign('client_details', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id']));
-    
+        // Load the client's details page
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("The Client's information was updated."));
+        $this->app->system->page->forcePage('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
+
+    } else {
+
+        // Build the page
+        $this->app->smarty->assign('client_types',   $this->app->components->client->getTypes());
+        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id']));
+
+    }
 }

@@ -18,11 +18,12 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('supplier', 'status'
 if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
     $this->app->system->page->forcePage('supplier', 'search');
-}  
+}
 
-// Cancel the supplier function call
-$this->app->components->supplier->cancelRecord(\CMSApplication::$VAR['supplier_id']);
-
-// Load the supplier search page
-$this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier cancelled successfully."));
-$this->app->system->page->forcePage('supplier', 'search');
+// Run the cancel function if allowed
+if(!$this->app->components->supplier->checkRecordAllowsCancel(\CMSApplication::$VAR['supplier_id'])) {
+    $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);
+} else {
+    $this->app->components->supplier->cancelRecord(\CMSApplication::$VAR['supplier_id']);   // TODO: Consider adding eason for cancelling
+    $this->app->system->page->forcePage('supplier', 'search');
+}

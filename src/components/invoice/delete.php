@@ -20,18 +20,10 @@ if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoic
     $this->app->system->page->forcePage('invoice', 'search');
 }
 
-// Delete Invoice
-if(!$this->app->components->invoice->deleteRecord(\CMSApplication::$VAR['invoice_id'])) {    
-    
-    // Load the invoice record on the search page with the error
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("The invoice failed to be deleted."));
-    //$this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
-    $this->app->system->page->forcePage('invoice', 'search&search_category=invoice_id&search_term='.\CMSApplication::$VAR['invoice_id']);
-    
-} else {   
-    
-    // Load the invoice search page with success message
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("The invoice has been deleted successfully."));
+// Run the delete function if allowed
+if(!$this->app->components->invoice->checkRecordAllowsDelete(\CMSApplication::$VAR['invoice_id'])) {
+    $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+} else {
+    $this->app->components->invoice->deleteRecord(\CMSApplication::$VAR['invoice_id']);
     $this->app->system->page->forcePage('invoice', 'search');
-    
 }

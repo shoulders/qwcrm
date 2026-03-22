@@ -20,9 +20,10 @@ if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['ot
     $this->app->system->page->forcePage('otherincome', 'search');
 }
 
-// Cancel otherincome
-$this->app->components->otherincome->cancelRecord(\CMSApplication::$VAR['otherincome_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling']);
-
-// Load the otherincome search page
-$this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome cancelled successfully."));
-$this->app->system->page->forcePage('otherincome', 'search');
+// Run the cancel function if allowed
+if(!$this->app->components->otherincome->checkRecordAllowsCancel(\CMSApplication::$VAR['otherincome_id'])) {
+    $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
+} else {
+    $this->app->components->otherincome->cancelRecord(\CMSApplication::$VAR['otherincome_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling']);
+    $this->app->system->page->forcePage('otherincome', 'search');
+}

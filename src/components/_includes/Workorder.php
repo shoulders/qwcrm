@@ -476,6 +476,7 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), $workorder_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -501,6 +502,7 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), $workorder_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -526,6 +528,7 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), $workorder_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -554,6 +557,7 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], $workorder_details['workorder_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -563,14 +567,14 @@ class WorkOrder extends Components {
     # Update Workorder Status  #
     ############################
 
-    public function updateStatus($workorder_id, $new_status) {
+    public function updateStatus($workorder_id, $new_status, $silent = false) {
 
         // Get current workorder details
         $workorder_details = $this->getRecord($workorder_id);
 
         // If the new status is the same as the current one, exit
         if($new_status == $workorder_details['status']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new work order status is the same as the current work order status."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new work order status is the same as the current work order status."), $silent);
             return false;
         }
 
@@ -596,9 +600,6 @@ class WorkOrder extends Components {
             $this->updateClosedStatus($workorder_id, 'open');
         }
 
-        // Status updated message
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Work order status updated."));
-
         // For writing message to log file, get work order status display name
         $wo_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
@@ -608,6 +609,8 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], $workorder_id);
+        //$this->app->system->variables->systemMessagesWrite('success', _gettext("Work order status updated."), $silent);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -687,18 +690,6 @@ class WorkOrder extends Components {
 
     public function deleteRecord($workorder_id) {
 
-        // Does the workorder have an invoice
-        if($this->getRecord($workorder_id, 'invoice_id')) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has an invoice."));
-            return false;
-        }
-
-        // Is the workorder in an allowed state to be deleted
-        if(!$this->checkRecordAllowsDelete($workorder_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because its status does not allow it."));
-            return false;
-        }
-
         // Get client_id before deleletion
         $client_id = $this->getRecord($workorder_id, 'client_id');
 
@@ -740,6 +731,7 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id, 'workorder_id' => $workorder_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -766,6 +758,7 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_details['workorder_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -807,6 +800,7 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -847,6 +841,7 @@ class WorkOrder extends Components {
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -862,7 +857,7 @@ class WorkOrder extends Components {
     #  Check if the workorder status is allowed to be changed  #
     ############################################################
 
-     public function checkRecordAllowsManualStatusChange($workorder_id) {
+  public function checkRecordAllowsManualStatusChange($workorder_id, $silent = false) {
 
         $state_flag = true;
 
@@ -871,67 +866,198 @@ class WorkOrder extends Components {
 
         /* Is Unassigned
         if($workorder_details['status'] == 'unassigned') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is unassigned."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is unassigned."), $silent);
             $state_flag = false;
         }*/
 
         /* Is Assigned
         if($workorder_details['status'] == 'assigned') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is assigned"));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is assigned"), $silent);
             $state_flag = false;
         }*/
 
         /* Is Waiting for Parts
         if($workorder_details['status'] == 'waiting_for_parts') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is waiting for parts."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is waiting for parts."), $silent);
             $state_flag = false;
         }*/
 
         /* Is Scheduled
         if($workorder_details['status'] == 'scheduled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is scheduled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is scheduled."), $silent);
             $state_flag = false;
         }*/
 
         /* With Client
         if($workorder_details['status'] == 'with_client') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with the client."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with the client."), $silent);
             $state_flag = false;
         }*/
 
         /* Is On Hold
         if($workorder_details['status'] == 'on_hold') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is on hold."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is on hold."), $silent);
             $state_flag = false;
         }*/
 
         /* Is with Management
         if($workorder_details['status'] == 'management') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with mangement."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with mangement."), $silent);
             $state_flag = false;
         }*/
 
         /* Closed without Invoice
         if($workorder_details['status'] == 'closed_without_invoice') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed without an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed without an invoice."), $silent);
             $state_flag = false;
         }*/
 
         // Closed with Invoice
         if($workorder_details['status'] == 'closed_with_invoice') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed with an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed with an invoice."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($workorder_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has already been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has already been deleted."), $silent);
             $state_flag = false;
         }
 
         return $state_flag;
 
-     }
+    }
+
+    ##########################################################
+    #  cant he workorder be edited                           #  // TODO: I will add more tests when needed
+    ##########################################################
+
+     public function checkRecordAllowsEdit($workorder_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the workorder details
+        $workorder_details = $this->getRecord($workorder_id);
+
+        // Is closed
+        if($workorder_details['closed_on']) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The workorder cannot be edited because it is closed."), $silent);
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
+    ################################
+    # Resolution Edit Status Check #  // not currently used
+    ################################
+
+    /*public function checkRecordAllowsResolutionUpdate($workorder_id, $silent = false) {
+
+        $wo_closed_on   = $this->getRecord($workorder_id, 'closed_on');
+        $wo_status      = $this->getRecord($workorder_id, 'status');
+
+        // Workorder is Closed
+        if($wo_closed_on) {
+
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the resolution because the work order is already closed."), $silent);
+            return false;
+        }
+
+        // Waiting For Parts
+        if ($wo_status == 'waiting_for_parts') {
+
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Can not close a work order if it is Waiting for Parts. Please Adjust the status."), $silent);
+            return false;
+
+        }
+
+        return true;
+
+    }*/
+
+    ######################################################
+    # can the workorder be deleted                       #
+    ######################################################
+
+    public function checkRecordAllowsDelete($workorder_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the workorder details
+        $workorder_details = $this->getRecord($workorder_id);
+
+        /* Is Unassigned
+        if($workorder_details['status'] == 'unassigned') {
+            $this->app->system->variables->systemMessagesWrite('danger',  _gettext("This workorder cannot be deleted because it is unassigned."), $silent);
+            $state_flag = false;
+        }*/
+
+        // Is Assigned
+        if($workorder_details['status'] == 'assigned') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is assigned"), $silent);
+            $state_flag = false;
+        }
+
+        // Is Waiting for Parts
+        if($workorder_details['status'] == 'waiting_for_parts') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is waiting for parts."), $silent);
+            $state_flag = false;
+        }
+
+        // Is Scheduled
+        if($workorder_details['status'] == 'scheduled') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is scheduled."), $silent);
+            $state_flag = false;
+        }
+
+        // With Client
+        if($workorder_details['status'] == 'with_client') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with the client."), $silent);
+            $state_flag = false;
+        }
+
+        // Is On Hold
+        if($workorder_details['status'] == 'on_hold') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is on hold."), $silent);
+            $state_flag = false;
+        }
+
+        /* Is with Management
+        if($workorder_details['status'] == 'management') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with mangement."), $silent);
+            $state_flag = false;
+        }*/
+
+        /* Does the workorder have an invoice
+        if($this->getRecord($workorder_id, 'invoice_id')) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has an invoice."), $silent);
+            return false;
+        }*/
+
+        // Closed without Invoice
+        if($workorder_details['status'] == 'closed_without_invoice') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."), $silent);
+            $state_flag = false;
+        }
+
+        // Closed with Invoice
+        if($workorder_details['status'] == 'closed_with_invoice') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed with an invoice."), $silent);
+            $state_flag = false;
+        }
+
+        // Is deleted
+        if($workorder_details['status'] == 'deleted') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The workorder cannot be deleted because it has already been deleted."), $silent);
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
 
     ############################################################
     #  Check if the workorder status is allowed to be changed  #  // currently only on status
@@ -958,116 +1084,15 @@ class WorkOrder extends Components {
 
         return $state_flag;
 
-     }
-
-    ######################################################
-    # Is the workorder in an allowed state to be deleted #
-    ######################################################
-
-    public function checkRecordAllowsDelete($workorder_id) {
-
-        $state_flag = true;
-
-        // Get the workorder details
-        $workorder_details = $this->getRecord($workorder_id);
-
-        /* Is Unassigned
-        if($workorder_details['status'] == 'unassigned') {
-            $this->app->system->variables->systemMessagesWrite('danger',  _gettext("This workorder cannot be deleted because it is unassigned."));
-            $state_flag = false;
-        }*/
-
-        // Is Assigned
-        if($workorder_details['status'] == 'assigned') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is assigned"));
-            $state_flag = false;
-        }
-
-        // Is Waiting for Parts
-        if($workorder_details['status'] == 'waiting_for_parts') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is waiting for parts."));
-            $state_flag = false;
-        }
-
-        // Is Scheduled
-        if($workorder_details['status'] == 'scheduled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is scheduled."));
-            $state_flag = false;
-        }
-
-        // With Client
-        if($workorder_details['status'] == 'with_client') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with the client."));
-            $state_flag = false;
-        }
-
-        // Is On Hold
-        if($workorder_details['status'] == 'on_hold') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is on hold."));
-            $state_flag = false;
-        }
-
-        /* Is with Management
-        if($workorder_details['status'] == 'management') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with mangement."));
-            $state_flag = false;
-        }*/
-
-        // Closed without Invoice
-        if($workorder_details['status'] == 'closed_without_invoice') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."));
-            $state_flag = false;
-        }
-
-        // Closed with Invoice
-        if($workorder_details['status'] == 'closed_with_invoice') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed with an invoice."));
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($workorder_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The workorder cannot be deleted because it has already been deleted."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
     }
 
-    ################################
-    # Resolution Edit Status Check #  // not currently used
-    ################################
 
-    public function checkRecordAllowsResolutionUpdate($workorder_id) {
-
-        $wo_closed_on   = $this->getRecord($workorder_id, 'closed_on');
-        $wo_status      = $this->getRecord($workorder_id, 'status');
-
-        // Workorder is Closed
-        if($wo_closed_on) {
-
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the resolution because the work order is already closed."));
-            return false;
-        }
-
-        // Waiting For Parts
-        if ($wo_status == 'waiting_for_parts') {
-
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Can not close a work order if it is Waiting for Parts. Please Adjust the status."));
-            return false;
-
-        }
-
-        return true;
-
-    }
 
     ##############################################################
     #  Check if the workorder employee is allowed to be changed  #
     ##############################################################
 
-     public function checkRecordAllowsEmployeeUpdate($workorder_id) {
+     public function checkRecordAllowsEmployeeUpdate($workorder_id, $silent = false) {
 
         $state_flag = true;
 
@@ -1076,67 +1101,67 @@ class WorkOrder extends Components {
 
         /* Is Unassigned
         if($workorder_details['status'] == 'unassigned') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is unassigned."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is unassigned."), $silent);
             $state_flag = false;
         }*/
 
         /* Is Assigned
         if($workorder_details['status'] == 'assigned') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is assigned"));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is assigned"), $silent);
             $state_flag = false;
         }*/
 
         /* Is Waiting for Parts
         if($workorder_details['status'] == 'waiting_for_parts') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is waiting for parts."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is waiting for parts."), $silent);
             $state_flag = false;
         }*/
 
         /* Is Scheduled
         if($workorder_details['status'] == 'scheduled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is scheduled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is scheduled."), $silent);
             $state_flag = false;
         }*/
 
         /* With Client
         if($workorder_details['status'] == 'with_client') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with the client."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with the client."), $silent);
             $state_flag = false;
         }*/
 
         /* Is On Hold
         if($workorder_details['status'] == 'on_hold') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is on hold."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is on hold."), $silent);
             $state_flag = false;
         }*/
 
         /* Is with Management
         if($workorder_details['status'] == 'management') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with mangement."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with mangement."), $silent);
             $state_flag = false;
         }*/
 
         // Closed without Invoice
         if($workorder_details['status'] == 'closed_without_invoice') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."), $silent);
             $state_flag = false;
         }
 
         // Closed with Invoice
         if($workorder_details['status'] == 'closed_with_invoice') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed with an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed with an invoice."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($workorder_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has already been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has already been deleted."), $silent);
             $state_flag = false;
         }
 
         /* Is Closed (old Fallback method)
         if($this->get_workorder_details($workorder_details['workorder_id'], 'closed_on')) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed."), $silent);
             $state_flag = false;
         }*/
 

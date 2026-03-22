@@ -23,19 +23,17 @@ if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['vouche
 // Get invoice_id before deleting
 $invoice_id = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id'], 'invoice_id');
 
-// Delete the Voucher
-if(!$this->app->components->voucher->deleteRecord(\CMSApplication::$VAR['voucher_id'])) {
-    
-    // Load the relevant invoice page with fail message
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher failed to be deleted."));
-    $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$invoice_id);
-    
+// Run the delete function if allowed
+if(!$this->app->components->voucher->checkRecordAllowsDelete(\CMSApplication::$VAR['voucher_id'])) {
+    //$this->app->system->page->forcePage('invoice', 'details&invoice_id='.$invoice_id);
+    $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 } else {
-    
+    // Delete the voucher
+    $this->app->components->voucher->deleteRecord(\CMSApplication::$VAR['voucher_id']);
+
     // Recalculate the invoice totals and update them
     $this->app->components->invoice->recalculateTotals($invoice_id);
-    
-    // Load the relevant invoice page with success message
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher deleted successfully."));
-    $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$invoice_id);
+
+    //$this->app->system->page->forcePage('invoice', 'details&invoice_id='.$invoice_id);
+    $this->app->system->page->forcePage('voucher', 'search');
 }

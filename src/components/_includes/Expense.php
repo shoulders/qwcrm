@@ -433,6 +433,7 @@ class Expense extends Components {
         // Log activity
         $logMessage = _gettext("Expense Record").' '.$qform['expense_id'].' '._gettext("updated.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $qform['supplier_id'] ?: null, 'expense_id' => $qform['expense_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -472,7 +473,7 @@ class Expense extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Status updated message
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense status updated."));
+
 
         /* This code is not used because I removed 'invoice_id'
          * Get related invoice details
@@ -485,6 +486,8 @@ class Expense extends Components {
         // Log activity
         $logMessage = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        //$this->app->system->variables->systemMessagesWrite('success', _gettext("Expense status updated."), $silent);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -557,6 +560,7 @@ class Expense extends Components {
         // Log activity
         $logMessage = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -609,6 +613,7 @@ class Expense extends Components {
         // Log activity
         $logMessage = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -646,7 +651,7 @@ class Expense extends Components {
     #  Check if the expense status is allowed to be changed  #  // not currently used
     ##########################################################
 
-    public function checkRecordAllowsManualStatusChange($expense_id) {
+    public function checkRecordAllowsManualStatusChange($expense_id, $silent = false) {
 
         $state_flag = true;
 
@@ -659,43 +664,46 @@ class Expense extends Components {
 
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."), $silent);
             $state_flag = false;
         }
 
         // Is paid
         if($expense_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is paid."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been deleted."), $silent);
             $state_flag = false;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because it has linked credit notes."), $silent);
             return false;
         }
 
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The feature to manually change the status is not currently enabled in the code."));
+        $state_flag = false;
+
         return $state_flag;
 
-     }
+    }
 
     ##########################################################
     #  Check if the expense status allows editing            #
     ##########################################################
 
-     public function checkRecordAllowsEdit($expense_id) {
+     public function checkRecordAllowsEdit($expense_id, $silent = false) {
 
         $state_flag = true;
 
@@ -704,7 +712,7 @@ class Expense extends Components {
 
         // Is on a different tax system
         if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -714,37 +722,37 @@ class Expense extends Components {
 
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is partially paid."), $silent);
             $state_flag = false;
         }
 
         // Is paid
         if($expense_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is paid."), $silent);
             $state_flag = false;
         }
 
         // Is cancelled
         if($expense_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been cancelled."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."), $silent);
             $state_flag = false;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."), $silent);
             return false;
         }
 
@@ -756,7 +764,7 @@ class Expense extends Components {
     #   Check to see if the expense can be cancelled              #  // Do I actuallu use this, the code seems to be implemented
     ###############################################################
 
-    public function checkRecordAllowsCancel($expense_id) {
+    public function checkRecordAllowsCancel($expense_id, $silent = false) {
 
         $state_flag = true;
 
@@ -765,43 +773,43 @@ class Expense extends Components {
 
         // Is pending
         if($expense_details['status'] == 'pending') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is pending."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is pending."), $silent);
             $state_flag = false;
         }
 
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is partially paid."), $silent);
             $state_flag = false;
         }
 
         // Is paid
         if($expense_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."), $silent);
             $state_flag = false;
         }
 
         // Is cancelled
         if($expense_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has already been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has already been cancelled."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has been deleted."), $silent);
             $state_flag = false;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because it has linked credit notes."), $silent);
             return false;
         }
 
@@ -813,7 +821,7 @@ class Expense extends Components {
     #   Check to see if the expense can be deleted                #
     ###############################################################
 
-    public function checkRecordAllowsDelete($expense_id) {
+    public function checkRecordAllowsDelete($expense_id, $silent = false) {
 
         $state_flag = true;
 
@@ -826,37 +834,37 @@ class Expense extends Components {
 
         // Is partially paid
         if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."), $silent);
             $state_flag = false;
         }
 
         // Is paid
         if($expense_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."), $silent);
             $state_flag = false;
         }
 
         // Is cancelled
         if($expense_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been cancelled."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it already been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it already been deleted."), $silent);
             $state_flag = false;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because it has linked credit notes."), $silent);
             return false;
         }
 

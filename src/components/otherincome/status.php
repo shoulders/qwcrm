@@ -21,7 +21,7 @@ if(isset(\CMSApplication::$VAR['change_status'])){
 }
 
 // Build the page with the current status from the database
-$this->app->smarty->assign('allowed_to_change_status',     false       );
+$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->otherincome->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['otherincome_id']));
 $this->app->smarty->assign('otherincome_status',              $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id'], 'status')             );
 $this->app->smarty->assign('otherincome_statuses',            $this->app->components->otherincome->getStatuses() );
 $this->app->smarty->assign('allowed_to_cancel',            $this->app->components->otherincome->checkRecordAllowsCancel(\CMSApplication::$VAR['otherincome_id'])    );

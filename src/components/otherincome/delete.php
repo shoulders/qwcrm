@@ -18,11 +18,13 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('otherincome', 'stat
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
     $this->app->system->page->forcePage('otherincome', 'search');
-} 
+}
 
-// Delete the otherincome function call
-$this->app->components->otherincome->deleteRecord(\CMSApplication::$VAR['otherincome_id']);
+// Run the delete function if allowed
+if(!$this->app->components->otherincome->checkRecordAllowsDelete(\CMSApplication::$VAR['otherincome_id'])) {
+    $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
+} else {
+    $this->app->components->otherincome->deleteRecord(\CMSApplication::$VAR['otherincome_id']);
+    $this->app->system->page->forcePage('otherincome', 'search');
+}
 
-// Load the otherincome search page
-$this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome deleted successfully."));
-$this->app->system->page->forcePage('otherincome', 'search');

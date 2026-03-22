@@ -564,6 +564,7 @@ defined('_QWEXEC') or die;
         // Log activity
         $logMessage = _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -601,14 +602,14 @@ defined('_QWEXEC') or die;
     # Update Invoice Status    #
     ############################
 
-    public function updateStatus($invoice_id, $new_status) {
+    public function updateStatus($invoice_id, $new_status, $silent = false) {
 
         // Get invoice details
         $invoice_details = $this->getRecord($invoice_id);
 
         // If the new status is the same as the current one, exit
         if($new_status == $invoice_details['status']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status."), $silent);
             return false;
         }
 
@@ -634,9 +635,6 @@ defined('_QWEXEC') or die;
         // Process invoice Vouchers and their status
         $this->app->components->voucher->updateInvoiceVouchersStatuses($invoice_id, $new_status);
 
-        // Status updated message
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice status updated."));
-
         // For writing message to log file, get invoice status display name
         $inv_status_diplay_name = _gettext($this->getStatusDisplayName($new_status));
 
@@ -646,6 +644,8 @@ defined('_QWEXEC') or die;
         // Log activity
         $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        //$this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice status updated."), $silent);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -703,11 +703,6 @@ defined('_QWEXEC') or die;
 
     public function cancelRecord($invoice_id, $reason_for_cancelling) {
 
-        // Make sure the invoice can be cancelled
-        if(!$this->checkRecordAllowsCancel($invoice_id)) {
-            return false;
-        }
-
         // Get invoice details
         $invoice_details = $this->getRecord($invoice_id);
 
@@ -726,6 +721,7 @@ defined('_QWEXEC') or die;
         // Log activity
         $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -740,11 +736,6 @@ defined('_QWEXEC') or die;
     #####################################
 
     public function deleteRecord($invoice_id) {
-
-        // Make sure the invoice can be deleted
-        if(!$this->checkRecordAllowsDelete($invoice_id)) {
-            return false;
-        }
 
         // Get invoice details
         $invoice_details = $this->getRecord($invoice_id);
@@ -800,6 +791,7 @@ defined('_QWEXEC') or die;
         if($invoice_details['workorder_id']){ $logMessage .= _gettext("for Work Order").' '.$invoice_details['workorder_id'].' ';}
         $logMessage .= _gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -827,7 +819,7 @@ defined('_QWEXEC') or die;
     #  Check if the invoice status is allowed to be manually changed  #
     ###################################################################
 
-     public function checkRecordAllowsManualStatusChange($invoice_id) {
+     public function checkRecordAllowsManualStatusChange($invoice_id, $silent = false) {
 
         $state_flag = true;
 
@@ -836,7 +828,7 @@ defined('_QWEXEC') or die;
 
         // Is on a different tax system
         if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -847,11 +839,11 @@ defined('_QWEXEC') or die;
             case 'unpaid':
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been partially paid."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been is paid."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been is paid."), $silent);
                 $state_flag = false;
                 break;
             case 'in_dispute':
@@ -861,18 +853,18 @@ defined('_QWEXEC') or die;
             case 'collections':
                 break;
             case 'cancelled':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been cancelled."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been cancelled."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been deleted."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."), $silent);
             $state_flag = false;
         }
 
@@ -880,12 +872,12 @@ defined('_QWEXEC') or die;
         --> when you change the invoice status - once the invoice is paid, it's status cannot be manually changed
             the vouchers status are now mirrored using updateInvoiceVouchersStatuses()
         if($this->app->components->report->voucherCount('date', null, null, null, null, null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has Vouchers."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has Vouchers."), $silent);
             $s*/
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has linked credit notes."), $silent);
             $state_flag = false;
         }
 
@@ -898,7 +890,7 @@ defined('_QWEXEC') or die;
     #  Check if the invoice status is allowed to be Edited   #
     ##########################################################
 
-     public function checkRecordAllowsEdit($invoice_id) {
+     public function checkRecordAllowsEdit($invoice_id, $silent = false) {
 
         $state_flag = true;
 
@@ -907,7 +899,7 @@ defined('_QWEXEC') or die;
 
         // Is on a different tax system
         if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -917,49 +909,49 @@ defined('_QWEXEC') or die;
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."), $silent);
             $state_flag = false;
         }
 
         // Is paid
         if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."), $silent);
             $state_flag = false;
         }
 
         // Is cancelled
         if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been cancelled."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."), $silent);
             $state_flag = false;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."), $silent);
             $state_flag = false;
         }
 
         // Does the invoice have any Vouchers preventing changing the invoice status
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowEdit($invoice_id)) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this.")); - messages handled downstream
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."), $silent); - messages handled downstream
             $state_flag = false;
         }
 
         // The current record VAT code is enabled
         if(!$this->checkVatTaxCodeStatuses($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it has linked credit notes."), $silent);
             $state_flag = false;
         }
 
@@ -972,7 +964,7 @@ defined('_QWEXEC') or die;
     #   Check to see if the invoice can be cancelled              #
     ###############################################################
 
-    public function checkRecordAllowsCancel($invoice_id) {
+    public function checkRecordAllowsCancel($invoice_id, $silent = false) {
 
         $state_flag = true;
 
@@ -981,13 +973,13 @@ defined('_QWEXEC') or die;
 
         // Is on a different tax system
         if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // Does not have a balance
         if($invoice_details['balance'] == 0) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it does not have a balance."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it does not have a balance."), $silent);
             $state_flag = false;
         }
 
@@ -997,37 +989,37 @@ defined('_QWEXEC') or die;
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it is partially paid."), $silent);
             $state_flag = false;
         }
 
         // Is cancelled
         if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has already been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has already been cancelled."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has been deleted."), $silent);
             $state_flag = false;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it has payments."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it has payments."), $silent);
             $state_flag = false;
         }
 
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowCancel($invoice_id)) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this.")); - messages handled downstream
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."), $silent); - messages handled downstream
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has linked credit notes."), $silent);
             $state_flag = false;
         }
 
@@ -1039,7 +1031,7 @@ defined('_QWEXEC') or die;
     #   Check to see if the invoice can be deleted                #
     ###############################################################
 
-    public function checkRecordAllowsDelete($invoice_id) {
+    public function checkRecordAllowsDelete($invoice_id, $silent = false) {
 
         $state_flag = true;
 
@@ -1048,13 +1040,13 @@ defined('_QWEXEC') or die;
 
         // Is on a different tax system
         if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // Is closed
         if($invoice_details['closed_on']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it is closed."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it is closed."), $silent);
             $state_flag = false;
         }
 
@@ -1064,51 +1056,51 @@ defined('_QWEXEC') or die;
 
         // Is partially paid
         if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been partially paid."), $silent);
             $state_flag = false;
         }
 
         // Is paid
         if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."), $silent);
             $state_flag = false;
         }
 
         // Is cancelled
         if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been cancelled."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."), $silent);
             $state_flag = false;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."), $silent);
             $state_flag = false;
         }
 
         /*
         // Has Items (these will get deleted anyway)
         if(!empty($this->getItems($invoice_id))) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has items."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has items."), $silent);
             $state_flag = false;
         }
         */
 
         // Does the invoice have any Vouchers preventing deletion of the invoice (i.e. any that have been used) TODO: the name is wrong it should be:  checkAllInvoiceSiblingVouchersAllowDelete()
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowDelete($invoice_id)) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this.")); - messages handled downstream
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."), $silent); - messages handled downstream
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it has linked credit notes."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it has linked credit notes."), $silent);
             $state_flag = false;
         }
 

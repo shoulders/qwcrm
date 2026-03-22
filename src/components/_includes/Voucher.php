@@ -470,6 +470,7 @@ class Voucher extends Components {
         // Log activity
         $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -741,6 +742,7 @@ class Voucher extends Components {
             // Log activity
             $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
             $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
+            $this->app->system->variables->systemMessagesWrite('success', $logMessage);
             $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
             $this->app->system->general->updateLastActive($recordIds);
 
@@ -758,26 +760,19 @@ class Voucher extends Components {
 
         $voucher_details = $this->getRecord($voucher_id);
 
-        if(!$this->checkRecordAllowsCancel($voucher_id)) {
+        // Change the voucher status to cancelled (I do this here to maintain log consistency)
+        $this->updateStatus($voucher_id, 'cancelled', true);
 
-            // Load the relevant invoice page with failed message
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
+        // Log activity
+        $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
-        } else {
+        return true;
 
-            // Change the voucher status to cancelled (I do this here to maintain log consistency)
-            $this->updateStatus($voucher_id, 'cancelled', true);
 
-            // Log activity
-            $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-            $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
-            $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
-            $this->app->system->general->updateLastActive($recordIds);
-
-            return true;
-
-        }
 
     }
 
@@ -791,52 +786,43 @@ class Voucher extends Components {
 
         $voucher_details = $this->getRecord($voucher_id);
 
-        if(!$this->checkRecordAllowsDelete($voucher_id)) {
+        // Change the voucher status to deleted (I do this here to maintain log consistency)
+        $this->updateStatus($voucher_id, 'deleted', true);
 
-            // Load the relevant invoice page with failed message
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
+        // The voucher_id and voucher_code are kept
+        $sql = "UPDATE ".PRFX."voucher_records SET
+            employee_id         =   NULL,
+            client_id           =   NULL,
+            workorder_id        =   NULL,
+            invoice_id          =   NULL,
+            expiry_date         =   NULL,
+            status              =   'deleted',
+            opened_on           =   NULL,
+            closed_on           =   NULL,
+            last_active         =   NULL,
+            blocked             =   1,
+            tax_system          =   '',
+            type                =   '',
+            unit_net            =   0.00,
+            sales_tax_exempt    =   0,
+            vat_tax_code        =   '',
+            unit_tax_rate       =   0.00,
+            unit_tax            =   0.00,
+            unit_gross          =   0.00,
+            balance             =   0.00,
+            note                =   ''
+            WHERE voucher_id =". $this->app->db->qStr($voucher_id);
 
-        } else {
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-            // Change the voucher status to deleted (I do this here to maintain log consistency)
-            $this->updateStatus($voucher_id, 'deleted', true);
+        // Log activity
+        $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
-            // The voucher_id and voucher_code are kept
-            $sql = "UPDATE ".PRFX."voucher_records SET
-                employee_id         =   NULL,
-                client_id           =   NULL,
-                workorder_id        =   NULL,
-                invoice_id          =   NULL,
-                expiry_date         =   NULL,
-                status              =   'deleted',
-                opened_on           =   NULL,
-                closed_on           =   NULL,
-                last_active         =   NULL,
-                blocked             =   1,
-                tax_system          =   '',
-                type                =   '',
-                unit_net            =   0.00,
-                sales_tax_exempt    =   0,
-                vat_tax_code        =   '',
-                unit_tax_rate       =   0.00,
-                unit_tax            =   0.00,
-                unit_gross          =   0.00,
-                balance             =   0.00,
-                note                =   ''
-                WHERE voucher_id =". $this->app->db->qStr($voucher_id);
-
-            if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-            // Log activity
-            $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-            $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
-            $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
-            $this->app->system->general->updateLastActive($recordIds);
-
-            return true;
-
-        }
+        return true;
 
     }
 
@@ -1284,7 +1270,6 @@ class Voucher extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be voided because it has been closed.", $silent));
         }*/
 
-
         // Check Voucher Status
         switch ($voucher_details['status'])
         {
@@ -1385,7 +1370,7 @@ class Voucher extends Components {
     #   Check to see a voucher can be cancelled                   #  // Needed for cancellation via button on voucher:status (checks parent invoice aswell)
     ###############################################################  // used by invoice cancellation routine
 
-    public function checkRecordAllowsCancel($voucher_id, $checkParentInvoice = true, $silent = false) {
+    private function checkRecordAllowsCancel($voucher_id, $checkParentInvoice = true, $silent = false) {
 
         $state_flag = true;
 
@@ -1527,7 +1512,6 @@ class Voucher extends Components {
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been closed.", $silent));
         }*/
-
 
         // Check Voucher Status
         switch ($voucher_details['status'])

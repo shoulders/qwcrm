@@ -20,17 +20,10 @@ if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_
     $this->app->system->page->forcePage('client', 'search');
 }
 
-// Run the delete function and return the results
-if(!$this->app->components->client->deleteRecord(\CMSApplication::$VAR['client_id'])) {
-    
-    // Reload client details page with error messages
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client cannot be deleted."));
+// Run the delete function if allowed
+if(!$this->app->components->client->checkRecordAllowsDelete(\CMSApplication::$VAR['client_id'])) {
     $this->app->system->page->forcePage('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
-    
 } else {
-    
-    // Load the Client search page
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("The client has been deleted."));
+    $this->app->components->client->deleteRecord(\CMSApplication::$VAR['client_id']);
     $this->app->system->page->forcePage('client', 'search');
-    
 }

@@ -565,7 +565,7 @@ class Payment extends Components {
 
         // if the new status is the same as the current one, exit
         if($new_status == $payment_details['status']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status."), $silent);
             return false;
         }
 
@@ -574,9 +574,6 @@ class Payment extends Components {
                 WHERE payment_id     =". $this->app->db->qStr( $payment_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        // Status updated message
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment status updated.", $silent));
 
         // For writing message to log file, get payment status display name
         $payment_status_names = $this->getStatusDisplayNames();
@@ -588,6 +585,8 @@ class Payment extends Components {
         // Log activity
         $logMessage = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $payment_details['client_id'], 'invoice_id' => $payment_details['invoice_id'], 'voucher_id' => $payment_details['voucher_id'], 'supplier_id' => $payment_details['supplier_id'], 'expense_id' => $payment_details['expense_id'], 'otherincome_id' => $payment_details['otherincome_id'],  'payment_id' => $payment_details['payment_id'], 'creditnote_id' => $payment_details['creditnote_id']);
+        //$this->app->system->variables->systemMessagesWrite('success', _gettext("Payment status updated."), $silent);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 

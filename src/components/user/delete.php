@@ -20,16 +20,10 @@ if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']
     $this->app->system->page->forcePage('user', 'search');
 }
 
-// Run the delete function
-if(!$this->app->components->user->deleteRecord(\CMSApplication::$VAR['user_id'])) {
-    
-    // load the user details page
-    $this->app->system->page->forcePage('user', 'details&user_id='.\CMSApplication::$VAR['user_id']);    
-    
+// Run the delete function if allowed
+if(!$this->app->components->user->checkRecordAllowsDelete(\CMSApplication::$VAR['user_id'])) {
+    $this->app->system->page->forcePage('user', 'details&user_id='.\CMSApplication::$VAR['user_id']);
 } else {
-    
-    // load the user search page
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("User record deleted."));
-    $this->app->system->page->forcePage('user', 'search');   
-    
+    $this->app->components->user->deleteRecord(\CMSApplication::$VAR['user_id']);
+    $this->app->system->page->forcePage('user', 'search');
 }

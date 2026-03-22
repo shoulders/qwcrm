@@ -368,6 +368,7 @@ class User extends Components {
         // Log activity
         $logMessage = _gettext("User Account").' '.$user_details['user_id'].' ('.$user_details['display_name'].') '._gettext("updated.");
         $recordIds = array('user_id' => $user_details['user_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -404,13 +405,6 @@ class User extends Components {
         // get user details before deleting
         $user_details = $this->getRecord($user_id);
 
-        // Make sure the client can be deleted
-        if(!$this->checkRecordAllowsDelete($user_id)) {
-            return false;
-        }
-
-        /* we can now delete the user */
-
         // Delete User account
         $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$this->app->db->qStr($user_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -418,6 +412,7 @@ class User extends Components {
         // Log activity
         $logMessage = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
         $recordIds = array('user_id' => $user_id);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return true;
@@ -510,11 +505,26 @@ class User extends Components {
 
     }
 
+    ##########################################################
+    #  Check if the user allows editing                      #  // TODO: I will add more tests when needed
+    ##########################################################
+
+    public function checkRecordAllowsEdit($user_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the client details
+        //$user_details = $this->getRecord($user_id);
+
+        return $state_flag;
+
+    }
+
     ###############################################################
     #   Check to see if the user can be deleted                   #
     ###############################################################
 
-    public function checkRecordAllowsDelete($user_id) {
+    public function checkRecordAllowsDelete($user_id, $silent = false) {
 
         $state_flag = true;
 
@@ -523,7 +533,7 @@ class User extends Components {
 
         // User cannot delete their own account
         if($user_id == $this->app->user->login_user_id) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete your own account."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete your own account."), $silent);
             $state_flag = false;
         }
 
@@ -533,7 +543,7 @@ class User extends Components {
             $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";
             if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
             if($rs->fields['count'] <= 1 ) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."), $silent);
                 $state_flag = false;
             }
         }
@@ -542,7 +552,7 @@ class User extends Components {
         $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$this->app->db->qStr($user_id);
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."), $silent);
             $state_flag = false;
         }
 
@@ -550,7 +560,7 @@ class User extends Components {
         $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$this->app->db->qStr($user_id);
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."), $silent);
             $state_flag = false;
         }
 
@@ -558,7 +568,7 @@ class User extends Components {
         $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$this->app->db->qStr($user_id);
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."), $silent);
             $state_flag = false;
         }
 
@@ -566,7 +576,7 @@ class User extends Components {
         $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$this->app->db->qStr($user_id);
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
         if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has Vouchers."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has Vouchers."), $silent);
             $state_flag = false;
         }
 
