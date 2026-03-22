@@ -12,6 +12,7 @@ class QConfig {
     public $default_language = 'en_GB';
     public $autodetect_language = '1';
     public $google_server = 'https://www.google.com/';
+    public $simple_messages = '0';
     public $email_online = '1';
     public $email_mailer = 'phpmail';
     public $email_mailfrom = '';
@@ -25,14 +26,14 @@ class QConfig {
     public $email_smtp_auth = '0';
     public $email_smtp_username = '';
     public $email_smtp_password = '';
-    public $cronjob_system = 'pseudo';   
+    public $cronjob_system = 'pseudo';
     public $cronjob_pseudo_interval = '15';
     public $secret_key = '';
     public $force_ssl = '0';
     public $recaptcha = '0';
     public $recaptcha_site_key = '';
     public $recaptcha_secret_key = '';
-    public $session_handler = 'database';    
+    public $session_handler = 'database';
     public $session_lifetime = '15';
     public $shared_session = '0';
     public $remember_me = '1';
@@ -60,5 +61,6 @@ class QConfig {
     public $smarty_caching = '0';
     public $smarty_cache_lifetime = '3600';
     public $smarty_cache_modified_check = '0';
-    public $smarty_cache_locking = '0';    
+    public $smarty_cache_locking = '0';
+
 }
