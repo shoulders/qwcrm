@@ -813,10 +813,9 @@ class Payment extends Components {
 
     }
 
-    ##########################################################  Called in PaymentType::preProcess() , payment:details
-    #  Check if the payment status allows editing            #  This is applied to all payment records
+    ##########################################################
+    #  Does payment record status allows editing             #  This is applied to all payment records
     ##########################################################  More checks are done upon submission because of the different combinations of Types and Methods
-                                                            //  These could be moved into PaymentType if I did not use them as a button Boolean
 
     public function checkRecordAllowsEdit($payment_id) {
 
@@ -847,10 +846,10 @@ class Payment extends Components {
 
     }
 
-    ###############################################################  Called in PaymentType::preProcess() , payment:status
-    #   Check to see if the payment can be cancelled              #  This is applied to all payment records
-    ###############################################################  More checks are done upon submission because fo the different combinations of Types and Methods
-                                                                 //  These could be moved into PaymentType if I did not use them as a button Boolean
+    ###############################################################
+    #   Does payment record allows cancelling                     #  This is applied to all payment records
+    ###############################################################  More checks are done upon submission because of the different combinations of Types and Methods
+
     public function checkRecordAllowsCancel($payment_id) {
 
         $state_flag = true;
@@ -880,10 +879,10 @@ class Payment extends Components {
 
     }
 
-    ###############################################################  Called in PaymentType::preProcess() , payment:status
-    #   Check to see if the payment can be deleted                #  This is applied to all payment records
-    ###############################################################  More checks are done upon submission because fo the different combinations of Types and Methods
-                                                                 //  These could be moved into PaymentType if I did not use them as a button Boolean
+    ###############################################################  // This test is applied to all payment records for this action type.
+    #   Does payment status record allow deletion                 #  // Other specific Method and Type tests are done elsewhere
+    ###############################################################  // This is uses as a button boolean.
+
     public function checkRecordAllowsDelete($payment_id) {
 
         $state_flag = true;
@@ -986,7 +985,7 @@ class Payment extends Components {
     }
 
     // Process the payment
-    public function processPayment()
+    public function performPaymentAction()
     {
         // Set the payment method class (Capitalise the first letter, Workaround: removes underscores, these might go when i go full PSR-1)
         $methodClassName = 'PaymentMethod'.ucfirst(str_replace('_', '', Payment::$method));

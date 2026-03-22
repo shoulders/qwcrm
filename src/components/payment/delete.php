@@ -20,14 +20,8 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
     $this->app->system->page->forcePage('payment', 'search');
 }
 
-// Check if payment can be deleted - this only checks against the status of the payment - this function is also run in the payment process TODO: do i need this check here
-if(!$this->app->components->payment->checkRecordAllowsDelete(\CMSApplication::$VAR['payment_id'])) {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete this payment because its status does not allow it."));
-    $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
-}
-
 // Build the Payment Environment
 $this->app->components->payment->buildPaymentEnvironment('delete');
 
-// Process the payment
-$this->app->components->payment->processPayment();
+// Perform payment action
+$this->app->components->payment->performPaymentAction();

@@ -336,25 +336,26 @@ class PaymentTypeInvoice extends PaymentType
             // New
             if(Payment::$action === 'new')
             {
-                // Do nothing
+                // Do nothing - this will reload the new payment page
             }
 
             // Edit
             elseif(Payment::$action === 'edit')
             {
-                // Do nothing
+               $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
+
             }
 
             // Cancel
-            elseif(Payment::$action === 'cancel')            {
-
-                $this->app->system->page->forcePage('invoice', 'status&invoice_id='.Payment::$payment_details['invoice_id']);
+            elseif(Payment::$action === 'cancel')
+            {
+                $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
             // Delete
             elseif(Payment::$action === 'delete')
             {
-                $this->app->system->page->forcePage('invoice', 'status&invoice_id='.Payment::$payment_details['invoice_id']);
+                $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
         }
 
@@ -369,7 +370,6 @@ class PaymentTypeInvoice extends PaymentType
         // Is on a different tax system
         if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.$this->VAR['invoice_id']);
             $state_flag = false;
         }
 

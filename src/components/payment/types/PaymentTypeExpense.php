@@ -331,7 +331,7 @@ class PaymentTypeExpense extends PaymentType
         }
         else
         {
-            // The same page will be reloaded unless specified here, error messages is handled by methof
+            // The same page will be reloaded unless specified here, error messages is handled by method
 
             // New
             if(Payment::$action === 'new')
@@ -343,6 +343,7 @@ class PaymentTypeExpense extends PaymentType
             elseif(Payment::$action === 'edit')
             {
                 // Do nothing
+                //$this->app->system->page->forcePage('expense', 'details&expense_id='.Payment::$payment_details['expense_id']);
             }
 
             // Cancel
@@ -369,7 +370,6 @@ class PaymentTypeExpense extends PaymentType
         // Is on a different tax system
         if($this->expense_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot receive a payment because it is on a different tax system."));
-            $this->app->system->page->forcePage('expense', 'details&expense_id='.$this->VAR['expense_id']);
             $state_flag = false;
         }
 

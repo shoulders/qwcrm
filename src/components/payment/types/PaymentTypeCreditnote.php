@@ -226,6 +226,7 @@ class PaymentTypeCreditnote extends PaymentType
             elseif(Payment::$action === 'edit')
             {
                 // Do nothing
+                //$this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             }
 
             // Cancel
@@ -252,7 +253,6 @@ class PaymentTypeCreditnote extends PaymentType
         // Is on a different tax system
         if($this->creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot receive a payment because it is on a different tax system."));
-            $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             $state_flag = false;
         }
 

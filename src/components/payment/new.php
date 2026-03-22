@@ -67,8 +67,8 @@ if(isset(\CMSApplication::$VAR['submit']))
     // Wrap the submitted note - note is not wrapped in <p> by tinymce - this is pointless
     //if(\CMSApplication::$VAR['qpayment']['note']) {\CMSApplication::$VAR['qpayment']['note'] = '<p>'.\CMSApplication::$VAR['qpayment']['note'].'</p>';}
 
-    // Process the payment (validations are done further in the process because of the different combinations of Types and Methods.)
-    $this->app->components->payment->processPayment();
+    // Perform payment action
+    $this->app->components->payment->performPaymentAction();
 }
 
 // Build the buttons

@@ -201,10 +201,12 @@ class PaymentTypeOtherincome extends PaymentType
             elseif(Payment::$action === 'edit')
             {
                 // Do nothing
+                //$this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }
 
             // Cancel
-            elseif(Payment::$action === 'cancel')            {
+            elseif(Payment::$action === 'cancel')
+            {
 
                 $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }
@@ -227,7 +229,6 @@ class PaymentTypeOtherincome extends PaymentType
         // Is on a different tax system
         if($this->otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot receive a payment because it is on a different tax system."));
-            $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             $state_flag = false;
         }
 

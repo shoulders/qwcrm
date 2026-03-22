@@ -30,12 +30,6 @@ class PaymentType
     // Pre-Processing - Prep/validate the data
     protected function preProcess()
     {
-        // Is the payment allowed - no checks in this function are currently in place - this is a placeholder
-        if(!$this->checkPaymentAllowed())
-        {
-            Payment::$payment_valid = false;
-        }
-
         // New
         if(Payment::$action === 'new')
         {
@@ -125,6 +119,12 @@ class PaymentType
     protected function postProcess()
     {
 
+        // Is the payment allowed - Remember this will run the funciton in the Extended Type file e.g. `PaymentTypeExpense.php`
+        if(!$this->checkPaymentAllowed())
+        {
+            Payment::$payment_valid = false;
+        }
+
         // Different actions depending on success
         if(Payment::$payment_successful)
         {
@@ -158,7 +158,7 @@ class PaymentType
         // The payment action has failed
         } else {
 
-            $logMessage = Payment::$payment_details['payment_id']
+            $logMessage = Payment::$payment_details['payment_id'] ?? null
             ? 'Payment Action of `'._gettext(Payment::$action).'` for Payment ID: `'.Payment::$payment_details['payment_id'].'` '._gettext("failed.")
             : 'Payment Action of `'._gettext(Payment::$action).'` '._gettext("failed.");
         }
@@ -182,7 +182,7 @@ class PaymentType
         return;
     }
 
-    // General payment checks (placeholder for now)
+    // General payment checks
     protected function checkPaymentAllowed()
     {
         return true;
