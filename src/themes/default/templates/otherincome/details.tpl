@@ -241,6 +241,9 @@
                                             <tr>
                                                 <td class="olotd4">{$otherincome_details.note}</td>
                                             </tr>
+                                            <tr>
+                                                <td>* {t}Note for internal use only{/t}</td>
+                                            </tr>
                                         </table>
                                     </td>
                                 </tr>

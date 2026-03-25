@@ -692,7 +692,8 @@ class Expense extends Components {
             return false;
         }
 
-        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The feature to manually change the status is not currently enabled in the code."));
+        // Disable this feature for now. may enable or remove in future versions.
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot have it's status changed at this time because the feature is not available in this version of QWcrm."), $silent);
         $state_flag = false;
 
         return $state_flag;

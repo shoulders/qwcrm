@@ -228,16 +228,6 @@
                     <td align="center"><b>{t}VAT Number{/t}:</b> {$company_details.vat_number}</td>
                 </tr>
             {/if}
-            {if $creditnote_details.note}
-                <tr>
-                    <td>
-                        <div style="width: 300px; word-wrap: break-word;">
-                            <div><strong>{t}Reason for Credit Note{/t}</strong></div>
-                            <div>{$creditnote_details.note}</div>
-                        </div>
-                    </td>
-                </tr>
-            {/if}
             <tr>
                 <td>
                     <strong>{t}This Credit Note will expire on{/t}: </strong>{$creditnote_details.expiry_date|date_format:$date_format}

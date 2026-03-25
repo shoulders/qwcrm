@@ -349,6 +349,9 @@
                                         <tr>
                                             <td class="olotd4">{$creditnote_details.note}</td>
                                         </tr>
+                                        <tr>
+                                            <td>* {t}Note for internal use only{/t}</td>
+                                        </tr>
                                     </table>
                                 </tr>
 

@@ -738,6 +738,7 @@
                                             <tr>
                                                 <td class="menutd2">
                                                     <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300"  onkeydown="return onlyAddress(event);">{$invoice_details.note}</textarea>
+                                                    <br>* {t}Note for internal use only{/t}
                                                 </td>
                                             </tr>
                                         </table>

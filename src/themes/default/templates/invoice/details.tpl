@@ -352,7 +352,12 @@
                                             <td class="menuhead2">&nbsp;{t}Note{/t}</td>
                                         </tr>
                                         <tr>
-                                            <td class="olotd4">{$invoice_details.note}</td>
+                                            <td class="olotd4">
+                                                {$invoice_details.note}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>* {t}Note for internal use only{/t}</td>
                                         </tr>
                                     </table>
                                 </td>
