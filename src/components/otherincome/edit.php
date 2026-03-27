@@ -35,7 +35,7 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
     if(isset(\CMSApplication::$VAR['submit']))
     {
         // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
-        if($this->app->components->otherincome->checkRecordCanBeSubmitted($otherincome_details))
+        if($this->app->components->otherincome->checkRecordSubmissionIsValid($otherincome_details))
         {
             // Update the record
             $this->app->components->otherincome->updateRecord($otherincome_details);

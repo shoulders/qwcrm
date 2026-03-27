@@ -553,7 +553,7 @@
                                                     {/if}
 
                                                     <!-- Add Voucher Button -->
-                                                    {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
+                                                    {if $allowed_to_create_voucher}
                                                         <button type="button" class="userButton" onclick="window.location.href='index.php?component=voucher&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Voucher{/t}</button>
                                                     {/if}
 

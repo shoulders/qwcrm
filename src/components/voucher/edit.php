@@ -24,11 +24,17 @@ if(!$this->app->components->payment->checkMethodActive('voucher')) {
 if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR['voucher_id'])) {
     $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 } else {
+
+    /* Get voucher details from whichever source, and fill in the blanks
+    $voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']);
+    \CMSApplication::$VAR['qform'] = \CMSApplication::$VAR['qform'] ?? array();
+    $voucher_details = array_merge($voucher_details, \CMSApplication::$VAR['qform']);*/
+
     // if information submitted
     if(isset(\CMSApplication::$VAR['submit'])) {
 
-        // Check the submission is valid, if not, load the page with an error message
-        if($this->app->components->voucher->checkVoucherExpiryDateIsValid(\CMSApplication::$VAR['qform']['expiry_date']))
+        // Check the submission is valid, if not, reload the page with an error message
+        if($this->app->components->voucher->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {
             // Update Voucher
             $this->app->components->voucher->updateRecord(\CMSApplication::$VAR['qform']['voucher_id'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['note']);

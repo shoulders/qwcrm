@@ -630,7 +630,7 @@ class Expense extends Components {
     # Validate submitted information before allowing submission #
     #############################################################
 
-    public function checkRecordCanBeSubmitted($qform)
+    public function checkRecordSubmissionIsValid($qform)
     {
         $state_flag = true;
 

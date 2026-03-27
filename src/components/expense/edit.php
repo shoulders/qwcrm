@@ -34,7 +34,7 @@ if(!$this->app->components->expense->checkRecordAllowsEdit(\CMSApplication::$VAR
     if(isset(\CMSApplication::$VAR['submit']))
     {
         // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
-        if($this->app->components->expense->checkRecordCanBeSubmitted($expense_details))
+        if($this->app->components->expense->checkRecordSubmissionIsValid($expense_details))
         {
             // Update the record
             $this->app->components->expense->updateRecord($expense_details);

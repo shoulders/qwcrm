@@ -478,7 +478,7 @@ class General extends System {
 
         // Load file into memory
         if (!($fp = fopen($file, 'r'))) {
-           die(_gettext("Unable to open XML file.").' : '.$file);
+            die(_gettext("Unable to open XML file.").' : '.$file);
         }
         $xmldata = fread($fp, filesize($file));
         fclose($fp);

@@ -30,7 +30,7 @@ if(!$this->app->components->payment->checkMethodActive('voucher')) {
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Check the submission is valid, if not, load the page with an error message
-    if($this->app->components->voucher->checkVoucherExpiryDateIsValid(\CMSApplication::$VAR['qform']['expiry_date']))
+    if($this->app->components->voucher->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
     {
         // Create a new Voucher
         $voucher_id = $this->app->components->voucher->insertRecord(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['type'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['note']);
@@ -52,10 +52,12 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     $dateObject->modify('+'.$this->app->components->company->getRecord('voucher_expiry_offset').' days');
     $voucher_expiry_date = $dateObject->format('Y-m-d');
 
+    // Build the page
+    $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'client_id')));
+    $this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
+    $this->app->smarty->assign('voucher_tax_system', $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'tax_system'));
+    $this->app->smarty->assign('voucher_expiry_date', $voucher_expiry_date);
+
 }
 
-// Build the page
-$this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'client_id')));
-$this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
-$this->app->smarty->assign('voucher_tax_system', $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'tax_system'));
-$this->app->smarty->assign('voucher_expiry_date', $voucher_expiry_date);
+

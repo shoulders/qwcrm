@@ -18,6 +18,7 @@ if(!isset(\CMSApplication::$VAR['creditnote_id']) || !\CMSApplication::$VAR['cre
 if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$VAR['creditnote_id'])) {
     $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.\CMSApplication::$VAR['creditnote_id']);
 } else {
+
     // Get credit note details from whichever source, and fill in the blanks
     $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']);
     \CMSApplication::$VAR['qform'] = \CMSApplication::$VAR['qform'] ?? array();
@@ -29,8 +30,8 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
     // Update credit note (if submited)
     if(isset(\CMSApplication::$VAR['submit']))
     {
-        // Check the submission is valid, if not, load the page with an error message
-        if($this->app->components->creditnote->checkRecordCanBeSubmitted($creditnote_details))
+        // Check the submission is valid, if not, reload the page with an error message
+        if($this->app->components->creditnote->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {
             $this->app->components->creditnote->insertItems($creditnote_details['creditnote_id'], $creditnote_items);
             $this->app->components->creditnote->updateRecord($creditnote_details);

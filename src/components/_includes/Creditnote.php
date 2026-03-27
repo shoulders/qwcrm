@@ -841,12 +841,14 @@ class Creditnote extends Components {
 
     }
 
-    ############################################ // this could be put in general with data stuff
-    #  Check Credit note Expiry is valid       #
-    ############################################ done
+    ############################################
+    #  Validate Expiry date                    #
+    ############################################
 
-    function checkCreditnoteExpiryIsValid($expiry_date)
+    private function checkExpiryDateIsValid($expiry_date)
     {
+        $state_flag = true;
+
         // Get the expiry date - Converted in to 0000-00-00, a format that will prevent incorrect calculations
         $expiry_date = new DateTime($this->app->system->general->dateToMysqlDate($expiry_date));
 
@@ -856,16 +858,16 @@ class Creditnote extends Components {
         // Expiry is in the past
         if($expiry_date < $todays_date) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expiry date is invalid because it is in the past."));
-            return false;
+            $state_flag =  false;
         }
 
         /* Expiry is today
         if($expiry_date = $todays_date) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expiry date is invalid because it is today's date."));
-            return false;
+            $state_flag =  false;
         }*/
 
-        return true;
+        return $state_flag;
 
     }
 
@@ -1137,7 +1139,7 @@ class Creditnote extends Components {
     # Validate submitted information before allowing submission #
     #############################################################
 
-    public function checkRecordCanBeSubmitted($qform)
+    public function checkRecordSubmissionIsValid($qform)
     {
         $state_flag = true;
 
@@ -1274,7 +1276,7 @@ class Creditnote extends Components {
             }
         }
 
-         /** Purchase Credit Notes **/
+        /** Purchase Credit Notes **/
 
         elseif($supplier_id) {
 
@@ -1285,7 +1287,6 @@ class Creditnote extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this supplier because they are not active."));
                 $state_flag = false;
             }
-
 
             /* Purchase Credit Note (Supplier) - (supplier:details) */
             // Used to reduce the amount you owe your supplier, or record a refund received from a supplier.

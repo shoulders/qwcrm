@@ -73,4 +73,5 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
     $this->app->smarty->assign('invoice_statuses',         $this->app->components->invoice->getStatuses());
     $this->app->smarty->assign('voucher_statuses',         $this->app->components->voucher->getStatuses());
 
+    $this->app->smarty->assign('allowed_to_create_voucher', $this->app->components->voucher->checkRecordCanBeCreated(\CMSApplication::$VAR['invoice_id']));
 }
