@@ -1003,12 +1003,12 @@ class Voucher extends Components {
     # Validate submitted information before allowing submission #
     #############################################################
 
-    public function checkRecordSubmissionIsValid($voucher_id){
+    public function checkRecordSubmissionIsValid($qform){
 
         $state_flag = true;
 
         // Check the expiry date
-        if(!$this->checkExpiryDateIsValid(\CMSApplication::$VAR['qform']['expiry_date'])){
+        if(!$this->checkExpiryDateIsValid($qform['expiry_date'])){
             $state_flag = false;
         }
 
