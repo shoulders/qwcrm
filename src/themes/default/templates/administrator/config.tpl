@@ -177,7 +177,7 @@
                     <tr>
                         <td align="right"><b>{t}Simple Messages{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="simple_messages" name="qform[simple_messages]">
+                            <select class="olotd5" id="simple_messages" name="qform[simple_messages]" disabled>
                                 <option value="0"{if $qwcrm_config.simple_messages == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.simple_messages == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
