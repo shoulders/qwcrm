@@ -20,7 +20,7 @@
         <td>{$creditnote_stats.count_opened}</td>
         <td>{$creditnote_stats.count_closed}</td>
         <td>{$creditnote_stats.count_fully_used}</td>
-        <td>{$creditnote_stats.count_expired_unused}</td>
+        <td>{$creditnote_stats.count_expired_paid}</td>
         <td>{$creditnote_stats.count_cancelled}</td>
         <td>{$creditnote_stats.count_deleted}</td>
     </tr>

@@ -210,7 +210,7 @@
                 </tr>
                 <tr>
                     <td><b>{t}Expired Unused{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_expired_unused}</b></td>
+                    <td><b>{$voucher_stats.count_expired_paid}</b></td>
                     <td><b>({$currency_symbol}{$voucher_stats.sum_expired_unused_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
