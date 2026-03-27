@@ -225,7 +225,12 @@ class Variables extends System {
     #  Write a system message to the store #
     ########################################
 
-    public function systemMessagesWrite($type, $message, $silent = false) {
+    public function systemMessagesWrite($type, $message, $silent = false, $adminOnly = false) {
+
+        // If adminOnly and the logged in use is not an admin, then do not push the message to the store for display
+        if($adminOnly && (int) $this->app->user->usergroup !== 1){
+            return;
+        }
 
         if(!$silent){
             \CMSApplication::$messages[$type][] = $message;
