@@ -402,6 +402,8 @@ class User extends Components {
 
     public function deleteRecord($user_id) {
 
+        return;
+
         // get user details before deleting
         $user_details = $this->getRecord($user_id);
 
@@ -538,45 +540,56 @@ class User extends Components {
         }
 
         // Cannot delete this account if it is the last administrator account
-        if($user_details['usergroup'] == '1') {
-
-            $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";
-            if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-            if($rs->fields['count'] <= 1 ) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."), $silent);
-                $state_flag = false;
-            }
+        if((int) $user_details['usergroup'] == 1 && $this->app->components->report->userCount(null, null, null, null, null, 1) == 1) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."), $silent);
+            $state_flag = false;
         }
 
-        // Check if user has created any workorders
-        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$this->app->db->qStr($user_id);
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        if($rs->fields['count'] > 0 ) {
+        // Check if user has `created` any workorders
+        if($this->app->components->report->workorderCount(null, null, null, null, 'created_by', $user_id) ){
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."), $silent);
             $state_flag = false;
         }
 
-        // Check if user has any assigned workorders
-        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$this->app->db->qStr($user_id);
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        if($rs->fields['count'] > 0 ) {
+        // Check if user has any `assigned` workorders
+        if($this->app->components->report->workorderCount(null, null, null, null, 'assigned', $user_id) ){
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."), $silent);
             $state_flag = false;
         }
 
+        // Check if user has `closed` any workorders
+        if($this->app->components->report->workorderCount(null, null, null, null, 'closed_by', $user_id) ){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has closed work orders."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Schedules
+        if($this->app->components->report->scheduleCount(null, null, null, $user_id)){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has schedules."), $silent);
+            $state_flag = false;
+        }
+
         // Check if user has any invoices
-        $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$this->app->db->qStr($user_id);
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        if($rs->fields['count'] > 0 ) {
+        if($this->app->components->report->invoiceCount(null, null, null, null, null, $user_id) ){
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."), $silent);
             $state_flag = false;
         }
 
-        // Check if user is assigned to any Vouchers
-        $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$this->app->db->qStr($user_id);
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        if($rs->fields['count'] > 0 ) {
+        // Check if user is assigned to any Vouchers - this is not really needed if you check for invoices
+        if($this->app->components->report->voucherCount(null, null, null, null, null, null, null, null, $user_id) ){
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has Vouchers."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Payments
+        if($this->app->components->report->paymentCount(null, null, null, null, null, null, null, null, $user_id)){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has payments."), $silent);
+            $state_flag = false;
+        }
+
+        // Creditnotes
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, $user_id)){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has credit notes."), $silent);
             $state_flag = false;
         }
 

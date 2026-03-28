@@ -648,7 +648,7 @@ class Expense extends Components {
     }
 
     ##########################################################
-    #  Check if the expense status is allowed to be changed  #  // not currently used
+    #  Check if the expense status is allowed to be changed  #  // not currently used - would be added to expense:status
     ##########################################################
 
     public function checkRecordAllowsManualStatusChange($expense_id, $silent = false) {
@@ -681,7 +681,7 @@ class Expense extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."), $silent);
             $state_flag = false;
         }
@@ -717,6 +717,12 @@ class Expense extends Components {
             $state_flag = false;
         }
 
+        // Check the relevant VAT code is enabled for all of this record's items
+        if(!$this->checkRecordItemsVatTaxCodeStatuses($expense_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
+            $state_flag = false;
+        }
+
         // Is Pending
         if($expense_details['status'] == 'pending') {
         }
@@ -746,7 +752,7 @@ class Expense extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."), $silent);
             $state_flag = false;
         }
@@ -803,7 +809,7 @@ class Expense extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."), $silent);
             $state_flag = false;
         }
@@ -858,7 +864,7 @@ class Expense extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."), $silent);
             $state_flag = false;
         }
@@ -867,6 +873,22 @@ class Expense extends Components {
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because it has linked credit notes."), $silent);
             return false;
+        }
+
+        return $state_flag;
+
+    }
+
+    ####################################################################
+    #   Check expense items VAT Tax Codes are all enabled              #
+    ####################################################################
+
+    private function checkRecordItemsVatTaxCodeStatuses($expense_id) {
+
+        $state_flag = true;
+
+        foreach ($this->getItems($expense_id) as $key => $value) {
+            if(!$this->app->components->company->getVatTaxCodeStatus($value['vat_tax_code'])) { $state_flag = false;}
         }
 
         return $state_flag;

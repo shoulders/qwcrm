@@ -863,17 +863,18 @@ defined('_QWEXEC') or die;
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the invoice has payments."), $silent);
             $state_flag = false;
         }
 
         /* Does the invoice have any Vouchers preventing changing the invoice status
-        --> when you change the invoice status - once the invoice is paid, it's status cannot be manually changed
-            the vouchers status are now mirrored using updateInvoiceVouchersStatuses()
-        if($this->app->components->report->voucherCount('date', null, null, null, null, null, null, null, null, null, $invoice_id)) {
+         * - When you change the invoice status, the vouchers status are now mirrored using updateInvoiceVouchersStatuses()
+         * - Once the invoice is paid, it's status cannot be manually changed
+        if($this->app->components->report->voucherCount(null, null, null, null, null, null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has Vouchers."), $silent);
-            $s*/
+        }
+        */
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
@@ -890,7 +891,7 @@ defined('_QWEXEC') or die;
     #  Check if the invoice status is allowed to be Edited   #
     ##########################################################
 
-     public function checkRecordAllowsEdit($invoice_id, $silent = false) {
+    public function checkRecordAllowsEdit($invoice_id, $silent = false) {
 
         $state_flag = true;
 
@@ -900,6 +901,12 @@ defined('_QWEXEC') or die;
         // Is on a different tax system
         if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Check the relevant VAT code is enabled for all of this record's items
+        if(!$this->checkRecordItemsVatTaxCodeStatuses($invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
             $state_flag = false;
         }
 
@@ -931,21 +938,15 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."), $silent);
-            $state_flag = false;
-        }
-
         // Does the invoice have any Vouchers preventing changing the invoice status
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowEdit($invoice_id)) {
             //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."), $silent); - messages handled downstream
             $state_flag = false;
         }
 
-        // The current record VAT code is enabled
-        if(!$this->checkVatTaxCodeStatuses($invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments."), $silent);
             $state_flag = false;
         }
 
@@ -1005,15 +1006,15 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it has payments."), $silent);
-            $state_flag = false;
-        }
-
         // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowCancel($invoice_id)) {
             //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."), $silent); - messages handled downstream
+            $state_flag = false;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it has payments."), $silent);
             $state_flag = false;
         }
 
@@ -1078,19 +1079,11 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."), $silent);
-            $state_flag = false;
-        }
-
-        /*
-        // Has Items (these will get deleted anyway)
+        /* Has Items (these will get deleted anyway)
         if(!empty($this->getItems($invoice_id))) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has items."), $silent);
             $state_flag = false;
-        }
-        */
+        }*/
 
         // Does the invoice have any Vouchers preventing deletion of the invoice (i.e. any that have been used) TODO: the name is wrong it should be:  checkAllInvoiceSiblingVouchersAllowDelete()
         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowDelete($invoice_id)) {
@@ -1098,10 +1091,32 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has payments."), $silent);
+            $state_flag = false;
+        }
+
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because it has linked credit notes."), $silent);
             $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
+    ####################################################################
+    #   Check invoice items VAT Tax Codes are all enabled              #
+    ####################################################################
+
+    private function checkRecordItemsVatTaxCodeStatuses($invoice_id) {
+
+        $state_flag = true;
+
+        foreach ($this->getItems($invoice_id) as $key => $value) {
+            if(!$this->app->components->company->getVatTaxCodeStatus($value['vat_tax_code'])) { $state_flag = false;}
         }
 
         return $state_flag;
@@ -1385,22 +1400,6 @@ defined('_QWEXEC') or die;
         $this->app->system->general->updateLastActive($recordIds);
 
         return true;
-
-    }
-
-    ####################################################################
-    #   Check invoice items VAT Tax Codes are all enabled              #
-    ####################################################################
-
-    public function checkVatTaxCodeStatuses($invoice_id) {
-
-        $state_flag = true;
-
-        foreach ($this->getItems($invoice_id) as $key => $value) {
-            if(!$this->app->components->company->getVatTaxCodeStatus($value['vat_tax_code'])) { $state_flag = false;}
-        }
-
-        return $state_flag;
 
     }
 

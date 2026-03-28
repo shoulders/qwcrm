@@ -22,10 +22,11 @@ defined('_QWEXEC') or die;
 
 class Report extends Components {
 
-    /** Clients **/
+    /** Users **/
 
-    #####################################
-    #    Get Client Stats               #
+
+    /*#####################################
+    #    Get Client Stats               #  conver to users
     #####################################
 
     public function clientGetStats($record_set, $start_date = null, $end_date = null) {
@@ -35,7 +36,7 @@ class Report extends Components {
         // Basic
         if($record_set == 'current' || $record_set == 'all') {
 
-            $stats['count_new'] = $this->clientCount($start_date, $end_date);
+            $stats['count_new'] = $this->clientCount('opened_on', $start_date, $end_date);
 
         }
 
@@ -53,9 +54,175 @@ class Report extends Components {
             $date_year_start    = $this->app->components->company->getRecord('year_start');
             $date_year_end      = $this->app->components->company->getRecord('year_end');
 
-            $stats['count_new_month'] = $this->clientCount($date_month_start, $date_month_end);
-            $stats['count_new_year']  = $this->clientCount($date_year_start, $date_year_end);
-            $stats['count_total'] = $this->clientCount();
+            $stats['count_new_month'] = $this->clientCount('opened_on', $date_month_start, $date_month_end);
+            $stats['count_new_year']  = $this->clientCount('opened_on', $date_year_start, $date_year_end);
+            $stats['count_total'] = $this->clientCount('opened_on');
+
+        }
+
+        return $stats;*/
+
+
+    #############################################
+    #    Count Users                            #
+    #############################################
+
+    public function userCount($date_type = null, $start_date = null, $end_date = null, $status = null, $type = null, $usergroup = null, $client_id = null) {
+
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";
+
+        // Filter by Date
+        $whereTheseRecords .= $this->userBuildFilterByDate($date_type, $start_date, $end_date);
+
+        // Restrict by Status
+        $whereTheseRecords .= $this->userBuildFilterByStatus($status);
+
+        // Restrict by Type
+        $whereTheseRecords .= $this->userBuildFilterByType($type);
+
+        // Filter by Usergroup
+        if($usergroup) {
+            $whereTheseRecords .= " AND ".PRFX."user_records.usergroup = ".$this->app->db->qStr($usergroup);
+        }
+
+        // Filter by client_id
+        if($client_id) {
+            $whereTheseRecords .= " AND ".PRFX."user_records.client_id = ".$this->app->db->qStr($client_id);
+        }
+
+        $sql = "SELECT COUNT(*) AS count
+                FROM ".PRFX."user_records
+                ".$whereTheseRecords;
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['count'];
+
+    }
+
+    ######################################
+    #   Build user Date filter SQL       #
+    ######################################
+
+    private function userBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
+
+        $whereTheseRecords = '';
+
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
+
+        // Set start date
+        if($start_date) {
+            if($date_type == 'register_date') {
+                $whereTheseRecords .= " AND ".PRFX."user_records.register_date >= ".$this->app->db->qStr($start_date);
+            }
+            if($date_type == 'last_reset_time') {
+                $whereTheseRecords .= " AND ".PRFX."user_records.last_reset_time >= ".$this->app->db->qStr($start_date);
+            }
+            if($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."user_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        // Set end date
+        if($end_date) {
+            if($date_type == 'register_date') {
+                $whereTheseRecords .= " AND ".PRFX."user_records.register_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
+            if($date_type == 'last_reset_time') {
+                $whereTheseRecords .= " AND ".PRFX."user_records.last_reset_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
+            if($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."user_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
+        }
+
+        return $whereTheseRecords;
+
+    }
+
+    ####################################### // status not supported yest, but still useful for active "status"
+    #  Build user Status filter SQL       #
+    #######################################
+
+    private function userBuildFilterByStatus($status = null) {
+
+        $whereTheseRecords = '';
+
+        if($status == 'active') {
+            $whereTheseRecords .= " AND ".PRFX."user_records.active = 1";
+        } elseif($status == 'inactive') {
+            $whereTheseRecords .= " AND ".PRFX."user_records.active = 0";
+        } elseif($status) {
+            $whereTheseRecords .= " AND ".PRFX."user_records.status = ".$this->app->db->qStr($status);
+        }
+
+        /* Remove Deleted Records from the results, unless the status is 'deleted' -- when a user is deleted, it should be fully deleted, like clients, unlike invoices etc..
+        if($status !== 'deleted') {
+            $whereTheseRecords .= " AND ".PRFX."user_records.status != 'deleted'";
+        }*/
+
+        return $whereTheseRecords;
+
+    }
+
+    #####################################
+    #  Build usre type filter SQL       # //  (employee | client)
+    #####################################
+
+    private function userBuildFilterByType($type = null) {
+
+        $whereTheseRecords = '';
+
+        // Return records for the given type
+        if($type == 'employee') {
+            $whereTheseRecords .= " AND ".PRFX."user_records.is_employee = 1";
+        }
+        if($type == 'client') {
+            $whereTheseRecords .= " AND ".PRFX."user_records.is_employee = 0";
+        }
+
+        return $whereTheseRecords;
+
+    }
+
+    /** Clients **/
+
+    #####################################
+    #    Get Client Stats               #  TODO: add dat type - check all ...  GetStats()
+    #####################################
+
+    public function clientGetStats($record_set, $start_date = null, $end_date = null) {
+
+        $stats = array();
+
+        // Basic
+        if($record_set == 'current' || $record_set == 'all') {
+
+            $stats['count_new'] = $this->clientCount('opened_on', $start_date, $end_date);
+
+        }
+
+        // Historic
+        if($record_set == 'historic' || $record_set == 'all') {
+
+            $dateObject = new DateTime();
+
+            $dateObject->modify('first day of this month');
+            $date_month_start = $dateObject->format('Y-m-d');
+
+            $dateObject->modify('last day of this month');
+            $date_month_end = $dateObject->format('Y-m-d');
+
+            $date_year_start    = $this->app->components->company->getRecord('year_start');
+            $date_year_end      = $this->app->components->company->getRecord('year_end');
+
+            $stats['count_new_month'] = $this->clientCount('opened_on', $date_month_start, $date_month_end);
+            $stats['count_new_year']  = $this->clientCount('opened_on', $date_year_start, $date_year_end);
+            $stats['count_total'] = $this->clientCount('opened_on');
 
         }
 
@@ -67,20 +234,16 @@ class Report extends Components {
     #    Count Clients                          #
     #############################################
 
-    public function clientCount($start_date = null, $end_date = null, $status = null) {
+    public function clientCount($date_type = null, $start_date = null, $end_date = null, $status = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."client_records.client_id\n";
 
-        // Filter by Create Date
-        if($start_date && $end_date) {
-            $whereTheseRecords .= " AND ".PRFX."client_records.opened_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."client_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-        }
+        // Filter by Date
+        $whereTheseRecords .= $this->clientBuildFilterByDate($date_type, $start_date, $end_date);
 
         // Restrict by Status
-        if($status) {
-            $whereTheseRecords .= " AND ".PRFX."client_records.active= ".$this->app->db->qStr($status);
-        }
+        $whereTheseRecords .= $this->clientBuildFilterByStatus($status);
 
         $sql = "SELECT COUNT(*) AS count
                 FROM ".PRFX."client_records
@@ -91,6 +254,111 @@ class Report extends Components {
         return $rs->fields['count'];
 
     }
+
+    ######################################
+    #   Build client Date filter SQL     #
+    ######################################
+
+    private function clientBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
+
+        $whereTheseRecords = '';
+
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
+
+        if($start_date) {
+            if($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."client_records.opened_on >= ".$this->app->db->qStr($start_date);
+            } elseif($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."client_records.closed_on >= ".$this->app->db->qStr($start_date);
+            } elseif($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."client_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        if($end_date) {
+            if($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."client_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."client_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."client_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
+        }
+
+        return $whereTheseRecords;
+
+    }
+
+
+    #######################################
+    #  Build client Status filter SQL     # // build a filter on whether or not the client is open or closed
+    ####################################### // you can filter by a particular status aswell, not sure if i have used that
+
+    private function clientBuildFilterByStatus($status = null) {
+
+        $whereTheseRecords = '';
+
+        if($status == 'active') {
+            $whereTheseRecords .= " AND ".PRFX."client_records.active = 1";
+        } elseif($status == 'inactive') {
+            $whereTheseRecords .= " AND ".PRFX."client_records.active = 0";
+        } elseif($status == 'open') {
+            $whereTheseRecords .= " AND ".PRFX."client_records.closed_on IS NULL";
+        } elseif($status == 'opened') {
+            // Do nothing
+        } elseif($status == 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."client_records.closed_on IS NOT NULL";
+        } elseif($status) {
+            $whereTheseRecords .= " AND ".PRFX."client_records.status = ".$this->app->db->qStr($status);
+        }
+
+        /* Remove Deleted Records from the results, unless the status is 'deleted'  -- tyhis should never be needed because if a clent is deleted, it is fully deleted unlike invoices.
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."client_records.status != 'deleted'";
+        }*/
+
+        return $whereTheseRecords;
+
+    }
+
+
+    #############################################
+    #    Count Client Notes                     #
+    #############################################
+
+    public function clientNotesCount($start_date = null, $end_date = null, $client_id = null) {
+
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."client_notes.client_note_id\n";
+
+        // Filter by Date
+        if($start_date) {
+            $whereTheseRecords .= " AND ".PRFX."client_notes.date >= ".$this->app->db->qStr($start_date);
+        }
+        if($end_date) {
+            $whereTheseRecords .= " AND ".PRFX."client_notes.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+        }
+
+        // Filter by client_id
+        if($client_id) {
+            $whereTheseRecords .= " AND ".PRFX."client_notes.client_note_id=".$this->app->db->qStr($client_id);
+        }
+
+        $sql = "SELECT COUNT(*) AS count
+                FROM ".PRFX."client_notes
+                ".$whereTheseRecords;
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['count'];
+
+    }
+
+
 
     /** Workorders **/
 
@@ -105,24 +373,24 @@ class Report extends Components {
         // Current
         if($record_set == 'current' || $record_set == 'all') {
 
-            $stats['count_open'] = $this->workorderCount('opened_on', $start_date, $end_date, 'open', $employee_id, $client_id);
-            $stats['count_unassigned'] = $this->workorderCount('opened_on', $start_date, $end_date,'unassigned', $employee_id, $client_id);
-            $stats['count_assigned'] = $this->workorderCount('opened_on', $start_date, $end_date, 'assigned', $employee_id, $client_id);
-            $stats['count_waiting_for_parts'] = $this->workorderCount('opened_on', $start_date, $end_date, 'waiting_for_parts',$employee_id, $client_id);
-            $stats['count_scheduled'] = $this->workorderCount('opened_on', $start_date, $end_date, 'scheduled', $employee_id, $client_id);
-            $stats['count_with_client'] = $this->workorderCount('opened_on', $start_date, $end_date, 'with_client', $employee_id, $client_id);
-            $stats['count_on_hold'] = $this->workorderCount('opened_on', $start_date, $end_date, 'on_hold', $employee_id, $client_id);
-            $stats['count_management'] = $this->workorderCount('opened_on', $start_date, $end_date, 'management', $employee_id, $client_id);
+            $stats['count_open'] = $this->workorderCount('opened_on', $start_date, $end_date, 'open', 'assigned', $employee_id, $client_id);
+            $stats['count_unassigned'] = $this->workorderCount('opened_on', $start_date, $end_date,'unassigned', 'assigned', $employee_id, $client_id);
+            $stats['count_assigned'] = $this->workorderCount('opened_on', $start_date, $end_date, 'assigned', 'assigned', $employee_id, $client_id);
+            $stats['count_waiting_for_parts'] = $this->workorderCount('opened_on', $start_date, $end_date, 'waiting_for_parts', 'assigned', $employee_id, $client_id);
+            $stats['count_scheduled'] = $this->workorderCount('opened_on', $start_date, $end_date, 'scheduled', 'assigned', $employee_id, $client_id);
+            $stats['count_with_client'] = $this->workorderCount('opened_on', $start_date, $end_date, 'with_client', 'assigned', $employee_id, $client_id);
+            $stats['count_on_hold'] = $this->workorderCount('opened_on', $start_date, $end_date, 'on_hold', 'assigned', $employee_id, $client_id);
+            $stats['count_management'] = $this->workorderCount('opened_on', $start_date, $end_date, 'management', 'assigned', $employee_id, $client_id);
         }
 
         // Historic
-        if($record_set == 'historic' || $record_set == 'all') {
+        if($record_set == 'historic' || $record_set == 'all') {   //is assigned the best choice. emploee_id was last to mess with record + shoul i allow if empty tyep = any - prob not
 
-            $stats['count_opened'] = $this->workorderCount('opened_on', $start_date, $end_date, 'opened', $employee_id, $client_id);
-            $stats['count_closed'] = $this->workorderCount('closed_on', $start_date, $end_date, 'closed', $employee_id, $client_id);
-            $stats['count_closed_without_invoice'] = $this->workorderCount('opened_on', $start_date, $end_date, 'closed_without_invoice', $employee_id, $client_id);
-            $stats['count_closed_with_invoice'] = $this->workorderCount('opened_on', $start_date, $end_date, 'closed_with_invoice', $employee_id, $client_id);
-            $stats['count_deleted'] = $this->workorderCount(null, null, null, 'deleted', $employee_id, $client_id);   // Only used on basic stats
+            $stats['count_opened'] = $this->workorderCount('opened_on', $start_date, $end_date, 'opened', 'created_by', $employee_id, $client_id);
+            $stats['count_closed'] = $this->workorderCount('closed_on', $start_date, $end_date, 'closed', 'closed_by', $employee_id, $client_id);
+            $stats['count_closed_without_invoice'] = $this->workorderCount('opened_on', $start_date, $end_date, 'closed_without_invoice', 'closed_by', $employee_id, $client_id);
+            $stats['count_closed_with_invoice'] = $this->workorderCount('opened_on', $start_date, $end_date, 'closed_with_invoice', 'closed_by', $employee_id, $client_id);
+            $stats['count_deleted'] = $this->workorderCount(null, null, null, 'deleted');   // Only used on basic stats
 
         }
 
@@ -134,7 +402,7 @@ class Report extends Components {
     #     Count Work Orders                 #
     #########################################
 
-    public function workorderCount($date_type, $start_date = null, $end_date = null, $status = null, $employee_id = null, $client_id = null) {
+    public function workorderCount($date_type = null, $start_date = null, $end_date = null, $status = null, $employeeEventType = null, $employee_id = null, $client_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";
@@ -145,10 +413,13 @@ class Report extends Components {
         // Restrict by Status
         $whereTheseRecords .= $this->workorderBuildFilterByStatus($status);
 
-        // Filter by Employee
+        // Restrict by Employee Event Type
+        $whereTheseRecords .= $this->workorderBuildFilterByEmployeeEventType($employeeEventType, $employee_id);
+
+        /* Filter by Employee - this is now rolled into the EmployeeEventType filter becaseu there are 3 columns affected.
         if($employee_id) {
             $whereTheseRecords .= " AND ".PRFX."workorder_records.employee_id=".$this->app->db->qStr($employee_id);
-        }
+        }*/
 
         // Filter by Client
         if($client_id) {
@@ -169,17 +440,32 @@ class Report extends Components {
     #   Build workorder Date filter SQL  #
     ######################################
 
-    public function workorderBuildFilterByDate($date_type, $start_date = null, $end_date = null) {
+    private function workorderBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
 
         $whereTheseRecords = '';
 
-        if($start_date && $end_date) {
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
+
+        if($start_date) {
             if($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."workorder_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$this->app->db->qStr($start_date);
             } elseif($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."workorder_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$this->app->db->qStr($start_date);
             } elseif($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active >= ".$this->app->db->qStr($start_date)." AND ".PRFX."workorder_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        if($end_date) {
+            if($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
         }
 
@@ -191,7 +477,7 @@ class Report extends Components {
     #  Build workorder Status filter SQL  # // build a filter on whether or not the workorder is open or closed
     ####################################### // you can filter by a particular status aswell, not sure if i have used that
 
-    public function workorderBuildFilterByStatus($status = null) {   //handle deleted workorders here
+    private function workorderBuildFilterByStatus($status = null) {   //handle deleted workorders here
 
         $whereTheseRecords = '';
 
@@ -215,16 +501,62 @@ class Report extends Components {
 
     }
 
+    #####################################
+    #  Build workorder type filter SQL  # // (assigned | created_by | closed_by | all)
+    #####################################
+
+    private function workorderBuildFilterByEmployeeEventType($employeeEventType = null, $employee_id = null) {
+
+        $whereTheseRecords = '';
+
+        // If there is no `employeeEventType` or `employee_id`, you cannot filter
+        if(!$employeeEventType || !$employee_id) {
+            return $whereTheseRecords = '';
+        }
+
+        // If employee_id is specified but no type, then return all records that reference the employee
+        //if(!$employeeEventType && $employee_id) {$employeeEventType = 'any';}
+
+        // Return records for the given type
+        if($employeeEventType == 'assigned') {
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.employee_id = ".$this->app->db->qStr($employee_id);
+        } elseif ($employeeEventType == 'created_by') {
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.created_by = ".$this->app->db->qStr($employee_id);
+        } elseif ($employeeEventType == 'closed_by') {
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_by = ".$this->app->db->qStr($employee_id);
+        } elseif ($employeeEventType == 'all') {
+            $whereTheseRecords .= " OR ".PRFX."workorder_records.employee_id = ".$this->app->db->qStr($employee_id);
+            $whereTheseRecords .= " OR ".PRFX."workorder_records.created_by = ".$this->app->db->qStr($employee_id);
+            $whereTheseRecords .= " OR ".PRFX."workorder_records.closed_by = ".$this->app->db->qStr($employee_id);
+        }
+
+        return $whereTheseRecords;
+
+    }
+
     /** Schedules **/
 
     ############################################
     #    Count Schedules                       #
     ############################################
 
-    public function scheduleCount($workorder_id = null) {
+    public function scheduleCount($date_type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null, $workorder_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."schedule_records.schedule_id\n";
+
+        // Filter by Date
+        $whereTheseRecords .= $this->scheduleBuildFilterByDate($date_type, $start_date, $end_date);
+
+        // Filter by employee_id
+        if($employee_id) {
+            $whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->app->db->qStr($workorder_id);
+        }
+
+        // Filter by client_id
+        if($client_id) {
+            $whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->app->db->qStr($workorder_id);
+        }
 
         // Filter by workorder_id
         if($workorder_id) {
@@ -238,6 +570,46 @@ class Report extends Components {
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         return  $rs->fields['count'];
+
+    }
+
+
+    ######################################
+    #   Build workorder Date filter SQL  #  (start_time | end_time | last_active)
+    ######################################
+
+    private function scheduleBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
+
+        $whereTheseRecords = '';
+
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
+
+        // Set start date
+        if($start_date) {
+            if($date_type == 'start_time') {
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.start_time >= ".$this->app->db->qStr($start_date);
+            } elseif($date_type == 'end_time') {
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.end_time >= ".$this->app->db->qStr($start_date);
+            } elseif($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        // Set end date
+        if($end_date) {
+            if($date_type == 'start_time') {
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.start_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif($date_type == 'end_time') {
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.end_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
+        }
+
+        return $whereTheseRecords;
 
     }
 
@@ -325,7 +697,7 @@ class Report extends Components {
     #     Count Invoices                               #
     ####################################################
 
-    public function invoiceCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $employee_id = null, $client_id = null) {
+    public function invoiceCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";
@@ -366,7 +738,7 @@ class Report extends Components {
     #  Sum selected value of invoices       #
     #########################################
 
-    public function invoiceSum($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $employee_id = null, $client_id = null) {
+    public function invoiceSum($value_name, $date_type = null, $start_date = null, $end_date = null, $tax_system = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";
@@ -403,73 +775,11 @@ class Report extends Components {
 
     }
 
-    #####################################
-    #   Build invoice Date filter SQL   #
-    #####################################
-
-    public function invoiceBuildFilterByDate($date_type, $start_date = null, $end_date = null) {
-
-        $whereTheseRecords = '';
-
-        if($start_date && $end_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."invoice_records.date <= ".$this->app->db->qStr($end_date);
-            } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qStr($end_date);
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."invoice_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."invoice_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$this->app->db->qStr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            }
-        }
-
-        return $whereTheseRecords;
-
-    }
-
-    #####################################
-    #  Build invoice Status filter SQL  #
-    #####################################
-
-    public function invoiceBuildFilterByStatus($status = null) {
-
-        $whereTheseRecords = '';
-
-        // Restrict the records
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
-        } elseif($status == 'discounted') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qStr($status);
-        }
-
-        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
-        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'cancelled'";
-        }
-
-        // Remove `Deleted` records from the results, unless you are looking up deleted records
-        if($status !== 'deleted')
-        {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'deleted'";
-        }
-
-        return $whereTheseRecords;
-
-    }
-
     #########################
     #  Count invoice items  #
     #########################
 
-    public function invoiceItemCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
+    public function invoiceItemCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."invoice_items.invoice_item_id\n";
@@ -515,7 +825,7 @@ class Report extends Components {
     #  Sum selected value of invoice items  #
     #########################################
 
-    public function invoiceItemSum($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
+    public function invoiceItemSum($value_name, $date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Prevent ambiguous error
         $value_name = PRFX."invoice_items.".$value_name;
@@ -559,6 +869,88 @@ class Report extends Components {
         return $rs->fields['sum'];
 
     }
+
+    #####################################
+    #   Build invoice Date filter SQL   #
+    #####################################
+
+    private function invoiceBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
+
+        $whereTheseRecords = '';
+
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
+
+        if($start_date) {
+            if ($date_type == 'date') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'due_date') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        if($end_date) {
+            if ($date_type == 'date') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.date <= ".$this->app->db->qStr($end_date);
+            } elseif ($date_type == 'due_date') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qStr($end_date);
+            } elseif ($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
+        }
+
+        return $whereTheseRecords;
+
+    }
+
+    #####################################
+    #  Build invoice Status filter SQL  #
+    #####################################
+
+    private function invoiceBuildFilterByStatus($status = null) {
+
+        $whereTheseRecords = '';
+
+        // Restrict the records
+        if($status == 'open') {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";
+        } elseif($status == 'opened') {
+            // Do nothing
+        } elseif($status == 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
+        } elseif($status == 'discounted') {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";
+        } elseif($status) {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qStr($status);
+        }
+
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'cancelled'";
+        }
+
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'deleted'";
+        }
+
+        return $whereTheseRecords;
+
+    }
+
 
     /** Vouchers **/
 
@@ -633,7 +1025,7 @@ class Report extends Components {
     #     Count Vouchers                    #
     #########################################
 
-    public function voucherCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $expired = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+    public function voucherCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $expired = null, $employee_id = null, $client_id = null, $invoice_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";
@@ -709,7 +1101,7 @@ class Report extends Components {
     #  Sum selected value of Vouchers         #
     ###########################################
 
-    public function voucherSum($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $expired = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+    public function voucherSum($value_name, $date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $expired = null, $employee_id = null, $client_id = null, $invoice_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";
@@ -785,7 +1177,7 @@ class Report extends Components {
     #  Build Voucher Status filter SQL  #
     #####################################
 
-    public function voucherBuildFilterByStatus($status = null, $client_id = null) {
+    private function voucherBuildFilterByStatus($status = null, $client_id = null) {
 
         $whereTheseRecords = '';
 
@@ -820,7 +1212,7 @@ class Report extends Components {
     #  Build Voucher Expired filter SQL # (null|true|false)
     #####################################
 
-    public function voucherBuildFilterByExpired($expired = null) {
+    private function voucherBuildFilterByExpired($expired = null) {
 
         $whereTheseRecords = '';
 
@@ -844,26 +1236,45 @@ class Report extends Components {
     #   Build Voucher Date filter SQL   #
     #####################################
 
-    public function voucherBuildFilterByDate($date_type, $start_date = null, $end_date = null) {
+    private function voucherBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
 
         $whereTheseRecords = '';
 
-        if($start_date && $end_date) {
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
 
+        if($start_date) {
             if($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."invoice_records.date <= ".$this->app->db->qStr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qStr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."voucher_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type== 'expiry') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."voucher_records.expiry_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'redeemed_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."voucher_records.redeemed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."voucher_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$this->app->db->qStr($start_date);
             }
+        }
 
+        if($end_date) {
+            if($date_type == 'date') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'due_date') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type== 'expiry') {
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'redeemed_on') {
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
         }
 
         return $whereTheseRecords;
@@ -929,7 +1340,7 @@ class Report extends Components {
     #     Count Expenses                    #
     #########################################
 
-    public function expenseCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
+    public function expenseCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";
@@ -1020,7 +1431,7 @@ class Report extends Components {
     #  Count Expense items      #
     #############################
 
-    public function expenseItemCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
+    public function expenseItemCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."expense_items.expense_item_id\n";
@@ -1086,7 +1497,7 @@ class Report extends Components {
     #  Sum selected value of expense items      #
     #############################################
 
-    public function expenseItemSum($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
+    public function expenseItemSum($value_name, $date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
 
         // Prevent ambiguous error
         $value_name = PRFX."expense_items.".$value_name;
@@ -1155,20 +1566,36 @@ class Report extends Components {
     #   Build expense Date filter SQL    #
     ######################################
 
-    public function expenseBuildFilterByDate($date_type, $start_date = null, $end_date = null) {
+    private function expenseBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
 
         $whereTheseRecords = '';
 
-        if($start_date && $end_date) {
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
 
+        if($start_date) {
             if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."expense_records.date <= ".$this->app->db->qStr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."expense_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."expense_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$this->app->db->qStr($start_date)." AND ".PRFX."expense_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        if($end_date) {
+            if ($date_type == 'date') {
+                $whereTheseRecords .= " AND ".PRFX."expense_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."expense_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
         }
 
@@ -1180,7 +1607,7 @@ class Report extends Components {
     #  Build expense Status filter SQL    #
     #######################################
 
-    public function expenseBuildFilterByStatus($status = null) {
+    private function expenseBuildFilterByStatus($status = null) {
 
         $whereTheseRecords = '';
 
@@ -1268,7 +1695,7 @@ class Report extends Components {
     #     Count Other Incomes               #
     #########################################
 
-    public function otherincomeCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
+    public function otherincomeCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";
@@ -1319,7 +1746,7 @@ class Report extends Components {
     #  Sum selected value of Other Incomes  #
     #########################################
 
-    public function otherincomeSum($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
+    public function otherincomeSum($value_name, $date_type = null, $start_date = null, $end_date = null, $tax_system = null, $type = null, $status = null, $employee_id = null, $supplier_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";
@@ -1369,7 +1796,7 @@ class Report extends Components {
     #  Count Otherincome items      #
     #################################
 
-    function otherincomeItemCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null)
+    function otherincomeItemCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null)
     {
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."otherincome_items.otherincome_item_id\n";
@@ -1419,7 +1846,7 @@ class Report extends Components {
     #################################
     #  Sum Otherincome items        #
     #################################
-    function otherincomeItemSum($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null) {
+    function otherincomeItemSum($value_name, $date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null) {
 
         // Prevent ambiguous error
         $value_name = PRFX."otherincome_items.".$value_name;
@@ -1473,19 +1900,36 @@ class Report extends Components {
     #   Build otherincome Date filter SQL  #
     ########################################
 
-    public function otherincomeBuildFilterByDate($date_type, $start_date = null, $end_date = null) {
+    private function otherincomeBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
 
         $whereTheseRecords = '';
 
-        if($start_date && $end_date) {
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
+
+        if($start_date) {
             if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."otherincome_records.date <= ".$this->app->db->qStr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."otherincome_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."otherincome_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$this->app->db->qStr($start_date)." AND ".PRFX."otherincome_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        if($end_date) {
+            if ($date_type == 'date') {
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
         }
 
@@ -1497,7 +1941,7 @@ class Report extends Components {
     #  Build otherincome Status filter SQL  #
     #########################################
 
-    public function otherincomeBuildFilterByStatus($status = null) {
+    private function otherincomeBuildFilterByStatus($status = null) {
 
         $whereTheseRecords = '';
 
@@ -1603,7 +2047,7 @@ class Report extends Components {
     #     Count Credit Notes                           #
     ####################################################
 
-    public function creditnoteCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $expired = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
+    public function creditnoteCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $status = null, $expired = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."creditnote_records.creditnote_id\n";
@@ -1727,97 +2171,11 @@ class Report extends Components {
 
     }
 
-    #########################################
-    #   Build Credit Note Date filter SQL   #
-    #########################################
-
-    public function creditnoteBuildFilterByDate($date_type, $start_date = null, $end_date = null) {
-
-        $whereTheseRecords = '';
-
-        if($start_date && $end_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.date <= ".$this->app->db->qStr($end_date);
-            } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.due_date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.due_date <= ".$this->app->db->qStr($end_date);
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active >= ".$this->app->db->qStr($start_date)." AND ".PRFX."creditnote_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            }
-        }
-
-        return $whereTheseRecords;
-
-    }
-
-    #########################################
-    #  Build Credit Note Status filter SQL  #
-    #########################################
-
-    public function creditnoteBuildFilterByStatus($status = null) {
-
-        $whereTheseRecords = '';
-
-        // Restrict the records
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NOT NULL";
-        } elseif($status == 'discounted') {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.unit_discount > 0";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status= ".$this->app->db->qStr($status);
-        }
-
-        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
-        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status != 'cancelled'";
-        }
-
-        // Remove `Deleted` records from the results, unless you are looking up deleted records
-        if($status !== 'deleted')
-        {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status != 'deleted'";
-        }
-
-        return $whereTheseRecords;
-
-    }
-
-    #########################################
-    #  Build Credit Note Expired filter SQL # (null|true|false)
-    #########################################
-
-    public function creditnoteBuildFilterByExpired($expired = null) {
-
-        $whereTheseRecords = '';
-
-        // Filter by expired credit notes
-        if($expired === true)
-        {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expiry_date IS NOT NULL";
-        }
-
-        // Filter by active credit notes
-        elseif($expired === false)
-        {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expiry_date IS NULL";
-        }
-
-        return $whereTheseRecords;
-
-    }
-
     #############################
     #  Count Credit Note items  #
     #############################
 
-    public function creditnoteItemCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+    public function creditnoteItemCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."creditnote_items.creditnote_item_id\n";
@@ -1888,7 +2246,7 @@ class Report extends Components {
     #  Sum selected value of Credit Note items  #
     #############################################
 
-    public function creditnoteItemSum($value_name, $date_type, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+    public function creditnoteItemSum($value_name, $date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
 
         // Prevent ambiguous error
         $value_name = PRFX."creditnote_items.".$value_name;
@@ -1958,6 +2316,111 @@ class Report extends Components {
 
     }
 
+    #########################################
+    #   Build Credit Note Date filter SQL   #
+    #########################################
+
+    private function creditnoteBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
+
+        $whereTheseRecords = '';
+
+        // If no date_type specified, don't filter by date
+        if(!$date_type){
+            return $whereTheseRecords;
+        }
+
+        if($start_date && $end_date) {
+            if ($date_type == 'date') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.date >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'due_date') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.due_date >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        if($start_date && $end_date) {
+            if ($date_type == 'date') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'due_date') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.due_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'opened_on') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'closed_on') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            }
+        }
+
+        return $whereTheseRecords;
+
+    }
+
+    #########################################
+    #  Build Credit Note Status filter SQL  #
+    #########################################
+
+    private function creditnoteBuildFilterByStatus($status = null) {
+
+        $whereTheseRecords = '';
+
+        // Restrict the records
+        if($status == 'open') {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NULL";
+        } elseif($status == 'opened') {
+            // Do nothing
+        } elseif($status == 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NOT NULL";
+        } elseif($status == 'discounted') {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.unit_discount > 0";
+        } elseif($status) {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status= ".$this->app->db->qStr($status);
+        }
+
+        // Remove `Cancelled` records from the results, unless you are looking up cancelled records except for opened and closed as these are absolutes
+        if($status !== 'cancelled' && $status !== 'opened' && $status !== 'closed') {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status != 'cancelled'";
+        }
+
+        // Remove `Deleted` records from the results, unless you are looking up deleted records
+        if($status !== 'deleted')
+        {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status != 'deleted'";
+        }
+
+        return $whereTheseRecords;
+
+    }
+
+    #########################################
+    #  Build Credit Note Expired filter SQL # (null|true|false)
+    #########################################
+
+    private function creditnoteBuildFilterByExpired($expired = null) {
+
+        $whereTheseRecords = '';
+
+        // Filter by expired credit notes
+        if($expired === true)
+        {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expiry_date IS NOT NULL";
+        }
+
+        // Filter by active credit notes
+        elseif($expired === false)
+        {
+            $whereTheseRecords .= " AND ".PRFX."creditnote_records.expiry_date IS NULL";
+        }
+
+        return $whereTheseRecords;
+
+    }
+
     /** Payments **/
 
     #####################################
@@ -2006,7 +2469,7 @@ class Report extends Components {
     #     Count Payments                               #  // currently only client uses the "extended" filters here
     ####################################################
 
-    public function paymentCount($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $payDirection = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
+    public function paymentCount($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $payDirection = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
@@ -2086,7 +2549,7 @@ class Report extends Components {
     #  Sum selected value of payments       #
     #########################################
 
-    public function paymentSum($date_type, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $payDirection = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
+    public function paymentSum($date_type = null, $start_date = null, $end_date = null, $tax_system = null, $status = null, $type = null, $method = null, $payDirection = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null, $creditnote_id = null, $voucher_id = null) {
 
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
@@ -2166,15 +2629,23 @@ class Report extends Components {
     #   Build payment Date filter SQL      #
     ########################################
 
-    public function paymentBuildFilterByDate($date_type, $start_date = null, $end_date = null) {
+    private function paymentBuildFilterByDate($date_type = null, $start_date = null, $end_date = null) {
 
         $whereTheseRecords = '';
 
-        if($start_date && $end_date) {
+        if($start_date) {
             if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->app->db->qStr($start_date)." AND ".PRFX."payment_records.date <= ".$this->app->db->qStr($end_date);
+                $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."payment_records.last_active >= ".$this->app->db->qStr($start_date)." AND ".PRFX."payment_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                $whereTheseRecords .= " AND ".PRFX."payment_records.last_active >= ".$this->app->db->qStr($start_date);
+            }
+        }
+
+        if($end_date) {
+            if ($date_type == 'date') {
+                $whereTheseRecords .= " AND ".PRFX."payment_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'last_active') {
+                $whereTheseRecords .= " AND ".PRFX."payment_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
         }
 
@@ -2186,7 +2657,7 @@ class Report extends Components {
     #  Build payment Status filter SQL  #
     #####################################
 
-    public function paymentBuildFilterByStatus($status = null) {
+    private function paymentBuildFilterByStatus($status = null) {
 
         $whereTheseRecords = '';
 
@@ -2246,7 +2717,7 @@ class Report extends Components {
     #  Build payment method filter SQL    # // Restrict by Method
     ####################################### // Creditnote and Voucher method payments do not use real money transactions.
 
-    public function paymentBuildFilterByMethod($method = null) {
+    private function paymentBuildFilterByMethod($method = null) {
 
         $whereTheseRecords = '';
 

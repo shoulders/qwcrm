@@ -789,24 +789,27 @@ class Payment extends Components {
     #  Check if the payment status is allowed to be changed  # This feature is not implemented, but present
     ########################################################## This is applied to all payment records
 
-    public function checkRecordAllowsManualStatusChange($payment_id) {
+    public function checkRecordAllowsManualStatusChange($payment_id, $silent = false) {
 
-        $state_flag = false; // Disable the ability to manually change status for now
+        $state_flag = true;
 
         // Get the payment details
         $payment_details = $this->getRecord($payment_id);
 
         // Is the current payment method is not active, if not you cannot change status
         if(!$this->checkMethodActive($payment_details['method'], 'receive')) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because it's current payment method is not available."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because it's current payment method is not available."), $silent);
             $state_flag = false;
         }
 
         // Is deleted
         if($payment_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."), $silent);
             $state_flag = false;
         }
+
+        // Disable the ability to manually change status for now
+        $state_flag = true;
 
         return $state_flag;
 
@@ -816,7 +819,7 @@ class Payment extends Components {
     #  Does payment record status allows editing             #  This is applied to all payment records
     ##########################################################  More checks are done upon submission because of the different combinations of Types and Methods
 
-    public function checkRecordAllowsEdit($payment_id) {
+    public function checkRecordAllowsEdit($payment_id, $silent = false) {
 
         $state_flag = true;
 
@@ -825,19 +828,19 @@ class Payment extends Components {
 
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // Is Cancelled
         if($payment_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been cancelled."), $silent);
             $state_flag = false;
         }
 
         // Is Deleted
         if($payment_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."), $silent);
             $state_flag = false;
         }
 

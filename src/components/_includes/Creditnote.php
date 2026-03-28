@@ -1715,13 +1715,13 @@ class Creditnote extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the credit note has payments."), $silent);
             $state_flag = false;
         }
 
         // Has been used as a payment
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the credit note has been used as a payment."), $silent);
             $state_flag = false;
         }
@@ -1755,8 +1755,8 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        // The current record VAT code is enabled
-        if(!$this->checkVatTaxCodeStatuses($creditnote_id)) {
+        // Check the relevant VAT code is enabled for all of this record's items
+        if(!$this->checkRecordItemsVatTaxCodeStatuses($creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
             $state_flag = false;
         }
@@ -1793,13 +1793,13 @@ class Creditnote extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it has payments."), $silent);
             $state_flag = false;
         }
 
         // Has been used as a payment
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it has been used as a payment."), $silent);
             $state_flag = false;
         }
@@ -1868,13 +1868,13 @@ class Creditnote extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be cancelled because it has payments."), $silent);
             $state_flag = false;
         }
 
         // Has been used as a payment
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be cancelled because it has been used as a payment."), $silent);
             $state_flag = false;
         }
@@ -1937,13 +1937,13 @@ class Creditnote extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be deleted because it has payments."), $silent);
             $state_flag = false;
         }
 
         // Has been used as a payment
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be deleted because it has been used as a payment."), $silent);
             $state_flag = false;
         }
@@ -2068,7 +2068,7 @@ class Creditnote extends Components {
     #   Check Credit Note items VAT Tax Codes are all enabled          #
     ####################################################################
 
-    public function checkVatTaxCodeStatuses($creditnote_id) {
+    public function checkRecordItemsVatTaxCodeStatuses($creditnote_id) {
 
         $state_flag = true;
 

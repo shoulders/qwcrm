@@ -929,7 +929,7 @@ class WorkOrder extends Components {
     }
 
     ##########################################################
-    #  cant he workorder be edited                           #  // TODO: I will add more tests when needed
+    #  can the workorder be edited                           #  // TODO: I will add more tests when needed
     ##########################################################
 
      public function checkRecordAllowsEdit($workorder_id, $silent = false) {

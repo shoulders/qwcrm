@@ -651,12 +651,13 @@ class Otherincome extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the otherincome has payments."), $silent);
             $state_flag = false;
         }
 
-        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The feature to manually change the status is not currently enabled in the code."));
+        // Disable this feature for now. may enable or remove in future versions.
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The feature to manually change the status is not available in this version of QWcrm."));
         $state_flag = false;
 
 
@@ -678,6 +679,12 @@ class Otherincome extends Components {
         // Is on a different tax system
         if($otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be edited because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Check the relevant VAT code is enabled for all of this record's items
+        if(!$this->checkRecordItemsVatTaxCodeStatuses($otherincome_details['vat_tax_code'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."), $silent);
             $state_flag = false;
         }
 
@@ -710,18 +717,10 @@ class Otherincome extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has payments."), $silent);
             $state_flag = false;
         }
-
-        // TODO: Add tax code check for all current items + add this to credit notes, vouchgers? expense, invoices - the code should be present in one of the others
-
-        /* The current record VAT code is enabled
-        if(!$this->app->components->company->getVatTaxCodeStatus($otherincome_details['vat_tax_code'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."), $silent);
-            $state_flag = false;
-        }*/
 
         return $state_flag;
 
@@ -769,9 +768,25 @@ class Otherincome extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."), $silent);
             $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
+    ####################################################################
+    #   Check invoice items VAT Tax Codes are all enabled              #
+    ####################################################################
+
+    private function checkRecordItemsVatTaxCodeStatuses($otherincome_id) {
+
+        $state_flag = true;
+
+        foreach ($this->getItems($otherincome_id) as $key => $value) {
+            if(!$this->app->components->company->getVatTaxCodeStatus($value['vat_tax_code'])) { $state_flag = false;}
         }
 
         return $state_flag;
@@ -818,7 +833,7 @@ class Otherincome extends Components {
         }
 
         // Has payments
-        if($this->app->components->report->paymentCount('date', null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments."), $silent);
             $state_flag = false;
         }

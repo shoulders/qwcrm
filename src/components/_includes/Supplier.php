@@ -593,15 +593,21 @@ class Supplier extends Components {
             $state_flag = false;
         }
 
-        // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked credit notes."), $silent);
-            $state_flag = false;
-        }
-
         // Has Other incomes
         if($this->app->components->report->otherincomeCount(null, null, null, null, null, null, null, $supplier_details['supplier_id'])){
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked other incomes."), $silent);
+            $state_flag = false;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, null, null, null, null, null, null, $supplier_id)){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked payments."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Credit notes
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked credit notes."), $silent);
             $state_flag = false;
         }
 

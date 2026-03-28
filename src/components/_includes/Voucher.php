@@ -1557,7 +1557,6 @@ class Voucher extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be cancelled because it has been closed.", $silent));
         }*/
 
-
         // Check Voucher Status
         switch ($voucher_details['status'])
         {

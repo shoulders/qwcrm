@@ -461,42 +461,53 @@ class Client extends Components {
         $state_flag = true;
 
         // Get the client details
-        $client_details = $this->getRecord($client_id);
+        //$client_details = $this->getRecord($client_id);
 
-        // Check if client has any workorders
-        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$this->app->db->qStr($client_id);
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has work orders."), $silent);
+        // Has Users
+        if($this->app->components->report->userCount(null, null, null, null, null, null, $client_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has users."), $silent);
             $state_flag = false;
         }
 
-        // Check if client has any invoices
-        $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE client_id=".$this->app->db->qStr($client_id);
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has invoices."), $silent);
-            $state_flag = false;
-        }
-
-        // Check if client has any Vouchers
-        $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE client_id=".$this->app->db->qStr($client_id);
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        if($rs->fields['count'] > 0 ) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has Vouchers."), $silent);
-            $state_flag = false;
-        }
-
-        // Check if client has any client notes
-        $sql = "SELECT count(*) as count FROM ".PRFX."client_notes WHERE client_id=".$this->app->db->qStr($client_id);
-        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-        if($rs->fields['count'] > 0 ) {
+        // Check if client has any client notes TODO: Should this be a consideration when deleting a cleint
+        if($this->app->components->report->clientNotesCount(null, null, $client_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has client notes."), $silent);
             $state_flag = false;
         }
 
+        // Check if client has any workorders
+        if($this->app->components->report->workorderCount('opened_on', null, null, null, null, null, $client_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has work orders."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Schedules
+        if($this->app->components->report->scheduleCount($date_type = null, null, null, null, $client_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has schedules."), $silent);
+            $state_flag = false;
+        }
+
+
+        // Check if client has any invoices
+        if($this->app->components->report->invoiceCount(null, null, null, null, null, null, $client_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has invoices."), $silent);
+            $state_flag = false;
+        }
+
+        // Check if client has any Vouchers (TODO: is this needed as an invoice is required)
+        if($this->app->components->report->voucherCount(null, null, null,  null, null, null, null, null, null, $client_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has Vouchers."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, null, null, null, $client_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has payments."), $silent);
+            $state_flag = false;
+        }
+
         // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $client_details['client_id'])) {
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $client_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client cannot be deleted because it has linked credit notes."), $silent);
             return false;
         }
