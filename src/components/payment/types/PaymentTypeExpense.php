@@ -232,7 +232,7 @@ class PaymentTypeExpense extends PaymentType
             // Cancel
             elseif(Payment::$action === 'cancel')
             {
-                 // Is this is a Type 1 credit note payment (closed a partially open expense), then remove the tag
+                // Is this is a Type 1 credit note payment (closed a partially open expense), then remove the tag
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
                     $this->app->components->invoice->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => null));
                     $this->closedByCreditnotePaymentId = null;
@@ -242,7 +242,11 @@ class PaymentTypeExpense extends PaymentType
             // Delete
             elseif(Payment::$action === 'delete')
             {
-                // Do nothing
+                // Is this is a Type 1 credit note payment (closed a partially open expense), then remove the tag
+                if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
+                    $this->app->components->invoice->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => null));
+                    $this->closedByCreditnotePaymentId = null;
+                }
             }
 
             // Recalculate record totals

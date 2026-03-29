@@ -45,7 +45,9 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $record['invoice_id'] = \CMSApplication::$VAR['invoice_id'];
         $record['client_id'] = $invoice_details['client_id'];
         $record['type'] = 'sales';
-        $record['reference'] = _gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'];
+        $record['reference'] = $invoice_details['balance']
+            ? _gettext("Close").' '._gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id']
+            : _gettext("Refund").' '._gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'];
         $record['sales_tax_rate'] = $invoice_details['sales_tax_rate'];
 
         // Get invoice items with voucher records merged as standard items
@@ -72,10 +74,14 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     // Purchase Credit Note (Expense) - (expense:details)
     elseif(\CMSApplication::$VAR['expense_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details'))
     {
+        $expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
+
         $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
-        $record['supplier_id'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'supplier_id');
+        $record['supplier_id'] = $expense_details['supplier_id'];
         $record['type'] = 'purchase';
-        $record['reference'] = _gettext("Expense").': '.\CMSApplication::$VAR['expense_id'] ;
+        $record['reference'] = $invoice_details['balance']
+            ? _gettext("Close").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id']
+            : _gettext("Refund").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id'];
         $record['sales_tax_rate'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'sales_tax_rate');
 
         // Get invoice items with voucher records merged as standard items

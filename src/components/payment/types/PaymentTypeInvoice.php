@@ -244,7 +244,11 @@ class PaymentTypeInvoice extends PaymentType
             // Delete
             elseif(Payment::$action === 'delete')
             {
-                // Do nothing
+                // If this is a Type 1 credit note payment (closed a partially open invoice), then remove the tag
+                if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
+                    $this->app->components->invoice->updateAdditionalInfo($this->invoice_details['invoice_id'], array('closed_by_creditnote_payment_id' => null));
+                    $this->closedByCreditnotePaymentId = null;
+                }
             }
 
             // Recalculate record totals
