@@ -460,14 +460,14 @@ class Expense extends Components {
         $sql = "UPDATE ".PRFX."expense_records SET
                 employee_id         =". $this->app->db->qStr($this->app->user->login_user_id).",
                 status              =". $this->app->db->qStr($new_status).",";
-        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
-        {
+
+        // Set closed statuses ('deleted' should never be passed here, this is just for reference)
+        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted'){
             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
-        }
-        else
-        {
+        } else {
             $sql .= "closed_on = NULL\n";
         }
+
         $sql .= "WHERE expense_id =". $this->app->db->qStr($expense_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -579,8 +579,8 @@ class Expense extends Components {
         // Get expense details before deleting the record
         $expense_details = $this->getRecord($expense_id);
 
-        // Change the expense status to deleted (I do this here to maintain consistency)
-        $this->updateStatus($expense_id, 'deleted');
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        //$this->updateStatus($expense_id, 'deleted', true);
 
         // Delete record items
         $sql = "DELETE FROM ".PRFX."expense_items WHERE expense_id=".$this->app->db->qStr($expense_id);

@@ -581,6 +581,7 @@ class WorkOrder extends Components {
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $workorder_details['employee_id'];
 
+        // ('deleted' should never be passed here, this is just for reference)
         $sql = "UPDATE ".PRFX."workorder_records SET
                 employee_id         =". $this->app->db->qStr( $employee_id ?: null   ).",
                 status              =". $this->app->db->qStr( $new_status      )."
@@ -693,8 +694,8 @@ class WorkOrder extends Components {
         // Get client_id before deleletion
         $client_id = $this->getRecord($workorder_id, 'client_id');
 
-        // Change the workorder status to deleted (I do this here to maintain consistency)
-        $this->updateStatus($workorder_id, 'deleted');
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        //$this->updateStatus($workorder_id, 'deleted', true);
 
         // Delete the workorder primary record
         //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qStr($workorder_id); (this use to delete the whole record)

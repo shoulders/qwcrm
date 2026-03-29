@@ -377,6 +377,7 @@ class Supplier extends Components {
         // Set the appropriate closed_on date
         $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
 
+        // ('deleted' should never be passed here, this is just for reference)
         $sql = "UPDATE ".PRFX."supplier_records SET
                 status             =". $this->app->db->qStr( $new_status   ).",
                 closed_on          =". $this->app->db->qStr( $closed_on    )."
@@ -454,6 +455,9 @@ class Supplier extends Components {
 
         // Get supplier details
         $supplier_details = $this->getRecord($supplier_id);
+
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        //$this->updateStatus($supplier_id, 'deleted');
 
         // Run the SQL
         $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);

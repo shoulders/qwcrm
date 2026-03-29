@@ -590,7 +590,7 @@ class Creditnote extends Components {
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $creditnote_details['employee_id'];
 
-        // Set closed statuses
+        // Set closed statuses ('deleted' should never be passed here, this is just for reference)
         if($new_status == 'used' || $new_status == 'cancelled' || $new_status == 'deleted') {
             $closed_on = $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
         } else {
@@ -713,8 +713,8 @@ class Creditnote extends Components {
         // Delete creditnote items
         $this->deleteItems($creditnote_id);
 
-        // Change the creditnote status to deleted - This triggers certain other routines
-        $this->updateStatus($creditnote_id, 'deleted');
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        //$this->updateStatus($creditnote_id, 'deleted', true);
 
         // Delete record items
         $sql = "DELETE FROM `".PRFX."creditnote_items` WHERE `".PRFX."creditnote_items`.`creditnote_id` = $creditnote_id";

@@ -620,12 +620,11 @@ defined('_QWEXEC') or die;
         $sql = "UPDATE ".PRFX."invoice_records SET
                 employee_id         =". $this->app->db->qStr($employee_id).",
                 status              =". $this->app->db->qStr($new_status).",";
-        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
-        {
+
+        // Set closed statuses ('deleted' should never be passed here, this is just for reference)
+        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted') {
             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
-        }
-        else
-        {
+        } else {
             $sql .= "closed_on = NULL";
         }
         $sql .= " WHERE invoice_id =". $this->app->db->qStr($invoice_id);
@@ -746,8 +745,8 @@ defined('_QWEXEC') or die;
         // Delete invoice items
         $this->deleteItems($invoice_id);
 
-        // Change the invoice status to deleted - This triggers certain routines such as voucher deletion
-        $this->updateStatus($invoice_id, 'deleted');
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        //$this->updateStatus($invoice_id, 'deleted');
 
         // Build the data to replace the invoice record (some stuff has just been updated with $this->update_invoice_status())
         $sql = "UPDATE ".PRFX."invoice_records SET

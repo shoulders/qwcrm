@@ -446,14 +446,14 @@ class Otherincome extends Components {
         $sql = "UPDATE ".PRFX."otherincome_records SET
                 employee_id         =". $this->app->db->qStr($this->app->user->login_user_id).",
                 status              =". $this->app->db->qStr($new_status).",";
-        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted')
-        {
+
+        // Set closed statuses ('deleted' should never be passed here, this is just for reference)
+        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted') {
             $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp));
-        }
-        else
-        {
+        } else {
             $sql .= "closed_on = NULL\n";
         }
+
         $sql .= "WHERE otherincome_id =". $this->app->db->qStr($otherincome_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -546,8 +546,8 @@ class Otherincome extends Components {
         // Get record details for logging before we delete anything
         $otherincome_details = $this->getRecord($otherincome_id);
 
-        // Change the otherincome status to deleted (I do this here to maintain consistency)
-        $this->updateStatus($otherincome_id, 'deleted');
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        //$this->updateStatus($otherincome_id, 'deleted', true);
 
         // Delete record items
         $sql = "DELETE FROM `".PRFX."otherincome_items` WHERE `".PRFX."otherincome_items`.`otherincome_id` = $otherincome_id";

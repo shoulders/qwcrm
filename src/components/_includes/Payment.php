@@ -569,6 +569,7 @@ class Payment extends Components {
             return false;
         }
 
+        // ('deleted' should never be passed here, this is just for reference)
         $sql = "UPDATE ".PRFX."payment_records SET
                 status               =". $this->app->db->qStr( $new_status      )."
                 WHERE payment_id     =". $this->app->db->qStr( $payment_id      );
@@ -675,8 +676,8 @@ class Payment extends Components {
         // Get payment details before deleting the record
         $payment_details = $this->getRecord($payment_id);
 
-        // Change the payment status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($payment_id, 'deleted');
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        //$this->updateStatus($payment_id, 'deleted');
 
         $sql = "UPDATE ".PRFX."payment_records SET
                 employee_id     = NULL,

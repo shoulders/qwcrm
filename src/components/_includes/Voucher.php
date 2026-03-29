@@ -496,8 +496,8 @@ class Voucher extends Components {
         // Set appropriate redeemed_on datetime for the new status
         //$redeemed_on = ($new_status == 'redeemed') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
 
-        // Update voucher 'closed_on' boolean for the new status
-        if(in_array($new_status, array('redeemed', 'voided', 'cancelled'))) {
+        // Update voucher 'closed_on' boolean for the new status ('deleted' should never be passed here, this is just for reference)
+        if(in_array($new_status, array('redeemed', 'voided', 'cancelled', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
             $closed_on = $voucher_details['closed_on'];
@@ -786,8 +786,8 @@ class Voucher extends Components {
 
         $voucher_details = $this->getRecord($voucher_id);
 
-        // Change the voucher status to deleted (I do this here to maintain log consistency)
-        $this->updateStatus($voucher_id, 'deleted', true);
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        //$this->updateStatus($voucher_id, 'deleted', true);
 
         // The voucher_id and voucher_code are kept
         $sql = "UPDATE ".PRFX."voucher_records SET
