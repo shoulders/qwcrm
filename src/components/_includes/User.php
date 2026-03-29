@@ -402,8 +402,6 @@ class User extends Components {
 
     public function deleteRecord($user_id) {
 
-        return;
-
         // get user details before deleting
         $user_details = $this->getRecord($user_id);
 

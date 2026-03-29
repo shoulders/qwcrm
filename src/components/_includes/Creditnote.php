@@ -740,11 +740,11 @@ class Creditnote extends Components {
                 status              = 'deleted',
                 opened_on           = NULL,
                 closed_on           = NULL,
-                last_active         = NULL
+                last_active         = NULL,
                 reference           = '',
                 note                = '',
                 additional_info     = ''
-                WHERE creditnote_id    =". $this->app->db->qStr( $creditnote_id  );
+                WHERE creditnote_id =". $this->app->db->qStr($creditnote_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Create a Workorder History Note  - this is not a workorder
@@ -1143,11 +1143,18 @@ class Creditnote extends Components {
     {
         $state_flag = true;
 
-        // Allow for CR created from different points
-        $client_id = $qform['client_id'] ?? null;
+        // Allow for CR created from different points - should not be neede
+        /*$client_id = $qform['client_id'] ?? null;
         $invoice_id = $qform['invoice_id'] ?? null;
         $supplier_id = $qform['supplier_id'] ?? null;
-        $expense_id = $qform['expense_id'] ?? null;
+        $expense_id = $qform['expense_id'] ?? null;*/
+
+        // $qform only sends the editable data, not the rest of the record
+        $creditnote_details = $this->getRecord($qform['creditnote_id']);
+        $client_id = $creditnote_details['client_id'];
+        $invoice_id = $creditnote_details['invoice_id'];
+        $supplier_id = $creditnote_details['supplier_id'];
+        $expense_id = $creditnote_details['expense_id'];
 
         /** Sales Credit Notes **/
 
