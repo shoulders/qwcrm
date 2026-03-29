@@ -551,9 +551,9 @@
                                                         <tr id="dummy_creditnote_items_row_iteration" class="dummy_creditnote_item_row olotd4" style="display: none;">
                                                             <td align="left">
                                                                 <select id="qform[creditnote_items][iteration][description]" name="qform[creditnote_items][iteration][description]" value="" style="width: 100%" disabled>
-                                                                    {section loop=$creditnote_prefill_items name=i}
+                                                                    {*section loop=$creditnote_prefill_items name=i}
                                                                         <option value="{$creditnote_prefill_items[i].description}" data-unit-net="{$creditnote_prefill_items[i].unit_net|string_format:"%.2f"}">{$creditnote_prefill_items[i].description}</option>
-                                                                    {/section}
+                                                                    {/section*}
                                                                 </select>
                                                             </td>
                                                             <td align="left"><input id="qform[creditnote_items][iteration][unit_qty]" name="qform[creditnote_items][iteration][unit_qty]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>

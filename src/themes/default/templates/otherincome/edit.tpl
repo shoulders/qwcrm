@@ -505,9 +505,9 @@
                                                             <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[otherincome_items][iteration][subtotal_net]" name="qform[otherincome_items][iteration][subtotal_net]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="right" hidden>
                                                                 <select id="qform[otherincome_items][iteration][vat_tax_code]" name="qform[otherincome_items][iteration][vat_tax_code]" value="" style="width: 100%; font-size: 10px;" required disabled>
-                                                                    {section loop=$vat_tax_codes name=i}
+                                                                    {*section loop=$vat_tax_codes name=i}
                                                                         <option value="{$vat_tax_codes[i].tax_key}" data-tax-rate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
-                                                                    {/section}
+                                                                    {/section*}
                                                                 </select>
                                                             </td>
                                                             <td class="vatTaxSystem salesTaxSystem" align="right" hidden>
