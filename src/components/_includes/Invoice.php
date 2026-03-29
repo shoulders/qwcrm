@@ -904,8 +904,8 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        // Check the relevant VAT code is enabled for all of this record's items
-        if(!$this->checkRecordItemsVatTaxCodeStatuses($invoice_id)) {
+        // If this is a VAT Record, check all of it's items have their VAT code enabled
+        if((preg_match('/^vat_/', $invoice_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
             $state_flag = false;
         }

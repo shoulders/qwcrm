@@ -494,9 +494,9 @@
                                                         <tr id="dummy_expense_items_row_iteration" class="dummy_expense_item_row olotd4" style="display: none;">
                                                             <td align="left">
                                                                 <select id="qform[expense_items][iteration][description]" name="qform[expense_items][iteration][description]" value="" style="width: 100%" disabled>
-                                                                    {section loop=$expense_prefill_items name=i}
+                                                                    {*section loop=$expense_prefill_items name=i}
                                                                         <option value="{$expense_prefill_items[i].description}" data-unit-net="{$expense_prefill_items[i].unit_net|string_format:"%.2f"}">{$expense_prefill_items[i].description}</option>
-                                                                    {/section}
+                                                                    {/section*}
                                                                 </select>
                                                             </td>
                                                             <td align="left"><input id="qform[expense_items][iteration][unit_qty]" name="qform[expense_items][iteration][unit_qty]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>

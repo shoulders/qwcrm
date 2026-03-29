@@ -309,7 +309,7 @@ class Expense extends Components {
         }
         else
         {
-            return null;
+            return array();
         }
 
     }
@@ -717,8 +717,8 @@ class Expense extends Components {
             $state_flag = false;
         }
 
-        // Check the relevant VAT code is enabled for all of this record's items
-        if(!$this->checkRecordItemsVatTaxCodeStatuses($expense_id)) {
+        // If this is a VAT Record, check all of it's items have their VAT code enabled
+        if((preg_match('/^vat_/', $expense_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($expense_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
             $state_flag = false;
         }

@@ -303,7 +303,7 @@ class Otherincome extends Components {
         }
         else
         {
-            return null;
+            return array();
         }
     }
 
@@ -682,8 +682,8 @@ class Otherincome extends Components {
             $state_flag = false;
         }
 
-        // Check the relevant VAT code is enabled for all of this record's items
-        if(!$this->checkRecordItemsVatTaxCodeStatuses($otherincome_details['vat_tax_code'])) {
+        // If this is a VAT Record, check all of it's items have their VAT code enabled
+        if((preg_match('/^vat_/', $otherincome_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($otherincome_details['vat_tax_code'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."), $silent);
             $state_flag = false;
         }
