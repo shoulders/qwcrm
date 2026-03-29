@@ -814,6 +814,18 @@ defined('_QWEXEC') or die;
 
     /** Check Functions **/
 
+    #############################################################
+    # Validate submitted information before allowing submission # // TODO will add test as needed
+    #############################################################
+
+    public function checkRecordSubmissionIsValid($qform)
+    {
+        $state_flag = true;
+
+        return $state_flag;
+
+    }
+
     ###################################################################
     #  Check if the invoice status is allowed to be manually changed  #
     ###################################################################

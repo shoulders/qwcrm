@@ -19,6 +19,16 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
     $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 } else {
 
+    /* I dont think block is needed
+        // Get invoice details from whichever source, and fill in the blanks (page submission or new)
+        $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
+        \CMSApplication::$VAR['qform'] = \CMSApplication::$VAR['qform'] ?? array();
+        $invoice_details = array_merge($invoice_details, \CMSApplication::$VAR['qform']);
+
+        // Get invoice items (if present) from whichever source
+        $invoice_items = \CMSApplication::$VAR['qform']['invoice_items'] ?? $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id']) ?? null;
+    */
+
     // Prevent undefined variable errors
     \CMSApplication::$VAR['qform']['invoice_items'] = \CMSApplication::$VAR['qform']['invoice_items'] ?? null;
 
@@ -28,20 +38,22 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
 
     if(isset(\CMSApplication::$VAR['submit'])) {
 
-        // Insert the invoice items into the database
-        $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['invoice_items']);
+        // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
+        if($this->app->components->invoice->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'])){
 
-        // Update and recalculate the invoice
-        $this->app->components->invoice->updateRecord(\CMSApplication::$VAR['qform']);
-        $this->app->components->invoice->recalculateTotals(\CMSApplication::$VAR['qform']['invoice_id']);
+            // Update the record
+            $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['invoice_items']);
+            $this->app->components->invoice->updateRecord(\CMSApplication::$VAR['qform']);
+            $this->app->components->invoice->recalculateTotals(\CMSApplication::$VAR['qform']['invoice_id']);
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice updated successfully."));
 
-        $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
+            // Load details page
+            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
+        }
 
     }
 
-    ##################################
-    #     Load invoice edit page     #
-    ##################################
+    // Build the page
 
     // Details
     $this->app->smarty->assign('company_details',          $this->app->components->company->getRecord());
