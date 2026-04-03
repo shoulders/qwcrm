@@ -1763,7 +1763,7 @@ class Creditnote extends Components {
         }
 
         // If this is a VAT Record, check all of it's items have their VAT code enabled
-        if((preg_match('/^vat_/', $creditote_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($creditnote_id)) {
+        if((preg_match('/^vat_/', $creditnote_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($creditnote_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
             $state_flag = false;
         }

@@ -50,13 +50,37 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             : _gettext("Refund").' '._gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'];
         $record['sales_tax_rate'] = $invoice_details['sales_tax_rate'];
 
-        // Get invoice items with voucher records merged as standard items
-        $creditnote_items = $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'], true);
+        // Build credit note items
+        if($invoice_details['balance']) {
+            $creditnote_items = array (0 =>
+                                    array (
+                                        'creditnote_item_id' => null,
+                                        'invoice_id' => null,
+                                        'tax_system' => null,
+                                        'description' => $record['reference'],
+                                        'unit_qty' => '0.00',
+                                        'unit_net' => '0.00',
+                                        'unit_discount' => '0.00',
+                                        'sales_tax_exempt' => 0,
+                                        'vat_tax_code' => $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']),
+                                        'unit_tax_rate' => '0.00',
+                                        'unit_tax' => '0.00',
+                                        'unit_gross' => '0.00',
+                                        'subtotal_net' => '0.00',
+                                        'subtotal_tax' => '0.00',
+                                        'subtotal_gross' => '0.00'
+                                    ),
+                                );
+        } else {
+            // Get invoice items with voucher records merged as standard items
+            $creditnote_items = $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'], true);
 
-        // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
-        $creditnote_items = json_encode($creditnote_items);
-        $creditnote_items = str_replace('invoice_item_id', 'creditnote_item_id', $creditnote_items);
-        $creditnote_items = json_decode($creditnote_items, true);
+            // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
+            $creditnote_items = json_encode($creditnote_items);
+            $creditnote_items = str_replace('invoice_item_id', 'creditnote_item_id', $creditnote_items);
+            $creditnote_items = json_decode($creditnote_items, true);
+        }
+
     }
 
     /* Purchase Credit Notes */
@@ -84,36 +108,37 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             : _gettext("Refund").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id'];
         $record['sales_tax_rate'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'sales_tax_rate');
 
-        // Get invoice items with voucher records merged as standard items
-        $creditnote_items = $this->app->components->expense->getItems(\CMSApplication::$VAR['expense_id']);
+        // Build credit note items
+        if($expense_details['balance']) {
+            $creditnote_items = array (0 =>
+                                    array (
+                                        'creditnote_item_id' => null,
+                                        'expense_id' => null,
+                                        'tax_system' => null,
+                                        'description' => $record['reference'],
+                                        'unit_qty' => '0.00',
+                                        'unit_net' => '0.00',
+                                        'unit_discount' => '0.00',
+                                        'sales_tax_exempt' => 0,
+                                        'vat_tax_code' => $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']),
+                                        'unit_tax_rate' => '0.00',
+                                        'unit_tax' => '0.00',
+                                        'unit_gross' => '0.00',
+                                        'subtotal_net' => '0.00',
+                                        'subtotal_tax' => '0.00',
+                                        'subtotal_gross' => '0.00'
+                                    ),
+                                );
+        } else {
+            // Get expense items
+            $creditnote_items = $this->app->components->expense->getItems(\CMSApplication::$VAR['expense_id']);
 
-        // Rename 'expense_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'expense_item_id' not renaming it
-        $creditnote_items = json_encode($creditnote_items);
-        $creditnote_items = str_replace('expense_item_id', 'creditnote_item_id', $creditnote_items);
-        $creditnote_items = json_decode($creditnote_items, true);
+            // Rename 'expense_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'expense_item_id' not renaming it
+            $creditnote_items = json_encode($creditnote_items);
+            $creditnote_items = str_replace('expense_item_id', 'creditnote_item_id', $creditnote_items);
+            $creditnote_items = json_decode($creditnote_items, true);
+        }
 
-        // Manual ? - builds a single row use `#__creditnote_items` for structure
-
-        //$expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
-
-        /* Build a single item to match the expense record - this is a workaround whilst expenses does not use items
-        $creditnote_items = array();
-        $creditnote_items[0]['creditnote_item_id'] = 1;
-        $creditnote_items[0]['expense_id'] = $expense_details['expense_id'];
-        $creditnote_items[0]['tax_system'] = $expense_details['tax_system'];
-        $creditnote_items[0]['description'] = _gettext("Items from from expense").': '.$expense_details['expense_id'];
-        $creditnote_items[0]['unit_qty'] = 1;
-        $creditnote_items[0]['unit_net'] = $expense_details['unit_net'];
-        $creditnote_items[0]['unit_discount'] = 0.00;
-        $creditnote_items[0]['sales_tax_exempt'] = 1;
-        $creditnote_items[0]['vat_tax_code'] = 'T9';
-        $creditnote_items[0]['unit_tax_rate'] = 0.00;
-        $creditnote_items[0]['unit_tax'] = $expense_details['unit_tax'];
-        $creditnote_items[0]['unit_gross'] = $expense_details['unit_gross'];
-        $creditnote_items[0]['subtotal_net'] = $expense_details['unit_net'];
-        $creditnote_items[0]['subtotal_tax'] = $expense_details['unit_tax'];
-        $creditnote_items[0]['subtotal_gross'] = $expense_details['unit_gross'];
-        */
     }
 
     // Compensate for multiple entry points
