@@ -1200,3 +1200,7 @@ ALTER TABLE `#__supplier_records` ADD `vat_number` VARCHAR(20) CHARACTER SET utf
 -- Remove Sales Tax from expenses --
 ALTER TABLE `#__expense_records` DROP `sales_tax_rate`;
 ALTER TABLE `#__expense_items` DROP `sales_tax_exempt`;
+
+-- Remove Sales Tax from otherincome --
+ALTER TABLE `#__otherincome_records` DROP `sales_tax_rate`;
+ALTER TABLE `#__otherincome_items` DROP `sales_tax_exempt`;

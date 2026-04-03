@@ -30,16 +30,12 @@ class Otherincome extends Components {
 
     public function insertRecord($supplier_id = null) {
 
-        // If QWcrm Tax system is set to Sales Tax, then set the rate
-        $sales_tax_rate = (QW_TAX_SYSTEM === 'sales_tax_cash') ? $this->app->components->company->getRecord('sales_tax_rate') : 0.00;
-
         $sql = "INSERT INTO ".PRFX."otherincome_records SET
                 employee_id     =". $this->app->db->qStr($this->app->user->login_user_id).",
                 supplier_id     =". $this->app->db->qStr($supplier_id).",
                 date            =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
-                sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
                 status          =". $this->app->db->qStr('pending').",
                 opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
@@ -75,12 +71,9 @@ class Otherincome extends Components {
         // Insert Items/Rows into database (if any)
         if($items) {
 
-            $sql = "INSERT INTO `".PRFX."otherincome_items` (`otherincome_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
+            $sql = "INSERT INTO `".PRFX."otherincome_items` (`otherincome_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
 
             foreach($items as $item) {
-
-                // Correct Sales Tax Exempt indicator
-                $sales_tax_exempt = isset($item['sales_tax_exempt']) ? 1 : 0;
 
                 // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes)
                 $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($otherincome_details['tax_system']);
@@ -92,7 +85,6 @@ class Otherincome extends Components {
                         $this->app->db->qStr( $item['unit_qty']                 ).",".
                         $this->app->db->qStr( $item['unit_net']                 ).",".
                         $this->app->db->qStr( $item['unit_discount']            ).",".
-                        $this->app->db->qStr( $sales_tax_exempt                 ).",".
                         $this->app->db->qStr( $vat_tax_code                     ).",".
                         $this->app->db->qStr( $item['unit_tax_rate']            ).",".
                         $this->app->db->qStr( $item['unit_tax']                 ).",".
@@ -409,7 +401,6 @@ class Otherincome extends Components {
                 date             =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date'])).",
                 due_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['date']) ).",
                 type             =". $this->app->db->qStr( $qform['type']               ).",
-                sales_tax_rate   =". $this->app->db->qStr( $qform['sales_tax_rate']           ).",
                 reference        =". $this->app->db->qStr( $qform['reference']                    ).",
                 note             =". $this->app->db->qStr( $qform['note']                    )."
                 WHERE otherincome_id  =". $this->app->db->qStr( $qform['otherincome_id']     );
@@ -564,7 +555,6 @@ class Otherincome extends Components {
             type                = '',
             unit_net            = 0.00,
             unit_discount       = 0.00,
-            sales_tax_rate      = 0.00,
             unit_tax            = 0.00,
             unit_gross          = 0.00,
             balance             = 0.00,
@@ -683,7 +673,7 @@ class Otherincome extends Components {
         }
 
         // If this is a VAT Record, check all of it's items have their VAT code enabled
-        if((preg_match('/^vat_/', $otherincome_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($otherincome_details['vat_tax_code'])) {
+        if((preg_match('/^vat_/', $otherincome_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($otherincome_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."), $silent);
             $state_flag = false;
         }

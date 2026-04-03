@@ -1313,7 +1313,7 @@ class Report extends Components {
 
         // Revenue
         if($record_set == 'revenue' || $record_set == 'all') {
-            //$stats['sum_unit_discount'] = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
+            //$stats['sum_unit_discount'] = $this->expenseSum('unit_discount', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
             $stats['sum_unit_gross'] = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
             $stats['sum_balance'] = $this->expenseSum('balance', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
 
@@ -1637,7 +1637,7 @@ class Report extends Components {
     /** Other Incomes **/
 
     #####################################
-    #   Get Otherincomes stats          #
+    #   Get Otherincome stats           #
     #####################################
 
     public function otherincomeGetStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null) {
@@ -1667,8 +1667,7 @@ class Report extends Components {
         // Revenue
         if($record_set == 'revenue' || $record_set == 'all') {
 
-            $stats['sum_unit_net'] = $this->otherincomeSum('unit_net', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);
-            $stats['sum_unit_tax'] = $this->otherincomeSum('unit_tax', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);
+            $stats['sum_unit_discount'] = $this->otherincomeSum('unit_discount', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);
             $stats['sum_unit_gross'] = $this->otherincomeSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);
             $stats['sum_balance'] = $this->otherincomeSum('balance', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id);
 
