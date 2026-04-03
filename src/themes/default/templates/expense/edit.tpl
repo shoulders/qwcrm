@@ -46,19 +46,19 @@
     // Change the Dummy records so the visible fields match the Tax System
     function modifyDummyRowsForTaxSystem() {
 
-        // If the Tax system is No Tax
+        /* If the Tax system is No Tax
         if(expenseTaxSystem.startsWith("no_tax")) {
-        }
+        }*/
 
         // If the Tax system is VAT based
         if(expenseTaxSystem.startsWith("vat_")) {
             $(".vatTaxSystem").show();
         }
 
-        // If the Tax system Sales Tax based
+        /* If the Tax system Sales Tax based
         if(expenseTaxSystem.startsWith("sales_tax_cash")) {
             $(".salesTaxSystem").show();
-        }
+        }*/
 
     }
 
@@ -74,7 +74,6 @@
             "unit_qty",
             "unit_net",
             "unit_discount",
-            "sales_tax_exempt",
             "vat_tax_code",
             "unit_tax_rate",
             "unit_tax",
@@ -90,16 +89,10 @@
             iteration = createNewTableRow();
 
             // Loop through the various fields and populate with their data
-            $.each(fieldNames, function(fieldIndex, fieldName) {
-
-                // If it is sales_tax_exempt and should be checked, do it
-                if(fieldName == "sales_tax_exempt") {
-                    if(expenseItem[fieldName] === '1') {
-                        $('#qform\\[expense_items\\]\\['+iteration+'\\]\\['+fieldName+'\\]').prop('checked', true);
-                    }
+            $.each(fieldNames, function(fieldIndex, fieldName)  {
 
                 // If it is a Combobox
-                } else if(fieldName === "description") {
+                if(fieldName === "description") {
 
                     // Build the Combobox identifier
                     let comboboxInputName = fieldName.replace("_", "")+'Combobox';
@@ -201,17 +194,6 @@
             refreshPage();
         });
 
-        // Monitor Sales Tax Exempt Checkboxes for click - Toggle the value between 0.00 and configured Sales Tax Rate
-        $(".expense_item_row input[id$='\\[sales_tax_exempt\\]']").click(function () {
-            if ($(this).is(":checked")) {
-                $(this).closest('tr').find("input[id$='\\[unit_tax_rate\\]']").val('0.00');
-            } else {
-                $(this).closest('tr').find("input[id$='\\[unit_tax_rate\\]']").val(parseFloat($("#expenseSalesTaxRate").val()).toFixed(2));  // what about +$ -  should this be a a varible rel;oad on each page refresh
-            }
-            refreshPage();
-        });
-
-
         /* Monitor all row input boxes for changes
         $(".expense_item_row input[type='text']").off("change").on("change", function() {
             refreshPage();
@@ -258,9 +240,6 @@
     // Recalculate and then refresh all onscreen expense totals
     function refreshTotals() {
 
-        // Refresh the Sales Tax Rate
-        let expenseSalesTaxRate = $("#expenseSalesTaxRate").val();
-
         /* Expense Item Rows */
 
         // Variable stores for Items Sums
@@ -271,11 +250,6 @@
 
         // Loop through item rows, calculate and refresh new values onscreen (Tax System Aware)
         $('.expense_item_row').each(function() {
-
-            // Update Sales Tax Rate if on sales_tax system and not exempt
-            if(expenseTaxSystem === 'sales_tax_cash' && !$(this).find("input[id$='\\[sales_tax_exempt\\]']").is(":checked")) {
-                $(this).find("input[id$='\\[unit_tax_rate\\]']").val(parseFloat(expenseSalesTaxRate).toFixed(2));
-            }
 
             // Unit Values (not used onscreen)
             rowUnitQty                  = +$(this).find("input[id$='\\[unit_qty\\]']").val();
@@ -412,13 +386,13 @@
                                                             <td><strong>{t}Payee{/t}:</strong></td>
                                                             <td>
                                                                 <!-- Payee Input -->
-                                                                <input id="qform[payee]" name="qform[payee]" class="olotd5" value="{$expense_details.payee}" size="25" type="text" maxlength="50" {if $expense_details.supplier_id}hidden{else}required{/if} onkeydown="return onlyName(event);">
-                                                                <input id="supplierAutosuggestNameDummy" class="olotd5" value="{$expense_details.display_name}" size="25" type="text" maxlength="50" readonly {if !$expense_details.supplier_id}hidden{/if}>
+                                                                <input id="qform[payee]" name="qform[payee]" class="olotd5" value="{$expense_details.payee}" size="25" type="text" maxlength="50" {if $expense_details.supplier_id}hidden {else}required {/if}onkeydown="return onlyName(event);">
+                                                                <input id="supplierAutosuggestNameDummy" class="olotd5" value="{$expense_details.display_name}" size="25" type="text" maxlength="50" {if !$expense_details.supplier_id}hidden{/if} readonly>
                                                                 <input id="assignToSupplier" name="assignToSupplier" type="checkbox" {if $expense_details.supplier_id}checked{/if}>{t}Assign to Supplier{/t}
 
                                                                 <!-- Autosuggest -->
                                                                 <div id="supplierAutosuggestBlock" {if !$expense_details.supplier_id}hidden{/if}>
-                                                                    <input id="supplierAutosuggestNameInput"class="" value="" size="25" type="text" maxlength="50" placeholder="{t}Start typing a Supplier's name{/t}" onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="debounceSupplierAutosuggestNameLookup(this.value);" onblur="supplierAutosuggestNameClose();">
+                                                                <input id="supplierAutosuggestNameInput"class="" value="" size="25" type="text" maxlength="50" placeholder="{t}Start typing a Supplier's name{/t}" onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="debounceSupplierAutosuggestNameLookup(this.value);" onblur="supplierAutosuggestNameClose();">
                                                                     <div class="suggestionsBoxWrapper">
                                                                         <div id="supplierAutosuggestName" class="suggestionsBox">
                                                                             <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
@@ -479,13 +453,12 @@
                                                         <tr class="olotd4">
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>
-                                                            <td class="row2" align="left" style="width: 75px;"><b>{if $expense_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_symbol})</b></td>
+                                                            <td class="row2" align="left" style="width: 75px;"><b>{if '/^vat_/'|preg_match:$expense_details.tax_system}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_symbol})</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_symbol})</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_symbol})</b></td>
+                                                            <td class="vatTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_symbol})</b></td>
                                                             <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$expense_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t} (%)</b></td>
-                                                            <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$expense_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} ({$currency_symbol})</b></td>
-                                                            <td class="salesTaxSystem row2"  align="right" hidden><b>{t}Sales Tax{/t} {t}Exempt{/t}</b></td>
+                                                            <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT{/t} {t}Rate{/t} (%)</b></td>
+                                                            <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT{/t} ({$currency_symbol})</b></td>
                                                             <td class="row2" align="right"><b>{t}Gross{/t} ({$currency_symbol})</b></td>
                                                             <td class="row2" align="right"><b>{t}Actions{/t}</b></td>
                                                         </tr>
@@ -502,7 +475,7 @@
                                                             <td align="left"><input id="qform[expense_items][iteration][unit_qty]" name="qform[expense_items][iteration][unit_qty]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="left"><input id="qform[expense_items][iteration][unit_net]" name="qform[expense_items][iteration][unit_net]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td align="left"><input id="qform[expense_items][iteration][unit_discount]" name="qform[expense_items][iteration][unit_discount]" style="width: 50px;" size="6" value="0.00" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
-                                                            <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[expense_items][iteration][subtotal_net]" name="qform[expense_items][iteration][subtotal_net]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td class="vatTaxSystem" align="left" hidden><input id="qform[expense_items][iteration][subtotal_net]" name="qform[expense_items][iteration][subtotal_net]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="right" hidden>
                                                                 <select id="qform[expense_items][iteration][vat_tax_code]" name="qform[expense_items][iteration][vat_tax_code]" value="" style="width: 100%; font-size: 10px;" required disabled>
                                                                     {section loop=$vat_tax_codes name=i}
@@ -510,10 +483,9 @@
                                                                     {/section}
                                                                 </select>
                                                             </td>
-                                                            <td class="vatTaxSystem salesTaxSystem" align="right" hidden>
-                                                                <input id="qform[expense_items][iteration][unit_tax_rate]" name="qform[expense_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="{if $expense_details.tax_system == 'sales_tax_cash'}{$expense_details.sales_tax_rate|string_format:"%.2f"}{else}0.00{/if}" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
-                                                            <td class="vatTaxSystem salesTaxSystem" align="right" hidden><input id="qform[expense_items][iteration][subtotal_tax]" name="qform[expense_items][iteration][subtotal_tax]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
-                                                            <td class="salesTaxSystem" align="right" hidden><input id="qform[expense_items][iteration][sales_tax_exempt]" name="qform[expense_items][iteration][sales_tax_exempt]" type="checkbox" value="1" disabled></td>
+                                                            <td class="vatTaxSystem" align="right" hidden>
+                                                                <input id="qform[expense_items][iteration][unit_tax_rate]" name="qform[expense_items][iteration][unit_tax_rate]" style="width: 50px;" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td class="vatTaxSystem" align="right" hidden><input id="qform[expense_items][iteration][subtotal_tax]" name="qform[expense_items][iteration][subtotal_tax]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td align="right">
                                                                 <input id="qform[expense_items][iteration][subtotal_gross]" name="qform[expense_items][iteration][subtotal_gross]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);">
                                                                 <!-- Hidden but needed -->
@@ -557,24 +529,15 @@
                                                                             <input type="text" class="olotd4" size="4" id="expenseTotalDiscount" name="qform[unit_discount]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
-                                                                    <tr class="vatTaxSystem salesTaxSystem" hidden>
+                                                                    <tr class="vatTaxSystem" hidden>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
                                                                             {$currency_symbol}<span id="expenseTotalNetText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="expenseTotalNet" name="qform[unit_net]" value="0.00" readonly hidden>
                                                                         </td>
                                                                     </tr>
-                                                                    <tr class="vatTaxSystem salesTaxSystem" hidden>
-                                                                        <td class="olotd4" width="80%" align="right">
-                                                                            {if '/^vat_/'|preg_match:$expense_details.tax_system}
-                                                                                <b>{t}VAT{/t}<b>
-                                                                                <input name="qform[sales_tax_rate]" value="{$expense_details.sales_tax_rate}" hidden>
-                                                                            {else}
-                                                                                <b>{t}Sales Tax{/t} (@
-                                                                                <input id="expenseSalesTaxRate" name="qform[sales_tax_rate]" class="olotd5" style="width: 40px; text-align: right;" value="{$expense_details.sales_tax_rate|string_format:"%.2f"}" type="text" maxlength="10" required onkeydown="return onlyNumberPeriod(event);" onkeyup="refreshPage();">
-                                                                                %)</b>
-                                                                            {/if}
-                                                                        </td>
+                                                                    <tr class="vatTaxSystem" hidden>
+                                                                        <td class="olotd4" width="80%" align="right"><b>{t}VAT{/t}<b></td>
                                                                         <td class="olotd4" width="20%" align="right">
                                                                             {$currency_symbol}<span id="expenseTotalTaxText">0.00</span>
                                                                             <input type="text" class="olotd4" size="4" id="expenseTotalTax" name="qform[unit_tax]" value="0.00" readonly hidden>

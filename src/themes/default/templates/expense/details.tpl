@@ -171,11 +171,11 @@
                                                                     <td class="row2"><b>{t}Unit Gross{/t}</b></td>
                                                                 {/if}
                                                                 <td class="row2"><b>{t}Unit Discount{/t}</b></td>
-                                                                {if $expense_details.tax_system != 'no_tax'}
+                                                                {if '/^vat_/'|preg_match:$expense_details.tax_system}
                                                                     <td class="row2"><b>{t}Net{/t}</b></td>
-                                                                    {if '/^vat_/'|preg_match:$expense_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
-                                                                    <td class="row2"><b>{if '/^vat_/'|preg_match:$expense_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                    <td class="row2"><b>{if '/^vat_/'|preg_match:$expense_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                                        <td class="row2"><b>{t}VAT Tax Code{/t}</b></td>
+                                                                        <td class="row2"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
+                                                                        <td class="row2"><b>{t}VAT{/t}</b></td>
                                                                 {/if}
                                                                 <td class="row2"><b>{t}Gross{/t}</b></td>
                                                             </tr>
@@ -186,20 +186,16 @@
                                                                     <td>{$expense_items[l].unit_qty|string_format:"%.2f"}</td>
                                                                     <td>{$currency_symbol}{$expense_items[l].unit_net|string_format:"%.2f"}</td>
                                                                     <td>{$currency_symbol}{$expense_items[l].unit_discount|string_format:"%.2f"}</td>
-                                                                    {if $expense_details.tax_system != 'no_tax'}
+                                                                    {if '/^vat_/'|preg_match:$expense_details.tax_system}
                                                                         <td>{$currency_symbol}{$expense_items[l].subtotal_net|string_format:"%.2f"}</td>
-                                                                        {if $expense_items[l].sales_tax_exempt}
-                                                                            <td colspan="2" align="center">{t}Exempt{/t}</td>
-                                                                        {elseif $expense_items[l].vat_tax_code == 'T2'}
+                                                                        {if $expense_items[l].vat_tax_code == 'T2'}
                                                                             <td colspan="3" align="center">{t}Exempt{/t}</td>
                                                                         {else}
-                                                                            {if '/^vat_/'|preg_match:$expense_details.tax_system}
-                                                                                <td>
-                                                                                    {section name=s loop=$vat_tax_codes}
-                                                                                        {if $expense_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                                                    {/section}
-                                                                                </td>
-                                                                            {/if}
+                                                                            <td>
+                                                                                {section name=s loop=$vat_tax_codes}
+                                                                                    {if $expense_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                                {/section}
+                                                                            </td>
                                                                             <td>{$expense_items[l].unit_tax_rate|string_format:"%.2f"}%</td>
                                                                             <td>{$currency_symbol}{$expense_items[l].subtotal_tax|string_format:"%.2f"}</td>
                                                                         {/if}
@@ -207,7 +203,6 @@
                                                                     <td>{$currency_symbol}{$expense_items[l].subtotal_gross|string_format:"%.2f"}</td>
                                                                 </tr>
                                                             {/section}
-
                                                         </table>
                                                     {/if}
                                                     <br>
@@ -231,13 +226,13 @@
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_symbol}{$expense_details.unit_discount|string_format:"%.2f"}</td>
                                                         </tr>
-                                                        {if $expense_details.tax_system != 'no_tax'}
+                                                        {if '/^vat_/'|preg_match:$expense_details.tax_system}
                                                             <tr>
                                                                 <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                                 <td class="olotd4" width="20%" align="right">{$currency_symbol}{$expense_details.unit_net|string_format:"%.2f"}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$expense_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$expense_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
+                                                                <td class="olotd4" width="80%" align="right"><b>{t}VAT{/t}</b></td>
                                                                 <td class="olotd4" width="20%" align="right">{$currency_symbol}{$expense_details.unit_tax|string_format:"%.2f"}</td>
                                                             </tr>
                                                         {/if}

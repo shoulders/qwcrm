@@ -42,6 +42,7 @@ function supplierAutosuggestNameIdFill(display_name, supplier_id) {
     $('#supplierAutosuggestNameDummy').val(display_name);       // set the Payee name, this will be discarded and is just for the user
     $('#qform\\[supplier_id\\]').val(supplier_id);              // Set the supplier_id used for real addressing.
     $('#supplierIdLink').html(supplier_id);                     // Set the supplier_id to show users onscreen
+    $('#supplierAutosuggestNameInput').prop('required', false); // As the supplier has been set, remove the required flag
     supplierAutosuggestNameClose();
 }
 
@@ -60,14 +61,18 @@ $(document).ready(function() {
       $('#qform\\[payee\\]').prop('required', false);
       $('#supplierAutosuggestNameDummy').prop('hidden', false);
       $('#supplierAutosuggestBlock').prop('hidden', false);
+      $('#supplierAutosuggestNameInput').prop('required', true); // The supplier is not longer set, add the required flag
+      $('#qform\\[supplier_id\\]').val('');
     } else {
       $('#supplierIdLink').html('');
-      //$('#qform\\[payee\\]').val('');
+      $('#qform\\[payee\\]').val('');
       $('#qform\\[payee\\]').prop('hidden', false);
       $('#qform\\[payee\\]').prop('required', true);
       $('#supplierAutosuggestNameDummy').prop('hidden', true);
       $('#supplierAutosuggestNameDummy').val('');
       $('#supplierAutosuggestBlock').prop('hidden', true);
+      $('#supplierAutosuggestNameInput').prop('required', false); // The Payee is now in freetype, so this input is not required
+      $('#qform\\[supplier_id\\]').val('');
     }
   });
 });
