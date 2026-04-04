@@ -22,6 +22,7 @@ $this->app->smarty->assign('peakMem',                  memory_get_peak_usage() /
 // Advanced Debug - Only use in offline sites and for development only
 $this->app->smarty->assign('qwcrmAdvancedDebug', $this->app->config->get('qwcrm_advanced_debug'));
 if($this->app->config->get('qwcrm_advanced_debug')) {
+    $this->app->smarty->assign('phpErrorGetLast', htmlspecialchars(print_r(error_get_last(), true)));
     $this->app->smarty->assign('definedPhpVariables', htmlspecialchars(print_r(get_defined_vars(), true)));
     $this->app->smarty->assign('definedPhpConstants', htmlspecialchars(print_r(get_defined_constants(), true)));
     $this->app->smarty->assign('definedPhpFunctions', print_r(get_defined_functions(), true));

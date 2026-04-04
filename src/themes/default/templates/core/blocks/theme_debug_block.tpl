@@ -58,6 +58,10 @@
     <div>
         <!-- Qwcrm Advanced Debug -->
         <h2><strong>{t}QWcrm Advanced Debug Section{/t}</strong></h2>
+
+        <!-- PHP Information -->
+        <h3><strong>{t}Last PHP Error{/t}:</strong></h3>
+        <pre>{$phpErrorGetLast}</pre>
         <h3><strong>{t}Defined PHP Variables{/t}:</strong></h3>
         <pre>{$definedPhpVariables}</pre>;
         <h3><strong>{t}Defined PHP Constants{/t}:</strong></h3>
@@ -66,6 +70,8 @@
         <pre>{$definedPhpFunctions}</pre>
         <h3><strong>{t}Declared PHP Classes{/t}:</strong></h3>
         <pre>{$declaredPhpClasses}</pre>
+
+        <!-- Server Information -->
         <h3><strong>{t}Server Enviromental Variables{/t}:</strong></h3>
         <pre>{$serverEnviromentalVariables}</pre>
     </div>
