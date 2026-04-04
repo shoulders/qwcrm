@@ -643,7 +643,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_debug == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_debug == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}QWcrm Debug{/t}</strong></div><hr><div>{t escape=js}This on it\'s own gives basic information such as the page and module names aswell as their load time. QWcrm Debug needs to be enabled to access the rest of the debugging options.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}QWcrm Debug{/t}</strong></div><hr><div>{t escape=js}This on it's own gives basic information about the page such as component name module name, load time and RAM usage. QWcrm Debug needs to be enabled to access the rest of the debugging options.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -653,17 +653,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_advanced_debug == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_advanced_debug == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}QWcrm Advanced Debug{/t}</strong></div><hr><div>{t escape=js}This does a full varible and class dump from PHP. This is a security risk and should only be used for QWcrm development.{/t}</div>');" onMouseOut="hideddrivetip();">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right"><b>{t}Smarty Debugging (QWcrm){/t}</b></td>
-                        <td>
-                            <select class="olotd5" id="qwcrm_smarty_debugging" name="qform[qwcrm_smarty_debugging]">
-                                <option value="0"{if $qwcrm_config.qwcrm_smarty_debugging == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.qwcrm_smarty_debugging == '1'} selected{/if}>{t}Yes{/t}</option>
-                            </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Smarty Debugging (QWcrm){/t}</strong></div><hr><div>{t escape=js}Because of the way QWcrm is structured I needed to implement a custom method to call the Smarty Debugging template.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}QWcrm Advanced Debug{/t}</strong></div><hr><div>{t escape=js}This displays all the configured variable, class and server environmental values. This is a security risk and should only be used for QWcrm development.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
@@ -671,7 +661,7 @@
                         <td>
                             <select class="olotd5" id="smarty_debugging" name="qform[smarty_debugging]">
                                 <option value="0"{if $qwcrm_config.smarty_debugging == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_debugging == '1'} selected{/if} disabled>{t}Yes{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_debugging == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Smarty Debugging{/t}</strong></div><hr><div>{t escape=js}This enables the debugging console. The console is a javascript popup window that informs you of the included templates, variables assigned from php and config file variables for the current script. It does not show variables assigned within a template with the { assign } function. This is the standard way to enable Smarty Debugging. This currently does not work.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -680,10 +670,10 @@
                         <td align="right"><b>{t}Smarty Debugging Control{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_debugging_ctrl" name="qform[smarty_debugging_ctrl]">
-                                <option value="NONE"{if $qwcrm_config.smarty_debugging_ctrl == 'NONE'} selected{/if}>{t}None{/t}</option>
-                                <option value="URL"{if $qwcrm_config.smarty_debugging_ctrl == 'URL'} selected{/if} disabled>{t}URL{/t}</option>
+                                <option value="NONE"{if $qwcrm_config.smarty_debugging_ctrl == 'NONE'} selected{/if}>{t}NONE{/t}</option>
+                                <option value="URL"{if $qwcrm_config.smarty_debugging_ctrl == 'URL'} selected{/if}>{t}URL{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Smarty Debugging Control{/t}</strong></div><hr><div>{t escape=js}This allows alternate ways to enable debugging. NONE means no alternate methods are allowed. URL means when the keyword SMARTY_DEBUG is found in the QUERY_STRING, debugging is enabled for that invocation of the script. If $debugging is TRUE, this value is ignored.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Smarty Debugging Control{/t}</strong></div><hr><div>{t escape=js}This allows alternate ways to enable debugging. NONE means no alternate methods are allowed. URL means when the keyword SMARTY_DEBUG is found in the QUERY_STRING, debugging is enabled for that invocation of the script. If Smarty Debugging is enabled, this value is ignored.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
 

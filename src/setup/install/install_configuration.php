@@ -53,7 +53,6 @@ class QConfig {
     public $error_handler_whoops = '1';
     public $qwcrm_debug = '0';
     public $qwcrm_advanced_debug = '0';
-    public $qwcrm_smarty_debugging = '0';
     public $smarty_debugging = '0';
     public $smarty_debugging_ctrl = 'NONE';
     public $smarty_force_compile = '0';

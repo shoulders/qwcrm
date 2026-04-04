@@ -19,49 +19,12 @@ $this->app->smarty->assign('peakMem',                  memory_get_peak_usage() /
 
 //\CMSApplication::$VAR['debug']['infoOutput'] - just incase I need a propername
 
-$pagePayload .= $this->app->smarty->fetch('core/blocks/theme_debug_block.tpl');
-
-// Smarty Debugging - Done this way because $this->app->smarty_debugging is not supported when using fetch()
-if($this->app->config->get('qwcrm_smarty_debugging')) {
-    $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl');
-}
-
-// Advanced Debug - Only use in offline sites and for developement only
+// Advanced Debug - Only use in offline sites and for development only
+$this->app->smarty->assign('qwcrmAdvancedDebug', $this->app->config->get('qwcrm_advanced_debug'));
 if($this->app->config->get('qwcrm_advanced_debug')) {
-
-    $pagePayload .= "\r\n\r\n<div><h2><strong>"._gettext("QWcrm Advanced Debug Section")."</strong></h2></div>\r\n";
- 
-    /* 
-     * All defined PHP Variables
-     *  
-     * Pick your poison - http://web-profile.net/php/dev/var_dump-print_r-var_export/
-     *       
-     */    
-    $pagePayload.= "<div><h3><strong>"._gettext("All Defined PHP Variables").":</strong></h3></div>\r\n";     
-    $pagePayload .= '<pre>'.htmlspecialchars(print_r(get_defined_vars(), true)).'</pre>';        
-    
-    /* 
-     * All defined PHP Constants
-     */    
-    $pagePayload .= "<div><h3><strong>"._gettext("All Defined PHP Constants").":</strong></h3></div>\r\n";
-    $pagePayload .= '<pre>'.htmlspecialchars(print_r(get_defined_constants(), true)).'</pre>';
-
-    /* 
-     * All defined PHP functions
-     */    
-    $pagePayload .= "<div><h3><strong>"._gettext("All Defined PHP Functions").":</strong></h3></div>\r\n";
-    $pagePayload .= '<pre>'.print_r(get_defined_functions(), true).'</pre>';    
-
-    /* 
-     * All declared PHP Classes
-     */    
-    $pagePayload .= "<div><h3><strong>"._gettext("All Declared PHP Classes").":</strong></h3></div>\r\n";
-    $pagePayload .= '<pre>'.print_r(get_declared_classes(), true).'</pre>'; 
-    
-    /* 
-     * All Server Enviromental Variables
-     */        
-    $pagePayload .= "<div><h3><strong>"._gettext("All Server Enviromental Variables").":</strong></h3></div>\r\n";
-    $pagePayload .= '<pre>'.htmlspecialchars(print_r($_SERVER, true)).'</pre>';     
-    
+    $this->app->smarty->assign('definedPhpVariables', htmlspecialchars(print_r(get_defined_vars(), true)));
+    $this->app->smarty->assign('definedPhpConstants', htmlspecialchars(print_r(get_defined_constants(), true)));
+    $this->app->smarty->assign('definedPhpFunctions', print_r(get_defined_functions(), true));
+    $this->app->smarty->assign('declaredPhpClasses', print_r(get_declared_classes(), true));
+    $this->app->smarty->assign('serverEnviromentalVariables', htmlspecialchars(print_r($_SERVER, true)));
 }

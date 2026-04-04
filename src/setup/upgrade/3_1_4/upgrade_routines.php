@@ -51,6 +51,7 @@ class Upgrade3_1_4 extends Setup {
         $this->app->components->administrator->insertQwcrmConfigSetting('cronjob_system', 'pseudo');
         $this->app->components->administrator->insertQwcrmConfigSetting('cronjob_pseudo_interval', '15');
         $this->app->components->administrator->insertQwcrmConfigSetting('simple_messages', '0');
+        $this->app->components->administrator->deleteQwcrmConfigSetting('qwcrm_smarty_debugging');
 
         // Set direction for invoice, expense, otherincome
         $this->updateColumnValues(PRFX.'payment_records', 'direction', '', 'credit', 'type', 'invoice');

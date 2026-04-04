@@ -10,7 +10,7 @@
 <div style="width: 900px; margin-bottom: 20px;">
     <table width="400" border="0" cellspacing="0" cellpadding="0" style="margin: auto auto;">
         <tr>
-            <td align="center" colspan="2"><h2><strong>{t}QWcrm Debug Section{/t}</span></h2></td>        
+            <td align="center" colspan="2"><h2><strong>{t}QWcrm Debug Section{/t}</span></h2></td>
         </tr>
 
         <!-- Visitor Details -->
@@ -35,7 +35,7 @@
         <tr>
             <td><b><span class="text3">{t}Page{/t}:</span></b></td>
             <td>{$loadedPageTpl}</td>
-        </tr>    
+        </tr>
 
         <!-- Memory Usage -->
         <tr>
@@ -50,6 +50,23 @@
             <td><b><span class="text3">{t}Peak PHP Memory{/t}:</span></b></td>
             <td>{$peakMem|string_format:"%.2f"} MB</td>
         </tr>
-        
+
     </table>
 </div>
+
+{if $qwcrmAdvancedDebug}
+    <div>
+        <!-- Qwcrm Advanced Debug -->
+        <h2><strong>{t}QWcrm Advanced Debug Section{/t}</strong></h2>
+        <h3><strong>{t}Defined PHP Variables{/t}:</strong></h3>
+        <pre>{$definedPhpVariables}</pre>;
+        <h3><strong>{t}Defined PHP Constants{/t}:</strong></h3>
+        <pre>{$definedPhpConstants}</pre>;
+        <h3><strong>{t}Defined PHP Functions{/t}:</strong></h3>
+        <pre>{$definedPhpFunctions}</pre>
+        <h3><strong>{t}Declared PHP Classes{/t}:</strong></h3>
+        <pre>{$declaredPhpClasses}</pre>
+        <h3><strong>{t}Server Enviromental Variables{/t}:</strong></h3>
+        <pre>{$serverEnviromentalVariables}</pre>
+    </div>
+{/if}

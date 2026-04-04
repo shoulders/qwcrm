@@ -9,18 +9,18 @@
 defined('_QWEXEC') or die;
 
 abstract class Factory {
-    
+
     // Static
     public static $application  = null;     // Application Object
     public static $config       = null;     // Global Config object
     public static $session      = null;     // Global Session object
     public static $auth         = null;     // Global Authetication object
     public static $user         = null;     // Global User object
-    public static $database     = null;     // Global Database object    
-    public static $smarty       = null;     // Global Smarty object  
-    
+    public static $database     = null;     // Global Database object
+    public static $smarty       = null;     // Global Smarty object
+
     /****************** Application Object ******************/
-    
+
     /**
      * Get an application object.
      *
@@ -35,14 +35,14 @@ abstract class Factory {
      */
     //public static function getApplication($id = null, array $config = array(), $prefix = 'J')
     public static function getApplication()
-    {        
+    {
         if(!self::$application)
         {
-            self::$application = new CMSApplication;            
+            self::$application = new CMSApplication;
         }
         return self::$application;
     }
-    
+
     /**
      * Returns a reference to the global CMSApplication object, only creating it if it doesn't already exist.
      *
@@ -62,7 +62,7 @@ abstract class Factory {
             // Create a CMSApplication object.
             //$classname = '\JApplication' . ucfirst($name);
             $classname = 'CMSApplication';
-            
+
             if (!class_exists($classname))
             {
                 //throw new \RuntimeException(\JText::sprintf('JLIB_APPLICATION_ERROR_APPLICATION_LOAD', $name), 500);
@@ -73,11 +73,11 @@ abstract class Factory {
 
         return static::$instances[$name];
     }
-    
-    
-    
+
+
+
     /****************** Configuration Object ******************/
-    
+
     /**
      * Get a configuration object - this allows the use in non object context
      *
@@ -101,13 +101,13 @@ abstract class Factory {
                 $file = 'configuration.php';
             }
 
-        self::$config = self::createConfig($file, $type, $namespace);            
-            
+        self::$config = self::createConfig($file, $type, $namespace);
+
         }
 
         return self::$config;
-    }    
-    
+    }
+
     /**
      * Create a configuration object
      *
@@ -147,14 +147,14 @@ abstract class Factory {
         }
 
         return $registry;
-    }  
-    
-    
+    }
+
+
 /****************** Session Object ******************/
 
 
 
-    
+
    /**
      * Get a session object.
      *
@@ -176,7 +176,7 @@ abstract class Factory {
 
         return self::$session;
     }
-  
+
     /**
      * Create a session object
      *
@@ -204,11 +204,11 @@ abstract class Factory {
         }
 
         return $session;
-    }    
+    }
 
-    
+
 /****************** Authentication Object ******************/
-        
+
      /**
      * Get authentication object.
      *
@@ -220,27 +220,27 @@ abstract class Factory {
      *
      * @see     JAuthentication
      * @since   11.1
-     */       
+     */
     public static function getAuth()
-    {        
+    {
         if(!self::$auth)
         {
         self::$auth = new \Joomla\CMS\Authentication\Authentication;
-            
+
         }
         return self::$auth;
     }
-        
-    
+
+
 /****************** User Object ******************/
-    
+
     // Check for data in the session.
     // $temp = Jself::getApplication()->getUserState('com_config.config.global.data');  - administrator/components/com_config/model/application.php
 
     // this handles user data stored in the user section of the session data blob
 
    /**
-     * 
+     *
      * Get a user object.
      *
      * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
@@ -254,7 +254,7 @@ abstract class Factory {
      */
     public static function getUser($id = null)
     {
-        $instance = self::getSession()->get('user');        
+        $instance = self::getSession()->get('user');
 
         if (is_null($id))
         {
@@ -272,13 +272,13 @@ abstract class Factory {
         return $instance;
     }
 
-    
 
-    
+
+
 
 /****************** Database Object ******************/
-    
-    
+
+
     /**
      * Get a database object.
      *
@@ -297,9 +297,9 @@ abstract class Factory {
         }
 
         return self::$database;
-    }       
-    
-    
+    }
+
+
     /**
      * Create an database object
      *
@@ -309,25 +309,25 @@ abstract class Factory {
      * @since   11.1
      */
     protected static function createDbo()
-    {        
-        
-        $config = self::getConfig();        
-        
+    {
+
+        $config = self::getConfig();
+
         $db = ADONewConnection('mysqli');
-        
+
         /* ADODB Options */
 
         // ADODB_ASSOC_CASE - You can control the associative fetch case for certain drivers which behave differently. - native is default since v2.90
         // set what case to use for recordsets where the field name (not table names): 0 = lowercase, 1 = uppercase, 2 = native case
-        //define('ADODB_ASSOC_CASE', 1); 
-        
-        //$ADODB_FETCH_MODE = ADODB_FETCH_NUM | ADODB_FETCH_ASSOC; // $ADODB_FETCH_MODE - This is a global variable that determines how arrays are retrieved by recordsets. 
+        //define('ADODB_ASSOC_CASE', 1);
+
+        //$ADODB_FETCH_MODE = ADODB_FETCH_NUM | ADODB_FETCH_ASSOC; // $ADODB_FETCH_MODE - This is a global variable that determines how arrays are retrieved by recordsets.
         $db->setFetchMode(ADODB_FETCH_ASSOC); // Set fetch mode to only return associative arrays (i.e. no indexeing added in by ADOdb - // also see http://adodb.org/dokuwiki/doku.php?id=v5:reference:connection:setfetchmode
-                
+
         // Also see http://adodb.org/dokuwiki/doku.php?id=v5:reference:connection:adonewconnection
         // http://adodb.org/dokuwiki/doku.php?id=v5:reference:reference_index - full list of command
-        // Basic instructions in vendor/adodb-php/README.md        
-        
+        // Basic instructions in vendor/adodb-php/README.md
+
         //set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb/'); // Set Path for ADODB in the php include path (Not needed because it is loaded by Composer)
         //require('adodb.inc.php'); // Load Dependency Manually (Not needed because it is loaded by composer)
 
@@ -335,18 +335,18 @@ abstract class Factory {
         // This extends the system class Exception - http://adodb.org/dokuwiki/doku.php?id=v5:userguide:error_handling
         // I think this tries to convert standard PHP errors to Exceptions
         //require('adodb-exceptions.inc.php');
-        //require(VENDOR_DIR.'adodb/adodb-php/adodb-exceptions.inc.php');        
-                
+        //require(VENDOR_DIR.'adodb/adodb-php/adodb-exceptions.inc.php');
+
         //$db->debug = true;  // This delivers a lot of information to the screen about failed SQL queries
         //$reporting_level = error_reporting(); // Get current PHP error reporting level (not needed with this version of ADOdb)
         //error_reporting(0); // Disable PHP error reporting (works globally) (not needed with this version of ADOdb)
 
         // ADOdb will show as connected if null values are sent to $db->connect  ?? - This is needed to allow install/migration
         if ($config->get('db_host') && $config->get('db_user') && $config->get('db_name')) {
-            
+
             // Create ADOdb database connection - and collection exceptions
             try
-            {        
+            {
                 $db->Connect($config->get('db_host'), $config->get('db_user'), $config->get('db_pass'), $config->get('db_name'));
             }
 
@@ -365,85 +365,85 @@ abstract class Factory {
 
                 return false;
 
-            }       
+            }
 
             // Re-Enable PHP error reporting (not needed with this version of ADOdb)
             //error_reporting($reporting_level);
-            
+
             // If just testing the database connection
             if($config->get('test_db_connection') == 'test') {
-                
+
                 if(!$db->isConnected()) {
-                    
+
                     // Database connection failed
                     self::getApplication()->system->variables->systemMessagesWrite('danger', self::getApplication()->system->general->prepareErrorData('error_database_connection', $db->ErrorMsg()));
                     $config->set('test_db_connection', 'failed');
                     return;
-                    
+
                 } else {
-                    
+
                     // Database connection succeeded
                     $config->set('test_db_connection', 'passed');
                     return;
-                    
-                }                
-                
+
+                }
+
             }
-            
+
             // Database connection failed (rigged to allow installation)
-            if(!$db->isConnected()) {           
-                
+            if(!$db->isConnected()) {
+
                 // Valid installation, Database Connection has failed
                 if (is_file('configuration.php') && !is_dir('components/_includes/setup')) {
 
                     die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');
 
-                }           
+                }
 
-            }            
-            
+            }
+
             return $db;
-        
+
         }
-        
+
         // If the database connection values have not all been supplied
         return false;
-    
+
     }
 /****************** Smarty Object ******************/
-    
+
     /**
      * Get a Smarty Object
      *
      * @return  smarty Object
      *
-     * @see     
-     * @since   
+     * @see
+     * @since
      */
     public static function getSmarty($newInstance = null)
     {
         if(!is_null($newInstance)) {
-            self::$smarty = $newInstance;    
+            self::$smarty = $newInstance;
         }
         if(is_null(self::$smarty)) {
-            self::$smarty = self::createSmarty();      
+            self::$smarty = self::createSmarty();
         }
         return self::$smarty;
-    }         
-    
+    }
+
     /**
      * Create a smarty object
      *
      * @return  Smarty Object
      *
-     * @see     
-     * @since   
+     * @see
+     * @since
      */
     protected static function createSmarty()
-    {        
+    {
         $config = self::getConfig();
         $smarty = new Smarty;
-        
+
         /* Configure Smarty */
 
         // Smarty Class Variables - https://www.smarty.net/docs/en/api.variables.tpl
@@ -451,7 +451,7 @@ abstract class Factory {
         $smarty->cache_dir              = SMARTY_CACHE_DIR;
         $smarty->compile_dir            = SMARTY_COMPILE_DIR;
         $smarty->force_compile          = $config->get('smarty_force_compile');
-        
+
         // Custom Plugin Directory
         $smarty->addPluginsDir(LIBRARIES_DIR.'/custom/smarty/plugins/');
 
@@ -465,11 +465,11 @@ abstract class Factory {
         $smarty->cache_modified_check   = $config->get('smarty_cache_modified_check');
         $smarty->cache_locking          = $config->get('smarty_cache_locking');
 
-        // Debugging    
+        // Debugging
+        $smarty->debugging              = $config->get('smarty_debugging');                               // Debugging does not work with fetch()
         $smarty->debugging_ctrl         = $config->get('smarty_debugging_ctrl');
-        //$smarty->debugging            = $config->get('smarty_debugging');                               // Does not work with fetch()
         //$smarty->debugging_ctrl       = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';      // Restrict debugging URL to work only on localhost
-        //$smarty->debug_tpl            = LIBRARIES_DIR.'smarty/debug.tpl';                               // By default it is in the Smarty directory
+        $smarty->debug_tpl              = LIBRARIES_DIR.'vendor/smarty/smarty/libs/debug.tpl';            // Define here becasue auto discovery is not working
 
         // Other Settings/functions
         //$smarty->load_filter('output','trimwhitespace');  // removes all whitespace from output. useful to get smaller page payloads (minify?)
@@ -479,9 +479,9 @@ abstract class Factory {
         //$smarty->clearAllCache();                         // clears all of the cache
         //$smarty->clear_cache()();                         // clear individual cache files (or groups)
         //$smarty->clearCompiledTemplate();                 // Clears the compile directory
-        
+
         return $smarty;
-    
+
     }
-    
+
 }
