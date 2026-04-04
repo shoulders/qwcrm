@@ -980,6 +980,7 @@ class Report extends Components {
             $stats['count_closed'] = $this->voucherCount('closed_on', $start_date, $end_date, $tax_system, null, null, 'closed', null, $employee_id, $client_id);
             $stats['count_claimed'] = $this->voucherCount('closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', null, $employee_id, $client_id);  // This is where the client has used a Voucher from someone else on their account
             $stats['count_expired_paid'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
+            $stats['count_voided'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'voided', null, $employee_id, $client_id);
             $stats['count_cancelled'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'cancelled', null, $employee_id, $client_id);
 
         }
@@ -996,6 +997,9 @@ class Report extends Components {
             $stats['sum_expired_unused_unit_net'] = $this->voucherSum('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
             $stats['sum_expired_unused_unit_tax'] = $this->voucherSum('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
             $stats['sum_expired_unused_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
+            //$stats['sum_voided_unit_net'] = $this->voucherSum('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'voided', $expired, $employee_id, $client_id);
+            //$stats['sum_voided_unit_tax'] = $this->voucherSum('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'voided', $expired, $employee_id, $client_id);
+            //$stats['sum_voided_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'voided', $expired, $employee_id, $client_id);
             //$stats['sum_cancelled_unit_net'] = $this->voucherSum('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $expired, $employee_id, $client_id);
             //$stats['sum_cancelled_unit_tax'] = $this->voucherSum('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $expired, $employee_id, $client_id);
             //$stats['sum_cancelled_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', $expired, $employee_id, $client_id);
@@ -1005,6 +1009,7 @@ class Report extends Components {
             //$stats['sum_redeemed_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'redeemed', $expired, $employee_id, $client_id);
             $stats['sum_suspended_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'suspended', null, $employee_id, $client_id);
             //$stats['sum_expired_unused_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'expired_unused', $expired, $employee_id, $client_id);
+            $stats['sum_voided_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'voided', null, $employee_id, $client_id);
             $stats['sum_cancelled_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'cancelled', null, $employee_id, $client_id);
             $stats['sum_open_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'open', null, $employee_id, $client_id);
             $stats['sum_opened_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'opened', null, $employee_id, $client_id);
