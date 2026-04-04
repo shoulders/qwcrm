@@ -22,7 +22,7 @@
         <!-- Page -->
         <tr>
             <td><b><span class="text3">{t}Page Load Time{/t}:</span></b></td>
-            <td>{$pageLoadTime|string_format:"%.4f"} {t}Microseconds{/t}</td>
+            <td>{$pageLoadTime|string_format:"%.4f"} {t}Seconds{/t}</td>
         </tr>
         <tr>
             <td><b><span class="text3">{t}Page Controller{/t}:</span></b></td>
