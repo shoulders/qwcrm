@@ -58,21 +58,33 @@
     <div>
         <!-- Qwcrm Advanced Debug -->
         <h2><strong>{t}QWcrm Advanced Debug Section{/t}</strong></h2>
+        <p>{t}Use Ctrl+F to search for the following sections or click on the links below.{/t}</p>
+        <ul>
+            <li><a href="#last-php-error">{t}Last PHP Error{/t}</a></il>
+            <li><a href="#php-debug-backtrace">{t}PHP Debug Backtrace{/t}</a></il>
+            <li><a href="#defined-php-variables">{t}Defined PHP Variables{/t}</a></il>
+            <li><a href="#defined-php-constants">{t}Defined PHP Constants{/t}</a></il>
+            <li><a href="#defined-php-functions">{t}Defined PHP Functions{/t}</a></il>
+            <li><a href="#declared-php-classes">{t}Declared PHP Classes{/t}</a></il>
+            <li><a href="#server-environmental-variables">{t}Server Environmental Variables{/t}.</a></il>
+        </ul>
 
         <!-- PHP Information -->
-        <h3><strong>{t}Last PHP Error{/t}:</strong></h3>
+        <h3 id="last-php-error"><strong>{t}Last PHP Error{/t}:</strong></h3>
         <pre>{$phpErrorGetLast}</pre>
-        <h3><strong>{t}Defined PHP Variables{/t}:</strong></h3>
+        <h3 id="php-debug-backtrace"><strong>{t}PHP Debug Backtrace{/t}:</strong></h3>
+        <pre>{$phpDebugBacktrace}</pre>
+        <h3 id="defined-php-variables"><strong>{t}Defined PHP Variables{/t}:</strong></h3>
         <pre>{$definedPhpVariables}</pre>;
-        <h3><strong>{t}Defined PHP Constants{/t}:</strong></h3>
+        <h3 id="defined-php-constants"><strong>{t}Defined PHP Constants{/t}:</strong></h3>
         <pre>{$definedPhpConstants}</pre>;
-        <h3><strong>{t}Defined PHP Functions{/t}:</strong></h3>
+        <h3 id="defined-php-functions"><strong>{t}Defined PHP Functions{/t}:</strong></h3>
         <pre>{$definedPhpFunctions}</pre>
-        <h3><strong>{t}Declared PHP Classes{/t}:</strong></h3>
+        <h3 id="declared-php-classes"><strong>{t}Declared PHP Classes{/t}:</strong></h3>
         <pre>{$declaredPhpClasses}</pre>
 
         <!-- Server Information -->
-        <h3><strong>{t}Server Enviromental Variables{/t}:</strong></h3>
-        <pre>{$serverEnviromentalVariables}</pre>
+        <h3 id="server-environmental-variables"><strong>{t}Server Environmental Variables{/t}:</strong></h3>
+        <pre>{$serverEnvironmentalVariables}</pre>
     </div>
 {/if}

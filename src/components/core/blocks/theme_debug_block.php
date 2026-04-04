@@ -23,9 +23,10 @@ $this->app->smarty->assign('peakMem',                  memory_get_peak_usage() /
 $this->app->smarty->assign('qwcrmAdvancedDebug', $this->app->config->get('qwcrm_advanced_debug'));
 if($this->app->config->get('qwcrm_advanced_debug')) {
     $this->app->smarty->assign('phpErrorGetLast', htmlspecialchars(print_r(error_get_last(), true)));
+    $this->app->smarty->assign('phpDebugBacktrace', htmlspecialchars(print_r(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT), true)));
     $this->app->smarty->assign('definedPhpVariables', htmlspecialchars(print_r(get_defined_vars(), true)));
     $this->app->smarty->assign('definedPhpConstants', htmlspecialchars(print_r(get_defined_constants(), true)));
     $this->app->smarty->assign('definedPhpFunctions', print_r(get_defined_functions(), true));
     $this->app->smarty->assign('declaredPhpClasses', print_r(get_declared_classes(), true));
-    $this->app->smarty->assign('serverEnviromentalVariables', htmlspecialchars(print_r($_SERVER, true)));
+    $this->app->smarty->assign('serverEnvironmentalVariables', htmlspecialchars(print_r($_SERVER, true)));
 }
