@@ -193,7 +193,7 @@
         <table width="675" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
             <tr>
                 <td width="500">&nbsp;</td>
-               <!-- Totals Box -->
+                <!-- Totals Box -->
                 <td colspan="2" valign="top">
                     <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                         <tr>
@@ -213,6 +213,10 @@
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_gross|string_format:"%.2f"}</td>
+                        </tr>
+                        <tr>
+                            <td class="olotd4" style="color: {if $creditnote_details.balance == '0.00'}forestgreen{else}firebrick{/if};" width="80%" align="right"><b>{t}Balance{/t}</b></td>
+                            <td class="olotd4" style="color: {if $creditnote_details.balance == '0.00'}forestgreen{else}firebrick{/if};" width="20%" align="right">{$currency_symbol}{$creditnote_details.balance|string_format:"%.2f"}</td>
                         </tr>
                     </table>
                 </td>

@@ -352,6 +352,10 @@
                             <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_symbol}{$invoice_details.unit_gross|string_format:"%.2f"}</td>
                         </tr>
+                        <tr>
+                            <td class="olotd4" style="color: {if $invoice_details.balance == '0.00'}forestgreen{else}firebrick{/if};" width="80%" align="right"><b>{t}Balance{/t}</b></td>
+                            <td class="olotd4" style="color: {if $invoice_details.balance == '0.00'}forestgreen{else}firebrick{/if};" align="right">{$currency_symbol}{$invoice_details.balance|string_format:"%.2f"}</td>
+                        </tr>
                     </table>
                 </td>
             </tr>
