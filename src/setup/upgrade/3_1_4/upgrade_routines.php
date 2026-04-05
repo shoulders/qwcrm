@@ -154,6 +154,7 @@ class Upgrade3_1_4 extends Setup {
                     unit_gross      =". $this->app->db->qStr($rs->fields['unit_gross']).",
                     balance         =". $this->app->db->qStr($rs->fields['balance']).",
                     status          =". $this->app->db->qStr($status[$rs->fields['status']]).",
+                    action_type     =". $this->app->db->qStr('refund').",
                     opened_on       =". $this->app->db->qStr($rs->fields['opened_on']).",
                     closed_on       =". $this->app->db->qStr($rs->fields['closed_on']).",
                     last_Active     =". $this->app->db->qStr($rs->fields['last_active']).",

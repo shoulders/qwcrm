@@ -53,6 +53,11 @@ _gettext("Deleted");
 _gettext("Sales");
 _gettext("Purchase");
 
+/* Credit Action Types */
+_gettext("Standalone");
+_gettext("Close");
+_gettext("Refund");
+
 /* Expense Statuses */
 _gettext("Pending");
 _gettext("Unpaid");

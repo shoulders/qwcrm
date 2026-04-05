@@ -306,6 +306,7 @@ CREATE TABLE `#__creditnote_records` (
   `unit_gross` decimal(10,2) NOT NULL DEFAULT 0.00,
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `action_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
@@ -357,6 +358,25 @@ CREATE TABLE `#__creditnote_types` (
 INSERT INTO `#__creditnote_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'sales', 'Sales'),
 (2, 'purchase', 'Purchase');
+
+--
+-- Table structure for table `#__creditnote_action_types`
+--
+
+CREATE TABLE `#__creditnote_action_types` (
+  `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `#__creditnote_action_types`
+--
+
+INSERT INTO `#__creditnote_action_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'standalone', 'Standalone'),
+(2, 'close', 'Close'),
+(3, 'refund', 'Refund');
 
 -- --------------------------------------------------------
 
@@ -1559,6 +1579,12 @@ ALTER TABLE `#__creditnote_statuses`
 -- Indexes for table `#__creditnote_types`
 --
 ALTER TABLE `#__creditnote_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__creditnote_types`
+--
+ALTER TABLE `#__creditnote_action_types`
   ADD PRIMARY KEY (`id`);
 
 --

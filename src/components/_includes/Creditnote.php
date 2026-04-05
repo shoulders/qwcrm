@@ -40,6 +40,7 @@ class Creditnote extends Components {
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                          ).",
                 sales_tax_rate  =". $this->app->db->qStr( $qform['sales_tax_rate']                      ).",
                 status          =". $this->app->db->qStr( 'pending'                            ).",
+                action_type     =". $this->app->db->qStr( $qform['action_type']).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
@@ -924,6 +925,8 @@ class Creditnote extends Components {
 
             if(!$invoice_id){
 
+                // CR `Standalone` Action Type (Credit)
+
                 // Dont allow this type of credit note (for now)
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is type of credit note for clients is not currently allowed. You should not see this error, report to admins.", $silent));
                 $state_flag = false;
@@ -958,7 +961,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'partially_paid':
-                        // Type 1 CR request (Credit) (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
 
                         // We are just closing with fake money
                         // All vouchers on invoices with this state are blocked, have never been used or activated and can be voided.
@@ -968,7 +971,7 @@ class Creditnote extends Components {
 
                         break;
                     case 'paid':
-                        // Type 2 CR request (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices)
+                        // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices)
 
                         // Check all the parent invoice's vouchers can be voided
                         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowVoid($invoice_id)){
@@ -978,7 +981,7 @@ class Creditnote extends Components {
                             $state_flag = false;
                         }
 
-                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a Type 1 CR and not gove free money to a client)
+                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not gove free money to a client)
                         $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, null, $invoice_id);
 
                         // Get all payments against this invoice (real monies via credit notes)
@@ -1047,6 +1050,8 @@ class Creditnote extends Components {
 
             if(!$expense_id) {
 
+                // CR `Standalone` Action Type (Debit)
+
                 // Dont allow this type of credit note (for now)
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is type of credit note for expenses is not currently allowed. You should not see this error, report to admins."), $silent);
                 $state_flag = false;
@@ -1083,18 +1088,18 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'partially_paid':
-                        // Type 1 CR request (Credit) (Used to clear expense balance) (expenses with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Debit) (Used to clear expense balance) (expenses with no balance should be cancelled and not cleared with a CR)
 
                         // We are just closing with fake money
                         // Do nothing
                         break;
                     case 'paid':
-                        // Type 2 CR request (Debit) (Refund monies to Suppliers or allow them to use the CR on another of their expenses)
+                        // CR `Refund` Action Type (Credit) (Apply refund, real monies or credit note, from a supplier. This also allow the use of their CR on another of their expenses.)
 
-                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a Type 1 CR and not gove free money to a client)
+                        // Calculate real monies paid on this expense by the us (excludes credit notes and vouchers, this allows you to close an expense with a `Close` CR and not receive any money from the supplier)
                         $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', 'real_monies', 'debit', null, null, null, null, $expense_id);
 
-                        // Get all payments against this invoice (real monies via credit notes)
+                        // Get all payments against this expense (real monies via credit notes)
                         $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', null, 'credit', null, null, null, null, $expense_id);
 
                         // Is there any real money is there left which can then be refunded.
@@ -1217,7 +1222,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'partially_paid':
-                        // Type 1 CR request (Credit) (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
 
                         // We are just closing with fake money
                         // All vouchers on invoices with this state are blocked, have never been used or activated and can be voided.
@@ -1231,9 +1236,9 @@ class Creditnote extends Components {
 
                         break;
                     case 'paid':
-                        // Type 2 CR request (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices)
+                        // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices)
 
-                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a Type 1 CR and not gove free money to a client)
+                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not give free money to a client)
                         $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, null, $invoice_id);
 
                         // Get all payments against this invoice (real monies via credit notes)
@@ -1349,7 +1354,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'partially_paid':
-                        // Type 1 CR request (Credit) (Used to clear expense balance) (expenses with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear expense balance) (expenses with no balance should be cancelled and not cleared with a CR)
                         // We are just closing with fake money
 
                         // Make sure the submitted CR total is the same as the parent expense's remaining balance
@@ -1360,9 +1365,9 @@ class Creditnote extends Components {
 
                         break;
                     case 'paid':
-                        // Type 2 CR request (Debit) (Refund monies to Suppliers or allow them to use the CR on another of their expenses)
+                        // CR `Refund` Action Type (Debit) (Refund monies to Suppliers or allow them to use the CR on another of their expenses)
 
-                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a Type 1 CR and not gove free money to a client)
+                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not gove free money to a client)
                         $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', 'real_monies', 'debit', null, null, null, null, $expense_id);
 
                         // Get all payments against this invoice (real monies via credit notes)
@@ -1527,7 +1532,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'partially_paid':
-                        // Type 1 CR request (Credit) (Used to clear outstanding invoice balances) (invoices with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear outstanding invoice balances) (invoices with no balance should be cancelled and not cleared with a CR)
                         // A CR raised against an invoice with a partially paid balance is issued to close that invoice only, so it can only be used to close said invoice.
 
                         // The target invoice must be the invoice the CR was raised against
@@ -1538,7 +1543,7 @@ class Creditnote extends Components {
                         }
                         break;
                     case 'paid':
-                        // Type 2 CR request (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices) (The code here only controls the use of the CR as a payment method)
+                        // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices) (The code here only controls the use of the CR as a payment method)
                         // Do Nothing
                         break;
                     case 'in_dispute':
@@ -1619,7 +1624,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'partially_paid':
-                        // Type 1 CR request (Credit) (Used to clear outstanding expense balances) (expenses with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear outstanding expense balances) (expenses with no balance should be cancelled and not cleared with a CR)
                         // A CR raised against an expense with a partially paid balance is issued to close that expense only, so it can only be used to close said expense.
                         // The target expense must be the expense the CR was raised against
                         if($creditnote_details['expense_id'] != $qpayment['expense_id']) {
@@ -1629,7 +1634,7 @@ class Creditnote extends Components {
                         }
                         break;
                     case 'paid':
-                        // Type 2 CR request (Debit) (Refund monies to Suppliers or allow the CR to be used against another of their expenses) (The code here only controls the use of the CR as a payment method)
+                        // CR `Refund` Action Type (Debit) (Refund monies to Suppliers or allow the CR to be used against another of their expenses) (The code here only controls the use of the CR as a payment method)
                         // Do Nothing
                         break;
                     case 'cancelled':

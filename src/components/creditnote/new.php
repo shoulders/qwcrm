@@ -27,6 +27,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     // Sales Credit Note (Client) - (client:details)
     if(\CMSApplication::$VAR['client_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('client', 'details'))
     {
+        $record['action_type'] = 'standalone';
         $record['client_id'] = \CMSApplication::$VAR['client_id'];
         $record['type'] = 'sales';
         $record['reference'] = _gettext("Client").': '.\CMSApplication::$VAR['client_id'];
@@ -42,6 +43,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         // Void all of the parent invoice's vouchers (their ability to voided has already been checked)
         $this->app->components->voucher->updateInvoiceVouchersStatuses(\CMSApplication::$VAR['invoice_id'], null, 'voided');
 
+        $record['action_type'] = $invoice_details['balance'] ? 'close' : 'refund';
         $record['invoice_id'] = \CMSApplication::$VAR['invoice_id'];
         $record['client_id'] = $invoice_details['client_id'];
         $record['type'] = 'sales';
@@ -88,6 +90,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     // Purchase Credit Note (Supplier) - (supplier:details)
     elseif(\CMSApplication::$VAR['supplier_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('supplier', 'details'))
     {
+        $record['action_type'] = 'standalone';
         $record['supplier_id'] = \CMSApplication::$VAR['supplier_id'];
         $record['type'] = 'purchase';
         $record['reference'] = _gettext("Supplier").': '.\CMSApplication::$VAR['supplier_id'] ;
@@ -100,6 +103,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     {
         $expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
 
+        $record['action_type'] = $expense_details['balance'] ? 'close' : 'refund';
         $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
         $record['supplier_id'] = $expense_details['supplier_id'];
         $record['type'] = 'purchase';

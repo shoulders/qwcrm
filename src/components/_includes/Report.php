@@ -1978,7 +1978,7 @@ class Report extends Components {
     #   Get All Credit Notes stats      #
     #####################################
 
-    public function creditnoteGetStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $otherincome_id = null) {
+    public function creditnoteGetStats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null) {
 
         $stats = array();
 
