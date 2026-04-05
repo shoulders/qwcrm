@@ -776,24 +776,24 @@
                                                                             <td style="text-align: center;">
                                                                                 <p>{t}Turnover{/t}{t}[P]{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoices{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[P]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[P]{/t}</p>
                                                                                 <p>{$currency_symbol}{$profit_totals.turnover.gross|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_symbol}{$profit_totals.invoice.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_symbol}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_symbol}{$profit_totals.refund.gross|string_format:"%.2f"})</p>
-                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use the monies you have sent and received, rather than the transactions themselves.{/t}<p>
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use the monies you have sent and received, rather than the transactions themselves.{/t} ({t}Cash Basis{/t})<p>
                                                                             </td>
                                                                         </tr>
                                                                     {/if}
 
-                                                                    <!-- Sales Tax -->
+                                                                    <!-- Sales Tax (Cash Basis) -->
                                                                     {if $qw_tax_system == 'sales_tax_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">
                                                                                 <p>{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoices{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[G]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
                                                                                 <p>{$currency_symbol}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_symbol}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_symbol}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_symbol}{$profit_totals.refund.net|string_format:"%.2f"}</p>
                                                                                 <hr style="border-top: dotted 1px;" />
-                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t}<p>
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t} ({t}Cash Basis{/t})<p>
                                                                             </td>
                                                                         </tr>
                                                                     {/if}
 
-                                                                    <!-- VAT Standard and Cash -->
+                                                                    <!-- VAT Standard Accounting, VAT Cash Accounting -->
                                                                     {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">
@@ -805,15 +805,15 @@
                                                                             <td>
                                                                                 <hr style="border-top: dotted 1px;" />
                                                                                 {if $qw_tax_system == 'vat_standard'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your turnover.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your turnover.{/t} ({t}Accrual{/t})
                                                                                 {elseif $qw_tax_system == 'vat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your turnover.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your turnover.{/t} ({t}Cash Basis{/t})
                                                                                 {/if}
                                                                             </td>
                                                                         </tr>
                                                                     {/if}
 
-                                                                    <!-- VAT Flat Rate -->
+                                                                    <!-- VAT Flat Rate (Basic Turnover), VAT Flat Rate (Cash based Turnover) -->
                                                                     {if $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">
@@ -831,9 +831,9 @@
                                                                             <td>
                                                                                 <hr style="border-top: dotted 1px;" />
                                                                                 {if $qw_tax_system == 'vat_flat_basic'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your turnover.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your turnover.{/t} ({t}Accrual{/t})
                                                                                 {elseif $qw_tax_system == 'vat_flat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your turnover.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your turnover.{/t} ({t}Cash Basis{/t})
                                                                                 {/if}
                                                                             </td>
                                                                         </tr>
@@ -874,24 +874,24 @@
                                                                             <td style="text-align: center;">
                                                                                 <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;{t}Turnover{/t}{t}[P]{/t}&nbsp;&nbsp;-&nbsp;&nbsp;{t}Expenses{/t}{t}[P]{/t}</p>
                                                                                 <p>{$currency_symbol}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;{$currency_symbol}{$profit_totals.turnover.gross|string_format:"%.2f"}&nbsp;-&nbsp;{$currency_symbol}{$profit_totals.expense.gross|string_format:"%.2f"}</p>
-                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use the monies you have sent and received, rather than the transactions themselves.{/t}<p>
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use the monies you have sent and received, rather than the transactions themselves.{/t} ({t}Cash Basis{/t})<p>
                                                                             </td>
                                                                         </tr>
                                                                     {/if}
 
-                                                                    <!-- Sales Tax -->
+                                                                    <!-- Sales Tax (Cash Basis) -->
                                                                     {if $qw_tax_system == 'sales_tax_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">
                                                                                 <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;-&nbsp;&nbsp;{t}Expenses{/t}{t}[G]{/t}</p>
                                                                                 <p>{$currency_symbol}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;{$currency_symbol}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_symbol}{$profit_totals.expense.gross|string_format:"%.2f"}</p>
                                                                                 <hr style="border-top: dotted 1px;" />
-                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t}<p>
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t} ({t}Cash Basis{/t})<p>
                                                                             </td>
                                                                         </tr>
                                                                     {/if}
 
-                                                                    <!-- VAT Standard and Cash -->
+                                                                    <!-- VAT Standard Accounting, VAT Cash Accounting -->
                                                                     {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">
@@ -903,15 +903,15 @@
                                                                             <td>
                                                                                 <hr style="border-top: dotted 1px;" />
                                                                                 {if $qw_tax_system == 'vat_standard'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your profit.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your profit.{/t} ({t}Accrual{/t})
                                                                                 {elseif $qw_tax_system == 'vat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t} ({t}Cash Basis{/t})
                                                                                 {/if}
                                                                             </td>
                                                                         </tr>
                                                                     {/if}
 
-                                                                    <!-- VAT Flat Rate -->
+                                                                    <!-- VAT Flat Rate (Basic Turnover), VAT Flat Rate (Cash based Turnover) -->
                                                                     {if $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">
@@ -923,9 +923,9 @@
                                                                             <td>
                                                                                 <hr style="border-top: dotted 1px;" />
                                                                                 {if $qw_tax_system == 'vat_flat_basic'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your profit.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your profit.{/t} ({t}Accrual{/t})
                                                                                 {elseif $qw_tax_system == 'vat_flat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t} ({t}Cash Basis{/t})
                                                                                 {/if}
                                                                             </td>
                                                                         </tr>
@@ -945,7 +945,7 @@
                         {else}
                             <table width="730px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
                                 <tr>
-                                    <td class="olotd"><strong>{t}To generate a report, submit a date range above.{/t}</strong</td>
+                                    <td class="olotd"><strong>{t}To generate a report, submit a date range above.{/t}</strong></td>
                                 </tr>
                             </table>
                         {/if}
