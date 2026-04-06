@@ -46,6 +46,15 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
         }
     }
 
+    // Disable all VAT codes except `T9` for `Standalone` Action Type CR - I could specify only for VAT tax systems, but I have not as it makes no difference
+    if($creditnote_details['action_type'] == 'standalone') {
+            $vat_tax_codes = $this->app->components->company->getVatTaxCodes(false, null, ['T9']);
+            $default_vat_tax_code = 'T9';
+    } else {
+        $vat_tax_codes = $this->app->components->company->getVatTaxCodes(false);
+        $default_vat_tax_code = $this->app->components->company->getDefaultVatTaxCode($creditnote_details['tax_system']);
+    }
+
     // Credit Note Details
     $this->app->smarty->assign('creditnote_details',       $creditnote_details);
     $this->app->smarty->assign('company_details',          $this->app->components->company->getRecord());
@@ -62,8 +71,9 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
     // Misc
     $this->app->smarty->assign('creditnote_statuses',      $this->app->components->creditnote->getStatuses());
     $this->app->smarty->assign('creditnote_types',         $this->app->components->creditnote->getTypes());
-    $this->app->smarty->assign('vat_tax_codes',            $this->app->components->company->getVatTaxCodes(false));
-    $this->app->smarty->assign('default_vat_tax_code',     $this->app->components->company->getDefaultVatTaxCode($creditnote_details['tax_system']));
+    $this->app->smarty->assign('creditnote_action_types',  $this->app->components->creditnote->getActionTypes());
+    $this->app->smarty->assign('vat_tax_codes',            $vat_tax_codes);
+    $this->app->smarty->assign('default_vat_tax_code',     $default_vat_tax_code);
     $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($creditnote_details['employee_id'], 'display_name'));
 
 }

@@ -106,9 +106,9 @@ class Company extends Components {
 
     #####################################
     #    Get VAT Tax Codes              # Editable is only used in company:edit
-    #####################################
+    ##################################### specified codes only used by creditnote:edit
 
-    public function getVatTaxCodes($hidden_status = null, $editable_status = null) {
+    public function getVatTaxCodes($hidden_status = null, $editable_status = null, array $specifiedCodes = array()) {
 
         $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
 
@@ -123,6 +123,11 @@ class Company extends Components {
         // Restrict by editable_status - only some of the VAT codes are editable
         if(!is_null($editable_status)) {
             $sql .= "\nAND editable = ".$this->app->db->qStr($editable_status);
+        }
+
+        // Restrict by specified codes.
+        if(!empty($specifiedCodes)) {
+            $sql .= "\nAND tax_key IN ".'(' . implode(',', array_map(fn($val) => "'" . addslashes($val) ."'", $specifiedCodes)) . ')';
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}

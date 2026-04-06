@@ -45,6 +45,7 @@ $this->app->smarty->assign('display_payments',         $this->app->components->p
 // Misc
 $this->app->smarty->assign('creditnote_statuses',      $this->app->components->creditnote->getStatuses());
 $this->app->smarty->assign('creditnote_types',         $this->app->components->creditnote->getTypes());
+$this->app->smarty->assign('creditnote_action_types',  $this->app->components->creditnote->getActionTypes());
 $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord($creditnote_details['employee_id'], 'display_name'));
 $this->app->smarty->assign('vat_tax_codes',            $this->app->components->company->getVatTaxCodes());
 $this->app->smarty->assign('parent_record_balance',    $parent_record_balance);

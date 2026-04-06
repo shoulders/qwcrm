@@ -32,7 +32,25 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $record['type'] = 'sales';
         $record['reference'] = _gettext("Client").': '.\CMSApplication::$VAR['client_id'];
         $record['sales_tax_rate'] = 0.00;
-        $creditnote_items = array();    // This will not have items but i might add a single one manually
+        $creditnote_items = array (0 =>
+                                    array (
+                                        'creditnote_item_id' => null,
+                                        'invoice_id' => null,
+                                        'tax_system' => null,
+                                        'description' => $record['reference'],
+                                        'unit_qty' => '1.00',
+                                        'unit_net' => '0.00',
+                                        'unit_discount' => '0.00',
+                                        'sales_tax_exempt' => 0,
+                                        'vat_tax_code' => 'T9',
+                                        'unit_tax_rate' => '0.00',
+                                        'unit_tax' => '0.00',
+                                        'unit_gross' => '0.00',
+                                        'subtotal_net' => '0.00',
+                                        'subtotal_tax' => '0.00',
+                                        'subtotal_gross' => '0.00'
+                                    ),
+                                );
     }
 
     // Sales Credit Note (Invoice) - (invoice:details)
@@ -43,7 +61,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         // Void all of the parent invoice's vouchers (their ability to voided has already been checked)
         $this->app->components->voucher->updateInvoiceVouchersStatuses(\CMSApplication::$VAR['invoice_id'], null, 'voided');
 
-        $record['action_type'] = $invoice_details['balance'] ? 'close' : 'refund';
+        $record['action_type'] = (float) $invoice_details['balance'] ? 'close' : 'refund';
         $record['invoice_id'] = \CMSApplication::$VAR['invoice_id'];
         $record['client_id'] = $invoice_details['client_id'];
         $record['type'] = 'sales';
@@ -52,15 +70,18 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             : _gettext("Refund").' '._gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'];
         $record['sales_tax_rate'] = $invoice_details['sales_tax_rate'];
 
+        // Copy invoice items or use single item
+        $useRecordItems = (float) $invoice_details['balance'] ? true : false;
+
         // Build credit note items
-        if($invoice_details['balance']) {
+        if($useRecordItems) {
             $creditnote_items = array (0 =>
                                     array (
                                         'creditnote_item_id' => null,
                                         'invoice_id' => null,
                                         'tax_system' => null,
                                         'description' => $record['reference'],
-                                        'unit_qty' => '0.00',
+                                        'unit_qty' => '1.00',
                                         'unit_net' => '0.00',
                                         'unit_discount' => '0.00',
                                         'sales_tax_exempt' => 0,
@@ -95,7 +116,25 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $record['type'] = 'purchase';
         $record['reference'] = _gettext("Supplier").': '.\CMSApplication::$VAR['supplier_id'] ;
         $record['sales_tax_rate'] = 0.00;
-        $creditnote_items = array();    // This will not have items, but i might add a single one manually
+        $creditnote_items = array (0 =>
+                                    array (
+                                        'creditnote_item_id' => null,
+                                        'invoice_id' => null,
+                                        'tax_system' => null,
+                                        'description' => $record['reference'],
+                                        'unit_qty' => '1.00',
+                                        'unit_net' => '0.00',
+                                        'unit_discount' => '0.00',
+                                        'sales_tax_exempt' => 0,
+                                        'vat_tax_code' => 'T9',
+                                        'unit_tax_rate' => '0.00',
+                                        'unit_tax' => '0.00',
+                                        'unit_gross' => '0.00',
+                                        'subtotal_net' => '0.00',
+                                        'subtotal_tax' => '0.00',
+                                        'subtotal_gross' => '0.00'
+                                    ),
+                                );
     }
 
     // Purchase Credit Note (Expense) - (expense:details)
@@ -103,7 +142,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     {
         $expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
 
-        $record['action_type'] = $expense_details['balance'] ? 'close' : 'refund';
+        $record['action_type'] = (float) $expense_details['balance'] ? 'close' : 'refund';
         $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
         $record['supplier_id'] = $expense_details['supplier_id'];
         $record['type'] = 'purchase';
@@ -112,15 +151,18 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             : _gettext("Refund").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id'];
         $record['sales_tax_rate'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'sales_tax_rate');
 
+        // Copy expense items or use single item
+        $useRecordItems = (float) $expense_details['balance'] ? true : false;
+
         // Build credit note items
-        if($expense_details['balance']) {
+        if($useRecordItems) {
             $creditnote_items = array (0 =>
                                     array (
                                         'creditnote_item_id' => null,
                                         'expense_id' => null,
                                         'tax_system' => null,
                                         'description' => $record['reference'],
-                                        'unit_qty' => '0.00',
+                                        'unit_qty' => '1.00',
                                         'unit_net' => '0.00',
                                         'unit_discount' => '0.00',
                                         'sales_tax_exempt' => 0,

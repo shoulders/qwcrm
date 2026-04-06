@@ -509,6 +509,20 @@ class Creditnote extends Components {
 
     }
 
+    ###########################################
+    #    Get Creditnote Action Types          #
+    ###########################################
+
+    public function getActionTypes() {
+
+        $sql = "SELECT * FROM ".PRFX."creditnote_action_types";
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->GetArray();
+
+    }
+
 
     /** Update Functions **/
 

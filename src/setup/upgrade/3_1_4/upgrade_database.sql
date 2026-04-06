@@ -894,11 +894,11 @@ ALTER TABLE `#__creditnote_types` ADD PRIMARY KEY (`id`);
 
 CREATE TABLE `#__creditnote_action_types` (
   `id` int(10) UNSIGNED NOT NULL COMMENT 'only for display order',
-  `type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `action_type_key` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `#__creditnote_action_types` (`id`, `type_key`, `display_name`) VALUES
+INSERT INTO `#__creditnote_action_types` (`id`, `action_type_key`, `display_name`) VALUES
 (1, 'standalone', 'Standalone'),
 (2, 'close', 'Close'),
 (3, 'refund', 'Refund');

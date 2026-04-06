@@ -21,11 +21,14 @@
     // Key pressed Boolean - Allow me to determine if action was started by a mouse click or typing
     var keyPressed = false;
 
-    // Default Sales Tax Rate
-    var creditnoteSalesTaxRate = {$creditnote_details.sales_tax_rate|string_format:"%.2f"};
-
     // Credit Note Tax System
     var creditnoteTaxSystem = '{$creditnote_details.tax_system}';
+
+    // Credit Note Action Type
+    var creditnoteActionType = '{$creditnote_details.action_type}';
+
+    // Default Sales Tax Rate
+    var creditnoteSalesTaxRate = {$creditnote_details.sales_tax_rate|string_format:"%.2f"};
 
     // Credit note items JSON (items from the database)
     var creditnoteItems = {$creditnote_items_json};
@@ -48,9 +51,9 @@
     // Change the Dummy records so the visible fields match the Tax System
     function modifyDummyRowsForTaxSystem() {
 
-        // If the Tax system is No Tax
-        if(creditnoteTaxSystem.startsWith("no_tax")) {
-        }
+        /* If the Tax system is No Tax
+        if(creditnoteTaxSystem == "no_tax") {
+        }*/
 
         // If the Tax system is VAT based
         if(creditnoteTaxSystem.startsWith("vat_")) {
@@ -58,8 +61,18 @@
         }
 
         // If the Tax system Sales Tax based
-        if(creditnoteTaxSystem.startsWith("sales_tax_cash")) {
-            $(".salesTaxSystem").show();
+        if(creditnoteTaxSystem == "sales_tax_cash") {
+
+            /* If the CR Action Type is `standalone` or `close` don't show the sales tax fields
+            if(creditnoteActionType != "standalone" && creditnoteActionType != "close") {
+                $(".salesTaxSystem").show();
+            }*/
+
+            // If the CR Action Type is `refund` show the sales tax fields
+            if(creditnoteActionType == "refund") {
+                $(".salesTaxSystem").show();
+            }
+
         }
 
     }
@@ -375,9 +388,9 @@
                                             <tr class="olotd4">
                                                 <td>{$creditnote_id}</td>
                                                 <td>
-                                                    {section name=t loop=$creditnote_types}
-                                                        {if $creditnote_details.type == $creditnote_types[t].type_key}{t}{$creditnote_types[t].display_name}{/t}{/if}
-                                                    {/section}
+                                                    {section name=t loop=$creditnote_types}{if $creditnote_details.type == $creditnote_types[t].type_key}{t}{$creditnote_types[t].display_name}{/t}{/if}{/section}
+                                                    ({section name=a loop=$creditnote_action_types}{if $creditnote_details.action_type == $creditnote_action_types[a].action_type_key}{t}{$creditnote_action_types[a].display_name}{/t}{/if}{/section})
+                                            </td>
                                                 </td>
                                                 <td>
                                                     {if '/^sales/'|preg_match:$creditnote_details.type}
@@ -561,7 +574,7 @@
                                                             <td align="left"><input id="qform[creditnote_items][iteration][unit_discount]" name="qform[creditnote_items][iteration][unit_discount]" style="width: 50px;" size="6" value="0.00" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[creditnote_items][iteration][subtotal_net]" name="qform[creditnote_items][iteration][subtotal_net]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="right" hidden>
-                                                                <select id="qform[creditnote_items][iteration][vat_tax_code]" name="qform[creditnote_items][iteration][vat_tax_code]" value="" style="width: 100%; font-size: 10px;" required disabled>
+                                                            <select id="qform[creditnote_items][iteration][vat_tax_code]" name="qform[creditnote_items][iteration][vat_tax_code]" value="" style="width: 100%; font-size: 10px;" required disabled>
                                                                     {section loop=$vat_tax_codes name=i}
                                                                         <option value="{$vat_tax_codes[i].tax_key}" data-tax-rate="{$vat_tax_codes[i].rate|string_format:"%.2f"}">{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%</option>
                                                                     {/section}

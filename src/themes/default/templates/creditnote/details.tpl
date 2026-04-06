@@ -54,9 +54,8 @@
                                         <tr class="olotd4">
                                             <td>{$creditnote_id}</td>
                                             <td>
-                                                {section name=t loop=$creditnote_types}
-                                                    {if $creditnote_details.type == $creditnote_types[t].type_key}{t}{$creditnote_types[t].display_name}{/t}{/if}
-                                                {/section}
+                                                {section name=t loop=$creditnote_types}{if $creditnote_details.type == $creditnote_types[t].type_key}{t}{$creditnote_types[t].display_name}{/t}{/if}{/section}
+                                                ({section name=a loop=$creditnote_action_types}{if $creditnote_details.action_type == $creditnote_action_types[a].action_type_key}{t}{$creditnote_action_types[a].display_name}{/t}{/if}{/section})
                                             </td>
                                             {if $creditnote_details.type == 'sales'}
                                                 <td><a href="index.php?component=client&page_tpl=details&client_id={$creditnote_details.client_id}">{$creditnote_details.client_id}</a></td>
@@ -258,11 +257,15 @@
                                                                 <td class="row2"><b>{t}Unit Gross{/t}</b></td>
                                                             {/if}
                                                             <td class="row2"><b>{t}Unit Discount{/t}</b></td>
-                                                            {if $creditnote_details.tax_system != 'no_tax'}
+                                                            {if '/^vat_/'|preg_match:$creditnote_details.tax_system}
                                                                 <td class="row2"><b>{t}Net{/t}</b></td>
-                                                                {if '/^vat_/'|preg_match:$creditnote_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                                <td class="row2"><b>{t}VAT Tax Code{/t}</b></td>
+                                                                <td class="row2"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
+                                                                <td class="row2"><b>{t}VAT{/t}</b></td>
+                                                            {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type == 'refund'}
+                                                                <td class="row2"><b>{t}Net{/t}</b></td>
+                                                                <td class="row2"><b>{t}Sales Tax{/t} {t}Rate{/t}</b></td>
+                                                                <td class="row2"><b>{t}Sales Tax{/t}</b></td>
                                                             {/if}
                                                             <td class="row2"><b>{t}Gross{/t}</b></td>
                                                         </tr>
@@ -273,20 +276,24 @@
                                                                 <td>{$creditnote_items[l].unit_qty|string_format:"%.2f"}</td>
                                                                 <td>{$currency_symbol}{$creditnote_items[l].unit_net|string_format:"%.2f"}</td>
                                                                 <td>{$currency_symbol}{$creditnote_items[l].unit_discount|string_format:"%.2f"}</td>
-                                                                {if $creditnote_details.tax_system != 'no_tax'}
+                                                                {if '/^vat_/'|preg_match:$creditnote_details.tax_system}
+                                                                    <td>{$currency_symbol}{$creditnote_items[l].subtotal_net|string_format:"%.2f"}</td>
+                                                                    {if $creditnote_items[l].vat_tax_code == 'T2'}
+                                                                        <td colspan="3" align="center">{t}Exempt{/t}</td>
+                                                                    {else}
+                                                                        <td>
+                                                                            {section name=s loop=$vat_tax_codes}
+                                                                                {if $creditnote_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                            {/section}
+                                                                        </td>
+                                                                    {/if}
+                                                                    <td>{$creditnote_items[l].unit_tax_rate|string_format:"%.2f"}%</td>
+                                                                    <td>{$currency_symbol}{$creditnote_items[l].subtotal_tax|string_format:"%.2f"}</td>
+                                                                {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type == 'refund'}
                                                                     <td>{$currency_symbol}{$creditnote_items[l].subtotal_net|string_format:"%.2f"}</td>
                                                                     {if $creditnote_items[l].sales_tax_exempt}
                                                                         <td colspan="2" align="center">{t}Exempt{/t}</td>
-                                                                    {elseif $creditnote_items[l].vat_tax_code == 'T2'}
-                                                                        <td colspan="3" align="center">{t}Exempt{/t}</td>
                                                                     {else}
-                                                                        {if '/^vat_/'|preg_match:$creditnote_details.tax_system}
-                                                                            <td>
-                                                                                {section name=s loop=$vat_tax_codes}
-                                                                                    {if $creditnote_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                                                {/section}
-                                                                            </td>
-                                                                        {/if}
                                                                         <td>{$creditnote_items[l].unit_tax_rate|string_format:"%.2f"}%</td>
                                                                         <td>{$currency_symbol}{$creditnote_items[l].subtotal_tax|string_format:"%.2f"}</td>
                                                                     {/if}
@@ -294,7 +301,6 @@
                                                                 <td>{$currency_symbol}{$creditnote_items[l].subtotal_gross|string_format:"%.2f"}</td>
                                                             </tr>
                                                         {/section}
-
                                                     </table>
                                                 {/if}
                                                 <br>
@@ -318,13 +324,22 @@
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                                                         <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_discount|string_format:"%.2f"}</td>
                                                     </tr>
-                                                    {if $creditnote_details.tax_system != 'no_tax'}
+                                                    {if '/^vat_/'|preg_match:$creditnote_details.tax_system}
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_net|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$creditnote_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}VAT{/t}</b></td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_tax|string_format:"%.2f"}</td>
+                                                        </tr>
+                                                    {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type == 'refund'}
+                                                        <tr>
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_net|string_format:"%.2f"}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}Sales Tax{/t}</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_tax|string_format:"%.2f"}</td>
                                                         </tr>
                                                     {/if}
