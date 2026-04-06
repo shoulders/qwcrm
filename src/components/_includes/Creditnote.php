@@ -928,7 +928,7 @@ class Creditnote extends Components {
             }
 
             // Check there are no pending credit notes attached to the client
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, $client_id))
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $client_id))
             {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client has a pending credit note assigned to it which needs sorting before you can create another credit note for this client.", $silent));
                 $state_flag = false;
@@ -958,7 +958,7 @@ class Creditnote extends Components {
                 }
 
                 // Check if there are any open credit notes issued against this invoice (Only 1 open credit note is allowed against this invoice at any time)
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, $invoice_id))
+                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, $invoice_id))
                 {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an open credit note assigned to it.", $silent));
                     $state_flag = false;
@@ -1052,7 +1052,7 @@ class Creditnote extends Components {
             }
 
             // Check there are no pending credit notes attached to the supplier
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $supplier_id))
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, null, $supplier_id))
             {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a pending credit note assigned to it.", $silent));
                 $state_flag = false;
@@ -1085,7 +1085,7 @@ class Creditnote extends Components {
                 }
 
                 // Check if there are any open credit notes issued against this expense (Only 1 open credit note is allowed against this exepsne at any time)
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, $expense_id))
+                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, null, $expense_id))
                 {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense already has an open credit note assigned to it.", $silent));
                     $state_flag = false;
@@ -1189,7 +1189,7 @@ class Creditnote extends Components {
 
             /* this check should not be needed as it is done upon creation, not submission
             // Check there are no pending credit notes attached to the client
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, $client_id))
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $client_id))
             {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a pending credit note."));
                 $state_flag = false;
@@ -1219,7 +1219,7 @@ class Creditnote extends Components {
 
                 /* this check should not be needed as it is done upon creation, not submission
                 // Check if there are any open credit notes issued against this invoice (Only 1 open credit note is allowed against this invoice at any time)
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, $invoice_id))
+                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, $invoice_id))
                 {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an open credit note assigned to it."));
                     $state_flag = false;
@@ -1322,7 +1322,7 @@ class Creditnote extends Components {
             {
                 /* this check should not be needed as it is done upon creation, not submission
                 // Check there are no pending credit notes attached to the supplier
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $supplier_id))
+                if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, null, $supplier_id))
                 {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a pending credit note assigned to it."));
                     $state_flag = false;
@@ -1351,7 +1351,7 @@ class Creditnote extends Components {
 
                 /* this check should not be needed as it is done upon creation, not submission
                 // Check if there are any open credit notes issued against this expense (Only 1 open credit note is allowed against this exepsne at any time)
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, $expense_id))
+                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, null, $expense_id))
                 {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense already has an open credit note assigned to it."));
                     $state_flag = false;

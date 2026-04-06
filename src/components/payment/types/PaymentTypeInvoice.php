@@ -88,7 +88,7 @@ class PaymentTypeInvoice extends PaymentType
                 }
 
                 // Does this invoice have any credit notes generated against it
-                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, $this->VAR['qpayment']['invoice_id'])){
+                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $this->VAR['qpayment']['invoice_id'])){
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add a new payment to this invoice because it has one or more credit notes generated against it."));
                     Payment::$payment_valid = false;
                 }
@@ -120,7 +120,7 @@ class PaymentTypeInvoice extends PaymentType
             } else{
 
                 // Does this invoice have any credit notes generated against it
-                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
+                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this payment because the invoice has one or more credit notes generated against it."));
                     Payment::$payment_valid = false;
                 }
@@ -139,7 +139,7 @@ class PaymentTypeInvoice extends PaymentType
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
 
                     // You can only cancel the CR payment (Type 1) if there are no other credit notes attached to this invoice (eg for refunds or store credit)
-                    if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id']) > 1){
+                    if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id']) > 1){
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this credit note payment that was used to close this invoice because there are more credit notes have been generated against this invoice for the purpose of refunding or store credit."));
                         Payment::$payment_valid = false;
                     }
@@ -160,7 +160,7 @@ class PaymentTypeInvoice extends PaymentType
             } else {
 
                 // Does this invoice have any credit notes generated against it
-                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
+                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this payment because the invoice has one or more credit notes generated against it."));
                     Payment::$payment_valid = false;
                 }
@@ -179,7 +179,7 @@ class PaymentTypeInvoice extends PaymentType
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
 
                     // You can only delete the CR payment (Type 1) if there are no other credit notes attached to this invoice (eg for refunds or store credit).
-                    if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id']) > 1){
+                    if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id']) > 1){
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete this credit note payment that was used to close this invoice because one or more credit notes have been generated against this invoice for the purpose of refunding or store credit."));
                         Payment::$payment_valid = false;
                     }
@@ -195,7 +195,7 @@ class PaymentTypeInvoice extends PaymentType
             } else {
 
                 // Does this invoice have any credit notes generated against it
-                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
+                if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete this payment because the invoice has one or more credit notes generated against it."));
                     Payment::$payment_valid = false;
                 }
