@@ -17,6 +17,7 @@
         <td class="olohead" nowrap>{t}Expense ID{/t}</td>
         <td class="olohead" nowrap>{t}Employee{/t}</td>
         <td class="olohead" nowrap>{t}Type{/t}</td>
+        <td class="olohead" nowrap>{t}Action Type{/t}</td>
         <td class="olohead" nowrap>{t}Status{/t}</td>
         {if $qw_tax_system != 'no_tax'}
             <td class="olohead" nowrap>{t}Net{/t}</td>
@@ -63,6 +64,11 @@
             <td class="olotd4" nowrap>
                 {section name=s loop=$creditnote_types}
                     {if $display_creditnotes.records[i].type == $creditnote_types[s].type_key}{t}{$creditnote_types[s].display_name}{/t}{/if}
+                {/section}
+            </td>
+            <td class="olotd4" nowrap>
+                {section name=s loop=$creditnote_action_types}
+                    {if $display_creditnotes.records[i].action_type == $creditnote_action_types[s].action_type_key}{t}{$creditnote_action_types[s].display_name}{/t}{/if}
                 {/section}
             </td>
             <td class="olotd4" nowrap>

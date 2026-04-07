@@ -9,11 +9,12 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-\CMSApplication::$VAR['page_no'] = \CMSApplication::$VAR['page_no'] ?? null;
-\CMSApplication::$VAR['search_category'] = \CMSApplication::$VAR['search_category'] ?? null;
-\CMSApplication::$VAR['search_term'] = \CMSApplication::$VAR['search_term'] ?? null;
-\CMSApplication::$VAR['filter_type'] = \CMSApplication::$VAR['filter_type'] ?? null;
-\CMSApplication::$VAR['filter_status'] = \CMSApplication::$VAR['filter_status'] ?? null;
+\CMSApplication::$VAR['page_no'] ??= null;
+\CMSApplication::$VAR['search_category'] ??= null;
+\CMSApplication::$VAR['search_term'] ??= null;
+\CMSApplication::$VAR['filter_type'] ??= null;
+\CMSApplication::$VAR['filter_action_type'] ??= null;
+\CMSApplication::$VAR['filter_status'] ??= null;
 
 // If a search is submitted
 if(isset(\CMSApplication::$VAR['submit'])) {
@@ -29,10 +30,13 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 }
 
 // Build the page
-$this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                          );
-$this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                              );
-$this->app->smarty->assign('filter_type',      \CMSApplication::$VAR['filter_type']                                                                                             );
-$this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                            );
-$this->app->smarty->assign('creditnote_types', $this->app->components->creditnote->getTypes()                                                              );
-$this->app->smarty->assign('creditnote_statuses', $this->app->components->creditnote->getStatuses()                                                              );
-$this->app->smarty->assign('display_creditnotes', $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_status']));
+$this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_category']);
+$this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']);
+$this->app->smarty->assign('filter_type',      \CMSApplication::$VAR['filter_type']);
+$this->app->smarty->assign('filter_action_type',\CMSApplication::$VAR['filter_action_type']);
+$this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']);
+
+$this->app->smarty->assign('creditnote_types', $this->app->components->creditnote->getTypes());
+$this->app->smarty->assign('creditnote_action_types', $this->app->components->creditnote->getActionTypes());
+$this->app->smarty->assign('creditnote_statuses', $this->app->components->creditnote->getStatuses());
+$this->app->smarty->assign('display_creditnotes', $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 25, true, \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_action_type'], \CMSApplication::$VAR['filter_status']));

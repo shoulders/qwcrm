@@ -125,7 +125,7 @@ class Creditnote extends Components {
     #     Display Credit Notes              #
     #########################################
 
-    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'creditnote_id', $search_term = null, $type = null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $redeemed_client_id = null, $redeemed_supplier_id = null, $redeemed_invoice_id = null, $redeemed_expense_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'creditnote_id', $search_term = null, $type = null, $action_type =null, $status = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null, $redeemed_client_id = null, $redeemed_supplier_id = null, $redeemed_invoice_id = null, $redeemed_expense_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
@@ -169,8 +169,11 @@ class Creditnote extends Components {
         // Restrict results by search category and search term
         elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."creditnote_records.$search_category LIKE ".$this->app->db->qStr('%'.$search_term.'%');}
 
-        // Restrict by type
+        // Restrict by Type
         if($type) { $whereTheseRecords .= " AND ".PRFX."creditnote_records.type= ".$this->app->db->qStr($type);}
+
+        // Restrict by Action Type
+        if($action_type) { $whereTheseRecords .= " AND ".PRFX."creditnote_records.action_type= ".$this->app->db->qStr($action_type);}
 
         // Restrict by Status
         if($status)

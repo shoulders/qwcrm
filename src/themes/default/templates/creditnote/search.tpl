@@ -24,8 +24,6 @@
                                 <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
-
-                                            <!-- Category Search -->
                                             <td valign="top">
                                                 <form method="post" action="index.php?component=creditnote&page_tpl=search" name="creditnote_search" id="creditnote_search" class="remove-empty-values">
                                                     <div>
@@ -73,6 +71,18 @@
                                                                         <option disabled>----------</option>
                                                                         {section name=t loop=$creditnote_types}
                                                                             <option value="{$creditnote_types[t].type_key}"{if $filter_type == $creditnote_types[t].type_key} selected{/if}>{t}{$creditnote_types[t].display_name}{/t}</option>
+                                                                        {/section}
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Action Type{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_action_type" name="filter_action_type">
+                                                                        <option value=""{if !$filter_action_type} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>
+                                                                        {section name=a loop=$creditnote_action_types}
+                                                                            <option value="{$creditnote_action_types[a].action_type_key}"{if $filter_action_type == $creditnote_action_types[a].action_type_key} selected{/if}>{t}{$creditnote_action_types[a].display_name}{/t}</option>
                                                                         {/section}
                                                                     </select>
                                                                 </td>
