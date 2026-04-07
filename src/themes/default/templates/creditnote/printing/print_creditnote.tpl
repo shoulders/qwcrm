@@ -188,7 +188,7 @@
                             {if $creditnote_items[l].sales_tax_exempt}
                                 <td colspan="2" align="center">{t}Exempt{/t}</td>
                             {else}
-                                {$creditnote_items[l].unit_tax_rate|string_format:"%.2f"}%
+                                <td>{$creditnote_items[l].unit_tax_rate|string_format:"%.2f"}%</td>
                                 <td>{$currency_symbol}{$creditnote_items[l].subtotal_tax|string_format:"%.2f"}</td>
                             {/if}
                         {/if}
