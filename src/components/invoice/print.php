@@ -90,7 +90,7 @@ if(\CMSApplication::$VAR['commContent'] == 'invoice')
     $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
     // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)
-    $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename, $client_details, $emailSubject ?? null, $emailBody ?? null);
+    $this->app->system->communication->performAction(\CMSApplication::$VAR['commType'], $templateFile, null, $filename, $client_details);
 
 }
 

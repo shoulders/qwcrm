@@ -24,18 +24,18 @@ class Communication extends System {
     private $templatePayload = '';
     private $logMessage = null;
     private $filename = null;
-    private $client_details = null;
+    private $recipient_details = null;
     private $emailSubject = null;
     private $emailBody = null;
 
     // this might need renaming - This loads a user configarble template (ie invoice) and they are a complete page
-    public function performAction($action, $templateFile = null, $logMessage = null, $filename = null, $client_details = null, $emailSubject = null, $emailBody = null)
+    public function performAction($action, $templateFile = null, $logMessage = null, $filename = null, array $recipient_details = null, $emailSubject = null, $emailBody = null)
     {
         // Load Class Variables
         $this->templatePayload = $this->app->smarty->fetch($templateFile);
         $this->logMessage = $logMessage;
         $this->filename = $filename;
-        $this->client_details = $client_details;
+        $this->recipient_details = $recipient_details;
         $this->emailSubject = $emailSubject;
         $this->emailBody = $emailBody;
 
@@ -52,10 +52,12 @@ class Communication extends System {
         // Run Communication Action
         if($this->$action())
         {
-           // Log Activity - not currently used by anything
+           // Log Activity - onyl trigger if a log message is passes, but currently nothing does pass this
             if($this->$logMessage)
             {
-                $this->app->system->general->writeRecordToActivityLog($this->$logMessage);
+                $recordIds = $recipient_details;
+                $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+                $this->app->system->general->updateLastActive($recordIds);
             }
         }
 
@@ -94,12 +96,12 @@ class Communication extends System {
             // Build the PDF Attachment
             $attachments = array();
             $attachment['data'] = $pdf_as_string;
-            $attachment['filename'] = $this->filename;
+            $attachment['filename'] = $this->filename.'.pdf';
             $attachment['contentType'] = 'application/pdf';
             $attachments[] = $attachment;
 
             // Email the PDF
-            $this->app->system->email->send($this->client_details['email'], $this->emailSubject, $this->emailBody, $this->client_details['display_name'], $attachments);
+            $this->app->system->email->send($this->recipient_details['email'], $this->emailSubject, $this->emailBody, $this->recipient_details['display_name'], $attachments);
 
             // End all other processing
             die();

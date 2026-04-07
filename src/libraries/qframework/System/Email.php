@@ -50,7 +50,7 @@ class Email extends System {
     #   Basic email wrapper function      #  // Silent option is need for password reset
     #######################################
 
-    function send(string $recipient_email, string $subject, string $body, string $recipient_name = null, array $attachments = array(), array $recordIds = null, bool $silent = false) {
+    function send(string $recipient_email, string $subject, string $body, string $recipient_name = null, array $attachments = array(), array $recordIds = array(), bool $silent = false) {
 
         // Unify Dates and Times
         $timestamp = time();
@@ -255,17 +255,12 @@ class Email extends System {
 
                 // Log activity
                 $logMessage = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject;
-                if($recordIds['workorder_id']) {$this->app->components->workorder->insertHistory($recordIds['workorder_id'], $logMessage.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
+                if($recordIds['workorder_id'] ?? null) {$this->app->components->workorder->insertHistory($recordIds['workorder_id'], $logMessage.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
                 $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+                $this->app->system->general->updateLastActive($recordIds);
 
                 // Build System message
                 $this->app->system->variables->systemMessagesWrite('success', $logMessage);
-
-                // Update last active record (will not error if no invoice_id sent )
-                $this->app->components->user->updateLastActive($recordIds['employee_id'], $timestamp);
-                if($recordIds['client_id']) {$this->app->components->client->updateLastActive($recordIds['client_id'], $timestamp);}
-                if($recordIds['workorder_id']) {$this->app->components->workorder->updateLastActive($recordIds['workorder_id'], $timestamp);}
-                if($recordIds['invoice_id']) {$this->app->components->invoice->updateLastActive($recordIds['invoice_id'], $timestamp);}
 
             }
 
