@@ -6,6 +6,16 @@
  */
 
 --
+-- Update invoice records to `paid` where they have been paid but was not closed correctly. `Caused by recalculate_invoice_totals($invoice_id)` ?
+--
+
+UPDATE `#__invoice_records`
+SET `status` = 'paid', `closed_on` = `last_active`, `is_closed` = 1
+WHERE `status` NOT IN ('pending', 'deleted', 'paid', 'refunded')
+AND `unit_gross` = `unit_paid`
+AND `balance` = 0.00;
+
+--
 -- Remove invoice delete labour and parts page permissions
 --
 
