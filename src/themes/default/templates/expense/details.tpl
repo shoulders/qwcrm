@@ -170,7 +170,6 @@
                                                                 {else}
                                                                     <td class="row2"><b>{t}Unit Gross{/t}</b></td>
                                                                 {/if}
-                                                                <td class="row2"><b>{t}Unit Discount{/t}</b></td>
                                                                 {if '/^vat_/'|preg_match:$expense_details.tax_system}
                                                                     <td class="row2"><b>{t}Net{/t}</b></td>
                                                                         <td class="row2"><b>{t}VAT Tax Code{/t}</b></td>
@@ -185,7 +184,6 @@
                                                                     <td>{$expense_items[l].description}</td>
                                                                     <td>{$expense_items[l].unit_qty|string_format:"%.2f"}</td>
                                                                     <td>{$currency_symbol}{$expense_items[l].unit_net|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_symbol}{$expense_items[l].unit_discount|string_format:"%.2f"}</td>
                                                                     {if '/^vat_/'|preg_match:$expense_details.tax_system}
                                                                         <td>{$currency_symbol}{$expense_items[l].subtotal_net|string_format:"%.2f"}</td>
                                                                         {if $expense_items[l].vat_tax_code == 'T2'}
@@ -222,10 +220,6 @@
                                             <tr>
                                                 <td class="menutd2">
                                                     <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
-                                                        <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_symbol}{$expense_details.unit_discount|string_format:"%.2f"}</td>
-                                                        </tr>
                                                         {if '/^vat_/'|preg_match:$expense_details.tax_system}
                                                             <tr>
                                                                 <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>

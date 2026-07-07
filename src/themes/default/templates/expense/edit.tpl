@@ -73,7 +73,6 @@
             "description",
             "unit_qty",
             "unit_net",
-            "unit_discount",
             "vat_tax_code",
             "unit_tax_rate",
             "unit_tax",
@@ -243,7 +242,6 @@
         /* Expense Item Rows */
 
         // Variable stores for Items Sums
-        expenseItemsSubTotalDiscount     = 0.00;
         expenseItemsSubTotalNet          = 0.00;
         expenseItemsSubTotalTax          = 0.00;
         expenseItemsSubTotalGross        = 0.00;
@@ -254,11 +252,10 @@
             // Unit Values (not used onscreen)
             rowUnitQty                  = +$(this).find("input[id$='\\[unit_qty\\]']").val();
             rowUnitNet                  = +$(this).find("input[id$='\\[unit_net\\]']").val();
-            rowUnitDiscount             = +$(this).find("input[id$='\\[unit_discount\\]']").val();
             rowUnitTaxRate              = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
 
             // Row Totals
-            rowSubTotalNet              = (rowUnitNet - rowUnitDiscount) * rowUnitQty;
+            rowSubTotalNet              = rowUnitNet * rowUnitQty;
             rowSubTotalTax              = rowSubTotalNet * (rowUnitTaxRate / 100);
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
 
@@ -267,8 +264,7 @@
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));
 
-            // Update credit Note Items SubTotals
-            expenseItemsSubTotalDiscount     += rowUnitDiscount * rowUnitQty;
+            // Update Credit Note Items SubTotals
             expenseItemsSubTotalNet          += rowSubTotalNet;
             expenseItemsSubTotalTax          += rowSubTotalTax;
             expenseItemsSubTotalGross        += rowSubTotalGross;
@@ -278,14 +274,11 @@
         /* Expense Totals */
 
         // These var declarationsa re just kept for now for comparrision with expense:edit
-        var expenseTotalDiscount    = expenseItemsSubTotalDiscount;
         var expenseTotalNet         = expenseItemsSubTotalNet;
         var expenseTotalTax         = expenseItemsSubTotalTax;
         var expenseTotalGross       = expenseItemsSubTotalGross;
 
         // Update values onscreen + Convert Value to 0.00 format
-        $("#expenseTotalDiscountText").text(parseFloat(expenseTotalDiscount).toFixed(2));
-        $("#expenseTotalDiscount").val(parseFloat(expenseTotalDiscount).toFixed(2));
         $("#expenseTotalNetText").text(parseFloat(expenseTotalNet).toFixed(2));
         $("#expenseTotalNet").val(parseFloat(expenseTotalNet).toFixed(2));
         $("#expenseTotalTaxText").text(parseFloat(expenseTotalTax).toFixed(2));
@@ -454,7 +447,6 @@
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>
                                                             <td class="row2" align="left" style="width: 75px;"><b>{if '/^vat_/'|preg_match:$expense_details.tax_system}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_symbol})</b></td>
-                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_symbol})</b></td>
                                                             <td class="vatTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_symbol})</b></td>
                                                             <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
                                                             <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT{/t} {t}Rate{/t} (%)</b></td>
@@ -474,7 +466,6 @@
                                                             </td>
                                                             <td align="left"><input id="qform[expense_items][iteration][unit_qty]" name="qform[expense_items][iteration][unit_qty]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="left"><input id="qform[expense_items][iteration][unit_net]" name="qform[expense_items][iteration][unit_net]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
-                                                            <td align="left"><input id="qform[expense_items][iteration][unit_discount]" name="qform[expense_items][iteration][unit_discount]" style="width: 50px;" size="6" value="0.00" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="left" hidden><input id="qform[expense_items][iteration][subtotal_net]" name="qform[expense_items][iteration][subtotal_net]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="right" hidden>
                                                                 <select id="qform[expense_items][iteration][vat_tax_code]" name="qform[expense_items][iteration][vat_tax_code]" value="" style="width: 100%; font-size: 10px;" required disabled>
@@ -522,13 +513,6 @@
                                                         <tr>
                                                             <td class="menutd2">
                                                                 <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
-                                                                    <tr>
-                                                                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
-                                                                        <td class="olotd4" width="20%" align="right">
-                                                                            {$currency_symbol}<span id="expenseTotalDiscountText">0.00</span>
-                                                                            <input type="text" class="olotd4" size="4" id="expenseTotalDiscount" name="qform[unit_discount]" value="0.00" readonly hidden>
-                                                                        </td>
-                                                                    </tr>
                                                                     <tr class="vatTaxSystem" hidden>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">

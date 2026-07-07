@@ -138,7 +138,7 @@ class PaymentTypeExpense extends PaymentType
                 ){
 
                     // You can only cancel the CR payment (Type 1) if there are no other credit notes attached to this expense (eg for refunds or store credit)
-                    if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null null, null, null, Payment::$payment_details['expense_id']) > 1){
+                    if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['expense_id']) > 1){
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this credit note payment that was used to close this expense because there are more credit notes have been generated against this expense for the purpose of refunding or store credit."));
                         Payment::$payment_valid = false;
                     }

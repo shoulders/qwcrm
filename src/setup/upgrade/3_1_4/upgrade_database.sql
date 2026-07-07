@@ -1235,8 +1235,14 @@ ALTER TABLE `#__otherincome_items` DROP `sales_tax_exempt`;
 
 -- Database Corrections --
 ALTER TABLE `#__invoice_records` DROP `unit_paid`;
-ALTER TABLE `#__otherincome_records` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT 0.00 AFTER `unit_net`;
+ALTER TABLE `#__otherincome_records` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
 ALTER TABLE `#__expense_records` MODIFY `last_active` datetime NULL DEFAULT NULL AFTER `closed_on`;
 ALTER TABLE `#__supplier_records` MODIFY `company_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' AFTER `last_name`;
 ALTER TABLE `#__supplier_records` MODIFY `vat_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' AFTER `company_number`;
 ALTER TABLE `#__client_records` MODIFY `employee_id` int(10) UNSIGNED NOT NULL AFTER `client_id`;
+
+-- Remove Discount from Otherincome, Expenses --
+ALTER TABLE `#__expense_records` DROP `unit_discount`;
+ALTER TABLE `#__expense_items` DROP `unit_discount`;
+ALTER TABLE `#__otherincome_records` DROP `unit_discount`;
+ALTER TABLE `#__otherincome_items` DROP `unit_discount`;

@@ -51,6 +51,11 @@
     // Change the Dummy records so the visible fields match the Tax System
     function modifyDummyRowsForTaxSystem() {
 
+        // Show the Discount fields if originating source record was an invoice
+        {if !$creditnote_details.invoice_id}
+            $(".discountAllowed").show();
+        {/if}
+
         /* If the Tax system is No Tax
         if(creditnoteTaxSystem == "no_tax") {
         }*/
@@ -313,7 +318,7 @@
 
         /* Credit Note Totals */
 
-        // These var declarationsa re just kept for now for comparrision with creditnote:edit
+        // These var declarations are just kept for comparrision with creditnote:edit
         var creditnoteTotalDiscount    = creditnoteItemsSubTotalDiscount;
         var creditnoteTotalNet         = creditnoteItemsSubTotalNet;
         var creditnoteTotalTax         = creditnoteItemsSubTotalTax;
@@ -550,7 +555,7 @@
                                                             <td class="row2" align="left" style="width: 200px;"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" align="left"><b>{t}Unit Qty{/t}</b></td>
                                                             <td class="row2" align="left" style="width: 75px;"><b>{if $creditnote_details.tax_system != 'no_tax'}{t}Unit Net{/t}{else}Unit Gross{/if} ({$currency_symbol})</b></td>
-                                                            <td class="row2" align="left"><b>{t}Unit Discount{/t} ({$currency_symbol})</b></td>
+                                                            <td class="row2 discountAllowed" align="left" hidden><b>{t}Unit Discount{/t} ({$currency_symbol})</b></td>
                                                             <td class="vatTaxSystem salesTaxSystem row2" align="left" hidden><b>{t}Net{/t} ({$currency_symbol})</b></td>
                                                             <td class="vatTaxSystem row2" align="right" hidden><b>{t}VAT Tax Code{/t}</b></td>
                                                             <td class="vatTaxSystem salesTaxSystem row2" align="right" hidden><b>{if '/^vat_/'|preg_match:$creditnote_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t} (%)</b></td>
@@ -571,7 +576,7 @@
                                                             </td>
                                                             <td align="left"><input id="qform[creditnote_items][iteration][unit_qty]" name="qform[creditnote_items][iteration][unit_qty]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="left"><input id="qform[creditnote_items][iteration][unit_net]" name="qform[creditnote_items][iteration][unit_net]" style="width: 50px;" size="6" value="" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
-                                                            <td align="left"><input id="qform[creditnote_items][iteration][unit_discount]" name="qform[creditnote_items][iteration][unit_discount]" style="width: 50px;" size="6" value="0.00" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td class="discountAllowed" align="left" hidden><input id="qform[creditnote_items][iteration][unit_discount]" name="qform[creditnote_items][iteration][unit_discount]" style="width: 50px;" size="6" value="0.00" type="text" maxlength="10" required disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem salesTaxSystem" align="left" hidden><input id="qform[creditnote_items][iteration][subtotal_net]" name="qform[creditnote_items][iteration][subtotal_net]" size="6" value="0.00" type="text" maxlength="10" required readonly disabled onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="vatTaxSystem" align="right" hidden>
                                                             <select id="qform[creditnote_items][iteration][vat_tax_code]" name="qform[creditnote_items][iteration][vat_tax_code]" value="" style="width: 100%; font-size: 10px;" required disabled>
@@ -622,7 +627,7 @@
                                                         <tr>
                                                             <td class="menutd2">
                                                                 <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
-                                                                    <tr>
+                                                                    <tr class="discountAllowed" hidden>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">
                                                                             {$currency_symbol}<span id="creditnoteTotalDiscountText">0.00</span>

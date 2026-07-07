@@ -146,10 +146,10 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
         $record['supplier_id'] = $expense_details['supplier_id'];
         $record['type'] = 'purchase';
-        $record['reference'] = $invoice_details['balance']
+        $record['reference'] = $expense_details['balance']
             ? _gettext("Close").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id']
             : _gettext("Refund").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id'];
-        $record['sales_tax_rate'] = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'sales_tax_rate');
+        $record['sales_tax_rate'] = 0.00;
 
         // Copy expense items or use single item
         $useRecordItems = (float) $expense_details['balance'] ? true : false;
@@ -179,6 +179,12 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             // Get expense items
             $creditnote_items = $this->app->components->expense->getItems(\CMSApplication::$VAR['expense_id']);
 
+            // Add `unit_discount` to each item to allow for Credit note compatibility
+            foreach($creditnote_items as &$creditnote_item) {
+                $creditnote_item['unit_discount'] = '0.00';
+            }
+            unset($creditnote_item); // break the reference after the loop
+
             // Rename 'expense_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'expense_item_id' not renaming it
             $creditnote_items = json_encode($creditnote_items);
             $creditnote_items = str_replace('expense_item_id', 'creditnote_item_id', $creditnote_items);
@@ -193,10 +199,10 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     $record['supplier_id'] ??= null;
     $record['expense_id'] ??= null;
 
-    // Create the credit note and return the new creditnote_id (this has no items)
+    // Create the creditnote and return the new creditnote_id (this has no items)
     $creditnote_id = $this->app->components->creditnote->insertRecord($record);
 
-    // Get invoice/expense items to populate the credit notes item fields
+    // Get Expense|Invoice items to populate the credit notes item fields
     $variables['qform']['creditnote_items'] = $creditnote_items;
 
     // Edit the newly created credit note populating with items on page load

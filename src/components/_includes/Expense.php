@@ -79,7 +79,7 @@ class Expense extends Components {
         // Insert Items/Rows into database (if any)
         if($items) {
 
-            $sql = "INSERT INTO `".PRFX."expense_items` (`expense_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
+            $sql = "INSERT INTO `".PRFX."expense_items` (`expense_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
 
             foreach($items as $item) {
 
@@ -92,7 +92,6 @@ class Expense extends Components {
                         $this->app->db->qStr( $item['description']              ).",".
                         $this->app->db->qStr( $item['unit_qty']                 ).",".
                         $this->app->db->qStr( $item['unit_net']                 ).",".
-                        $this->app->db->qStr( $item['unit_discount']            ).",".
                         $this->app->db->qStr( $vat_tax_code                     ).",".
                         $this->app->db->qStr( $item['unit_tax_rate']            ).",".
                         $this->app->db->qStr( $item['unit_tax']                 ).",".
@@ -317,7 +316,6 @@ class Expense extends Components {
         // $expense_items_subtotals = $this->app->components->report->expenseGetStats('items', null, null, null, null, null, $supplier_id);
 
         $sql = "SELECT
-                SUM(unit_discount * unit_qty) AS subtotal_discount,
                 SUM(subtotal_net) AS subtotal_net,
                 SUM(subtotal_tax) AS subtotal_tax,
                 SUM(subtotal_gross) AS subtotal_gross
@@ -587,7 +585,6 @@ class Expense extends Components {
                 tax_system          = '',
                 type                = '',
                 unit_net            = 0.00,
-                unit_discount       = 0.00,
                 unit_tax            = 0.00,
                 unit_gross          = 0.00,
                 balance             = 0.00,
@@ -896,7 +893,6 @@ class Expense extends Components {
         $items_subtotals        = $this->getItemsSubtotals($expense_id);
         $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'expense', null, null, null, null, null, null, $expense_id);
 
-        $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];
         $unit_tax               = $items_subtotals['subtotal_tax'];
         $unit_gross             = $items_subtotals['subtotal_gross'];
@@ -904,7 +900,6 @@ class Expense extends Components {
 
         $sql = "UPDATE ".PRFX."expense_records SET
                 unit_net            =". $this->app->db->qstr( $unit_net            ).",
-                unit_discount       =". $this->app->db->qstr( $unit_discount       ).",
                 unit_tax            =". $this->app->db->qstr( $unit_tax            ).",
                 unit_gross          =". $this->app->db->qstr( $unit_gross          ).",
                 balance             =". $this->app->db->qstr( $balance             )."

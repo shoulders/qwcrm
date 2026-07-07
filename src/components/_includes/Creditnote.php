@@ -38,7 +38,7 @@ class Creditnote extends Components {
                 type            =". $this->app->db->qStr( $qform['type']                         ).",
                 reference       =". $this->app->db->qStr( $qform['reference']                         ).",
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                          ).",
-                sales_tax_rate  =". $this->app->db->qStr( $qform['sales_tax_rate']                      ).",
+                sales_tax_rate  =". $this->app->db->qStr( $qform['sales_tax_rate'] ?? '0.00'     ).",
                 status          =". $this->app->db->qStr( 'pending'                            ).",
                 action_type     =". $this->app->db->qStr( $qform['action_type']).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
