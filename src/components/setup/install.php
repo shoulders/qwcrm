@@ -174,6 +174,7 @@ if(\CMSApplication::$VAR['stage'] == 'company_details') {
         \CMSApplication::$VAR['email_signature_active']  = $company_details['email_signature_active'];
         \CMSApplication::$VAR['email_msg_workorder']     = $company_details['email_msg_workorder'];
         \CMSApplication::$VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];
+        \CMSApplication::$VAR['email_msg_voucher']       = $company_details['email_msg_voucher'];
 
         // Set the date format required for $this->app->components->company->update_company_details()
         defined('DATE_FORMAT') ?: define('DATE_FORMAT', $this->app->components->company->getRecord('date_format'));

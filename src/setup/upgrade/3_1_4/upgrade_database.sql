@@ -65,7 +65,7 @@ CREATE TABLE `#__cronjob_system` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `#__cronjob_system` (`last_run_time`, `last_run_status`, `locked`) VALUES
-(NULL, 0, 0);
+('0000-00-00 00:00:00', 0, 0);
 
 ALTER TABLE `#__cronjob_system` ADD PRIMARY KEY (`last_run_time`);
 
@@ -712,7 +712,7 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (7, 'suspended', 'Suspended'),
 (8, 'cancelled', 'Cancelled'),
 (9, 'deleted', 'Deleted');
-ALTER TABLE `#__voucher_records` CHANGE `balance` `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__voucher_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_gross`;
 UPDATE `#__voucher_records` SET `type` = 'mpv' WHERE `type` = 'MPV';
 UPDATE `#__voucher_records` SET `type` = 'spv' WHERE `type` = 'SPV';
 UPDATE `#__voucher_records` SET `balance` = `unit_gross` WHERE `status` != 'redeemed';
@@ -946,7 +946,7 @@ ALTER TABLE `#__payment_records` ADD `supplier_id` INT(10) UNSIGNED NULL DEFAULT
 ALTER TABLE `#__payment_records` CHANGE `refund_id` `refund_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against' AFTER `invoice_id`;
 ALTER TABLE `#__payment_records` CHANGE `voucher_id` `voucher_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Payment made with';
 ALTER TABLE `#__payment_records` CHANGE `creditnote_id` `creditnote_id` INT(10) UNSIGNED NULL DEFAULT NULL COMMENT 'Applied against / Refunded against';
-ALTER TABLE `#__company_record` ADD `creditnote_expiry_offset` INT(5) UNSIGNED NOT NULL AFTER `year_end`;
+ALTER TABLE `#__company_record` ADD `creditnote_expiry_offset` INT(5) UNSIGNED NOT NULL DEFAULT 366 AFTER `year_end`;
 UPDATE `#__company_record` SET `creditnote_expiry_offset` = '366' WHERE `#__company_record`.`creditnote_expiry_offset` = 0;
 ALTER TABLE `#__expense_records` ADD `supplier_id` INT(10) UNSIGNED NULL AFTER `employee_id`;
 ALTER TABLE `#__payment_options` ADD `creditnote_footer_msg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `invoice_footer_msg`;
@@ -1232,3 +1232,11 @@ ALTER TABLE `#__expense_items` DROP `sales_tax_exempt`;
 -- Remove Sales Tax from otherincome --
 ALTER TABLE `#__otherincome_records` DROP `sales_tax_rate`;
 ALTER TABLE `#__otherincome_items` DROP `sales_tax_exempt`;
+
+-- Database Corrections --
+ALTER TABLE `#__invoice_records` DROP `unit_paid`;
+ALTER TABLE `#__otherincome_records` ADD `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT 0.00 AFTER `unit_net`;
+ALTER TABLE `#__expense_records` MODIFY `last_active` datetime NULL DEFAULT NULL AFTER `closed_on`;
+ALTER TABLE `#__supplier_records` MODIFY `company_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' AFTER `last_name`;
+ALTER TABLE `#__supplier_records` MODIFY `vat_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' AFTER `company_number`;
+ALTER TABLE `#__client_records` MODIFY `employee_id` int(10) UNSIGNED NOT NULL AFTER `client_id`;

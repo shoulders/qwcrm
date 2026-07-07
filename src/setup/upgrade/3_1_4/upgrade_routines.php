@@ -60,10 +60,11 @@ class Upgrade3_1_4 extends Setup {
 
         // Remove Refunds and convert to Creditnotes
         $this->refundConvertToCreditnotes();
-        $this->refundTidyDatabase();
         $this->copyColumnAToColumnB('payment_records', 'refund_id', 'creditnote_id');
         $this->updateColumnValues(PRFX.'payment_records', 'type', 'refund', 'creditnote');
         $this->updateColumnValues(PRFX.'payment_records', 'direction', '', 'credit', 'type', 'creditnote');
+        $this->refundTidyDatabase();
+
 
         // Convert Expense to use items
         $this->expenseConvertToUseItems();
@@ -148,7 +149,7 @@ class Upgrade3_1_4 extends Setup {
                     type            =". $this->app->db->qStr('sales').",
                     tax_system      =". $this->app->db->qStr($rs->fields['tax_system']).",
                     unit_net        =". $this->app->db->qStr($rs->fields['unit_net']).",
-                    unit_discount   =". $this->app->db->qStr($rs->fields[0.00]).",
+                    unit_discount   =". $this->app->db->qStr(0.00).",
                     sales_tax_rate  =". $this->app->db->qStr($this->app->components->invoice->getRecord($rs->fields['invoice_id'], 'sales_tax_rate')).",
                     unit_tax        =". $this->app->db->qStr($rs->fields['unit_tax']).",
                     unit_gross      =". $this->app->db->qStr($rs->fields['unit_gross']).",
@@ -158,7 +159,6 @@ class Upgrade3_1_4 extends Setup {
                     opened_on       =". $this->app->db->qStr($rs->fields['opened_on']).",
                     closed_on       =". $this->app->db->qStr($rs->fields['closed_on']).",
                     last_Active     =". $this->app->db->qStr($rs->fields['last_active']).",
-                    is_closed       =". $this->app->db->qStr($rs->fields['closed_on'] ? 1 : 0).",
                     reference       =". $this->app->db->qStr(_gettext("Migrated from Refund").': '.$rs->fields['refund_id']).",
                     note            =". $this->app->db->qStr($rs->fields['note']).",
                     additional_info =". $this->app->db->qStr('{}');
@@ -250,6 +250,7 @@ class Upgrade3_1_4 extends Setup {
                 $rs->MoveNext();
 
             }
+
         }
 
         process_end:

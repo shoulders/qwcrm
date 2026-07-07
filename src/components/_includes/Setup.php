@@ -126,7 +126,7 @@ class Setup extends Components {
                     WHERE $column   =". $this->app->db->qStr($current_value);
             if($and_column && $and_value)
             {
-                $sql = " AND $table.$and_column = ".$this->app->db->qStr($and_value);
+                $sql .= " AND $table.$and_column = ".$this->app->db->qStr($and_value);
             }
 
         }
@@ -177,7 +177,7 @@ class Setup extends Components {
 
     public function executeSqlFile($sql_file) {
 
-        $local_error_flag = null;
+        $local_error_flag = false;
 
         // Load the SQL file into memory as string
         $sql_file = file_get_contents($sql_file);
@@ -198,7 +198,8 @@ class Setup extends Components {
         foreach ($sql_statements['0'] as $sql) {
 
             // Get rule name for output
-            preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);
+            preg_match('/(^SET.*$|^START TRANSACTION;|^COMMIT;|^.*`.*`)/U', $sql, $query_name);
+            $query_name['0'] = $query_name['0'] ?? 'No Query Name Fallback - '.substr($sql, 0, 50);
 
             // Perform the query
             if(!$this->app->db->execute($sql)) {
@@ -273,8 +274,9 @@ class Setup extends Components {
 
     public function executeSqlFileLines($sql_file) {
 
+        $local_error_flag = false;
+
         // Prevent undefined variable errors
-        $local_error_flag = null;
         $sql = null;
         $query_name = null;
 
@@ -460,6 +462,8 @@ class Setup extends Components {
 
     public function executeSqlCommands(array $sqls) {
 
+        $local_error_flag = false;
+
         foreach($sqls as $sql)
         {
             if(!$this->app->db->execute($sql))
@@ -476,7 +480,7 @@ class Setup extends Components {
                 // Log message to setup log
                 $this->writeRecordToSetupLog('correction', $message, $this->app->db->ErrorMsg(), $sql);
 
-                return false;
+                $local_error_flag = true;
             }
             else
             {
@@ -490,10 +494,12 @@ class Setup extends Components {
                 // Log message to setup log
                 $this->writeRecordToSetupLog('correction', $message, $this->app->db->ErrorMsg(), $sql);
 
-                return true;
             }
 
         }
+
+        // Return the success state
+        return !$local_error_flag;
 
     }
 
