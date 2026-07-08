@@ -46,13 +46,18 @@
         // Intialialise the correct values on page
         refreshTotals();
 
+        // On form submission, correct user inputs and refresh the calculations
+        $("#editForm").on("submit", function() {
+            refreshTotals(true);
+        });
+
     });
 
     // Change the Dummy records so the visible fields match the Tax System
     function modifyDummyRowsForTaxSystem() {
 
         // Show the Discount fields if originating source record was an invoice
-        {if !$creditnote_details.invoice_id}
+        {if $creditnote_details.invoice_id}
             $(".discountAllowed").show();
         {/if}
 
@@ -233,10 +238,10 @@
             refreshPage();
         });
 
-        /* Monitor all row input boxes for changes
+        // Monitor all row input boxes for changes
         $(".creditnote_item_row input[type='text']").off("change").on("change", function() {
             refreshPage();
-        });*/
+        });
 
         // Monitor all row input boxes for keyup
         $(".creditnote_item_row input[type='text']").off("keyup").on("keyup", function() {
@@ -250,9 +255,6 @@
             $(this).closest('tr').remove();
             refreshPage();
         });
-
-
-
 
         /* Cleaning Up */
 
@@ -279,11 +281,11 @@
     }
 
     // Recalculate and then refresh all onscreen credit note totals
-    function refreshTotals() {
+    function refreshTotals(cleanUserInputs = false) {
 
-        /* Credit Note Item Rows */
+        /* Item Rows */
 
-        // Variable stores for Items Sums
+        // Variable stores for Items SubTotals
         creditnoteItemsSubTotalDiscount     = 0.00;
         creditnoteItemsSubTotalNet          = 0.00;
         creditnoteItemsSubTotalTax          = 0.00;
@@ -292,23 +294,30 @@
         // Loop through item rows, calculate and refresh new values onscreen (Tax System Aware)
         $('.creditnote_item_row').each(function() {
 
-            // Unit Values (not used onscreen)
-            rowUnitQty                  = +$(this).find("input[id$='\\[unit_qty\\]']").val();
-            rowUnitNet                  = +$(this).find("input[id$='\\[unit_net\\]']").val();
-            rowUnitDiscount             = +$(this).find("input[id$='\\[unit_discount\\]']").val();
-            rowUnitTaxRate              = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
+            // Get user inputted values as numbers in the format `0.00`
+            rowUnitQty = parseFloat((+$(this).find("input[id$='\\[unit_qty\\]']").val()).toFixed(2));
+            rowUnitNet = parseFloat((+$(this).find("input[id$='\\[unit_net\\]']").val()).toFixed(2));
+            rowUnitDiscount = parseFloat((+$(this).find("input[id$='\\[unit_discount\\]']").val()).toFixed(2));
+            rowUnitTaxRate = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
 
-            // Row Totals
+            // Calculate Row Totals
             rowSubTotalNet              = (rowUnitNet - rowUnitDiscount) * rowUnitQty;
             rowSubTotalTax              = rowSubTotalNet * (rowUnitTaxRate / 100);
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
+
+            // Update user inputted values onscreen (so the input displays "0.00")
+            if(cleanUserInputs) {
+                $(this).find("input[id$='\\[unit_qty\\]']").val(rowUnitQty.toFixed(2));
+                $(this).find("input[id$='\\[unit_net\\]']").val(rowUnitNet.toFixed(2));
+                $(this).find("input[id$='\\[unit_discount\\]']").val(rowUnitDiscount.toFixed(2));
+            }
 
             // Update Row Totals onscreen
             $(this).find("input[id$='\\[subtotal_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));
 
-            // Update credit Note Items SubTotals
+            // Update Items SubTotals
             creditnoteItemsSubTotalDiscount     += rowUnitDiscount * rowUnitQty;
             creditnoteItemsSubTotalNet          += rowSubTotalNet;
             creditnoteItemsSubTotalTax          += rowSubTotalTax;
@@ -316,23 +325,27 @@
 
         });
 
-        /* Credit Note Totals */
+        /* Items SubTotals */
 
-        // These var declarations are just kept for comparrision with creditnote:edit
+        /* Record Totals */
+
+        // Calculations
         var creditnoteTotalDiscount    = creditnoteItemsSubTotalDiscount;
         var creditnoteTotalNet         = creditnoteItemsSubTotalNet;
         var creditnoteTotalTax         = creditnoteItemsSubTotalTax;
         var creditnoteTotalGross       = creditnoteItemsSubTotalGross;
 
-        // Update values onscreen + Convert Value to 0.00 format
-        $("#creditnoteTotalDiscountText").text(parseFloat(creditnoteTotalDiscount).toFixed(2));
+        // Update Totals Values onscreen + Convert Value to 0.00 format
         $("#creditnoteTotalDiscount").val(parseFloat(creditnoteTotalDiscount).toFixed(2));
-        $("#creditnoteTotalNetText").text(parseFloat(creditnoteTotalNet).toFixed(2));
         $("#creditnoteTotalNet").val(parseFloat(creditnoteTotalNet).toFixed(2));
-        $("#creditnoteTotalTaxText").text(parseFloat(creditnoteTotalTax).toFixed(2));
         $("#creditnoteTotalTax").val(parseFloat(creditnoteTotalTax).toFixed(2));
-        $("#creditnoteTotalGrossText").text(parseFloat(creditnoteTotalGross).toFixed(2));
         $("#creditnoteTotalGross").val(parseFloat(creditnoteTotalGross).toFixed(2));
+
+        // Update Totals Text onscreen + Convert Value to 0.00 format
+        $("#creditnoteTotalDiscountText").text(parseFloat(creditnoteTotalDiscount).toFixed(2));
+        $("#creditnoteTotalNetText").text(parseFloat(creditnoteTotalNet).toFixed(2));
+        $("#creditnoteTotalTaxText").text(parseFloat(creditnoteTotalTax).toFixed(2));
+        $("#creditnoteTotalGrossText").text(parseFloat(creditnoteTotalGross).toFixed(2));
         $("#creditnoteTotalGrossTop").text(parseFloat(creditnoteTotalGross).toFixed(2));
 
     }
@@ -342,7 +355,7 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <form action="index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_id}" method="post" name="new_creditnote" id="new_creditnote">
+            <form action="index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_id}" method="post" name="editForm" id="editForm">
                 <table width="1024" cellpadding="4" cellspacing="0" border="0" >
 
                     <!-- Title -->

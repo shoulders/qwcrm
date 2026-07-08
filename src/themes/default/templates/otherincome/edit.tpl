@@ -41,6 +41,11 @@
         // Intialialise the correct values on page
         refreshTotals();
 
+        // On form submission, correct user inputs and refresh the calculations
+        $("#editForm").on("submit", function() {
+            refreshTotals(true);
+        });
+
     });
 
     // Change the Dummy records so the visible fields match the Tax System
@@ -193,10 +198,10 @@
             refreshPage();
         });
 
-        /* Monitor all row input boxes for changes
+        // Monitor all row input boxes for changes
         $(".otherincome_item_row input[type='text']").off("change").on("change", function() {
             refreshPage();
-        });*/
+        });
 
         // Monitor all row input boxes for keyup
         $(".otherincome_item_row input[type='text']").off("keyup").on("keyup", function() {
@@ -237,11 +242,11 @@
     }
 
     // Recalculate and then refresh all onscreen otherincome totals
-    function refreshTotals() {
+    function refreshTotals(cleanUserInputs = false) {
 
-        /* Otherincome Item Rows */
+        /* Item Rows */
 
-        // Variable stores for Items Sums
+        // Variable stores for Items SubTotals
         otherincomeItemsSubTotalNet          = 0.00;
         otherincomeItemsSubTotalTax          = 0.00;
         otherincomeItemsSubTotalGross        = 0.00;
@@ -249,42 +254,52 @@
         // Loop through item rows, calculate and refresh new values onscreen (Tax System Aware)
         $('.otherincome_item_row').each(function() {
 
-            // Unit Values (not used onscreen)
-            rowUnitQty                  = +$(this).find("input[id$='\\[unit_qty\\]']").val();
-            rowUnitNet                  = +$(this).find("input[id$='\\[unit_net\\]']").val();
-            rowUnitTaxRate              = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
+            // Get user inputted values as numbers in the format `0.00`
+            rowUnitQty = parseFloat((+$(this).find("input[id$='\\[unit_qty\\]']").val()).toFixed(2));
+            rowUnitNet = parseFloat((+$(this).find("input[id$='\\[unit_net\\]']").val()).toFixed(2));
+            rowUnitTaxRate = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
 
-            // Row Totals
+            // Calculate Row Totals
             rowSubTotalNet              = rowUnitNet * rowUnitQty;
             rowSubTotalTax              = rowSubTotalNet * (rowUnitTaxRate / 100);
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
+
+            // Update user inputted values onscreen (so the input displays "0.00")
+            if(cleanUserInputs) {
+                $(this).find("input[id$='\\[unit_qty\\]']").val(rowUnitQty.toFixed(2));
+                $(this).find("input[id$='\\[unit_net\\]']").val(rowUnitNet.toFixed(2));
+            }
 
             // Update Row Totals onscreen
             $(this).find("input[id$='\\[subtotal_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));
 
-            // Update credit Note Items SubTotals
+            // Update Items SubTotals
             otherincomeItemsSubTotalNet          += rowSubTotalNet;
             otherincomeItemsSubTotalTax          += rowSubTotalTax;
             otherincomeItemsSubTotalGross        += rowSubTotalGross;
 
         });
 
-        /* Otherincome Totals */
+        /* Items SubTotals */
 
-        // These var declarationsa re just kept for now for comparrision with otherincome:edit
+        /* Record Totals */
+
+        // Calculations
         var otherincomeTotalNet         = otherincomeItemsSubTotalNet;
         var otherincomeTotalTax         = otherincomeItemsSubTotalTax;
         var otherincomeTotalGross       = otherincomeItemsSubTotalGross;
 
-        // Update values onscreen + Convert Value to 0.00 format
-        $("#otherincomeTotalNetText").text(parseFloat(otherincomeTotalNet).toFixed(2));
+        // Update Totals Values onscreen + Convert Value to 0.00 format
         $("#otherincomeTotalNet").val(parseFloat(otherincomeTotalNet).toFixed(2));
-        $("#otherincomeTotalTaxText").text(parseFloat(otherincomeTotalTax).toFixed(2));
         $("#otherincomeTotalTax").val(parseFloat(otherincomeTotalTax).toFixed(2));
-        $("#otherincomeTotalGrossText").text(parseFloat(otherincomeTotalGross).toFixed(2));
         $("#otherincomeTotalGross").val(parseFloat(otherincomeTotalGross).toFixed(2));
+
+        // Update Totals Text onscreen + Convert Value to 0.00 format
+        $("#otherincomeTotalNetText").text(parseFloat(otherincomeTotalNet).toFixed(2));
+        $("#otherincomeTotalTaxText").text(parseFloat(otherincomeTotalTax).toFixed(2));
+        $("#otherincomeTotalGrossText").text(parseFloat(otherincomeTotalGross).toFixed(2));
         $("#otherincomeTotalGrossTop").text(parseFloat(otherincomeTotalGross).toFixed(2));
 
     }
@@ -294,7 +309,7 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <form action="index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_id}" method="post" name="new_otherincome" id="new_otherincome">
+            <form action="index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_id}" method="post" name="editForm" id="editForm">
                 <table width="1024" cellpadding="4" cellspacing="0" border="0" >
 
                     <!-- Title -->

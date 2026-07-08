@@ -43,6 +43,11 @@
         // Intialialise the correct values on page
         refreshTotals();
 
+        // On form submission, correct user inputs and refresh the calculations
+        $("#editForm").on("submit", function() {
+            refreshTotals(false,true);
+        });
+
     });
 
     // Change the Dummy records so the visible fields match the Tax System
@@ -215,10 +220,10 @@
             refreshPage();
         });
 
-        /* Monitor all row input boxes for changes
+        // Monitor all row input boxes for changes
         $(".invoice_item_row input[type='text']").off("change").on("change", function() {
             refreshPage();
-        });*/
+        });
 
         // Monitor all row input boxes for keyup
         $(".invoice_item_row input[type='text']").off("keyup").on("keyup", function() {
@@ -243,21 +248,8 @@
 
     }
 
-    // Refresh all dynamic items onscreen
-    function refreshPage(applyDiscountRate = false) {
-
-        // Only run once the page is fully loaded
-        if(pageBuilding) { return; }
-
-        // Disable some function buttons because there is a change
-        $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
-
-        // Refresh Invoice Totals
-        refreshTotals(applyDiscountRate);
-    }
-
     // Apply a discount rate to all items via the 'Apply Discount' button
-    function applyDiscountRate() {
+    function applyDiscountRateButton() {
 
         let clientDiscountRate = +$("#client_discount_rate").val();
 
@@ -268,15 +260,28 @@
         }
     }
 
+    // Refresh all dynamic items onscreen
+    function refreshPage(applyDiscountRate = false) {
+
+        // Only run once the page is fully loaded
+        if(pageBuilding) { return; }
+
+        // Disable some function buttons because there is a change
+        $(".userButton").prop('disabled', true).attr('title', '{t}This button is disabled until you have saved your changes.{/t}');
+
+        // Refresh Invoice Totals
+        refreshTotals(false, applyDiscountRate);
+    }
+
     // Recalculate and then refresh all onscreen invoice totals
-    function refreshTotals(applyDiscountRate = false) {
+    function refreshTotals(cleanUserInputs = false, applyDiscountRate = false) {
 
         // Get the client discount rate
         var clientDiscountRate = +$("#client_discount_rate").val();
 
-        /* Invoice Item Rows */
+        /* Item Rows */
 
-        // Variable stores for Items Sums
+        // Variable stores for Items SubTotals
         invoiceItemsSubTotalDiscount     = 0.00;
         invoiceItemsSubTotalNet          = 0.00;
         invoiceItemsSubTotalTax          = 0.00;
@@ -285,25 +290,36 @@
         // Loop through item rows, calculate and refresh new values onscreen (Tax System Aware)
         $('.invoice_item_row').each(function() {
 
-            // Unit Values (not used onscreen)
-            rowUnitQty                  = +$(this).find("input[id$='\\[unit_qty\\]']").val();
-            rowUnitNet                  = +$(this).find("input[id$='\\[unit_net\\]']").val();
-            rowUnitDiscount             = applyDiscountRate ? rowUnitNet * (clientDiscountRate / 100) : +$(this).find("input[id$='\\[unit_discount\\]']").val();
-            rowUnitTaxRate              = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
+            // Get user inputted values as numbers in the format `0.00`
+            rowUnitQty = parseFloat((+$(this).find("input[id$='\\[unit_qty\\]']").val()).toFixed(2));
+            rowUnitNet = parseFloat((+$(this).find("input[id$='\\[unit_net\\]']").val()).toFixed(2));
+            rowUnitDiscount = parseFloat((+$(this).find("input[id$='\\[unit_discount\\]']").val()).toFixed(2));
+            rowUnitTaxRate = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
 
-            // Row Totals
+            // Apply Discount Rate
+            if(applyDiscountRate) {
+                rowUnitDiscount = rowUnitNet * (clientDiscountRate / 100);
+                $(this).find("input[id$='\\[unit_discount\\]']").val(rowUnitDiscount.toFixed(2));
+            }
+
+            // Calculate Row Totals
             rowSubTotalNet              = (rowUnitNet - rowUnitDiscount) * rowUnitQty;
             rowSubTotalTax              = rowSubTotalNet * (rowUnitTaxRate / 100);
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
 
+            // Update user inputted values onscreen (so the input displays "0.00")
+            if(cleanUserInputs) {
+                $(this).find("input[id$='\\[unit_qty\\]']").val(rowUnitQty.toFixed(2));
+                $(this).find("input[id$='\\[unit_net\\]']").val(rowUnitNet.toFixed(2));
+                $(this).find("input[id$='\\[unit_discount\\]']").val(rowUnitDiscount.toFixed(2));
+            }
+
             // Update Row Totals onscreen
-            //if(applyDiscountRate) { $(this).find("input[id$='\\[unit_discount\\]']").val(parseFloat(rowUnitDiscount).toFixed(2)); }
-            $(this).find("input[id$='\\[unit_discount\\]']").val(parseFloat(rowUnitDiscount).toFixed(2));
             $(this).find("input[id$='\\[subtotal_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));
 
-            // Update Invoice Items SubTotals
+            // Update Items SubTotals
             invoiceItemsSubTotalDiscount     += rowUnitDiscount * rowUnitQty;
             invoiceItemsSubTotalNet          += rowSubTotalNet;
             invoiceItemsSubTotalTax          += rowSubTotalTax;
@@ -311,7 +327,7 @@
 
         });
 
-        /* Invoice Items SubTotals */
+        /* Items SubTotals */
 
         // Update Items SubTotals onscreen
         $("#invoice_items_subtotal_discount").text(parseFloat(invoiceItemsSubTotalDiscount).toFixed(2));
@@ -326,7 +342,7 @@
         var vouchersTotalTax    = +$("#vouchersTotalTax").text();
         //var vouchersTotalGross  = +$("#vouchersTotalGross").text();
 
-        /* Invoice Totals */
+        /* Record Totals */
 
         // Calculations
         var invoiceTotalDiscount    = invoiceItemsSubTotalDiscount;
@@ -334,15 +350,17 @@
         var invoiceTotalTax         = invoiceItemsSubTotalTax + vouchersTotalTax;
         var invoiceTotalGross       = invoiceTotalNet + invoiceTotalTax;
 
-        // Update values onscreen + Convert Value to 0.00 format
-        $("#invoiceTotalDiscountText").text(parseFloat(invoiceTotalDiscount).toFixed(2));
+        // Update Totals Values onscreen + Convert Value to 0.00 format
         $("#invoiceTotalDiscount").val(parseFloat(invoiceTotalDiscount).toFixed(2));
-        $("#invoiceTotalNetText").text(parseFloat(invoiceTotalNet).toFixed(2));
         $("#invoiceTotalNet").val(parseFloat(invoiceTotalNet).toFixed(2));
-        $("#invoiceTotalTaxText").text(parseFloat(invoiceTotalTax).toFixed(2));
         $("#invoiceTotalTax").val(parseFloat(invoiceTotalTax).toFixed(2));
-        $("#invoiceTotalGrossText").text(parseFloat(invoiceTotalGross).toFixed(2));
         $("#invoiceTotalGross").val(parseFloat(invoiceTotalGross).toFixed(2));
+
+        // Update Totals Text onscreen + Convert Value to 0.00 format
+        $("#invoiceTotalDiscountText").text(parseFloat(invoiceTotalDiscount).toFixed(2));
+        $("#invoiceTotalNetText").text(parseFloat(invoiceTotalNet).toFixed(2));
+        $("#invoiceTotalTaxText").text(parseFloat(invoiceTotalTax).toFixed(2));
+        $("#invoiceTotalGrossText").text(parseFloat(invoiceTotalGross).toFixed(2));
         $("#invoiceTotalGrossTop").text(parseFloat(invoiceTotalGross).toFixed(2));
 
     }
@@ -352,7 +370,7 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <form action="index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}" method="post" name="new_invoice" id="new_invoice">
+            <form action="index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}" method="post" name="editForm" id="editForm">
                 <table width="1024" cellpadding="4" cellspacing="0" border="0" >
 
                     <!-- Title -->
@@ -406,7 +424,7 @@
                                                                 trigger     : "date_button",
                                                                 inputField  : "date",
                                                                 dateFormat  : "{$date_format}",
-                                                                onChange    : function() { refreshPage('1'); }
+                                                                onChange    : function() { refreshPage(); }
                                                             } );
                                                         </script>
                                                     {else}
@@ -422,7 +440,7 @@
                                                                 trigger     : "due_date_button",
                                                                 inputField  : "due_date",
                                                                 dateFormat  : "{$date_format}",
-                                                                onChange    : function() { refreshPage('2'); }
+                                                                onChange    : function() { refreshPage(); }
                                                             });
                                                         </script>
                                                     {else}
@@ -512,7 +530,7 @@
                                                 </td>
                                                 <td colspan="6" valign="top" align="left">
                                                     <input type="number" class="olotd4" size="6" id="client_discount_rate" value="{$client_details.discount_rate|string_format:"%.2f"}" min="0" max="99.99" step="0.01"> %
-                                                    <button type="button" onclick="applyDiscountRate();">{t}Apply Discount{/t}</button><br>
+                                                    <button type="button" onclick="applyDiscountRateButton();">{t}Apply Discount{/t}</button><br>
                                                     * {t}The default value shown is the client's standard discount rate.{/t}<br>
                                                     * {t}This will alter all item's Unit Discount to apply the discount at the specified rate.{/t}<br>
                                                     * {t}The specified rate is not stored in the invoice's record.{/t}
@@ -737,7 +755,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
-                                                    <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300"  onkeydown="return onlyAddress(event);">{$invoice_details.note}</textarea>
+                                                    <textarea name="qform[note]" class="olotd5 mceNoEditor" cols="50" rows="3" maxlength="300" onkeydown="return onlyAddress(event);">{$invoice_details.note}</textarea>
                                                     <br>* {t}Note for internal use only{/t}
                                                 </td>
                                             </tr>

@@ -41,6 +41,11 @@
         // Intialialise the correct values on page
         refreshTotals();
 
+        // On form submission, correct user inputs and refresh the calculations
+        $("#editForm").on("submit", function() {
+            refreshTotals(true);
+        });
+
     });
 
     // Change the Dummy records so the visible fields match the Tax System
@@ -193,10 +198,10 @@
             refreshPage();
         });
 
-        /* Monitor all row input boxes for changes
+        // Monitor all row input boxes for changes
         $(".expense_item_row input[type='text']").off("change").on("change", function() {
             refreshPage();
-        });*/
+        });
 
         // Monitor all row input boxes for keyup
         $(".expense_item_row input[type='text']").off("keyup").on("keyup", function() {
@@ -237,11 +242,11 @@
     }
 
     // Recalculate and then refresh all onscreen expense totals
-    function refreshTotals() {
+    function refreshTotals(cleanUserInputs = false) {
 
-        /* Expense Item Rows */
+        /* Item Rows */
 
-        // Variable stores for Items Sums
+        // Variable stores for Items SubTotals
         expenseItemsSubTotalNet          = 0.00;
         expenseItemsSubTotalTax          = 0.00;
         expenseItemsSubTotalGross        = 0.00;
@@ -249,42 +254,53 @@
         // Loop through item rows, calculate and refresh new values onscreen (Tax System Aware)
         $('.expense_item_row').each(function() {
 
-            // Unit Values (not used onscreen)
-            rowUnitQty                  = +$(this).find("input[id$='\\[unit_qty\\]']").val();
-            rowUnitNet                  = +$(this).find("input[id$='\\[unit_net\\]']").val();
-            rowUnitTaxRate              = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
+            // Get user inputted values as numbers in the format `0.00`
+            rowUnitQty = parseFloat((+$(this).find("input[id$='\\[unit_qty\\]']").val()).toFixed(2));
+            rowUnitNet = parseFloat((+$(this).find("input[id$='\\[unit_net\\]']").val()).toFixed(2));
+            rowUnitTaxRate = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
 
-            // Row Totals
+            // Calculate Row Totals
             rowSubTotalNet              = rowUnitNet * rowUnitQty;
             rowSubTotalTax              = rowSubTotalNet * (rowUnitTaxRate / 100);
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
+
+            // Update user inputted values onscreen (so the input displays "0.00")
+            if(cleanUserInputs) {
+                $(this).find("input[id$='\\[unit_qty\\]']").val(rowUnitQty.toFixed(2));
+                $(this).find("input[id$='\\[unit_net\\]']").val(rowUnitNet.toFixed(2));
+                $(this).find("input[id$='\\[unit_discount\\]']").val(rowUnitDiscount.toFixed(2));
+            }
 
             // Update Row Totals onscreen
             $(this).find("input[id$='\\[subtotal_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));
 
-            // Update Credit Note Items SubTotals
+            // Update Items SubTotals
             expenseItemsSubTotalNet          += rowSubTotalNet;
             expenseItemsSubTotalTax          += rowSubTotalTax;
             expenseItemsSubTotalGross        += rowSubTotalGross;
 
         });
 
-        /* Expense Totals */
+        /* Items SubTotals */
 
-        // These var declarationsa re just kept for now for comparrision with expense:edit
+        /* Record Totals */
+
+        // Calculations
         var expenseTotalNet         = expenseItemsSubTotalNet;
         var expenseTotalTax         = expenseItemsSubTotalTax;
         var expenseTotalGross       = expenseItemsSubTotalGross;
 
-        // Update values onscreen + Convert Value to 0.00 format
-        $("#expenseTotalNetText").text(parseFloat(expenseTotalNet).toFixed(2));
+        // Update Totals Values onscreen + Convert Value to 0.00 format
         $("#expenseTotalNet").val(parseFloat(expenseTotalNet).toFixed(2));
-        $("#expenseTotalTaxText").text(parseFloat(expenseTotalTax).toFixed(2));
         $("#expenseTotalTax").val(parseFloat(expenseTotalTax).toFixed(2));
-        $("#expenseTotalGrossText").text(parseFloat(expenseTotalGross).toFixed(2));
         $("#expenseTotalGross").val(parseFloat(expenseTotalGross).toFixed(2));
+
+        // Update Totals Text onscreen + Convert Value to 0.00 format
+        $("#expenseTotalNetText").text(parseFloat(expenseTotalNet).toFixed(2));
+        $("#expenseTotalTaxText").text(parseFloat(expenseTotalTax).toFixed(2));
+        $("#expenseTotalGrossText").text(parseFloat(expenseTotalGross).toFixed(2));
         $("#expenseTotalGrossTop").text(parseFloat(expenseTotalGross).toFixed(2));
 
     }
@@ -294,7 +310,7 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <form action="index.php?component=expense&page_tpl=edit&expense_id={$expense_id}" method="post" name="new_expense" id="new_expense">
+            <form action="index.php?component=expense&page_tpl=edit&expense_id={$expense_id}" method="post" name="editForm" id="editForm">
                 <table width="1024" cellpadding="4" cellspacing="0" border="0" >
 
                     <!-- Title -->
