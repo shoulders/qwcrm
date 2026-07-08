@@ -5,7 +5,7 @@ Over at [QuantumWarp.com](https://quantumwarp.com/)
 
 # What is QWcrm?
 
-[QWcrm](http://quantumwarp.com) is a free, open source and easy to use CRM designed for 
+[QWcrm](http://quantumwarp.com) is a free, open source and easy to use CRM designed for
 small businesses for all of their job and invoicing needs in one package.
 
 There are no over complicated things that you need to do or learn
@@ -35,7 +35,7 @@ QWcrm has many features, not all can be listed here:
 * Employees and roles
 * Configurable permissions
 * Client Management
-* Work Order (Jobs/Tasks) Management 
+* Work Order (Jobs/Tasks) Management
 * Work Order Scheduling
 * Invoicing
 * Assign payments to invoices
@@ -58,7 +58,7 @@ QWcrm has many features, not all can be listed here:
 These are quick install instructions. I will improve them as I can.
 
 - Create a MySQL database called xxxxxxxx_qwcrm
-- Set the collation of the database to utf8_unicode_ci  - this is done under the operation tab of phpmyadmin
+- Set the collation of the database to utf8mb4_unicode_ci  - this is done under the operation tab of phpmyadmin
 - Upload the qwcrm_x.x.x.zip to your webhost public_html/htdocs folder or sub-folder (as required)
 - Extract the zip file contents.
 - Delete the zip file because it no longer needed
@@ -112,7 +112,7 @@ The are just some quick instructions for now (Clean Install)
 
 There is a [forum](https://quantumwarp.com/forum/) available for support over at [QuantumWarp](https://quantumwarp.com/forum/)
 with new features and bugs being actively reported and resolved. It’s also a great way to get personal involvement from all
-our end users to help build on this software. 
+our end users to help build on this software.
 
 Always search the forum and double check your problem before posting.
 
