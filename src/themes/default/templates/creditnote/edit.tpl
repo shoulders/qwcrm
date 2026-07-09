@@ -146,7 +146,7 @@
 
     }
 
-    // Dynamically Copy, Process and add an new credit note item row to the relevant table
+    // Dynamically Copy, Process and add an new item row to the relevant table
     function createNewTableRow() {
 
         // Get Table
