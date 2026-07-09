@@ -1246,3 +1246,6 @@ ALTER TABLE `#__expense_records` DROP `unit_discount`;
 ALTER TABLE `#__expense_items` DROP `unit_discount`;
 ALTER TABLE `#__otherincome_records` DROP `unit_discount`;
 ALTER TABLE `#__otherincome_items` DROP `unit_discount`;
+
+-- Allow 100% Discount --
+ALTER TABLE `#__client_records` CHANGE `discount_rate` `discount_rate` DECIMAL(5,2) NOT NULL DEFAULT '0.00';

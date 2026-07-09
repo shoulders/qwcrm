@@ -74,7 +74,7 @@ CREATE TABLE `#__client_records` (
   `website` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `credit_terms` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `discount_rate` decimal(4,2) NOT NULL DEFAULT 0.00,
+  `discount_rate` decimal(5,2) NOT NULL DEFAULT 0.00,
   `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `active` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `primary_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',

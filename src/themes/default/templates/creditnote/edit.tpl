@@ -173,6 +173,8 @@
         // Convert Description cell into a combobox
         window[iteration+'descriptionCombobox'] = dhtmlXComboFromSelect('qform[creditnote_items]['+iteration+'][description]');
 
+        /* Description Combobox */
+
         // Set Combobox Options - https://docs.dhtmlx.com/api__refs__dhtmlxcombo.html
         window[iteration+'descriptionCombobox'].DOMelem_input.id = 'qform[creditnote_items]['+iteration+'][description_combobox]';
         //window[iteration+'descriptionCombobox'].setSize(400);
@@ -187,7 +189,7 @@
             e.cancelBubble = true;
             if (e.preventDefault) e.preventDefault();
             return false;
-        } );
+        });
         //window[iteration+'descriptionCombobox'].attachEvent("keypress", function(e) { /* Does not Work with keypress */ } );
         //window[iteration+'descriptionCombobox'].attachEvent("onSelectionChange", function() { /* this does not really do what I want */ } );
         window[iteration+'descriptionCombobox'].attachEvent("onChange", function(value, text) {
@@ -204,7 +206,9 @@
 
             refreshPage();
 
-        } );
+        });
+
+        /* Configure Individual Fields, including binding events */
 
         // Set Vat Tax Code default value
         $('#qform\\[creditnote_items\\]\\['+iteration+'\\]\\[vat_tax_code\\]').val('{$default_vat_tax_code}');
@@ -299,6 +303,12 @@
             rowUnitNet = parseFloat((+$(this).find("input[id$='\\[unit_net\\]']").val()).toFixed(2));
             rowUnitDiscount = parseFloat((+$(this).find("input[id$='\\[unit_discount\\]']").val()).toFixed(2));
             rowUnitTaxRate = +$(this).find("input[id$='\\[unit_tax_rate\\]']").val();
+
+            // Validate Unit Qty and Unit Net input fields and blocks form submission
+            let unitQtyInput      = $(this).find("input[id$='\\[unit_qty\\]']")[0];
+            let unitNetInput      = $(this).find("input[id$='\\[unit_net\\]']")[0];
+            unitQtyInput.setCustomValidity(rowUnitQty < 0 ? "{t}Quantity cannot be negative.{/t}" : "");
+            unitNetInput.setCustomValidity(rowUnitNet < 0 ? "{t}Net cannot be negative.{/t}" : "");
 
             // Calculate Row Totals
             rowSubTotalNet              = (rowUnitNet - rowUnitDiscount) * rowUnitQty;
