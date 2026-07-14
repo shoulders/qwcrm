@@ -262,7 +262,7 @@
                                                                 <td class="row2"><b>{t}VAT Tax Code{/t}</b></td>
                                                                 <td class="row2"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
                                                                 <td class="row2"><b>{t}VAT{/t}</b></td>
-                                                            {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type == 'refund'}
+                                                            {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type != 'standalone'}
                                                                 <td class="row2"><b>{t}Net{/t}</b></td>
                                                                 <td class="row2"><b>{t}Sales Tax{/t} {t}Rate{/t}</b></td>
                                                                 <td class="row2"><b>{t}Sales Tax{/t}</b></td>
@@ -289,7 +289,7 @@
                                                                     {/if}
                                                                     <td>{$creditnote_items[l].unit_tax_rate|string_format:"%.2f"}%</td>
                                                                     <td>{$currency_symbol}{$creditnote_items[l].subtotal_tax|string_format:"%.2f"}</td>
-                                                                {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type == 'refund'}
+                                                                {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type != 'standalone'}
                                                                     <td>{$currency_symbol}{$creditnote_items[l].subtotal_net|string_format:"%.2f"}</td>
                                                                     {if $creditnote_items[l].sales_tax_exempt}
                                                                         <td colspan="2" align="center">{t}Exempt{/t}</td>
@@ -333,7 +333,7 @@
                                                             <td class="olotd4" width="80%" align="right"><b>{t}VAT{/t}</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_tax|string_format:"%.2f"}</td>
                                                         </tr>
-                                                    {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type == 'refund'}
+                                                    {elseif $creditnote_details.tax_system == 'sales_tax_cash' && $creditnote_details.action_type != 'standalone'}
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_symbol}{$creditnote_details.unit_net|string_format:"%.2f"}</td>

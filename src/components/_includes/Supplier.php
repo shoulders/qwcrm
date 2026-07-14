@@ -48,10 +48,11 @@ class Supplier extends Components {
                 state          =". $this->app->db->qStr( $qform['state']         ).",
                 zip            =". $this->app->db->qStr( $qform['zip']           ).",
                 country        =". $this->app->db->qStr( $qform['country']       ).",
-                status         =". $this->app->db->qStr( 'valid'               ).",
-                opened_on      =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()      ).",
+                status         =". $this->app->db->qStr( 'activated'             ).",
+                opened_on      =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()).",
                 description    =". $this->app->db->qStr( $qform['description']   ).",
-                note           =". $this->app->db->qStr( $qform['note']          );
+                note           =". $this->app->db->qStr( $qform['note']          ).",
+                additional_info =". $this->app->db->qStr( '{}'                   );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -216,7 +217,7 @@ class Supplier extends Components {
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
             //$sql .= "\nWHERE status_key NOT IN ('cancelled', 'deleted')";
-            $sql .= "\nWHERE status_key IN ('active', 'suspended')";
+            $sql .= "\nWHERE status_key IN ('activated', 'suspended')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -377,8 +378,9 @@ class Supplier extends Components {
         // Set the appropriate closed_on date
         $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
 
-        // ('deleted' should never be passed here, this is just for reference)
+        // Build SQL
         $sql = "UPDATE ".PRFX."supplier_records SET
+                employee_id        =". $this->app->db->qStr($this->app->user->login_user_id).",
                 status             =". $this->app->db->qStr( $new_status   ).",
                 closed_on          =". $this->app->db->qStr( $closed_on    )."
                 WHERE supplier_id  =". $this->app->db->qStr( $supplier_id  );
@@ -393,6 +395,58 @@ class Supplier extends Components {
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("supplier status updated."), $silent);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
+
+        return true;
+
+    }
+
+    #####################################
+    #   Activate Supplier               #
+    #####################################
+
+    public function activateRecord($supplier_id) {
+
+        // Get supplier details
+        $supplier_details = $this->getRecord($supplier_id);
+
+        // Change the supplier status to activated
+        $this->updateStatus($supplier_id, 'activated');
+
+        // Add reason to the additional info
+        $this->updateAdditionalInfo($supplier_id, array('reason_for_suspending' => null, 'reason_for_closing' => null));
+
+        // Log activity
+        $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was activated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
+
+        return true;
+
+    }
+
+    #####################################
+    #   Suspend Supplier                #
+    #####################################
+
+    public function suspendRecord($supplier_id, $reason_for_suspending) {
+
+        // Get supplier details
+        $supplier_details = $this->getRecord($supplier_id);
+
+        // Change the supplier status to cancelled
+        $this->updateStatus($supplier_id, 'suspended');
+
+        // Add reason to the additional info
+        $this->updateAdditionalInfo($supplier_id, array('reason_for_suspending' => $reason_for_suspending,'reason_for_closing' => null));
+
+        // Log activity
+        $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was suspended by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -417,25 +471,48 @@ class Supplier extends Components {
 
     }
 
+    ###################################  if you send a new key/pair, it will be added
+    #    update additional info       #  if you send an existing key/pair the value will be updated
+    ###################################  if you send a key/pair with a null value, it will be removed
+
+    public function updateAdditionalInfo($supplier_id, array $new_additional_info = array()) {
+
+        // Make sure we merge current data from the database, decode as an array even if empty
+        $current_additional_info = json_decode($this->getRecord($supplier_id, 'additional_info'), true);
+
+        // Merge arrays
+        $additional_info = array_merge($current_additional_info, $new_additional_info);
+
+        // Remove all entries defined as null
+        $additional_info = array_filter($additional_info, function($var) {return ($var !== null);});
+
+        $sql = "UPDATE ".PRFX."supplier_records SET
+                additional_info=".$this->app->db->qStr(json_encode($additional_info, JSON_FORCE_OBJECT))."
+                WHERE supplier_id=".$this->app->db->qStr($supplier_id);
+
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+    }
+
     /** Close Functions **/
 
     #####################################
-    #   Cancel Supplier                 #
+    #   Close Supplier                  #
     #####################################
 
-    public function cancelRecord($supplier_id) {
+    public function closeRecord($supplier_id, $reason_for_closing) {
 
         // Get supplier details
         $supplier_details = $this->getRecord($supplier_id);
 
-        // Change the supplier status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($supplier_id, 'cancelled');
+        // Change the supplier status to closed
+        $this->updateStatus($supplier_id, 'closed');
 
-        // Add Cancelled message to the additional info
-        //$this->updateAdditionalInfo($expense_id, array('reason_for_cancelling' => $reason_for_cancelling));
+        // Add reason to the additional info
+        $this->updateAdditionalInfo($supplier_id, array('reason_for_suspending' => null, 'reason_for_closing' => $reason_for_closing));
 
         // Log activity
-        $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was closed by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -489,11 +566,11 @@ class Supplier extends Components {
 
         // Status checks
         switch ($supplier_details['status']) {
-            case 'active':
+            case 'activated':
                 break;
             case 'suspended':
                 break;
-            case 'cancelled':
+            case 'closed':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier's status cannot be changed because the supplier has been cancelled."), $silent);
                 $state_flag = false;
                 break;
@@ -501,7 +578,6 @@ class Supplier extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier's status cannot be changed because the supplier has been deleted."), $silent);
                 $state_flag = false;
                 break;
-
         }
 
         return $state_flag;
@@ -519,10 +595,23 @@ class Supplier extends Components {
         // Get the supplier details
         $supplier_details = $this->getRecord($supplier_id);
 
-        // Is cancelled
-        if($supplier_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been cancelled."), $silent);
-            $state_flag = false;
+        // Status checks
+        switch ($supplier_details['status']) {
+            case 'activated':
+                break;
+            case 'suspended':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been suspended."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been closed."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+
         }
 
         return $state_flag;
@@ -530,10 +619,10 @@ class Supplier extends Components {
     }
 
     ###############################################################
-    #   Check to see if the supplier can be cancelled             #
+    #   Check to see if the supplier can be activate              #
     ###############################################################
 
-    public function checkRecordAllowsCancel($supplier_id, $silent = false) {
+    public function checkRecordAllowsActivate($supplier_id, $silent = false) {
 
         $state_flag = true;
 
@@ -542,23 +631,85 @@ class Supplier extends Components {
 
         // status checks
         switch ($supplier_details['status']) {
-            case 'active':
+            case 'activated':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be activated because it is already activated."), $silent);
+                $state_flag = false;
                 break;
             case 'suspended':
                 break;
-            case 'cancelled':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because it is already cancelled."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a suspended supplier can be activated."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because the supplier has been cancelled."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be activated because the supplier has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
-        // Disable this feature for now. may enable or remove in future versions.
-        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled at this time because the feature is not available in this version of QWcrm. Suspend the supplier instead."), $silent);
-        $state_flag = false;
+        return $state_flag;
+
+    }
+
+    ###############################################################
+    #   Check to see if the supplier can be suspended             #
+    ###############################################################
+
+    public function checkRecordAllowsSuspend($supplier_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the supplier details
+        $supplier_details = $this->getRecord($supplier_id);
+
+        // status checks
+        switch ($supplier_details['status']) {
+            case 'activated':
+                break;
+            case 'suspended':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be suspended because it is already suspended."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed':
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it is suspended. Change the status to closed first."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        return $state_flag;
+
+    }
+
+    ###############################################################
+    #   Check to see if the supplier can be closed                #
+    ###############################################################
+
+    public function checkRecordAllowsClose($supplier_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the supplier details
+        $supplier_details = $this->getRecord($supplier_id);
+
+        // status checks
+        switch ($supplier_details['status']) {
+            case 'activated':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a suspended supplier can be activated."), $silent);
+                $state_flag = false;
+                break;
+            case 'suspended':
+                break;
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be closed because it is already closed."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be closed because the supplier has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
 
         return $state_flag;
 
@@ -577,16 +728,18 @@ class Supplier extends Components {
 
         // status checks
         switch ($supplier_details['status']) {
-            case 'active':
-                break;
-            case 'suspended':
-                break;
-            case 'cancelled':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it is already deleted."), $silent);
+            case 'activated':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a closed supplier can be deleted."), $silent);
                 $state_flag = false;
                 break;
+            case 'suspended':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a closed supplier can be deleted."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed':
+                break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because the supplier has already been cancelled."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because the supplier has already been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -618,7 +771,6 @@ class Supplier extends Components {
         return $state_flag;
 
     }
-
 
     /** Other Functions **/
 

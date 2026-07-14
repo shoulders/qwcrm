@@ -73,8 +73,8 @@ class PaymentMethodVoucher extends PaymentMethod
             }
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // Void
+        if(Payment::$action === 'void')
         {
             // Do nothing
         }
@@ -113,7 +113,7 @@ class PaymentMethodVoucher extends PaymentMethod
             Payment::$payment_successful = true;
         }
 
-        if(Payment::$action === 'cancel')
+        if(Payment::$action === 'void')
         {
             // Recalculate the Voucher record totals
             $this->app->components->voucher->recalculateTotals($this->VAR['qpayment']['voucher_id'], Payment::$payment_details['amount'], Payment::$action);
@@ -168,8 +168,8 @@ class PaymentMethodVoucher extends PaymentMethod
             // Do nothing
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // Void
+        if(Payment::$action === 'void')
         {
             // Do nothing
         }

@@ -502,8 +502,7 @@ INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
-(5, 'cancelled', 'Cancelled'),
-(6, 'deleted', 'Deleted');
+(5, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -902,6 +901,7 @@ CREATE TABLE `#__payment_records` (
   `direction` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `voided_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
@@ -925,7 +925,7 @@ CREATE TABLE `#__payment_statuses` (
 
 INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'valid', 'Valid'),
-(2, 'cancelled', 'Cancelled'),
+(2, 'voided', 'Voided'),
 (3, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
@@ -1013,7 +1013,8 @@ CREATE TABLE `#__supplier_records` (
   `closed_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `additional_info` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1033,8 +1034,10 @@ CREATE TABLE `#__supplier_statuses` (
 --
 
 INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'valid', 'Valid'),
-(2, 'cancelled', 'Cancelled');
+(1, 'activated', 'Activated'),
+(2, 'suspended', 'Suspended'),
+(3, 'closed', 'Closed'),
+(4, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -1132,7 +1135,6 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('cronjob:overview', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('cronjob:run', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('cronjob:unlock', 1, 0, 0, 0, 0, 0, 0, 0, 0),
-('expense:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -1142,7 +1144,6 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('invoice:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
@@ -1160,7 +1161,6 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('otherincome:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('payment:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -1168,6 +1168,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('payment:options', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:void', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('report:basic_stats', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('report:financial', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('schedule:day', 1, 1, 1, 1, 0, 0, 0, 0, 0),
@@ -1182,7 +1183,6 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('setup:migrate', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('setup:upgrade', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('supplier:autosuggest_name', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-('supplier:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('supplier:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('supplier:details', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('supplier:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -1407,8 +1407,7 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (6, 'redeemed', 'Redeemed'),
 (7, 'suspended', 'Suspended'),
 (8, 'voided', 'Voided'),
-(9, 'cancelled', 'Cancelled'),
-(10, 'deleted', 'Deleted');
+(9, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 

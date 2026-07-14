@@ -511,7 +511,7 @@ defined('_QWEXEC') or die;
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
             $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'in_dispute', 'overdue', 'collections')";
-            //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid',  'cancelled', 'deleted')";
+            //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -616,18 +616,15 @@ defined('_QWEXEC') or die;
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $invoice_details['employee_id'];
 
+        // Set the appropriate closed_on value
+        $closed_on = ($new_status == 'paid') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
+
         // Build SQL
         $sql = "UPDATE ".PRFX."invoice_records SET
-                employee_id         =". $this->app->db->qStr($employee_id).",
-                status              =". $this->app->db->qStr($new_status).",";
-
-        // Set closed statuses ('deleted' should never be passed here, this is just for reference)
-        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted') {
-            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
-        } else {
-            $sql .= "closed_on = NULL";
-        }
-        $sql .= " WHERE invoice_id =". $this->app->db->qStr($invoice_id);
+                employee_id          =". $this->app->db->qStr( $employee_id).",
+                status               =". $this->app->db->qStr( $new_status      ).",
+                closed_on            =". $this->app->db->qStr( $closed_on    )."
+                WHERE invoice_id     =". $this->app->db->qStr( $invoice_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -694,39 +691,6 @@ defined('_QWEXEC') or die;
     }
 
     /** Close Functions **/
-
-
-    #####################################
-    #   Cancel Invoice                  # // This does not delete information i.e. client went bust and did not pay
-    #####################################
-
-    public function cancelRecord($invoice_id, $reason_for_cancelling) {
-
-        // Get invoice details
-        $invoice_details = $this->getRecord($invoice_id);
-
-        // Cancel any Vouchers - handled in updateInvoiceVouchersStatuses()
-        //$this->app->components->voucher->cancelInvoiceVouchers($invoice_id);
-
-        // Change the invoice status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($invoice_id, 'cancelled');
-
-        // Add Cancelled message to the additional info
-        $this->updateAdditionalInfo($invoice_id, array('reason_for_cancelling' => $reason_for_cancelling));
-
-        // Create a Workorder History Note  - this is an invoice
-        //$this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
-
-        // Log activity
-        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
-        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
-        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
-        $this->app->system->general->updateLastActive($recordIds);
-
-        return true;
-
-    }
 
     /** Delete Functions **/
 
@@ -863,10 +827,6 @@ defined('_QWEXEC') or die;
                 break;
             case 'collections':
                 break;
-            case 'cancelled':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been cancelled."), $silent);
-                $state_flag = false;
-                break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been deleted."), $silent);
                 $state_flag = false;
@@ -937,12 +897,6 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been cancelled."), $silent);
-            $state_flag = false;
-        }
-
         // Is deleted
         if($invoice_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."), $silent);
@@ -964,74 +918,6 @@ defined('_QWEXEC') or die;
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it has linked credit notes."), $silent);
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-
-    ###############################################################
-    #   Check to see if the invoice can be cancelled              #
-    ###############################################################
-
-    public function checkRecordAllowsCancel($invoice_id, $silent = false) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->getRecord($invoice_id);
-
-        // Is on a different tax system
-        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it is on a different Tax system."), $silent);
-            $state_flag = false;
-        }
-
-        // Does not have a balance
-        if($invoice_details['balance'] == 0) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it does not have a balance."), $silent);
-            $state_flag = false;
-        }
-
-        // Is Pending
-        if($invoice_details['status'] == 'pending') {
-        }
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it is partially paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has already been cancelled."), $silent);
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has been deleted."), $silent);
-            $state_flag = false;
-        }
-
-        // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
-        if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowCancel($invoice_id)) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."), $silent); - messages handled downstream
-            $state_flag = false;
-        }
-
-        // Has payments
-        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be cancelled because it has payments."), $silent);
-            $state_flag = false;
-        }
-
-        // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because it has linked credit notes."), $silent);
             $state_flag = false;
         }
 
@@ -1075,12 +961,6 @@ defined('_QWEXEC') or die;
         // Is paid
         if($invoice_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is cancelled
-        if($invoice_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been cancelled."), $silent);
             $state_flag = false;
         }
 

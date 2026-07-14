@@ -217,13 +217,6 @@ _gettext("CRONJOB_OVERVIEW_HELP_CONTENT");
 
 /* Expense */
 
-// expense:cancel
-//_gettext("EXPENSE_CANCEL_PAGE_TITLE");
-//_gettext("EXPENSE_CANCEL_META_DESCRIPTION");
-//_gettext("EXPENSE_CANCEL_META_KEYWORDS");
-//_gettext("EXPENSE_CANCEL_HELP_TITLE");
-//_gettext("EXPENSE_CANCEL_HELP_CONTENT");
-
 // expense:delete
 //_gettext("EXPENSE_DELETE_PAGE_TITLE");
 //_gettext("EXPENSE_DELETE_META_DESCRIPTION");
@@ -290,13 +283,6 @@ _gettext("HELP_LICENSE_DETAILS_HELP_TITLE");
 _gettext("HELP_LICENSE_DETAILS_HELP_CONTENT");
 
 /* Invoice */
-
-// invoice:cancel
-//_gettext("INVOICE_CANCEL_PAGE_TITLE");
-//_gettext("INVOICE_CANCEL_META_DESCRIPTION");
-//_gettext("INVOICE_CANCEL_META_KEYWORDS");
-//_gettext("INVOICE_CANCEL_HELP_TITLE");
-//_gettext("INVOICE_CANCEL_HELP_CONTENT");
 
 // invoice:delete
 //_gettext("INVOICE_DELETE_PAGE_TITLE");
@@ -407,19 +393,12 @@ _gettext("OTHERINCOME_STATUS_HELP_CONTENT");
 
 /* Payment */
 
-// payment:cancel
-//_gettext("OTHERINCOME_CANCEL_PAGE_TITLE");
-//_gettext("OTHERINCOME_CANCEL_META_DESCRIPTION");
-//_gettext("OTHERINCOME_CANCEL_META_KEYWORDS");
-//_gettext("OTHERINCOME_CANCEL_HELP_TITLE");
-//_gettext("OTHERINCOME_CANCEL_HELP_CONTENT");
-
 // payment:delete
-//_gettext("OTHERINCOME_DELETE_PAGE_TITLE");
-//_gettext("OTHERINCOME_DELETE_META_DESCRIPTION");
-//_gettext("OTHERINCOME_DELETE_META_KEYWORDS");
-//_gettext("OTHERINCOME_DELETE_HELP_TITLE");
-//_gettext("OTHERINCOME_DELETE_HELP_CONTENT");
+//_gettext("PAYMENT_DELETE_PAGE_TITLE");
+//_gettext("PAYMENT_DELETE_META_DESCRIPTION");
+//_gettext("PAYMENT_DELETE_META_KEYWORDS");
+//_gettext("PAYMENT_DELETE_HELP_TITLE");
+//_gettext("PAYMENT_DELETE_HELP_CONTENT");
 
 // payment:details
 _gettext("PAYMENT_DETAILS_PAGE_TITLE");
@@ -462,6 +441,13 @@ _gettext("PAYMENT_STATUS_META_DESCRIPTION");
 _gettext("PAYMENT_STATUS_META_KEYWORDS");
 _gettext("PAYMENT_STATUS_HELP_TITLE");
 _gettext("PAYMENT_STATUS_HELP_CONTENT");
+
+// payment:void
+//_gettext("PAYMENT_VOID_PAGE_TITLE");
+//_gettext("PAYMENT_VOID_META_DESCRIPTION");
+//_gettext("PAYMENT_VOID_META_KEYWORDS");
+//_gettext("PAYMENT_VOID_HELP_TITLE");
+//_gettext("PAYMENT_VOID_HELP_CONTENT");
 
 /* Report */
 
@@ -554,13 +540,6 @@ _gettext("SETUP_UPGRADE_HELP_TITLE");
 _gettext("SETUP_UPGRADE_HELP_CONTENT");
 
 /* Supplier */
-
-// supplier:cancel
-//_gettext("SUPPLIER_CANCEL_PAGE_TITLE");
-//_gettext("SUPPLIER_CANCEL_META_DESCRIPTION");
-//_gettext("SUPPLIER_CANCEL_META_KEYWORDS");
-//_gettext("SUPPLIER_CANCEL_HELP_TITLE");
-//_gettext("SUPPLIER_CANCEL_HELP_CONTENT");
 
 // supplier:delete
 //_gettext("SUPPLIER_DELETE_PAGE_TITLE");

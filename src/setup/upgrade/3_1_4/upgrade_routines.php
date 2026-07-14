@@ -65,7 +65,6 @@ class Upgrade3_1_4 extends Setup {
         $this->updateColumnValues(PRFX.'payment_records', 'direction', '', 'credit', 'type', 'creditnote');
         $this->refundTidyDatabase();
 
-
         // Convert Expense to use items
         $this->expenseConvertToUseItems();
         $this->expenseTidyDatabase();
@@ -77,6 +76,13 @@ class Upgrade3_1_4 extends Setup {
         // Fix Invoice and Voucher statuses
         $this->updateColumnValues(PRFX.'invoice_records', 'status', 'refunded', 'paid');
         $this->updateColumnValues(PRFX.'voucher_records', 'status', 'refunded', 'voided');
+
+        // Convert Cancelled Records to Credit Notes
+        $this->expenseConvertCancelledToCreditnotes();
+        $this->updateColumnValues(PRFX.'expense_records', 'status', 'cancelled', 'paid');
+        $this->invoiceConvertCancelledToCreditnotes();
+        $this->updateColumnValues(PRFX.'invoice_records', 'status', 'cancelled', 'paid');
+        $this->updateColumnValues(PRFX.'voucher_records', 'status', 'cancelled', 'voided');
 
         // Update database version number
         $this->updateRecordValue(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
@@ -408,7 +414,6 @@ class Upgrade3_1_4 extends Setup {
                     description         =". $this->app->db->qStr(_gettext("Item(s) - Full list in notes")).",
                     unit_qty            =". $this->app->db->qStr(1).",
                     unit_net            =". $this->app->db->qStr($rs->fields['unit_net']).",
-                    unit_discount       =". $this->app->db->qStr(0.00).",
                     sales_tax_exempt    =". $this->app->db->qStr(0).",
                     vat_tax_code        =". $this->app->db->qStr($rs->fields['vat_tax_code']).",
                     unit_tax_rate       =". $this->app->db->qStr($rs->fields['unit_tax_rate']).",
@@ -428,7 +433,7 @@ class Upgrade3_1_4 extends Setup {
                     $local_error_flag = true;
 
                     // Log Message
-                    $record = _gettext("Failed to create item for the expense record").' '.$rs->fields['refund_id'];
+                    $record = _gettext("Failed to create item for the expense record").' '.$rs->fields['expense_id'];
 
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -542,13 +547,12 @@ class Upgrade3_1_4 extends Setup {
                 /* Record Item - This is a made up item */
 
                 // Build Items/Rows insert SQL
-                $sql = "INSERT INTO ".PRFX."expense_items SET
+                $sql = "INSERT INTO ".PRFX."otherincome_items SET
                     otherincome_id      =". $this->app->db->qStr($rs->fields['otherincome_id']).",
                     tax_system          =". $this->app->db->qStr($rs->fields['tax_system']).",
                     description         =". $this->app->db->qStr(_gettext("Item(s) - Full list in notes")).",
                     unit_qty            =". $this->app->db->qStr(1).",
                     unit_net            =". $this->app->db->qStr($rs->fields['unit_net']).",
-                    unit_discount       =". $this->app->db->qStr(0.00).",
                     sales_tax_exempt    =". $this->app->db->qStr(0).",
                     vat_tax_code        =". $this->app->db->qStr($rs->fields['vat_tax_code']).",
                     unit_tax_rate       =". $this->app->db->qStr($rs->fields['unit_tax_rate']).",
@@ -635,6 +639,594 @@ class Upgrade3_1_4 extends Setup {
         $sqls[] = "ALTER TABLE `".PRFX."otherincome_records` DROP `unit_tax_rate`;";   // this has been deleted from the table - i have removed the rule now
         $sqls[] = "ALTER TABLE `".PRFX."otherincome_records` DROP `items`;";
         $this->executeSqlCommands($sqls);
+    }
+
+    ########################################################  // These will be `Purchase Credit Note (Expense)`, `close` type.
+    # Convert Cancelled Expense Records to use Creditnotes #  // The expenses do no have a supplier, so we will create one if needed.
+    ########################################################  // They cannot be standalone because they come from an expense, not a supplier.
+
+    public function expenseConvertCancelledToCreditnotes()
+    {
+        $local_error_flag = false;
+
+        // Loop through all of the Expense records
+        $sql = "SELECT * FROM ".PRFX."expense_records WHERE `status` = 'cancelled'";
+        if(!$rs = $this->app->db->execute($sql))
+        {
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+
+            // Set the local error flag
+            $local_error_flag = true;
+
+            // Log Message
+            $record = _gettext("Failed to select all the cancelled records from the table").' `expense_records`.';
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+            // The process has failed so stop any further proccesing
+            goto process_end;
+
+        }
+
+        // Create a Holding Supplier for the credit notes if there are any Cancelled records
+        if(!$rs->EOF)
+        {
+            // Build SQL
+            $sql = "INSERT INTO ".PRFX."supplier_records SET
+                    employee_id    =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                    company_name   =". $this->app->db->qStr( 'Dummy Holding Company' ).",
+                    first_name     =". $this->app->db->qStr( 'Quantum').",
+                    last_name      =". $this->app->db->qStr( 'Warp').",
+                    company_number =". $this->app->db->qStr( '').",
+                    vat_number     =". $this->app->db->qStr( '').",
+                    website        =". $this->app->db->qStr( '').",
+                    email          =". $this->app->db->qStr( '').",
+                    type           =". $this->app->db->qStr( 'other').",
+                    primary_phone  =". $this->app->db->qStr( '').",
+                    mobile_phone   =". $this->app->db->qStr( '').",
+                    fax            =". $this->app->db->qStr( '').",
+                    address        =". $this->app->db->qStr( '').",
+                    city           =". $this->app->db->qStr( '').",
+                    state          =". $this->app->db->qStr( '').",
+                    zip            =". $this->app->db->qStr( '').",
+                    country        =". $this->app->db->qStr( '').",
+                    status         =". $this->app->db->qStr( 'closed'             ).",
+                    opened_on      =". $this->app->db->qStr( \CMSApplication::$timestamp).",
+                    closed_on      =". $this->app->db->qStr( \CMSApplication::$timestamp).",
+                    last_active    =". $this->app->db->qStr( \CMSApplication::$timestamp).",
+                    description    =". $this->app->db->qStr( _gettext("A dummy holding company.")  ).",
+                    note           =". $this->app->db->qStr( 'Automatically created during an upgrade from v3.1.3 to v3.1.4 to hold cancelled record that were converted to use credit notes and as such they needed a supplier to be attached to. Expenses prior to this version did could nto have an attached supplier. ').",
+                    additional_info =". $this->app->db->qStr( '{\"reason_for_closing\":\"Holding supplier for cancelled expense records that were upgraded to use credit notes.\"}');
+
+            if(!$Supplier = $this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to create a holding supplier for the cancelled expense records.");
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+
+            }
+
+            $supplier_id = $this->app->db->Insert_ID();
+        }
+
+
+        // Loop through all of the Cancelled Expense records
+        while(!$rs->EOF)
+        {
+            /* Main Record */
+
+            // Build Credit note main record migration SQL
+            $sql = "INSERT INTO ".PRFX."creditnote_records SET
+                employee_id     =". $this->app->db->qStr($rs->fields['employee_id']).",
+                client_id       =". $this->app->db->qStr(null).",
+                invoice_id      =". $this->app->db->qStr(null).",
+                supplier_id     =". $this->app->db->qStr($supplier_id).",
+                expense_id      =". $this->app->db->qStr($rs->fields['expense_id']).",
+                date            =". $this->app->db->qStr($rs->fields['date']).",
+                expiry_date     =". $this->app->db->qStr($rs->fields['date']).",
+                type            =". $this->app->db->qStr('purchase').",
+                tax_system      =". $this->app->db->qStr($rs->fields['tax_system']).",
+                unit_net        =". $this->app->db->qStr($rs->fields['unit_net']).",
+                unit_discount   =". $this->app->db->qStr(0.00).",
+                sales_tax_rate  =". $this->app->db->qStr(0.00).",
+                unit_tax        =". $this->app->db->qStr($rs->fields['unit_tax']).",
+                unit_gross      =". $this->app->db->qStr($rs->fields['unit_gross']).",
+                balance         =". $this->app->db->qStr($rs->fields['balance']).",
+                status          =". $this->app->db->qStr('used').",
+                action_type     =". $this->app->db->qStr('close').",
+                opened_on       =". $this->app->db->qStr($rs->fields['opened_on']).",
+                closed_on       =". $this->app->db->qStr($rs->fields['closed_on']).",
+                last_Active     =". $this->app->db->qStr($rs->fields['last_active']).",
+                reference       =". $this->app->db->qStr(_gettext("Converted Cancelled Expense").': '.$rs->fields['expense_id']).",
+                note            =". $this->app->db->qStr(_gettext("See orginal record for more information.")).",
+                additional_info =". $this->app->db->qStr('{}');
+
+            // Run the Main Record SQL
+            if(!$this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to create a credit note for the cancelled expense record.").' '.$rs->fields['expense_id'];
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+            }
+
+            // Get creditnote_id
+            $creditnote_id = $this->app->db->Insert_ID();
+
+            /* Record Items */
+
+            // Get expense items
+            $creditnote_items = $this->app->components->expense->getItems($rs->fields['expense_id']);
+
+            // Rename 'expense_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'expense_item_id' not renaming it
+            $creditnote_items = json_encode($creditnote_items);
+            $creditnote_items = str_replace('expense_item_id', 'creditnote_item_id', $creditnote_items);
+            $creditnote_items = json_decode($creditnote_items, true);
+
+            // Build Items/Rows insert SQL
+            if($creditnote_items)
+            {
+                $sql = "INSERT INTO `".PRFX."creditnote_items` (`creditnote_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
+
+                foreach($creditnote_items as $item)
+                {
+                    $sql .="(".
+                            $this->app->db->qStr( $creditnote_id                    ).",".
+                            $this->app->db->qStr( $item['tax_system']               ).",".
+                            $this->app->db->qStr( $item['description']              ).",".
+                            $this->app->db->qStr( $item['unit_qty']                 ).",".
+                            $this->app->db->qStr( $item['unit_net']                 ).",".
+                            $this->app->db->qStr( 0.00                              ).",".
+                            $this->app->db->qStr( $item['sales_tax_exempt']         ).",".
+                            $this->app->db->qStr( $item['vat_tax_code']             ).",".
+                            $this->app->db->qStr( $item['unit_tax_rate']            ).",".
+                            $this->app->db->qStr( $item['unit_tax']                 ).",".
+                            $this->app->db->qStr( $item['unit_gross']               ).",".
+                            $this->app->db->qStr( $item['subtotal_net']             ).",".
+                            $this->app->db->qStr( $item['subtotal_tax']             ).",".
+                            $this->app->db->qStr( $item['subtotal_gross']           )."),";
+                }
+
+                // Strips off last comma as this is a joined SQL statement
+                $sql = substr($sql , 0, -1);
+            }
+
+            // Run the Record items SQL (if there is anything to run)
+            if($sql && !$this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to import the items into the credit note for the cancelled Expense").': '.$rs->fields['expense_id'];
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+            }
+
+            /* Apply Credit Note as a payment to the Expense Record */
+
+            // Build SQL
+            $sql = "INSERT INTO ".PRFX."payment_records SET
+                employee_id     =". $this->app->db->qStr( $rs->fields['employee_id']).",
+                client_id       = ".$this->app->db->qStr( null                      ).",
+                supplier_id     = ".$this->app->db->qStr( $supplier_id              ).",
+                invoice_id      = ".$this->app->db->qStr( null                      ).",
+                expense_id      = ".$this->app->db->qStr( $rs->fields['expense_id'] ).",
+                otherincome_id  = ".$this->app->db->qStr( null                      ).",
+                creditnote_id   = ".$this->app->db->qStr( $creditnote_id            ).",
+                voucher_id      = ".$this->app->db->qStr( null                      ).",
+                date            = ".$this->app->db->qStr( $rs->fields['date']       ).",
+                tax_system      = ".$this->app->db->qStr( $rs->fields['tax_system'] ).",
+                type            = ".$this->app->db->qStr( 'expense'                 ).",
+                method          = ".$this->app->db->qStr( 'creditnote'              ).",
+                direction       = ".$this->app->db->qStr( 'debit'                   ).",
+                status          = ".$this->app->db->qStr( 'valid'                   ).",
+                amount          = ".$this->app->db->qStr( $rs->fields['unit_gross'] ).",
+                additional_info = ".$this->app->db->qStr( '{\"bank_transfer_reference\":\"\",\"card_type_key\":\"\",\"name_on_card\":\"\",\"cheque_number\":\"\",\"direct_debit_reference\":\"\",\"paypal_transaction_id\":\"\"}').",
+                note            = ".$this->app->db->qStr( ''                        );
+
+            // Run SQL
+            if($sql && !$this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to add a credit note payment for the cancelled Expense").': '.$rs->fields['expense_id'];
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+            }
+
+            // Get payment_id
+            $payment_id = $this->app->db->Insert_ID();
+
+            /* Update Expense Record */
+
+            // Build SQL
+            $sql = "UPDATE ".PRFX."expense_records SET
+                additional_info = '{\"closed_by_creditnote_payment_id\":'.$payment_id.'}'
+                WHERE expense_id = ".$rs->fields['expense_id'].";";
+
+            // Run SQL
+            if($sql && !$this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to update additional information for the cancelled Expense").': '.$rs->fields['expense_id'];
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+            }
+
+            /* Advance the loop to the next record */
+
+            $rs->MoveNext();
+
+        }
+
+        process_end:
+
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag)
+        {
+            // Log Message
+            $record = _gettext("Failed to complete conversion of cancelled expenses to using credit notes.");
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+            return false;
+
+        }
+        else
+        {
+            // Log Message
+            $record = _gettext("Successfully completed conversion of cancelled expenses to using credit notes.");
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+            return true;
+        }
+
+    }
+
+    ########################################################  // These will be `Purchase Credit Note (Expense)`, `close` type.
+    # Convert Cancelled Expense Records to use Creditnotes #  // The expenses do no have a supplier, so we will create one if needed.
+    ########################################################  // They cannot be standalone because they come from an expense, not a supplier.
+
+    public function invoiceConvertCancelledToCreditnotes()
+    {
+        $local_error_flag = false;
+
+        // Loop through all of the Invoice records
+        $sql = "SELECT * FROM ".PRFX."invoice_records WHERE `status` = 'cancelled'";
+        if(!$rs = $this->app->db->execute($sql))
+        {
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+
+            // Set the local error flag
+            $local_error_flag = true;
+
+            // Log Message
+            $record = _gettext("Failed to select all the cancelled records from the table").' `invoice_records`.';
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+            // The process has failed so stop any further proccesing
+            goto process_end;
+
+        }
+
+        // Loop through all of the Cancelled Invoice records
+        while(!$rs->EOF)
+        {
+            /* Main Record */
+
+            // Build Credit note main record migration SQL
+            $sql = "INSERT INTO ".PRFX."creditnote_records SET
+                employee_id     =". $this->app->db->qStr($rs->fields['employee_id']).",
+                client_id       =". $this->app->db->qStr($rs->fields['client_id']).",
+                invoice_id      =". $this->app->db->qStr($rs->fields['invoice_id']).",
+                supplier_id     =". $this->app->db->qStr(null).",
+                expense_id      =". $this->app->db->qStr(null).",
+                date            =". $this->app->db->qStr($rs->fields['date']).",
+                expiry_date     =". $this->app->db->qStr($rs->fields['date']).",
+                type            =". $this->app->db->qStr('sales').",
+                tax_system      =". $this->app->db->qStr($rs->fields['tax_system']).",
+                unit_net        =". $this->app->db->qStr($rs->fields['unit_net']).",
+                unit_discount   =". $this->app->db->qStr(0.00).",
+                sales_tax_rate  =". $this->app->db->qStr($rs->fields['sales_tax_rate']).",
+                unit_tax        =". $this->app->db->qStr($rs->fields['unit_tax']).",
+                unit_gross      =". $this->app->db->qStr($rs->fields['unit_gross']).",
+                balance         =". $this->app->db->qStr($rs->fields['balance']).",
+                status          =". $this->app->db->qStr('used').",
+                action_type     =". $this->app->db->qStr('close').",
+                opened_on       =". $this->app->db->qStr($rs->fields['opened_on']).",
+                closed_on       =". $this->app->db->qStr($rs->fields['closed_on']).",
+                last_Active     =". $this->app->db->qStr($rs->fields['last_active']).",
+                reference       =". $this->app->db->qStr(_gettext("Converted Cancelled Invoice").': '.$rs->fields['invoice_id']).",
+                note            =". $this->app->db->qStr(_gettext("See orginal record for more information.")).",
+                additional_info =". $this->app->db->qStr('{}');
+
+            // Run the Main Record SQL
+            if(!$this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to create a credit note for the cancelled invoice record.").' '.$rs->fields['invoice_id'];
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+            }
+
+            // Get creditnote record
+            $creditnote_id = $this->app->db->Insert_ID();
+
+            /* Record Items */
+
+            // Get invoice items
+            $creditnote_items = $this->app->components->invoice->getItems($rs->fields['invoice_id'], true);
+
+            // Rename 'expense_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'expense_item_id' not renaming it
+            $creditnote_items = json_encode($creditnote_items);
+            $creditnote_items = str_replace('invoice_item_id', 'creditnote_item_id', $creditnote_items);
+            $creditnote_items = json_decode($creditnote_items, true);
+
+            // Build Items/Rows insert SQL
+            if($creditnote_items)
+            {
+                $sql = "INSERT INTO `".PRFX."creditnote_items` (`creditnote_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `unit_discount`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `subtotal_net`, `subtotal_tax`, `subtotal_gross`) VALUES ";
+
+                foreach($creditnote_items as $item)
+                {
+                    $sql .="(".
+                            $this->app->db->qStr( $creditnote_id                    ).",".
+                            $this->app->db->qStr( $item['tax_system']               ).",".
+                            $this->app->db->qStr( $item['description']              ).",".
+                            $this->app->db->qStr( $item['unit_qty']                 ).",".
+                            $this->app->db->qStr( $item['unit_net']                 ).",".
+                            $this->app->db->qStr( $item['unit_discount']            ).",".
+                            $this->app->db->qStr( $item['sales_tax_exempt']         ).",".
+                            $this->app->db->qStr( $item['vat_tax_code']             ).",".
+                            $this->app->db->qStr( $item['unit_tax_rate']            ).",".
+                            $this->app->db->qStr( $item['unit_tax']                 ).",".
+                            $this->app->db->qStr( $item['unit_gross']               ).",".
+                            $this->app->db->qStr( $item['subtotal_net']             ).",".
+                            $this->app->db->qStr( $item['subtotal_tax']             ).",".
+                            $this->app->db->qStr( $item['subtotal_gross']           )."),";
+                }
+
+                // Strips off last comma as this is a joined SQL statement
+                $sql = substr($sql , 0, -1);
+            }
+
+            // Run the Record items SQL (if there is anything to run)
+            if($sql && !$this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to import the items into the credit note for the cancelled Invoice").': '.$rs->fields['invoice_id'];
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+            }
+
+            /* Apply Credit Note as a payment to the Expense Record */
+
+            // Build SQL
+            $sql = "INSERT INTO ".PRFX."payment_records SET
+                employee_id     =". $this->app->db->qStr( $rs->fields['employee_id']).",
+                client_id       = ".$this->app->db->qStr( $rs->fields['client_id']  ).",
+                supplier_id     = ".$this->app->db->qStr( null                      ).",
+                invoice_id      = ".$this->app->db->qStr( $rs->fields['invoice_id'] ).",
+                expense_id      = ".$this->app->db->qStr( null                      ).",
+                otherincome_id  = ".$this->app->db->qStr( null                      ).",
+                creditnote_id   = ".$this->app->db->qStr( $creditnote_id            ).",
+                voucher_id      = ".$this->app->db->qStr( null                      ).",
+                date            = ".$this->app->db->qStr( $rs->fields['date']       ).",
+                tax_system      = ".$this->app->db->qStr( $rs->fields['tax_system'] ).",
+                type            = ".$this->app->db->qStr( 'invoice'                 ).",
+                method          = ".$this->app->db->qStr( 'creditnote'              ).",
+                direction       = ".$this->app->db->qStr( 'credit'                  ).",
+                status          = ".$this->app->db->qStr( 'valid'                   ).",
+                amount          = ".$this->app->db->qStr( $rs->fields['unit_gross'] ).",
+                additional_info = ".$this->app->db->qStr( '{\"bank_transfer_reference\":\"\",\"card_type_key\":\"\",\"name_on_card\":\"\",\"cheque_number\":\"\",\"direct_debit_reference\":\"\",\"paypal_transaction_id\":\"\"}').",
+                note            = ".$this->app->db->qStr( ''                        );
+
+            // Run SQL
+            if($sql && !$this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to add a credit note payment for the cancelled Invoice").': '.$rs->fields['expense_id'];
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+            }
+
+            /* Update Invoice Record */ TODO: should this be made into a upgrade thing maybe convert the status filed aswell
+
+            // Get payment_id
+            $payment_id = $this->app->db->Insert_ID();
+
+            /* Update Expense Record */
+
+            // Build SQL
+            $sql = "UPDATE ".PRFX."invoice_records SET
+                additional_info = '{\"closed_by_creditnote_payment_id\":'.$payment_id.'}'
+                WHERE invoice_id = ".$rs->fields['invoice_id'].";";
+
+            // Run SQL
+            if($sql && !$this->app->db->execute($sql))
+            {
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message
+                $record = _gettext("Failed to update additional information for the cancelled Invoice").': '.$rs->fields['invoice_id'];
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+            }
+
+            /* Advance the loop to the next record */
+
+            $rs->MoveNext();
+
+        }
+
+        process_end:
+
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag)
+        {
+            // Log Message
+            $record = _gettext("Failed to complete conversion of cancelled invoices to using credit notes.");
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+            return false;
+
+        }
+        else
+        {
+            // Log Message
+            $record = _gettext("Successfully completed conversion of cancelled invoices to using credit notes.");
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+
+            // Log message to setup log
+            $this->writeRecordToSetupLog('correction', $record, $this->app->db->ErrorMsg(), $sql);
+
+            return true;
+        }
+
     }
 
 }

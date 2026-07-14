@@ -112,8 +112,8 @@ class PaymentMethodCreditnote extends PaymentMethod
             }
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // Void
+        if(Payment::$action === 'void')
         {
             // Do nothing
         }
@@ -152,7 +152,7 @@ class PaymentMethodCreditnote extends PaymentMethod
             Payment::$payment_successful = true;
         }
 
-        if(Payment::$action === 'cancel')
+        if(Payment::$action === 'void')
         {
             // Recalculate the Credit Note record totals
             $this->app->components->creditnote->recalculateTotals(Payment::$payment_details['creditnote_id']);
@@ -209,8 +209,8 @@ class PaymentMethodCreditnote extends PaymentMethod
             // Do nothing
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // Void
+        if(Payment::$action === 'void')
         {
             // Do nothing
         }

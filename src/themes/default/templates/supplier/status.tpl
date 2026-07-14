@@ -22,15 +22,14 @@
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{t}Status{/t}</td>
-                                <td class="olohead" align="center">{t}Cancel{/t}</td>
-                                <td class="olohead" align="center">{t}Delete{/t}</td>
+                                <td class="olohead" align="center">{t}Activate{/t}</td>
                             </tr>
                             <tr>
 
                                 <!-- Update Status Button -->
-                                <td class="olotd4" align="center" width="33%">
+                                <td class="olotd4" align="center" width="50%">
                                     <p><b>{t}Current Status{/t}:</b> {$supplier_status_display_name}</p>
-                                    {if $allowed_to_change_status}
+                                    {*if $allowed_to_change_status}
                                         <p>&nbsp;</p>
                                         <form action="index.php?component=supplier&page_tpl=status&supplier_id={$supplier_id}" method="post">
                                             <b>{t}New Status{/t}: </b>
@@ -44,15 +43,68 @@
                                         </form>
                                     {else}
                                         {t}This Supplier cannot have it's status changed because it's current state does not allow it.{/t}
+                                    {/if*}
+                                </td>
+
+                                <!-- Activate Button -->
+                                <td class="olotd4" align="center" width="50%">
+                                    {if $allowed_to_activate}
+                                        <form method="post" action="index.php?component=supplier&page_tpl=status&supplier_id={$supplier_id}">
+                                            <input name="assign_status" value="activated" hidden>
+                                            <input class="olotd4" name="activate_supplier" value="{t}Activate{/t}" type="submit" onclick="confirm('{t}Are you sure you want to activate this supplier? This will also wipe the current reason for suspending.{/t}');">
+                                        </form>
+                                    {else}
+                                        <p>{t}This Supplier cannot be activated because it's status does not allow it.{/t}</p>
                                     {/if}
                                 </td>
 
-                                <!-- Cancel Button -->
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="menutd2" colspan="2">
+                        <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
+                            <tr>
+                                <td class="olohead" align="center">{t}Suspend{/t}</td>
+                                <td class="olohead" align="center">{t}Close{/t}</td>
+                                <td class="olohead" align="center">{t}Delete{/t}</td>
+                            </tr>
+                            <tr>
+
+                                <!-- Suspend Button -->
                                 <td class="olotd4" align="center" width="33%">
-                                    {if $allowed_to_cancel}
-                                        <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to cancel this supplier?{/t}')) window.location.href='index.php?component=supplier&page_tpl=cancel&supplier_id={$supplier_id}';">{t}Cancel{/t}</button>
+                                    {if $allowed_to_suspend}
+                                        <form method="post" action="index.php?component=supplier&page_tpl=status&supplier_id={$supplier_id}">
+                                            <textarea id="qform[reason_for_suspending]" name="qform[reason_for_suspending]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Suspending{/t}"></textarea>
+                                            <p>&nbsp;</p>
+                                            <input name="assign_status" value="suspended" hidden>
+                                            <input class="olotd4" name="suspend_supplier" value="{t}Suspend{/t}" type="submit" onclick="confirm('{t}Are you sure you want to suspend this supplier?{/t}');">
+                                        </form>
                                     {else}
-                                        {t}This Supplier cannot be cancelled because it's status does not allow it.{/t}
+                                        {if $supplier_status == 'suspended' && $reason_for_suspending}
+                                            <p><strong>{t}Reason for Suspending{/t}:</strong> {$reason_for_suspending}</p>
+                                        {else}
+                                            {t}This Supplier cannot be suspended because it's status does not allow it.{/t}
+                                        {/if}
+                                    {/if}
+                                </td>
+
+                                <!-- Close Button -->
+                                <td class="olotd4" align="center" width="33%">
+                                    {if $allowed_to_close}
+                                        <form method="post" action="index.php?component=supplier&page_tpl=status&supplier_id={$supplier_id}">
+                                            <textarea id="qform[reason_for_closing]" name="qform[reason_for_closing]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Closing{/t}"></textarea>
+                                            <p>&nbsp;</p>
+                                            <input name="assign_status" value="closed" hidden>
+                                            <input class="olotd4" name="close_supplier" value="{t}Close{/t}" type="submit" onclick="confirm('{t}Are you sure you want to close this supplier?{/t}');">
+                                        </form>
+                                    {else}
+                                        {if $supplier_status == 'closed' && $reason_for_closing}
+                                            <p><strong>{t}Reason for Closing{/t}:</strong> {$reason_for_closing}</p>
+                                        {else}
+                                            {t}This Supplier cannot be closed because it's status does not allow it.{/t}
+                                        {/if}
                                     {/if}
                                 </td>
 

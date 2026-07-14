@@ -387,7 +387,7 @@ if(\CMSApplication::$VAR['stage'] == 'upgrade_confirmation') {
     } else {
 
         // Log message to setup log - only when starting the process - this start every page loads
-        $this->app->components->setup->writeRecordToSetupLog('upgrade', _gettext("MyITCRM to QWcrm migration has finished."));
+        $this->app->components->setup->writeRecordToSetupLog('migrate', _gettext("MyITCRM to QWcrm migration has finished."));
 
         // Clean up after setup process
         $this->app->components->setup->setupFinished();

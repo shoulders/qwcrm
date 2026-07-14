@@ -106,7 +106,7 @@ class PaymentTypeInvoice extends PaymentType
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
 
                     // Prevent editing the CR (Type 1) that closed this invoice. You can only delete this CR payment.
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a credit note payment that was used to close an invoice. You can only cancel or delete this type of payment."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a credit note payment that was used to close an invoice. You can only void or delete this type of payment."));
                     Payment::$payment_valid = false;
 
                 // Type 2 CR Payments - From CR generated from other invoices owned by the client (invoice:details), Client Standalone CR method (client:details)
@@ -128,8 +128,8 @@ class PaymentTypeInvoice extends PaymentType
             }
         }
 
-        // Cancel
-        elseif(Payment::$action === 'cancel')
+        // Void
+        elseif(Payment::$action === 'void')
         {
             // Credit Note Method
             if(Payment::$method == 'creditnote'){
@@ -138,14 +138,14 @@ class PaymentTypeInvoice extends PaymentType
                 // There should only ever be one CR created from the invoice, that is applied to the same invoice, resulting in a zero balance (i.e. Type 1 CR)
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
 
-                    // You can only cancel the CR payment (Type 1) if there are no other credit notes attached to this invoice (eg for refunds or store credit)
+                    // You can only void the CR payment (Type 1) if there are no other credit notes attached to this invoice (eg for refunds or store credit)
                     if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id']) > 1){
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this credit note payment that was used to close this invoice because there are more credit notes have been generated against this invoice for the purpose of refunding or store credit."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void this credit note payment that was used to close this invoice because there are more credit notes have been generated against this invoice for the purpose of refunding or store credit."));
                         Payment::$payment_valid = false;
                     }
 
-                    // Prevent cancelling the CR (Type 1) that closed this invoice. You can only delete this CR payment.
-                    //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel a credit note payment that was used to close an invoice. You can only delete this type of payment."));
+                    // Prevent voiding the CR (Type 1) that closed this invoice. You can only delete this CR payment.
+                    //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void a credit note payment that was used to close an invoice. You can only delete this type of payment."));
                     //Payment::$payment_valid = false;
 
 
@@ -161,7 +161,7 @@ class PaymentTypeInvoice extends PaymentType
 
                 // Does this invoice have any credit notes generated against it
                 if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['invoice_id'])){
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this payment because the invoice has one or more credit notes generated against it."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void this payment because the invoice has one or more credit notes generated against it."));
                     Payment::$payment_valid = false;
                 }
 
@@ -231,8 +231,8 @@ class PaymentTypeInvoice extends PaymentType
                 // Do nothing
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 // If this is a Type 1 credit note payment (closed a partially open invoice), then remove the tag
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
@@ -273,8 +273,8 @@ class PaymentTypeInvoice extends PaymentType
                 // Do nothing
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 // Do nothing
             }
@@ -319,10 +319,10 @@ class PaymentTypeInvoice extends PaymentType
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Invoice").' '.Payment::$payment_details['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment voided successfully and Invoice").' '.Payment::$payment_details['invoice_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('invoice', 'details&invoice_id='.Payment::$payment_details['invoice_id']);
             }
 
@@ -349,8 +349,8 @@ class PaymentTypeInvoice extends PaymentType
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }

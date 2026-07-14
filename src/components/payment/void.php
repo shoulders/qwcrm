@@ -21,7 +21,7 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
 }
 
 // Build the Payment Environment
-$this->app->components->payment->buildPaymentEnvironment('cancel');
+$this->app->components->payment->buildPaymentEnvironment('void');
 
 // Perform payment action
 $this->app->components->payment->performPaymentAction();

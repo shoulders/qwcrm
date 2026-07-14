@@ -114,8 +114,8 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Last Active{/t}</b></td>
                                             <td class="menutd">{$supplier_details.last_active|date_format:$date_format}</td>
-                                            <td class="menutd">&nbsp;</td>
-                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}Additional Info{/t}</b></td>
+                                            <td class="menutd">{if $supplier_details.additional_info|supplier_addinfo_display}{$supplier_details.additional_info|supplier_addinfo_display}{else}{t}none{/t}{/if}</td>
                                         </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
@@ -161,7 +161,7 @@
                         <button type="button" onclick="window.location.href='index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Expense{/t}</button>
                         <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Other Income{/t}</button>
                         {if $allowed_to_create_creditnote}
-                            <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Create Purchase Credit Note (Supplier){/t}</button>
+                            <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note agains this supplier?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}'; } ">{t}Create Purchase Credit Note (Supplier){/t}</button>
                         {/if}
                         <br>
                         <br>

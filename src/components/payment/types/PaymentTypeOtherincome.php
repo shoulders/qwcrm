@@ -57,8 +57,8 @@ class PaymentTypeOtherincome extends PaymentType
            // Do nothing
         }
 
-        // Cancel
-        elseif(Payment::$action === 'cancel')
+        // Void
+        elseif(Payment::$action === 'void')
         {
             // Do nothing
         }
@@ -92,8 +92,8 @@ class PaymentTypeOtherincome extends PaymentType
                 // Do nothing
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 // Do nothing
             }
@@ -127,8 +127,8 @@ class PaymentTypeOtherincome extends PaymentType
                 // Do nothing
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 // Do nothing
             }
@@ -173,10 +173,10 @@ class PaymentTypeOtherincome extends PaymentType
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment voided successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }
 
@@ -203,8 +203,8 @@ class PaymentTypeOtherincome extends PaymentType
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }

@@ -338,7 +338,7 @@ class Expense extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
+            $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -445,24 +445,17 @@ class Expense extends Components {
             return false;
         }
 
+        // Set the appropriate closed_on value
+        $closed_on = ($new_status == 'paid') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
+
         // Build SQL
         $sql = "UPDATE ".PRFX."expense_records SET
                 employee_id         =". $this->app->db->qStr($this->app->user->login_user_id).",
-                status              =". $this->app->db->qStr($new_status).",";
-
-        // Set closed statuses ('deleted' should never be passed here, this is just for reference)
-        if($new_status == 'paid' || $new_status == 'cancelled' || $new_status == 'deleted'){
-            $sql .= "closed_on =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
-        } else {
-            $sql .= "closed_on = NULL\n";
-        }
-
-        $sql .= "WHERE expense_id =". $this->app->db->qStr($expense_id);
+                status               =". $this->app->db->qStr( $new_status      ).",
+                closed_on            =". $this->app->db->qStr( $closed_on    )."
+                WHERE expense_id     =". $this->app->db->qStr( $expense_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        // Status updated message
-
 
         /* This code is not used because I removed 'invoice_id'
          * Get related invoice details
@@ -526,36 +519,6 @@ class Expense extends Components {
 
     /** Close Functions **/
 
-    #####################################
-    #   Cancel Expense                  #
-    #####################################
-
-    public function cancelRecord($expense_id, $reason_for_cancelling) {
-
-        // Make sure the expense can be cancelled
-        if(!$this->checkRecordAllowsCancel($expense_id)) {
-            return false;
-        }
-
-        // Get expense details
-        $expense_details = $this->getRecord($expense_id);
-
-        // Change the expense status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($expense_id, 'cancelled');
-
-        // Add Cancelled message to the additional info
-        $this->updateAdditionalInfo($expense_id, array('reason_for_cancelling' => $reason_for_cancelling));
-
-        // Log activity
-        $logMessage = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
-        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
-        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
-        $this->app->system->general->updateLastActive($recordIds);
-
-        return true;
-
-    }
 
     /** Delete Functions **/
 
@@ -726,12 +689,6 @@ class Expense extends Components {
             $state_flag = false;
         }
 
-        // Is cancelled
-        if($expense_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been cancelled."), $silent);
-            $state_flag = false;
-        }
-
         // Is deleted
         if($expense_details['status'] == 'deleted') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."), $silent);
@@ -747,63 +704,6 @@ class Expense extends Components {
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."), $silent);
-            return false;
-        }
-
-        return $state_flag;
-
-    }
-
-    ###############################################################
-    #   Check to see if the expense can be cancelled              #  // Do I actuallu use this, the code seems to be implemented
-    ###############################################################
-
-    public function checkRecordAllowsCancel($expense_id, $silent = false) {
-
-        $state_flag = true;
-
-        // Get the expense details
-        $expense_details = $this->getRecord($expense_id);
-
-        // Is pending
-        if($expense_details['status'] == 'pending') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is pending."), $silent);
-            $state_flag = false;
-        }
-
-        // Is partially paid
-        if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is partially paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($expense_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is cancelled
-        if($expense_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has already been cancelled."), $silent);
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has been deleted."), $silent);
-            $state_flag = false;
-        }
-
-        // Has payments
-        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."), $silent);
-            $state_flag = false;
-        }
-
-        // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because it has linked credit notes."), $silent);
             return false;
         }
 
@@ -835,12 +735,6 @@ class Expense extends Components {
         // Is paid
         if($expense_details['status'] == 'paid') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is cancelled
-        if($expense_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been cancelled."), $silent);
             $state_flag = false;
         }
 

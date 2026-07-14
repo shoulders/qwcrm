@@ -104,7 +104,7 @@ class PaymentTypeExpense extends PaymentType
                 if(this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
 
                     // Prevent editing the CR (Type 1) that closed this expense. You can only delete this CR payment.
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a credit note payment that was used to close an expense. You can only cancel or delete this type of payment."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a credit note payment that was used to close an expense. You can only void or delete this type of payment."));
                     Payment::$payment_valid = false;
 
                 // Type 2 CR Payments - From CR generated from other expenses owned by the supplier (expense:details), supplier Standalone CR method (supplier:details)
@@ -126,8 +126,8 @@ class PaymentTypeExpense extends PaymentType
             }
         }
 
-        // Cancel
-        elseif(Payment::$action === 'cancel')
+        // Void
+        elseif(Payment::$action === 'void')
         {
             // Credit Note Method
             if(Payment::$method == 'creditnote'){
@@ -137,14 +137,14 @@ class PaymentTypeExpense extends PaymentType
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']
                 ){
 
-                    // You can only cancel the CR payment (Type 1) if there are no other credit notes attached to this expense (eg for refunds or store credit)
+                    // You can only void the CR payment (Type 1) if there are no other credit notes attached to this expense (eg for refunds or store credit)
                     if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['expense_id']) > 1){
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this credit note payment that was used to close this expense because there are more credit notes have been generated against this expense for the purpose of refunding or store credit."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void this credit note payment that was used to close this expense because there are more credit notes have been generated against this expense for the purpose of refunding or store credit."));
                         Payment::$payment_valid = false;
                     }
 
-                    // Prevent cancelling the CR (Type 1) that closed this expense. You can only delete this CR payment.
-                    //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel a credit note payment that was used to close an expense. You can only delete this type of payment."));
+                    // Prevent voiding the CR (Type 1) that closed this expense. You can only delete this CR payment.
+                    //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void a credit note payment that was used to close an expense. You can only delete this type of payment."));
                     //Payment::$payment_valid = false;
 
 
@@ -161,7 +161,7 @@ class PaymentTypeExpense extends PaymentType
 
                 // Does this expense have any credit notes generated against it
                 if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, Payment::$payment_details['expense_id'])){
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot cancel this payment because the expense has one or more credit notes generated against it."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void this payment because the expense has one or more credit notes generated against it."));
                     Payment::$payment_valid = false;
                 }
             }
@@ -217,8 +217,8 @@ class PaymentTypeExpense extends PaymentType
             if(Payment::$action === 'new')
             {
                 // Is this is a Type 1 credit note payment (closed a partially open expense), then tag it in the expense record
-                if(Payment::$method == 'creditnote' && (float) $this->expense_details['balance'] && $this->VAR['qpayment']['expense_id'] == $this->creditnote_details['expense_id']){
-                    $this->app->components->invoice->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => Payment::$payment_details['payment_id']));
+                if(Payment::$method == 'creditnote' && (float) $this->expense_details['balance'] && $this->VAR['qpayment']['creditnote_id'] == $this->creditnote_details['expense_id']){
+                    $this->app->components->expense->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => Payment::$payment_details['payment_id']));
                     $this->closedByCreditnotePaymentId = Payment::$payment_details['payment_id'];
                 }
             }
@@ -229,12 +229,12 @@ class PaymentTypeExpense extends PaymentType
                 // Do nothing
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 // Is this is a Type 1 credit note payment (closed a partially open expense), then remove the tag
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
-                    $this->app->components->invoice->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => null));
+                    $this->app->components->expense->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => null));
                     $this->closedByCreditnotePaymentId = null;
                 }
             }
@@ -244,7 +244,7 @@ class PaymentTypeExpense extends PaymentType
             {
                 // Is this is a Type 1 credit note payment (closed a partially open expense), then remove the tag
                 if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
-                    $this->app->components->invoice->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => null));
+                    $this->app->components->expense->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => null));
                     $this->closedByCreditnotePaymentId = null;
                 }
             }
@@ -271,8 +271,8 @@ class PaymentTypeExpense extends PaymentType
                 // Do nothing
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 // Do nothing
             }
@@ -318,10 +318,10 @@ class PaymentTypeExpense extends PaymentType
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Expense").' '.Payment::$payment_details['expense_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment voided successfully and Expense").' '.Payment::$payment_details['expense_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('expense', 'details&expense_id='.Payment::$payment_details['expense_id']);
             }
 
@@ -349,8 +349,8 @@ class PaymentTypeExpense extends PaymentType
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')            {
+            // Void
+            elseif(Payment::$action === 'void')            {
 
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }

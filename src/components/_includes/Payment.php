@@ -61,7 +61,7 @@ class Payment extends Components {
                 type            = ".$this->app->db->qStr( $qpayment['type']        ).",
                 method          = ".$this->app->db->qStr( $qpayment['method']      ).",
                 direction       = ".$this->app->db->qStr( $qpayment['direction']      ).",
-                status          = 'valid',
+                status          = ".$this->app->db->qStr( 'valid'                   ).",
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                      ).",
                 additional_info = ".$this->app->db->qStr( json_encode($qpayment['additional_info'], JSON_FORCE_OBJECT) ).",
                 note            = ".$this->app->db->qStr( $qpayment['note']                        );
@@ -569,9 +569,13 @@ class Payment extends Components {
             return false;
         }
 
-        // ('deleted' should never be passed here, this is just for reference)
+        // Set the appropriate voided_on value
+        $voided_on = ($new_status == 'voided') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
+
+        // Build SQL
         $sql = "UPDATE ".PRFX."payment_records SET
                 status               =". $this->app->db->qStr( $new_status      )."
+                voided_on            =". $this->app->db->qStr( $voided_on       )."
                 WHERE payment_id     =". $this->app->db->qStr( $payment_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -638,25 +642,25 @@ class Payment extends Components {
     /** Close Functions **/
 
     #####################################
-    #    Cancel  Payment                #
+    #    Void  Payment                  #
     #####################################
 
-    public function cancelRecord($payment_id, $reason_for_cancelling) {
+    public function voidRecord($payment_id, $reason_for_voiding) {
 
         // Get payment details
         $payment_details = $this->getRecord($payment_id);
 
-        // Change the payment status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($payment_id, 'cancelled');
+        // Change the payment status to void (I do this here to maintain consistency)
+        $this->updateStatus($payment_id, 'voided');
 
-        // Add Cancelled message to the additional info
-        $this->updateAdditionalInfo($payment_id, array('reason_for_cancelling' => $reason_for_cancelling));
+        // Add voided message to the additional info
+        $this->updateAdditionalInfo($payment_id, array('reason_for_voiding' => $reason_for_voiding));
 
         // Create a Workorder History Note - not a work order
-        //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
+        //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $logMessage = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $logMessage = _gettext("Expense").' '.$payment_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $payment_details['client_id'], 'invoice_id' => $payment_details['invoice_id'], 'voucher_id' => $payment_details['voucher_id'], 'supplier_id' => $payment_details['supplier_id'], 'expense_id' => $payment_details['expense_id'], 'otherincome_id' => $payment_details['otherincome_id'],  'payment_id' => $payment_details['payment_id'], 'creditnote_id' => $payment_details['creditnote_id']);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -803,10 +807,16 @@ class Payment extends Components {
             $state_flag = false;
         }
 
-        // Is deleted
-        if($payment_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."), $silent);
-            $state_flag = false;
+        // Status checks
+        switch ($payment_details['status']) {
+            case 'valid':
+                break;
+            case 'voided':
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."), $silent);
+                $state_flag = false;
+                break;
         }
 
         // Disable the ability to manually change status for now
@@ -833,16 +843,18 @@ class Payment extends Components {
             $state_flag = false;
         }
 
-        // Is Cancelled
-        if($payment_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been cancelled."), $silent);
-            $state_flag = false;
-        }
-
-        // Is Deleted
-        if($payment_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."), $silent);
-            $state_flag = false;
+        // Status checks
+        switch ($payment_details['status']) {
+            case 'valid':
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been voided."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
         }
 
         return $state_flag;
@@ -850,10 +862,10 @@ class Payment extends Components {
     }
 
     ###############################################################
-    #   Does payment record allows cancelling                     #  This is applied to all payment records
+    #   Does payment record allows voiding                        #  This is applied to all payment records
     ###############################################################  More checks are done upon submission because of the different combinations of Types and Methods
 
-    public function checkRecordAllowsCancel($payment_id) {
+    public function checkRecordAllowsVoid($payment_id) {
 
         $state_flag = true;
 
@@ -862,20 +874,22 @@ class Payment extends Components {
 
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be voided because it is on a different Tax system."));
             $state_flag = false;
         }
 
-        // Is cancelled
-        if($payment_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the payment has already been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($payment_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the payment has been deleted."));
-            $state_flag = false;
+        // Status checks
+        switch ($payment_details['status']) {
+            case 'valid':
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be voided because the payment has already been voided."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be voided because the payment has been deleted."));
+                $state_flag = false;
+                break;
         }
 
         return $state_flag;
@@ -899,16 +913,18 @@ class Payment extends Components {
             $state_flag = false;
         }
 
-        // Is cancelled
-        if($payment_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been cancelled."));
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($payment_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it already been deleted."));
-            $state_flag = false;
+        // Status checks
+        switch ($payment_details['status']) {
+            case 'valid':
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been voided."));
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it already been deleted."));
+                $state_flag = false;
+                break;
         }
 
         return $state_flag;
@@ -1001,7 +1017,7 @@ class Payment extends Components {
         // Process the payment
         if(Payment::$payment_valid)
         {
-            $this->paymentMethod->process();  // Insert/edit/cancel/delete database operations
+            $this->paymentMethod->process();  // Insert/edit/void/delete database operations
             $this->paymentType->process();    // Recalculation of type records
         }
 

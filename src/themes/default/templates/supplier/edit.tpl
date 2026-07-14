@@ -112,11 +112,18 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><strong>{t}Zip{/t}</strong></td>
-                                                            <td colspan="2"><input name="qform[zip]" class="olotd5" value="{$supplier_details.zip}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td><input name="qform[zip]" class="olotd5" value="{$supplier_details.zip}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><strong>{t}Country{/t}</strong></td>
                                                             <td><input name="qform[country]" class="olotd5" value="{$supplier_details.country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="menuhead" colspan="2"><b>{t}Information{/t}</b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><strong>{t}Additional Info{/t}</strong></td>
+                                                            <td>{if $supplier_details.additional_info|supplier_addinfo_display}{$supplier_details.additional_info|supplier_addinfo_display}{else}{t}none{/t}{/if}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Status{/t}</b><span style="color: #ff0000"> *</span></td>
@@ -125,7 +132,7 @@
                                                                     {if $supplier_details.status == $supplier_statuses[s].status_key}{t}{$supplier_statuses[s].display_name}{/t}{/if}
                                                                 {/section}
                                                             </td>
-                                                    </tr>
+                                                        </tr>
                                                         <tr>
                                                             <td class="menuhead" colspan="2"><b>{t}Description{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         </tr>

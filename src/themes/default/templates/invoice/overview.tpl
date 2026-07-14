@@ -7,7 +7,7 @@
 *}
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
-        <td>            
+        <td>
             <table width="700" cellpadding="3" cellspacing="0" border="0">
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Invoices Overview{/t}</td>
@@ -25,13 +25,13 @@
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
                                             <td>
-                                                <a name="invoice_stats"></a>                                                
-                                                {include file='invoice/blocks/display_invoice_current_stats_block.tpl' invoice_stats=$overview_invoice_stats block_title=_gettext("Invoice Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                           
+                                                <a name="invoice_stats"></a>
+                                                {include file='invoice/blocks/display_invoice_current_stats_block.tpl' invoice_stats=$overview_invoice_stats block_title=_gettext("Invoice Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="pending"></a>                                                
+                                                <a name="pending"></a>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_pending block_title=_gettext("Pending")}
                                             </td>
                                         </tr>
@@ -70,13 +70,8 @@
                                                 <a name="collections"></a>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_collections block_title=_gettext("Collections")}
                                             </td>
-                                        </tr>                                        
-                                        {*<tr>
-                                            <td>
-                                                <a name="cancelled"></a>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_cancelled block_title=_gettext("Cancelled")}
-                                            </td>
-                                        </tr> *}                                                                             
+                                        </tr>
+
                                     </table>
                                 </td>
                             </tr>

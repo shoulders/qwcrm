@@ -63,7 +63,6 @@ _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
-_gettext("Cancelled");
 _gettext("Deleted");
 
 /* Expense Types */
@@ -99,7 +98,6 @@ _gettext("Paid");
 _gettext("In Dispute");
 _gettext("Overdue");
 _gettext("Collections");
-_gettext("Cancelled");
 _gettext("Deleted");
 
 /* Otherincome Statuses */
@@ -148,7 +146,7 @@ _gettext("Credit Note");
 
 /* Payment Statuses */
 _gettext("Valid");
-_gettext("Cancelled");
+_gettext("Void");
 _gettext("Deleted");
 
 /* Payment Types */
@@ -158,8 +156,10 @@ _gettext("Other Income");
 _gettext("Credit Note");
 
 /* Supplier Statuses */
-_gettext("Valid");
-_gettext("Cancelled");
+_gettext("Activated");
+_gettext("Suspended");
+_gettext("Closed");
+_gettext("Deleted");
 
 /* Supplier Types*/
 _gettext("Courier");

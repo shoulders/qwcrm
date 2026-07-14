@@ -32,8 +32,8 @@ class PaymentMethodCash extends PaymentMethod
             // Do nothing
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // void
+        if(Payment::$action === 'void')
         {
             // Do nothing
         }

@@ -1194,7 +1194,7 @@ ALTER TABLE `#__client_records` ADD `employee_id` INT(10) UNSIGNED NULL AFTER `c
 -- Alter Supplier status to something better --
 TRUNCATE TABLE `#__supplier_statuses`;
 INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'active', 'Active'),
+(1, 'activated', 'Activated'),
 (2, 'suspended', 'Suspended'),
 (3, 'cancelled', 'Cancelled'),
 (4, 'deleted', 'Deleted');
@@ -1249,3 +1249,35 @@ ALTER TABLE `#__otherincome_items` DROP `unit_discount`;
 
 -- Allow 100% Discount --
 ALTER TABLE `#__client_records` CHANGE `discount_rate` `discount_rate` DECIMAL(5,2) NOT NULL DEFAULT '0.00';
+
+-- Convert Payment Cancel to Void --
+UPDATE `#__user_acl_page` SET `page` = 'payment:void' WHERE `#__user_acl_page`.`page` = 'payment:cancel';
+UPDATE `#__payment_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__payment_statuses`.`id` = 2;
+ALTER TABLE `#__payment_records` ADD `voided_on` DATETIME NULL AFTER `amount`;
+UPDATE `#__payment_records` SET `voided_on` = `last_active` WHERE status = 'voided';
+
+-- Remove Cancel from expense --
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'expense:cancel';
+DELETE FROM `#__expense_statuses` WHERE `#__expense_statuses`.`id` = 5;
+UPDATE `#__expense_statuses` SET `id` = '5' WHERE `#__expense_statuses`.`id` = 6;
+
+-- Remove Cancel from invoice --
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'invoice:cancel';
+DELETE FROM `#__invoice_statuses` WHERE `#__invoice_statuses`.`id` = 8;
+UPDATE `#__invoice_statuses` SET `id` = '9' WHERE `#__invoice_statuses`.`id` = 8;
+DELETE FROM `#__voucher_statuses` WHERE `#__invoice_statuses`.`id` = 9;
+UPDATE `#__voucher_statuses` SET `id` = '9' WHERE `#__invoice_statuses`.`id` = 10;
+
+-- Convert Supplier Cancel to Closed --
+ALTER TABLE `#__supplier_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
+UPDATE `#__supplier_records` SET `additional_info` = '{}';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'supplier:cancel';
+TRUNCATE TABLE `#__supplier_statuses`;
+INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'activated', 'Activated'),
+(2, 'suspended', 'Suspended'),
+(3, 'closed', 'Closed'),
+(4, 'deleted', 'Deleted');
+UPDATE `#__supplier_records` SET `additional_info` = '{\"reason_for_closing\":\"Supplier was cancelled prior to the upgrade.\"}' WHERE `#__supplier_records`.`status` = 'cancelled';
+UPDATE `#__supplier_records` SET `closed_on` = `last_active` WHERE status = 'cancelled';
+UPDATE `#__supplier_records` SET `status` = 'closed' WHERE `#__supplier_records`.`status` = 'cancelled';

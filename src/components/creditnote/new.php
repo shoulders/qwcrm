@@ -62,19 +62,29 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $this->app->components->voucher->updateInvoiceVouchersStatuses(\CMSApplication::$VAR['invoice_id'], null, 'voided');
 
         $record['action_type'] = (float) $invoice_details['balance'] ? 'close' : 'refund';
-        $record['invoice_id'] = \CMSApplication::$VAR['invoice_id'];
         $record['client_id'] = $invoice_details['client_id'];
+        $record['invoice_id'] = \CMSApplication::$VAR['invoice_id'];
         $record['type'] = 'sales';
         $record['reference'] = $invoice_details['balance']
             ? _gettext("Close").' '._gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id']
             : _gettext("Refund").' '._gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'];
         $record['sales_tax_rate'] = $invoice_details['sales_tax_rate'];
 
-        // Copy invoice items or use single item
+        // Copy invoice items if present or use a single blank item
         $useRecordItems = (float) $invoice_details['balance'] ? true : false;
-
-        // Build credit note items
         if($useRecordItems) {
+
+            // Get invoice items with voucher records merged as standard items
+            $creditnote_items = $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'], true);
+
+            // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
+            $creditnote_items = json_encode($creditnote_items);
+            $creditnote_items = str_replace('invoice_item_id', 'creditnote_item_id', $creditnote_items);
+            $creditnote_items = json_decode($creditnote_items, true);
+
+        } else {
+
+            // Single Blank Item
             $creditnote_items = array (0 =>
                                     array (
                                         'creditnote_item_id' => null,
@@ -94,14 +104,6 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
                                         'subtotal_gross' => '0.00'
                                     ),
                                 );
-        } else {
-            // Get invoice items with voucher records merged as standard items
-            $creditnote_items = $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'], true);
-
-            // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
-            $creditnote_items = json_encode($creditnote_items);
-            $creditnote_items = str_replace('invoice_item_id', 'creditnote_item_id', $creditnote_items);
-            $creditnote_items = json_decode($creditnote_items, true);
         }
 
     }
@@ -143,19 +145,35 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
 
         $record['action_type'] = (float) $expense_details['balance'] ? 'close' : 'refund';
-        $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
         $record['supplier_id'] = $expense_details['supplier_id'];
+        $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
         $record['type'] = 'purchase';
         $record['reference'] = $expense_details['balance']
             ? _gettext("Close").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id']
             : _gettext("Refund").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id'];
         $record['sales_tax_rate'] = 0.00;
 
-        // Copy expense items or use single item
+        // Copy expense items if present or use a single blank item
         $useRecordItems = (float) $expense_details['balance'] ? true : false;
-
-        // Build credit note items
         if($useRecordItems) {
+
+            // Get expense items
+            $creditnote_items = $this->app->components->expense->getItems(\CMSApplication::$VAR['expense_id']);
+
+            // Add `unit_discount` to each item to allow for Credit note compatibility
+            foreach($creditnote_items as &$creditnote_item) {
+                $creditnote_item['unit_discount'] = '0.00';
+            }
+            unset($creditnote_item); // break the reference after the loop
+
+            // Rename 'expense_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'expense_item_id' not renaming it
+            $creditnote_items = json_encode($creditnote_items);
+            $creditnote_items = str_replace('expense_item_id', 'creditnote_item_id', $creditnote_items);
+            $creditnote_items = json_decode($creditnote_items, true);
+
+        } else {
+
+            // Single Blank Item
             $creditnote_items = array (0 =>
                                     array (
                                         'creditnote_item_id' => null,
@@ -175,20 +193,6 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
                                         'subtotal_gross' => '0.00'
                                     ),
                                 );
-        } else {
-            // Get expense items
-            $creditnote_items = $this->app->components->expense->getItems(\CMSApplication::$VAR['expense_id']);
-
-            // Add `unit_discount` to each item to allow for Credit note compatibility
-            foreach($creditnote_items as &$creditnote_item) {
-                $creditnote_item['unit_discount'] = '0.00';
-            }
-            unset($creditnote_item); // break the reference after the loop
-
-            // Rename 'expense_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'expense_item_id' not renaming it
-            $creditnote_items = json_encode($creditnote_items);
-            $creditnote_items = str_replace('expense_item_id', 'creditnote_item_id', $creditnote_items);
-            $creditnote_items = json_decode($creditnote_items, true);
         }
 
     }

@@ -79,14 +79,14 @@ class PaymentTypeCreditnote extends PaymentType
            // Do nothing
         }
 
-        // Cancel
-        elseif(Payment::$action === 'cancel')
+        // Void
+        elseif(Payment::$action === 'void')
         {
             // Do nothing
         }
 
         // Delete
-       elseif(Payment::$action === 'delete')
+        elseif(Payment::$action === 'delete')
         {
             // Do nothing
         }
@@ -114,8 +114,8 @@ class PaymentTypeCreditnote extends PaymentType
                 // Do nothing
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 // Do nothing
             }
@@ -149,8 +149,8 @@ class PaymentTypeCreditnote extends PaymentType
                 // Do nothing
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 // Do nothing
             }
@@ -198,10 +198,10 @@ class PaymentTypeCreditnote extends PaymentType
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment cancelled successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment voided successfully and Credit Note").' '.$this->VAR['qpayment']['creditnote_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$this->VAR['qpayment']['creditnote_id']);
             }
 
@@ -228,8 +228,8 @@ class PaymentTypeCreditnote extends PaymentType
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
-            // Cancel
-            elseif(Payment::$action === 'cancel')
+            // Void
+            elseif(Payment::$action === 'void')
             {
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }

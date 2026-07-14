@@ -22,7 +22,6 @@
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{t}Status{/t}</td>
-                                <td class="olohead" align="center">{t}Cancel{/t}</td>
                                 <td class="olohead" align="center">{t}Delete{/t}</td>
                             </tr>
                             <tr>
@@ -53,19 +52,6 @@
                                         {t}This Expense cannot have it's status changed because it's current state does not allow it.{/t}
                                         <br />
                                         <br />
-                                    {/if}
-                                </td>
-
-                                <!-- Cancel Button -->
-                                <td class="olotd4" align="center" width="33%">
-                                    {if $allowed_to_cancel}
-                                        <form method="post" action="index.php?component=expense&page_tpl=cancel&expense_id={$expense_id}">
-                                            <textarea id="qform[reason_for_cancelling]" name="qform[reason_for_cancelling]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Cancelling{/t}"/></textarea>
-                                            <p>&nbsp;</p>
-                                            <input class="olotd4" name="cancel_expense" value="{t}Cancel{/t}" type="submit" onclick="confirm('{t}Are you sure you want to cancel this expense? All records relating to this expense will be kept but removed from the relevant financial calculations.{/t}');">
-                                        </form>
-                                    {else}
-                                        {t}This expense cannot be cancelled. You can only cancel an expense if it is open and does not have any payments.{/t}
                                     {/if}
                                 </td>
 

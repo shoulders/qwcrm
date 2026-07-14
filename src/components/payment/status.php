@@ -16,7 +16,7 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
 
 // Update Payment Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    $this->app->components->payment->updateStatus(\CMSApplication::$VAR['payment_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->components->payment->updateStatus(\CMSApplication::$VAR['payment_id'], \CMSApplication::$VAR['assign_status']);
     $this->app->system->page->forcePage('payment', 'status&payment_id='.\CMSApplication::$VAR['payment_id']);
 }
 
@@ -24,6 +24,6 @@ if(isset(\CMSApplication::$VAR['change_status'])){
 $this->app->smarty->assign('allowed_to_change_status',        $this->app->components->payment->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['payment_id'])      );
 $this->app->smarty->assign('payment_status',                  $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id'], 'status')             );
 $this->app->smarty->assign('payment_statuses',                $this->app->components->payment->getStatuses() );
-$this->app->smarty->assign('allowed_to_cancel',               $this->app->components->payment->checkRecordAllowsCancel(\CMSApplication::$VAR['payment_id'])   );
+$this->app->smarty->assign('allowed_to_void',                 $this->app->components->payment->checkRecordAllowsVoid(\CMSApplication::$VAR['payment_id'])   );
 $this->app->smarty->assign('allowed_to_delete',               $this->app->components->payment->checkRecordAllowsDelete(\CMSApplication::$VAR['payment_id'])              );
 $this->app->smarty->assign('payment_selectable_statuses',     $this->app->components->payment->getStatuses(true) );

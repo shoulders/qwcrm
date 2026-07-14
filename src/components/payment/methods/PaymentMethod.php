@@ -42,8 +42,8 @@ class PaymentMethod
             // Do nothing
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // Void
+        if(Payment::$action === 'void')
         {
             // Do nothing
         }
@@ -74,11 +74,11 @@ class PaymentMethod
             }
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // Void
+        if(Payment::$action === 'void')
         {
-            // Cancel the payment
-            if($this->app->components->payment->cancelRecord(Payment::$payment_details['payment_id'], \CMSApplication::$VAR['qform']['reason_for_cancelling']))
+            // Void the payment
+            if($this->app->components->payment->voidRecord(Payment::$payment_details['payment_id'], \CMSApplication::$VAR['qform']['reason_for_voiding']))
             {
                 Payment::$payment_successful = true;
             }
@@ -110,8 +110,8 @@ class PaymentMethod
             // Do nothing
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // void
+        if(Payment::$action === 'void')
         {
             // Do nothing
         }

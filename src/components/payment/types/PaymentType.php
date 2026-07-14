@@ -62,11 +62,11 @@ class PaymentType
             }
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // Void
+        if(Payment::$action === 'void')
         {
-            // Check payment Status allows record Cancel  - This check is done upstream on payment:status
-            if(!$this->app->components->payment->checkRecordAllowsCancel(Payment::$payment_details['payment_id']))
+            // Check payment Status allows record void - This check is done upstream on payment:status
+            if(!$this->app->components->payment->checkRecordAllowsVoid(Payment::$payment_details['payment_id']))
             {
                 Payment::$payment_valid = false;
             }
@@ -100,8 +100,8 @@ class PaymentType
             // Do nothing
         }
 
-        // Cancel
-        if(Payment::$action === 'cancel')
+        // Void
+        if(Payment::$action === 'void')
         {
             // Do nothing
         }
@@ -143,10 +143,10 @@ class PaymentType
                 $logMessage = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was edited.");
             }
 
-            // Cancel
-            if(Payment::$action === 'cancel')
+            // Void
+            if(Payment::$action === 'void')
             {
-                $logMessage = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was cancelled.");
+                $logMessage = "Payment ID".': '.Payment::$payment_details['payment_id'].' '._gettext("was voided.");
             }
 
             // Delete

@@ -891,7 +891,7 @@ class Creditnote extends Components {
 
     ###############################################   done
     #  Check if a credit note can be created      #  // Used to hide create CR buttons + in creditnote:new
-    ###############################################
+    ###############################################  // only pass the record type you want to issue a CR against, this keeps logic easy to follow
 
     public function checkRecordCanBeCreated($client_id = null, $invoice_id = null, $supplier_id = null, $expense_id = null, $silent = false) {
 
@@ -938,7 +938,8 @@ class Creditnote extends Components {
             }
 
             /* Sales Credit Note (Client) - (client:details) */
-            // Used to refund real money to a client without an invoice, or they can use the credit to purchase other items
+
+            // Used to send real money to a client without an invoice, or they can use the credit to purchase other items
 
             if(!$invoice_id){
 
@@ -950,7 +951,9 @@ class Creditnote extends Components {
             }
 
             /* Sales Credit Note (Invoice) - (invoice:details) */
-            // Used to close invoices with outstanding balances without accepting or sending real money
+
+            // Used to close invoices with outstanding balances, without receiving any real money
+            // Refund monies to Clients or allow them to use the credit on another of their invoices
 
             elseif($invoice_id)
             {
@@ -974,11 +977,9 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'unpaid':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has no payments and should be cancelled, not closed with a credit note. You should not see this error, report to admins.", $silent));
-                        $state_flag = false;
-                        break;
                     case 'partially_paid':
-                        // CR `Close` Action Type (Credit) (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
+
+                        // CR `Close` Action Type (Credit)
 
                         // We are just closing with fake money
                         // All vouchers on invoices with this state are blocked, have never been used or activated and can be voided.
@@ -988,7 +989,10 @@ class Creditnote extends Components {
 
                         break;
                     case 'paid':
-                        // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices)
+
+                        // CR `Refund` Action Type (Debit)
+
+                        // This refunds monies to Clients or allows them to use the credit on another of their invoices
 
                         // Check all the parent invoice's vouchers can be voided
                         if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowVoid($invoice_id)){
@@ -1024,10 +1028,6 @@ class Creditnote extends Components {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins.", $silent));
                         $state_flag = false;
                         break;
-                    case 'cancelled':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is cancelled and cannot accept payments. You should not see this error, report to admins.", $silent));
-                        $state_flag = false;
-                        break;
                     case 'deleted':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is deleted and cannot accept payments. You should not see this error, report to admins.", $silent));
                         $state_flag = false;
@@ -1048,7 +1048,7 @@ class Creditnote extends Components {
             /* Common Tests */
 
             // Is the Supplier active
-            if($this->app->components->supplier->getRecord($supplier_id, 'status') != 'active')
+            if($this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated')
             {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier is not active so you cannot create a credit note against it.", $silent));
                 $state_flag = false;
@@ -1062,8 +1062,8 @@ class Creditnote extends Components {
             }
 
             /* Purchase Credit Note (Supplier) - (supplier:details) */
-            // Used to reduce the amount you owe your supplier, or record a refund received from a supplier.
-            // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
+
+            // Used to send real money to a supplier without an an expense, or they can use the credit against an outstanding invoice.
 
             if(!$expense_id) {
 
@@ -1076,6 +1076,7 @@ class Creditnote extends Components {
             }
 
             /* Purchase Credit Note (Expense) - (expense:details) */
+
             // Used to reduce the amount you owe on an expense, or record a refund received from a supplier against an expense.
             // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
 
@@ -1101,17 +1102,20 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'unpaid':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense has no payments and should be cancelled, not closed with a credit note. You should not see this error, report to admins.", $silent));
-                        $state_flag = false;
-                        break;
                     case 'partially_paid':
-                        // CR `Close` Action Type (Debit) (Used to clear expense balance) (expenses with no balance should be cancelled and not cleared with a CR)
 
+                        // CR `Close` Action Type (Debit)
+
+                        // Used to clear expense balances without sending monies
                         // We are just closing with fake money
                         // Do nothing
+
                         break;
                     case 'paid':
-                        // CR `Refund` Action Type (Credit) (Apply refund, real monies or credit note, from a supplier. This also allow the use of their CR on another of their expenses.)
+
+                        // CR `Refund` Action Type (Credit)
+
+                        // Apply refund, real monies or credit note, from a supplier. This also allow the use of their CR on another of their expenses.
 
                         // Calculate real monies paid on this expense by the us (excludes credit notes and vouchers, this allows you to close an expense with a `Close` CR and not receive any money from the supplier)
                         $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', 'real_monies', 'debit', null, null, null, null, $expense_id);
@@ -1125,10 +1129,6 @@ class Creditnote extends Components {
                             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense has no valid real monies left that can be refunded.", $silent));
                             $state_flag = false;
                         }
-                        break;
-                    case 'cancelled':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is cancelled and cannot accept payments. You should not see this error, report to admins.", $silent));
-                        $state_flag = false;
                         break;
                     case 'deleted':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is deleted and cannot accept payments. You should not see this error, report to admins.", $silent));
@@ -1235,11 +1235,8 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'unpaid':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has no payments and should be cancelled, not closed with a credit note. You should not see this error, report to admins."));
-                        $state_flag = false;
-                        break;
                     case 'partially_paid':
-                        // CR `Close` Action Type (Credit) (Used to clear invoice balance) (invoices with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear invoice balances without receiving monies)
 
                         // We are just closing with fake money
                         // All vouchers on invoices with this state are blocked, have never been used or activated and can be voided.
@@ -1289,10 +1286,6 @@ class Creditnote extends Components {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
-                    case 'cancelled':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is cancelled and cannot accept payments. You should not see this error, report to admins."));
-                        $state_flag = false;
-                        break;
                     case 'deleted':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is deleted and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
@@ -1312,7 +1305,7 @@ class Creditnote extends Components {
             /* Common Tests */
 
             // Is the supplier active
-            if($this->app->components->supplier->getRecord($supplier_id, 'status') != 'active') {
+            if($this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated') {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this supplier because they are not active."));
                 $state_flag = false;
             }
@@ -1367,11 +1360,8 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'unpaid':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense has no payments and should be cancelled, not closed with a credit note. You should not see this error, report to admins."));
-                        $state_flag = false;
-                        break;
                     case 'partially_paid':
-                        // CR `Close` Action Type (Credit) (Used to clear expense balance) (expenses with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear expense balances without sending monies)
                         // We are just closing with fake money
 
                         // Make sure the submitted CR total is the same as the parent expense's remaining balance
@@ -1403,10 +1393,6 @@ class Creditnote extends Components {
                             $state_flag = false;
                         }
 
-                        break;
-                    case 'cancelled':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is cancelled and cannot accept payments. You should not see this error, report to admins."));
-                        $state_flag = false;
                         break;
                     case 'deleted':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is deleted and cannot accept payments. You should not see this error, report to admins."));
@@ -1545,11 +1531,8 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'unpaid':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has no payments and should be cancelled, not closed with a credit note. You should not see this error, report to admins."));
-                        $state_flag = false;
-                        break;
                     case 'partially_paid':
-                        // CR `Close` Action Type (Credit) (Used to clear outstanding invoice balances) (invoices with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear invoice balances without receiving monies)
                         // A CR raised against an invoice with a partially paid balance is issued to close that invoice only, so it can only be used to close said invoice.
 
                         // The target invoice must be the invoice the CR was raised against
@@ -1575,10 +1558,6 @@ class Creditnote extends Components {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
-                    case 'cancelled':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is cancelled and cannot accept payments. You should not see this error, report to admins."));
-                        $state_flag = false;
-                        break;
                     case 'deleted':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is deleted and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
@@ -1599,7 +1578,7 @@ class Creditnote extends Components {
             /* Common Tests */
 
             // Is the supplier active
-            if($this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'status') != 'active') {
+            if($this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'status') != 'activated') {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this supplier because they are not active."));
                 $state_flag = false;
             }
@@ -1637,12 +1616,10 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'unpaid':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense has no payments and should be cancelled, not closed with a credit note. You should not see this error, report to admins."));
-                        $state_flag = false;
-                        break;
                     case 'partially_paid':
-                        // CR `Close` Action Type (Credit) (Used to clear outstanding expense balances) (expenses with no balance should be cancelled and not cleared with a CR)
+                        // CR `Close` Action Type (Credit) (Used to clear outstanding expense balances without sending monies)
                         // A CR raised against an expense with a partially paid balance is issued to close that expense only, so it can only be used to close said expense.
+
                         // The target expense must be the expense the CR was raised against
                         if($creditnote_details['expense_id'] != $qpayment['expense_id']) {
                             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be used against this expense. It must be used to close the expense it was raised against."));
@@ -1653,10 +1630,6 @@ class Creditnote extends Components {
                     case 'paid':
                         // CR `Refund` Action Type (Debit) (Refund monies to Suppliers or allow the CR to be used against another of their expenses) (The code here only controls the use of the CR as a payment method)
                         // Do Nothing
-                        break;
-                    case 'cancelled':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is cancelled and cannot accept payments. You should not see this error, report to admins."));
-                        $state_flag = false;
                         break;
                     case 'deleted':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is deleted and cannot accept payments. You should not see this error, report to admins."));

@@ -321,6 +321,8 @@
             }
 
             // Calculate Row Totals
+            rowUnitTax                  = rowUnitNet * (rowUnitTaxRate / 100);
+            rowUnitGross                = rowUnitNet + rowUnitTax;
             rowSubTotalNet              = (rowUnitNet - rowUnitDiscount) * rowUnitQty;
             rowSubTotalTax              = rowSubTotalNet * (rowUnitTaxRate / 100);
             rowSubTotalGross            = rowSubTotalNet + rowSubTotalTax;
@@ -333,6 +335,8 @@
             }
 
             // Update Row Totals onscreen
+            $(this).find("input[id$='\\[unit_tax\\]']").val(parseFloat(rowUnitTax).toFixed(2));
+            $(this).find("input[id$='\\[unit_gross\\]']").val(parseFloat(rowUnitGross).toFixed(2));
             $(this).find("input[id$='\\[subtotal_net\\]']").val(parseFloat(rowSubTotalNet).toFixed(2));
             $(this).find("input[id$='\\[subtotal_tax\\]']").val(parseFloat(rowSubTotalTax).toFixed(2));
             $(this).find("input[id$='\\[subtotal_gross\\]']").val(parseFloat(rowSubTotalGross).toFixed(2));

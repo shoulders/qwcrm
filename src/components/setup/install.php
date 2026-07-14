@@ -299,7 +299,7 @@ if(\CMSApplication::$VAR['stage'] == 'delete_setup_folder') {
     } else {
 
         // Log message to setup log - only when starting the process - this start every page loads
-        $this->app->components->setup->writeRecordToSetupLog('upgrade', _gettext("QWcrm installation has finished."));
+        $this->app->components->setup->writeRecordToSetupLog('install', _gettext("QWcrm installation has finished."));
 
         // Clean up after setup process
         $this->app->components->setup->setupFinished();

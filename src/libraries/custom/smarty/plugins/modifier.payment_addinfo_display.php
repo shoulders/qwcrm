@@ -65,8 +65,8 @@ function smarty_modifier_payment_addinfo_display($string)
         // Additional messages and flags
         } else {
             switch($key) {
-                case 'reason_for_cancelling' :
-                    $html .= '<strong>'._gettext("Reason for Cancelling").':</strong> '.$value.'<br>';
+                case 'reason_for_voiding' :
+                    $html .= '<strong>'._gettext("Reason for Voiding").':</strong> '.$value.'<br>';
                     break;
                 default :
                     $html .= '<strong>'._gettext($key).':</strong> '.$value.'<br>';
