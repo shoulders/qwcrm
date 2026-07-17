@@ -31,7 +31,6 @@ $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',     $this->app->components->invoice->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['invoice_id']));
 $this->app->smarty->assign('allowed_to_change_employee',   !$invoice_details['closed_on']);
-$this->app->smarty->assign('allowed_to_cancel',            $this->app->components->invoice->checkRecordAllowsCancel(\CMSApplication::$VAR['invoice_id']));
 $this->app->smarty->assign('allowed_to_delete',            $this->app->components->invoice->checkRecordAllowsDelete(\CMSApplication::$VAR['invoice_id']));
 $this->app->smarty->assign('active_employees',             $this->app->components->user->getActiveUsers('employees'));
 $this->app->smarty->assign('invoice_statuses',             $this->app->components->invoice->getStatuses(true));

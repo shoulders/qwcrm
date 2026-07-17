@@ -643,13 +643,6 @@ _gettext("USER_SEARCH_HELP_CONTENT");
 
 /* Voucher */
 
-// voucher:cancel
-//_gettext("VOUCHER_CANCEL_PAGE_TITLE");
-//_gettext("VOUCHER_CANCEL_META_DESCRIPTION");
-//_gettext("VOUCHER_CANCEL_META_KEYWORDS");
-//_gettext("VOUCHER_CANCEL_HELP_TITLE");
-//_gettext("VOUCHER_CANCEL_HELP_CONTENT");
-
 // voucher:delete
 //_gettext("VOUCHER_DELETE_PAGE_TITLE");
 //_gettext("VOUCHER_DELETE_META_DESCRIPTION");

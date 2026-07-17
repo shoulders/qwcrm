@@ -843,9 +843,9 @@ class Creditnote extends Components {
 
                 // Update the credit note record (we don't update the status when they are expired, these are different things)
                 // ('blocked' is a way of disabling the voucher without permanently closing it, i.e. for suspended status, and is controlled by Expiry and Status)
-                $sql = "UPDATE ".PRFX."voucher_records SET
-                    closed_on           =".$this->app->db->qstr($creditnote_details['expiry_date'].' 23:59:59')."
-                    WHERE voucher_id    =". $this->app->db->qstr( $creditnote_id          );
+                $sql = "UPDATE ".PRFX."creditnote_records SET
+                    closed_on              =".$this->app->db->qstr($creditnote_details['expiry_date'].' 23:59:59')."
+                    WHERE creditnote_id    =". $this->app->db->qstr( $creditnote_id          );
                 if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
             }
@@ -982,7 +982,6 @@ class Creditnote extends Components {
                         // CR `Close` Action Type (Credit)
 
                         // We are just closing with fake money
-                        // All vouchers on invoices with this state are blocked, have never been used or activated and can be voided.
                         // When the CR is created the vouchers will be voided
 
                         // Do Nothing
@@ -993,14 +992,6 @@ class Creditnote extends Components {
                         // CR `Refund` Action Type (Debit)
 
                         // This refunds monies to Clients or allows them to use the credit on another of their invoices
-
-                        // Check all the parent invoice's vouchers can be voided
-                        if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowVoid($invoice_id)){
-
-                            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has vouchers that cannot be voided, so you cannot issue a credit note against this invoice.", $silent));
-                            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice has vouchers that cannot be voided so you cannot issue a credit note.", $silent));
-                            $state_flag = false;
-                        }
 
                         // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not gove free money to a client)
                         $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, null, $invoice_id);
@@ -1036,6 +1027,12 @@ class Creditnote extends Components {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice status does not allow payments. You should not see this error, report to admins.", true));
                         $state_flag = false;
                         break;
+                }
+
+                // Check all the parent invoice's vouchers can be voided
+                if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowVoid($invoice_id)){
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has vouchers that cannot be voided, so you cannot issue a credit note against this invoice.", $silent));
+                    $state_flag = false;
                 }
 
             }

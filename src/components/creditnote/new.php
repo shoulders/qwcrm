@@ -212,7 +212,6 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     // Edit the newly created credit note populating with items on page load
     $this->app->system->page->forcePage('creditnote', 'edit&creditnote_id='.$creditnote_id, $variables);
 
-
 }
 
 // Return to details page if possible else send to CR search (not validating that there is more than one record variable so this modified order ensures the correct details page is loaded)

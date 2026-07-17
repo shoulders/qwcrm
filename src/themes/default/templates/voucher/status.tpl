@@ -16,35 +16,35 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}VOUCHER_STATUS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}VOUCHER_STATUS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
-                </tr>  
+                </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">                        
+                    <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{t}Status{/t}</td>
-                                <td class="olohead" align="center">&nbsp;</td>
+                                <td class="olohead" align="center">Suspend</td>
                                 <td class="olohead" align="center">{t}Delete{/t}</td>
                             </tr>
                             <tr>
-                            
+
                                 <!-- Update Status -->
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_change_status}
-                                        <p>&nbsp;</p>                                    
+                                        <p>&nbsp;</p>
                                         <form action="index.php?component=voucher&page_tpl=status&voucher_id={$voucher_id}" method="post">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
-                                                {section name=s loop=$voucher_selectable_statuses}    
+                                                {section name=s loop=$voucher_selectable_statuses}
                                                     <option value="{$voucher_selectable_statuses[s].status_key}"{if $voucher_status == $voucher_selectable_statuses[s].status_key} selected{/if}>{t}{$voucher_selectable_statuses[s].display_name}{/t}</option>
-                                                {/section}                                            
-                                            </select>                                    
-                                            <p>&nbsp;</p>                                        
-                                            <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />                                                                      
+                                                {/section}
+                                            </select>
+                                            <p>&nbsp;</p>
+                                            <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />
                                         </form>
                                     {else}
                                         <br />
                                         <b>{t}Current Status{/t} =
-                                        {section name=s loop=$voucher_statuses}    
+                                        {section name=s loop=$voucher_statuses}
                                             {if $voucher_status == $voucher_statuses[s].status_key}{$voucher_statuses[s].display_name}{/if}
                                         {/section}
                                         </b>
@@ -56,22 +56,22 @@
                                     {/if}
                                 </td>
 
-                                <!--  --> 
+                                <!-- Suspend Voucher -->
                                 <td class="olotd4" align="center" width="33%">
-                                    <p>{t}A voucher can currently only be cancelled when you cancel the parent invoice.{/t}</p> 
+                                    <p>{t}A voucher can currently only be suspended when you change the parent invoice to a status that requires it.{/t}</p>
                                 </td>
 
-                                <!-- Delete Voucher -->                        
-                                <td class="olotd4" align="center" width="33%">                                                                       
+                                <!-- Delete Voucher -->
+                                <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=voucher&page_tpl=delete&voucher_id={$voucher_id}">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Voucher?{/t}');">                                            
-                                        </form>                                            
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Voucher?{/t}');">
+                                        </form>
                                     {else}
                                         {t}This Voucher cannot be deleted because it's status, or the attached invoice's status does not allow it.{/t}
-                                    {/if}                                        
-                                </td>                                
-                                
+                                    {/if}
+                                </td>
+
                             </tr>
                         </table>
                     </td>

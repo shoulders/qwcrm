@@ -9,13 +9,13 @@
 <br>
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr class="olotd4">
-        <td class="row2"><b>{t}Invoiced Total{/t} ({t}Excl.{/t} {t}Cancelled{/t})</b></td>
+        <td class="row2"><b>{t}Invoiced Total{/t} ({t}Excl.{/t} {t}Voided{/t})</b></td>
         <td class="row2"><b>{t}Expired Unused{/t}</b></td>
-        <td class="row2"><b>{t}Cancelled{/t}</b></td>
+        <td class="row2"><b>{t}Voided{/t}</b></td>
     </tr>
     <tr class="olotd4">
         <td><font color="green">{$currency_symbol}{$voucher_stats.sum_unit_gross|string_format:"%.2f"}</font> [G]</td>
         <td><font color="green">{$currency_symbol}{$voucher_stats.sum_expired_unused_unit_gross|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="cc0000">{$currency_symbol}{$voucher_stats.sum_cancelled_unit_gross|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="cc0000">{$currency_symbol}{$voucher_stats.sum_voided_unit_gross|string_format:"%.2f"}</font> [G]</td>
     </tr>
 </table>
