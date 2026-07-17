@@ -496,11 +496,18 @@ class Voucher extends Components {
         // Set appropriate redeemed_on datetime for the new status
         //$redeemed_on = ($new_status == 'redeemed') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
 
-        // Update voucher 'closed_on' boolean for the new status ('deleted' should never be passed here, this is just for reference)
-        if(in_array($new_status, array('redeemed', 'voided', 'deleted'))) {
+        // Is the new status a "closed" status (once closed, it cannot be re-opened)
+        if(in_array($new_status, array('redeemed', 'voided'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
             $closed_on = $voucher_details['closed_on'];
+        }
+
+        // Has the voucher been voided (once voided, it cannot be re-activated)
+        if($new_status == 'voided') {
+            $voided_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
+        } else {
+            $voided_on = $voucher_details['voided_on'];
         }
 
         // Update voucher 'blocked' boolean for the new status ('blocked' is a way of disabling the voucher without permanently closing it, i.e. for suspended status, and is controlled by Expiry and Status)
@@ -514,6 +521,7 @@ class Voucher extends Components {
         $sql = "UPDATE ".PRFX."voucher_records SET
                 status             =". $this->app->db->qStr( $new_status   ).",
                 closed_on          =". $this->app->db->qStr( $closed_on    ).",
+                voided_on          =". $this->app->db->qStr( $voided_on    ).",
                 blocked            =". $this->app->db->qStr( $blocked      )."
                 WHERE voucher_id   =". $this->app->db->qStr( $voucher_id   );
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -537,9 +545,9 @@ class Voucher extends Components {
 
     }
 
-    ######################################### // i dont have to load voucher details twice, but it makes logic easier to understand
-    #   Update Voucher Balance              # // when a voucher is redeemed against an invoice, or that payment is voided or deleted, the balance needs updating and the status needs recalcualting
-    ######################################### // only change status if required
+    ######################################### // When a voucher is redeemed against an invoice, or that voucher payment is voided or deleted,
+    #   Update Voucher Balance              # // the voucher balance needs updating and the status needs recalcualting/
+    ######################################### // The invoice balance will be calculated upstream separately.
 
     public function recalculateTotals($voucher_id, $amount, $action, $previous_amount = null) {
 
@@ -583,14 +591,14 @@ class Voucher extends Components {
         // Can only be set by $this->updateInvoiceVouchersStatuses() when the invoice is updated.
         // This function should only ever be called for the statuses below
 
-        // Paid (Unused)
+        // Paid (Unused) TODO: should this be using `unit_gross` - consider SPV or MPV
         if($voucher_details['balance'] == $voucher_details['unit_net'])
         {
             $this->updateStatus($voucher_id, 'paid', true);
         }
 
         // Partially Redeemed
-        elseif($voucher_details['balance'] > 0 && $voucher_details['balance'] < $voucher_details['unit_net'])
+        elseif($voucher_details['balance'] > 0 && $voucher_details['balance'] < $voucher_details['unit_net'] && $voucher_details['status'] != 'partially_redeemed')
         {
             $this->updateStatus($voucher_id, 'partially_redeemed', true);
         }
@@ -765,6 +773,7 @@ class Voucher extends Components {
             status              =   'deleted',
             opened_on           =   NULL,
             closed_on           =   NULL,
+            voided_on           =   NULL,
             last_active         =   NULL,
             blocked             =   1,
             tax_system          =   '',

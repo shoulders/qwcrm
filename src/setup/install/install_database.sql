@@ -1368,6 +1368,7 @@ CREATE TABLE `#__voucher_records` (
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
+  `voided_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `blocked` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `tax_system` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,

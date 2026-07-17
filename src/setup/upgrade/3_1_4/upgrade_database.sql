@@ -1259,14 +1259,19 @@ UPDATE `#__payment_records` SET `voided_on` = `last_active` WHERE status = 'void
 -- Remove Cancel from expense --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'expense:cancel';
 DELETE FROM `#__expense_statuses` WHERE `#__expense_statuses`.`id` = 5;
-UPDATE `#__expense_statuses` SET `id` = '5' WHERE `#__expense_statuses`.`id` = 6;
+UPDATE `#__expense_statuses` SET `id` = 5 WHERE `#__expense_statuses`.`id` = 6;
 
 -- Remove Cancel from invoice --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'invoice:cancel';
 DELETE FROM `#__invoice_statuses` WHERE `#__invoice_statuses`.`id` = 8;
-UPDATE `#__invoice_statuses` SET `id` = '9' WHERE `#__invoice_statuses`.`id` = 8;
+UPDATE `#__invoice_statuses` SET `id` = 9 WHERE `#__invoice_statuses`.`id` = 8;
+
+-- Remove Cancel from voucher --
 DELETE FROM `#__voucher_statuses` WHERE `#__invoice_statuses`.`id` = 9;
-UPDATE `#__voucher_statuses` SET `id` = '9' WHERE `#__invoice_statuses`.`id` = 10;
+UPDATE `#__voucher_statuses` SET `id` = 9 WHERE `#__invoice_statuses`.`id` = 10;
+ALTER TABLE `#__voucher_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
+UPDATE `#__voucher_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
+UPDATE `#__voucher_records` SET `voided_on` = `closed_on` WHERE `status` = 'voided';
 
 -- Convert Supplier Cancel to Closed --
 ALTER TABLE `#__supplier_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
