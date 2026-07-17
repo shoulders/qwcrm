@@ -14,11 +14,11 @@ if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['suppl
     $this->app->system->page->forcePage('supplier', 'search');
 }
 
-/* Update Supplier Status
+// Update Supplier Status
 if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->components->supplier->updateStatus(\CMSApplication::$VAR['supplier_id'], \CMSApplication::$VAR['assign_status']);
     $this->app->system->page->forcePage('supplier', 'status&supplier_id='.\CMSApplication::$VAR['supplier_id']);
-}*/
+}
 
 // Activate TODO: activateRecord() + message
 if(isset(\CMSApplication::$VAR['activate_supplier']) &&$this->app->components->supplier->checkRecordAllowsActivate(\CMSApplication::$VAR['supplier_id'])){

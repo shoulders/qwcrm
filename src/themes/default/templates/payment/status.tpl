@@ -29,7 +29,8 @@
 
                                 <!-- Update Status Button -->
                                 <td class="olotd4" align="center" width="33%">
-                                    {if $allowed_to_change_status}
+                                    <p><b>{t}Current Status{/t}:</b> {$payment_status_display_name}</p>
+                                    {*if $allowed_to_change_status}
                                         <p>&nbsp;</p>
                                         <form action="index.php?component=payment&page_tpl=status&payment_id={$payment_id}" method="post">
                                             <b>{t}New Status{/t}: </b>
@@ -53,7 +54,7 @@
                                         {t}This Payment cannot have it's status changed because it's current state does not allow it.{/t}
                                         <br />
                                         <br />
-                                    {/if}
+                                    {/if*}
                                 </td>
 
                                 <!-- Void Button -->
