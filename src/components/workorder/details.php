@@ -18,12 +18,13 @@ $workorder_details = $this->app->components->workorder->getRecord(\CMSApplicatio
 $client_details = $this->app->components->client->getRecord($workorder_details['client_id']);
 
 // Build the page with the workorder details from the database
-$this->app->smarty->assign('employee_details',     $this->app->components->user->getRecord($workorder_details['employee_id'])                                      );
-$this->app->smarty->assign('client_details',       $client_details                                                                          );
-$this->app->smarty->assign('workorder_statuses',   $this->app->components->workorder->getStatuses()                                                                 );
-$this->app->smarty->assign('workorder_details',    $workorder_details                                                                       );
+$this->app->smarty->assign('employee_details',     $this->app->components->user->getRecord($workorder_details['employee_id']) );
+$this->app->smarty->assign('client_details',       $client_details);
+$this->app->smarty->assign('client_types',         $this->app->components->client->getTypes() );
+$this->app->smarty->assign('workorder_statuses',   $this->app->components->workorder->getStatuses());
+$this->app->smarty->assign('workorder_details',    $workorder_details);
 $this->app->smarty->assign('workorder_schedules',  $this->app->components->schedule->getRecords('schedule_id', 'DESC', 0, false, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
-$this->app->smarty->assign('workorder_notes',      $this->app->components->workorder->getNotes(\CMSApplication::$VAR['workorder_id'])                                            ); 
+$this->app->smarty->assign('workorder_notes',      $this->app->components->workorder->getNotes(\CMSApplication::$VAR['workorder_id'])                                            );
 $this->app->smarty->assign('workorder_history',    $this->app->components->workorder->getHistory(\CMSApplication::$VAR['workorder_id'])                                          );
 $this->app->smarty->assign('selected_date',        $this->app->system->general->timestampToCalendarFormat( time() )                                                   );
 $this->app->smarty->assign('GoogleMapString',      $this->app->components->client->buildGooglemapDirectionsURL($workorder_details['client_id'], $this->app->user->login_user_id) );

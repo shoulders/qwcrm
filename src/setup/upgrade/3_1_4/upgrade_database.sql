@@ -1302,3 +1302,13 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'creditnote:can
 ALTER TABLE `#__creditnote_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
 UPDATE `#__creditnote_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
 UPDATE `#__creditnote_records` SET `voided_on` = `closed_on` WHERE `status` = 'voided';
+
+-- Records should be deleted from status and not delete.php --
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:delete';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'expense:delete';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'invoice:delete';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'creditnote:delete';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'supplier:delete';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'voucher:delete';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'payment:delete';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'otherincome:delete';

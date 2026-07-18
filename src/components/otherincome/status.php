@@ -34,6 +34,12 @@ if(isset(\CMSApplication::$VAR['void_otherincome']) && $allowed_to_void){
     $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
 }
 
+// Delete
+if(isset(\CMSApplication::$VAR['delete_otherincome']) && $allowed_to_delete){
+    $this->app->components->otherincome->deleteRecord(\CMSApplication::$VAR['otherincome_id']);
+    $this->app->system->page->forcePage('otherincome', 'search');
+}
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',     $allowed_to_change_status);
 $this->app->smarty->assign('allowed_to_void',               $allowed_to_void);

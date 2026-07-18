@@ -26,6 +26,12 @@ if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status ){
     $this->app->components->expense->updateStatus(\CMSApplication::$VAR['expense_id'], \CMSApplication::$VAR['assign_status']);
 }
 
+// Delete
+if(isset(\CMSApplication::$VAR['delete_expense']) && $allowed_to_delete){
+    $this->app->components->expense->deleteRecord(\CMSApplication::$VAR['expense_id']);
+    $this->app->system->page->forcePage('expense', 'search');
+}
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',        $allowed_to_change_status      );
 $this->app->smarty->assign('allowed_to_delete',               $allowed_to_delete       );

@@ -30,11 +30,23 @@ if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status){
     $this->app->system->page->forcePage('voucher', 'status&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 }
 
+// Delete
+if(isset(\CMSApplication::$VAR['delete_voucher']) && $allowed_to_delete){
+
+    // Delete the voucher
+    $this->app->components->voucher->deleteRecord(\CMSApplication::$VAR['voucher_id']);
+
+    // Recalculate the invoice totals and update them
+    $this->app->components->invoice->recalculateTotals($voucher_details['invoice_id']);
+
+    //$this->app->system->page->forcePage('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
+    $this->app->system->page->forcePage('voucher', 'search');
+}
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',    $allowed_to_change_status        );
 $this->app->smarty->assign('allowed_to_delete',           $allowed_to_delete               );
-
 $this->app->smarty->assign('voucher_status',              $voucher_details['status']             );
 $this->app->smarty->assign('voucher_status_display_name', $this->app->components->voucher->getStatusDisplayName($voucher_details['status']));
 $this->app->smarty->assign('voucher_statuses',            $this->app->components->voucher->getStatuses() );
-$this->app->smarty->assign('voucher_selectable_statuses',     $this->app->components->voucher->getStatuses(true) );
+$this->app->smarty->assign('voucher_selectable_statuses', $this->app->components->voucher->getStatuses(true) );

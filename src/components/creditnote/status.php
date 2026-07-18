@@ -41,6 +41,12 @@ if(isset(\CMSApplication::$VAR['void_creditnote']) && $allowed_to_void){
     $this->app->components->creditnote->voidRecord(\CMSApplication::$VAR['creditnote_id'], \CMSApplication::$VAR['qform']['reason_for_voiding']);
 }
 
+// Delete
+if(isset(\CMSApplication::$VAR['delete_creditnote']) && $allowed_to_delete){
+    $this->app->components->creditnote->deleteRecord(\CMSApplication::$VAR['creditnote_id']);
+    $this->app->system->page->forcePage('creditnote', 'search');
+}
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',          $allowed_to_change_status);
 $this->app->smarty->assign('allowed_to_change_employee',        $allowed_to_change_employee);

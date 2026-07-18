@@ -34,6 +34,12 @@ if(isset(\CMSApplication::$VAR['change_employee']) && $allowed_to_change_employe
     $this->app->system->page->forcePage('workorder', 'status&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 }
 
+// Delete
+if(isset(\CMSApplication::$VAR['delete_workorder']) && $allowed_to_delete){
+    $this->app->components->workorder->deleteRecord(\CMSApplication::$VAR['workorder_id']);
+    $this->app->system->page->forcePage('workorder', 'search');
+}
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',     $allowed_to_change_status);
 $this->app->smarty->assign('allowed_to_change_employee',   $allowed_to_change_employee);

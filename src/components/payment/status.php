@@ -37,6 +37,15 @@ if(isset(\CMSApplication::$VAR['void_payment']) && $allowed_to_void){
     $this->app->components->payment->performPaymentAction();
 }
 
+// Delete
+if(isset(\CMSApplication::$VAR['delete_payment']) && $allowed_to_delete){
+    // Build the Payment Environment
+    $this->app->components->payment->buildPaymentEnvironment('delete');
+
+    // Perform payment action
+    $this->app->components->payment->performPaymentAction();
+}
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',        $allowed_to_change_status);
 $this->app->smarty->assign('allowed_to_void',                 $allowed_to_void);

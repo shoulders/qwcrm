@@ -48,6 +48,12 @@ if(isset(\CMSApplication::$VAR['close_supplier']) && $allowed_to_close){
     $this->app->system->page->forcePage('supplier', 'status&supplier_id='.\CMSApplication::$VAR['supplier_id']);
 }
 
+// Delete
+if(isset(\CMSApplication::$VAR['delete_supplier']) && $allowed_to_delete){
+    $this->app->components->supplier->deleteRecord(\CMSApplication::$VAR['supplier_id']);
+    $this->app->system->page->forcePage('supplier', 'search');
+}
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',     $allowed_to_change_status);
 $this->app->smarty->assign('allowed_to_activate',          $allowed_to_activate);

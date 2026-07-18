@@ -55,8 +55,8 @@
                                 <!-- Delete Voucher -->
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_delete}
-                                        <form method="post" action="index.php?component=voucher&page_tpl=delete&voucher_id={$voucher_id}">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Voucher?{/t}');">
+                                        <form method="post" action="index.php?component=voucher&page_tpl=status&voucher_id={$voucher_id}">
+                                            <input name="delete_voucher" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Voucher?{/t}');">
                                         </form>
                                     {else}
                                         {t}This Voucher cannot be deleted because it's status, or the attached invoice's status does not allow it.{/t}

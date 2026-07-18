@@ -595,7 +595,7 @@ class WorkOrder extends Components {
                 employee_id         =". $this->app->db->qStr( $employee_id).",
                 status              =". $this->app->db->qStr( $new_status      ).",
                 closed_by           =". $this->app->db->qStr( $closed_by      ).",
-                closed_on           =". $this->app->db->qStr( $closed_on      ).",
+                closed_on           =". $this->app->db->qStr( $closed_on      )."
                 WHERE workorder_id  =". $this->app->db->qStr( $workorder_id    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
