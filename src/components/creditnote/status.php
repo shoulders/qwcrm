@@ -20,9 +20,6 @@ $this->app->components->creditnote->checkCreditnoteIsExpired(\CMSApplication::$V
 // Get Record details
 $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']);
 
-// Get the Id of the employee assigned to the creditnote
-$assigned_employee_id = $creditnote_details['employee_id'];
-
 // Get Permissions
 $allowed_to_change_status = $this->app->components->creditnote->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['creditnote_id']);
 $allowed_to_change_employee = !$this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id'], 'closed_on');
@@ -30,7 +27,7 @@ $allowed_to_void = $this->app->components->creditnote->checkRecordAllowsVoid(\CM
 $allowed_to_delete = $this->app->components->creditnote->checkRecordAllowsDelete(\CMSApplication::$VAR['creditnote_id']);
 
 // Change Status (manually)
-if(isset(\CMSApplication::$VAR['change_status'])){
+if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status){
     $this->app->components->creditnote->updateStatus(\CMSApplication::$VAR['creditnote_id'], \CMSApplication::$VAR['assign_status']);
 }
 
@@ -53,5 +50,5 @@ $this->app->smarty->assign('active_employees',                  $this->app->comp
 $this->app->smarty->assign('creditnote_statuses',               $this->app->components->creditnote->getStatuses()                                             );
 $this->app->smarty->assign('creditnote_status',                 $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id'], 'status')       );
 $this->app->smarty->assign('creditnote_status_display_name',    $this->app->components->creditnote->getStatusDisplayName($this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id'], 'status')));
-$this->app->smarty->assign('assigned_employee_id',              $assigned_employee_id                                   );
-$this->app->smarty->assign('assigned_employee_details',         $this->app->components->user->getRecord($assigned_employee_id)                 );
+$this->app->smarty->assign('assigned_employee_id',              $creditnote_details['employee_id']                                  );
+$this->app->smarty->assign('assigned_employee_details',         $this->app->components->user->getRecord($creditnote_details['employee_id'])                 );

@@ -14,6 +14,9 @@ if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['vouche
     $this->app->system->page->forcePage('voucher', 'search');
 }
 
+// Is Expired (Live Check)
+$this->app->components->voucher->checkVoucherIsExpired(\CMSApplication::$VAR['voucher_id']);
+
 // Check the request is valid
 if
 (

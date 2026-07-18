@@ -14,6 +14,10 @@ if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['vouche
     $this->app->system->page->forcePage('voucher', 'search');
 }
 
+// Is Expired (Live Check)
+$this->app->components->voucher->checkVoucherIsExpired(\CMSApplication::$VAR['voucher_id']);
+
+// Get Record Details
 $voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']);
 
 // if the voucher is deleted return to the search page
