@@ -605,7 +605,7 @@ class Creditnote extends Components {
             return false;
         }
 
-        // Set the appropriate employee_id
+        // Set the appropriate employee_id  TODO: CR doe snot have a unassaigned status
         $employee_id = ($new_status == 'unassigned') ? null : $creditnote_details['employee_id'];
 
         // Set closed statuses ('deleted' should never be passed here, this is just for reference)
@@ -1659,7 +1659,8 @@ class Creditnote extends Components {
 
     public function checkRecordAllowsManualStatusChange($creditnote_id, $silent = false) {
 
-        // Prevent the manual changing of status - this is not a feature i want enabled until i have a use for it
+        // Disable this feature for now. I may enable or remove in future versions.
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("The credit note cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
         return false;
 
         $state_flag = true;
@@ -1678,12 +1679,6 @@ class Creditnote extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
-
-        // Is the credit note closed
-        /*if($creditnote_details['closed_on'])
-        {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the credit note has been closed."), $silent);
-        }*/
 
         // Status checks
         switch($creditnote_details['status']) {
@@ -1712,6 +1707,12 @@ class Creditnote extends Components {
                 $state_flag = false;
                 break;
         }
+
+        // Is the credit note closed
+        /*if($creditnote_details['closed_on'])
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the credit note has been closed."), $silent);
+        }*/
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
@@ -1760,13 +1761,6 @@ class Creditnote extends Components {
             $state_flag = false;
         }
 
-        /* Is the credit note closed (This should not be needed because of expiry and status checks)
-        if($creditnote_details['closed_on'])
-        {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be edited because it has been closed."), $silent);
-
-        }*/
-
         // Status checks
         switch($creditnote_details['status']) {
             case 'pending':
@@ -1790,6 +1784,13 @@ class Creditnote extends Components {
                 $state_flag = false;
                 break;
         }
+
+        /* Is the credit note closed (This should not be needed because of expiry and status checks)
+        if($creditnote_details['closed_on'])
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be edited because it has been closed."), $silent);
+
+        }*/
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {

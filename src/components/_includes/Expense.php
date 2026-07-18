@@ -445,8 +445,13 @@ class Expense extends Components {
             return false;
         }
 
-        // Set the appropriate closed_on value
-        $closed_on = ($new_status == 'paid') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
+        // Is the new status a "closed" status
+        // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
+        if(in_array($new_status, array('paid', 'deleted'))) {
+            $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
+        } else {
+            $closed_on = null;
+        }
 
         // Build SQL
         $sql = "UPDATE ".PRFX."expense_records SET
@@ -603,31 +608,33 @@ class Expense extends Components {
 
     public function checkRecordAllowsManualStatusChange($expense_id, $silent = false) {
 
+        // Disable this feature for now. I may enable or remove in future versions. TODO:
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("The expense cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        return false;
+
         $state_flag = true;
 
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
 
-        // Is Pending
-        if($expense_details['status'] == 'pending') {
-        }
-
-        // Is partially paid
-        if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($expense_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been deleted."), $silent);
-            $state_flag = false;
+        // Status checks
+        switch($xpense_details['status']) {
+            case 'pending':
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been deleted."), $silent);
+                $state_flag = false;
+                break;
         }
 
         // Has payments
@@ -641,10 +648,6 @@ class Expense extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because it has linked credit notes."), $silent);
             return false;
         }
-
-        // Disable this feature for now. may enable or remove in future versions.
-        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot have it's status changed at this time because the feature is not available in this version of QWcrm."), $silent);
-        $state_flag = false;
 
         return $state_flag;
 
@@ -673,26 +676,24 @@ class Expense extends Components {
             $state_flag = false;
         }
 
-        // Is Pending
-        if($expense_details['status'] == 'pending') {
-        }
-
-        // Is partially paid
-        if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is partially paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($expense_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."), $silent);
-            $state_flag = false;
+        // Status checks
+        switch($expense_details['status']) {
+            case 'pending':
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
         }
 
         // Has payments
@@ -722,26 +723,24 @@ class Expense extends Components {
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
 
-        // Is Pending
-        if($expense_details['status'] == 'pending') {
-        }
-
-        // Is partially paid
-        if($expense_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($expense_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($expense_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it already been deleted."), $silent);
-            $state_flag = false;
+        // Status checks
+        switch($expense_details['status']) {
+            case 'pending':
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it already been deleted."), $silent);
+                $state_flag = false;
+                break;
         }
 
         // Has payments

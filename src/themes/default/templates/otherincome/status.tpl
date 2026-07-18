@@ -29,6 +29,7 @@
 
                                 <!-- Update Status Button -->
                                 <td class="olotd4" align="center" width="33%">
+                                    <p><b>{t}Current Status{/t}:</b> {$otherincome_status_display_name}</p>
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>
                                         <form action="index.php?component=otherincome&page_tpl=status&otherincome_id={$otherincome_id}" method="post">
@@ -42,17 +43,7 @@
                                             <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />
                                         </form>
                                     {else}
-                                        <br />
-                                        <b>{t}Current Status{/t} =
-                                        {section name=s loop=$otherincome_statuses}
-                                            {if $otherincome_status == $otherincome_statuses[s].status_key}{$otherincome_statuses[s].display_name}{/if}
-                                        {/section}
-                                        </b>
-                                        <br />
-                                        <br />
                                         {t}This Otherincome cannot have it's status changed because it's current state does not allow it.{/t}
-                                        <br />
-                                        <br />
                                     {/if}
                                 </td>
 

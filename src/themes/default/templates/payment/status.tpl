@@ -30,8 +30,7 @@
                                 <!-- Update Status Button -->
                                 <td class="olotd4" align="center" width="33%">
                                     <p><b>{t}Current Status{/t}:</b> {$payment_status_display_name}</p>
-                                    {*if $allowed_to_change_status}
-                                        <p>&nbsp;</p>
+                                    {if $allowed_to_change_status}
                                         <form action="index.php?component=payment&page_tpl=status&payment_id={$payment_id}" method="post">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
@@ -43,18 +42,8 @@
                                             <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />
                                         </form>
                                     {else}
-                                        <br />
-                                        <b>{t}Current Status{/t} =
-                                        {section name=s loop=$payment_statuses}
-                                            {if $payment_status == $payment_statuses[s].status_key}{$payment_statuses[s].display_name}{/if}
-                                        {/section}
-                                        </b>
-                                        <br />
-                                        <br />
                                         {t}This Payment cannot have it's status changed because it's current state does not allow it.{/t}
-                                        <br />
-                                        <br />
-                                    {/if*}
+                                    {/if}
                                 </td>
 
                                 <!-- Void Button -->

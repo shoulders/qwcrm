@@ -616,8 +616,13 @@ defined('_QWEXEC') or die;
         // Set the appropriate employee_id
         $employee_id = ($new_status == 'unassigned') ? null : $invoice_details['employee_id'];
 
-        // Set the appropriate closed_on value
-        $closed_on = ($new_status == 'paid') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
+        // Is the new status a "closed" status
+        // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
+        if(in_array($new_status, array('paid', 'deleted'))) {
+            $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
+        } else {
+            $closed_on = null;
+        }
 
         // Build SQL
         $sql = "UPDATE ".PRFX."invoice_records SET
@@ -794,7 +799,7 @@ defined('_QWEXEC') or die;
     #  Check if the invoice status is allowed to be manually changed  #
     ###################################################################
 
-     public function checkRecordAllowsManualStatusChange($invoice_id, $silent = false) {
+    public function checkRecordAllowsManualStatusChange($invoice_id, $silent = false) {
 
         $state_flag = true;
 
@@ -881,26 +886,24 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        // Is Pending
-        if($invoice_details['status'] == 'pending') {
-        }
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."), $silent);
-            $state_flag = false;
+        // Status checks
+        switch($invoice_details['status']) {
+            case 'pending':
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."), $silent);
+                $state_flag = false;
+                break;
         }
 
         // Does the invoice have any Vouchers preventing changing the invoice status
@@ -942,32 +945,30 @@ defined('_QWEXEC') or die;
             $state_flag = false;
         }
 
-        // Is closed
+        /* Is closed - this should not be needed becasue everythign is done from status
         if($invoice_details['closed_on']) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it is closed."), $silent);
             $state_flag = false;
-        }
+        }*/
 
-        // Is Pending
-        if($invoice_details['status'] == 'pending') {
-        }
-
-        // Is partially paid
-        if($invoice_details['status'] == 'partially_paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been partially paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is paid
-        if($invoice_details['status'] == 'paid') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."), $silent);
-            $state_flag = false;
-        }
-
-        // Is deleted
-        if($invoice_details['status'] == 'deleted') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."), $silent);
-            $state_flag = false;
+        // Status checks
+        switch($invoice_details['status']) {
+            case 'pending':
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."), $silent);
+                $state_flag = false;
+                break;
         }
 
         /* Has Items (these will get deleted anyway)

@@ -496,18 +496,19 @@ class Voucher extends Components {
         // Set appropriate redeemed_on datetime for the new status
         //$redeemed_on = ($new_status == 'redeemed') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
 
-        // Is the new status a "closed" status (once closed, it cannot be re-opened)
-        if(in_array($new_status, array('redeemed', 'voided'))) {
+        // Is the new status a "closed" status
+        // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
+        if(in_array($new_status, array('redeemed', 'voided', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
-            $closed_on = $voucher_details['closed_on'];
+            $closed_on = null;
         }
 
-        // Has the voucher been voided (once voided, it cannot be re-activated)
+        // Has the voucher been voided
         if($new_status == 'voided') {
             $voided_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
-            $voided_on = $voucher_details['voided_on'];
+            $voided_on = null;
         }
 
         // Update voucher 'blocked' boolean for the new status ('blocked' is a way of disabling the voucher without permanently closing it, i.e. for suspended status, and is controlled by Expiry and Status)
@@ -524,6 +525,7 @@ class Voucher extends Components {
                 voided_on          =". $this->app->db->qStr( $voided_on    ).",
                 blocked            =". $this->app->db->qStr( $blocked      )."
                 WHERE voucher_id   =". $this->app->db->qStr( $voucher_id   );
+
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Status updated message
@@ -1122,6 +1124,10 @@ class Voucher extends Components {
 
     public function checkRecordAllowsManualStatusChange($voucher_id, $checkParentInvoice = true, $silent = false) {
 
+        // Disable this feature for now. I may enable or remove in future versions.
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("The voucher cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        return false;
+
         $state_flag = true;
 
         // Is Expired (Live Check)
@@ -1354,6 +1360,7 @@ class Voucher extends Components {
                 case 'deleted':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice has been deleted."), $silent);
                     $state_flag = false;
+                    break;
             }
         }
 
@@ -1479,7 +1486,7 @@ class Voucher extends Components {
     #   Check to see if the voucher can be deleted                #
     ###############################################################
 
-    private function checkRecordAllowsDelete($voucher_id, $checkParentInvoice = true, $silent = false) {
+    public function checkRecordAllowsDelete($voucher_id, $checkParentInvoice = true, $silent = false) {
 
         $state_flag = true;
 

@@ -20,10 +20,13 @@ if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
 }
 
+$otherincome_details = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id']);
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',     $this->app->components->otherincome->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['otherincome_id']));
-$this->app->smarty->assign('otherincome_status',              $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id'], 'status')             );
+$this->app->smarty->assign('otherincome_status',              $otherincome_details['status'] );
+$this->app->smarty->assign('otherincome_status_display_name',$this->app->components->otherincome->getStatusDisplayName($otherincome_details['status']));
 $this->app->smarty->assign('otherincome_statuses',            $this->app->components->otherincome->getStatuses() );
-$this->app->smarty->assign('allowed_to_cancel',            $this->app->components->otherincome->checkRecordAllowsCancel(\CMSApplication::$VAR['otherincome_id'])    );
+$this->app->smarty->assign('allowed_to_cancel',            $this->app->components->otherincome->checkRecordAllowsVoid(\CMSApplication::$VAR['otherincome_id'])    );
 $this->app->smarty->assign('allowed_to_delete',            $this->app->components->otherincome->checkRecordAllowsDelete(\CMSApplication::$VAR['otherincome_id'])              );
 $this->app->smarty->assign('otherincome_selectable_statuses',     $this->app->components->otherincome->getStatuses(true));

@@ -42,7 +42,7 @@ if(isset(\CMSApplication::$VAR['close_supplier']) &&$this->app->components->supp
 $supplier_details = $this->app->components->supplier->getRecord(\CMSApplication::$VAR['supplier_id']);
 
 // Build the page with the current status from the database
-//$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->supplier->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['supplier_id']));
+$this->app->smarty->assign('allowed_to_change_status',     $this->app->components->supplier->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['supplier_id']));
 $this->app->smarty->assign('allowed_to_activate',          $this->app->components->supplier->checkRecordAllowsActivate(\CMSApplication::$VAR['supplier_id']));
 $this->app->smarty->assign('allowed_to_suspend',           $this->app->components->supplier->checkRecordAllowsSuspend(\CMSApplication::$VAR['supplier_id']));
 $this->app->smarty->assign('allowed_to_close',             $this->app->components->supplier->checkRecordAllowsClose(\CMSApplication::$VAR['supplier_id']));

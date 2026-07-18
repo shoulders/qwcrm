@@ -28,6 +28,7 @@
 
                                 <!-- Update Status Button -->
                                 <td class="olotd4" align="center" width="33%">
+                                    <p><b>{t}Current Status{/t}:</b> {$expense_status_display_name}</p>
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>
                                         <form action="index.php?component=expense&page_tpl=status&expense_id={$expense_id}" method="post">
@@ -41,17 +42,7 @@
                                             <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />
                                         </form>
                                     {else}
-                                        <br />
-                                        <b>{t}Current Status{/t} =
-                                        {section name=s loop=$expense_statuses}
-                                            {if $expense_status == $expense_statuses[s].status_key}{$expense_statuses[s].display_name}{/if}
-                                        {/section}
-                                        </b>
-                                        <br />
-                                        <br />
                                         {t}This Expense cannot have it's status changed because it's current state does not allow it.{/t}
-                                        <br />
-                                        <br />
                                     {/if}
                                 </td>
 

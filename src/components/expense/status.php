@@ -20,9 +20,12 @@ if(isset(\CMSApplication::$VAR['change_status'])){
     $this->app->system->page->forcePage('expense', 'status&expense_id='.\CMSApplication::$VAR['expense_id']);
 }
 
+$expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
+
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',        $this->app->components->expense->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['expense_id'])       );
-$this->app->smarty->assign('expense_status',                  $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id'], 'status')             );
+$this->app->smarty->assign('expense_status',                  $expense_details['status']            );
+$this->app->smarty->assign('expense_status_display_name',     $this->app->components->expense->getStatusDisplayName($expense_details['status']));
 $this->app->smarty->assign('expense_statuses',                $this->app->components->expense->getStatuses() );
 $this->app->smarty->assign('allowed_to_delete',               $this->app->components->expense->checkRecordAllowsDelete(\CMSApplication::$VAR['expense_id'])              );
 $this->app->smarty->assign('expense_selectable_statuses',     $this->app->components->expense->getStatuses(true) );

@@ -569,8 +569,12 @@ class Payment extends Components {
             return false;
         }
 
-        // Set the appropriate voided_on value
-        $voided_on = ($new_status == 'voided') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
+        // Has the payment been voided
+        if($new_status == 'voided') {
+            $voided_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
+        } else {
+            $voided_on = null;
+        }
 
         // Build SQL
         $sql = "UPDATE ".PRFX."payment_records SET
@@ -699,6 +703,7 @@ class Payment extends Components {
                 direction       = '',
                 status          = 'deleted',
                 amount          = 0.00,
+                voided_on       = NULL,
                 last_active     = NULL,
                 note            = '',
                 additional_info = ''
@@ -795,6 +800,10 @@ class Payment extends Components {
     ########################################################## This is applied to all payment records
 
     public function checkRecordAllowsManualStatusChange($payment_id, $silent = false) {
+
+        // Disable this feature for now. I may enable or remove in future versions.
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("The payment cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        return false;
 
         $state_flag = true;
 

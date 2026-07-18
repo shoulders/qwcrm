@@ -375,8 +375,13 @@ class Supplier extends Components {
             return false;
         }
 
-        // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
+        // Is the new status a "closed" status
+        // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
+        if(in_array($new_status, array('closed', 'deleted'))) {
+            $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
+        } else {
+            $closed_on = null;
+        }
 
         // Build SQL
         $sql = "UPDATE ".PRFX."supplier_records SET
@@ -558,6 +563,10 @@ class Supplier extends Components {
     ###########################################################
 
     public function checkRecordAllowsManualStatusChange($supplier_id, $silent = false) {
+
+        // Disable this feature for now. I may enable or remove in future versions.
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("The supplier cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        return false;
 
         $state_flag = true;
 
