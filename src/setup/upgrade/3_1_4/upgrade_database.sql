@@ -1286,3 +1286,19 @@ INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
 UPDATE `#__supplier_records` SET `additional_info` = '{\"reason_for_closing\":\"Supplier was cancelled prior to the upgrade.\"}' WHERE `#__supplier_records`.`status` = 'cancelled';
 UPDATE `#__supplier_records` SET `closed_on` = `last_active` WHERE status = 'cancelled';
 UPDATE `#__supplier_records` SET `status` = 'closed' WHERE `#__supplier_records`.`status` = 'cancelled';
+
+-- Converting otherincome from Cancel to Void --
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'payment:void';
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'otherincome:cancel';
+UPDATE `#__otherincome_statuses` SET `status_key` = 'voided' WHERE `status_key` = 'cancelled';
+UPDATE `#__otherincome_statuses` SET `display_name` = 'Voided' WHERE `display_name` = 'cancelled';
+ALTER TABLE `#__otherincome_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
+UPDATE `#__otherincome_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
+UPDATE `#__otherincome_records` SET `voided_on` = `closed_on` WHERE `status` = 'voided';
+
+-- Converting creditnote from Cancel to Void --
+UPDATE `#__creditnote_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__creditnote_statuses`.`id` = 5;
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'creditnote:cancel';
+ALTER TABLE `#__creditnote_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
+UPDATE `#__creditnote_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
+UPDATE `#__creditnote_records` SET `voided_on` = `closed_on` WHERE `status` = 'voided';

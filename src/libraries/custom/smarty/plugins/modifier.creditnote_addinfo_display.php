@@ -45,8 +45,8 @@ function smarty_modifier_creditnote_addinfo_display($string)
 
         // Apply modifications as required
         switch($key) {
-            case 'reason_for_cancelling' :
-                $html .= '<strong>'._gettext("Reason for Cancelling").':</strong> '.$value.'<br>';
+            case 'reason_for_voiding' :
+                $html .= '<strong>'._gettext("Reason for Voiding").':</strong> '.$value.'<br>';
                 break;
             default :
                 $html .= '<strong>'._gettext($key).':</strong> '.$value.'<br>';

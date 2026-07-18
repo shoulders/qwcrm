@@ -342,13 +342,6 @@ _gettext("INVOICE_STATUS_HELP_CONTENT");
 
 /* Otherincome */
 
-// otherincome:cancel
-//_gettext("OTHERINCOME_CANCEL_PAGE_TITLE");
-//_gettext("OTHERINCOME_CANCEL_META_DESCRIPTION");
-//_gettext("OTHERINCOME_CANCEL_META_KEYWORDS");
-//_gettext("OTHERINCOME_CANCEL_HELP_TITLE");
-//_gettext("OTHERINCOME_CANCEL_HELP_CONTENT");
-
 // otherincome:delete
 //_gettext("OTHERINCOME_DELETE_PAGE_TITLE");
 //_gettext("OTHERINCOME_DELETE_META_DESCRIPTION");
@@ -441,13 +434,6 @@ _gettext("PAYMENT_STATUS_META_DESCRIPTION");
 _gettext("PAYMENT_STATUS_META_KEYWORDS");
 _gettext("PAYMENT_STATUS_HELP_TITLE");
 _gettext("PAYMENT_STATUS_HELP_CONTENT");
-
-// payment:void
-//_gettext("PAYMENT_VOID_PAGE_TITLE");
-//_gettext("PAYMENT_VOID_META_DESCRIPTION");
-//_gettext("PAYMENT_VOID_META_KEYWORDS");
-//_gettext("PAYMENT_VOID_HELP_TITLE");
-//_gettext("PAYMENT_VOID_HELP_CONTENT");
 
 /* Report */
 

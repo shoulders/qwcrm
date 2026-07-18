@@ -46,7 +46,7 @@ _gettext("Pending");
 _gettext("Unused");
 _gettext("Partially Used");
 _gettext("Used");
-_gettext("Cancelled");
+_gettext("Voided");
 _gettext("Deleted");
 
 /* Credit Note Types */
@@ -105,7 +105,7 @@ _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
-_gettext("Cancelled");
+_gettext("Voided");
 _gettext("Deleted");
 
 /* Otherincome Types */
@@ -206,7 +206,6 @@ _gettext("Partially Redeemed");
 _gettext("Redeemed");
 _gettext("Voided");
 _gettext("Suspended");
-_gettext("Cancelled");
 _gettext("Deleted");
 
 /* Workorder Statuses */

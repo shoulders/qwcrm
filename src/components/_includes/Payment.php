@@ -578,7 +578,7 @@ class Payment extends Components {
 
         // Build SQL
         $sql = "UPDATE ".PRFX."payment_records SET
-                status               =". $this->app->db->qStr( $new_status      )."
+                status               =". $this->app->db->qStr( $new_status      ).",
                 voided_on            =". $this->app->db->qStr( $voided_on       )."
                 WHERE payment_id     =". $this->app->db->qStr( $payment_id      );
 

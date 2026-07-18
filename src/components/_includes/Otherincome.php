@@ -332,7 +332,7 @@ class Otherincome extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
+            $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'voided', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -440,7 +440,7 @@ class Otherincome extends Components {
             $closed_on = null;
         }
 
-        // Has the otherincome been voided (once voided, it cannot be re-activated)
+        // Has the otherincome been voided
         if($new_status == 'voided') {
             $voided_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
@@ -511,19 +511,19 @@ class Otherincome extends Components {
     /** Close Functions **/
 
     #####################################
-    #   Cancel Otherincome              #
+    #   Void Otherincome              #
     #####################################
 
-    public function cancelRecord($otherincome_id, $reason_for_cancelling) {
+    public function voidRecord($otherincome_id, $reason_for_voiding) {
 
-        // Change the otherincome status to cancelled (I do this here to maintain consistency)
-        $this->updateStatus($otherincome_id, 'cancelled');
+        // Change the otherincome status to voided (I do this here to maintain consistency)
+        $this->updateStatus($otherincome_id, 'voided');
 
-        // Add Cancelled message to the additional info
-        $this->updateAdditionalInfo($otherincome_id, array('reason_for_cancelling' => $reason_for_cancelling));
+        // Add voided message to the additional info
+        $this->updateAdditionalInfo($otherincome_id, array('reason_for_voiding' => $reason_for_voiding));
 
         // Log activity
-        $logMessage = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $logMessage = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $this->app->components->otherincome->getRecord($otherincome_id, 'supplier_id'), 'otherincome_id' => $otherincome_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -720,7 +720,7 @@ class Otherincome extends Components {
     }
 
     ###############################################################
-    #   Check to see if the otherincome can be Voiding            #
+    #   Check to see if the otherincome can be Voided             #
     ###############################################################
 
     public function checkRecordAllowsVoid($otherincome_id, $silent = false) {
@@ -737,11 +737,11 @@ class Otherincome extends Components {
             case 'unpaid':
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome is partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be voided because the otherincome is partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has payments and is paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be voided because it has payments and is paid."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -749,14 +749,14 @@ class Otherincome extends Components {
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be cancelled because the otherincome has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be deleted because the otherincome has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be voided because the otherincome has payments."), $silent);
             $state_flag = false;
         }
 

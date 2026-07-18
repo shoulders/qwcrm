@@ -22,7 +22,7 @@
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{t}Status{/t}</td>
-                                <td class="olohead" align="center">{t}Cancel{/t}</td>
+                                <td class="olohead" align="center">{t}Void{/t}</td>
                                 <td class="olohead" align="center">{t}Delete{/t}</td>
                             </tr>
                             <tr>
@@ -47,16 +47,16 @@
                                     {/if}
                                 </td>
 
-                                <!-- Cancel Button -->
+                                <!-- Void Button -->
                                 <td class="olotd4" align="center" width="33%">
-                                    {if $allowed_to_cancel}
-                                        <form method="post" action="index.php?component=otherincome&page_tpl=cancel&otherincome_id={$otherincome_id}">
-                                            <textarea id="qform[reason_for_cancelling]" name="qform[reason_for_cancelling]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Cancelling{/t}"/></textarea>
+                                    {if $allowed_to_void}
+                                        <form method="post" action="index.php?component=otherincome&page_tpl=status&otherincome_id={$otherincome_id}">
+                                            <textarea id="qform[reason_for_voiding]" name="qform[reason_for_voiding]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Voiding{/t}"></textarea>
                                             <p>&nbsp;</p>
-                                            <input class="olotd4" name="cancel_otherincome" value="{t}Cancel{/t}" type="submit" onclick="confirm('{t}Are you sure you want to cancel this otherincome? All records relating to this otherincome will be kept but removed from the relevant financial calculations.{/t}');">
+                                            <input class="olotd4" name="void_otherincome" value="{t}Void{/t}" type="submit" onclick="confirm('{t}Are you sure you want to void this otherincome?{/t}');">
                                         </form>
                                     {else}
-                                        {t}This other income cannot be cancelled. You can only cancel an other income if it is open and does not have any payments.{/t}
+                                        {t}This other income cannot be voided. You can only void an other income if it is open and does not have any payments.{/t}
                                     {/if}
                                 </td>
 
