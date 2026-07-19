@@ -452,14 +452,14 @@ class Company extends Components {
 
         // Check there is an uplaoded file
         if($_FILES['logo']['size'] = 0) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("There was no logo uploaded."));
+            $error_flag = true;
         }
 
         // Check for file submission errors
         if ($_FILES['logo']['error'] > 0 ) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Files submission error with Return Code").': ' . $_FILES['logo']['error'] . '<br />');
+            $error_flag = true;
         }
 
         // Get file extension
@@ -468,20 +468,20 @@ class Company extends Components {
 
         // Validate the uploaded file is an allowed file type
         if (!in_array($fileExtension, $allowedExt)) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it does not have an allowed file extension."));
+            $error_flag = true;
         }
 
         // Validate the uploaded file is allowed mime type
         if (!in_array($_FILES['logo']['type'], $allowedMime)) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it does not have an allowed mime type."));
+            $error_flag = true;
         }
 
         // Validate the uploaded file is not to big
         if ($_FILES['logo']['size'] > $maxAllowedSize) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it is too large.").' '._gettext("The maximum size is ").' '.($maxAllowedSize/1024/1024).'MB');
+            $error_flag = true;
         }
 
         // If no errors

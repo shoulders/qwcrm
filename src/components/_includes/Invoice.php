@@ -1091,14 +1091,14 @@ defined('_QWEXEC') or die;
 
         // Check there is an uploaded file
         if($_FILES['invoice_prefill_csv']['size'] = 0) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("There was no csv uploaded."));
+            $error_flag = true;
         }
 
         // Check for file submission errors
         if ($_FILES['invoice_prefill_csv']['error'] > 0 ) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Files submission error with Return Code").': ' . $_FILES['invoice_prefill_csv']['error'] . '<br />');
+            $error_flag = true;
         }
 
         // Get file extension
@@ -1107,20 +1107,20 @@ defined('_QWEXEC') or die;
 
         // Validate the uploaded file is an allowed file type
         if (!in_array($fileExtension, $allowedExt)) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new csv because it does not have an allowed file extension."));
+            $error_flag = true;
         }
 
         // Validate the uploaded file is allowed mime type
         if (!in_array($_FILES['invoice_prefill_csv']['type'], $allowedMime)) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new csv because it does not have an allowed mime type."));
+            $error_flag = true;
         }
 
         // Validate the uploaded file is not to big
         if ($_FILES['invoice_prefill_csv']['size'] > $maxAllowedSize) {
-            $error_flag = true;
             $this->app->system->variables->systemMessagesWrite('warning', _gettext("Failed to upload the new logo because it is too large.").' '._gettext("The maximum size is ").' '.($maxAllowedSize/1024/1024).'MB');
+            $error_flag = true;
         }
 
         // If no errors
