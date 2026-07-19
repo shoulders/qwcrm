@@ -1185,6 +1185,11 @@ class Creditnote extends Components {
         $supplier_id = $creditnote_details['supplier_id'];
         $expense_id = $creditnote_details['expense_id'];
 
+        // Validate Date and Expiry Date
+        if(!$this->app->system->general->compareDateAndExpiryDate($qform['date'], $qform['expiry_date'])){
+            $state_flag = false;
+        }
+
         /** Sales Credit Notes **/
 
         if($client_id) {
@@ -1420,6 +1425,11 @@ class Creditnote extends Components {
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The submission is invalid. You should not see this error, report to admins."));
             $state_flag = false;
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote submission failed validation and was not committed to the database. Fix and re-submit."));
         }
 
         return $state_flag;

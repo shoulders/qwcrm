@@ -869,7 +869,7 @@ class Voucher extends Components {
     #   Check to see if the voucher is expired      #  // This will close the voucher if expired
     #################################################  // This does nto change the vouchers status
 
-    private function checkVoucherIsExpired($voucher_id) {
+    public function checkVoucherIsExpired($voucher_id) {
 
         $expired_status = false;
         $voucher_details = $this->getRecord($voucher_id);
@@ -971,6 +971,11 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
         return $state_flag;
 
     }
@@ -984,9 +989,14 @@ class Voucher extends Components {
 
         $state_flag = true;
 
-        // Check the expiry date
+        // Check the expiry date (messages handled in the function)
         if(!$this->checkExpiryDateIsValid($qform['expiry_date'])){
             $state_flag = false;
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher submission failed validation and was not committed to the database. Fix and re-submit."));
         }
 
         return $state_flag;

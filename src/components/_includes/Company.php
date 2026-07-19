@@ -184,65 +184,58 @@ class Company extends Components {
 
     }
 
-
-
     ##########################################
-    #      Get Company Opening Hours         # // return opening hours in smarty/datetime/timestamp with an optional specified date (2019-05-72)
+    #   Get Company Opening Hours            #
     ##########################################
+
+    // Return the opening and closing times in various formats
+
+    // $event (opening_time/closing_time) - Select the opening or closing time to return
+    // $type (smartytime/datetime/timestamp) - Output format
+       // smartytime - Output in smartytime builder format (e.g. company hours)
+       // datetime   - Output results in a datetime format (e.g. Schedule Matrix)
+       // timestamp  - Output results in a timestamp (not currently used)
+    // $date (e.g. 2019-05-72) - Optional date to append to the outputted hours and minutes (e.g. Schedule Matrix). DATE_FORMAT is expected unless overridden.
+    // $date_format (e.g. '%Y-%m-%d') - Specify the format of the input date format. This overrides DATE_FORMAT. When needed, is used to prevent errors due to ambiguity.
 
     public function getOpeningHours($event, $type, $date = null, $date_format = null) {
 
-        // Convert Date to time stamp
+        // Convert Date to timestamp
         if($date) {
-            $date_timestamp = $this->app->system->general->dateToTimestamp($date, $date_format);
+            $timestamp = $this->app->system->general->dateToTimestamp($date, $date_format);
         }
 
-        // Smarty Time Format
-        if($type == 'smartytime') {
-
-            // return opening time in correct format for smartytime builder
-            if($event == 'opening_time') {
-                return $this->getRecord('opening_hour').':'.$this->getRecord('opening_minute').':00';
-            }
-
-            // return closing time in correct format for smartytime builder
-            if($event == 'closing_time') {
-                return $this->getRecord('closing_hour').':'.$this->getRecord('closing_minute').':00';
-            }
-
+        // Correct values from the database by padding a zero when needed
+        // These values are stored as integers. `02:00` is converted to `2` and `0`.
+        // Smarty builder accepts `0` for `00`.
+        if($event == 'opening_time') {
+            $hour   = sprintf('%02d', $this->getRecord('opening_hour'));
+            $minute = sprintf('%02d', $this->getRecord('opening_minute'));
+        } else {
+            $hour   = sprintf('%02d', $this->getRecord('closing_hour'));
+            $minute = sprintf('%02d', $this->getRecord('closing_minute'));
         }
 
-        // MySQL DATETIME format
-        if($type == 'datetime') {
+        // Build the time in the request format format
+        switch($type){
 
-            // return opening time in correct format for smarty time builder
-            if($event == 'opening_time') {
-                //return $date.' '.$this->get_company_details('opening_hour').':'.$this->get_company_details('opening_minute');  // This only allows the use of DATE and not DATETIME
-                return $this->app->system->general->buildMysqlDatetime($this->getRecord('opening_hour'), $this->getRecord('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
-            }
+            // Smarty Time Format (Hours, Minutes, Seconds) ('10:00:00')
+            case 'smartytime':
+                $time = $hour.':'.$minute.':00';
+                break;
 
-            // return closing time in correct format for smarty time builder
-            if($event == 'closing_time') {
-                //return $date.' '.$this->get_company_details('closing_hour').':'.$this->get_company_details('closing_minute');  // This only allows the use of DATE and not DATETIME
+            // MySQL DATETIME format ('2026-07-19 10:00:00')
+            case 'datetime':
+                $time =  $this->app->system->general->timestampToDate(mktime($hour, $minute, 0, date('m', $timestamp), date('d', $timestamp), date('Y', $timestamp)), 'datetime');
+                break;
 
-                return $this->app->system->general->buildMysqlDatetime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
-            }
+            // Timestamp (not currently used)
+            case 'timestamp':
+                $time =  mktime($hour, $minute, 0, date('m', $timestamp), date('d', $timestamp), date('Y', $timestamp));
+                break;
         }
 
-        // Unix Timestamp
-        if($type == 'timestamp') {
-
-            // return opening time in correct format for smarty time builder
-            if($event == 'opening_time') {
-                return mktime($this->getRecord('opening_hour'), $this->getRecord('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
-            }
-
-            // return closing time in correct format for smarty time builder
-            if($event == 'closing_time') {
-                return mktime($this->getRecord('closing_hour'), $this->getRecord('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
-            }
-
-        }
+        return $time;
 
     }
 
@@ -327,9 +320,9 @@ class Company extends Components {
 
     }
 
-    ##########################################
-    #        Update Company Hours            #
-    ##########################################
+    ########################################## // These values are stored as integers (I could use string if I wanted 00)
+    #        Update Company Hours            # // `02:00` is converted to `2` and `0`.
+    ########################################## // Smarty builder accepts `0` for `00`
 
     public function updateOpeningHours($openingTime, $closingTime) {
 
@@ -409,7 +402,7 @@ class Company extends Components {
     /** Check Functions **/
 
     ##########################################
-    #  Check Start and End times are valid   #
+    #  Check Start and End times are valid   # // the variables supplied are timestamps
     ##########################################
 
     public function checkOpeningHoursValid($start_time, $end_time) {

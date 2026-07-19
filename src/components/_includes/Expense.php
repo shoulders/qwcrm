@@ -597,6 +597,15 @@ class Expense extends Components {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot have a negative or zero gross amount."));
             $state_flag = false;
         }
+        // Validate Date and Due Date
+        if(!$this->app->system->general->compareDateAndDueDate($qform['date'], $qform['due_date'])){
+            $state_flag = false;
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
 
         return $state_flag;
 

@@ -704,43 +704,108 @@ class General extends System {
 
     }
 
-    ##########################################
-    #   Convert Date into Unix Timestamp     #  // $date_format is not currently used
-    ##########################################
+    ################################################## // $date_to_convert = Smarty date formats
+    #   Convert Date String into Timestamp/Date/     # // $returntype = timestamp, mysql_date, mysql_datetime,  datetime_object
+    #   MySQL Date/MySQL DateTime/DateTime Object    # // $date_format - This is the format of the input date, by default it is DATE_FORMAT
+    ##################################################
 
-    function dateToTimestamp($date_to_convert, $date_format = null) {
+    private function convertDate($date_to_convert, $return_type = 'timestamp', $date_format = null) {
 
         // http://php.net/manual/en/datetime.createfromformat.php
-        // Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
+        // Be warned that a DateTime object created without explicitly providing the time portion will have the current time set instead of 00:00:00.
+        // the ! allows use without supplying the time portion
         // can also use - instead of /
-        // the ! allows the use without supplying the time portion
         // this works for all formats of dates where as mktime() might be a bit dodgy
 
-        switch(!is_null($date_format) ? $date_format : DATE_FORMAT) {
+        switch (!is_null($date_format) ? $date_format : DATE_FORMAT) {
 
             case '%d/%m/%Y':
-            return DateTime::createFromFormat('!d/m/Y', $date_to_convert)->getTimestamp();
+                $format = '!d/m/Y';
+                break;
 
             case '%d/%m/%y':
-            return DateTime::createFromFormat('!d/m/y', $date_to_convert)->getTimestamp();
+                $format = '!d/m/y';
+                break;
 
             case '%m/%d/%Y':
-            return DateTime::createFromFormat('!m/d/Y', $date_to_convert)->getTimestamp();
+                $format = '!m/d/Y';
+                break;
 
             case '%m/%d/%y':
-            return DateTime::createFromFormat('!m/d/y', $date_to_convert)->getTimestamp();
+                $format = '!m/d/y';
+                break;
 
             case '%Y-%m-%d':
-            return DateTime::createFromFormat('!Y-m-d', $date_to_convert)->getTimestamp();
+                $format = '!Y-m-d';
+                break;
 
-            // This should be for MySQL DATETIME format
-            case 'Y-m-d H:i:s' || 'datetime':
-            return DateTime::createFromFormat('Y-m-d H:i:s', $date_to_convert)->getTimestamp();
+            // This is the MySQL DATETIME format ('2026-07-19 10:00:00')
+            case 'datetime':
+                $format = 'Y-m-d H:i:s';
+                break;
+
+            default:
+                return null;
 
         }
 
-        return;
+        $date_object = DateTime::createFromFormat($format, $date_to_convert);
 
+        if ($date_object === false) {
+            return null;
+        }
+
+        switch ($return_type) {
+
+            case 'timestamp':
+                return $date_object->getTimestamp();
+
+            case 'mysql_date':
+                return $date_object->format('Y-m-d');
+
+            case 'mysql_datetime':
+                return $date_object->format('Y-m-d H:i:s');
+
+            case 'datetime_object':
+                return $date_object;
+
+            default:
+                return null;
+
+        }
+
+    }
+
+    ##########################################
+    #   Convert Date into Unix Timestamp     # // Wrapper
+    ##########################################
+
+    function dateToTimestamp($date_to_convert, $date_format = null) {
+        return convertDate($date_to_convert, 'timestamp', $date_format);
+    }
+
+    ############################################
+    #   Convert Date into DateTime Object      # // Wrapper
+    ############################################
+
+    function dateToDateTimeObject($date_to_convert, $date_format = null) {
+        return $this->convertDate($date_to_convert, 'datetime_object', $date_format);
+    }
+
+    ############################################
+    #   Convert Date into MySQL DATE Format    # // Wrapper
+    ############################################
+
+    function dateToMysqlDate($date_to_convert, $date_format = null) {
+        return $this->convertDate($date_to_convert, 'mysql_date', $date_format);
+    }
+
+    ############################################
+    #   Convert Date into MySQL DATETIME       # // Wrapper
+    ############################################ // I am not sure this will be used, if i remove, modfy the rapped function
+
+    function dateToMysqlDatetime($date_to_convert, $date_format = null) {
+        return $this->convertDate($date_to_convert, 'mysql_datetime', $date_format);
     }
 
     ################################################
@@ -824,11 +889,45 @@ class General extends System {
     #    Get Timestamp from year/month/day      #
     #############################################
 
-    function convertYearMonthDayToTimestamp($year, $month, $day) {
+    function yearMonthDayToTimestamp($year, $month, $day) {
 
             return DateTime::createFromFormat('!Y/m/d', $year.'/'.$month.'/'.$day)->getTimestamp();
 
     }
+
+    #########################################################
+    #   Return Date in correct format from year/month/day   #  // only used in schedule
+    #########################################################
+
+    function yearMonthDayToDate($year, $month, $day) {
+
+        // Ensure months supplied as 2 digits
+        if(strlen($month) == 1) {$month = '0'.$month;}
+
+        // Ensure days supplied as 2 digits
+        if(strlen($day) == 1) {$day = '0'.$day;}
+
+        switch(DATE_FORMAT) {
+
+            case '%d/%m/%Y':
+            return $day."/".$month."/".$year;
+
+            case '%d/%m/%y':
+            return $day.'/'.$month.'/'.substr($year, 2);
+
+            case '%m/%d/%Y':
+            return $month.'/'.$day.'/'.$year;
+
+            case '%m/%d/%y':
+            return $month.'/'.$day.'/'.substr($year, 2);
+
+            case '%Y-%m-%d':
+            return $year.'-'.$month.'-'.$day;
+
+        }
+
+    }
+
 
     ##########################################
     #   Timestamp to calendar date format    #
@@ -862,6 +961,11 @@ class General extends System {
 
             case '%Y-%m-%d':
             return date('Y-m-d', $timestamp);
+
+            // This is the MySQL DATETIME format ('2026-07-19 10:00:00')
+            case 'Y-m-d H:i:s':
+            case 'datetime':
+            return date('Y-m-d H:i:s', $timestamp);
 
         }
 
@@ -905,40 +1009,6 @@ class General extends System {
 
     }
 
-    ############################################
-    #   Convert Date into MySQL DATE Format    #  // $date_format is not currently used
-    ############################################
-
-    function dateToMysqlDate($date_to_convert, $date_format = null) {
-
-        // http://php.net/manual/en/datetime.createfromformat.php
-        // Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
-        // can also use - instead of /
-        // the ! allows the use without supplying the time portion
-
-        switch(!is_null($date_format) ? $date_format : DATE_FORMAT) {
-
-            case '%d/%m/%Y':
-            return DateTime::createFromFormat('!d/m/Y', $date_to_convert)->format('Y-m-d');
-
-            case '%d/%m/%y':
-            return DateTime::createFromFormat('!d/m/y', $date_to_convert)->format('Y-m-d');
-
-            case '%m/%d/%Y':
-            return DateTime::createFromFormat('!m/d/Y', $date_to_convert)->format('Y-m-d');
-
-            case '%m/%d/%y':
-            return DateTime::createFromFormat('!m/d/y', $date_to_convert)->format('Y-m-d');
-
-            case '%Y-%m-%d':
-            return DateTime::createFromFormat('!Y-m-d', $date_to_convert)->format('Y-m-d');
-
-        }
-
-        return;
-
-    }
-
     ##################################################
     #   Get current date in MySQL DATE Format        #  // gives current datetime unless a timstamp is used then that is converted
     ##################################################
@@ -968,48 +1038,49 @@ class General extends System {
     }
 
     ##############################################
-    #   Build MySQL DATETIME                     #
+    #  Validate Date and Due Date                #
     ##############################################
 
-    function buildMysqlDatetime($hour = null, $minute = null, $second = null, $month = null, $day = null, $year = null) {
+    public function compareDateAndDueDate(string $date, string $due_date) {
 
-        $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
-        return date('Y-m-d H:i:s', $timestamp);
+        $state_flag = true;
 
-    }
+        // Convert dates into objects (i could use timestamps)
+        $date = $this->dateToDateTimeObject($date);
+        $due_date = $this->dateToDateTimeObject($due_date);
 
-    #########################################################
-    #   Return Date in correct format from year/month/day   #  // only used in schedule
-    #########################################################
-
-    function convertYearMonthDayToDate($year, $month, $day) {
-
-        // Ensure months supplied as 2 digits
-        if(strlen($month) == 1) {$month = '0'.$month;}
-
-        // Ensure days supplied as 2 digits
-        if(strlen($day) == 1) {$day = '0'.$day;}
-
-        switch(DATE_FORMAT) {
-
-            case '%d/%m/%Y':
-            return $day."/".$month."/".$year;
-
-            case '%d/%m/%y':
-            return $day.'/'.$month.'/'.substr($year, 2);
-
-            case '%m/%d/%Y':
-            return $month.'/'.$day.'/'.$year;
-
-            case '%m/%d/%y':
-            return $month.'/'.$day.'/'.substr($year, 2);
-
-            case '%Y-%m-%d':
-            return $year.'-'.$month.'-'.$day;
-
+        // If date is after due date
+        if($date > $due_date) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Date is after Due Date."));
+            $state_flag = false;
         }
 
+        return $state_flag;
+
     }
+
+    ##############################################
+    #  Validate Date and Expiry Date             #
+    ##############################################
+
+    public function compareDateAndExpiryDate(string $date, string $expiry_date) {
+
+        $state_flag = true;
+
+        // Convert dates into objects (i could use timestamps)
+        $date = $this->dateToDateTimeObject($date);
+        $expiry_date = $this->dateToDateTimeObject($expiry_date);
+
+        // If date is after expiry date
+        if($date > $expiry_date) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Date is after Expiry Date."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
 
     /* Other */
 

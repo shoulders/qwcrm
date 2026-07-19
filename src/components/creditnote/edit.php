@@ -19,6 +19,7 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
     $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.\CMSApplication::$VAR['creditnote_id']);
 } else {
 
+    /* I dont think block is needed
     // Get credit note details from whichever source, and fill in the blanks
     $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']);
     \CMSApplication::$VAR['qform'] = \CMSApplication::$VAR['qform'] ?? array();
@@ -26,6 +27,10 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
 
     // Get credit note items (if present) from whichever source
     $creditnote_items = \CMSApplication::$VAR['qform']['creditnote_items'] ?? $this->app->components->creditnote->getItems(\CMSApplication::$VAR['creditnote_id']) ?? null;
+    */
+
+    // Prevent undefined variable errors
+    \CMSApplication::$VAR['qform']['creditnote_items'] = \CMSApplication::$VAR['qform']['creditnote_items'] ?? null;
 
     // Update credit note (if submited)
     if(isset(\CMSApplication::$VAR['submit']))
@@ -33,23 +38,36 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
         // Check the submission is valid, if not, reload the page with an error message
         if($this->app->components->creditnote->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {
-            $this->app->components->creditnote->insertItems($creditnote_details['creditnote_id'], $creditnote_items);
-            $this->app->components->creditnote->updateRecord($creditnote_details);
-            $this->app->components->creditnote->recalculateTotals($creditnote_details['creditnote_id']);
+            $this->app->components->creditnote->updateRecord(\CMSApplication::$VAR['qform']);
+            $this->app->components->creditnote->insertItems(\CMSApplication::$VAR['qform']['creditnote_id'], \CMSApplication::$VAR['qform']['creditnote_items']);
+            $this->app->components->creditnote->recalculateTotals(\CMSApplication::$VAR['qform']['creditnote_id']);
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Credit note updated successfully."));
 
             // Load credit note record - this makes sure any calculations are taken into account such as balance and status
             //$creditnote_details = $this->app->components->creditnote->getRecord($creditnote_details['creditnote_id']);
 
             // Load details page
-            $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.$creditnote_details['creditnote_id']);
+            $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.\CMSApplication::$VAR['qform']['creditnote_id']);
+
+        // Submission has failed validation,
+        } else {
+            $submitFailedValidation = true;
         }
+    }
+
+    // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+    if($submitFailedValidation ?? null) {
+        $creditnote_details = array_merge($this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']), \CMSApplication::$VAR['qform']);
+        $creditnote_items = \CMSApplication::$VAR['qform']['creditnote_items'] ;
+    } else {
+        $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']);
+        $creditnote_items = $this->app->components->creditnote->getItems(\CMSApplication::$VAR['creditnote_id']);
     }
 
     // Disable all VAT codes except `T9` for `Standalone` Action Type CR - I could specify only for VAT tax systems, but I have not as it makes no difference
     if($creditnote_details['action_type'] == 'standalone') {
-            $vat_tax_codes = $this->app->components->company->getVatTaxCodes(false, null, ['T9']);
-            $default_vat_tax_code = 'T9';
+        $vat_tax_codes = $this->app->components->company->getVatTaxCodes(false, null, ['T9']);
+        $default_vat_tax_code = 'T9';
     } else {
         $vat_tax_codes = $this->app->components->company->getVatTaxCodes(false);
         $default_vat_tax_code = $this->app->components->company->getDefaultVatTaxCode($creditnote_details['tax_system']);

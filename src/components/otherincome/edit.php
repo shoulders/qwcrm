@@ -19,6 +19,7 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
     $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
 } else {
 
+    /* I dont think block is needed
     // Get otherincome details from whichever source, and fill in the blanks (page submission or new)
     $otherincome_details = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id']);
     \CMSApplication::$VAR['qform'] = \CMSApplication::$VAR['qform'] ?? array();
@@ -26,6 +27,10 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
 
     // Get otherincome items (if present) from whichever source
     $otherincome_items = \CMSApplication::$VAR['qform']['otherincome_items'] ?? $this->app->components->otherincome->getItems(\CMSApplication::$VAR['otherincome_id']) ?? null;
+    */
+
+    // Prevent undefined variable errors
+    \CMSApplication::$VAR['qform']['otherincome_items'] = \CMSApplication::$VAR['qform']['otherincome_items'] ?? null;
 
     ##################################
     #      Update otherincome        #
@@ -35,13 +40,13 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
     if(isset(\CMSApplication::$VAR['submit']))
     {
         // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
-        if($this->app->components->otherincome->checkRecordSubmissionIsValid($otherincome_details))
+        if($this->app->components->otherincome->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {
             // Update the record
-            $this->app->components->otherincome->updateRecord($otherincome_details);
-            $this->app->components->otherincome->insertItems($otherincome_details['otherincome_id'], $otherincome_items);
-            $this->app->components->otherincome->recalculateTotals($otherincome_details['otherincome_id']);
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense updated successfully."));
+            $this->app->components->otherincome->updateRecord(\CMSApplication::$VAR['qform']);
+            $this->app->components->otherincome->insertItems(\CMSApplication::$VAR['qform']['otherincome_id'], \CMSApplication::$VAR['qform']['otherincome_items']);
+            $this->app->components->otherincome->recalculateTotals(\CMSApplication::$VAR['qform']['otherincome_id']);
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome updated successfully."));
 
             // Load the new otherincome page
             if (\CMSApplication::$VAR['submit'] == 'submitandnew')
@@ -52,7 +57,7 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
             // Load the new payment page for otherincome
             elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment')
             {
-                $this->app->system->page->forcePage('payment', 'new&type=otherincome&otherincome_id='.$otherincome_details['otherincome_id']);
+                $this->app->system->page->forcePage('payment', 'new&type=otherincome&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id']);
             }
 
             else
@@ -61,14 +66,27 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
                 //$otherincome_details = $this->app->components->otherincome->getRecord($otherincome_details['otherincome_id']);
 
                 // Load details page
-                $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$otherincome_details['otherincome_id']);
+                $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id']);
             }
+
+        // Submission has failed validation,
+        } else {
+            $submitFailedValidation = true;
         }
+    }
+
+    // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+    if($submitFailedValidation ?? null) {
+        $otherincome_details = array_merge($this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id']), \CMSApplication::$VAR['qform']);
+        $otherincome_items = \CMSApplication::$VAR['qform']['otherincome_items'] ;
+    } else {
+        $otherincome_details = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id']);
+        $otherincome_items = $this->app->components->otherincome->getItems(\CMSApplication::$VAR['otherincome_id']);
     }
 
     // Build the page
 
-    // Expense Details
+    // Otherincome Details
     $this->app->smarty->assign('otherincome_details',       $otherincome_details);
     $this->app->smarty->assign('otherincome_items_json',    json_encode($otherincome_items));
 

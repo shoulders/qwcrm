@@ -61,8 +61,8 @@ class Otherincome extends Components {
 
     public function insertItems($otherincome_id, $items = null) {
 
-        // Get Otherincome Details
-        $otherincome_details = $this->getRecord($otherincome_id);
+        // Get Otherincome Tax System
+        $tax_system = $this->getRecord($otherincome_id, 'tax_system');
 
         // Delete all items from the otherincome to prevent duplication
         $sql = "DELETE FROM ".PRFX."otherincome_items WHERE otherincome_id=".$this->app->db->qStr($otherincome_id);
@@ -76,15 +76,14 @@ class Otherincome extends Components {
             foreach($items as $item) {
 
                 // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes)
-                $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($otherincome_details['tax_system']);
+                $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($tax_system);
 
                 $sql .="(".
-                        $this->app->db->qStr( $otherincome_id                    ).",".
-                        $this->app->db->qStr( $otherincome_details['tax_system'] ).",".
+                        $this->app->db->qStr( $otherincome_id                   ).",".
+                        $this->app->db->qStr( $tax_system                       ).",".
                         $this->app->db->qStr( $item['description']              ).",".
                         $this->app->db->qStr( $item['unit_qty']                 ).",".
                         $this->app->db->qStr( $item['unit_net']                 ).",".
-
                         $this->app->db->qStr( $vat_tax_code                     ).",".
                         $this->app->db->qStr( $item['unit_tax_rate']            ).",".
                         $this->app->db->qStr( $item['unit_tax']                 ).",".
@@ -607,6 +606,16 @@ class Otherincome extends Components {
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot have a negative or zero gross amount."));
             $state_flag = false;
+        }
+
+        // Validate Date and Due Date
+        if(!$this->app->system->general->compareDateAndDueDate($qform['date'], $qform['due_date'])){
+            $state_flag = false;
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome submission failed validation and was not committed to the database. Fix and re-submit."));
         }
 
         return $state_flag;

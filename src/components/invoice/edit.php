@@ -42,15 +42,28 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
         if($this->app->components->invoice->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'])){
 
             // Update the record
-            $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['invoice_items']);
             $this->app->components->invoice->updateRecord(\CMSApplication::$VAR['qform']);
+            $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['invoice_items']);
             $this->app->components->invoice->recalculateTotals(\CMSApplication::$VAR['qform']['invoice_id']);
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice updated successfully."));
 
             // Load details page
             $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
+
+        // Submission has failed validation,
+        } else {
+            $submitFailedValidation = true;
         }
 
+    }
+
+    // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+    if($submitFailedValidation ?? null) {
+        $invoice_details = array_merge($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']), \CMSApplication::$VAR['qform']);
+        $invoice_items = \CMSApplication::$VAR['qform']['invoice_items'] ;
+    } else {
+        $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
+        $invoice_items = $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id']);
     }
 
     // Build the page
@@ -59,7 +72,7 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
     $this->app->smarty->assign('company_details',          $this->app->components->company->getRecord());
     $this->app->smarty->assign('client_details',           $this->app->components->client->getRecord($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'client_id')));
     $this->app->smarty->assign('workorder_details',        $this->app->components->workorder->getRecord($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'workorder_id')));
-    $this->app->smarty->assign('invoice_details',          $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']));
+    $this->app->smarty->assign('invoice_details',          $invoice_details);
 
     // Prefill Items
     $this->app->smarty->assign('invoice_prefill_items',    $this->app->components->invoice->getPrefillItems(1));
@@ -67,12 +80,13 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
     $this->app->smarty->assign('default_vat_tax_code',     $this->app->components->company->getDefaultVatTaxCode($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'tax_system')));
 
     // Invoice Items
-    $this->app->smarty->assign('invoice_items_json',       json_encode($this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'])));
+    $this->app->smarty->assign('invoice_items_json',       json_encode($invoice_items));
     $this->app->smarty->assign('display_vouchers',         $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']));
 
-    // Sub Totals
+    // Sub Totals - // TODO: these are not handled by javascript so will not match on failed submit validation refresh
+                    // javascript need to update totals using voucher + update item sub-totals
     $this->app->smarty->assign('invoice_items_subtotals',  $this->app->components->invoice->getItemsSubtotals(\CMSApplication::$VAR['invoice_id']));
-    $this->app->smarty->assign('voucher_items_subtotals', $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id']));
+    $this->app->smarty->assign('voucher_items_subtotals',  $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id']));
 
     // Payment Details
     $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes());
