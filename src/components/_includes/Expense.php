@@ -618,7 +618,7 @@ class Expense extends Components {
         $expense_details = $this->getRecord($expense_id);
 
         // Status checks
-        switch($xpense_details['status']) {
+        switch($expense_details['status']) {
             case 'pending':
                 break;
             case 'unpaid':
