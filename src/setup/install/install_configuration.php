@@ -13,6 +13,7 @@ class QConfig {
     public $autodetect_language = '1';
     public $google_server = 'https://www.google.com/';
     public $simple_messages = '0';
+    public $display_clock = '24';
     public $email_online = '1';
     public $email_mailer = 'phpmail';
     public $email_mailfrom = '';

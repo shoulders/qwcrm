@@ -184,6 +184,17 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Simple Messages{/t}</strong></div><hr><div>{t escape=js}If enabled, instead of QWcrm reporting every reason a test failed, it will just return which test failed.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
+                    <tr>
+                        <td align="right"><b>{t}Display Clock{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="display_clock" name="qform[display_clock]">
+                                <option value="0"{if $qwcrm_config.display_clock == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="12"{if $qwcrm_config.display_clock == '12'} selected{/if}>{t}12 Hour{/t}</option>
+                                <option value="24"{if $qwcrm_config.display_clock == '24'} selected{/if}>{t}24 Hour{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}Display Clock{/t}</strong></div><hr><div>{t escape=js}If enabled, a clock will be shown in the header in the selected format.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>
 
                     <!-- Mail Settings -->
 
