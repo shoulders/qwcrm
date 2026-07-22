@@ -969,14 +969,14 @@ class Voucher extends Components {
         $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
 
         // Is the Client active
-        if(!$this->app->components->client->getRecord($invoice['client_id'], 'active'))
+        if(!$this->app->components->client->getRecord($invoice_details['client_id'], 'active'))
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a voucher against this invoice.", $silent));
             $state_flag = false;
         }
 
         // Check the invoice status is either pending or unpaid
-        if(!in_array($invoice['status']), ['pending', 'unpaid'])){
+        if(!in_array($invoice_details['status'], ['pending', 'unpaid'])){
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's status does not allow you to add vouchers."), $silent);
             $state_flag = false;
         }

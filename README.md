@@ -108,6 +108,13 @@ The are just some quick instructions for now (Clean Install)
 
 **NB:** Potentially you can just copy all of the files over the top of your current QWcrm installation without moving any files but this might leave old files in place that are no longer used. This method should only be used for quick testing.
 
+## QW / QuantumWarp logo
+
+- The logo is copyrighted and is not open source or free for you to use.
+- All rights reserved.
+- You may use the logo in conjunction with testing this software, but not to imply ownership of, or endorsement by, QuantumWarp, or for any other purpose.
+- You may not use the logo in a production environment.
+
 ## Support
 
 There is a [forum](https://quantumwarp.com/forum/) available for support over at [QuantumWarp](https://quantumwarp.com/forum/)
