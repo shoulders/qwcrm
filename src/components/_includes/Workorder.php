@@ -823,6 +823,27 @@ class WorkOrder extends Components {
 
     /** Check Functions **/
 
+    ###############################################
+    #  Check if a work order can be created       #
+    ###############################################
+
+    public function checkRecordCanBeCreated($client_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($client_id, 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a workorder against it.", $silent));
+            $state_flag = false;
+        }
+
+        if(!$state_flag) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The workdorder cannot be created.", $silent));
+        }
+
+        return $state_flag;
+    }
 
     ############################################################
     #  Check if the workorder status is allowed to be changed  #
@@ -832,8 +853,15 @@ class WorkOrder extends Components {
 
         $state_flag = true;
 
-       // Get the otherincome details
+        // Get the otherincome details
         $workorder_details = $this->getRecord($workorder_id);
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because the client is not active", $silent));
+            $state_flag = false;
+        }
 
         // Status checks
         switch($workorder_details['status']) {
@@ -878,7 +906,14 @@ class WorkOrder extends Components {
         // Get the workorder details
         $workorder_details = $this->getRecord($workorder_id);
 
-                // Status checks
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because the client is not active", $silent));
+            $state_flag = false;
+        }
+
+        // Status checks
         switch($workorder_details['status']) {
             case 'unassigned':
                 break;
@@ -954,6 +989,13 @@ class WorkOrder extends Components {
 
         // Get the workorder details
         $workorder_details = $this->getRecord($workorder_id);
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because the client is not active", $silent));
+            $state_flag = false;
+        }
 
         // Status checks
         switch($workorder_details['status']) {

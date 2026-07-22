@@ -783,6 +783,28 @@ defined('_QWEXEC') or die;
 
     /** Check Functions **/
 
+    ###############################################
+    #  Check if an invoice can be created         #
+    ###############################################
+
+    public function checkRecordCanBeCreated($client_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($client_id, 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create an invoice against it.", $silent));
+            $state_flag = false;
+        }
+
+        if(!$state_flag) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be created.", $silent));
+        }
+
+        return $state_flag;
+    }
+
     #############################################################
     # Validate submitted information before allowing submission #
     #############################################################
@@ -815,6 +837,13 @@ defined('_QWEXEC') or die;
 
         // Get the invoice details
         $invoice_details = $this->getRecord($invoice_id);
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($invoice_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the client is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Is on a different tax system
         if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -884,6 +913,13 @@ defined('_QWEXEC') or die;
         // Get the invoice details
         $invoice_details = $this->getRecord($invoice_id);
 
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($invoice_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot edit this invoice.", $silent));
+            $state_flag = false;
+        }
+
         // Is on a different tax system
         if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because it is on a different Tax system."), $silent);
@@ -948,6 +984,13 @@ defined('_QWEXEC') or die;
 
         // Get the invoice details
         $invoice_details = $this->getRecord($invoice_id);
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($invoice_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot delete this invoice.", $silent));
+            $state_flag = false;
+        }
 
         // Is on a different tax system
         if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {

@@ -1050,7 +1050,7 @@ class Creditnote extends Components {
 
         /** Purchase Credit Notes **/
 
-        elseif($supplier_id){
+        elseif($supplier_id) {
 
             /* Common Tests */
 
@@ -1694,6 +1694,13 @@ class Creditnote extends Components {
         // Get the creditnote details
         $creditnote_details = $this->getRecord($creditnote_id);
 
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($client_id, 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the client is not active.", $silent));
+            $state_flag = false;
+        }
+
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because it is on a different Tax system."), $silent);
@@ -1768,6 +1775,13 @@ class Creditnote extends Components {
 
         // Get the creditnote details
         $creditnote_details = $this->getRecord($creditnote_id);
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($client_id, 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be edited because the client is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -1845,6 +1859,13 @@ class Creditnote extends Components {
         // Get the creditnote details
         $creditnote_details = $this->getRecord($creditnote_id);
 
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($client_id, 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be voided because the client is not active.", $silent));
+            $state_flag = false;
+        }
+
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be voided because it is on a different Tax system."), $silent);
@@ -1919,6 +1940,13 @@ class Creditnote extends Components {
 
         // Get the creditnote details
         $creditnote_details = $this->getRecord($creditnote_id);
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($client_id, 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be deleted because the client is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {

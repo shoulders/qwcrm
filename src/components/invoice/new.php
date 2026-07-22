@@ -8,33 +8,39 @@
 
 defined('_QWEXEC') or die;
 
-// Create an invoice for the supplied workorder
-if(isset(\CMSApplication::$VAR['workorder_id']) && \CMSApplication::$VAR['workorder_id'] && !$this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'invoice_id')) {
+// Check if the record can be created
+if(!$this->app->components->invoice->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'])) {
+    $this->app->system->page->forcePage('workorder', 'search');
+} else {
 
-    // Get client_id from the workorder    
-    \CMSApplication::$VAR['client_id'] = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'client_id');
-    
-    // Create the invoice and return the new invoice_id
-    \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['workorder_id']);
-    
-    // Update the workorder with the new invoice_id
-    $this->app->components->workorder->updateInvoiceId(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']);
+    // Create an invoice for the supplied workorder
+    if(isset(\CMSApplication::$VAR['workorder_id']) && \CMSApplication::$VAR['workorder_id'] && !$this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'invoice_id')) {
 
-    // Load the newly created invoice edit page
-    $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
-    
-} 
+        // Get client_id from the workorder
+        \CMSApplication::$VAR['client_id'] = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'client_id');
 
-// Invoice only
-if((isset(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['invoice_type']) && \CMSApplication::$VAR['client_id'] && \CMSApplication::$VAR['invoice_type'] == 'invoice-only')) {
-    
-    // Create the invoice and return the new invoice_id
-    \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id']);
+        // Create the invoice and return the new invoice_id
+        \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['workorder_id']);
 
-    // Load the newly created invoice edit page
-    $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
-}    
-  
-// Fallback Error Control
-$this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot create an invoice by the method you just tried, report to admins."));
-$this->app->system->page->forcePage('workorder', 'search');
+        // Update the workorder with the new invoice_id
+        $this->app->components->workorder->updateInvoiceId(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']);
+
+        // Load the newly created invoice edit page
+        $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+
+    }
+
+    // Invoice only
+    if((isset(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['invoice_type']) && \CMSApplication::$VAR['client_id'] && \CMSApplication::$VAR['invoice_type'] == 'invoice-only')) {
+
+        // Create the invoice and return the new invoice_id
+        \CMSApplication::$VAR['invoice_id'] = $this->app->components->invoice->insertRecord(\CMSApplication::$VAR['client_id']);
+
+        // Load the newly created invoice edit page
+        $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+    }
+
+    // Fallback Error Control
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot create an invoice by the method you just tried, report to admins."));
+    $this->app->system->page->forcePage('workorder', 'search');
+}

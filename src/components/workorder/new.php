@@ -17,22 +17,28 @@ if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_
     $this->app->system->page->forcePage('client', 'search');
 }
 
-// If a workorder is submitted
-if(isset(\CMSApplication::$VAR['submit'])){
-    
-    // insert the submitted workorder and return it's id
-    \CMSApplication::$VAR['workorder_id'] = $this->app->components->workorder->insertRecord(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['scope'], \CMSApplication::$VAR['description'], \CMSApplication::$VAR['comment']);
+// Check if the record can be created
+if(!$this->app->components->workorder->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'])) {
+    $this->app->system->page->forcePage('workorder', 'search');
+} else {
 
-    // If workorder is to be assigned to an employee
-    if(\CMSApplication::$VAR['assign_to_employee'] === '1') {       
-        $this->app->components->workorder->assignToEmployee(\CMSApplication::$VAR['workorder_id'], $this->app->user->login_user_id);  
+    // If a workorder is submitted
+    if(isset(\CMSApplication::$VAR['submit'])){
+
+        // insert the submitted workorder and return it's id
+        \CMSApplication::$VAR['workorder_id'] = $this->app->components->workorder->insertRecord(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['scope'], \CMSApplication::$VAR['description'], \CMSApplication::$VAR['comment']);
+
+        // If workorder is to be assigned to an employee
+        if(\CMSApplication::$VAR['assign_to_employee'] === '1') {
+            $this->app->components->workorder->assignToEmployee(\CMSApplication::$VAR['workorder_id'], $this->app->user->login_user_id);
+        }
+
+        // load the workorder details page
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("New Work Order created."));
+        $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+
     }
-    
-    // load the workorder details page
-    $this->app->system->variables->systemMessagesWrite('success', _gettext("New Work Order created."));
-    $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
-        
-}
 
-// Build the page
-$this->app->smarty->assign('client_display_name', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'display_name'));
+    // Build the page
+    $this->app->smarty->assign('client_display_name', $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id'], 'display_name'));
+}

@@ -959,27 +959,31 @@ class Voucher extends Components {
 ///////////////////////////////////////////////////////////////////////
 
     ###############################################
-    #  Check if a voucher can be created          #  // Used to hide `Add Voucher` button in invoice:new
+    #  Check if a voucher can be created          #  // Used to hide `Add Voucher` button on invoice:edit
     ###############################################
 
-    public function checkRecordCanBeCreated($invoice_id){
+    public function checkRecordCanBeCreated($invoice_id,  $silent = false){
 
         $state_flag = true;
 
-        // Check the invoice status is either pending or unpaid
-        if(!in_array($this->app->components->invoice->getRecord($invoice_id, 'status'), ['pending', 'unpaid'])){
+        $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($invoice['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a voucher against this invoice.", $silent));
             $state_flag = false;
         }
 
-        // Add Submission Failed Validation message
-        if(!$state_flag){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher submission failed validation and was not committed to the database. Fix and re-submit."));
+        // Check the invoice status is either pending or unpaid
+        if(!in_array($invoice['status']), ['pending', 'unpaid'])){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's status does not allow you to add vouchers."), $silent);
+            $state_flag = false;
         }
 
         return $state_flag;
 
     }
-
 
     #############################################################
     # Validate submitted information before allowing submission #
@@ -1157,6 +1161,13 @@ class Voucher extends Components {
 
         /*  Check the specified voucher record allows change */
 
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($voucher_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because the client is not active.", $silent));
+            $state_flag = false;
+        }
+
         /* Is the voucher closed (This should not be needed because of expiry and status checks)
         if($voucher_details['closed_on'])
         {
@@ -1271,6 +1282,13 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);
 
         /* Check the specified voucher record allows edit */
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($voucher_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because the client is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Is on a different tax system
         if($voucher_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -1398,6 +1416,13 @@ class Voucher extends Components {
 
         /* Check the specified voucher record allows void */
 
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($voucher_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be voided because the client is not active.", $silent));
+            $state_flag = false;
+        }
+
         /* Is the voucher closed (This should not be needed because of expiry and status checks)
         if($voucher_details['closed_on'])
         {
@@ -1510,6 +1535,13 @@ class Voucher extends Components {
         $voucher_details = $this->getRecord($voucher_id);
 
         /* Check the specified voucher record allows delete */
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($voucher_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because the client is not active.", $silent));
+            $state_flag = false;
+        }
 
         /* Is the voucher closed (This should not be needed because of expiry and status checks)
         if($voucher_details['closed_on'])

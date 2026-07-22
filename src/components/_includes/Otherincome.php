@@ -591,6 +591,28 @@ class Otherincome extends Components {
 
     /** Check Functions **/
 
+    ###############################################
+    #  Check if an otherincome can be created     #
+    ###############################################
+
+    public function checkRecordCanBeCreated($supplier_id = null, $silent = false) {
+
+        $state_flag = true;
+
+        // Is there a supplier and are they active
+        if($supplier_id && $this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier is not active so you cannot create an otherincome against it.", $silent));
+            $state_flag = false;
+        }
+
+        if(!$state_flag) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be created.", $silent));
+        }
+
+        return $state_flag;
+    }
+
     #############################################################
     # Validate submitted information before allowing submission #
     #############################################################
@@ -637,6 +659,13 @@ class Otherincome extends Components {
         // Get the otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
 
+        // Is there a supplier and are they active
+        if($otherincome_details['supplier_id'] && $this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the supplier is not active.", $silent));
+            $state_flag = false;
+        }
+
         // Status checks
         switch($otherincome_details['status']) {
             case 'pending':
@@ -681,6 +710,13 @@ class Otherincome extends Components {
 
         // Get the otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
+
+        // Is there a supplier and are they active
+        if($otherincome_details['supplier_id'] && $this->app->components->supplier->getRecord($otherincome_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be edited because the supplier is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Is on a different tax system
         if($otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -738,6 +774,13 @@ class Otherincome extends Components {
 
         // Get the otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
+
+        // Is there a supplier and are they active
+        if($otherincome_details['supplier_id'] && $this->app->components->supplier->getRecord($otherincome_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be voided because the supplier is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Status checks
         switch($otherincome_details['status']) {
@@ -799,6 +842,13 @@ class Otherincome extends Components {
 
         // Get the otherincome details
         $otherincome_details = $this->getRecord($otherincome_id);
+
+        // Is there a supplier and are they active
+        if($otherincome_details['supplier_id'] && $this->app->components->supplier->getRecord($otherincome_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be deleted because the supplier is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Status checks
         switch($otherincome_details['status']) {

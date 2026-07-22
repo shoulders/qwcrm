@@ -579,7 +579,27 @@ class Expense extends Components {
 
     /** Check Functions **/
 
+    ###############################################
+    #  Check if an expense can be created         #
+    ###############################################
 
+    public function checkRecordCanBeCreated($supplier_id = null, $silent = false) {
+
+        $state_flag = true;
+
+        // Is there a supplier and are they active
+        if($supplier_id && $this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier is not active so you cannot create an expense against it.", $silent));
+            $state_flag = false;
+        }
+
+        if(!$state_flag) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be created.", $silent));
+        }
+
+        return $state_flag;
+    }
 
     ############################################################# done
     # Validate submitted information before allowing submission #
@@ -625,6 +645,13 @@ class Expense extends Components {
 
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
+
+        // Is there a supplier and are they active
+        if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the supplier is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Status checks
         switch($expense_details['status']) {
@@ -672,6 +699,13 @@ class Expense extends Components {
 
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
+
+        // Is there a supplier and are they active
+        if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because the supplier is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Is on a different tax system
         if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
@@ -731,6 +765,13 @@ class Expense extends Components {
 
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
+
+        // Is there a supplier and are they active
+        if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because the supplier is not active.", $silent));
+            $state_flag = false;
+        }
 
         // Status checks
         switch($expense_details['status']) {

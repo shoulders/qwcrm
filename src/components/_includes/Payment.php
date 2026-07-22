@@ -726,6 +726,18 @@ class Payment extends Components {
 
     /** Check functions **/
 
+    ###############################################
+    #  Check if a payment can be created          # // does nothing for now
+    ###############################################
+
+    public function checkRecordCanBeCreated($qpayment, $silent = false) {
+
+        $state_flag = true;
+
+        return $state_flag;
+
+    }
+
     ######################################################
     #   Make sure the submitted payment amount is valid  #
     ######################################################
