@@ -382,8 +382,8 @@ class Voucher extends Components {
 
     }
 
-    ##############################################  // All statuses should be summed up,
-    #   Get Invoice Voucher  Sub Totals          #  // deleted vouchers do not have an invoice_id anyway so are ignored
+    ##############################################
+    #   Get Invoice Voucher Sub Totals           #
     ##############################################
 
     public function getInvoiceVouchersSubtotals($invoice_id) {
@@ -393,7 +393,8 @@ class Voucher extends Components {
                 SUM(unit_tax) AS subtotal_tax,
                 SUM(unit_gross) AS subtotal_gross
                 FROM ".PRFX."voucher_records
-                WHERE invoice_id=". $this->app->db->qStr($invoice_id);
+                WHERE invoice_id=". $this->app->db->qStr($invoice_id)."
+                AND status NOT IN ('voided', 'deleted')";
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
