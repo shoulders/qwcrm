@@ -321,11 +321,12 @@ class General extends System {
         // Get the QWcrm database version number (assumes database connection is good)
         $qwcrm_database_version = $this->app->system->general->getQwcrmDatabaseVersionNumber();
 
-        // File System and Database versions match(not needed handles in opening 'if' statement, left for reference)
+        // File System and Database versions match (not needed handles in opening 'if' statement, left for reference)
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {
 
             die(
                 '<div style="color: red;">'.
+                _gettext("File System and Database versions match.").'<br>'.
                 _gettext("You must delete the 'Setup' directory before you can use QWcrm.").'<br>'.
                 '<strong>'.QWCRM_PART_URL.SETUP_DIR.'</strong><br>'.
                 '<strong>'.QWCRM_PHYSICAL_PATH.SETUP_DIR.'</strong>'.
