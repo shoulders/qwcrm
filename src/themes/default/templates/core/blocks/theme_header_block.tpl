@@ -62,12 +62,18 @@
 
             }
 
-            // Updates the clock every second
+            // Run the clock
             jQuery(document).ready(function() {
+
+                // Run clock immediately
+                updateClientClock("client-clock");
+
+                // Register the clock to update every second
                 setInterval(function() {
                     updateClientClock("client-clock")
                 }, 1000);
             } );
+
         </script>
     {/if}
 </head>
@@ -80,16 +86,6 @@
             <tr class="text4">
                 <td width="450" class="text4" align="left">{$greeting_msg}</td>
                 <td class="text4" align="right">{if $display_clock}<span id="client-clock"></span> - {/if}{$todays_display_date}</td>
-                {if $display_clock}
-                    <!-- Load the Clock -->
-                    <script>
-                        // Run immediately
-                        updateClientClock("client-clock");
-
-                        // Update the clock every second
-                        setInterval(function() { updateClientClock("client-clock") }, 1000);
-                    </script>
-                {/if}
         </table>
     </div>
 
