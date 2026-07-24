@@ -1312,3 +1312,6 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'supplier:delet
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'voucher:delete';
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'payment:delete';
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'otherincome:delete';
+
+-- Move Company Hours into company:edit --
+DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'business_hours';

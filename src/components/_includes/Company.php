@@ -67,7 +67,7 @@ class Company extends Components {
                         _gettext("Error occured at").' <strong>function '.__FUNCTION__.'()</strong> '._gettext("when trying to get the variable").' <strong>date_format</strong>'.'<br><br>'.
                         '<strong>'._gettext("Database Error Message").':</strong> '.$this->app->db->ErrorMsg().
                         '</div>'
-                   );
+                    );
 
             } else {
 
@@ -245,6 +245,11 @@ class Company extends Components {
     #  Update Company details   #
     #############################
 
+    // Smarty Time Builder notes
+        // These values are stored as integers (I could use string if I wanted 00)
+        // `02:00` is converted to `2` and `0`.
+        // Smarty builder accepts `0` for `00`
+
     public function updateRecord($qform) {
 
         $sql = null;
@@ -298,6 +303,10 @@ class Company extends Components {
                 currency_symbol         =". $this->app->db->qStr( htmlentities($qform['currency_symbol'])    ).",
                 currency_code           =". $this->app->db->qStr( $qform['currency_code']                    ).",
                 date_format             =". $this->app->db->qStr( $qform['date_format']                      ).",
+                opening_hour            =". $this->app->db->qStr( $qform['openingTime']['Time_Hour']         ).",
+                opening_minute          =". $this->app->db->qStr( $qform['openingTime']['Time_Minute']       ).",
+                closing_hour            =". $this->app->db->qStr( $qform['closingTime']['Time_Hour']         ).",
+                closing_minute          =". $this->app->db->qStr( $qform['closingTime']['Time_Minute']       ).",
                 email_signature         =". $this->app->db->qStr( $qform['email_signature']                  ).",
                 email_signature_active  =". $this->app->db->qStr( $qform['email_signature_active']           ).",
                 email_msg_invoice       =". $this->app->db->qStr( $qform['email_msg_invoice']                ).",
@@ -317,30 +326,6 @@ class Company extends Components {
         $this->app->system->general->writeRecordToActivityLog(_gettext("Company details updated."));
 
         return;
-
-    }
-
-    ########################################## // These values are stored as integers (I could use string if I wanted 00)
-    #        Update Company Hours            # // `02:00` is converted to `2` and `0`.
-    ########################################## // Smarty builder accepts `0` for `00`
-
-    public function updateOpeningHours($openingTime, $closingTime) {
-
-        $sql = "UPDATE ".PRFX."company_record SET
-                opening_hour    =". $this->app->db->qStr( $openingTime['Time_Hour']     ).",
-                opening_minute  =". $this->app->db->qStr( $openingTime['Time_Minute']   ).",
-                closing_hour    =". $this->app->db->qStr( $closingTime['Time_Hour']     ).",
-                closing_minute  =". $this->app->db->qStr( $closingTime['Time_Minute']   );
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        // Assign success message
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Business hours have been updated."));
-
-        // Log activity
-        $this->app->system->general->writeRecordToActivityLog(_gettext("Business hours have been updated."));
-
-        return true;
 
     }
 
@@ -401,25 +386,37 @@ class Company extends Components {
 
     /** Check Functions **/
 
-    ##########################################
-    #  Check Start and End times are valid   # // the variables supplied are timestamps
-    ##########################################
 
-    public function checkOpeningHoursValid($start_time, $end_time) {
+    #############################################################
+    # Validate submitted information before allowing submission #
+    #############################################################
 
-        // If start time is before end time
-        if($start_time > $end_time) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Start Time is after End Time."));
-            return false;
+    public function checkRecordSubmissionIsValid($qform)
+    {
+        $state_flag = true;
+
+        // Convert the times into timestamps, I think todays date is assumed.
+        $opening_time = strtotime($qform['openingTime']['Time_Hour'].':'.$qform['openingTime']['Time_Minute'].':'.'00');
+        $closing_time = strtotime($qform['closingTime']['Time_Hour'].':'.$qform['closingTime']['Time_Minute'].':'.'00');
+
+        // If Business hours start time is before end time
+        if($opening_time > $closing_time) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Business hours opening time is after closing time."));
+            $state_flag = false;
         }
 
-        // If the start and end time are the same
-        if($start_time ==  $end_time) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Start Time is the same as End Time."));
-            return false;
+        // If Business hours start and end time are the same
+        if($opening_time == $closing_time) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Business opening and closing times are the same."));
+            $state_flag = false;
         }
 
-        return true;
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The company details submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
+        return $state_flag;
 
     }
 
