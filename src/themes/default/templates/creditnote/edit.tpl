@@ -30,15 +30,18 @@
     // Default Sales Tax Rate
     var creditnoteSalesTaxRate = {$creditnote_details.sales_tax_rate|string_format:"%.2f"};
 
-    // Credit note items JSON (items from the database)
-    var creditnoteItems = {$creditnote_items_json};
+    // Credit note items JSON (from the database or creditenote:new)
+    var submittedCreditnoteItems = {$creditnote_items_json};
+
+    // Parent Record Items
+    var parentRecordItems = {$parent_record_items_json};
 
     // Run these functions when the DOM is ready
     $(document).ready(function() {
 
         // Prepare the Data
         modifyDummyRowsForTaxSystem();
-        processCreditnoteItemsFromDatabase(creditnoteItems);
+        populateCreditnoteItems(submittedCreditnoteItems);
 
         // Page Building has now completed
         pageBuilding = false;
@@ -82,14 +85,24 @@
 
     }
 
-    // Create and populate item rows with sorted data from the database
-    function processCreditnoteItemsFromDatabase(creditnoteItems) {
+    // Populate the items with the parent records items
+    function populateCreditnoteItemsParentItems() {
 
-        // Form Fields that are submitted
+        // Empty the table
+        $(".creditnote_item_row").remove();
+
+        // Perform the population of the parent items
+        populateCreditnoteItems(parentRecordItems);
+
+        // Refresh all dynamic items onscreen
+        refreshPage();
+    }
+
+    // Create and populate item rows with sorted data from the database
+    function populateCreditnoteItems(creditnoteItems) {
+
+        // Populate these Form Fields with items data submitted
         fieldNames = [
-            //"creditnote_" + "_id",
-            //"creditnote_id",
-            //"tax_system",
             "description",
             "unit_qty",
             "unit_net",
@@ -559,6 +572,27 @@
                                                 </td>
                                             </tr>
 
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <!-- Function Buttons -->
+                                <tr>
+                                    <td>
+                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
+                                            <tr>
+                                                <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="menutd2">
+
+                                                    <!-- Populate with Parent Items Button -->
+                                                    {if $creditnote_details.invoice_id OR $creditnote_details.expense_id}
+                                                        <button type="button" onclick="if(confirm('Are you Sure you want to populate this creditnote with its parents items?')) { populateCreditnoteItemsParentItems(); } ">{t}Populate with Parent Items{/t}</button>
+                                                    {/if}
+
+                                                </td>
+                                            </tr>
                                         </table>
                                     </td>
                                 </tr>

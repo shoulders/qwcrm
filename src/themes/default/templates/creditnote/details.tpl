@@ -176,8 +176,8 @@
                                                 <!-- Print Buttons -->
                                                 {if $creditnote_details.unit_gross > 0}
                                                     <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=htmlBrowser');">{t}Print HTML{/t}</button>
-                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfBrowser');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
-                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfDownload');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Download PDF{/t}</button>
+                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfBrowser');"><img src="{$theme_images_dir}icons/pdf_small.png" height="14" alt="pdf">{t}Print PDF{/t}</button>
+                                                    <button type="button" onclick="window.open('index.php?component=creditnote&page_tpl=print&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfDownload');"><img src="{$theme_images_dir}icons/pdf_small.png" height="14" alt="pdf">{t}Download PDF{/t}</button>
 
                                                     {if $creditnote_details.client_id}
                                                         <button type="button" onclick="confirm('Are you sure you want to email this credit note to the client?') && $.ajax( { url:'index.php?component=creditnote&page_tpl=email&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
@@ -227,7 +227,7 @@
                                         </tr>
                                     </table>
                                 </td>
-                                </tr>
+                            </tr>
 
                             <!-- Payments -->
                             <tr>

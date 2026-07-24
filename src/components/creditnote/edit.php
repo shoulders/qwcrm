@@ -58,10 +58,43 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
     // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
     if($submitFailedValidation ?? null) {
         $creditnote_details = array_merge($this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']), \CMSApplication::$VAR['qform']);
-        $creditnote_items = \CMSApplication::$VAR['qform']['creditnote_items'] ;
+        $creditnote_items = \CMSApplication::$VAR['qform']['creditnote_items'];
     } else {
         $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']);
-        $creditnote_items = $this->app->components->creditnote->getItems(\CMSApplication::$VAR['creditnote_id']);
+
+        // Use items passed from creditnote:new when creating a new creditnote item, or just load the record
+        $creditnote_items = \CMSApplication::$VAR['qform']['creditnote_items'] ?? $this->app->components->creditnote->getItems(\CMSApplication::$VAR['creditnote_id']);
+    }
+
+    // Default Record Items - used to populate creditenote when you press a button
+    if($creditnote_details['invoice_id']) {
+            // Get invoice items with voucher records merged as standard items
+            $parent_record_items = $this->app->components->invoice->getItems($creditnote_details['invoice_id']);
+
+            // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
+            $parent_record_items = json_encode($parent_record_items);
+            $parent_record_items = str_replace('invoice_item_id', 'creditnote_item_id', $parent_record_items);
+            $parent_record_items = json_decode($parent_record_items, true);
+
+    } else if($creditnote_details['expense_id']) {
+
+            // Get expense items
+            $parent_record_items = $this->app->components->expense->getItems($creditnote_details['expense_id']);
+
+            // Add `unit_discount` to each item to allow for Credit note compatibility
+            foreach($parent_record_items as &$parent_record_item) {
+                $parent_record_item['unit_discount'] = '0.00';
+            }
+            unset($parent_record_item); // break the reference after the loop
+
+            // Rename 'expense_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'expense_item_id' not renaming it
+            $parent_record_items = json_encode($parent_record_items);
+            $parent_record_items = str_replace('expense_item_id', 'creditnote_item_id', $parent_record_items);
+            $parent_record_items = json_decode($parent_record_items, true);
+
+    } else {
+        //fallback
+        $creditnote_items = null;
     }
 
     // Disable all VAT codes except `T9` for `Standalone` Action Type CR - I could specify only for VAT tax systems, but I have not as it makes no difference
@@ -79,6 +112,7 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
     $this->app->smarty->assign('client_details',           $this->app->components->client->getRecord($creditnote_details['client_id']));
     $this->app->smarty->assign('supplier_details',         $this->app->components->supplier->getRecord($creditnote_details['supplier_id']));
     $this->app->smarty->assign('creditnote_items_json',    json_encode($creditnote_items));
+    $this->app->smarty->assign('parent_record_items_json', json_encode($parent_record_items));
 
     // Payment Details
     $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes());
