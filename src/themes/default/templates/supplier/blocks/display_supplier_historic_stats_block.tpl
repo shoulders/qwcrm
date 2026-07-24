@@ -1,0 +1,22 @@
+<!-- display_supplier_historic_stats_block.tpl -->
+{*
+ * @package   QWcrm
+ * @author    Jon Brown https://quantumwarp.com/
+ * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
+ * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
+*}
+<b>{$block_title}</b>
+<br>
+<table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+
+    <tr class="olotd4">
+        <td class="row2"><b>{t}New This Calendar Month{/t}</b></td>
+        <td class="row2"><b>{t}New This Financial Year{/t}</b></td>
+        <td class="row2"><b>{t}Total{/t} {t}Clients{/t}</b></td>
+    </tr>
+    <tr class="olotd4">
+        <td>{$supplier_stats.count_new_month}</td>
+        <td>{$supplier_stats.count_new_year}</td>
+        <td>{$supp;ier_stats.count_total}</td>
+    </tr>
+</table>

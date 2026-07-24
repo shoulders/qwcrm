@@ -5,141 +5,71 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<table width="700" border="0" cellpadding="20" cellspacing="5">
+<table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
-            <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+            <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">{t}Supplier Details{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Supplier Details for{/t} {$supplier_details.display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit{/t}</a>
-                        <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}SUPPLIER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}SUPPLIER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
-                        </a>
+                        <a><img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}SUPPLIER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}SUPPLIER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();"></a>
                     </td>
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="2">
-                        <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
+                        <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
-                                <td class="menutd">
-                                    <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Client Contact">
-                                        <tr>
-                                            <td class="olohead" colspan="4">
-                                                <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                                    <tr>
-                                                        <td class="menuhead2">&nbsp;{t}Supplier ID{/t} {$supplier_id}</td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Name{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.display_name}</td>
-                                            <td class="menutd"><b>{t}Phone{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.primary_phone}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Contact{/t}</b></td>
-                                            <td class="menutd" >{$supplier_details.full_name}</td>
-                                            <td class="menutd"><b>{t}Mobile{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.mobile_phone}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Type{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$supplier_types}
-                                                    {if $supplier_details.type == $supplier_types[s].type_key}{t}{$supplier_types[s].display_name}{/t}{/if}
-                                                {/section}
-                                            </td>
-                                            <td class="menutd" ><b>{t}Fax{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.fax}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Company Number{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.company_number}</td>
-                                            <td class="menutd"><b>{t}VAT Number{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.vat_number}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Website{/t}</b></td>
-                                            <td class="menutd"><a href="{$supplier_details.website}" target="_blank">{$supplier_details.website|regex_replace:"/^https?:\/\//":""|regex_replace:"/\/$/":""}</a></td>
-                                            <td class="menutd"><b>{t}Email{/t}</b></td>
-                                            <td class="menutd"><a href="mailto: {$supplier_details.email}">{$supplier_details.email}</a></td>
-                                        </tr>
-                                        <tr class="row2">
-                                            <td class="menutd" colspan="4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Address{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.address|nl2br}</td>
-                                            <td class="menutd" colspan="2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}City{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.city}</td>
-                                            <td class="menutd" colspan="2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}State{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.state}</td>
-                                            <td class="menutd" colspan="2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Zip{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.zip}</td>
-                                            <td class="menutd" colspan="2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Country{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.country}</td>
-                                            <td class="menutd" colspan="2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd">&nbsp;</td>
-                                            <td class="menutd">&nbsp;</td>
-                                            <td class="menutd"><b>{t}Status{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=r loop=$supplier_statuses}
-                                                    {if $supplier_details.status == $supplier_statuses[r].status_key}{t}{$supplier_statuses[r].display_name}{/t}{/if}
-                                                {/section}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Opened On{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.opened_on|date_format:$date_format}</td>
-                                            <td class="menutd"><b>{t}Closed On{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.closed_on|date_format:$date_format}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Last Active{/t}</b></td>
-                                            <td class="menutd">{$supplier_details.last_active|date_format:$date_format}</td>
-                                            <td class="menutd"><b>{t}Additional Info{/t}</b></td>
-                                            <td class="menutd">{if $supplier_details.additional_info|supplier_addinfo_display}{$supplier_details.additional_info|supplier_addinfo_display}{else}{t}none{/t}{/if}</td>
-                                        </tr>
-                                        <tr class="row2">
-                                            <td class="menutd" colspan="4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Description{/t}</b></td>
-                                            <td class="menutd" colspan="3"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd" colspan="3">{$supplier_details.description}</td>
-                                            <td class="menutd"></td>
-                                        </tr>
-                                        <tr class="row2">
-                                            <td class="menutd" colspan="4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Note{/t}</b></td>
-                                            <td class="menutd" colspan="3"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd" colspan="3">{$supplier_details.note}</td>
-                                            <td class="menutd"></td>
-                                        </tr>
-                                    </table>
+                                <td>
+                                    <div id="tabs_container">
+                                        <ul class="tabs">
+                                            <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab">{t}Supplier Details{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab">{t}Expenses{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab">{t}Other Incomes{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab">{t}Payments{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Credit Notes{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Account{/t}</a></li>
+                                        </ul>
+
+                                        <!-- This is used so the contents don't appear to the right of the tabs -->
+                                        <div class="clear"></div>
+
+                                        <!-- This is a div that hold all the tabbed contents -->
+                                        <div class="tab_contents_container">
+
+                                            <!-- Tab 1 Contents (Supplier Details) -->
+                                            <div id="tab_1_contents" class="tab_contents tab_contents_active">
+                                                {include file='supplier/blocks/display_supplier_details_block.tpl'}
+                                            </div>
+
+                                            <!-- Tab 2 Contents (Expenses) -->
+                                            <div id="tab_2_contents" class="tab_contents">
+                                                {include file='expense/blocks/display_expenses_block.tpl' display_expenses=$display_expenses block_title=_gettext("Expenses")}
+                                            </div>
+
+                                            <!-- Tab 3 Contents (Other Incomes) -->
+                                            <div id="tab_3_contents" class="tab_contents">
+                                                {include file='otherincome/blocks/display_otherincomes_block.tpl' display_otherincomes=$display_otherincomes block_title=_gettext("Other Incomes")}
+                                            </div>
+
+                                            <!-- Tab 4 Contents (Payments) -->
+                                            <div id="tab_4_contents" class="tab_contents">
+                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_credits block_title=_gettext("Credits")}
+                                                <br>
+                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_debits block_title=_gettext("Debits")}
+                                            </div>
+
+                                            <!-- Tab 5 Contents (Credit Notes) -->
+                                            <div id="tab_5_contents" class="tab_contents">
+                                                {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes")}
+                                            </div>
+
+                                            <!-- Tab 6 Contents (Account) -->
+                                            <div id="tab_6_contents" class="tab_contents">
+                                                {include file='supplier/blocks/details_account_block.tpl'}
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -148,46 +78,4 @@
             </table>
         </td>
     </tr>
-
-    <!-- Function Buttons -->
-    <tr>
-        <td>
-            <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
-                <tr>
-                    <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
-                </tr>
-                <tr>
-                    <td class="menutd2">
-                        <button type="button" onclick="window.location.href='index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Expense{/t}</button>
-                        <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Other Income{/t}</button>
-                        {if $allowed_to_create_creditnote}
-                            <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note agains this supplier?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}'; } ">{t}Create Purchase Credit Note (Supplier){/t}</button>
-                        {/if}
-                        <br>
-                        <br>
-                        <button type="button" onclick="window.open('index.php?component=supplier&page_tpl=print&supplier_id={$supplier_details.supplier_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Supplier Envelope{/t}</button>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-
-
-    <!-- Tables  -->
-    <tr>
-        <td>
-            {include file='expense/blocks/display_expenses_block.tpl' display_expenses=$display_expenses block_title=_gettext("Expenses")}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            {include file='otherincome/blocks/display_otherincomes_block.tpl' display_otherincomes=$display_otherincomes block_title=_gettext("Other Incomes")}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            {include file='creditnote/blocks/display_creditnotes_block.tpl' display_creditnotes=$display_creditnotes block_title=_gettext("Credit Notes")}
-        </td>
-    </tr>
-
 </table>

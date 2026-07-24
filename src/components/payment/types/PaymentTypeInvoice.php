@@ -385,14 +385,14 @@ class PaymentTypeInvoice extends PaymentType
         parent::buildButtons();
 
         // Submit
-        if((float) $this->invoice_details['balance']) {
+        if((float) $this->invoice_details['balance'] || !(float) $this->invoice_details['balance'] && \CMSApplication::$VAR['method'] == 'creditnote') {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
             Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }
 
         // Cancel
-        if(!(float) $this->invoice_details['balance']){
+        if((float) $this->invoice_details['balance'] || !(float) $this->invoice_details['balance'] && \CMSApplication::$VAR['method'] == 'creditnote') {
             if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') || $this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details')) {
                 Payment::$buttons['cancel']['allowed'] = true;
                 Payment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['invoice_id'];
@@ -401,7 +401,7 @@ class PaymentTypeInvoice extends PaymentType
         }
 
         // Return To Record
-        if($this->app->system->security->checkPageAccessedViaQwcrm('payment', 'new')){
+        if((float) $this->invoice_details['balance'] || !(float) $this->invoice_details['balance'] && \CMSApplication::$VAR['method'] == 'creditnote') {
             Payment::$buttons['returnToRecord']['allowed'] = true;
             Payment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['invoice_id'];
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");

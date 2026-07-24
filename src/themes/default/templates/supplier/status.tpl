@@ -42,7 +42,7 @@
                                             <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />
                                         </form>
                                     {else}
-                                        {t}This Supplier cannot have it's status changed because it's current state does not allow it.{/t}
+                                        <p>{t}This Supplier cannot have it's status changed because it's current state does not allow it.{/t}</p>
                                     {/if}
                                 </td>
 

@@ -59,7 +59,7 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
 }
 
 // Check if the record can be created (this currently does nothing, but is here to keep uniformity with other components)
-if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$VAR['qpayment']) {
+if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$VAR['qpayment'] ?? null)) {
     $this->app->system->page->forcePage('payment', 'search');
 } else {
 
@@ -124,7 +124,7 @@ if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$V
     $this->app->smarty->assign('record_balance',                    Payment::$record_balance);
     $this->app->smarty->assign('buttons',                           Payment::$buttons);
     $this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes() );
-    $this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods());
+    //$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods());  // This is replaced by `$payment_active_methods` and `Payment::$disabledMethods`
     $this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses());
     $this->app->smarty->assign('payment_directions',                $this->app->components->payment->getDirections());
     $this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes());
@@ -132,6 +132,33 @@ if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$V
     // Make Credit note ID inputs readonly when closing an invoice or expense. It uses the presense of these variables in the URL
     // This is not 100% needed because if the user swaps the target CR in the input box it still uses the one from the URL and you cannot access payments page directly
     // This just indicates to the user they cannot change the CR number so they don't try.
-    $this->app->smarty->assign('creditNoteInputreadonly', (\CMSApplication::$VAR['creditnote_id'] ?? null && \CMSApplication::$VAR['creditnote_id'] ?? null) ? true : false);
+    $this->app->smarty->assign('creditNoteInputReadonly', (\CMSApplication::$VAR['creditnote_id'] ?? null) ? true : false);
+
+
+    // Hide creditnote method when type is creditnote not used
+    // TPL bit removed from method - <option {if $hideCreditnoteMethod && $payment_active_methods[s].method_key == 'creditnote'}hidden disabled>{/if} value="
+    // This is handles with Payment::$disabledMethods
+    //$this->app->smarty->assign('hideCreditnoteMethod', Payment::$type == 'creditnote' ? true : false);
+
+
+    //$this->app->smarty->assign('creditNoteInputReadonly', (\CMSApplication::$VAR['creditnote_id'] ?? null) && !(float) Payment::$record_balance ? true : false);
+
+    /* this cpde might note be needed, leave until everythin is checkec
+    // Make Credit note ID inputs readonly when closing an invoice or expense.
+    // It uses the presense of these variables in the URL
+    // This is not 100% needed because if the user swaps the target CR in the input box it still uses the one from the URL and you cannot access payments page directly
+    // This just indicates to the user they cannot change the CR number so they don't try.
+    $this->app->smarty->assign('creditNoteInputAmountReadonly', (\CMSApplication::$VAR['creditnote_id'] ?? null) && !(float) Payment::$record_balance ? true : false);
+
+    $creditNoteInputIdReadonly = (\CMSApplication::$VAR['creditnote_id'] ?? null) ? true : false;
+    this->app->smarty->assign('creditNoteIdInputReadonly', $creditNoteInputIdReadonly);
+
+    // Allow inputting amount when refunding of expense|invoice where they have a 0.00 balance
+    $creditNoteInputAmountReadonly = (\CMSApplication::$VAR['creditnote_id'] ?? null) && !(float) Payment::$record_balance ? false : true;
+    $this->app->smarty->assign('creditNoteInputAmountReadonly', $creditNoteInputAmountReadonly);
+
+    $this->app->smarty->assign('creditNoteInputIdReadonly', (\CMSApplication::$VAR['creditnote_id'] ?? null) && !(float) Payment::$record_balance ? true : false);
+    $this->app->smarty->assign('creditNoteInputAmountReadonly', (\CMSApplication::$VAR['creditnote_id'] ?? null) && !(float) Payment::$record_balance ? true : false);
+*/
 
 }

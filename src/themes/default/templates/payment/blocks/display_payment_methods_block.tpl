@@ -53,29 +53,27 @@
         </tr>
 
         <!-- Select Payment Method -->
-        {if $record_balance}
-            {if $payment_active_methods}
-                <tr>
-                    <td>
-                        <p>{t}Select Payment Method{/t}</p>
-                        <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required>
-                            <option selected hidden disabled></option>
-                            {section name=s loop=$payment_active_methods}
-                                <option {if $creditNoteInputreadonly && $payment_active_methods[s].method_key != 'creditnote'}hidden disabled>{/if} value="{$payment_active_methods[s].method_key}"{if $payment_active_methods[s].method_key === $payment_method} selected{/if}>{t}{$payment_active_methods[s].display_name}{/t}</option>
-                            {/section}
-                        </select>
+        {if $payment_active_methods}
+            <tr>
+                <td>
+                    <p>{t}Select Payment Method{/t}</p>
+                    <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required>
+                        <option selected hidden disabled></option>
+                        {section name=s loop=$payment_active_methods}
+                            <option value="{$payment_active_methods[s].method_key}"{if $payment_active_methods[s].method_key === $payment_method} selected{/if}>{t}{$payment_active_methods[s].display_name}{/t}</option>
+                        {/section}
+                    </select>
 
-                    </td>
-                </tr>
-            {else}
-                <tr>
-                    <td><span style="color: red;">{t}There are no payment methods available.{/t}</td>
-                </tr>
-            {/if}
+                </td>
+            </tr>
+        {else}
+            <tr>
+                <td><span style="color: red;">{t}There are no payment methods available.{/t}</td>
+            </tr>
         {/if}
 
         <!-- Payment Methods -->
-        {if $record_balance}
+        {if $record_balance || !$record_balance && $payment_method == 'creditnote'}
             <tr>
                 <td>
 
@@ -440,8 +438,8 @@
                                                     } );
                                                 </script>
                                             </td>
-                                                <td><input name="qpayment[creditnote_id]" class="paymentInput olotd5" size="32" value="{$creditnote_id}" type="text" maxlength="16" required onkeydown="return onlyNumber(event);" disabled{if $creditNoteInputreadonly} readonly{/if}></td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled{if $creditNoteInputreadonly} readonly{/if}></td>
+                                                <td><input name="qpayment[creditnote_id]" class="paymentInput olotd5" size="32" value="{$creditnote_id}" type="text" maxlength="16" required onkeydown="return onlyNumber(event);" disabled{if $creditNoteInputReadonly} readonly{/if}></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled{if $creditNoteInputReadonly} readonly{/if}></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>

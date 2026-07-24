@@ -267,7 +267,8 @@ class Payment extends Components {
 
     ################################################  // default = returns all methods
     #   Get get Payment Methods                    #  // can restrict returned methods by direction, status
-    ################################################  // invalidTypes() are specific payment methods that are not allowed for this payment type
+    ################################################  // invalidTypes() are payment methods that are to be removed from the list
+                                                      // you can pass Payment::$disabledMethods from Payment types
 
     public function getMethods($direction = null, $activeOnly = false, $invalidMethods = array()) {
 
@@ -728,7 +729,7 @@ class Payment extends Components {
 
     ###############################################
     #  Check if a payment can be created          # // does nothing for now
-    ###############################################
+    ############################################### see in the types: checkPaymentAllowed()
 
     public function checkRecordCanBeCreated($qpayment, $silent = false) {
 

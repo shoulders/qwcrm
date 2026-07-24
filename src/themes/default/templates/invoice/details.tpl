@@ -177,10 +177,12 @@
                                                 {/if}
 
                                                 <!-- Credit Note Button -->
-                                                {if ($invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid') && $allowed_to_create_creditnote}
-                                                    <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this invoice?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}'; } ">{t}Close invoice with CR{/t} / {t}Create Sales Credit Note (Invoice){/t}</button>
-                                                {elseif ($invoice_details.status == 'paid') && $allowed_to_create_creditnote}
-                                                    <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this invoice?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}'; } ">{t}Refund invoice via CR{/t} / {t}Create Sales Credit Note (Invoice){/t}</button>
+                                                {if $allowed_to_create_creditnote}
+                                                    {if ($invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid')}
+                                                        <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this invoice?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}'; } ">{t}Close invoice with CR{/t} / {t}Create Sales Credit Note (Invoice){/t}</button>
+                                                    {elseif ($invoice_details.status == 'paid')}
+                                                        <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this invoice?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&invoice_id={$invoice_details.invoice_id}'; } ">{t}Refund invoice via CR{/t} / {t}Create Sales Credit Note (Invoice){/t}</button>
+                                                    {/if}
                                                 {/if}
 
                                             </td>

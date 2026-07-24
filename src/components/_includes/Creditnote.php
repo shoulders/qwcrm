@@ -1777,7 +1777,7 @@ class Creditnote extends Components {
         $creditnote_details = $this->getRecord($creditnote_id);
 
         // Is the Client active
-        if(!$this->app->components->client->getRecord($client_id, 'active'))
+        if(!$this->app->components->client->getRecord($creditnote_details['client_id'], 'active'))
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be edited because the client is not active.", $silent));
             $state_flag = false;

@@ -10,7 +10,8 @@
         <td class="olohead">{t}Work Orders{/t}</td>
         <td class="olohead">{t}Invoice Stats{/t}</td>
         <td class="olohead">{t}Voucher Stats{/t}</td>
-        <td class="olohead">{t}Monies{/t}</td>
+        <td class="olohead">{t}Credit Notes{/t}</td>
+        <td class="olohead">{t}Payments{/t}</td>
     </tr>
 
     <tr>
@@ -129,6 +130,7 @@
                 </tr>
                 <tr>
                     <td colspan="2"><h2>{t}Historic{/t}</h2></td>
+                    <td><b>{t}[G]{/t}</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Opened{/t}:</b></td>
@@ -154,14 +156,14 @@
                     <td><b>({$currency_symbol}{$invoice_stats.sum_paid_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Cancelled{/t}:</b></td>
-                    <td><b>{$invoice_stats.count_cancelled}</b></td>
-                    <td><b>({$currency_symbol}{$invoice_stats.sum_cancelled_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Voided{/t}:</b></td>
+                    <td><b>{$invoice_stats.count_voided}</b></td>
+                    <td><b>({$currency_symbol}{$invoice_stats.sum_voided_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
             </table>
         </td>
 
-        <!-- Vouchers -->
+        <!-- Voucher Stats -->
         <td class="olotd4" valign="top">
             <table>
                 <tr>
@@ -177,23 +179,23 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Unused{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_paid_unused}</b></td>
-                    <td><b>({$currency_symbol}{$voucher_stats.sum_paid_unused_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Paid{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_paid}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_paid_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
-
+                <tr>
+                    <td><b>{t}Partially Redeemed{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_partially_redeemed}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_partially_redeemed_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
                 <tr>
                     <td><b>{t}Suspended{/t}:</b></td>
                     <td><b>{$voucher_stats.count_suspended}</b></td>
                     <td><b>({$currency_symbol}{$voucher_stats.sum_suspended_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Redeemed{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_redeemed}</b></td>
-                    <td><b>({$currency_symbol}{$voucher_stats.sum_redeemed_unit_gross|string_format:"%.2f"})</b></td>
-                </tr>
-                <tr>
-                    <td colspan="3"><h2>{t}Historic{/t}</h2></td>
+                    <td colspan="2"><h2>{t}Historic{/t}</h2></td>
+                    <td><b>{t}[G]{/t}</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Opened{/t}:</b></td>
@@ -209,17 +211,41 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
+                    <td><b>{t}Expired{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_expired}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_expired_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
                     <td><b>{t}Expired Unused{/t}:</b></td>
                     <td><b>{$voucher_stats.count_expired_paid}</b></td>
-                    <td><b>({$currency_symbol}{$voucher_stats.sum_expired_unused_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_expired_paid_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Cancelled{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_cancelled}</b></td>
-                    <td><b>({$currency_symbol}{$voucher_stats.sum_cancelled_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Expired Partially Redeemed{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_expired_partially_redeemed}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_expired_partially_redeemed_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td colspan="3"><h2>{t}Claimed{/t}</h2></td>
+                    <td><b>{t}Expired Redeemed{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_expired_partially_redeemed}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_expired_partially_redeemed_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><b>{t}Redeemed{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_redeemed}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_redeemed_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Voided{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_voided}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_voided_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><h2>{t}Claimed{/t}</h2></td>
+                    <td><b>{t}[G]{/t}</b></td>
                 </tr>
                 <tr>
                     <td colspan="2">{t}These are Vouchers purchased by other clients that have redeemed against this clients invoices. This client has not bought these.{/t}</td>
@@ -233,30 +259,69 @@
             </table>
         </td>
 
-        <!-- Monies -->
+        <!-- Credit Note Stats -->
         <td class="olotd4" valign="top">
             <table>
                 <tr>
-                    <td colspan="3"><h2>{t}{t}Payments{/t}{/t}</h2></td>
+                    <td colspan="2"><h2>{t}Current{/t}</h2></td>
+                    <td><b>{t}[G]{/t}</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Received{/t}:</b></td>
-                    <td><span style="color: green;"><b>{$currency_symbol}{$payment_stats.sum_received|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: green;"><b>({$payment_stats.count_received})</b></span></td>
+                    <td><b>{t}Open{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_open}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_open_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Sent{/t}:</b></td>
-                    <td><span style="color: red;"><b>{$currency_symbol}{$payment_stats.sum_sent|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: red;"><b>({$payment_stats.count_sent})</b></span></td>
+                    <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td colspan="3"><h2>{t}Credit Notes{/t} - Needs finishing i.e. debit/credit</h2></td>
+                    <td><b>{t}Pending{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_pending}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_pending_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Credit Notes{/t}&nbsp;{t}[G]{/t}:</b></td>
-                    <td><span style="color: red;"><b>{$currency_symbol}{$creditnote_stats.sum_unit_gross|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: red;"><b>({$creditnote_stats.count_opened})</b></span></td>
+                    <td><b>{t}Unused{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_unused}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_unused_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
+                <tr>
+                    <td><b>{t}Partially Used{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_partially_used}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_partially_used_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><h2>{t}Historic{/t}</h2></td>
+                    <td><b>{t}[G]{/t}</b></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Opened{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_opened}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_opened_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Closed{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_closed}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_closed_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td><b>{t}Used{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_used}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_used_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Voided{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_voided}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_voided_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+            </table>
+        </td>
+
+        <!-- Payments -->
+        <td class="olotd4" valign="top">
+            <table>
                 <tr>
                     <td colspan="3"><h2>{t}{t}Invoiced{/t}{/t}</h2></td>
                 </tr>
@@ -282,7 +347,44 @@
                     <td><b>{$currency_symbol}{$invoice_stats.sum_unit_gross|string_format:"%.2f"}</b></td>
                 </tr>
                 <tr>
-                    <td colspan="2">&nbsp;</td>
+                    <td colspan="3"><hr /></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <h2>{t}Credit Notes{/t} ({t}Sales{/t})</h2>
+                    </td>
+                </tr>
+                {*<tr>
+                    <td><b>{t}Used for Credits{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_symbol}{$payment_stats.sum_creditnote_used_for_credits|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: red;"><b>({$payment_stats.count_creditnote_used_for_credits})</b></span></td>
+                </tr>*}
+                <tr>
+                    <td><b>{t}Used for Payments{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_symbol}{$payment_stats.sum_creditnote_used_for_payments|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: red;"><b>({$payment_stats.count_creditnote_used_for_payments})</b></span></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><hr /></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><h2>{t}Real Monies{/t}</h2></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Received{/t} {t}from{/t}:</b></td>
+                    <td><span style="color: green;"><b>{$currency_symbol}{$payment_stats.sum_real_monies_received|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: green;"><b>({$payment_stats.count_real_monies_received})</b></span></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Sent{/t} {t}to{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_symbol}{$payment_stats.sum_real_monies_sent|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: red;"><b>({$payment_stats.count_real_monies_sent})</b></span></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><hr /></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><h2>{t}Account Balance{/t}</h2></td>
                 </tr>
                 <tr>
                     <td>
@@ -294,7 +396,9 @@
                         <hr>
                     </td>
                 </tr>
-
+                <tr>
+                    <td colspan="3">* {t}The balance is calculated from outstanding invoices only.{/t}</td>
+                </tr>
             </table>
         </td>
     </tr>

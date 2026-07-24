@@ -43,7 +43,7 @@ class PaymentTypeCreditnote extends PaymentType
         // Assign Payment Type specific template variables
         if($this->creditnote_details['type'] == 'sales')
         {
-            // show payment methods to send money (debit)
+            // Show payment methods to send money (debit)
             $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, Payment::$disabledMethods));
 
             // Client Details
