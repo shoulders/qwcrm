@@ -1392,7 +1392,7 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'pending', 'Pending'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
-(4, 'paid', 'Paid (Unused)'),
+(4, 'unredeemed', 'Unredeemed'),
 (5, 'partially_redeemed', 'Partially Redeemed'),
 (6, 'redeemed', 'Redeemed'),
 (7, 'suspended', 'Suspended'),

@@ -980,12 +980,12 @@ class Report extends Components {
             $stats['count_opened'] = $this->voucherCount('opened_on', $start_date, $end_date, $tax_system, null, null, 'opened', null, $employee_id, $client_id);
             $stats['count_closed'] = $this->voucherCount('closed_on', $start_date, $end_date, $tax_system, null, null, 'closed', null, $employee_id, $client_id);
             $stats['count_claimed'] = $this->voucherCount('closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', null, $employee_id, $client_id);  // This is where the client has used a Voucher from someone else on their account
-            $stats['count_paid'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'paid', false, $employee_id, $client_id);
+            $stats['count_unredeemed'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'unredeemed', false, $employee_id, $client_id);
             $stats['count_partially_redeemed'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'partially_redeemed', null, $employee_id, $client_id);
             $stats['count_redeemed'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'redeemed', null, $employee_id, $client_id);
 
             $stats['count_expired'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, null, true, $employee_id, $client_id);
-            $stats['count_expired_paid'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
+            $stats['count_expired_unredeemed'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'unredeemed', true, $employee_id, $client_id);
             $stats['count_expired_partially_redeemed'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'partially_redeemed', true, $employee_id, $client_id);
             $stats['count_expired_redeemed'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'redeemed', true, $employee_id, $client_id);
 
@@ -1002,7 +1002,7 @@ class Report extends Components {
             $stats['sum_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, null, $employee_id, $client_id);
 
             // Sums by Status (Used on supplier:details Account tab)
-            $stats['sum_paid_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
+            $stats['sum_unredeemed_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'unredeemed', true, $employee_id, $client_id);
             $stats['sum_partially_redeemed_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'partially_redeemed', null, $employee_id, $client_id);
             $stats['sum_suspended_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'suspended', null, $employee_id, $client_id);
 
@@ -1015,12 +1015,12 @@ class Report extends Components {
             $stats['sum_claimed_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', null, $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
 
             $stats['sum_expired_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, null, true, $employee_id, $client_id);
-            $stats['sum_expired_paid_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
-            $stats['sum_expired_partially_redeemed_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'partiallyredeemed', true, $employee_id, $client_id);
+            $stats['sum_expired_unredeemed_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'unredeemed', true, $employee_id, $client_id);
+            $stats['sum_expired_partially_redeemed_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'partially_redeemed', true, $employee_id, $client_id);
             $stats['sum_expired_redeemed_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'redeemed', true, $employee_id, $client_id);
-            //$stats['sum_expired_unused_unit_net'] = $this->voucherSum('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
-            //$stats['sum_expired_unused_unit_tax'] = $this->voucherSum('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
-            //$stats['sum_expired_unused_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'paid', true, $employee_id, $client_id);
+            //$stats['sum_expired_unused_unit_net'] = $this->voucherSum('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'unredeemed', true, $employee_id, $client_id);
+            //$stats['sum_expired_unused_unit_tax'] = $this->voucherSum('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'unredeemed', true, $employee_id, $client_id);
+            //$stats['sum_expired_unused_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'unredeemed', true, $employee_id, $client_id);
 
             //$stats['sum_redeemed_unit_net'] = $this->voucherSum('unit_net', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', null, $employee_id, $client_id);
             //$stats['sum_redeemed_unit_tax'] = $this->voucherSum('unit_tax', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'redeemed', null, $employee_id, $client_id);

@@ -1301,7 +1301,7 @@ UPDATE `#__creditnote_statuses` SET `status_key` = 'voided', `display_name` = 'V
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'creditnote:cancel';
 ALTER TABLE `#__creditnote_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
 UPDATE `#__creditnote_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
-UPDATE `#__creditnote_records` SET `voided_on` = `closed_on` WHERE `status` = 'voided';
+UPDATE `#__creditnote_records` SET `voided_on` = 'closed_on' WHERE `status` = 'voided';
 
 -- Records should be deleted from status and not delete.php --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:delete';
@@ -1315,3 +1315,7 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'otherincome:de
 
 -- Move Company Hours into company:edit --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'business_hours';
+
+-- Rename some record statuses --
+UPDATE `#__voucher_statuses` SET `status_key` = `unredeemed` WHERE `status` = 'paid';
+UPDATE `#__voucher_records` SET `status` = 'unredeemed' WHERE `status` = 'paid';

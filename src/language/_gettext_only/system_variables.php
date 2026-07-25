@@ -201,7 +201,7 @@ _gettext("Single Purpose (SPV)");
 _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
-_gettext("Paid (Unused)");
+_gettext("Unredeemed");
 _gettext("Partially Redeemed");
 _gettext("Redeemed");
 _gettext("Voided");

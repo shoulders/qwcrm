@@ -345,7 +345,7 @@ class Voucher extends Components {
         // Restrict statuses to those that are allowed to be changed by the user
         if($restrict_statuses) {
             //$sql .= "\nWHERE status_key NOT IN ('pending', 'unpaid', 'partially_paid', 'partially_redeemed', 'suspended', 'voided', 'deleted')";
-            $sql .= "\nWHERE status_key IN ('paid', 'suspended')";
+            $sql .= "\nWHERE status_key IN ('unredeemed', 'suspended')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -514,7 +514,7 @@ class Voucher extends Components {
 
         // Update voucher 'blocked' boolean for the new status ('blocked' is a way of disabling the voucher without permanently closing it, i.e. for suspended status, and is controlled by Expiry and Status)
         // If a voucher is suspended and then expires, when you change the voucher status (e.g. suspended --> paid) it stays blocked.
-        if(in_array($new_status, array('paid', 'partially_redeemed')) && !$voucher_details['closed_on']) {
+        if(in_array($new_status, array('unredeemed', 'partially_redeemed')) && !$voucher_details['closed_on']) {
             $blocked = 0;
         } else {
             $blocked = 1;
@@ -594,10 +594,10 @@ class Voucher extends Components {
         // Can only be set by $this->updateInvoiceVouchersStatuses() when the invoice is updated.
         // This function should only ever be called for the statuses below
 
-        // Paid (Unused) TODO: should this be using `unit_gross` - consider SPV or MPV
+        // Unredeemed TODO: should this be using `unit_gross` - consider SPV or MPV
         if($voucher_details['balance'] == $voucher_details['unit_net'])
         {
-            $this->updateStatus($voucher_id, 'paid', true);
+            $this->updateStatus($voucher_id, 'unredeemed', true);
         }
 
         // Partially Redeemed
@@ -640,8 +640,8 @@ class Voucher extends Components {
                 case 'partially_paid':
                     $vouchers_new_status = 'partially_paid';
                     break;
-                case 'paid':
-                    $vouchers_new_status = 'paid';
+                case 'closed':
+                    $vouchers_new_status = 'unredeemed';
                     break;
                 case 'in_dispute':
                     $vouchers_new_status = 'suspended';
@@ -1054,7 +1054,7 @@ class Voucher extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
+            case 'unredeemed':
                 break;
             case 'partially_redeemed':
                 break;
@@ -1104,7 +1104,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'paid':
+                case 'closed':
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because the parent invoice is in dispute."), $silent);
@@ -1190,7 +1190,7 @@ class Voucher extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it is partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
+            case 'unredeemed':
                 break;
             case 'partially_redeemed':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it is partially redeemed."), $silent);
@@ -1240,7 +1240,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'paid':
+                case 'closed':
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in dispute."), $silent);
@@ -1320,7 +1320,7 @@ class Voucher extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
+            case 'unredeemed':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been paid."), $silent);
                 $state_flag = false;
                 break;
@@ -1370,7 +1370,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'paid':
+                case 'closed':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is paid."), $silent);
                     $state_flag = false;
                     break;
@@ -1441,7 +1441,7 @@ class Voucher extends Components {
                 break;
             case 'partially_paid':
                 break;
-            case 'paid':
+            case 'unredeemed':
                 break;
             case 'partially_redeemed':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because it has been partially redeemed."), $silent);
@@ -1489,7 +1489,7 @@ class Voucher extends Components {
                     break;
                 case 'partially_paid':
                     break;
-                case 'paid':
+                case 'closed':
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is in dispute."), $silent);
@@ -1561,7 +1561,7 @@ class Voucher extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
+            case 'unredeemed':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been paid."), $silent);
                 $state_flag = false;
                 break;
@@ -1611,7 +1611,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'paid':
+                case 'closed':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is paid."), $silent);
                     $state_flag = false;
                     break;
@@ -1763,7 +1763,7 @@ class Voucher extends Components {
 ///////////////////////////////////////////////////////////////////////  -- this is also pre-removing cancel
 
 - These additional tests would assume the vouchers can become out of sync with their invoices and this is not allowed.
-- vouchers are in sync with their invoice until paid at which point they can diverege, intentionally.
+- vouchers are in sync with their invoice until unredeeemedmat which point they can diverege, intentionally.
 
     #######################################################################
     #   Check to see if the voucher status allows invoice Editing         #
@@ -1810,8 +1810,8 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Paid (Unused)
-        if($voucher_details['status'] == 'paid') {
+        // Is Unredeemed
+        if($voucher_details['status'] == 'unredeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has has been paid."));
             $state_flag = false;
         }
@@ -1885,8 +1885,8 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Unused
-        if($voucher_details['status'] == 'paid') {
+        // Is Unredeemed
+        if($voucher_details['status'] == 'unredeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been paid."));
             $state_flag = false;
         }
@@ -1961,8 +1961,8 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Paid (Unused)
-        if($voucher_details['status'] == 'paid') {
+        // Is Unredeemed
+        if($voucher_details['status'] == 'unredeemed') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been paid."));
             $state_flag = false;
         }
