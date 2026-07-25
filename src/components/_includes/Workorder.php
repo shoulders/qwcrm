@@ -877,7 +877,7 @@ class WorkOrder extends Components {
                 break;
             case 'on_hold':
                 break;
-            case 'management':
+            case 'with_management':
                 break;
             case 'closed_without_invoice':
                 break;
@@ -927,7 +927,7 @@ class WorkOrder extends Components {
                 break;
             case 'on_hold':
                 break;
-            case 'management':
+            case 'with_management':
                 break;
             case 'closed_without_invoice':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be edited because it has been closed without an invoice."), $silent);
@@ -1021,7 +1021,7 @@ class WorkOrder extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is on hold."), $silent);
                 $state_flag = false;
                 break;
-            case 'management':
+            case 'with_management':
                 break;
             case 'closed_without_invoice':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."), $silent);
@@ -1096,7 +1096,7 @@ class WorkOrder extends Components {
                 break;
             case 'on_hold':
                 break;
-            case 'management':
+            case 'with_management':
                 break;
             case 'closed_without_invoice':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."), $silent);

@@ -1319,3 +1319,6 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'business_hours
 -- Rename some record statuses --
 UPDATE `#__voucher_statuses` SET `status_key` = `unredeemed` WHERE `status` = 'paid';
 UPDATE `#__voucher_records` SET `status` = 'unredeemed' WHERE `status` = 'paid';
+
+UPDATE `#__workorder_statuses` SET `status_key` = `with_management` WHERE `status` = 'management';
+UPDATE `#__workorder_records` SET `status` = 'with_management' WHERE `status` = 'management';

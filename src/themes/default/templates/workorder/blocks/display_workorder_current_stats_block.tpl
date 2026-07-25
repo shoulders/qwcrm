@@ -18,7 +18,7 @@
         <td class="row2"><b>{t}Scheduled{/t}</b></td>
         <td class="row2"><b>{t}With Client{/t}</b></td>
         <td class="row2"><b>{t}On Hold{/t}</b></td>
-        <td class="row2"><b>{t}Management{/t}</b></td>        
+        <td class="row2"><b>{t}With Management{/t}</b></td>
     </tr>
     <tr class="olotd4">
         <td>{$workorder_stats.count_open}</td>
@@ -30,6 +30,6 @@
         <td>{$workorder_stats.count_scheduled}</td>
         <td>{$workorder_stats.count_with_client}</td>
         <td>{$workorder_stats.count_on_hold}</td>
-        <td>{$workorder_stats.count_management}</td>                                                  
+        <td>{$workorder_stats.count_with_management}</td>
     </tr>
 </table>

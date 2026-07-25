@@ -7,7 +7,7 @@
 *}
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
-        <td>            
+        <td>
             <table width="700" cellpadding="3" cellspacing="0" border="0">
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Work Orders Overview{/t}</td>
@@ -23,23 +23,23 @@
                             <tr>
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
-                                        
+
                                         {*<!-- Search Bar -->
                                         <tr>
                                             <td>
                                                 {include file='core/blocks/theme_searchbar_block.tpl'}
                                             </td>
                                         </tr>*}
-                                        
+
                                         <tr>
                                             <td>
-                                                <a name="workorder_stats"></a>                                                
-                                                {include file='workorder/blocks/display_workorder_current_stats_block.tpl' workorder_stats=$overview_workorder_stats block_title=_gettext("Work Order Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                              
+                                                <a name="workorder_stats"></a>
+                                                {include file='workorder/blocks/display_workorder_current_stats_block.tpl' workorder_stats=$overview_workorder_stats block_title=_gettext("Work Order Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="unassigned"></a>                                                
+                                                <a name="unassigned"></a>
                                                 {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_unassigned block_title=_gettext("Unassigned")}
                                             </td>
                                         </tr>
@@ -75,16 +75,16 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="management"></a>
-                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_management block_title=_gettext("Management")}
+                                                <a name="with_management"></a>
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_with_management block_title=_gettext("With Management")}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" onclick="printThisPage(true, 'index.php?component=workorder&page_tpl=print&commContent=technician_workorder_slip&commType=htmlBrowser&blankMedia=true');">{t}Print{/t} {t}Blank{/t} {t}Technician Work Order Slip{/t}</button><br>                                                  
+                                                <button type="button" onclick="printThisPage(true, 'index.php?component=workorder&page_tpl=print&commContent=technician_workorder_slip&commType=htmlBrowser&blankMedia=true');">{t}Print{/t} {t}Blank{/t} {t}Technician Work Order Slip{/t}</button><br>
                                                 <button type="button" onclick="printThisPage(true, 'index.php?component=workorder&page_tpl=print&commContent=technician_job_sheet&commType=htmlBrowser&blankMedia=true');">{t}Print{/t} {t}Blank{/t} {t}Technician Job Sheet{/t}</button><br>
                                                 <button type="button" onclick="printThisPage(true, 'index.php?component=workorder&page_tpl=print&commContent=client_workorder_slip&commType=htmlBrowser&blankMedia=true');">{t}Print{/t} {t}Blank{/t} {t}Client Work Order Slip{/t}</button><br>
-                                            </td>                                            
+                                            </td>
                                         </tr>
                                     </table>
                                 </td>

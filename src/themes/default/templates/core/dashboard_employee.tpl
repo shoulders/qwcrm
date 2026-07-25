@@ -8,10 +8,10 @@
 <table width="700" border="0" cellpadding="2" cellspacing="5">
     <tr>
         <td>
-            
+
             <!-- Surrounding Table (for styling) -->
             <table width="700" cellpadding="4" cellspacing="0" border="0">
-                
+
                 <!-- Header -->
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}QWcrm - Welcome to your Online Office{/t}</td>
@@ -27,16 +27,16 @@
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">
                             <tr>
-                                <td>                                    
+                                <td>
                                     <table>
-                                        
+
                                         <!-- Search Bar -->
                                         {*<tr>
                                             <td>
                                                 {include file='core/blocks/theme_searchbar_block.tpl'}
                                             </td>
                                         </tr>*}
-                                        
+
                                         <!-- Welcome Message -->
                                         {if $welcome_msg}
                                             <tr>
@@ -49,29 +49,29 @@
                                                             <td>{$welcome_msg}</td>
                                                         </tr>
                                                     </table>
-                                                    <br> 
+                                                    <br>
                                                 </td>
                                             </tr>
                                         {/if}
-                                        
+
                                         <!-- Employee Workorder Stats (logged in) -->
                                         <tr>
                                             <td>
                                                 <a name="employee_workorder_stats"></a>
                                                 {include file='workorder/blocks/display_workorder_current_stats_block.tpl' workorder_stats=$employee_workorder_stats block_title=_gettext("Work Order Current Stats")|cat:" ($login_display_name)"}
                                             </td>
-                                        </tr> 
-                                        
+                                        </tr>
+
                                         <!-- Employee Workorders (logged in) -->
                                         <tr>
                                             <td>
-                                                <table width="100%" border="0" cellpadding="10" cellspacing="0">                                                    
+                                                <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                                     <tr>
                                                         <td>
                                                             <a name="assigned"></a>
                                                             {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$employee_workorders_assigned block_title=_gettext("Assigned")|cat:" ($login_display_name)"}
                                                         </td>
-                                                    </tr>                                                    
+                                                    </tr>
                                                     <tr>
                                                         <td>
                                                             <a name="waiting_for_parts"></a>
@@ -98,15 +98,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <a name="management"></a>
-                                                            {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$employee_workorders_management block_title=_gettext("Management")|cat:" ($login_display_name)"}
+                                                            <a name="with_management"></a>
+                                                            {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$employee_workorders_with_management block_title=_gettext("With Management")|cat:" ($login_display_name)"}
                                                         </td>
                                                     </tr>
                                                 </table>
                                             </td>
-                                        </tr>                                        
-                                        
-                                    </table>                                        
+                                        </tr>
+
+                                    </table>
                                 </td>
                             </tr>
                         </table>

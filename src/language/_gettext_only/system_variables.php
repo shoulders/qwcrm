@@ -215,7 +215,7 @@ _gettext("Waiting for Parts");
 _gettext("Scheduled");
 _gettext("With Client");
 _gettext("On Hold");
-_gettext("Management");
+_gettext("With Management");
 _gettext("Closed without Invoice");
 _gettext("Closed with Invoice");
 _gettext("Deleted");

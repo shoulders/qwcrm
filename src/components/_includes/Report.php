@@ -382,7 +382,7 @@ class Report extends Components {
             $stats['count_scheduled'] = $this->workorderCount('opened_on', $start_date, $end_date, 'scheduled', 'assigned', $employee_id, $client_id);
             $stats['count_with_client'] = $this->workorderCount('opened_on', $start_date, $end_date, 'with_client', 'assigned', $employee_id, $client_id);
             $stats['count_on_hold'] = $this->workorderCount('opened_on', $start_date, $end_date, 'on_hold', 'assigned', $employee_id, $client_id);
-            $stats['count_management'] = $this->workorderCount('opened_on', $start_date, $end_date, 'management', 'assigned', $employee_id, $client_id);
+            $stats['count_with_management'] = $this->workorderCount('opened_on', $start_date, $end_date, 'with_management', 'assigned', $employee_id, $client_id);
         }
 
         // Historic

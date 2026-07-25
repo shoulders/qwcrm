@@ -79,7 +79,7 @@
                                             <input name="delete_workorder" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Workorder?{/t}');">
                                         </form>
                                     {else}
-                                        {t}This work order cannot be deleted. You can only delete the work order if it's status is either unassigned or management and the workorder has no invoice.{/t}
+                                        {t}This work order cannot be deleted. You can only delete the work order if it's status is either unassigned or with management, and the workorder has no invoice.{/t}
                                     {/if}
                                 </td>
 

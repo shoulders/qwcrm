@@ -50,8 +50,8 @@
                     <td><b>{$workorder_stats.count_on_hold}</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Management{/t}:</b></td>
-                    <td><b>{$workorder_stats.count_management}</b></td>
+                    <td><b>{t}With Management{/t}:</b></td>
+                    <td><b>{$workorder_stats.count_with_management}</b></td>
                 </tr>
                 <tr>
                     <td colspan="2"><h2>{t}Historic{/t}</h2></td>
