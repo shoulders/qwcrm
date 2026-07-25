@@ -502,7 +502,7 @@ INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'pending', 'Pending'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
-(4, 'closed', 'closed'),
+(4, 'closed', 'Closed'),
 (5, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
