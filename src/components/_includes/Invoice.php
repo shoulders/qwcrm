@@ -511,7 +511,7 @@ defined('_QWEXEC') or die;
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
             $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'in_dispute', 'overdue', 'collections')";
-            //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'deleted')";
+            //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'closed', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -618,7 +618,7 @@ defined('_QWEXEC') or die;
 
         // Is the new status a "closed" status
         // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
-        if(in_array($new_status, array('paid', 'deleted'))) {
+        if(in_array($new_status, array('closed', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
             $closed_on = null;
@@ -847,7 +847,7 @@ defined('_QWEXEC') or die;
 
         // Status checks
         switch($invoice_details['status']) {
-            case'pending':
+            case 'pending':
                 break;
             case 'unpaid':
                 break;
@@ -855,8 +855,8 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been is paid."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'in_dispute':
@@ -879,7 +879,7 @@ defined('_QWEXEC') or die;
 
         /* Does the invoice have any Vouchers preventing changing the invoice status
          * - When you change the invoice status, the vouchers status are now mirrored using updateInvoiceVouchersStatuses()
-         * - Once the invoice is paid, it's status cannot be manually changed
+         * - Once the invoice is closed, it's status cannot be manually changed
         if($this->app->components->report->voucherCount(null, null, null, null, null, null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has Vouchers."), $silent);
         }
@@ -936,9 +936,15 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is paid."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been closed."), $silent);
                 $state_flag = false;
+                break;
+            case 'in_dispute':
+                break;
+            case 'overdue':
+                break;
+            case 'collections':
                 break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."), $silent);
@@ -1008,9 +1014,15 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been closed."), $silent);
                 $state_flag = false;
+                break;
+            case 'in_dispute':
+                break;
+            case 'overdue':
+                break;
+            case 'collections':
                 break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."), $silent);
@@ -1111,8 +1123,8 @@ defined('_QWEXEC') or die;
         }
 
         // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
-        elseif($invoice_details['unit_gross'] > 0 && $invoice_details['unit_gross'] == $payments_subtotal && $invoice_details['status'] != 'paid') {
-            $this->updateStatus($invoice_id, 'paid');
+        elseif($invoice_details['unit_gross'] > 0 && $invoice_details['unit_gross'] == $payments_subtotal && $invoice_details['status'] != 'closed') {
+            $this->updateStatus($invoice_id, 'closed');
         }
 
         return;

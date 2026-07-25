@@ -1323,8 +1323,11 @@ UPDATE `#__voucher_records` SET `status` = 'unredeemed' WHERE `status` = 'paid';
 UPDATE `#__workorder_statuses` SET `status_key` = `with_management` WHERE `status` = 'management';
 UPDATE `#__workorder_records` SET `status` = 'with_management' WHERE `status` = 'management';
 
-UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `id` = 8;
-UPDATE `#__workorder_statuses` SET `status_key` = `deleted` WHERE `id` = 9;
+UPDATE `#__workorder_statuses` SET `status_key` = 'closed', `display_name` = 'Closed' WHERE `#__workorder_statuses`.`id` = 8;
+UPDATE `#__workorder_statuses` SET `status_key` = 'deleted', `display_name` = 'Deleted' WHERE `#__workorder_statuses`.`id` = 9;
 DELETE FROM `#__workorder_statuses` WHERE `id` = 10;
 UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `status` = 'closed_without_invoice';
 UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `status` = 'closed_with_invoice';
+
+UPDATE `#__invoice_statuses` SET `status_key` = 'closed', `display_name` = 'Closed' WHERE `qw_invoice_statuses`.`id` = 4;
+-- done in php  - UPDATE `#__invoice_records` SET `status` = 'closed' WHERE `status` = 'paid';

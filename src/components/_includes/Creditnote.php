@@ -997,7 +997,7 @@ class Creditnote extends Components {
                         // Do Nothing
 
                         break;
-                    case 'paid':
+                    case 'closed':
 
                         // CR `Refund` Action Type (Debit)
 
@@ -1261,7 +1261,7 @@ class Creditnote extends Components {
                         }
 
                         break;
-                    case 'paid':
+                    case 'closed':
                         // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices)
 
                         // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not give free money to a client)
@@ -1559,7 +1559,7 @@ class Creditnote extends Components {
                             $state_flag = false;
                         }
                         break;
-                    case 'paid':
+                    case 'closed':
                         // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices) (The code here only controls the use of the CR as a payment method)
                         // Do Nothing
                         break;

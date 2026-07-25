@@ -94,7 +94,7 @@ _gettext("Wages");
 _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
-_gettext("Paid");
+_gettext("Closed");
 _gettext("In Dispute");
 _gettext("Overdue");
 _gettext("Collections");

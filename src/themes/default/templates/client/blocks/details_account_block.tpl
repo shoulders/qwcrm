@@ -143,17 +143,12 @@
                     <td><b>({$currency_symbol}{$invoice_stats.sum_closed_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Closed{/t} {t}with{/t} {t}Discount{/t}:</b></td>
-                    <td><b>{$invoice_stats.count_closed_discounted}</b></td>
-                    <td><b>({$currency_symbol}{$invoice_stats.sum_closed_discounted_unit_gross|string_format:"%.2f"})</b></td>
-                </tr>
-                <tr>
                     <td colspan="2">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Paid{/t}:</b></td>
-                    <td><b>{$invoice_stats.count_paid}</b></td>
-                    <td><b>({$currency_symbol}{$invoice_stats.sum_paid_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Closed{/t} {t}with{/t} {t}Discount{/t}:</b></td>
+                    <td><b>{$invoice_stats.count_closed_discounted}</b></td>
+                    <td><b>({$currency_symbol}{$invoice_stats.sum_closed_discounted_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Voided{/t}:</b></td>
@@ -179,7 +174,7 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Paid{/t}:</b></td>
+                    <td><b>{t}Unredeemed{/t}:</b></td>
                     <td><b>{$voucher_stats.count_unredeemed}</b></td>
                     <td><b>({$currency_symbol}{$voucher_stats.sum_unredeemed_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>

@@ -49,8 +49,8 @@
                                         </tr>
                                         {*<tr>
                                             <td>
-                                                <a name="paid"></a>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_paid block_title=_gettext("Paid")}
+                                                <a name="closed"></a>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_closed block_title=_gettext("closed")}
                                             </td>
                                         </tr>*}
                                         <tr>
