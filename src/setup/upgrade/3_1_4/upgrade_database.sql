@@ -1336,3 +1336,15 @@ UPDATE `#__invoice_records` SET `status` = 'in_collections' WHERE `status` = 'co
 
 UPDATE `#__expense_statuses` SET `status_key` = 'closed', `display_name` = 'Closed' WHERE `#__expense_statuses`.`id` = 4;
 -- done in php  - UPDATE `#__expense_records` SET `status` = 'closed' WHERE `status` = 'paid';
+
+-- Remove unwanted otherincome types --
+TRUNCATE TABLE `#__otherincome_types`;
+UPDATE `#__otherincome_records` SET `status` = 'other' WHERE `status` = 'cancelled_services';
+UPDATE `#__otherincome_records` SET `status` = 'other' WHERE `status` = 'returned_goods';
+INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'commission', 'Commission'),
+(2, 'donation', 'Donation'),
+(3, 'interest', 'Interest'),
+(4, 'other', 'Other'),
+(5, 'royalties', 'Royalties'),
+(6, 'tips', 'Tips');

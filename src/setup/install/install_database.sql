@@ -746,14 +746,12 @@ CREATE TABLE `#__otherincome_types` (
 --
 
 INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
-(1, 'cancelled_services', 'Cancelled Services'),
-(2, 'commission', 'Commission'),
-(3, 'donation', 'Donation'),
-(4, 'interest', 'Interest'),
-(5, 'other', 'Other'),
-(6, 'returned_goods', 'Returned Goods'),
-(7, 'royalties', 'Royalties'),
-(8, 'tips', 'Tips');
+(1, 'commission', 'Commission'),
+(2, 'donation', 'Donation'),
+(3, 'interest', 'Interest'),
+(4, 'other', 'Other'),
+(5, 'royalties', 'Royalties'),
+(6, 'tips', 'Tips');
 
 --
 -- Table structure for table `#__payment_additional_info_types`
