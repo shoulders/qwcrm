@@ -60,12 +60,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td><b>{t}Paid{/t}:</b></td>
-                    <td><b>{$expense_stats.count_paid}</b></td>
-                    <td><b>({$currency_symbol}{$expense_stats.sum_paid_unit_gross|string_format:"%.2f"})</b></td>
-                </tr>
+                </tr>                
                 <tr>
                     <td><b>{t}Voided{/t}:</b></td>
                     <td><b>{$expense_stats.count_voided}</b></td>
@@ -120,11 +115,6 @@
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td><b>{t}Paid{/t}:</b></td>
-                    <td><b>{$otherincome_stats.count_paid}</b></td>
-                    <td><b>({$currency_symbol}{$otherincome_stats.sum_paid_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Voided{/t}:</b></td>

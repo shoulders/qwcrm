@@ -2038,28 +2038,9 @@ class Report extends Components {
             $stats['count_closed'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, 'closed', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['count_used'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, 'used', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['count_voided'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, 'voided', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
-            //$stats['count_deleted'] = $this->creditnoteCount(null, $start_date, $end_date, $tax_system, 'deleted', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
-            //$stats['count_expired'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, null, true, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
+            $stats['count_deleted'] = $this->creditnoteCount(null, $start_date, $end_date, $tax_system, 'deleted', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
 
-
-            /*if($client_id){}
-            if($supplier_id){}
-
-            sales_standalone
-            sales_close
-            sales_refund
-
-            purchase_standalone
-            purchase_close
-            purchase_refund
-
-
-            $stats['count_debit'] = $this->creditnoteCount('date', $start_date, $end_date, $tax_system, $status, null, $type = null, $action_type = null, $employee_id = null, $client_id = null, $supplier_id = null, $invoice_id = null, $expense_id = null);
-            $stats['count_credit'] =*/
-
-            // TODO: i dont thing this should be a thing credit notes do show discounts
-            //$stats['count_closed_discounted'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, 'discounted', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
-
+            $stats['count_expired_unused'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, 'unused', true, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
         }
 
         // Revenue

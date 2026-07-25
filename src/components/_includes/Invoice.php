@@ -1122,7 +1122,7 @@ defined('_QWEXEC') or die;
             $this->updateStatus($invoice_id, 'partially_paid');
         }
 
-        // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
+        // Has invoicable amount and the payment(s) match the invoiceable amount, set to closed (if not already)
         elseif($invoice_details['unit_gross'] > 0 && $invoice_details['unit_gross'] == $payments_subtotal && $invoice_details['status'] != 'closed') {
             $this->updateStatus($invoice_id, 'closed');
         }

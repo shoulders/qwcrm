@@ -513,7 +513,7 @@ class Voucher extends Components {
         }
 
         // Update voucher 'blocked' boolean for the new status ('blocked' is a way of disabling the voucher without permanently closing it, i.e. for suspended status, and is controlled by Expiry and Status)
-        // If a voucher is suspended and then expires, when you change the voucher status (e.g. suspended --> paid) it stays blocked.
+        // If a voucher is suspended and then expires, when you change the voucher status (e.g. suspended --> unredeemed) it stays blocked.
         if(in_array($new_status, array('unredeemed', 'partially_redeemed')) && !$voucher_details['closed_on']) {
             $blocked = 0;
         } else {
@@ -680,7 +680,7 @@ class Voucher extends Components {
 
         }
 
-        // Default Status change handler - this is when the vouchers have not been processed above (voided/deleted) but still need their status changing (eg pending/partially_paid/paid)
+        // Default Status change handler - this is when the vouchers have not been processed above (voided/deleted) but still need their status changing (eg pending/partially_paid/unredeemed)
         // Might not be used currently, but could be useful in future
         elseif($vouchers_new_status)
         {
@@ -1016,7 +1016,7 @@ class Voucher extends Components {
 
         $state_flag = true;
 
-        // Is Expired (Live Check) (`paid` and `partially_paid` status need this extra check)
+        // Is Expired (Live Check) (`unredeemed` and `partially_paid` status need this extra check)
         if($this->checkVoucherIsExpired($voucher_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it has expired.", $silent));
             $state_flag = false;
@@ -1135,7 +1135,7 @@ class Voucher extends Components {
 
     ###########################################################  // used by invoice manual status change routine
     #  Check if the voucher status is allowed to be changed   #  // used on voucher:status
-    ###########################################################  // can only swap between `paid` and 'suspended`, and parent invoice must be paid
+    ###########################################################  // can only swap between `unredeemed` and 'suspended`, and parent invoice must be closed
 
     public function checkRecordAllowsManualStatusChange($voucher_id, $checkParentInvoice = true, $silent = false) {
 
@@ -1612,7 +1612,7 @@ class Voucher extends Components {
                     $state_flag = false;
                     break;
                 case 'closed':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is paid."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is closed."), $silent);
                     $state_flag = false;
                     break;
                 case 'in_dispute':
@@ -1679,7 +1679,7 @@ class Voucher extends Components {
         return $state_flag;
 
     }
-    ############################################################################  // This is different because the invoice status is not changed, is stays aas paid
+    ############################################################################  // This is different because the invoice status is not changed, is stays as closed
     # Check an invoices vouchers allow voiding                                 #  // Used by invoice voiding routine when you generate a CR
     ############################################################################
 

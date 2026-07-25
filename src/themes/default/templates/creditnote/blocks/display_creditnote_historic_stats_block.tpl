@@ -12,16 +12,16 @@
         <td class="row2"><b>{t}Opened{/t}</b></td>
         <td class="row2"><b>{t}Closed{/t}</b></td>
         <td class="row2"><b>{t}Used{/t}</b></td>
-        <td class="row2"><b>{t}Expired Unused{/t}</b></td>
-        <td class="row2"><b>{t}Cancelled{/t}</b></td>
+        <td class="row2"><b>{t}Expired (Unused){/t}</b></td>
+        <td class="row2"><b>{t}Voided{/t}</b></td>
         <td class="row2"><b>{t}Deleted{/t}</b></td>
     </tr>
     <tr class="olotd4">
         <td>{$creditnote_stats.count_opened}</td>
         <td>{$creditnote_stats.count_closed}</td>
-        <td>{$creditnote_stats.count_fully_used}</td>
-        <td>{$creditnote_stats.count_expired_paid}</td>
-        <td>{$creditnote_stats.count_cancelled}</td>
+        <td>{$creditnote_stats.count_used}</td>
+        <td>{$creditnote_stats.count_expired_unused'}</td>
+        <td>{$creditnote_stats.count_voided}</td>
         <td>{$creditnote_stats.count_deleted}</td>
     </tr>
 </table>
