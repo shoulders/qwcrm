@@ -180,8 +180,8 @@
                 </tr>
                 <tr>
                     <td><b>{t}Paid{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_paid}</b></td>
-                    <td><b>({$currency_symbol}{$voucher_stats.sum_paid_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_unredeemed}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_unredeemed_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Partially Redeemed{/t}:</b></td>
@@ -217,8 +217,8 @@
                 </tr>
                 <tr>
                     <td><b>{t}Expired Unused{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_expired_paid}</b></td>
-                    <td><b>({$currency_symbol}{$voucher_stats.sum_expired_paid_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_expired_unredeemed}</b></td>
+                    <td><b>({$currency_symbol}{$voucher_stats.sum_unredeemed_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Expired Partially Redeemed{/t}:</b></td>
