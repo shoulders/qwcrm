@@ -392,7 +392,7 @@ class Report extends Components {
             $stats['count_closed'] = $this->workorderCount('closed_on', $start_date, $end_date, 'closed', 'closed_by', $employee_id, $client_id);
             $stats['count_closed_without_invoice'] = $this->workorderCount('opened_on', $start_date, $end_date, 'closed_without_invoice', 'closed_by', $employee_id, $client_id);
             $stats['count_closed_with_invoice'] = $this->workorderCount('opened_on', $start_date, $end_date, 'closed_with_invoice', 'closed_by', $employee_id, $client_id);
-            $stats['count_deleted'] = $this->workorderCount(null, null, null, 'deleted');   // Only used on basic stats
+            $stats['count_deleted'] = $this->workorderCount(null, null, null, 'deleted');   // Only used on basic stats TODO: do i need any of these delete counts
 
         }
 
@@ -487,10 +487,14 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";
         } elseif($status == 'opened') {
             // Do nothing
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NOT NULL";
+        } elseif($status == 'closed_without_invoice') {
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NULL";
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
+        } elseif($status == 'closed_with_invoice') {
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NOT NULL";
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
         } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->app->db->qStr($status);
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.status = ".$this->app->db->qStr($status);
         }
 
         // Remove Deleted Records from the results, unless the status is 'deleted'

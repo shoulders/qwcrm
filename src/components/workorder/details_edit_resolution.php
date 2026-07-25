@@ -30,14 +30,14 @@ if(!$this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$V
 
         // Close without invoice
         if(\CMSApplication::$VAR['submit'] == 'closewithoutinvoice') {
-            $this->app->components->workorder->closeWithoutInvoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+            $this->app->components->workorder->closeRecord(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed without an invoice."));
             $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
         }
 
         // Close with invoice
         if(\CMSApplication::$VAR['submit'] == 'closewithinvoice') {
-            $this->app->components->workorder->closeWithInvoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+            $this->app->components->workorder->closeRecord(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
 
             // Create a new invoice attached to this work order
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed with an invoice."));

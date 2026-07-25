@@ -354,23 +354,9 @@ class WorkOrder extends Components {
 
         $sql = "SELECT * FROM ".PRFX."workorder_statuses";
 
-        // Restrict statuses
+        // Restrict statuses to those that are only allowed to be changed by the user
         if($restricted) {
-
-            // Restrict statuses to those that are only allowed to be changed by the user
-            $restricted_statuses = "'closed_with_invoice', 'deleted'";
-
-            // Check and restrict close statuses if required
-            if($workorder_id) {
-                // Check to see if close status are allowed
-                if(!$this->checkRecordAllowsClosedStatus($workorder_id)) {
-                    $restricted_statuses .= " ,'closed_without_invoice'";
-                }
-            }
-
-            // Final Restriction SQL
-            $sql .= "\nWHERE status_key NOT IN ($restricted_statuses)";
-
+            $sql .= "\nWHERE status_key NOT IN ('closed', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -583,7 +569,7 @@ class WorkOrder extends Components {
 
         // Is the new status a "closed" status
         // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
-        if(in_array($new_status, array('closed_without_invoice', 'closed_with_invoice', 'deleted'))) {
+        if(in_array($new_status, array('closed', 'deleted'))) {
             $closed_by = $this->app->db->qStr($this->app->user->login_user_id);
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
@@ -738,24 +724,17 @@ class WorkOrder extends Components {
 
     /** Close Functions **/
 
-    ########################################
-    # Close Workorder without invoice      #
-    ########################################
+    ############################################### // closed with & without invoice aware
+    # Close Workorder                             #
+    ###############################################
 
-    public function closeWithoutInvoice($workorder_id, $resolution) {
+    public function closeRecord($workorder_id, $resolution) {
 
-        // Insert resolution and close information
-        $sql = "UPDATE ".PRFX."workorder_records SET
-                closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
-                status              =". $this->app->db->qStr( 'closed_without_invoice'             ).",
-                closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)  ).",
-                resolution          =". $this->app->db->qStr( $resolution                          )."
-                WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
+        // Update Resolution
+        $this->updateResolution($workorder_id, $resolution);
 
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        // Update Work Order Status - not needed
-        //$this->app->components->workorder->update_workorder_status($workorder_id, 'closed_without_invoice');
+        // Update Work Order Status
+        $this->app->components->workorder->update_workorder_status($workorder_id, 'closed');
 
         // Get workorder details
         $workorder_details = $this->getRecord($workorder_id);
@@ -763,13 +742,21 @@ class WorkOrder extends Components {
         // If there is no employee assigned, set the current logged in user as the assigned employee
         if(!$workorder_details['employee_id']) {
             $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
+        }
+
+        // Messages that depend on closed with or without invoice
+        if(!$workorder_details['invoice_id']) {
+            $historyMessage = _gettext("Closed without invoice by").' '.$this->app->user->login_display_name.'.';
+            $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
+        } else {
+            $historyMessage = _gettext("Closed with invoice by").' '.$this->app->user->login_display_name.'.';
+            $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
         }
 
         // Create a History record
-        $this->insertHistory($workorder_id, _gettext("Closed without invoice by").' '.$this->app->user->login_display_name.'.');
+        $this->insertHistory($workorder_id, $historyMessage);
 
         // Log activity
-        $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -778,48 +765,6 @@ class WorkOrder extends Components {
         return true;
 
     }
-
-    #################################
-    # Close Workorder with Invoice  #
-    #################################
-
-    public function closeWithInvoice($workorder_id, $resolution) {
-
-        // Insert resolution and close information
-        $sql = "UPDATE ".PRFX."workorder_records SET
-                closed_by           =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
-                status              =". $this->app->db->qStr( 'closed_with_invoice'                ).",
-                closed_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp))."
-                resolution          =". $this->app->db->qStr( $resolution                          )."
-                WHERE workorder_id  =". $this->app->db->qStr( $workorder_id                        );
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
-        // Update Work Order Status - not needed
-        //$this->app->components->workorder->update_workorder_status($workorder_id, 'closed_with_invoice');
-
-        // Get workorder details
-        $workorder_details = $this->getRecord($workorder_id);
-
-        // If there is no employee assigned, set the current logged in user as the assigned employee
-        if(!$workorder_details['employee_id']) {
-            $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
-        }
-
-        // Create a Workorder History Note
-        $this->insertHistory($workorder_id, _gettext("Closed with invoice by").' '.$this->app->user->login_display_name.'.');
-
-        // Log activity
-        $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_id);
-        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
-        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
-        $this->app->system->general->updateLastActive($recordIds);
-
-        return true;
-
-    }
-
 
     /** Check Functions **/
 
@@ -849,7 +794,7 @@ class WorkOrder extends Components {
     #  Check if the workorder status is allowed to be changed  #
     ############################################################
 
-  public function checkRecordAllowsManualStatusChange($workorder_id, $silent = false) {
+   public function checkRecordAllowsManualStatusChange($workorder_id, $silent = false) {
 
         $state_flag = true;
 
@@ -879,16 +824,20 @@ class WorkOrder extends Components {
                 break;
             case 'with_management':
                 break;
-            case 'closed_without_invoice':
-                break;
-            case 'closed_with_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed with an invoice."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has already been deleted."), $silent);
                 $state_flag = false;
                 break;
+        }
+
+        // Is the workorder closed with an invoice
+        if($workorder_details['invoice_id']) {
+            $this->app->system->variables->systemMessagesWrite('warning', _gettext("This workorder was closed with an invoice, so it cannot have it's status changed. You need to delete the invoice first."), $silent);
+            $state_flag = false;
         }
 
         return $state_flag;
@@ -929,13 +878,10 @@ class WorkOrder extends Components {
                 break;
             case 'with_management':
                 break;
-            case 'closed_without_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be edited because it has been closed without an invoice."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be edited because it has been closed."), $silent);
                 $state_flag = false;
                 break;
-            case 'closed_with_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be edited because it has been closed with an invoice."), $silent);
-                $state_flag = false;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
@@ -1023,12 +969,8 @@ class WorkOrder extends Components {
                 break;
             case 'with_management':
                 break;
-            case 'closed_without_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."), $silent);
-                $state_flag = false;
-                break;
-            case 'closed_with_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed with an invoice."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
@@ -1041,10 +983,10 @@ class WorkOrder extends Components {
 
     }
 
-
-    ############################################################
-    #  Check if the workorder status is allowed to be changed  #  // currently only on status
-    ############################################################
+    /*
+    ############################################################  // TODO: should these tests be in allowed to submit for workorder
+    #  Check if the workorder status is allowed to be changed  #  // These forms do a simple check before submission
+    ############################################################  // not used - was used for defining restricted statuses
 
     private function checkRecordAllowsClosedStatus($workorder_id) {
 
@@ -1068,14 +1010,14 @@ class WorkOrder extends Components {
         return $state_flag;
 
     }
-
+    */
 
 
     ##############################################################
     #  Check if the workorder employee is allowed to be changed  #
     ##############################################################
 
-     public function checkRecordAllowsEmployeeUpdate($workorder_id, $silent = false) {
+    public function checkRecordAllowsEmployeeUpdate($workorder_id, $silent = false) {
 
         $state_flag = true;
 
@@ -1098,12 +1040,8 @@ class WorkOrder extends Components {
                 break;
             case 'with_management':
                 break;
-            case 'closed_without_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."), $silent);
-                $state_flag = false;
-                break;
-            case 'closed_with_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed with an invoice."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':

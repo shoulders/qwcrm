@@ -748,12 +748,6 @@ defined('_QWEXEC') or die;
         // Create a Workorder History Note
         $this->app->components->workorder->insertHistory($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
-        // Update workorder status
-        if($invoice_details['workorder_id'])
-        {
-            $this->app->components->workorder->updateStatus($invoice_details['workorder_id'], 'closed_without_invoice');
-        }
-
         // Log activity
         $logMessage = _gettext("Invoice").' '.$invoice_details['invoice_id'].' ';
         if($invoice_details['workorder_id']){ $logMessage .= _gettext("for Work Order").' '.$invoice_details['workorder_id'].' ';}

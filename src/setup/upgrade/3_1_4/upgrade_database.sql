@@ -1322,3 +1322,9 @@ UPDATE `#__voucher_records` SET `status` = 'unredeemed' WHERE `status` = 'paid';
 
 UPDATE `#__workorder_statuses` SET `status_key` = `with_management` WHERE `status` = 'management';
 UPDATE `#__workorder_records` SET `status` = 'with_management' WHERE `status` = 'management';
+
+UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `id` = 8;
+UPDATE `#__workorder_statuses` SET `status_key` = `deleted` WHERE `id` = 9;
+DELETE FROM `#__workorder_statuses` WHERE `id` = 10;
+UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `status` = 'closed_without_invoice';
+UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `status` = 'closed_with_invoice';
