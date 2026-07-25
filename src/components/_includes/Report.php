@@ -309,8 +309,6 @@ class Report extends Components {
             $whereTheseRecords .= " AND ".PRFX."client_records.active = 0";
         } elseif($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."client_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
         } elseif($status == 'closed') {
             $whereTheseRecords .= " AND ".PRFX."client_records.closed_on IS NOT NULL";
         } elseif($status) {
@@ -485,8 +483,6 @@ class Report extends Components {
 
         if($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
         } elseif($status == 'closed_without_invoice') {
             $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NULL";
             $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
@@ -932,8 +928,6 @@ class Report extends Components {
         // Restrict the records
         if($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
         } elseif($status == 'closed') {
             $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
         } elseif($status == 'discounted') {
@@ -1209,8 +1203,6 @@ class Report extends Components {
 
         if($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
         } elseif($status == 'closed') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NOT NULL";
         } elseif($status == 'claimed' && $client_id) {
@@ -1652,8 +1644,6 @@ class Report extends Components {
         // Filter by open, opened, closed. These are virtual statuses
         if($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
         } elseif($status == 'closed') {
             $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NOT NULL";
         } elseif($status) {
@@ -1999,8 +1989,6 @@ class Report extends Components {
         // Filter by open, opened, closed. These are virtual statuses
         if($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
         } elseif($status == 'closed') {
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NOT NULL";
         } elseif($status) {
@@ -2453,8 +2441,6 @@ class Report extends Components {
         // Restrict the records
         if($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NULL";
-        } elseif($status == 'opened') {
-            // Do nothing
         } elseif($status == 'closed') {
             $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NOT NULL";
         } elseif($status == 'discounted') {
