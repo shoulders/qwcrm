@@ -67,8 +67,8 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="collections"></a>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_collections block_title=_gettext("Collections")}
+                                                <a name="in_collections"></a>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_in_collections block_title=_gettext("In Collections")}
                                             </td>
                                         </tr>
 

@@ -97,7 +97,7 @@ _gettext("Partially Paid");
 _gettext("Closed");
 _gettext("In Dispute");
 _gettext("Overdue");
-_gettext("Collections");
+_gettext("In Collections");
 _gettext("Deleted");
 
 /* Otherincome Statuses */

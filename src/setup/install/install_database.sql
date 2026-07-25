@@ -651,7 +651,7 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (4, 'closed', 'Closed'),
 (5, 'in_dispute', 'In Dispute'),
 (6, 'overdue', 'Overdue'),
-(7, 'collections', 'Collections'),
+(7, 'in_collections', 'In Collections'),
 (8, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------

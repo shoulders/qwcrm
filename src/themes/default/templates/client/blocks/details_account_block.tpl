@@ -124,9 +124,9 @@
                     <td><b>({$currency_symbol}{$invoice_stats.sum_overdue_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Collections{/t}:</b></td>
-                    <td><b>{$invoice_stats.count_collections}</b></td>
-                    <td><b>({$currency_symbol}{$invoice_stats.sum_collections_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}In Collections{/t}:</b></td>
+                    <td><b>{$invoice_stats.count_in_collections}</b></td>
+                    <td><b>({$currency_symbol}{$invoice_stats.sum_in_collections_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td colspan="2"><h2>{t}Historic{/t}</h2></td>

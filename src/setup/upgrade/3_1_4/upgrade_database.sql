@@ -1331,3 +1331,6 @@ UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `status` = 'clo
 
 UPDATE `#__invoice_statuses` SET `status_key` = 'closed', `display_name` = 'Closed' WHERE `qw_invoice_statuses`.`id` = 4;
 -- done in php  - UPDATE `#__invoice_records` SET `status` = 'closed' WHERE `status` = 'paid';
+
+UPDATE `#__invoice_statuses` SET `status_key` = 'in_collections', `display_name` = 'In Collections' WHERE `#__invoice_statuses`.`id` = 7;
+UPDATE `#__invoice_records` SET `status` = 'in_collections' WHERE `status` = 'collections';

@@ -649,7 +649,7 @@ class Voucher extends Components {
                 case 'overdue':
                     $vouchers_new_status = 'suspended';
                     break;
-                case 'collections':
+                case 'in_collections':
                     $vouchers_new_status = 'suspended';
                     break;
                 case 'deleted':
@@ -1114,7 +1114,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is overdue."), $silent);
                     $state_flag = false;
                     break;
-                case 'collections':
+                case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is in collections."), $silent);
                     $state_flag = false;
                     break;
@@ -1250,7 +1250,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is overdue."), $silent);
                     $state_flag = false;
                     break;
-                case 'collections':
+                case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in collections."), $silent);
                     $state_flag = false;
                     break;
@@ -1382,7 +1382,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is overdue."), $silent);
                     $state_flag = false;
                     break;
-                case 'collections':
+                case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is in collections."), $silent);
                     $state_flag = false;
                     break;
@@ -1499,7 +1499,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is overdue."), $silent);
                     $state_flag = false;
                     break;
-                case 'collections':
+                case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is in collections."), $silent);
                     $state_flag = false;
                     break;
@@ -1623,7 +1623,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is overdue."), $silent);
                     $state_flag = false;
                     break;
-                case 'collections':
+                case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is in collections."), $silent);
                     $state_flag = false;
                     break;

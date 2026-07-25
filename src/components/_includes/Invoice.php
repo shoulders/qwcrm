@@ -510,7 +510,7 @@ defined('_QWEXEC') or die;
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'in_dispute', 'overdue', 'collections')";
+            $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'in_dispute', 'overdue', 'in_collections')";
             //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'closed', 'deleted')";
         }
 
@@ -863,7 +863,7 @@ defined('_QWEXEC') or die;
                 break;
             case 'overdue':
                 break;
-            case 'collections':
+            case 'in_collections':
                 break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been deleted."), $silent);
@@ -944,7 +944,7 @@ defined('_QWEXEC') or die;
                 break;
             case 'overdue':
                 break;
-            case 'collections':
+            case 'in_collections':
                 break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."), $silent);
@@ -1022,7 +1022,7 @@ defined('_QWEXEC') or die;
                 break;
             case 'overdue':
                 break;
-            case 'collections':
+            case 'in_collections':
                 break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."), $silent);

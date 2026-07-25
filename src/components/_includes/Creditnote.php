@@ -1025,7 +1025,7 @@ class Creditnote extends Components {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins.", $silent));
                         $state_flag = false;
                         break;
-                    case 'collections':
+                    case 'in_collections':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins.", $silent));
                         $state_flag = false;
                         break;
@@ -1294,7 +1294,7 @@ class Creditnote extends Components {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
-                    case 'collections':
+                    case 'in_collections':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
@@ -1571,7 +1571,7 @@ class Creditnote extends Components {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
-                    case 'collections':
+                    case 'in_collections':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
