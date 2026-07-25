@@ -22,17 +22,35 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'new')
 // Check CR can be created (this check is also do on the buttons but silently)
 if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] ?? null, \CMSApplication::$VAR['invoice_id'] ?? null, \CMSApplication::$VAR['supplier_id'] ?? null, \CMSApplication::$VAR['expense_id'] ?? null))
 {
+    // Holding arrays (not really needed)
+    $record = array();
+    $single_item = array();
+
     /* Sales Credit Notes */
 
     // Sales Credit Note (Client) - (client:details)
     if(\CMSApplication::$VAR['client_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('client', 'details'))
     {
-        $record['action_type'] = 'standalone';
+        // Build Creditnote record
         $record['client_id'] = \CMSApplication::$VAR['client_id'];
         $record['type'] = 'sales';
         $record['reference'] = _gettext("Client").': '.\CMSApplication::$VAR['client_id'];
         $record['sales_tax_rate'] = 0.00;
-        $blank_item['vat_tax_code'] = 'T9';
+        $record['action_type'] = 'standalone';
+
+        // Build Single Item
+        $single_item['description'] = $record['reference'];
+        $single_item['unit_qty'] = '1.00';
+        $single_item['unit_net'] = '0.00';
+        $single_item['unit_discount'] = '0.00';
+        $single_item['sales_tax_exempt'] = 0;
+        $single_item['vat_tax_code'] = 'T9';
+        $single_item['unit_tax_rate'] = '0.00';
+        $single_item['unit_tax'] = '0.00';
+        $single_item['unit_gross'] = '0.00';
+        $single_item['subtotal_net'] = '0.00';
+        $single_item['subtotal_tax'] = '0.00';
+        $single_item['subtotal_gross'] = '0.00';
     }
 
     // Sales Credit Note (Invoice) - (invoice:details)
@@ -43,7 +61,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         // Void all of the parent invoice's vouchers (their ability to voided has already been checked)
         $this->app->components->voucher->updateInvoiceVouchersStatuses(\CMSApplication::$VAR['invoice_id'], null, 'voided');
 
-        $record['action_type'] = (float) $invoice_details['balance'] ? 'close' : 'refund';
+        // Build Creditnote record
         $record['client_id'] = $invoice_details['client_id'];
         $record['invoice_id'] = \CMSApplication::$VAR['invoice_id'];
         $record['type'] = 'sales';
@@ -51,7 +69,25 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             ? _gettext("Close").' '._gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id']
             : _gettext("Refund").' '._gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'];
         $record['sales_tax_rate'] = $invoice_details['sales_tax_rate'];
-        $blank_item['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']);
+        $record['action_type'] = (float) $invoice_details['balance'] ? 'close' : 'refund';
+
+        // Build Single Item
+        $single_item['description'] = $record['reference'];
+        $single_item['unit_qty'] = '1.00';
+        $single_item['unit_net'] = $invoice_details['unit_net'];
+        $single_item['unit_discount'] = $invoice_details['unit_discount'];
+        $single_item['sales_tax_exempt'] = 0;
+        $single_item['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($invoice_details['tax_system']);
+        $single_item['unit_tax_rate'] = preg_match('/^vat_/', QW_TAX_SYSTEM)
+                                        ? $this->app->components->company->getVatRate($single_item['vat_tax_code'])
+                                        : (QW_TAX_SYSTEM === 'sales_tax_cash'
+                                            ? $this->app->components->company->getRecord('sales_tax_rate')
+                                            : '0.00');
+        $single_item['unit_tax'] = $invoice_details['unit_tax'];
+        $single_item['unit_gross'] = $invoice_details['unit_gross'];
+        $single_item['subtotal_net'] = $invoice_details['unit_net'];
+        $single_item['subtotal_tax'] = $invoice_details['unit_tax'];
+        $single_item['subtotal_gross'] = $invoice_details['unit_gross'];
     }
 
     /* Purchase Credit Notes */
@@ -59,21 +95,34 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     // Purchase Credit Note (Supplier) - (supplier:details)
     elseif(\CMSApplication::$VAR['supplier_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('supplier', 'details'))
     {
-        $record['action_type'] = 'standalone';
+        // Build Creditnote record
         $record['supplier_id'] = \CMSApplication::$VAR['supplier_id'];
         $record['type'] = 'purchase';
         $record['reference'] = _gettext("Supplier").': '.\CMSApplication::$VAR['supplier_id'] ;
         $record['sales_tax_rate'] = 0.00;
-        $blank_item['vat_tax_code'] = 'T9';
-    }
+        $record['action_type'] = 'standalone';
 
+        // Build Single Item
+        $single_item['description'] = $record['reference'];
+        $single_item['unit_qty'] = '1.00';
+        $single_item['unit_net'] = '0.00';
+        $single_item['unit_discount'] = '0.00';
+        $single_item['sales_tax_exempt'] = 0;
+        $single_item['vat_tax_code'] = 'T9';
+        $single_item['unit_tax_rate'] = '0.00';
+        $single_item['unit_tax'] = '0.00';
+        $single_item['unit_gross'] = '0.00';
+        $single_item['subtotal_net'] = '0.00';
+        $single_item['subtotal_tax'] = '0.00';
+        $single_item['subtotal_gross'] = '0.00';
+    }
 
     // Purchase Credit Note (Expense) - (expense:details)
     elseif(\CMSApplication::$VAR['expense_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details'))
     {
         $expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
 
-        $record['action_type'] = (float) $expense_details['balance'] ? 'close' : 'refund';
+        // Build Creditnote record
         $record['supplier_id'] = $expense_details['supplier_id'];
         $record['expense_id'] = \CMSApplication::$VAR['expense_id'];
         $record['type'] = 'purchase';
@@ -81,41 +130,47 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             ? _gettext("Close").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id']
             : _gettext("Refund").' '._gettext("Expense").': '.\CMSApplication::$VAR['expense_id'];
         $record['sales_tax_rate'] = 0.00;
-        $blank_item['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']);
+        $record['action_type'] = (float) $expense_details['balance'] ? 'close' : 'refund';
+
+        // Build Single Item
+        $single_item['description'] = $record['reference'];
+        $single_item['unit_qty'] = '1.00';
+        $single_item['unit_net'] = $expense_details['unit_net'];
+        $single_item['unit_discount'] = $expense_details['unit_discount'];
+        $single_item['sales_tax_exempt'] = 0;
+        $single_item['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']);
+        $single_item['unit_tax_rate'] = preg_match('/^vat_/', QW_TAX_SYSTEM)
+                                        ? $this->app->components->company->getVatRate($single_item['vat_tax_code'])
+                                        : (QW_TAX_SYSTEM === 'sales_tax_cash'
+                                            ? $this->app->components->company->getRecord('sales_tax_rate')
+                                            : '0.00');
+        $single_item['unit_tax'] = $expense_details['unit_tax'];
+        $single_item['unit_gross'] = $expense_details['unit_gross'];
+        $single_item['subtotal_net'] = $expense_details['unit_net'];
+        $single_item['subtotal_tax'] = $expense_details['unit_tax'];
+        $single_item['subtotal_gross'] = $expense_details['unit_gross'];
     }
 
-    // Single Blank Item
-    $creditnote_items = array (0 =>
-        array (
-            'description' => $record['reference'],
-            'unit_qty' => '1.00',
-            'unit_net' => '0.00',
-            'unit_discount' => '0.00',
-            'sales_tax_exempt' => 0,
-            'vat_tax_code' => $blank_item['vat_tax_code'],
-            'unit_tax_rate' => '0.00',
-            'unit_tax' => '0.00',
-            'unit_gross' => '0.00',
-            'subtotal_net' => '0.00',
-            'subtotal_tax' => '0.00',
-            'subtotal_gross' => '0.00'
-        ),
-    );
-
-    // Compensate for multiple entry points
+    // Compensate record for multiple entry points
     $record['client_id'] ??= null;
     $record['invoice_id'] ??= null;
     $record['supplier_id'] ??= null;
     $record['expense_id'] ??= null;
 
-    // Create the creditnote and return the new creditnote_id (this has no items)
+    // Create credit note
     $creditnote_id = $this->app->components->creditnote->insertRecord($record);
 
-    // Get Expense|Invoice items to populate the credit notes item fields
-    $variables['qform']['creditnote_items'] = $creditnote_items;
+    // Insert single item (nested in an array for correct looping)
+    $this->app->components->creditnote->insertItems($creditnote_id, [$single_item]);
+
+    // Recalculate creditote record totals to ensure they are correect
+    $this->app->components->creditnote->recalculateTotals($creditnote_id);
+
+    // Ensure creditnote status is pending
+    $this->app->components->creditnote->updateStatus($creditnote_id, 'pending', true);
 
     // Edit the newly created credit note populating with items on page load
-    $this->app->system->page->forcePage('creditnote', 'edit&creditnote_id='.$creditnote_id, $variables);
+    $this->app->system->page->forcePage('creditnote', 'edit&creditnote_id='.$creditnote_id);
 
 }
 

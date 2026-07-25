@@ -68,7 +68,7 @@ class Creditnote extends Components {
     #     Insert Items                  #  // Some or all of these calculations are done on the creditnote:edit page - This extra code might not be needed in the future
     #####################################  done
 
-    public function insertItems($creditnote_id, $items = null) {
+    public function insertItems($creditnote_id, array $items = null) {
 
         // Get Creditnote Details
         $creditnote_details = $this->getRecord($creditnote_id);
@@ -84,8 +84,8 @@ class Creditnote extends Components {
 
             foreach($items as $item) {
 
-                // Correct Sales Tax Exempt indicator
-                $sales_tax_exempt = isset($item['sales_tax_exempt']) ? 1 : 0;
+                // Correct Sales Tax Exempt indicator (allows for html form and elsewhere)
+                $sales_tax_exempt = (isset($item['sales_tax_exempt']) && $item['sales_tax_exempt'] == 1) ? 1 : 0;
 
                 // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes)
                 $vat_tax_code = $item['vat_tax_code'] ?? $this->app->components->company->getDefaultVatTaxCode($creditnote_details['tax_system']);
