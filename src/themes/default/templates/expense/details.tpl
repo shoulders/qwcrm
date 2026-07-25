@@ -127,7 +127,7 @@
                                                     {if $allowed_to_create_creditnote}
                                                         {if ($expense_details.status == 'unpaid' || $expense_details.status == 'partially_paid')}
                                                             <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this expense?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}'; } ">{t}Close expense with CR{/t} / {t}Create Sales Credit Note (Expense){/t}</button>
-                                                        {elseif ($expense_details.status == 'paid')}
+                                                        {elseif ($expense_details.status == 'closed')}
                                                             <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this expense?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&expense_id={$expense_details.expense_id}'; } ">{t}Refund expense via CR{/t} / {t}Create Sales Credit Note (Expense){/t}</button>
                                                         {/if}
                                                     {/if}

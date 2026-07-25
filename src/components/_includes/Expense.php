@@ -338,7 +338,7 @@ class Expense extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'deleted')";
+            $sql .= "\nWHERE status_key NOT IN ('closed', 'partially_paid', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -447,7 +447,7 @@ class Expense extends Components {
 
         // Is the new status a "closed" status
         // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
-        if(in_array($new_status, array('paid', 'deleted'))) {
+        if(in_array($new_status, array('closed', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
             $closed_on = null;
@@ -663,8 +663,8 @@ class Expense extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is paid."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
@@ -729,8 +729,8 @@ class Expense extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is paid."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
@@ -783,8 +783,8 @@ class Expense extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."), $silent);
+            case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
@@ -869,9 +869,9 @@ class Expense extends Components {
             $this->updateStatus($expense_id, 'partially_paid');
         }
 
-        // Has expense amount and the payment(s) match the credit note amount, set to paid (if not already)
-        elseif($expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $payments_subtotal && $expense_details['status'] != 'paid') {
-            $this->updateStatus($expense_id, 'paid');
+        // Has expense amount and the payment(s) match the credit note amount, set to closed (if not already)
+        elseif($expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $payments_subtotal && $expense_details['status'] != 'closed') {
+            $this->updateStatus($expense_id, 'closed');
         }
 
         return;

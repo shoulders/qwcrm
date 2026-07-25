@@ -610,7 +610,7 @@ class Creditnote extends Components {
 
         // Is the new status a "closed" status
         // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
-        if(in_array($new_status, array('paid', 'voided', 'deleted'))) {
+        if(in_array($new_status, array('used', 'voided', 'deleted'))) {
             $closed_on = $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
         } else {
             $closed_on = null;
@@ -1118,7 +1118,7 @@ class Creditnote extends Components {
                         // Do nothing
 
                         break;
-                    case 'paid':
+                    case 'closed':
 
                         // CR `Refund` Action Type (Credit)
 
@@ -1383,7 +1383,7 @@ class Creditnote extends Components {
                         }
 
                         break;
-                    case 'paid':
+                    case 'closed':
                         // CR `Refund` Action Type (Debit) (Refund monies to Suppliers or allow them to use the CR on another of their expenses)
 
                         // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not gove free money to a client)
@@ -1644,7 +1644,7 @@ class Creditnote extends Components {
                             $state_flag = false;
                         }
                         break;
-                    case 'paid':
+                    case 'closed':
                         // CR `Refund` Action Type (Debit) (Refund monies to Suppliers or allow the CR to be used against another of their expenses) (The code here only controls the use of the CR as a payment method)
                         // Do Nothing
                         break;

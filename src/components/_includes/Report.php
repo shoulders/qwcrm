@@ -1333,10 +1333,8 @@ class Report extends Components {
             $stats['count_items'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
                 // TODO: is count_items used or needed? each of functions() have a items section at the borttom remmed out
             $stats['count_opened'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
-            $stats['count_closed'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
-            $stats['count_paid'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'paid', $employee_id, $supplier_id);
+            $stats['count_closed'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'closed', $employee_id, $supplier_id);
             $stats['count_voided'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'voided', $employee_id, $supplier_id);
-
         }
 
         // Revenue
@@ -1352,11 +1350,12 @@ class Report extends Components {
             $stats['sum_pending_unit_gross']        = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $supplier_id);
             $stats['sum_unpaid_unit_gross']         = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $supplier_id);
             $stats['sum_partially_paid_unit_gross'] = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $supplier_id);
-            $stats['sum_paid_unit_gross']           = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $supplier_id);
-            $stats['sum_voided_unit_gross']      = $this->expenseSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'voided', $employee_id, $supplier_id);
+            $stats['sum_voided_unit_gross']         = $this->expenseSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'voided', $employee_id, $supplier_id);
+
             $stats['sum_open_unit_gross']           = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $supplier_id);
             $stats['sum_opened_unit_gross']         = $this->expenseSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $supplier_id);
-            $stats['sum_closed_unit_gross']         = $this->expenseSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $supplier_id);
+            $stats['sum_closed_unit_gross']         = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'closed', $employee_id, $supplier_id);
+
 
         }
 
@@ -2877,7 +2876,7 @@ class Report extends Components {
     #  Calulate the revenue and tax liability for ALL payments against their parent record       #  // I dont use most of these filters at the minute (only start_date, end_date and tax_system)
     ##############################################################################################  TODO: need to add in creditnotes and maybe vouchers for offsetting?
 
-    // This is for calculating TAX liability from invoices and is aware of partially paid invoices.
+    // This is for calculating TAX liability from invoices and is aware of partially_paid invoices.
     // By taking each payment and breaking them down into 'NET, TAX and GROSS' by prorata'ing them against their parent transaction.
     // Vouchers are not real money and should therefore not contribute anything to the the NET and GROSS totals, however:
     // MPV (multi purpose vouchers i.e. phone top up) vouchers have their TAX liability accounted for at the point of redemption, so does add TAX to the totals,

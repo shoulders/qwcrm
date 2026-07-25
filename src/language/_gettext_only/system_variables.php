@@ -62,7 +62,7 @@ _gettext("Refund");
 _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
-_gettext("Paid");
+_gettext("Closed");
 _gettext("Deleted");
 
 /* Expense Types */
