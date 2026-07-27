@@ -1322,20 +1322,14 @@ UPDATE `#__voucher_records` SET `status` = 'unredeemed' WHERE `status` = 'paid';
 
 UPDATE `#__workorder_statuses` SET `status_key` = `with_management` WHERE `status` = 'management';
 UPDATE `#__workorder_records` SET `status` = 'with_management' WHERE `status` = 'management';
-
 UPDATE `#__workorder_statuses` SET `status_key` = 'closed', `display_name` = 'Closed' WHERE `#__workorder_statuses`.`id` = 8;
 UPDATE `#__workorder_statuses` SET `status_key` = 'deleted', `display_name` = 'Deleted' WHERE `#__workorder_statuses`.`id` = 9;
 DELETE FROM `#__workorder_statuses` WHERE `id` = 10;
 UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `status` = 'closed_without_invoice';
 UPDATE `#__workorder_statuses` SET `status_key` = `closed` WHERE `status` = 'closed_with_invoice';
 
-UPDATE `#__invoice_statuses` SET `status_key` = 'closed', `display_name` = 'Closed' WHERE `#__invoice_statuses`.`id` = 4;
 UPDATE `#__invoice_statuses` SET `status_key` = 'in_collections', `display_name` = 'In Collections' WHERE `#__invoice_statuses`.`id` = 7;
 UPDATE `#__invoice_records` SET `status` = 'in_collections' WHERE `status` = 'collections';
--- done in php  - UPDATE `#__invoice_records` SET `status` = 'closed' WHERE `status` = 'paid';
-
-UPDATE `#__expense_statuses` SET `status_key` = 'closed', `display_name` = 'Closed' WHERE `#__expense_statuses`.`id` = 4;
--- done in php  - UPDATE `#__expense_records` SET `status` = 'closed' WHERE `status` = 'paid';
 
 -- Remove unwanted otherincome types --
 TRUNCATE TABLE `#__otherincome_types`;

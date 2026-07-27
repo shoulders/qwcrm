@@ -665,7 +665,7 @@ class Report extends Components {
             $stats['sum_pending_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id);
             $stats['sum_unpaid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $client_id);
             $stats['sum_partially_paid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $client_id);
-            $stats['sum_closed_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'closed', $employee_id, $client_id);
+            $stats['sum_paid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $client_id);
             $stats['sum_in_dispute_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'in_dipute', $employee_id, $client_id);
             $stats['sum_overdue_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'overdue', $employee_id, $client_id);
             $stats['sum_in_collections_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'in_collections', $employee_id, $client_id);
@@ -1325,7 +1325,8 @@ class Report extends Components {
             $stats['count_items'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
                 // TODO: is count_items used or needed? each of functions() have a items section at the borttom remmed out
             $stats['count_opened'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
-            $stats['count_closed'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'closed', $employee_id, $supplier_id);
+            $stats['count_closed'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
+            $stats['count_paid'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'paid', $employee_id, $supplier_id);
             $stats['count_voided'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'voided', $employee_id, $supplier_id);
         }
 
@@ -1342,12 +1343,11 @@ class Report extends Components {
             $stats['sum_pending_unit_gross']        = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $supplier_id);
             $stats['sum_unpaid_unit_gross']         = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $supplier_id);
             $stats['sum_partially_paid_unit_gross'] = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $supplier_id);
-            $stats['sum_voided_unit_gross']         = $this->expenseSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'voided', $employee_id, $supplier_id);
-
+            $stats['sum_paid_unit_gross']           = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $supplier_id);
+            $stats['sum_voided_unit_gross']      = $this->expenseSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'voided', $employee_id, $supplier_id);
             $stats['sum_open_unit_gross']           = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $supplier_id);
             $stats['sum_opened_unit_gross']         = $this->expenseSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $supplier_id);
-            $stats['sum_closed_unit_gross']         = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'closed', $employee_id, $supplier_id);
-
+            $stats['sum_closed_unit_gross']         = $this->expenseSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $supplier_id);
 
         }
 

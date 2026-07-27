@@ -640,7 +640,7 @@ class Voucher extends Components {
                 case 'partially_paid':
                     $vouchers_new_status = 'partially_paid';
                     break;
-                case 'closed':
+                case 'paid':
                     $vouchers_new_status = 'unredeemed';
                     break;
                 case 'in_dispute':
@@ -1104,7 +1104,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'closed':
+                case 'paid':
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because the parent invoice is in dispute."), $silent);
@@ -1240,7 +1240,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'closed':
+                case 'paid':
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in dispute."), $silent);
@@ -1370,7 +1370,7 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'closed':
+                case 'paid':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is paid."), $silent);
                     $state_flag = false;
                     break;
@@ -1489,7 +1489,7 @@ class Voucher extends Components {
                     break;
                 case 'partially_paid':
                     break;
-                case 'closed':
+                case 'paid':
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is in dispute."), $silent);
@@ -1611,8 +1611,8 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'closed':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is closed."), $silent);
+                case 'paid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is paid."), $silent);
                     $state_flag = false;
                     break;
                 case 'in_dispute':

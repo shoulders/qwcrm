@@ -84,10 +84,6 @@ class Upgrade3_1_4 extends Setup {
         $this->invoiceConvertCancelledToCreditnotes();
         $this->updateColumnValues(PRFX.'invoice_records', 'status', 'cancelled', 'paid');
 
-        // Convert Paid status to Closed
-        $this->updateColumnValues(PRFX.'invoice_records', 'status', 'paid', 'closed');
-        $this->updateColumnValues(PRFX.'expense_records', 'status', 'paid', 'closed');
-
         // Update database version number
         $this->updateRecordValue(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
 
