@@ -869,7 +869,7 @@ class Expense extends Components {
             $this->updateStatus($expense_id, 'partially_paid');
         }
 
-        // Has expense amount and the payment(s) match the credit note amount, set to closed (if not already)
+        // Has expense amount and the payment(s) match the credit note amount, set to paid (if not already)
         elseif($expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $payments_subtotal && $expense_details['status'] != 'paid') {
             $this->updateStatus($expense_id, 'paid');
         }
