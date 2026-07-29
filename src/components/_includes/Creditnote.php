@@ -1000,8 +1000,19 @@ class Creditnote extends Components {
                         // Do Nothing
 
                         break;
+                    case 'overdue':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins.", $silent));
+                        $state_flag = false;
+                        break;
+                    case 'in_dispute':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins.", $silent));
+                        $state_flag = false;
+                        break;
+                    case 'in_collections':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins.", $silent));
+                        $state_flag = false;
+                        break;
                     case 'paid':
-
                         // CR `Refund` Action Type (Debit)
 
                         // This refunds monies to Clients or allows them to use the credit on another of their invoices
@@ -1019,18 +1030,6 @@ class Creditnote extends Components {
                             $state_flag = false;
                         }
 
-                        break;
-                    case 'in_dispute':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins.", $silent));
-                        $state_flag = false;
-                        break;
-                    case 'overdue':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins.", $silent));
-                        $state_flag = false;
-                        break;
-                    case 'in_collections':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins.", $silent));
-                        $state_flag = false;
                         break;
                     case 'voided':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is voided and cannot accept payments. You should not see this error, report to admins.", $silent));
@@ -1278,6 +1277,18 @@ class Creditnote extends Components {
                         }
 
                         break;
+                    case 'overdue':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'in_dispute':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
+                    case 'in_collections':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
                     case 'paid':
                         // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices)
 
@@ -1302,18 +1313,6 @@ class Creditnote extends Components {
                             $state_flag = false;
                         }
 
-                        break;
-                    case 'in_dispute':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
-                        $state_flag = false;
-                        break;
-                    case 'overdue':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins."));
-                        $state_flag = false;
-                        break;
-                    case 'in_collections':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
-                        $state_flag = false;
                         break;
                     case 'voided':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is voided and cannot accept payments. You should not see this error, report to admins."));
@@ -1589,22 +1588,23 @@ class Creditnote extends Components {
                             //$this->app->system->variables->systemMessagesWrite('danger', _gettext("You can only apply this credit note against the invoice it is linked with.").' '._gettext("Invoice").': '.$this->creditnote_details['invoice_id']);
                             $state_flag = false;
                         }
-                        break;
-                    case 'paid':
-                        // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices) (The code here only controls the use of the CR as a payment method)
-                        // Do Nothing
-                        break;
-                    case 'in_dispute':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
-                        $state_flag = false;
+
                         break;
                     case 'overdue':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
+                    case 'in_dispute':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
+                        $state_flag = false;
+                        break;
                     case 'in_collections':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
+                        break;
+                    case 'paid':
+                        // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices) (The code here only controls the use of the CR as a payment method)
+                        // Do Nothing
                         break;
                     case 'voided':
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is voided and cannot accept payments. You should not see this error, report to admins."));

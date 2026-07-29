@@ -651,10 +651,10 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'pending', 'Pending'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
-(4, 'paid', 'Paid'),
+(4, 'overdue', 'Overdue'),
 (5, 'in_dispute', 'In Dispute'),
-(6, 'overdue', 'Overdue'),
-(7, 'in_collections', 'In Collections'),
+(6, 'in_collections', 'In Collections'),
+(7, 'paid', 'Paid'),
 (8, 'voided', 'Voided');
 (9, 'deleted', 'Deleted');
 

@@ -640,17 +640,20 @@ class Voucher extends Components {
                 case 'partially_paid':
                     $vouchers_new_status = 'partially_paid';
                     break;
-                case 'paid':
-                    $vouchers_new_status = 'unredeemed';
+                case 'overdue':
+                    $vouchers_new_status = 'suspended';
                     break;
                 case 'in_dispute':
                     $vouchers_new_status = 'suspended';
                     break;
-                case 'overdue':
-                    $vouchers_new_status = 'suspended';
-                    break;
                 case 'in_collections':
                     $vouchers_new_status = 'suspended';
+                    break;
+                case 'paid':
+                    $vouchers_new_status = 'unredeemed';
+                    break;
+                case 'voided':
+                    $vouchers_new_status = 'voided';
                     break;
                 case 'deleted':
                     // Delete vouchers (this happens when you delete the invoice) - from deleteInvoiceVouchers() - records have already been checked that they allow deletion
@@ -666,7 +669,7 @@ class Voucher extends Components {
             }
         }
 
-        // Void Vouchers (called from creditnote:new - There is no change in invoice status)
+        // Void Vouchers (can also be called from creditnote:new, so in this case there is no change in invoice status, hence why it is not in the switch statement above to allow for both scenarios)
         if($vouchers_new_status == 'voided') {
 
             while(!$rs->EOF)
@@ -1104,18 +1107,22 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'paid':
+                case 'overdue':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is overdue."), $silent);
+                    $state_flag = false;
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because the parent invoice is in dispute."), $silent);
                     $state_flag = false;
                     break;
-                case 'overdue':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is overdue."), $silent);
-                    $state_flag = false;
-                    break;
                 case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is in collections."), $silent);
+                    $state_flag = false;
+                    break;
+                case 'paid':
+                    break;
+                case 'voided':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice has been voided."), $silent);
                     $state_flag = false;
                     break;
                 case 'deleted':
@@ -1240,18 +1247,22 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'paid':
+                case 'overdue':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is overdue."), $silent);
+                    $state_flag = false;
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in dispute."), $silent);
                     $state_flag = false;
                     break;
-                case 'overdue':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is overdue."), $silent);
-                    $state_flag = false;
-                    break;
                 case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is in collections."), $silent);
+                    $state_flag = false;
+                    break;
+                case 'paid':
+                    break;
+                case 'deleted': // might not need this check
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice has been voided."), $silent);
                     $state_flag = false;
                     break;
                 case 'deleted': // might not need this check
@@ -1370,20 +1381,24 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is paid."), $silent);
+                case 'overdue':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is overdue."), $silent);
                     $state_flag = false;
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is in dispute."), $silent);
                     $state_flag = false;
                     break;
-                case 'overdue':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is overdue."), $silent);
-                    $state_flag = false;
-                    break;
                 case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is in collections."), $silent);
+                    $state_flag = false;
+                    break;
+                case 'paid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice is paid."), $silent);
+                    $state_flag = false;
+                    break;
+                case 'voided':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because the parent invoice has been voided."), $silent);
                     $state_flag = false;
                     break;
                 case 'deleted':
@@ -1489,19 +1504,19 @@ class Voucher extends Components {
                     break;
                 case 'partially_paid':
                     break;
-                case 'paid':
+                case 'overdue':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is overdue."), $silent);
+                    $state_flag = false;
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is in dispute."), $silent);
                     $state_flag = false;
                     break;
-                case 'overdue':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is overdue."), $silent);
-                    $state_flag = false;
-                    break;
                 case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is in collections."), $silent);
                     $state_flag = false;
+                    break;
+                case 'paid':
                     break;
                 case 'voided':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice has been voided."), $silent);
@@ -1611,20 +1626,24 @@ class Voucher extends Components {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is partially paid."), $silent);
                     $state_flag = false;
                     break;
-                case 'paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is paid."), $silent);
+                case 'overdue':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is overdue."), $silent);
                     $state_flag = false;
                     break;
                 case 'in_dispute':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is in dispute."), $silent);
                     $state_flag = false;
                     break;
-                case 'overdue':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is overdue."), $silent);
-                    $state_flag = false;
-                    break;
                 case 'in_collections':
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is in collections."), $silent);
+                    $state_flag = false;
+                    break;
+                case 'paid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice is paid."), $silent);
+                    $state_flag = false;
+                    break;
+                case 'voided':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because the parent invoice has been voided."), $silent);
                     $state_flag = false;
                     break;
                 case 'deleted':

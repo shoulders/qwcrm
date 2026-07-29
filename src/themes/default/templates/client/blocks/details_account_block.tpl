@@ -114,14 +114,14 @@
                     <td><b>({$currency_symbol}{$invoice_stats.sum_partially_paid_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td><b>{t}In Dispute{/t}:</b></td>
-                    <td><b>{$invoice_stats.count_in_dispute}</b></td>
-                    <td><b>({$currency_symbol}{$invoice_stats.sum_in_dispute_unit_gross|string_format:"%.2f"})</b></td>
-                </tr>
-                <tr>
                     <td><b>{t}Overdue{/t}:</b></td>
                     <td><b>{$invoice_stats.count_overdue}</b></td>
                     <td><b>({$currency_symbol}{$invoice_stats.sum_overdue_unit_gross|string_format:"%.2f"})</b></td>
+                </tr>
+                <tr>
+                    <td><b>{t}In Dispute{/t}:</b></td>
+                    <td><b>{$invoice_stats.count_in_dispute}</b></td>
+                    <td><b>({$currency_symbol}{$invoice_stats.sum_in_dispute_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}In Collections{/t}:</b></td>

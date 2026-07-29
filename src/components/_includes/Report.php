@@ -633,8 +633,8 @@ class Report extends Components {
             $stats['count_pending'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id);
             $stats['count_unpaid'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $client_id);
             $stats['count_partially_paid'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $client_id);
-            $stats['count_in_dispute'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'in_dispute', $employee_id, $client_id);
             $stats['count_overdue'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'overdue', $employee_id, $client_id);
+            $stats['count_in_dispute'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'in_dispute', $employee_id, $client_id);
             $stats['count_in_collections'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'in_collections', $employee_id, $client_id);
 
         }
@@ -666,8 +666,8 @@ class Report extends Components {
             $stats['sum_unpaid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $client_id);
             $stats['sum_partially_paid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $client_id);
             $stats['sum_paid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $client_id);
-            $stats['sum_in_dispute_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'in_dipute', $employee_id, $client_id);
             $stats['sum_overdue_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'overdue', $employee_id, $client_id);
+            $stats['sum_in_dispute_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'in_dipute', $employee_id, $client_id);
             $stats['sum_in_collections_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'in_collections', $employee_id, $client_id);
             $stats['sum_voided_unit_gross'] = $this->invoiceSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'voided', $employee_id, $client_id);
 

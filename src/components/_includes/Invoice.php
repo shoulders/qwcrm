@@ -510,7 +510,7 @@ defined('_QWEXEC') or die;
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'in_dispute', 'overdue', 'in_collections')";
+            $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'overdue', 'in_dispute', 'in_collections')";
             //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'voided', 'deleted')";
         }
 
@@ -887,15 +887,15 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been paid."), $silent);
-                $state_flag = false;
+            case 'overdue':
                 break;
             case 'in_dispute':
                 break;
-            case 'overdue':
-                break;
             case 'in_collections':
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been paid."), $silent);
+                $state_flag = false;
                 break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been voided."), $silent);
@@ -972,15 +972,15 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been paid."), $silent);
-                $state_flag = false;
+            case 'overdue':
                 break;
             case 'in_dispute':
                 break;
-            case 'overdue':
-                break;
             case 'in_collections':
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been paid."), $silent);
+                $state_flag = false;
                 break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been voided."), $silent);
@@ -1047,13 +1047,13 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it is partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                reak;
-            case 'in_dispute':
-                break;
             case 'overdue':
                 break;
+            case 'in_dispute':
+                break;
             case 'in_collections':
+                break;
+            case 'paid':
                 break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be voided because it has already been voided."), $silent);
@@ -1128,15 +1128,15 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."), $silent);
-                $state_flag = false;
+            case 'overdue':
                 break;
             case 'in_dispute':
                 break;
-            case 'overdue':
-                break;
             case 'in_collections':
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."), $silent);
+                $state_flag = false;
                 break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been voided."), $silent);

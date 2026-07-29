@@ -22,8 +22,8 @@
         <td>{$invoice_stats.count_pending}</td>
         <td>{$invoice_stats.count_unpaid}</td>
         <td>{$invoice_stats.count_partially_paid}</td>
-        <td>{$invoice_stats.count_in_dispute}</td>
         <td>{$invoice_stats.count_overdue}</td>
+        <td>{$invoice_stats.count_in_dispute}</td>        
         <td>{$invoice_stats.count_in_collections}</td>
     </tr>
 </table>

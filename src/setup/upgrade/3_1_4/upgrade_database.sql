@@ -1337,9 +1337,9 @@ UPDATE `#__invoice_statuses` SET `status_key` = 'in_collections', `display_name`
 UPDATE `#__invoice_records` SET `status` = 'in_collections' WHERE `status` = 'collections';
 
 -- Remove unwanted otherincome types --
-TRUNCATE TABLE `#__otherincome_types`;
 UPDATE `#__otherincome_records` SET `status` = 'other' WHERE `status` = 'cancelled_services';
 UPDATE `#__otherincome_records` SET `status` = 'other' WHERE `status` = 'returned_goods';
+TRUNCATE TABLE `#__otherincome_types`;
 INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'commission', 'Commission'),
 (2, 'donation', 'Donation'),
@@ -1347,3 +1347,16 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (4, 'other', 'Other'),
 (5, 'royalties', 'Royalties'),
 (6, 'tips', 'Tips');
+
+-- Change Invoice Statuses Order to better fit it's lifecycle --
+TRUNCATE TABLE `#__invoice_statuses`;
+INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'pending', 'Pending'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'overdue', 'Overdue'),
+(5, 'in_dispute', 'In Dispute'),
+(6, 'in_collections', 'In Collections'),
+(7, 'paid', 'Paid'),
+(8, 'voided', 'Voided'),
+(9, 'deleted', 'Deleted');

@@ -95,10 +95,10 @@ _gettext("Wages");
 _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
-_gettext("Paid");
-_gettext("In Dispute");
 _gettext("Overdue");
+_gettext("In Dispute");
 _gettext("In Collections");
+_gettext("Paid");
 _gettext("Voided");
 _gettext("Deleted");
 
