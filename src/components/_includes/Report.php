@@ -894,6 +894,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.voided_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$this->app->db->qStr($start_date);
             }
@@ -908,6 +910,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
@@ -1276,6 +1280,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.voided_on >= ".$this->app->db->qStr($start_date);
             }
         }
 
@@ -1292,6 +1298,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
         }
 
@@ -1612,6 +1620,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."expense_records.voided_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$this->app->db->qStr($start_date);
             }
@@ -1624,6 +1634,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."expense_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."expense_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
@@ -1957,6 +1969,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.voided_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$this->app->db->qStr($start_date);
             }
@@ -1969,6 +1983,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
@@ -2388,6 +2404,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.voided_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active >= ".$this->app->db->qStr($start_date);
             }
@@ -2402,6 +2420,8 @@ class Report extends Components {
                 $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'closed_on') {
                 $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
@@ -2696,6 +2716,8 @@ class Report extends Components {
         if($start_date) {
             if ($date_type == 'date') {
                 $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->app->db->qStr($start_date);
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."payment_records.voided_on >= ".$this->app->db->qStr($start_date);
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."payment_records.last_active >= ".$this->app->db->qStr($start_date);
             }
@@ -2704,6 +2726,8 @@ class Report extends Components {
         if($end_date) {
             if ($date_type == 'date') {
                 $whereTheseRecords .= " AND ".PRFX."payment_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            } elseif ($date_type == 'voided_on') {
+                $whereTheseRecords .= " AND ".PRFX."payment_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
             } elseif ($date_type == 'last_active') {
                 $whereTheseRecords .= " AND ".PRFX."payment_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
             }
