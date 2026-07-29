@@ -476,6 +476,7 @@ CREATE TABLE `#__expense_records` (
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
+  `voided_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -503,7 +504,8 @@ INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
-(5, 'deleted', 'Deleted');
+(5, 'voided', 'Voided');
+(6, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -622,6 +624,7 @@ CREATE TABLE `#__invoice_records` (
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `opened_on` datetime DEFAULT NULL,
   `closed_on` datetime DEFAULT NULL,
+  `voided_on` datetime DEFAULT NULL,
   `last_active` datetime DEFAULT NULL,
   `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -652,7 +655,8 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (5, 'in_dispute', 'In Dispute'),
 (6, 'overdue', 'Overdue'),
 (7, 'in_collections', 'In Collections'),
-(8, 'deleted', 'Deleted');
+(8, 'voided', 'Voided');
+(9, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 

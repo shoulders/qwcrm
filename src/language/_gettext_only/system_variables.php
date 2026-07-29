@@ -63,6 +63,7 @@ _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
+_gettext("Voided");
 _gettext("Deleted");
 
 /* Expense Types */
@@ -94,10 +95,11 @@ _gettext("Wages");
 _gettext("Pending");
 _gettext("Unpaid");
 _gettext("Partially Paid");
-_gettext("Closed");
+_gettext("Paid");
 _gettext("In Dispute");
 _gettext("Overdue");
 _gettext("In Collections");
+_gettext("Voided");
 _gettext("Deleted");
 
 /* Otherincome Statuses */
@@ -146,7 +148,7 @@ _gettext("Credit Note");
 
 /* Payment Statuses */
 _gettext("Valid");
-_gettext("Void");
+_gettext("Voided");
 _gettext("Deleted");
 
 /* Payment Types */

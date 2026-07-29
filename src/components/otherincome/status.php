@@ -28,7 +28,7 @@ if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status){
     $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
 }
 
-// Void Payment
+// Void
 if(isset(\CMSApplication::$VAR['void_otherincome']) && $allowed_to_void){
     $this->app->components->otherincome->voidRecord(\CMSApplication::$VAR['otherincome_id'], \CMSApplication::$VAR['qform']['reason_for_voiding']);
     $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);

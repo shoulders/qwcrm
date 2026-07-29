@@ -101,7 +101,7 @@ class PaymentTypeExpense extends PaymentType
 
                 // Type 1 CR Payment - A partially paid expense generated a credit note to close itself using this payment (expense:details)
                 // There should only ever be one CR created from the expense that is applied to the same expense, resulting in a zero balance (i.e. Type 1 CR)
-                if(this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
+                if($this->closedByCreditnotePaymentId == Payment::$payment_details['payment_id']){
 
                     // Prevent editing the CR (Type 1) that closed this expense. You can only delete this CR payment.
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a credit note payment that was used to close an expense. You can only void or delete this type of payment."));

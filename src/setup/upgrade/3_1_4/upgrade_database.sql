@@ -1202,10 +1202,13 @@ UPDATE `#__supplier_records` SET `status` = 'active' WHERE `#__supplier_records`
 
 -- Updating and adding addtional_info for record cancel status, other and future variables --
 ALTER TABLE `#__creditnote_records` CHANGE `additional_info` `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+
 ALTER TABLE `#__invoice_records` CHANGE `additional_info` `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
 ALTER TABLE `#__payment_records` CHANGE `additional_info` `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
 ALTER TABLE `#__expense_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
+UPDATE `#__expense_records` SET `additional_info` = '{}';
 ALTER TABLE `#__otherincome_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
+UPDATE `#__otherincome_records` SET `additional_info` = '{}';
 
 -- Add last_active to schedules --
 ALTER TABLE `#__schedule_records` ADD `last_active` DATETIME NULL DEFAULT NULL AFTER `end_time`;
@@ -1250,32 +1253,35 @@ ALTER TABLE `#__otherincome_items` DROP `unit_discount`;
 -- Allow 100% Discount --
 ALTER TABLE `#__client_records` CHANGE `discount_rate` `discount_rate` DECIMAL(5,2) NOT NULL DEFAULT '0.00';
 
--- Convert Payment Cancel to Void --
-UPDATE `#__user_acl_page` SET `page` = 'payment:void' WHERE `#__user_acl_page`.`page` = 'payment:cancel';
-UPDATE `#__payment_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__payment_statuses`.`id` = 2;
+-- Convert Payment Cancelled to Voided --
+UPDATE `#__payment_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__payment_statuses`.`status_key` = 'cancelled';
+
 ALTER TABLE `#__payment_records` ADD `voided_on` DATETIME NULL AFTER `amount`;
 UPDATE `#__payment_records` SET `voided_on` = `last_active` WHERE status = 'voided';
 
--- Remove Cancel from expense --
+-- Convert Expense Cancelled to Voided --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'expense:cancel';
-DELETE FROM `#__expense_statuses` WHERE `#__expense_statuses`.`id` = 5;
-UPDATE `#__expense_statuses` SET `id` = 5 WHERE `#__expense_statuses`.`id` = 6;
+UPDATE `#__expense_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__expense_statuses`.`status_key` = 'cancelled';
+ALTER TABLE `#__expense_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
+UPDATE `#__expense_records` SET `voided_on` = `closed_on` WHERE `status` = 'cancelled';
+UPDATE `#__expense_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
 
--- Remove Cancel from invoice --
+-- Convert Invoice Cancelled to voided --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'invoice:cancel';
-DELETE FROM `#__invoice_statuses` WHERE `#__invoice_statuses`.`id` = 8;
-UPDATE `#__invoice_statuses` SET `id` = 9 WHERE `#__invoice_statuses`.`id` = 8;
+UPDATE `#__invoice_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__invoice_statuses`.`status_key` = 'cancelled';
+ALTER TABLE `#__invoice_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
+UPDATE `#__invoice_records` SET `voided_on` = `closed_on` WHERE `status` = 'cancelled';
+UPDATE `#__invoice_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
 
--- Remove Cancel from voucher --
-DELETE FROM `#__voucher_statuses` WHERE `#__invoice_statuses`.`id` = 9;
-UPDATE `#__voucher_statuses` SET `id` = 9 WHERE `#__invoice_statuses`.`id` = 10;
+-- Convert Voucher Cancelled to voided --
+DELETE FROM `#__voucher_statuses` WHERE `#__voucher_statuses`.`status_key` = 'cancelled';
+UPDATE `#__voucher_statuses` SET `id` = 9 WHERE `#__invoice_statuses`.`status_key` = 'deleted';
 ALTER TABLE `#__voucher_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
+UPDATE `#__voucher_records` SET `voided_on` = `closed_on` WHERE `status` = 'cancelled';
+UPDATE `#__voucher_records` SET `last_active` = `closed_on` WHERE `status` = 'cancelled';
 UPDATE `#__voucher_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
-UPDATE `#__voucher_records` SET `voided_on` = `closed_on` WHERE `status` = 'voided';
 
--- Convert Supplier Cancel to Closed --
-ALTER TABLE `#__supplier_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
-UPDATE `#__supplier_records` SET `additional_info` = '{}';
+-- Convert Supplier Cancelled to Closed --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'supplier:cancel';
 TRUNCATE TABLE `#__supplier_statuses`;
 INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
@@ -1283,25 +1289,24 @@ INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'suspended', 'Suspended'),
 (3, 'closed', 'Closed'),
 (4, 'deleted', 'Deleted');
-UPDATE `#__supplier_records` SET `additional_info` = '{\"reason_for_closing\":\"Supplier was cancelled prior to the upgrade.\"}' WHERE `#__supplier_records`.`status` = 'cancelled';
-UPDATE `#__supplier_records` SET `closed_on` = `last_active` WHERE status = 'cancelled';
+ALTER TABLE `#__supplier_records` ADD `additional_info` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL AFTER `note`;
+UPDATE `#__supplier_records` SET `additional_info` = '{}';
+UPDATE `#__supplier_records` SET `additional_info` = '{\"reason_for_closing\":\"Supplier was closed prior to the upgrade.\"}' WHERE `#__supplier_records`.`status` = 'cancelled';
 UPDATE `#__supplier_records` SET `status` = 'closed' WHERE `#__supplier_records`.`status` = 'cancelled';
 
--- Converting otherincome from Cancel to Void --
-DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'payment:void';
+-- Convert otherincome Cancelled to Void --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'otherincome:cancel';
-UPDATE `#__otherincome_statuses` SET `status_key` = 'voided' WHERE `status_key` = 'cancelled';
-UPDATE `#__otherincome_statuses` SET `display_name` = 'Voided' WHERE `display_name` = 'cancelled';
+UPDATE `#__otherincome_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__invoice_statuses`.`status_key` = 'cancelled';
 ALTER TABLE `#__otherincome_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
+UPDATE `#__otherincome_records` SET `voided_on` = `closed_on` WHERE `status` = 'cancelled';
 UPDATE `#__otherincome_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
-UPDATE `#__otherincome_records` SET `voided_on` = `closed_on` WHERE `status` = 'voided';
 
 -- Converting creditnote from Cancel to Void --
-UPDATE `#__creditnote_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__creditnote_statuses`.`id` = 5;
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'creditnote:cancel';
+UPDATE `#__creditnote_statuses` SET `status_key` = 'voided', `display_name` = 'Voided' WHERE `#__creditnote_statuses`.`status_key` = 'cancelled';
 ALTER TABLE `#__creditnote_records` ADD `voided_on` DATETIME DEFAULT NULL AFTER `closed_on`;
+UPDATE `#__creditnote_records` SET `voided_on` = 'closed_on' WHERE `status` = 'cancelled';
 UPDATE `#__creditnote_records` SET `status` = 'voided' WHERE `status` = 'cancelled';
-UPDATE `#__creditnote_records` SET `voided_on` = 'closed_on' WHERE `status` = 'voided';
 
 -- Records should be deleted from status and not delete.php --
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:delete';

@@ -1135,7 +1135,7 @@ class Voucher extends Components {
 
     ###########################################################  // used by invoice manual status change routine
     #  Check if the voucher status is allowed to be changed   #  // used on voucher:status
-    ###########################################################  // can only swap between `unredeemed` and 'suspended`, and parent invoice must be closed
+    ###########################################################  // can only swap between `unredeemed` and 'suspended`, and parent invoice must be paid
 
     public function checkRecordAllowsManualStatusChange($voucher_id, $checkParentInvoice = true, $silent = false) {
 
@@ -1321,7 +1321,7 @@ class Voucher extends Components {
                 $state_flag = false;
                 break;
             case 'unredeemed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be edited because it has been paid, and is currently unredeemed."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_redeemed':
@@ -1562,7 +1562,7 @@ class Voucher extends Components {
                 $state_flag = false;
                 break;
             case 'unredeemed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be deleted because it has been paid, and is currently unredeemed."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_redeemed':
@@ -1763,7 +1763,7 @@ class Voucher extends Components {
 ///////////////////////////////////////////////////////////////////////  -- this is also pre-removing cancel
 
 - These additional tests would assume the vouchers can become out of sync with their invoices and this is not allowed.
-- vouchers are in sync with their invoice until unredeeemedmat which point they can diverege, intentionally.
+- vouchers are in sync with their invoice until unredeemed at which point they can diverege, intentionally.
 
     #######################################################################
     #   Check to see if the voucher status allows invoice Editing         #
@@ -1840,11 +1840,6 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Cancelled
-        if($voucher_details['status'] == 'cancelled') {
-            $state_flag = false;
-        }
-
         // Is Deleted (this should not be needed)
         if($voucher_details['status'] == 'deleted') {
             $state_flag = false;
@@ -1915,12 +1910,6 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Cancelled
-        if($voucher_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because this voucher has been cancelled."));
-            $state_flag = false;
-        }
-
         // Is Deleted (should not be needed)
         if($voucher_details['status'] == 'deleted') {
             $state_flag = false;
@@ -1988,12 +1977,6 @@ class Voucher extends Components {
         // Is Voided
         if($voucher_details['status'] == 'voided') {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been voided."));
-            $state_flag = false;
-        }
-
-        // Is Cancelled
-        if($voucher_details['status'] == 'cancelled') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because this voucher has been cancelled."));
             $state_flag = false;
         }
 

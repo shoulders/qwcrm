@@ -511,7 +511,7 @@ defined('_QWEXEC') or die;
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
             $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'in_dispute', 'overdue', 'in_collections')";
-            //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'deleted')";
+            //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'voided', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -618,7 +618,7 @@ defined('_QWEXEC') or die;
 
         // Is the new status a "closed" status
         // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
-        if(in_array($new_status, array('paid', 'deleted'))) {
+        if(in_array($new_status, array('paid', 'voided', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
             $closed_on = null;
@@ -696,6 +696,38 @@ defined('_QWEXEC') or die;
     }
 
     /** Close Functions **/
+
+    #####################################
+    #   Void Invoice                    #
+    #####################################
+
+    public function voidRecord($invoice_id, $reason_for_voiding) {
+
+        // Get invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Void any Vouchers - handled in updateInvoiceVouchersStatuses()
+        //$this->app->components->voucher->voidInvoiceVouchers($invoice_id);
+
+        // Change the invoice status to voided
+        $this->updateStatus($invoice_id, 'voided');
+
+        // Add Voided message to the additional info
+        $this->updateAdditionalInfo($invoice_id, array('reason_for_voiding' => $reason_for_voiding));
+
+        // Create a Workorder History Note  - this is an invoice
+        //$this->app->components->workorder->insertHistory($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.');
+
+        // Log activity
+        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
+
+        return true;
+
+    }
 
     /** Delete Functions **/
 
@@ -856,7 +888,7 @@ defined('_QWEXEC') or die;
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been closed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'in_dispute':
@@ -864,6 +896,10 @@ defined('_QWEXEC') or die;
             case 'overdue':
                 break;
             case 'in_collections':
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been voided."), $silent);
+                $state_flag = false;
                 break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has been deleted."), $silent);
@@ -879,7 +915,7 @@ defined('_QWEXEC') or die;
 
         /* Does the invoice have any Vouchers preventing changing the invoice status
          * - When you change the invoice status, the vouchers status are now mirrored using updateInvoiceVouchersStatuses()
-         * - Once the invoice is closed, it's status cannot be manually changed
+         * - Once the invoice is paid, it's status cannot be manually changed
         if($this->app->components->report->voucherCount(null, null, null, null, null, null, null, null, null, null, $invoice_id)) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice status cannot be changed because it has Vouchers."), $silent);
         }
@@ -946,6 +982,10 @@ defined('_QWEXEC') or die;
                 break;
             case 'in_collections':
                 break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been voided."), $silent);
+                $state_flag = false;
+                break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because the invoice has been deleted."), $silent);
                 $state_flag = false;
@@ -973,6 +1013,80 @@ defined('_QWEXEC') or die;
         return $state_flag;
 
     }
+
+    ###############################################################
+    #   Check to see if the invoice can be voided                 #
+    ###############################################################
+
+    public function checkRecordAllowsVoid($invoice_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Is on a different tax system
+        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be voided because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Does not have a balance
+        if($invoice_details['balance'] == 0) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it does not have a balance."), $silent);
+            $state_flag = false;
+        }
+
+        // Status checks
+        switch($invoice_details['status']) {
+            case 'pending':
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it is partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                reak;
+            case 'in_dispute':
+                break;
+            case 'overdue':
+                break;
+            case 'in_collections':
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be voided because it has already been voided."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be voided because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        // Does the invoice have any Vouchers preventing voiding the invoice (i.e. any that have been used)
+        if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowVoid($invoice_id)) {
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be voided because it's Vouchers prevent this."), $silent); - messages handled downstream
+            $state_flag = false;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it has payments."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Credit notes
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be voided because it has linked credit notes."), $silent);
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
 
     ###############################################################
     #   Check to see if the invoice can be deleted                #
@@ -1023,6 +1137,10 @@ defined('_QWEXEC') or die;
             case 'overdue':
                 break;
             case 'in_collections':
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been voided."), $silent);
+                $state_flag = false;
                 break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it already been deleted."), $silent);

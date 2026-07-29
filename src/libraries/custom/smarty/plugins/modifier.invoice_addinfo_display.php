@@ -45,6 +45,9 @@ function smarty_modifier_invoice_addinfo_display($string)
 
         // Apply modifications as required
         switch($key) {
+            case 'reason_for_voiding' :
+                $html .= '<strong>'._gettext("Reason for Voiding").':</strong> '.$value.'<br>';
+                break;
             case 'closed_by_creditnote_payment_id' :
                 $html .= '<strong>'._gettext("Closed by Credit Note - Payment ID").':</strong> <a href="index.php?component=payment&page_tpl=details&payment_id='.$value.'">'.$value.'</a><br>';
                 break;

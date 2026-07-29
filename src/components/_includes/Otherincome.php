@@ -801,7 +801,7 @@ class Otherincome extends Components {
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be deleted because the otherincome has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot be voided because the otherincome has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }

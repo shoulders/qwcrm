@@ -72,9 +72,6 @@
 
         // Form Fields that are submitted
         fieldNames = [
-            //"expense_" + "_id",
-            //"expense_id",
-            //"tax_system",
             "description",
             "unit_qty",
             "unit_net",

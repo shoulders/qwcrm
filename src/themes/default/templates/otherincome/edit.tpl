@@ -72,9 +72,6 @@
 
         // Form Fields that are submitted
         fieldNames = [
-            //"otherincome_" + "_id",
-            //"otherincome_id",
-            //"tax_system",
             "description",
             "unit_qty",
             "unit_net",

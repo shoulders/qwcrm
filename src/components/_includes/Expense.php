@@ -338,7 +338,7 @@ class Expense extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'deleted')";
+            $sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'voided', 'deleted')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -447,7 +447,7 @@ class Expense extends Components {
 
         // Is the new status a "closed" status
         // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
-        if(in_array($new_status, array('paid', 'deleted'))) {
+        if(in_array($new_status, array('paid', 'voided', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
             $closed_on = null;
@@ -524,6 +524,36 @@ class Expense extends Components {
 
     /** Close Functions **/
 
+    #####################################
+    #   Void Expense                    #
+    #####################################
+
+    public function voidRecord($expense_id, $reason_for_voiding) {
+
+        // Make sure the expense can be voided
+        if(!$this->checkRecordAllowsVoid($expense_id)) {
+            return false;
+        }
+
+        // Get expense details
+        $expense_details = $this->getRecord($expense_id);
+
+        // Change the expense status to voided
+        $this->updateStatus($expense_id, 'voided');
+
+        // Add Voided message to the additional info
+        $this->updateAdditionalInfo($expense_id, array('reason_for_voiding' => $reason_for_voiding));
+
+        // Log activity
+        $logMessage = _gettext("Expense").' '.$expense_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $this->app->system->variables->systemMessagesWrite('success', $logMessage);
+        $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
+
+        return true;
+
+    }
 
     /** Delete Functions **/
 
@@ -730,9 +760,12 @@ class Expense extends Components {
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been closed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been paid."), $silent);
                 $state_flag = false;
                 break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been voided."), $silent);
+                $state_flag = false;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
@@ -748,6 +781,59 @@ class Expense extends Components {
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."), $silent);
+            return false;
+        }
+
+        return $state_flag;
+
+    }
+
+    ###############################################################
+    #   Check to see if the expense can be voided                 #
+    ###############################################################
+
+    public function checkRecordAllowsVoid($expense_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the expense details
+        $expense_details = $this->getRecord($expense_id);
+
+        // Status checks
+        switch($expense_details['status']) {
+            case 'pending':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because the expense is pending."), $silent);
+                $state_flag = false;
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because the expense is partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has payments and is paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be voided because the expense has already been voided."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be voided because the expense has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because the expense has payments."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Credit notes
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be voided because it has linked credit notes."), $silent);
             return false;
         }
 
@@ -785,6 +871,10 @@ class Expense extends Components {
                 break;
             case 'paid':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':

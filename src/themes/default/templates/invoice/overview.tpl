@@ -49,8 +49,8 @@
                                         </tr>
                                         {*<tr>
                                             <td>
-                                                <a name="closed"></a>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_closed block_title=_gettext("closed")}
+                                                <a name="paid"></a>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_paid block_title=_gettext("Paid")}
                                             </td>
                                         </tr>*}
                                         <tr>
@@ -71,6 +71,12 @@
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_in_collections block_title=_gettext("In Collections")}
                                             </td>
                                         </tr>
+                                        {*<tr>
+                                            <td>
+                                                <a name="voided"></a>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_voided block_title=_gettext("Voided")}
+                                            </td>
+                                        </tr> *}
 
                                     </table>
                                 </td>
