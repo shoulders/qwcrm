@@ -624,11 +624,19 @@ defined('_QWEXEC') or die;
             $closed_on = null;
         }
 
+        // Has the invoice been voided
+        if($new_status == 'voided') {
+            $voided_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
+        } else {
+            $voided_on = null;
+        }
+
         // Build SQL
         $sql = "UPDATE ".PRFX."invoice_records SET
                 employee_id          =". $this->app->db->qStr( $employee_id).",
                 status               =". $this->app->db->qStr( $new_status      ).",
-                closed_on            =". $this->app->db->qStr( $closed_on    )."
+                closed_on            =". $this->app->db->qStr( $closed_on    ).",
+                voided_on            =". $this->app->db->qStr( $voided_on    )."
                 WHERE invoice_id     =". $this->app->db->qStr( $invoice_id      );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
