@@ -193,7 +193,7 @@
                                                 {/if}
 
                                                 <!-- Edit Button -->
-                                                {if $creditnote_details.status == 'pending' || $creditnote_details.status == 'unused'}
+                                                {if $creditnote_details.status == 'draft' || $creditnote_details.status == 'unused'}
                                                     <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_details.creditnote_id}';">{t}Edit Credit Note{/t}</button>
                                                     <br>
                                                     <br>

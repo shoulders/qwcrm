@@ -31,8 +31,8 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="pending"></a>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_pending block_title=_gettext("Pending")}
+                                                <a name="draft"></a>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_draft block_title=_gettext("Draft")}
                                             </td>
                                         </tr>
                                         <tr>

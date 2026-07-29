@@ -114,7 +114,7 @@
                                                 <td class="menutd2">
 
                                                     <!-- Edit Button -->
-                                                    {if $expense_details.status == 'pending' || $expense_details.status == 'unpaid'}
+                                                    {if $expense_details.status == 'draft' || $expense_details.status == 'unpaid'}
                                                         <button type="button" onclick="window.location.href='index.php?component=expense&page_tpl=edit&expense_id={$expense_details.expense_id}';">{t}Edit{/t}</button>
                                                     {/if}
 

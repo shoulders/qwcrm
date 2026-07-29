@@ -39,7 +39,7 @@ class Creditnote extends Components {
                 reference       =". $this->app->db->qStr( $qform['reference']                         ).",
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                          ).",
                 sales_tax_rate  =". $this->app->db->qStr( $qform['sales_tax_rate'] ?? '0.00'     ).",
-                status          =". $this->app->db->qStr( 'pending'                            ).",
+                status          =". $this->app->db->qStr( 'draft'                            ).",
                 action_type     =". $this->app->db->qStr( $qform['action_type']).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
@@ -940,10 +940,10 @@ class Creditnote extends Components {
                 $state_flag = false;
             }
 
-            // Check there are no pending credit notes attached to the client
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $client_id))
+            // Check there are no draft credit notes attached to the client
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'draft', null, null, null, null, $client_id))
             {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client has a pending credit note assigned to it which needs sorting before you can create another credit note for this client.", $silent));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client has a draft credit note assigned to it which needs sorting before you can create another credit note for this client.", $silent));
                 $state_flag = false;
             }
 
@@ -982,8 +982,8 @@ class Creditnote extends Components {
 
                 // Status Checks (CR Parent Invoice)
                 switch ($invoice_details['status']) {
-                    case 'pending':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins.", $silent));
+                    case 'draft':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is draft and cannot accept payments. You should not see this error, report to admins.", $silent));
                         $state_flag = false;
                         break;
                     case 'unpaid':
@@ -1005,7 +1005,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'in_dispute':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins.", $silent));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is draft and cannot accept payments. You should not see this error, report to admins.", $silent));
                         $state_flag = false;
                         break;
                     case 'in_collections':
@@ -1067,10 +1067,10 @@ class Creditnote extends Components {
                 $state_flag = false;
             }
 
-            // Check there are no pending credit notes attached to the supplier
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, null, $supplier_id))
+            // Check there are no draft credit notes attached to the supplier
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'draft', null, null, null, null, null, $supplier_id))
             {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a pending credit note assigned to it.", $silent));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a draft credit note assigned to it.", $silent));
                 $state_flag = false;
             }
 
@@ -1110,8 +1110,8 @@ class Creditnote extends Components {
 
                 // Status Checks (CR Parent Expense)
                 switch ($expense_details['status']) {
-                    case 'pending':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is pending and cannot accept payments. You should not see this error, report to admins.", $silent));
+                    case 'draft':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is draft and cannot accept payments. You should not see this error, report to admins.", $silent));
                         $state_flag = false;
                         break;
                     case 'unpaid':
@@ -1216,10 +1216,10 @@ class Creditnote extends Components {
             }
 
             /* this check should not be needed as it is done upon creation, not submission
-            // Check there are no pending credit notes attached to the client
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, $client_id))
+            // Check there are no draft credit notes attached to the client
+            if($this->app->components->report->creditnoteCount(null, null, null, null, 'draft', null, null, null, null, $client_id))
             {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a pending credit note."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a draft credit note."));
                 $state_flag = false;
             }*/
 
@@ -1255,8 +1255,8 @@ class Creditnote extends Components {
 
                 // Status Checks (CR Parent Invoice)
                 switch ($invoice_details['status']) {
-                    case 'pending':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
+                    case 'draft':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is draft and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'unpaid':
@@ -1282,7 +1282,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'in_dispute':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is draft and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'in_collections':
@@ -1349,10 +1349,10 @@ class Creditnote extends Components {
             if(!$expense_id)
             {
                 /* this check should not be needed as it is done upon creation, not submission
-                // Check there are no pending credit notes attached to the supplier
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'pending', null, null, null, null, null, $supplier_id))
+                // Check there are no draft credit notes attached to the supplier
+                if($this->app->components->report->creditnoteCount(null, null, null, null, 'draft', null, null, null, null, null, $supplier_id))
                 {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a pending credit note assigned to it."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a draft credit note assigned to it."));
                     $state_flag = false;
                 }*/
 
@@ -1387,8 +1387,8 @@ class Creditnote extends Components {
 
                 // Status Checks (CR Parent Expense)
                 switch($expense_details['status']){
-                    case 'pending':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is pending and cannot accept payments. You should not see this error, report to admins."));
+                    case 'draft':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is draft and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'unpaid':
@@ -1508,8 +1508,8 @@ class Creditnote extends Components {
 
         // Status Checks (Credit Note)
         switch ($creditnote_details['status']) {
-            case 'pending':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credi note cannot be used because it is pending."));
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credi note cannot be used because it is draft."));
                 $state_flag = false;
                 break;
             case 'unused':
@@ -1570,8 +1570,8 @@ class Creditnote extends Components {
 
                 // Status Checks (CR Parent Invoice)
                 switch ($this->app->components->invoice->getRecord($creditnote_details['invoice_id'], 'status')) {
-                    case 'pending':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
+                    case 'draft':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is draft and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'unpaid':
@@ -1595,7 +1595,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'in_dispute':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is pending and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is draft and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'in_collections':
@@ -1663,8 +1663,8 @@ class Creditnote extends Components {
 
                 // Status Checks (CR Parent Expense)
                 switch ($this->app->components->expense->getRecord($creditnote_details['expense_id'], 'status')) {
-                    case 'pending':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense is pending and cannot accept payments. You should not see this error, report to admins."));
+                    case 'draft':
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense is draft and cannot accept payments. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'unpaid':
@@ -1751,8 +1751,8 @@ class Creditnote extends Components {
 
         // Status checks
         switch($creditnote_details['status']) {
-            case 'pending':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the credit note is pending."), $silent);
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be changed because the credit note is draft."), $silent);
                 $state_flag = false;
                 break;
             case 'unused':
@@ -1839,7 +1839,7 @@ class Creditnote extends Components {
 
         // Status checks
         switch($creditnote_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unused':
                 break;
@@ -1928,7 +1928,7 @@ class Creditnote extends Components {
 
         // Status checks
         switch($creditnote_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unused':
                 break;
@@ -2004,7 +2004,7 @@ class Creditnote extends Components {
 
         // Status checks
         switch($creditnote_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unused':
                 break;
@@ -2082,9 +2082,9 @@ class Creditnote extends Components {
 
         $creditnote_details = $this->getRecord($creditnote_id);
 
-        // No creditable amount, set to pending (if not already)
-        if($creditnote_details['unit_gross'] == 0 && $creditnote_details['status'] != 'pending') {
-            $this->updateStatus($creditnote_id, 'pending');
+        // No creditable amount, set to draft (if not already)
+        if($creditnote_details['unit_gross'] == 0 && $creditnote_details['status'] != 'draft') {
+            $this->updateStatus($creditnote_id, 'draft');
         }
 
         // Has creditable amount with no payments, set to unused (if not already)

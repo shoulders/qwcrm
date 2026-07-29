@@ -30,9 +30,9 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Pending{/t}:</b></td>
-                    <td><b>{$expense_stats.count_pending}</b></td>
-                    <td><b>({$currency_symbol}{$expense_stats.sum_pending_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Draft{/t}:</b></td>
+                    <td><b>{$expense_stats.count_draft}</b></td>
+                    <td><b>({$currency_symbol}{$expense_stats.sum_draft_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Unused{/t}:</b></td>
@@ -60,7 +60,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
-                </tr>                
+                </tr>
                 <tr>
                     <td><b>{t}Voided{/t}:</b></td>
                     <td><b>{$expense_stats.count_voided}</b></td>
@@ -85,9 +85,9 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Pending{/t}:</b></td>
-                    <td><b>{$otherincome_stats.count_pending}</b></td>
-                    <td><b>({$currency_symbol}{$otherincome_stats.sum_pending_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Draft{/t}:</b></td>
+                    <td><b>{$otherincome_stats.count_draft}</b></td>
+                    <td><b>({$currency_symbol}{$otherincome_stats.sum_draft_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Unpaid{/t}:</b></td>
@@ -140,9 +140,9 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Pending{/t}:</b></td>
-                    <td><b>{$creditnote_stats.count_pending}</b></td>
-                    <td><b>({$currency_symbol}{$creditnote_stats.sum_pending_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Draft{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_draft}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_draft_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Unused{/t}:</b></td>

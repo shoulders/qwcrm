@@ -684,7 +684,7 @@ class Report extends Components {
 
             $stats['count_open'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id);
             $stats['count_discounted'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);
-            $stats['count_pending'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id);
+            $stats['count_draft'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'draft', $employee_id, $client_id);
             $stats['count_unpaid'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $client_id);
             $stats['count_partially_paid'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $client_id);
             $stats['count_overdue'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, 'overdue', $employee_id, $client_id);
@@ -716,7 +716,7 @@ class Report extends Components {
             $stats['sum_balance'] = $this->invoiceSum('balance', 'date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);
 
             // Sums by Status (Used on client:details Account tab)
-            $stats['sum_pending_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $client_id);
+            $stats['sum_draft_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'draft', $employee_id, $client_id);
             $stats['sum_unpaid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $client_id);
             $stats['sum_partially_paid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $client_id);
             $stats['sum_paid_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $client_id);
@@ -1418,7 +1418,7 @@ class Report extends Components {
         if($record_set == 'current' || $record_set == 'all') {
 
             $stats['count_open'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'open', $employee_id, $supplier_id);
-            $stats['count_pending'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'pending', $employee_id, $supplier_id);
+            $stats['count_draft'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'draft', $employee_id, $supplier_id);
             $stats['count_unpaid'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'unpaid', $employee_id, $supplier_id);
             $stats['count_partially_paid'] = $this->expenseCount('date', $start_date, $end_date, $tax_system, null, 'partially_paid', $employee_id, $supplier_id);
 
@@ -1445,7 +1445,7 @@ class Report extends Components {
             $stats['sum_balance'] = $this->expenseSum('balance', 'date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
 
             // Sums by Status (Used on supplier:details Account tab)
-            $stats['sum_pending_unit_gross']        = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $supplier_id);
+            $stats['sum_draft_unit_gross']        = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'draft', $employee_id, $supplier_id);
             $stats['sum_unpaid_unit_gross']         = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $supplier_id);
             $stats['sum_partially_paid_unit_gross'] = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $supplier_id);
             $stats['sum_paid_unit_gross']           = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $supplier_id);
@@ -1806,7 +1806,7 @@ class Report extends Components {
         if($record_set == 'current' || $record_set == 'all') {
 
             $stats['count_open'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'open', $employee_id, $supplier_id);
-            $stats['count_pending'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'pending', $employee_id, $supplier_id);
+            $stats['count_draft'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'draft', $employee_id, $supplier_id);
             $stats['count_unpaid'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'unpaid', $employee_id, $supplier_id);
             $stats['count_partially_paid'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'partially_paid', $employee_id, $supplier_id);
 
@@ -1833,7 +1833,7 @@ class Report extends Components {
             $stats['sum_balance'] = $this->otherincomeSum('balance', 'date', $start_date, $end_date, $tax_system, null, $employee_id, null, $supplier_id);
 
             // Sums by Status (Used on supplier:details Account tab)
-            $stats['sum_pending_unit_gross']        = $this->otherincomeSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', $employee_id, $supplier_id);
+            $stats['sum_draft_unit_gross']        = $this->otherincomeSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'draft', $employee_id, $supplier_id);
             $stats['sum_unpaid_unit_gross']         = $this->otherincomeSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unpaid', $employee_id, $supplier_id);
             $stats['sum_partially_paid_unit_gross'] = $this->otherincomeSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_paid', $employee_id, $supplier_id);
             $stats['sum_paid_unit_gross']           = $this->otherincomeSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $supplier_id);
@@ -2175,7 +2175,7 @@ class Report extends Components {
 
             $stats['count_open'] = $this->creditnoteCount('date', $start_date, $end_date, $tax_system, 'open', null, false, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             //$stats['count_discounted'] = $this->creditnoteCount('date', $start_date, $end_date, $tax_system, 'discounted', false, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
-            $stats['count_pending'] = $this->creditnoteCount('date', $start_date, $end_date, $tax_system, 'pending', false, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
+            $stats['count_draft'] = $this->creditnoteCount('date', $start_date, $end_date, $tax_system, 'draft', false, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['count_unused'] = $this->creditnoteCount('date', $start_date, $end_date, $tax_system, 'unused', false, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['count_partially_used'] = $this->creditnoteCount('date', $start_date, $end_date, $tax_system, 'partially_used', false, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
         }
@@ -2204,7 +2204,7 @@ class Report extends Components {
             $stats['sum_balance'] = $this->creditnoteSum('balance', 'date', $start_date, $end_date, $tax_system, null, null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
 
             // Sums by Status (Used on client:details Account tab / supplier:details Account tab)
-            $stats['sum_pending_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'pending', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
+            $stats['sum_draft_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'draft', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['sum_unused_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'unused', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['sum_partially_used_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'partially_used', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['sum_used_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'used', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);

@@ -36,7 +36,7 @@ class Otherincome extends Components {
                 date            =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
-                status          =". $this->app->db->qStr('pending').",
+                status          =". $this->app->db->qStr('draft').",
                 opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
@@ -668,7 +668,7 @@ class Otherincome extends Components {
 
         // Status checks
         switch($otherincome_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -732,7 +732,7 @@ class Otherincome extends Components {
 
         // Status checks
         switch($otherincome_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -784,7 +784,7 @@ class Otherincome extends Components {
 
         // Status checks
         switch($otherincome_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -852,7 +852,7 @@ class Otherincome extends Components {
 
         // Status checks
         switch($otherincome_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -913,9 +913,9 @@ class Otherincome extends Components {
 
         $otherincome_details = $this->getRecord($otherincome_id);
 
-        // No otherincome amount, set to pending (if not already)
-        if($otherincome_details['unit_gross'] == 0 && $otherincome_details['status'] != 'pending') {
-            $this->updateStatus($otherincome_id, 'pending');
+        // No otherincome amount, set to draft (if not already)
+        if($otherincome_details['unit_gross'] == 0 && $otherincome_details['status'] != 'draft') {
+            $this->updateStatus($otherincome_id, 'draft');
         }
 
         // Has otherincome amount with no payments, set to unpaid (if not already)

@@ -114,7 +114,7 @@
                                                 <td class="menutd2">
 
                                                     <!-- Edit Button -->
-                                                    {if $otherincome_details.status == 'pending' || $otherincome_details.status == 'unpaid'}
+                                                    {if $otherincome_details.status == 'draft' || $otherincome_details.status == 'unpaid'}
                                                         <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_details.otherincome_id}';">{t}Edit{/t}</button>
                                                     {/if}
 

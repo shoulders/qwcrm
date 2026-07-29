@@ -334,7 +334,7 @@ CREATE TABLE `#__creditnote_statuses` (
 --
 
 INSERT INTO `#__creditnote_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'pending', 'Pending'),
+(1, 'draft', 'Draft'),
 (2, 'unused', 'Unused'),
 (3, 'partially_used', 'Partially Used'),
 (4, 'used', 'Used'),
@@ -500,7 +500,7 @@ CREATE TABLE `#__expense_statuses` (
 --
 
 INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'pending', 'Pending'),
+(1, 'draft', 'Draft'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
@@ -648,7 +648,7 @@ CREATE TABLE `#__invoice_statuses` (
 --
 
 INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'pending', 'Pending'),
+(1, 'draft', 'Draft'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'overdue', 'Overdue'),
@@ -726,7 +726,7 @@ CREATE TABLE `#__otherincome_statuses` (
 --
 
 INSERT INTO `#__otherincome_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'pending', 'Pending'),
+(1, 'draft', 'Draft'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
@@ -1391,7 +1391,7 @@ CREATE TABLE `#__voucher_statuses` (
 --
 
 INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'pending', 'Pending'),
+(1, 'draft', 'Draft'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'unredeemed', 'Unredeemed'),

@@ -41,7 +41,7 @@ defined('_QWEXEC') or die;
                 due_date        =". $this->app->db->qStr( $this->app->system->general->mysqlDate(\CMSApplication::$timestamp)               ).",
                 tax_system      =". $this->app->db->qStr( QW_TAX_SYSTEM                          ).",
                 sales_tax_rate  =". $this->app->db->qStr( $sales_tax_rate                      ).",
-                status          =". $this->app->db->qStr( 'pending'                            ).",
+                status          =". $this->app->db->qStr( 'draft'                            ).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)           ).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
@@ -510,7 +510,7 @@ defined('_QWEXEC') or die;
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restricted_statuses) {
-            $sql .= "\nWHERE status_key IN ('pending', 'unpaid', 'overdue', 'in_dispute', 'in_collections')";
+            $sql .= "\nWHERE status_key IN ('draft', 'unpaid', 'overdue', 'in_dispute', 'in_collections')";
             //$sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'voided', 'deleted')";
         }
 
@@ -887,7 +887,7 @@ defined('_QWEXEC') or die;
 
         // Status checks
         switch($invoice_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -972,7 +972,7 @@ defined('_QWEXEC') or die;
 
         // Status checks
         switch($invoice_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -1047,7 +1047,7 @@ defined('_QWEXEC') or die;
 
         // Status checks
         switch($invoice_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -1128,7 +1128,7 @@ defined('_QWEXEC') or die;
 
         // Status checks
         switch($invoice_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -1233,9 +1233,9 @@ defined('_QWEXEC') or die;
 
         $invoice_details = $this->getRecord($invoice_id);
 
-        // No invoiceable amount, set to pending (if not already)
-        if($invoice_details['unit_gross'] == 0 && $invoice_details['status'] != 'pending') {
-            $this->updateStatus($invoice_id, 'pending');
+        // No invoiceable amount, set to draft (if not already)
+        if($invoice_details['unit_gross'] == 0 && $invoice_details['status'] != 'draft') {
+            $this->updateStatus($invoice_id, 'draft');
         }
 
         // Has invoiceable amount with no payments, set to unpaid (if not already)

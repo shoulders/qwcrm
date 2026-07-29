@@ -42,7 +42,7 @@ _gettext("Standard Rate Purchases - Services - EC");
 _gettext("Flat Rate Capital Asset");
 
 /* Credit Note Statuses */
-_gettext("Pending");
+_gettext("Draft");
 _gettext("Unused");
 _gettext("Partially Used");
 _gettext("Used");
@@ -59,7 +59,7 @@ _gettext("Close");
 _gettext("Refund");
 
 /* Expense Statuses */
-_gettext("Pending");
+_gettext("Draft");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
@@ -92,7 +92,7 @@ _gettext("Voucher");
 _gettext("Wages");
 
 /* Invoice Statuses */
-_gettext("Pending");
+_gettext("Draft");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Overdue");
@@ -103,7 +103,7 @@ _gettext("Voided");
 _gettext("Deleted");
 
 /* Otherincome Statuses */
-_gettext("Pending");
+_gettext("Draft");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
@@ -200,7 +200,7 @@ _gettext("Multi Purpose (MPV)");
 _gettext("Single Purpose (SPV)");
 
 /* Voucher Statuses */
-_gettext("Pending");
+_gettext("Draft");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Unredeemed");

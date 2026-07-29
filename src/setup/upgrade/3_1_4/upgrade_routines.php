@@ -78,13 +78,18 @@ class Upgrade3_1_4 extends Setup {
         $this->updateColumnValues(PRFX.'invoice_records', 'status', 'refunded', 'paid');
         $this->updateColumnValues(PRFX.'voucher_records', 'status', 'refunded', 'voided');
 
-        // Convert Cancelled Records to Credit Notes TODO: convert to voided
+        // Convert Cancelled Records to Credit Notes
         //$this->expenseConvertCancelledToCreditnotes();
         ///$this->updateColumnValues(PRFX.'expense_records', 'status', 'cancelled', 'paid');
         //$this->invoiceConvertCancelledToCreditnotes();
         //$this->updateColumnValues(PRFX.'invoice_records', 'status', 'cancelled', 'paid');
 
-        // Convert Cancelled Records to Credit Notes TODO: convert to voided
+        // Convert Records - Pending into Draft
+        $this->updateColumnValues(PRFX.'creditnote_records', 'status', 'pending', 'draft');
+        $this->updateColumnValues(PRFX.'expense_records', 'status', 'pending', 'draft');
+        $this->updateColumnValues(PRFX.'invoice_records', 'status', 'pending', 'draft');
+        $this->updateColumnValues(PRFX.'otherincome_records', 'status', 'pending', 'draft');
+        $this->updateColumnValues(PRFX.'voucher_records', 'status', 'pending', 'draft');
 
         // Update database version number
         $this->updateRecordValue(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));

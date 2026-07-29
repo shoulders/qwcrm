@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Build the page
-$this->app->smarty->assign('overview_invoices_pending',            $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, false, null, null, null, 'pending')           );
+$this->app->smarty->assign('overview_invoices_draft',            $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, false, null, null, null, 'draft')           );
 $this->app->smarty->assign('overview_invoices_unpaid',             $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, false, null, null, null, 'unpaid')            );
 $this->app->smarty->assign('overview_invoices_partially_paid',     $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, false, null, null, null, 'partially_paid')    );
 $this->app->smarty->assign('overview_invoices_overdue',            $this->app->components->invoice->getRecords('invoice_id', 'DESC', 25, false, null, null, null, 'overdue')           );

@@ -435,7 +435,7 @@
                                                 </td>
                                                 <td><a href="index.php?component=user&page_tpl=details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td>
                                                 <td>
-                                                    {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
+                                                    {if $invoice_details.status == 'draft' || $invoice_details.status == 'unpaid'}
                                                         <input id="date" name="qform[date]" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                         <button type="button" id="date_button">+</button>
                                                         <script>
@@ -451,7 +451,7 @@
                                                     {/if}
                                                 </td>
                                                 <td>
-                                                    {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
+                                                    {if $invoice_details.status == 'draft' || $invoice_details.status == 'unpaid'}
                                                         <input id="due_date" name="qform[due_date]" class="olotd4" size="10" value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                         <button type="button" id="due_date_button">+</button>
                                                         <script>
@@ -667,7 +667,7 @@
                                                         <!-- Invoice Items Table Record Rows are added here -->
 
                                                     </table>
-                                                    {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
+                                                    {if $invoice_details.status == 'draft' || $invoice_details.status == 'unpaid'}
                                                         <p>
                                                             <button type="button" onclick="createNewTableRow();">{t}Add{/t}</button>
                                                         </p>
@@ -788,7 +788,7 @@
                                         <table width="100%"  cellpadding="3" cellspacing="0" border="0">
                                             <tr>
                                                 <td align="left" valign="top" width="25%">
-                                                    {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}
+                                                    {if $invoice_details.status == 'draft' || $invoice_details.status == 'unpaid'}
                                                         <input type="hidden" name="qform[invoice_id]" value="{$invoice_details.invoice_id}">
                                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_details.invoice_id}';">{t}Cancel{/t}</button>

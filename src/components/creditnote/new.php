@@ -166,8 +166,8 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
     // Recalculate creditote record totals to ensure they are correect
     $this->app->components->creditnote->recalculateTotals($creditnote_id);
 
-    // Ensure creditnote status is pending
-    $this->app->components->creditnote->updateStatus($creditnote_id, 'pending', true);
+    // Ensure creditnote status is draft
+    $this->app->components->creditnote->updateStatus($creditnote_id, 'draft', true);
 
     // Edit the newly created credit note populating with items on page load
     $this->app->system->page->forcePage('creditnote', 'edit&creditnote_id='.$creditnote_id);

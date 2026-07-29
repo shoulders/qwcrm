@@ -1360,3 +1360,10 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (7, 'paid', 'Paid'),
 (8, 'voided', 'Voided'),
 (9, 'deleted', 'Deleted');
+
+-- Convert status - Pending into Draft --
+UPDATE `#__creditnote_statuses` SET `status_key` = 'draft', `display_name` = 'Draft' WHERE `#__creditnote_statuses`.`id` = 1;
+UPDATE `#__expense_statuses` SET `status_key` = 'draft', `display_name` = 'Draft' WHERE `#__expense_statuses`.`id` = 1;
+UPDATE `#__invoice_statuses` SET `status_key` = 'draft', `display_name` = 'Draft' WHERE `#__invoice_statuses`.`id` = 1;
+UPDATE `#__otherincome_statuses` SET `status_key` = 'draft', `display_name` = 'Draft' WHERE `#__otherincome_statuses`.`id` = 1;
+UPDATE `#__voucher_statuses` SET `status_key` = 'draft', `display_name` = 'Draft' WHERE `#__voucher_statuses`.`id` = 1;

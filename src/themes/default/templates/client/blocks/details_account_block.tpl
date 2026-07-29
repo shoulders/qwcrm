@@ -99,9 +99,9 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Pending{/t}:</b></td>
-                    <td><b>{$invoice_stats.count_pending}</b></td>
-                    <td><b>({$currency_symbol}{$invoice_stats.sum_pending_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Draft{/t}:</b></td>
+                    <td><b>{$invoice_stats.count_draft}</b></td>
+                    <td><b>({$currency_symbol}{$invoice_stats.sum_draft_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Unpaid{/t}:</b></td>
@@ -270,9 +270,9 @@
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Pending{/t}:</b></td>
-                    <td><b>{$creditnote_stats.count_pending}</b></td>
-                    <td><b>({$currency_symbol}{$creditnote_stats.sum_pending_unit_gross|string_format:"%.2f"})</b></td>
+                    <td><b>{t}Draft{/t}:</b></td>
+                    <td><b>{$creditnote_stats.count_draft}</b></td>
+                    <td><b>({$currency_symbol}{$creditnote_stats.sum_draft_unit_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Unused{/t}:</b></td>

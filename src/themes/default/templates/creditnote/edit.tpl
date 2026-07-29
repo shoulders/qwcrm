@@ -450,7 +450,7 @@
                                                     <a href="index.php?component=user&page_tpl=details&user_id={$creditnote_details.employee_id}">{$employee_display_name}</a>
                                                 </td>
                                                 <td>
-                                                    {if $creditnote_details.status == 'pending' || $creditnote_details.status == 'unused'}
+                                                    {if $creditnote_details.status == 'draft' || $creditnote_details.status == 'unused'}
                                                         <input id="date" name="qform[date]" class="olotd4" size="10" value="{$creditnote_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                         <button type="button" id="date_button">+</button>
                                                         <script>
@@ -466,7 +466,7 @@
                                                     {/if}
                                                 </td>
                                                 <td>
-                                                    {if $creditnote_details.status == 'pending' || $creditnote_details.status == 'unused'}
+                                                    {if $creditnote_details.status == 'draft' || $creditnote_details.status == 'unused'}
                                                         <input id="expiry_date" name="qform[expiry_date]" class="olotd4" size="10" value="{$creditnote_details.expiry_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                         <button type="button" id="expiry_date_button">+</button>
                                                         <script>
@@ -659,7 +659,7 @@
                                                         <!-- Credit Note Items Table Record Rows are added here -->
 
                                                     </table>
-                                                    {if $creditnote_details.status == 'pending' || $creditnote_details.status == 'unused'}
+                                                    {if $creditnote_details.status == 'draft' || $creditnote_details.status == 'unused'}
                                                         <p>
                                                             <button type="button" onclick="createNewTableRow();">{t}Add{/t}</button>
                                                         </p>

@@ -344,7 +344,7 @@ class Voucher extends Components {
 
         // Restrict statuses to those that are allowed to be changed by the user
         if($restrict_statuses) {
-            //$sql .= "\nWHERE status_key NOT IN ('pending', 'unpaid', 'partially_paid', 'partially_redeemed', 'suspended', 'voided', 'deleted')";
+            //$sql .= "\nWHERE status_key NOT IN ('draft', 'unpaid', 'partially_paid', 'partially_redeemed', 'suspended', 'voided', 'deleted')";
             $sql .= "\nWHERE status_key IN ('unredeemed', 'suspended')";
         }
 
@@ -590,7 +590,7 @@ class Voucher extends Components {
 
         /* Update the Status */
 
-        // Pending, Unpaid, Partially Paid, Suspended, Voided, Deleted
+        // Draft, Unpaid, Partially Paid, Suspended, Voided, Deleted
         // Can only be set by $this->updateInvoiceVouchersStatuses() when the invoice is updated.
         // This function should only ever be called for the statuses below
 
@@ -631,8 +631,8 @@ class Voucher extends Components {
         if($invoice_new_status)
         {
             switch ($invoice_new_status) {
-                case 'pending':
-                    $vouchers_new_status = 'pending';
+                case 'draft':
+                    $vouchers_new_status = 'draft';
                     break;
                 case 'unpaid':
                     $vouchers_new_status = 'unpaid';
@@ -683,7 +683,7 @@ class Voucher extends Components {
 
         }
 
-        // Default Status change handler - this is when the vouchers have not been processed above (voided/deleted) but still need their status changing (eg pending/partially_paid/unredeemed)
+        // Default Status change handler - this is when the vouchers have not been processed above (voided/deleted) but still need their status changing (eg draft/partially_paid/unredeemed)
         // Might not be used currently, but could be useful in future
         elseif($vouchers_new_status)
         {
@@ -979,8 +979,8 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Check the invoice status is either pending or unpaid
-        if(!in_array($invoice_details['status'], ['pending', 'unpaid'])){
+        // Check the invoice status is either draft or unpaid
+        if(!in_array($invoice_details['status'], ['draft', 'unpaid'])){
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice's status does not allow you to add vouchers."), $silent);
             $state_flag = false;
         }
@@ -1045,8 +1045,8 @@ class Voucher extends Components {
         // Check Voucher Status
         switch ($voucher_details['status'])
         {
-            case 'pending':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it is pending."), $silent);
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be redeemed because it is draft."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
@@ -1095,8 +1095,8 @@ class Voucher extends Components {
             // Check Parent Invoice Status
             switch ($invoice_details['status'])
             {
-                case 'pending':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is pending."), $silent);
+                case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice is draft."), $silent);
                     $state_flag = false;
                     break;
                 case 'unpaid':
@@ -1185,8 +1185,8 @@ class Voucher extends Components {
         // Check Voucher Status
         switch ($voucher_details['status'])
         {
-            case 'pending':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it is pending."), $silent);
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because it is draft."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
@@ -1235,12 +1235,12 @@ class Voucher extends Components {
             // Check Parent Invoice Status
             switch ($invoice_details['status'])
             {
-                case 'pending':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is pending."), $silent);
+                case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is draft."), $silent);
                     $state_flag = false;
                     break;
                 case 'unpaid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is pending."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher status cannot be changed because the parent invoice is draft."), $silent);
                     $state_flag = false;
                     break;
                 case 'partially_paid':
@@ -1323,7 +1323,7 @@ class Voucher extends Components {
         // Check Voucher Status
         switch ($voucher_details['status'])
         {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -1373,7 +1373,7 @@ class Voucher extends Components {
             // Check Parent Invoice Status
             switch ($invoice_details['status'])
             {
-                case 'pending':
+                case 'draft':
                     break;
                 case 'unpaid':
                     break;
@@ -1448,8 +1448,8 @@ class Voucher extends Components {
         // Check Voucher Status
         switch ($voucher_details['status'])
         {
-            case 'pending':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be voided because it it pending."), $silent);
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The voucher cannot be voided because it it draft."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
@@ -1496,8 +1496,8 @@ class Voucher extends Components {
             // Check Parent Invoice Status
             switch ($invoice_details['status'])
             {
-                case 'pending':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is pending."), $silent);
+                case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice is draft."), $silent);
                     $state_flag = false;
                     break;
                 case 'unpaid':
@@ -1568,7 +1568,7 @@ class Voucher extends Components {
         // Check Voucher Status
         switch ($voucher_details['status'])
         {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -1618,7 +1618,7 @@ class Voucher extends Components {
             // Check Parent Invoice Status
             switch ($invoice_details['status'])
             {
-                case 'pending':
+                case 'draft':
                     break;
                 case 'unpaid':
                     break;
@@ -1813,9 +1813,9 @@ class Voucher extends Components {
             $state_flag = false;
         }
 
-        // Is Pending
-        if($voucher_details['status'] == 'pending') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher is pending."));
+        // Is Draft
+        if($voucher_details['status'] == 'draft') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher is draft."));
             $state_flag = false;
         }
 
@@ -1885,8 +1885,8 @@ class Voucher extends Components {
         // Get the voucher details
         $voucher_details = $this->getRecord($voucher_id);
 
-        // Is Pending
-        if($voucher_details['status'] == 'pending') {
+        // Is Draft
+        if($voucher_details['status'] == 'draft') {
         }
 
         // Is Unpaid
@@ -1955,8 +1955,8 @@ class Voucher extends Components {
         // Get the voucher details
         $voucher_details = $this->getRecord($voucher_id);
 
-        // Is Pending
-        if($voucher_details['status'] == 'pending') {
+        // Is Draft
+        if($voucher_details['status'] == 'draft') {
         }
 
         // Is Unpaid

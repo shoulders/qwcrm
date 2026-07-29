@@ -36,7 +36,7 @@ class Expense extends Components {
                 date            =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 due_date        =". $this->app->db->qStr($this->app->system->general->mysqlDate(\CMSApplication::$timestamp)).",
                 tax_system      =". $this->app->db->qStr(QW_TAX_SYSTEM).",
-                status          =". $this->app->db->qStr('pending').",
+                status          =". $this->app->db->qStr('draft').",
                 opened_on       =". $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)).",
                 additional_info =". $this->app->db->qStr( '{}'                                 );
 
@@ -693,7 +693,7 @@ class Expense extends Components {
 
         // Status checks
         switch($expense_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -759,7 +759,7 @@ class Expense extends Components {
 
         // Status checks
         switch($expense_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -809,8 +809,8 @@ class Expense extends Components {
 
         // Status checks
         switch($expense_details['status']) {
-            case 'pending':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because the expense is pending."), $silent);
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because the expense is draft."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
@@ -869,7 +869,7 @@ class Expense extends Components {
 
         // Status checks
         switch($expense_details['status']) {
-            case 'pending':
+            case 'draft':
                 break;
             case 'unpaid':
                 break;
@@ -952,9 +952,9 @@ class Expense extends Components {
 
         $expense_details = $this->getRecord($expense_id);
 
-        // No expense amount, set to pending (if not already)
-        if($expense_details['unit_gross'] == 0 && $expense_details['status'] != 'pending') {
-            $this->updateStatus($expense_id, 'pending');
+        // No expense amount, set to draft (if not already)
+        if($expense_details['unit_gross'] == 0 && $expense_details['status'] != 'draft') {
+            $this->updateStatus($expense_id, 'draft');
         }
 
         // Has expense amount with no payments, set to unpaid (if not already)

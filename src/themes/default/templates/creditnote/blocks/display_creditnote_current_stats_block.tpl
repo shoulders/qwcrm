@@ -9,15 +9,15 @@
 <br>
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr class="olotd4">
-        <td class="row2"><b>{t}Open{/t}</b></td>        
-        <td class="row2"><b>{t}Pending{/t}</b></td>
+        <td class="row2"><b>{t}Open{/t}</b></td>
+        <td class="row2"><b>{t}Draft{/t}</b></td>
         <td class="row2"><b>{t}Unused{/t}</b></td>
         <td class="row2"><b>{t}Partially Used{/t}</b></td>
     </tr>
     <tr class="olotd4">
         <td>{$creditnote_stats.count_open}</td>
-        <td>{$creditnote_stats.count_pending}</td>
+        <td>{$creditnote_stats.count_draft}</td>
         <td>{$creditnote_stats.count_unused}</td>
-        <td>{$creditnote_stats.count_partially_used}</td> 
+        <td>{$creditnote_stats.count_partially_used}</td>
     </tr>
 </table>
