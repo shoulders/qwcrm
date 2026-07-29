@@ -116,27 +116,31 @@ class Report extends Components {
 
         // Set start date
         if($start_date) {
-            if($date_type == 'register_date') {
-                $whereTheseRecords .= " AND ".PRFX."user_records.register_date >= ".$this->app->db->qStr($start_date);
-            }
-            if($date_type == 'last_reset_time') {
-                $whereTheseRecords .= " AND ".PRFX."user_records.last_reset_time >= ".$this->app->db->qStr($start_date);
-            }
-            if($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."user_records.last_active >= ".$this->app->db->qStr($start_date);
+            switch($date_type) {
+                case 'register_date':
+                    $whereTheseRecords .= " AND ".PRFX."user_records.register_date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_reset_time':
+                    $whereTheseRecords .= " AND ".PRFX."user_records.last_reset_time >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."user_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
         // Set end date
         if($end_date) {
-            if($date_type == 'register_date') {
-                $whereTheseRecords .= " AND ".PRFX."user_records.register_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            }
-            if($date_type == 'last_reset_time') {
-                $whereTheseRecords .= " AND ".PRFX."user_records.last_reset_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            }
-            if($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."user_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'register_date':
+                    $whereTheseRecords .= " AND ".PRFX."user_records.register_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_reset_time':
+                    $whereTheseRecords .= " AND ".PRFX."user_records.last_reset_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."user_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -153,11 +157,13 @@ class Report extends Components {
         $whereTheseRecords = '';
 
         // Return records for the given type
-        if($type == 'employee') {
-            $whereTheseRecords .= " AND ".PRFX."user_records.is_employee = 1";
-        }
-        if($type == 'client') {
-            $whereTheseRecords .= " AND ".PRFX."user_records.is_employee = 0";
+        switch ($type) {
+            case 'employee':
+                $whereTheseRecords .= " AND ".PRFX."user_records.is_employee = 1";
+                break;
+            case 'client':
+                $whereTheseRecords .= " AND ".PRFX."user_records.is_employee = 0";
+                break;
         }
 
         return $whereTheseRecords;
@@ -172,12 +178,16 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        if($status == 'active') {
-            $whereTheseRecords .= " AND ".PRFX."user_records.active = 1";
-        } elseif($status == 'inactive') {
-            $whereTheseRecords .= " AND ".PRFX."user_records.active = 0";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."user_records.status = ".$this->app->db->qStr($status);
+        switch ($status) {
+            case 'active':
+                $whereTheseRecords .= " AND ".PRFX."user_records.active = 1";
+                break;
+            case 'inactive':
+                $whereTheseRecords .= " AND ".PRFX."user_records.active = 0";
+                break;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."user_records.status = ".$this->app->db->qStr($status);}
+                break;
         }
 
         /* Remove Deleted Records from the results, unless the status is 'deleted' -- when a user is deleted, it should be fully deleted, like clients, unlike invoices etc..
@@ -188,8 +198,6 @@ class Report extends Components {
         return $whereTheseRecords;
 
     }
-
-
 
     /** Clients **/
 
@@ -270,23 +278,33 @@ class Report extends Components {
             return $whereTheseRecords;
         }
 
+        // Start Date
         if($start_date) {
-            if($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."client_records.opened_on >= ".$this->app->db->qStr($start_date);
-            } elseif($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."client_records.closed_on >= ".$this->app->db->qStr($start_date);
-            } elseif($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."client_records.last_active >= ".$this->app->db->qStr($start_date);
+            switch($date_type) {
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."client_records.opened_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."client_records.closed_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."client_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
+        // End Date
         if($end_date) {
-            if($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."client_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."client_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."client_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."client_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."client_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."client_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -303,16 +321,22 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        if($status == 'active') {
-            $whereTheseRecords .= " AND ".PRFX."client_records.active = 1";
-        } elseif($status == 'inactive') {
-            $whereTheseRecords .= " AND ".PRFX."client_records.active = 0";
-        } elseif($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."client_records.closed_on IS NULL";
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."client_records.closed_on IS NOT NULL";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."client_records.status = ".$this->app->db->qStr($status);
+        switch ($status) {
+            case 'active':
+                $whereTheseRecords .= " AND ".PRFX."client_records.active = 1";
+                break;
+            case 'inactive':
+                $whereTheseRecords .= " AND ".PRFX."client_records.active = 0";
+                break;
+            case 'open':
+                $whereTheseRecords .= " AND ".PRFX."client_records.closed_on IS NULL";
+                break;
+            case 'closed':
+                $whereTheseRecords .= " AND ".PRFX."client_records.closed_on IS NOT NULL";
+                break;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."client_records.status = ".$this->app->db->qStr($status);}
+                break;
         }
 
         /* Remove Deleted Records from the results, unless the status is 'deleted'  -- tyhis should never be needed because if a clent is deleted, it is fully deleted unlike invoices.
@@ -335,10 +359,12 @@ class Report extends Components {
         // Default Action
         $whereTheseRecords = "WHERE ".PRFX."client_notes.client_note_id\n";
 
-        // Filter by Date
+        // Filter by Start Date
         if($start_date) {
             $whereTheseRecords .= " AND ".PRFX."client_notes.date >= ".$this->app->db->qStr($start_date);
         }
+
+        // Filter by End Date
         if($end_date) {
             $whereTheseRecords .= " AND ".PRFX."client_notes.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
         }
@@ -449,23 +475,33 @@ class Report extends Components {
             return $whereTheseRecords;
         }
 
+        // Start Date
         if($start_date) {
-            if($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$this->app->db->qStr($start_date);
-            } elseif($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$this->app->db->qStr($start_date);
-            } elseif($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active >= ".$this->app->db->qStr($start_date);
+            switch ($date_type) {
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
+        // End Date
         if($end_date) {
-            if($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -481,16 +517,21 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";
-        } elseif($status == 'closed_without_invoice') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NULL";
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
-        } elseif($status == 'closed_with_invoice') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NOT NULL";
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.status = ".$this->app->db->qStr($status);
+        switch ($status) {
+            case 'open':
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";
+                break;
+            case 'closed_without_invoice':
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NULL";
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
+                break;
+            case 'closed_with_invoice':
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NOT NULL";
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
+                break;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."workorder_records.status = ".$this->app->db->qStr($status);}
+                break;
         }
 
         // Remove Deleted Records from the results, unless the status is 'deleted'
@@ -520,16 +561,21 @@ class Report extends Components {
         //if(!$employeeEventType && $employee_id) {$employeeEventType = 'any';}
 
         // Return records for the given type
-        if($employeeEventType == 'assigned') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.employee_id = ".$this->app->db->qStr($employee_id);
-        } elseif ($employeeEventType == 'created_by') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.created_by = ".$this->app->db->qStr($employee_id);
-        } elseif ($employeeEventType == 'closed_by') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_by = ".$this->app->db->qStr($employee_id);
-        } elseif ($employeeEventType == 'all') {
-            $whereTheseRecords .= " OR ".PRFX."workorder_records.employee_id = ".$this->app->db->qStr($employee_id);
-            $whereTheseRecords .= " OR ".PRFX."workorder_records.created_by = ".$this->app->db->qStr($employee_id);
-            $whereTheseRecords .= " OR ".PRFX."workorder_records.closed_by = ".$this->app->db->qStr($employee_id);
+        switch ($employeeEventType) {
+            case 'assigned':
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.employee_id = ".$this->app->db->qStr($employee_id);
+                break;
+            case 'created_by':
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.created_by = ".$this->app->db->qStr($employee_id);
+                break;
+            case 'closed_by':
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_by = ".$this->app->db->qStr($employee_id);
+                break;
+            case 'all':
+                $whereTheseRecords .= " OR ".PRFX."workorder_records.employee_id = ".$this->app->db->qStr($employee_id);
+                $whereTheseRecords .= " OR ".PRFX."workorder_records.created_by = ".$this->app->db->qStr($employee_id);
+                $whereTheseRecords .= " OR ".PRFX."workorder_records.closed_by = ".$this->app->db->qStr($employee_id);
+                break;
         }
 
         return $whereTheseRecords;
@@ -591,23 +637,31 @@ class Report extends Components {
 
         // Set start date
         if($start_date) {
-            if($date_type == 'start_time') {
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.start_time >= ".$this->app->db->qStr($start_date);
-            } elseif($date_type == 'end_time') {
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.end_time >= ".$this->app->db->qStr($start_date);
-            } elseif($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.last_active >= ".$this->app->db->qStr($start_date);
+            switch ($date_type) {
+                case 'start_time':
+                    $whereTheseRecords .= " AND ".PRFX."schedule_records.start_time >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'end_time':
+                    $whereTheseRecords .= " AND ".PRFX."schedule_records.end_time >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."schedule_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
         // Set end date
         if($end_date) {
-            if($date_type == 'start_time') {
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.start_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif($date_type == 'end_time') {
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.end_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'start_time':
+                    $whereTheseRecords .= " AND ".PRFX."schedule_records.start_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'end_time':
+                    $whereTheseRecords .= " AND ".PRFX."schedule_records.end_time <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."schedule_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -885,35 +939,51 @@ class Report extends Components {
             return $whereTheseRecords;
         }
 
+        // Start Date
         if($start_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.voided_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$this->app->db->qStr($start_date);
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'due_date':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.voided_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
+        // End Date
         if($end_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.date <= ".$this->app->db->qStr($end_date);
-            } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qStr($end_date);
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.date <= ".$this->app->db->qStr($end_date);
+                    break;
+                case 'due_date':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qStr($end_date);
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -930,17 +1000,22 @@ class Report extends Components {
         $whereTheseRecords = '';
 
         // Restrict the records
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
-        } elseif($status == 'discounted') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qStr($status);
+        switch ($status) {
+            case 'open':
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NULL";
+                break;
+            case 'closed':
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on IS NOT NULL";
+                break;
+            case 'discounted':
+                $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";
+                break;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$this->app->db->qStr($status);}
+                break;
         }
 
-        // Remove `Voided` records from the results, unless you are looking up voided records except for opened and closed as these are absolutes
+        // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
         if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'voided'";
         }
@@ -954,7 +1029,6 @@ class Report extends Components {
         return $whereTheseRecords;
 
     }
-
 
     /** Vouchers **/
 
@@ -1205,17 +1279,22 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NULL";
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NOT NULL";
-        } elseif($status == 'claimed' && $client_id) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.status = ".$this->app->db->qStr($status);
+        switch ($status) {
+            case 'open':
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NULL";
+                break;
+            case 'closed':
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on IS NOT NULL";
+                break;
+            case 'claimed':
+                $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
+                break;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."voucher_records.status = ".$this->app->db->qStr($status);}
+                break;
         }
 
-        // Remove `Voided` records from the results, unless you are looking up voided records except for opened and closed as these are absolutes
+        // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
         if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.status != 'voided'";
         }
@@ -1267,39 +1346,57 @@ class Report extends Components {
             return $whereTheseRecords;
         }
 
+        // Start Date
         if($start_date) {
-            if($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type== 'expiry') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'redeemed_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.voided_on >= ".$this->app->db->qStr($start_date);
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'due_date':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'expiry':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'redeemed_on':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.voided_on >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
+        // End Date
         if($end_date) {
-            if($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type== 'expiry') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'redeemed_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."voucher_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'due_date':
+                    $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'expiry':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'redeemed_on':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."voucher_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -1613,31 +1710,45 @@ class Report extends Components {
             return $whereTheseRecords;
         }
 
+        // Start Date
         if($start_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.voided_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$this->app->db->qStr($start_date);
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.voided_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
+        // End Date
         if($end_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."expense_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."expense_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -1654,15 +1765,19 @@ class Report extends Components {
         $whereTheseRecords = '';
 
         // Filter by open, opened, closed. These are virtual statuses
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NULL";
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NOT NULL";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->app->db->qStr($status);
+        switch ($status) {
+            case 'open':
+                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NULL";
+                break;
+            case 'closed':
+                $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on IS NOT NULL";
+                break;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$this->app->db->qStr($status);}
+                break;
         }
 
-        // Remove `Voided` records from the results, unless you are looking up voided records except for opened and closed as these are absolutes
+        // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
         if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."expense_records.status != 'voided'";
         }
@@ -1899,6 +2014,7 @@ class Report extends Components {
     #################################
     #  Sum Otherincome items        #
     #################################
+
     function otherincomeItemSum($value_name, $date_type = null, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null) {
 
         // Prevent ambiguous error
@@ -1962,31 +2078,45 @@ class Report extends Components {
             return $whereTheseRecords;
         }
 
+        // Start Date
         if($start_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.voided_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$this->app->db->qStr($start_date);
+            switch ($date_type ) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.voided_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
+        // End Date
         if($end_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -2003,15 +2133,19 @@ class Report extends Components {
         $whereTheseRecords = '';
 
         // Filter by open, opened, closed. These are virtual statuses
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NULL";
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NOT NULL";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qStr($status);
+        switch ($status ) {
+            case 'open':
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NULL";
+                break;
+            case 'closed':
+                $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on IS NOT NULL";
+                break;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$this->app->db->qStr($status);}
+                break;
         }
 
-        // Remove `Voided` records from the results, unless you are looking up voided records except for opened and closed as these are absolutes
+        // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
         if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.status != 'voided'";
         }
@@ -2395,35 +2529,51 @@ class Report extends Components {
             return $whereTheseRecords;
         }
 
-        if($start_date && $end_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.due_date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.voided_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active >= ".$this->app->db->qStr($start_date);
+        // Start date
+        if($start_date) {
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'due_date':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.due_date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.voided_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
-        if($start_date && $end_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'due_date') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.due_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'opened_on') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'closed_on') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+        // End date
+        if($end_date) {
+            switch ($date_type ) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'due_date':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.due_date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'opened_on':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.opened_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'closed_on':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."creditnote_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -2440,17 +2590,22 @@ class Report extends Components {
         $whereTheseRecords = '';
 
         // Restrict the records
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NULL";
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NOT NULL";
-        } elseif($status == 'discounted') {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.unit_discount > 0";
-        } elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."creditnote_records.status= ".$this->app->db->qStr($status);
+        switch ($status) {
+            case 'open':
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NULL";
+                break;
+            case 'closed':
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.closed_on IS NOT NULL";
+                break;
+            case 'discounted':
+                $whereTheseRecords .= " AND ".PRFX."creditnote_records.unit_discount > 0";
+                break;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."creditnote_records.status= ".$this->app->db->qStr($status);}
+                break;
         }
 
-        // Remove `Voided` records from the results, unless you are looking up voided records except for opened and closed as these are absolutes
+        // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
         if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."creditnote_records.status != 'voided'";
         }
@@ -2713,23 +2868,33 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
+        // Start date
         if($start_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."payment_records.voided_on >= ".$this->app->db->qStr($start_date);
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."payment_records.last_active >= ".$this->app->db->qStr($start_date);
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."payment_records.voided_on >= ".$this->app->db->qStr($start_date);
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."payment_records.last_active >= ".$this->app->db->qStr($start_date);
+                    break;
             }
         }
 
+        // End date
         if($end_date) {
-            if ($date_type == 'date') {
-                $whereTheseRecords .= " AND ".PRFX."payment_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'voided_on') {
-                $whereTheseRecords .= " AND ".PRFX."payment_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
-            } elseif ($date_type == 'last_active') {
-                $whereTheseRecords .= " AND ".PRFX."payment_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+            switch ($date_type) {
+                case 'date':
+                    $whereTheseRecords .= " AND ".PRFX."payment_records.date <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'voided_on':
+                    $whereTheseRecords .= " AND ".PRFX."payment_records.voided_on <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
+                case 'last_active':
+                    $whereTheseRecords .= " AND ".PRFX."payment_records.last_active <= ".$this->app->db->qStr($end_date.' 23:59:59');
+                    break;
             }
         }
 
@@ -2745,14 +2910,15 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        // Do not filter records by any status - This status allows for the detection of records including voided. Deleted records are not linked to anything so are effectivey ignored.
-        if($status == 'all') {
-            return $whereTheseRecords;
-        }
-
-        // Return records for the given status
-        elseif($status) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);
+        // Restrict the records
+        switch ($status) {
+            case 'all':
+                // Do not filter records by any status
+                // This status allows for the detection of records including voided.
+                //Deleted records are not linked to anything so are effectivey ignored.
+                return $whereTheseRecords;
+            default:
+                if ($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->app->db->qStr($status);}
         }
 
         // Remove `Voided` records from the results, unless you are looking up voided records except for opened and closed as these are absolutes
@@ -2778,18 +2944,19 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        /* All received monies
-        if($type == 'incoming') {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome', 'creditnote')";
-
-        // All sent monies
-        } elseif($type == 'outgoing') {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'creditnote')";
-        }*/
-
         // Return records for the given type
-        if($type) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);
+        switch ($type) {
+            /*case 'incoming':
+                // All received monies
+                $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome', 'creditnote')";
+                break;*/
+            /*case 'outgoing':
+                // All sent monies
+                $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'creditnote')";
+                break;*/
+            default:
+                if ($type) {$whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->app->db->qStr($type);}
+                break;
         }
 
         return $whereTheseRecords;
@@ -2804,19 +2971,19 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        // Only return records using methods that involve real monies
-        if($method == 'real_monies') {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.method NOT IN ('creditnote', 'voucher')";
-        }
-
-        // Only return records using methods that involve fake monies
-        elseif($method == 'fake_monies') {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.method IN ('creditnote', 'voucher')";
-        }
-
-        // Return records for the given type
-        elseif($method) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qStr($method);
+        switch ($method) {
+            case 'real_monies':
+                // Only return records using methods that involve real monies
+                $whereTheseRecords .= " AND ".PRFX."payment_records.method NOT IN ('creditnote', 'voucher')";
+                break;
+            case 'fake_monies':
+                // Only return records using methods that involve fake monies
+                $whereTheseRecords .= " AND ".PRFX."payment_records.method IN ('creditnote', 'voucher')";
+                break;
+            default:
+                // Return records for the given type
+                if ($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->app->db->qStr($method);}
+                break;
         }
 
         /* By default remove `voucher` records from the results, unless you are looking up voucher records.
@@ -2844,19 +3011,20 @@ class Report extends Components {
 
         $whereTheseRecords = '';
 
-        /* All received monies
-        if($direction == 'monies_received') {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.direction = 'credit'";
-            // exclude credit notes when used as method???
-
-        // All sent monies
-        } elseif($direction == 'monies_sent') {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.direction = 'debit'";
-            // exclude credit notes when used as method???*/
-
-        // Return records for the given direction
-        if($direction) {
-            $whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($direction);
+        switch ($direction) {
+            /*case 'monies_received':
+                // All received monies
+                // exclude credit notes when used as method???
+                $whereTheseRecords .= " AND ".PRFX."payment_records.direction = 'credit'";
+                break;*/
+            /*case 'monies_sent':
+                // All sent monies
+                // exclude credit notes when used as method???
+                $whereTheseRecords .= " AND ".PRFX."payment_records.direction = 'debit'";
+                break;*/
+            default:
+                if ($direction) {$whereTheseRecords .= " AND ".PRFX."payment_records.direction= ".$this->app->db->qStr($direction);}
+                break;
         }
 
         return $whereTheseRecords;
