@@ -12,7 +12,6 @@
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Voucher{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="index.php?component=voucher&page_tpl=edit&voucher_id={$voucher_details.voucher_id}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit{/t}</a>
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}VOUCHER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}VOUCHER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
@@ -139,9 +138,20 @@
                         </table>
                     </td>
                 </tr>
+
+                <!-- Function Buttons -->
                 <tr>
                     <td colspan="2">
+
+                        <!-- Edit Button -->
+                        {if $allowed_to_edit}
+                            <button type="button" onclick="window.open('index.php?component=voucher&page_tpl=edit&voucher_id={$voucher_details.voucher_id}');">{t}Edit{/t}</button>
+                        {/if}
+
+                        <!-- Print Button -->
                         <button type="button" onclick="window.open('index.php?component=voucher&page_tpl=print&voucher_id={$voucher_details.voucher_id}&commContent=voucher&commType=htmlBrowser');">{t}Print HTML{/t}</button>
+
+                        <!-- Email Button -->
                         <button type="button" onclick="confirm('Are you sure you want to email this voucher to the client?') && $.ajax( { url:'index.php?component=voucher&page_tpl=email&voucher_id={$voucher_details.voucher_id}&commContent=voucher&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email Voucher{/t}</button>
                     </td>
                 </tr>

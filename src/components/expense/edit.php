@@ -39,6 +39,9 @@ if(!$this->app->components->expense->checkRecordAllowsEdit(\CMSApplication::$VAR
     // Update expense (if submited)
     if(isset(\CMSApplication::$VAR['submit']))
     {
+        // Holding variable for validation tests
+        $submitFailedValidation = false;
+
         // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
         if($this->app->components->expense->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {
@@ -48,36 +51,26 @@ if(!$this->app->components->expense->checkRecordAllowsEdit(\CMSApplication::$VAR
             $this->app->components->expense->recalculateTotals(\CMSApplication::$VAR['qform']['expense_id']);
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense updated successfully."));
 
-            // Load the new expense page
-            if (\CMSApplication::$VAR['submit'] == 'submitandnew')
-            {
-                $this->app->system->page->forcePage('expense', 'new');
+            // The user also wants to approve the record
+            if (\CMSApplication::$VAR['submit'] == 'submitandapprove') {
+                if($this->app->components->expense->checkRecordAllowsApprove(\CMSApplication::$VAR['qform']['expense_id'])) {
+                    $this->app->components->expense->updateStatus(\CMSApplication::$VAR['qform']['expense_id'], 'unpaid');
+                } else {
+                    $submitFailedValidation = true;
+                }
             }
 
-            // Load the new payment page for expense
-            elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment')
-            {
-                $this->app->system->page->forcePage('payment', 'new&type=expense&expense_id='.\CMSApplication::$VAR['qform']['expense_id']);
-            }
-
-
-            else
-            {
-                // Refresh expense record - this makes sure any calculations are taken into account such as balance and status after record update
-                //$expense_details = $this->app->components->expense->getRecord($expense_details['expense_id']);
-
-                // Load details page
-                $this->app->system->page->forcePage('expense', 'details&expense_id='.\CMSApplication::$VAR['qform']['expense_id']);
-
-            }
-
-        // Submission has failed validation,
         } else {
             $submitFailedValidation = true;
         }
+
+        // Load the details page is submission was successful
+        if(!$submitFailedValidation) {
+            $this->app->system->page->forcePage('expense', 'details&expense_id='.\CMSApplication::$VAR['qform']['expense_id']);
+        }
     }
 
-    // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+    // If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
     if($submitFailedValidation ?? null) {
         $expense_details = array_merge($this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']), \CMSApplication::$VAR['qform']);
         $expense_items = \CMSApplication::$VAR['qform']['expense_items'] ;

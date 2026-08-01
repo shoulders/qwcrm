@@ -233,8 +233,6 @@ class Client extends Components {
 
     }
 
-
-
     #####################################
     #  Get ALL of a client's notes      #
     #####################################
@@ -277,8 +275,6 @@ class Client extends Components {
             return $rs->fields[$item];
 
         }
-
-
 
     }
 
@@ -396,7 +392,7 @@ class Client extends Components {
         $sql = "DELETE FROM ".PRFX."user_records WHERE client_id=".$this->app->db->qStr($client_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Delete Client
+        // Delete Main record
         $sql = "DELETE FROM ".PRFX."client_records WHERE client_id=".$this->app->db->qStr($client_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -465,50 +461,50 @@ class Client extends Components {
 
         // Has Users
         if($this->app->components->report->userCount(null, null, null, null, null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has users."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a client who has users."), $silent);
             $state_flag = false;
         }
 
         // Check if client has any client notes TODO: Should this be a consideration when deleting a cleint
         if($this->app->components->report->clientNotesCount(null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has client notes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a client who has client notes."), $silent);
             $state_flag = false;
         }
 
         // Check if client has any workorders
         if($this->app->components->report->workorderCount('opened_on', null, null, null, null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has work orders."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a client who has workorders."), $silent);
             $state_flag = false;
         }
 
         // Has Schedules
         if($this->app->components->report->scheduleCount($date_type = null, null, null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has schedules."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a client who has schedules."), $silent);
             $state_flag = false;
         }
 
 
         // Check if client has any invoices
         if($this->app->components->report->invoiceCount(null, null, null, null, null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has invoices."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a client who has invoices."), $silent);
             $state_flag = false;
         }
 
         // Check if client has any Vouchers (TODO: is this needed as an invoice is required)
         if($this->app->components->report->voucherCount(null, null, null,  null, null, null, null, null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has Vouchers."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a client who has vouchers."), $silent);
             $state_flag = false;
         }
 
         // Has Payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, null, null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has linked payments."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client cannot be deleted because it has linked credit notes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has linked creditnotes."), $silent);
             return false;
         }
 

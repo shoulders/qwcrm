@@ -22,13 +22,12 @@
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{t}Status{/t}</td>
-                                <td class="olohead" align="center">{t}Void{/t}</td>
-                                <td class="olohead" align="center">{t}Delete{/t}</td>
+                                <td class="olohead" align="center">{t}Unapprove{/t}</td>
                             </tr>
                             <tr>
 
                                 <!-- Update Status Button -->
-                                <td class="olotd4" align="center" width="33%">
+                                <td class="olotd4" align="center" width="50%" height="150">
                                     <p><b>{t}Current Status{/t}:</b> {$otherincome_status_display_name}</p>
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>
@@ -47,8 +46,33 @@
                                     {/if}
                                 </td>
 
+                                <!-- Unapprove Button -->
+                                <td class="olotd4" align="center" width="50%" height="150">
+                                    {if $allowed_to_unapprove}
+                                        <form method="post" action="index.php?component=otherincome&page_tpl=status&otherincome_id={$otherincome_id}">
+                                            <input class="olotd4" name="unapprove_otherincome" value="{t}Unapprove{/t}" type="submit" onclick="confirm('{t}Are you sure you want to unapprove this otherincome?{/t}');">
+                                            <p>{t}This not a normal financial practice, but I am keeping this feature for now.{/t}</p>
+                                        </form>
+                                    {else}
+                                        {t}This otherincome cannot be unapproved. You can only unapprove an otherincome if it is unpaid and does not have any transactions against it.{/t}
+                                    {/if}
+                                </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="menutd2" colspan="2">
+                        <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
+                            <tr>
+                                <td class="olohead" align="center">{t}Void{/t}</td>
+                                <td class="olohead" align="center">{t}Delete{/t}</td>
+                            </tr>
+                            <tr>
+
                                 <!-- Void Button -->
-                                <td class="olotd4" align="center" width="33%">
+                                <td class="olotd4" align="center" width="50%" height="150">
                                     {if $allowed_to_void}
                                         <form method="post" action="index.php?component=otherincome&page_tpl=status&otherincome_id={$otherincome_id}">
                                             <textarea id="qform[reason_for_voiding]" name="qform[reason_for_voiding]" class="olotd5 mceNoEditor" cols="25" rows="3" maxlength="100" onkeydown="return onlyAlphaNumeric(event);" required placeholder="{t}Reason for Voiding{/t}"></textarea>
@@ -61,7 +85,7 @@
                                 </td>
 
                                 <!-- Delete Button -->
-                                <td class="olotd4" align="center" width="33%">
+                                <td class="olotd4" align="center" width="50%" height="150">
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=otherincome&page_tpl=status&otherincome_id={$otherincome_id}">
                                             <input name="delete_otherincome" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Otherincome?{/t}');">

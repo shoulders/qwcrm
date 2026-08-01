@@ -83,10 +83,11 @@
                                                 <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="qform[note]">{$voucher_details.note}</textarea></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">
-                                                    <input type="hidden" name="qform[voucher_id]" value="{$voucher_details.voucher_id}">
+                                                <td colspan="2">                                                    
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=voucher&page_tpl=details&voucher_id={$voucher_id}';">{t}Cancel{/t}</button>
+                                                
+                                                    <input type="hidden" name="qform[voucher_id]" value="{$voucher_details.voucher_id}">
                                                 </td>
                                             </tr>
                                         </table>

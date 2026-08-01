@@ -632,7 +632,7 @@ class General extends System {
         $user_id = $recordIds['user_id'];
         $client_id = $recordIds['client_id'];
         $workorder_id = $recordIds['workorder_id'];
-        $schedule_id = $record_id['schedule_id'];
+        $schedule_id = $recordIds['schedule_id'];
         $invoice_id = $recordIds['invoice_id'];
         $voucher_id = $recordIds['voucher_id'];
         $supplier_id = $recordIds['supplier_id'];

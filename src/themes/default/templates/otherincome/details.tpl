@@ -114,13 +114,13 @@
                                                 <td class="menutd2">
 
                                                     <!-- Edit Button -->
-                                                    {if $otherincome_details.status == 'draft' || $otherincome_details.status == 'unpaid'}
+                                                    {if $allowed_to_edit}
                                                         <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_details.otherincome_id}';">{t}Edit{/t}</button>
                                                     {/if}
 
-                                                    <!-- Apply Payment Button -->
+                                                    <!-- Record Payment Button -->
                                                     {if $otherincome_details.status == 'unpaid' || $otherincome_details.status == 'partially_paid'}
-                                                        <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=otherincome&otherincome_id={$otherincome_details.otherincome_id}';">{t}Apply Payment{/t}</button>
+                                                        <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=otherincome&otherincome_id={$otherincome_details.otherincome_id}';">{t}Record Payment{/t}</button>
                                                     {/if}
 
                                                 </td>

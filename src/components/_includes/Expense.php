@@ -389,7 +389,6 @@ class Expense extends Components {
 
     }
 
-
     /** Update Functions **/
 
     #####################################
@@ -441,7 +440,7 @@ class Expense extends Components {
 
         // if the new status is the same as the current one, exit
         if($new_status == $expense_details['status']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.", $silent));
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.", $silent));
             return false;
         }
 
@@ -574,14 +573,11 @@ class Expense extends Components {
         // Get expense details before deleting the record
         $expense_details = $this->getRecord($expense_id);
 
-        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
-        //$this->updateStatus($expense_id, 'deleted', true);
-
         // Delete record items
         $sql = "DELETE FROM ".PRFX."expense_items WHERE expense_id=".$this->app->db->qStr($expense_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Delete Main record
+        // Truncate Main record
         $sql = "UPDATE ".PRFX."expense_records SET
                 employee_id         = NULL,
                 supplier_id         = NULL,
@@ -594,7 +590,7 @@ class Expense extends Components {
                 unit_tax            = 0.00,
                 unit_gross          = 0.00,
                 balance             = 0.00,
-                status              = 'deleted',
+                status              = '',
                 opened_on           = NULL,
                 closed_on           = NULL,
                 last_active         = NULL,
@@ -602,6 +598,9 @@ class Expense extends Components {
                 note                = ''
                 WHERE expense_id    =". $this->app->db->qStr($expense_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        // Change the record status to deleted
+        $this->updateStatus($expense_id, 'deleted', true);
 
         // Log activity
         $logMessage = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
@@ -614,7 +613,6 @@ class Expense extends Components {
 
     }
 
-
     /** Check Functions **/
 
     ###############################################
@@ -625,10 +623,10 @@ class Expense extends Components {
 
         $state_flag = true;
 
-        // Is there a supplier and are they active
+        // If there is a supplier, are they active
         if($supplier_id && $this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated')
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier is not active so you cannot create an expense against it.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The specified supplier is not active so you cannot create an expense against it.", $silent));
             $state_flag = false;
         }
 
@@ -647,14 +645,13 @@ class Expense extends Components {
     {
         $state_flag = true;
 
-        //$expense_details = $this->app->components->expense->getRecord($qform['expense_id']);
-
         // Check there is a positive unit_gross
         if($qform['unit_gross'] <= 0)
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot have a negative or zero gross amount."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be submitted if it has a negative or zero gross amount."));
             $state_flag = false;
         }
+
         // Validate Date and Due Date
         if(!$this->app->system->general->compareDateAndDueDate($qform['date'], $qform['due_date'])){
             $state_flag = false;
@@ -662,7 +659,141 @@ class Expense extends Components {
 
         // Add Submission Failed Validation message
         if(!$state_flag){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense submission failed validation and was not committed to the database. Fix and re-submit."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
+        return $state_flag;
+
+    }
+
+    ########################################################## // reads from the database
+    # Check if record allows approval                        # // could be used for a button later
+    ##########################################################
+
+    public function checkRecordAllowsApprove($expense_id, $silent = false)
+    {
+        $state_flag = true;
+
+        $expense_details = $this->app->components->expense->getRecord($expense_id);
+
+        // If there is a supplier, are they active
+        if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be approved because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Check there is a positive unit_gross
+        if($expense_details['unit_gross'] <= 0)
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be approved because it has a negative or zero gross amount."));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be approved because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Status checks
+        switch($expense_details['status']) {
+            case 'draft':
+                break;
+            case 'unpaid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense is already approved."), $silent);
+                $state_flag = false;
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense is already approved."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense is already approved."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense is already approved."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be approved because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        // Add Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be approved at this time because it is not allowed."), $silent);
+        }
+
+        return $state_flag;
+    }
+
+    ##########################################################  // reads from the database
+    # Check if record allows unapproving                     #
+    ##########################################################
+
+    public function checkRecordAllowsUnapprove($expense_id, $silent = false)
+    {
+        $state_flag = true;
+
+        $expense_details = $this->app->components->expense->getRecord($expense_id);
+
+        // If there is a supplier, are they active
+        if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be unapproved because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Status checks
+        switch($expense_details['status']) {
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense is not approved, so cannot be unapproved."), $silent);
+                $state_flag = false;
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it has been partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it has been voided."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it has linked payments."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Credit notes
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it has linked credit notes."), $silent);
+            return false;
+        }
+
+        // Add Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Thhis expense cannot be unapproved at this time because it is not allowed."), $silent);
         }
 
         return $state_flag;
@@ -676,7 +807,7 @@ class Expense extends Components {
     public function checkRecordAllowsManualStatusChange($expense_id, $silent = false) {
 
         // Disable this feature for now. I may enable or remove in future versions. TODO:
-        $this->app->system->variables->systemMessagesWrite('warning', _gettext("The expense cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("This expense cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
         return false;
 
         $state_flag = true;
@@ -684,42 +815,56 @@ class Expense extends Components {
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
 
-        // Is there a supplier and are they active
+        // If there is a supplier, are they active
         if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the supplier is not active.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense's status cannot be changed because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // Status checks
         switch($expense_details['status']) {
             case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is a draft."), $silent);
+                $state_flag = false;
                 break;
             case 'unpaid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is unpaid."), $silent);
+                $state_flag = false;
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been closed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has linked payments."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense status cannot be changed because it has linked credit notes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has linked credit notes."), $silent);
             return false;
         }
 
@@ -731,23 +876,23 @@ class Expense extends Components {
     #  Check if the expense status allows editing            #
     ##########################################################
 
-     public function checkRecordAllowsEdit($expense_id, $silent = false) {
+    public function checkRecordAllowsEdit($expense_id, $silent = false) {
 
         $state_flag = true;
 
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
 
-        // Is there a supplier and are they active
+        // If there is a supplier, are they active
         if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because the supplier is not active.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because the supplier it belongs to is not active.", $silent));
             $state_flag = false;
         }
 
         // Is on a different tax system
         if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -762,9 +907,11 @@ class Expense extends Components {
             case 'draft':
                 break;
             case 'unpaid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a draft expense can be edited."), $silent);
+                $state_flag = false;
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
@@ -774,22 +921,11 @@ class Expense extends Components {
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been voided."), $silent);
                 $state_flag = false;
+                break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
-        }
-
-        // Has payments
-        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."), $silent);
-            $state_flag = false;
-        }
-
-        // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has linked credit notes."), $silent);
-            return false;
         }
 
         return $state_flag;
@@ -807,35 +943,48 @@ class Expense extends Components {
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
 
+        // If there is a supplier, are they active
+        if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be voided because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
         // Status checks
         switch($expense_details['status']) {
             case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because the expense is draft."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void a draft expense, you can only delete them."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because the expense is partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has payments and is paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be voided because the expense has already been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has already been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be voided because the expense has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
-        // Has payments
+        // Has Payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because the expense has payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has linked payments."), $silent);
             $state_flag = false;
         }
 
@@ -860,10 +1009,16 @@ class Expense extends Components {
         // Get the expense details
         $expense_details = $this->getRecord($expense_id);
 
-        // Is there a supplier and are they active
+        // If there is a supplier, are they active
         if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because the supplier is not active.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -872,9 +1027,11 @@ class Expense extends Components {
             case 'draft':
                 break;
             case 'unpaid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete an unpaid expense, you can only void them."), $silent);
+                $state_flag = false;
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
@@ -893,13 +1050,13 @@ class Expense extends Components {
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has linked payments."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The expense cannot be deleted because it has linked credit notes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has linked credit notes."), $silent);
             return false;
         }
 
@@ -948,28 +1105,37 @@ class Expense extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        /* Update Status - only if required */
+        /* Update Status (as required) */
 
+        // Get fresh record details
         $expense_details = $this->getRecord($expense_id);
 
-        // No expense amount, set to draft (if not already)
-        if($expense_details['unit_gross'] == 0 && $expense_details['status'] != 'draft') {
-            $this->updateStatus($expense_id, 'draft');
-        }
+        // If status is draft, do not change status
+        if($expense_details['status'] == 'draft') { return; }
 
-        // Has expense amount with no payments, set to unpaid (if not already)
-        elseif($expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $balance && $expense_details['status'] != 'unpaid') {
-            $this->updateStatus($expense_id, 'unpaid');
-        }
+        // Change status (based on the balance)
+        switch (true) {
 
-        // Has expense amount with partially usage, set to partially paid (if not already)
-        elseif($expense_details['unit_gross'] > 0 && $payments_subtotal > 0 && $payments_subtotal < $expense_details['unit_gross'] && $expense_details['status'] != 'partially_paid') {
-            $this->updateStatus($expense_id, 'partially_paid');
-        }
+            /* No expense amount, set to draft (if not already)
+            case $expense_details['unit_gross'] == 0 :
+                $this->updateStatus($expense_id, 'draft');
+                break;*/
 
-        // Has expense amount and the payment(s) match the credit note amount, set to paid (if not already)
-        elseif($expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $payments_subtotal && $expense_details['status'] != 'paid') {
-            $this->updateStatus($expense_id, 'paid');
+            // Has expense amount with no payments, set to unpaid (if not already)
+            case $expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $balance :
+                $this->updateStatus($expense_id, 'unpaid');
+                break;
+
+            // Has expense amount with partially usage, set to partially paid (if not already)
+            case $expense_details['unit_gross'] > 0 && $payments_subtotal > 0 && $payments_subtotal < $expense_details['unit_gross'] :
+                $this->updateStatus($expense_id, 'partially_paid');
+                break;
+
+            // Has expense amount and the payment(s) match the credit note amount, set to paid (if not already)
+            case $expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $payments_subtotal :
+                $this->updateStatus($expense_id, 'paid');
+                break;
+
         }
 
         return;

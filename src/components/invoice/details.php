@@ -60,3 +60,4 @@ $this->app->smarty->assign('employee_display_name',    $this->app->components->u
 $this->app->smarty->assign('invoice_statuses',         $this->app->components->invoice->getStatuses()                                                                   );
 $this->app->smarty->assign('voucher_statuses',        $this->app->components->voucher->getStatuses()                                                                   );
 $this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, \CMSApplication::$VAR['invoice_id']));
+$this->app->smarty->assign('allowed_to_edit',          $this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR['invoice_id'], true));

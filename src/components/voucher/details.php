@@ -27,8 +27,9 @@ if($voucher_details['status'] === 'deleted') {
 }
 
 // Build the page
-$this->app->smarty->assign('client_details',               $this->app->components->client->getRecord($voucher_details['client_id'])                          );
-$this->app->smarty->assign('employee_display_name',        $this->app->components->user->getRecord($voucher_details['employee_id'], 'display_name')          );
+$this->app->smarty->assign('allowed_to_edit',             $this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR['voucher_id'], true));
+$this->app->smarty->assign('client_details',              $this->app->components->client->getRecord($voucher_details['client_id'])                          );
+$this->app->smarty->assign('employee_display_name',       $this->app->components->user->getRecord($voucher_details['employee_id'], 'display_name')          );
 $this->app->smarty->assign('voucher_statuses',            $this->app->components->voucher->getStatuses()                                                     );
 $this->app->smarty->assign('voucher_types',               $this->app->components->voucher->getTypes()                                                     );
 $this->app->smarty->assign('voucher_details',             $voucher_details                                                           );

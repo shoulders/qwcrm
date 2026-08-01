@@ -114,13 +114,13 @@
                                                 <td class="menutd2">
 
                                                     <!-- Edit Button -->
-                                                    {if $expense_details.status == 'draft' || $expense_details.status == 'unpaid'}
+                                                    {if $allowed_to_edit}
                                                         <button type="button" onclick="window.location.href='index.php?component=expense&page_tpl=edit&expense_id={$expense_details.expense_id}';">{t}Edit{/t}</button>
                                                     {/if}
 
-                                                    <!-- Apply Payment Button -->
+                                                    <!-- Record Payment Button -->
                                                     {if $expense_details.status == 'unpaid' || $expense_details.status == 'partially_paid'}
-                                                        <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=expense&expense_id={$expense_details.expense_id}';">{t}Apply Payment{/t}</button>
+                                                        <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=expense&expense_id={$expense_details.expense_id}';">{t}Record Payment{/t}</button>
                                                     {/if}
 
                                                     <!-- Credit Note Button -->

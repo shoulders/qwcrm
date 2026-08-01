@@ -33,6 +33,9 @@ if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR
     // if information submitted
     if(isset(\CMSApplication::$VAR['submit'])) {
 
+        // Holding variable for validation tests
+        $submitFailedValidation = false;
+
         // Check the submission is valid, if not, reload the page with an error message
         if($this->app->components->voucher->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {

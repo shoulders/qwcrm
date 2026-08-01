@@ -38,6 +38,9 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
 
     if(isset(\CMSApplication::$VAR['submit'])) {
 
+        // Holding variable for validation tests
+        $submitFailedValidation = false;
+
         // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
         if($this->app->components->invoice->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'])){
 
@@ -47,12 +50,22 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
             $this->app->components->invoice->recalculateTotals(\CMSApplication::$VAR['qform']['invoice_id']);
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice updated successfully."));
 
-            // Load details page
-            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
+            // The user also wants to approve the record
+            if (\CMSApplication::$VAR['submit'] == 'submitandapprove') {
+                if($this->app->components->invoice->checkRecordAllowsApprove(\CMSApplication::$VAR['qform']['invoice_id'])) {
+                    $this->app->components->invoice->updateStatus(\CMSApplication::$VAR['qform']['invoice_id'], 'unpaid');
+                } else {
+                    $submitFailedValidation = true;
+                }
+            }
 
-        // Submission has failed validation,
         } else {
             $submitFailedValidation = true;
+        }
+
+        // Load the details page is submission was successful
+        if(!$submitFailedValidation) {
+            $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
         }
 
     }

@@ -41,3 +41,4 @@ $this->app->smarty->assign('otherincome_statuses', $this->app->components->other
 $this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->getTypes());
 $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->getVatTaxCodes(false));
 $this->app->smarty->assign('otherincome_details', $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id']));
+$this->app->smarty->assign('allowed_to_edit',          $this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::$VAR['otherincome_id'], true));

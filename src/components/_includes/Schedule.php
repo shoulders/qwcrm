@@ -309,8 +309,8 @@ class Schedule extends Components {
         // Get schedule details before deleting
         $schedule_details = $this->getRecord($schedule_id);
 
+        // Delete main record
         $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->app->db->qStr($schedule_id);
-
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // If there are no schedules left for this workorder
@@ -343,7 +343,7 @@ class Schedule extends Components {
     #  Check if the schedule can be deleted                  #
     ##########################################################
 
-     public function checkRecordAllowsEdit($schedule_id, $silent = false) {
+    public function checkRecordAllowsEdit($schedule_id, $silent = false) {
 
         $state_flag = true;
 
@@ -352,7 +352,7 @@ class Schedule extends Components {
 
         // Is the parent workorder closed
         if($this->app->components->workorder->getRecord($schedule_details['workorder_id'], 'closed_on')){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not edit a schedule whoes parent Work Order has been closed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a schedule whoes parent workrder has been closed."), $silent);
             $state_flag = false;
         }
 
@@ -364,7 +364,7 @@ class Schedule extends Components {
     #  Check if the schedule can be deleted                  #
     ##########################################################
 
-     public function checkRecordAllowsDelete($schedule_id, $silent = false) {
+    public function checkRecordAllowsDelete($schedule_id, $silent = false) {
 
         $state_flag = true;
 
@@ -373,7 +373,7 @@ class Schedule extends Components {
 
         // Is the parent workorder closed
         if($this->app->components->workorder->getRecord($schedule_details['workorder_id'], 'closed_on')){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a schedule whoes parent Work Order has been closed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a schedule whoes parent workorder has been closed."), $silent);
             $state_flag = false;
         }
 

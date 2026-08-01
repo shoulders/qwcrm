@@ -20,6 +20,7 @@ $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$
 // Get Permissions
 $allowed_to_change_status = $this->app->components->invoice->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['invoice_id']);
 $allowed_to_change_employee = !$invoice_details['closed_on'];
+$allowed_to_unapprove = $this->app->components->invoice->checkRecordAllowsUnapprove(\CMSApplication::$VAR['invoice_id']);
 $allowed_to_void = $this->app->components->invoice->checkRecordAllowsVoid(\CMSApplication::$VAR['invoice_id']);
 $allowed_to_delete = $this->app->components->invoice->checkRecordAllowsDelete(\CMSApplication::$VAR['invoice_id']);
 
@@ -32,6 +33,12 @@ if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status){
 // Assign Work Order to another employee
 if(isset(\CMSApplication::$VAR['change_employee']) && $allowed_to_change_employee) {
     $this->app->components->invoice->assignToEmployee(\CMSApplication::$VAR['invoice_id'], \CMSApplication::$VAR['target_employee_id']);
+    $this->app->system->page->forcePage('invoice', 'status&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+}
+
+// Unapprove
+if(isset(\CMSApplication::$VAR['unapprove_invoice']) && $allowed_to_unapprove){
+    $this->app->components->invoice->updateStatus(\CMSApplication::$VAR['invoice_id'], 'draft');
     $this->app->system->page->forcePage('invoice', 'status&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 }
 
@@ -51,9 +58,10 @@ if(isset(\CMSApplication::$VAR['delete_invoice']) && $allowed_to_delete){
 $this->app->smarty->assign('allowed_to_change_status',     $allowed_to_change_status);
 $this->app->smarty->assign('allowed_to_change_employee',   $allowed_to_change_employee);
 $this->app->smarty->assign('allowed_to_void',              $allowed_to_void);
+$this->app->smarty->assign('allowed_to_unapprove',         $allowed_to_unapprove);
 $this->app->smarty->assign('allowed_to_delete',            $allowed_to_delete);
 $this->app->smarty->assign('active_employees',             $this->app->components->user->getActiveUsers('employees'));
-$this->app->smarty->assign('invoice_statuses',             $this->app->components->invoice->getStatuses(true));
+$this->app->smarty->assign('invoice_statuses',             $this->app->components->invoice->getStatuses(true, \CMSApplication::$VAR['invoice_id']));
 $this->app->smarty->assign('invoice_status',               $invoice_details['status']);
 $this->app->smarty->assign('invoice_status_display_name',  $this->app->components->invoice->getStatusDisplayName($invoice_details['status']));
 $this->app->smarty->assign('assigned_employee_id',         $invoice_details['employee_id']);

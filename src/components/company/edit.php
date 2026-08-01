@@ -14,6 +14,9 @@ defined('_QWEXEC') or die;
 // Update Company details
 if(isset(\CMSApplication::$VAR['submit'])) {
 
+    // Holding variable for validation tests
+    $submitFailedValidation = false;
+
     // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
     if($this->app->components->company->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'])) {
 

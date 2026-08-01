@@ -19,12 +19,19 @@ $otherincome_details = $this->app->components->otherincome->getRecord(\CMSApplic
 
 // Get Permissions
 $allowed_to_change_status = $this->app->components->otherincome->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['otherincome_id']);
+$allowed_to_unapprove = $this->app->components->otherincome->checkRecordAllowsUnapprove(\CMSApplication::$VAR['otherincome_id']);
 $allowed_to_void = $this->app->components->otherincome->checkRecordAllowsVoid(\CMSApplication::$VAR['otherincome_id']);
 $allowed_to_delete = $this->app->components->otherincome->checkRecordAllowsDelete(\CMSApplication::$VAR['otherincome_id']);
 
 // Change Status (manually)
 if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status){
     $this->app->components->otherincome->updateStatus(\CMSApplication::$VAR['otherincome_id'], \CMSApplication::$VAR['assign_status']);
+    $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
+}
+
+// Unapprove
+if(isset(\CMSApplication::$VAR['unapprove_otherincome']) && $allowed_to_unapprove){
+    $this->app->components->otherincome->updateStatus(\CMSApplication::$VAR['otherincome_id'], 'draft');
     $this->app->system->page->forcePage('otherincome', 'status&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
 }
 
@@ -41,9 +48,10 @@ if(isset(\CMSApplication::$VAR['delete_otherincome']) && $allowed_to_delete){
 }
 
 // Build the page with the current status from the database
-$this->app->smarty->assign('allowed_to_change_status',     $allowed_to_change_status);
+$this->app->smarty->assign('allowed_to_change_status',      $allowed_to_change_status);
 $this->app->smarty->assign('allowed_to_void',               $allowed_to_void);
-$this->app->smarty->assign('allowed_to_delete',            $allowed_to_delete);
+$this->app->smarty->assign('allowed_to_unapprove',          $allowed_to_unapprove);
+$this->app->smarty->assign('allowed_to_delete',             $allowed_to_delete);
 $this->app->smarty->assign('otherincome_status',              $otherincome_details['status'] );
 $this->app->smarty->assign('otherincome_status_display_name',$this->app->components->otherincome->getStatusDisplayName($otherincome_details['status']));
 $this->app->smarty->assign('otherincome_statuses',            $this->app->components->otherincome->getStatuses() );

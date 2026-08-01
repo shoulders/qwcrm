@@ -167,13 +167,13 @@
                                                 {/if}
 
                                                 <!-- Edit Button -->
-                                                {if $invoice_details.status == 'draft' || $invoice_details.status == 'unpaid'}
+                                                {if $allowed_to_edit}
                                                     <button type="button" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_details.invoice_id}';">{t}Edit Invoice{/t}</button>
                                                 {/if}
 
-                                                <!-- Receive Payment Button -->
+                                                <!-- Record Payment Button -->
                                                 {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}
-                                                    <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                    <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Record Payment{/t}</button>
                                                 {/if}
 
                                                 <!-- Credit Note Button -->

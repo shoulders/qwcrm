@@ -35,6 +35,9 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
     // Update credit note (if submited)
     if(isset(\CMSApplication::$VAR['submit']))
     {
+        // Holding variable for validation tests
+        $submitFailedValidation = false;
+
         // Check the submission is valid, if not, reload the page with an error message
         if($this->app->components->creditnote->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {
@@ -43,19 +46,26 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
             $this->app->components->creditnote->recalculateTotals(\CMSApplication::$VAR['qform']['creditnote_id']);
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Credit note updated successfully."));
 
-            // Load credit note record - this makes sure any calculations are taken into account such as balance and status
-            //$creditnote_details = $this->app->components->creditnote->getRecord($creditnote_details['creditnote_id']);
+            // The user also wants to approve the record
+            if (\CMSApplication::$VAR['submit'] == 'submitandapprove') {
+                if($this->app->components->creditnote->checkRecordAllowsApprove(\CMSApplication::$VAR['qform']['creditnote_id'])) {
+                    $this->app->components->creditnote->updateStatus(\CMSApplication::$VAR['qform']['creditnote_id'], 'unused');
+                } else {
+                    $submitFailedValidation = true;
+                }
+            }
 
-            // Load details page
-            $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.\CMSApplication::$VAR['qform']['creditnote_id']);
-
-        // Submission has failed validation,
         } else {
             $submitFailedValidation = true;
         }
+
+        // Load the details page is submission was successful
+        if(!$submitFailedValidation) {
+            $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.\CMSApplication::$VAR['qform']['creditnote_id']);
+        }
     }
 
-    // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+    // If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
     if($submitFailedValidation ?? null) {
         $creditnote_details = array_merge($this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id']), \CMSApplication::$VAR['qform']);
         $creditnote_items = \CMSApplication::$VAR['qform']['creditnote_items'];

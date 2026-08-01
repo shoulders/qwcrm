@@ -43,6 +43,7 @@ $this->app->smarty->assign('payment_statuses',         $this->app->components->p
 $this->app->smarty->assign('display_payments',         $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['creditnote_id']));
 
 // Misc
+$this->app->smarty->assign('allowed_to_edit',          $this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$VAR['creditnote_id'], true));
 $this->app->smarty->assign('creditnote_statuses',      $this->app->components->creditnote->getStatuses());
 $this->app->smarty->assign('creditnote_types',         $this->app->components->creditnote->getTypes());
 $this->app->smarty->assign('creditnote_action_types',  $this->app->components->creditnote->getActionTypes());

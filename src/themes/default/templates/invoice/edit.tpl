@@ -594,9 +594,9 @@
                                                         <button type="button" class="userButton" onclick="window.location.href='index.php?component=voucher&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Voucher{/t}</button>
                                                     {/if}
 
-                                                    <!-- Receive Payment Button -->
+                                                    <!-- Record Payment Button -->
                                                     {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}
-                                                        <button type="button" class="userButton" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                        <button type="button" class="userButton" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Record Payment{/t}</button>
                                                     {/if}
 
                                                 </td>
@@ -788,11 +788,11 @@
                                         <table width="100%"  cellpadding="3" cellspacing="0" border="0">
                                             <tr>
                                                 <td align="left" valign="top" width="25%">
-                                                    {if $invoice_details.status == 'draft' || $invoice_details.status == 'unpaid'}
-                                                        <input type="hidden" name="qform[invoice_id]" value="{$invoice_details.invoice_id}">
-                                                        <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_details.invoice_id}';">{t}Cancel{/t}</button>
-                                                    {/if}
+                                                    <button type="submit" name="submit" value="submitchangesonly">{t}Submit Changes Only{/t}</button>
+                                                    <button type="submit" name="submit" value="submitandapprove" onclick="return confirm('{t}Are you sure you want to submit and approve this invoice?{/t}');">{t}Submit and Approve{/t}</button>
+                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_details.invoice_id}';">{t}Cancel{/t}</button>
+
+                                                    <input type="hidden" name="qform[invoice_id]" value="{$invoice_details.invoice_id}">
                                                 </td>
                                                 <td align="right" width="75%"></td>
                                             </tr>

@@ -566,7 +566,7 @@ class Payment extends Components {
 
         // if the new status is the same as the current one, exit
         if($new_status == $payment_details['status']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status."), $silent);
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status."), $silent);
             return false;
         }
 
@@ -685,9 +685,7 @@ class Payment extends Components {
         // Get payment details before deleting the record
         $payment_details = $this->getRecord($payment_id);
 
-        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
-        //$this->updateStatus($payment_id, 'deleted');
-
+        // Truncate Main record
         $sql = "UPDATE ".PRFX."payment_records SET
                 employee_id     = NULL,
                 client_id       = NULL,
@@ -702,15 +700,17 @@ class Payment extends Components {
                 type            = '',
                 method          = '',
                 direction       = '',
-                status          = 'deleted',
+                status          = '',
                 amount          = 0.00,
                 voided_on       = NULL,
                 last_active     = NULL,
                 note            = '',
                 additional_info = ''
                 WHERE payment_id = ". $payment_id;
-
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        $this->updateStatus($payment_id, 'deleted', true);
 
         // Create a Workorder History Note - not a workorder
         //$this->app->components->workorder->insertHistory($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);
@@ -825,7 +825,7 @@ class Payment extends Components {
 
         // Is the current payment method is not active, if not you cannot change status
         if(!$this->checkMethodActive($payment_details['method'], 'receive')) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because it's current payment method is not available."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment have cannot have it's status changed because it's current payment method is not available."), $silent);
             $state_flag = false;
         }
 
@@ -834,9 +834,11 @@ class Payment extends Components {
             case 'valid':
                 break;
             case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot have it's status changed because it has been voided."), $silent);
+                $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot have it's status changed because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -861,7 +863,7 @@ class Payment extends Components {
 
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -870,11 +872,11 @@ class Payment extends Components {
             case 'valid':
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -896,7 +898,7 @@ class Payment extends Components {
 
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be voided because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it is on a different Tax system."));
             $state_flag = false;
         }
 
@@ -905,11 +907,11 @@ class Payment extends Components {
             case 'valid':
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be voided because the payment has already been voided."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it has has already been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be voided because the payment has been deleted."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it has has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -931,7 +933,7 @@ class Payment extends Components {
 
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be deleted because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it is on a different Tax system."));
             $state_flag = false;
         }
 
@@ -940,11 +942,11 @@ class Payment extends Components {
             case 'valid':
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been voided."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it already been deleted."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it already been deleted."), $silent);
                 $state_flag = false;
                 break;
         }

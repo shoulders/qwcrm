@@ -371,7 +371,7 @@ class Supplier extends Components {
 
         // if the new status is the same as the current one, exit
         if($new_status == $supplier_details['status']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status."), $silent);
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status."), $silent);
             return false;
         }
 
@@ -538,9 +538,6 @@ class Supplier extends Components {
         // Get supplier details
         $supplier_details = $this->getRecord($supplier_id);
 
-        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
-        //$this->updateStatus($supplier_id, 'deleted');
-
         // Run the SQL
         $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->app->db->qStr($supplier_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -580,11 +577,11 @@ class Supplier extends Components {
             case 'suspended':
                 break;
             case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier's status cannot be changed because the supplier has been cancelled."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot have it's status changed because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier's status cannot be changed because the supplier has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot have it's status changed because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -609,15 +606,15 @@ class Supplier extends Components {
             case 'activated':
                 break;
             case 'suspended':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been suspended."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be edited because it is suspended."), $silent);
                 $state_flag = false;
                 break;
             case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been closed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be edited because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
 
@@ -641,17 +638,17 @@ class Supplier extends Components {
         // status checks
         switch ($supplier_details['status']) {
             case 'activated':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be activated because it is already activated."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be activated because it is already activated."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
                 break;
             case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a suspended supplier can be activated."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be activated because the supplier has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be activated because the supplier has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be activated because the supplier has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -676,13 +673,15 @@ class Supplier extends Components {
             case 'activated':
                 break;
             case 'suspended':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be suspended because it is already suspended."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be suspended because it is already suspended."), $silent);
                 $state_flag = false;
                 break;
             case 'closed':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be suspended because it is closed."), $silent);
+                $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it is suspended. Change the status to closed first."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be suspended because it is deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -705,17 +704,17 @@ class Supplier extends Components {
         // status checks
         switch ($supplier_details['status']) {
             case 'activated':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a suspended supplier can be activated."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be closed because it is activated. Only a suspended supplier can be closed."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
                 break;
             case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be closed because it is already closed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be closed because it is already closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be closed because the supplier has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be closed because the supplier has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -738,42 +737,42 @@ class Supplier extends Components {
         // status checks
         switch ($supplier_details['status']) {
             case 'activated':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a closed supplier can be deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it is activated. Only a closed supplier can be deleted."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a closed supplier can be deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it is suspended. Only a closed supplier can be deleted."), $silent);
                 $state_flag = false;
                 break;
             case 'closed':
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because the supplier has already been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because the supplier has already been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has Expenses
         if($this->app->components->report->expenseCount(null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked expenses."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has linked expenses."), $silent);
             $state_flag = false;
         }
 
         // Has Other incomes
         if($this->app->components->report->otherincomeCount(null, null, null, null, null, null, null, $supplier_details['supplier_id'])){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked other incomes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has linked otherincomes."), $silent);
             $state_flag = false;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, null, null, null, null, null, null, $supplier_id)){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has linked payments."), $silent);
             $state_flag = false;
         }
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $supplier_details['supplier_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be deleted because it has linked credit notes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has linked creditnotes."), $silent);
             $state_flag = false;
         }
 

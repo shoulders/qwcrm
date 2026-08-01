@@ -560,7 +560,7 @@ class WorkOrder extends Components {
 
         // If the new status is the same as the current one, exit
         if($new_status == $workorder_details['status']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new work order status is the same as the current work order status."), $silent);
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new work order status is the same as the current work order status."), $silent);
             return false;
         }
 
@@ -650,29 +650,6 @@ class WorkOrder extends Components {
         // Get client_id before deleletion
         $client_id = $this->getRecord($workorder_id, 'client_id');
 
-        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
-        //$this->updateStatus($workorder_id, 'deleted', true);
-
-        // Delete the workorder primary record
-        //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qStr($workorder_id); (this use to delete the whole record)
-        $sql = "UPDATE ".PRFX."workorder_records SET
-            employee_id         = NULL,
-            client_id           = NULL,
-            invoice_id          = NULL,
-            created_by          = NULL,
-            closed_by           = NULL,
-            status              = 'deleted',
-            opened_on           = NULL,
-            closed_on           = NULL,
-            last_active         = NULL,
-            scope               = '',
-            description         = '',
-            comment             = '',
-            resolution          = ''
-            WHERE workorder_id =". $this->app->db->qStr($workorder_id);
-
-        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
-
         // Delete the workorder history
         $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$this->app->db->qStr($workorder_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -684,6 +661,30 @@ class WorkOrder extends Components {
         // Delete the workorder schedule events
         $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$this->app->db->qStr($workorder_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        // Delete Main record
+        $sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$this->app->db->qStr($workorder_id);
+
+        /* Truncate Main record
+        $sql = "UPDATE ".PRFX."workorder_records SET
+            employee_id         = NULL,
+            client_id           = NULL,
+            invoice_id          = NULL,
+            created_by          = NULL,
+            closed_by           = NULL,
+            status              = '',
+            opened_on           = NULL,
+            closed_on           = NULL,
+            last_active         = NULL,
+            scope               = '',
+            description         = '',
+            comment             = '',
+            resolution          = ''
+            WHERE workorder_id =". $this->app->db->qStr($workorder_id);
+        if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        // Change the record status to deleted
+        $this->updateStatus($workorder_id, 'deleted', true);*/
 
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
@@ -779,7 +780,7 @@ class WorkOrder extends Components {
         // Is the Client active
         if(!$this->app->components->client->getRecord($client_id, 'active'))
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a workorder against it.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The specified client is not active so you cannot create a workorder against it.", $silent));
             $state_flag = false;
         }
 
@@ -804,7 +805,7 @@ class WorkOrder extends Components {
         // Is the Client active
         if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active'))
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because the client is not active", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's status cannot be changed because the cleint it belongs to is not active.", $silent));
             $state_flag = false;
         }
 
@@ -825,11 +826,11 @@ class WorkOrder extends Components {
             case 'with_management':
                 break;
             case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot have it's status changed because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has already been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot have it's status changed because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -858,7 +859,7 @@ class WorkOrder extends Components {
         // Is the Client active
         if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active'))
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because the client is not active", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because the client it belongs to is not active.", $silent));
             $state_flag = false;
         }
 
@@ -879,15 +880,15 @@ class WorkOrder extends Components {
             case 'with_management':
                 break;
             case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be edited because it has been closed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be edited because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
         }
 
-        /* Is closed i use statsu now
+        /* Is closed i use status now
         if($workorder_details['closed_on']) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The workorder cannot be edited because it is closed."), $silent);
             $state_flag = false;
@@ -909,14 +910,14 @@ class WorkOrder extends Components {
         // Workorder is Closed
         if($wo_closed_on) {
 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the resolution because the work order is already closed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit the resolution because the workorder is already closed."), $silent);
             return false;
         }
 
         // Waiting For Parts
         if ($wo_status == 'waiting_for_parts') {
 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Can not close a work order if it is Waiting for Parts. Please Adjust the status."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You Cannot close a workorder if it is waiting for parts. Please Adjust the status."), $silent);
             return false;
 
         }
@@ -939,7 +940,7 @@ class WorkOrder extends Components {
         // Is the Client active
         if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active'))
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because the client is not active", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because the client it belongs to is not active.", $silent));
             $state_flag = false;
         }
 
@@ -948,7 +949,7 @@ class WorkOrder extends Components {
             case 'unassigned':
                 break;
             case 'assigned':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is assigned"), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is assigned."), $silent);
                 $state_flag = false;
                 break;
             case 'waiting_for_parts':
@@ -1041,18 +1042,18 @@ class WorkOrder extends Components {
             case 'with_management':
                 break;
             case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's assigned employee cannot be changed because it has been closed."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has already been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's assigned employee cannot be changed because it has already been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         /* Is Closed (old Fallback method)
         if($this->get_workorder_details($workorder_details['workorder_id'], 'closed_on')) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("his workorder's assigned employee cannot be changed because it has been closed."), $silent);
             $state_flag = false;
         }*/
 

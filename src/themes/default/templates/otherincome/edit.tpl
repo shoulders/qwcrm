@@ -593,10 +593,10 @@
                                         <table width="100%"  cellpadding="3" cellspacing="0" border="0">
                                             <tr>
                                                 <td align="left" valign="top" width="100%">
-                                                    <button type="submit" name="submit" value="submit" {*onclick="return confirm('{t}Are you sure you want to continue without payment?{/t}');"*}>{t}Submit{/t}</button>
-                                                    <button type="submit" name="submit" value="submitandnew" onclick="return confirm('{t}Are you sure you want to continue without payment?{/t}');">{t}Submit and New{/t}</button>
-                                                    <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>
+                                                    <button type="submit" name="submit" value="submitchangesonly">{t}Submit Changes Only{/t}</button>
+                                                    <button type="submit" name="submit" value="submitandapprove" onclick="return confirm('{t}Are you sure you want to submit and approve this other income?{/t}');">{t}Submit and Approve{/t}</button>
                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=otherincome&page_tpl=details&otherincome_id={$otherincome_details.otherincome_id}';">{t}Cancel{/t}</button>
+
                                                     <input type="hidden" name="qform[otherincome_id]" value="{$otherincome_details.otherincome_id}">
                                                     <input id="qform[supplier_id]" type="hidden" name="qform[supplier_id]" value="{$otherincome_details.supplier_id}">
                                                 </td>

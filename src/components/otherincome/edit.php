@@ -39,6 +39,9 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
     // Update otherincome (if submited)
     if(isset(\CMSApplication::$VAR['submit']))
     {
+        // Holding variable for validation tests
+        $submitFailedValidation = false;
+
         // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
         if($this->app->components->otherincome->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {
@@ -48,30 +51,22 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
             $this->app->components->otherincome->recalculateTotals(\CMSApplication::$VAR['qform']['otherincome_id']);
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome updated successfully."));
 
-            // Load the new otherincome page
-            if (\CMSApplication::$VAR['submit'] == 'submitandnew')
-            {
-                $this->app->system->page->forcePage('otherincome', 'new');
+            // The user also wants to approve the record
+            if (\CMSApplication::$VAR['submit'] == 'submitandapprove') {
+                if($this->app->components->otherincome->checkRecordAllowsApprove(\CMSApplication::$VAR['qform']['otherincome_id'])) {
+                    $this->app->components->otherincome->updateStatus(\CMSApplication::$VAR['qform']['otherincome_id'], 'unpaid');
+                } else {
+                    $submitFailedValidation = true;
+                }
             }
 
-            // Load the new payment page for otherincome
-            elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment')
-            {
-                $this->app->system->page->forcePage('payment', 'new&type=otherincome&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id']);
-            }
-
-            else
-            {
-                // Refresh otherincome record - this makes sure any calculations are taken into account such as balance and status after record update
-                //$otherincome_details = $this->app->components->otherincome->getRecord($otherincome_details['otherincome_id']);
-
-                // Load details page
-                $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id']);
-            }
-
-        // Submission has failed validation,
         } else {
             $submitFailedValidation = true;
+        }
+
+        // Load the details page is submission was successful
+        if(!$submitFailedValidation) {
+            $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id']);
         }
     }
 

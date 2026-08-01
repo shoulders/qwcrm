@@ -405,15 +405,18 @@ class User extends Components {
         // get user details before deleting
         $user_details = $this->getRecord($user_id);
 
-        // Delete User account
+        // Delete Main record
         $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$this->app->db->qStr($user_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
         $logMessage = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
         $recordIds = array('user_id' => $user_id);
+        //$recordIds = array('employee_id' => $this->app->user->login_user_id);
+        //$recordIds = array('user_id' => $this->app->user->login_user_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
+        $this->app->system->general->updateLastActive($recordIds);
 
         return true;
 
@@ -539,55 +542,55 @@ class User extends Components {
 
         // Cannot delete this account if it is the last administrator account
         if((int) $user_details['usergroup'] == 1 && $this->app->components->report->userCount(null, null, null, null, null, 1) == 1) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete the last administrator user account."), $silent);
             $state_flag = false;
         }
 
         // Check if user has `created` any workorders
         if($this->app->components->report->workorderCount(null, null, null, null, 'created_by', $user_id) ){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has created workorders."), $silent);
+            $state_flag = false;
+        }
+
+         // Check if user has `closed` any workorders
+        if($this->app->components->report->workorderCount(null, null, null, null, 'closed_by', $user_id) ){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has closed workorders."), $silent);
             $state_flag = false;
         }
 
         // Check if user has any `assigned` workorders
         if($this->app->components->report->workorderCount(null, null, null, null, 'assigned', $user_id) ){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."), $silent);
-            $state_flag = false;
-        }
-
-        // Check if user has `closed` any workorders
-        if($this->app->components->report->workorderCount(null, null, null, null, 'closed_by', $user_id) ){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has closed work orders."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has assigned workorders."), $silent);
             $state_flag = false;
         }
 
         // Has Schedules
         if($this->app->components->report->scheduleCount(null, null, null, $user_id)){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has schedules."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has schedules."), $silent);
             $state_flag = false;
         }
 
         // Check if user has any invoices
         if($this->app->components->report->invoiceCount(null, null, null, null, null, $user_id) ){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has invoices."), $silent);
             $state_flag = false;
         }
 
         // Check if user is assigned to any Vouchers - this is not really needed if you check for invoices
         if($this->app->components->report->voucherCount(null, null, null, null, null, null, null, null, $user_id) ){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has Vouchers."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has vouchers."), $silent);
             $state_flag = false;
         }
 
         // Has Payments
         if($this->app->components->report->paymentCount(null, null, null, null, null, null, null, null, $user_id)){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has linked payments."), $silent);
             $state_flag = false;
         }
 
         // Creditnotes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $user_id)){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has credit notes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has linked creditnotes."), $silent);
             $state_flag = false;
         }
 

@@ -193,7 +193,7 @@
                                                 {/if}
 
                                                 <!-- Edit Button -->
-                                                {if $creditnote_details.status == 'draft' || $creditnote_details.status == 'unused'}
+                                                {if $allowed_to_edit}
                                                     <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_details.creditnote_id}';">{t}Edit Credit Note{/t}</button>
                                                     <br>
                                                     <br>
@@ -218,9 +218,9 @@
                                                     <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Payment to Client{/t}</button>
                                                 {/if}
 
-                                                <!-- Apply Payment from Supplier Buttons -->
+                                                <!-- Record Payment from Supplier Buttons -->
                                                 {if $creditnote_details.supplier_id && (!(float) $parent_record_balance && ($creditnote_details.status == 'unused' || $creditnote_details.status == 'partially_used'))}
-                                                    <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Apply Payment from Supplier{/t}</button>
+                                                    <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=creditnote&creditnote_id={$creditnote_details.creditnote_id}';">{t}Record Payment from Supplier{/t}</button>
                                                 {/if}
 
                                             </td>
