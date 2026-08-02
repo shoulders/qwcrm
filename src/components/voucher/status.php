@@ -49,4 +49,4 @@ $this->app->smarty->assign('allowed_to_delete',           $allowed_to_delete    
 $this->app->smarty->assign('voucher_status',              $voucher_details['status']             );
 $this->app->smarty->assign('voucher_status_display_name', $this->app->components->voucher->getStatusDisplayName($voucher_details['status']));
 $this->app->smarty->assign('voucher_statuses',            $this->app->components->voucher->getStatuses() );
-$this->app->smarty->assign('voucher_selectable_statuses', $this->app->components->voucher->getStatuses(true) );
+$this->app->smarty->assign('voucher_selectable_statuses', $this->app->components->voucher->getStatuses(true,\CMSApplication::$VAR['voucher_id']) );

@@ -26,15 +26,15 @@
                             </tr>
                             <tr>
 
-                                <!-- Assign Status Update -->
+                                <!-- Update Status Button -->
                                 <td class="olotd4" align="center" width="50%" height="150">
                                     <p><b>{t}Current Status{/t}:</b> {$creditnote_status_display_name}</p>
                                     {if $allowed_to_change_status}
                                         <form action="index.php?component=creditnote&page_tpl=status&creditnote_id={$creditnote_id}" method="post" name="new_creditnote_status" id="new_creditnote_status">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
-                                                {section name=s loop=$creditnote_statuses}
-                                                    <option value="{$creditnote_statuses[s].status_key}"{if $creditnote_status == $creditnote_statuses[s].status_key} selected{/if}>{t}{$creditnote_statuses[s].display_name}{/t}</option>
+                                                {section name=s loop=$creditnote_selectable_statuses}
+                                                    <option value="{$creditnote_selectable_statuses[s].status_key}"{if $creditnote_status == $creditnote_selectable_statuses[s].status_key} selected{/if}>{t}{$creditnote_selectable_statuses[s].display_name}{/t}</option>
                                                 {/section}
                                             </select>
                                             <p>&nbsp;</p>

@@ -350,13 +350,13 @@ class WorkOrder extends Components {
     #    Get Workorder Statuses         #
     #####################################
 
-    public function getStatuses($restricted = false, $workorder_id = null) {
+    public function getStatuses($restricted = false) {
 
         $sql = "SELECT * FROM ".PRFX."workorder_statuses";
 
-        // Restrict statuses to those that are only allowed to be changed by the user
+        // Restrict statuses to those that are allowed to be changed by the user
         if($restricted) {
-            $sql .= "\nWHERE status_key NOT IN ('closed', 'deleted')";
+            $sql .= "\nWHERE status_key IN ('unassigned', 'assigned', 'waiting_for_parts', 'scheduled', 'with_client', 'on_hold', 'with_management')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}

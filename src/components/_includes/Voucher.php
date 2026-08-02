@@ -338,19 +338,37 @@ class Voucher extends Components {
     #    Get Voucher Statuses           #
     #####################################
 
-    public function getStatuses($restrict_statuses = false) {
+    public function getStatuses($restricted = false, $voucher_id = null) {
 
         $sql = "SELECT * FROM ".PRFX."voucher_statuses";
 
         // Restrict statuses to those that are allowed to be changed by the user
-        if($restrict_statuses) {
-            //$sql .= "\nWHERE status_key NOT IN ('draft', 'unpaid', 'partially_paid', 'partially_redeemed', 'suspended', 'voided', 'deleted')";
-            $sql .= "\nWHERE status_key IN ('unredeemed', 'suspended')";
+        if($restricted) {
+            $sql .= "\nWHERE status_key IN ('unredeemed', 'partially_redeemed', 'suspended')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        return $rs->GetArray();
+        $statuses = $rs->GetArray();
+
+        // Remove `unredeemed/partially_redeemed` - because a `suspended` records can be unredeemed or partially redeemed
+        if($restricted && $voucher_id) {
+
+            $voucher_details = $this->getRecord($voucher_id);
+
+            // Which status to remove - the one that does NOT match the vouchers's current state
+            $statusToRemove = ($voucher_details['unit_gross'] != $voucher_details['balance']) ? 'unredeemed' : 'partially_redeemed';
+
+            // Remove relevant status from the array
+            foreach($statuses as $key => $status) {
+                if($status['status_key'] === $statusToRemove) {
+                    unset($statuses[$key]);
+                }
+            }
+
+        }
+
+        return $statuses;
 
     }
 

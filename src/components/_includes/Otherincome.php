@@ -326,13 +326,13 @@ class Otherincome extends Components {
     #    Get Otherincome Statuses       #
     #####################################
 
-    public function getStatuses($restricted_statuses = false) {
+    public function getStatuses($restricted = false) {
 
         $sql = "SELECT * FROM ".PRFX."otherincome_statuses";
 
-        // Restrict statuses to those that are allowed to be changed by the user
-        if($restricted_statuses) {
-            $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'voided', 'deleted')";
+        // Restrict statuses to those that are allowed to be changed by the user (not currently used)
+        if($restricted) {
+            $sql .= "\nWHERE status_key IN ('dummy')";
         }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}

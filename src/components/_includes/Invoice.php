@@ -505,12 +505,12 @@ defined('_QWEXEC') or die;
     #    Get Invoice Statuses           #  // if you suppliy an invoice ID the restricted statuses will be balance aware
     #####################################
 
-    public function getStatuses($restricted_statuses = false, $invoice_id = null) {
+    public function getStatuses($restricted = false, $invoice_id = null) {
 
         $sql = "SELECT * FROM ".PRFX."invoice_statuses";
 
         // Restrict statuses to those that are allowed to be changed by the user
-        if($restricted_statuses) {
+        if($restricted) {
             $sql .= "\nWHERE status_key IN ('unpaid', 'partially_paid', 'overdue', 'in_dispute', 'in_collections')";
         }
 
@@ -518,8 +518,8 @@ defined('_QWEXEC') or die;
 
         $statuses = $rs->GetArray();
 
-        // Remove `unpaid/partially_paid` - because `overdue/in_dispute/in_collections` can be unpaid or partially paid
-        if($restricted_statuses && $invoice_id) {
+        // Remove `unpaid/partially_paid` - because `overdue/in_dispute/in_collections` records can be unpaid or partially paid
+        if($restricted && $invoice_id) {
 
             $invoice_details = $this->getRecord($invoice_id);
 

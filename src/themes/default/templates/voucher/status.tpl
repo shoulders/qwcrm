@@ -28,7 +28,7 @@
                             <tr>
 
                                 <!-- Update Status -->
-                                <td class="olotd4" align="center" width="33%">
+                                <td class="olotd4" align="center" width="33%" height="150">
                                     <p><b>{t}Current Status{/t}:</b> {$voucher_status_display_name}</p>
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>
@@ -48,12 +48,12 @@
                                 </td>
 
                                 <!-- Suspend Voucher -->
-                                <td class="olotd4" align="center" width="33%">
+                                <td class="olotd4" align="center" width="33%" height="150">
                                     <p>{t}A voucher can currently only be suspended when you change the parent invoice to a status that requires it.{/t}</p>
                                 </td>
 
                                 <!-- Delete Voucher -->
-                                <td class="olotd4" align="center" width="33%">
+                                <td class="olotd4" align="center" width="33%" height="150">
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=voucher&page_tpl=status&voucher_id={$voucher_id}">
                                             <input name="delete_voucher" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Voucher?{/t}');">

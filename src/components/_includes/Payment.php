@@ -321,9 +321,14 @@ class Payment extends Components {
     #    Get Payment Statuses           #
     #####################################
 
-    public function getStatuses() {
+    public function getStatuses($restricted = false) {
 
         $sql = "SELECT * FROM ".PRFX."payment_statuses";
+
+        // Restrict statuses to those that are allowed to be changed by the user (not currently used)
+        if($restricted) {
+            $sql .= "\nWHERE status_key IN ('dummy')";
+        }
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -570,8 +575,8 @@ class Payment extends Components {
             return false;
         }
 
-        /* Not currently used like other record types because there is no `closed_on` database column, so this is just for reference and maybe future use        
-        // Is the new status a "closed" status        
+        /* Not currently used like other record types because there is no `closed_on` database column, so this is just for reference and maybe future use
+        // Is the new status a "closed" status
         if(in_array($new_status, array('voided', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {

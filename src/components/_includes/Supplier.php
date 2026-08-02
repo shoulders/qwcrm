@@ -210,13 +210,12 @@ class Supplier extends Components {
     #    Get Supplier Statuses          #
     #####################################
 
-    public function getStatuses($restricted_statuses = false) {
+    public function getStatuses($restricted = false) {
 
         $sql = "SELECT * FROM ".PRFX."supplier_statuses";
 
         // Restrict statuses to those that are allowed to be changed by the user
-        if($restricted_statuses) {
-            //$sql .= "\nWHERE status_key NOT IN ('cancelled', 'deleted')";
+        if($restricted) {
             $sql .= "\nWHERE status_key IN ('activated', 'suspended')";
         }
 
