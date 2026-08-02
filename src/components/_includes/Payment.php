@@ -570,6 +570,14 @@ class Payment extends Components {
             return false;
         }
 
+        /* Not currently used like other record types because there is no `closed_on` database column, so this is just for reference and maybe future use        
+        // Is the new status a "closed" status        
+        if(in_array($new_status, array('voided', 'deleted'))) {
+            $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
+        } else {
+            $closed_on = null;
+        }*/
+
         // Has the payment been voided
         if($new_status == 'voided') {
             $voided_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
@@ -709,7 +717,7 @@ class Payment extends Components {
                 WHERE payment_id = ". $payment_id;
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        // Change the record status to deleted
         $this->updateStatus($payment_id, 'deleted', true);
 
         // Create a Workorder History Note - not a workorder

@@ -376,7 +376,7 @@ class Supplier extends Components {
         }
 
         // Is the new status a "closed" status
-        // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
+        // 'deleted' should never be passed here because a full delete is used for this record type, so this is just for reference and maybe future use
         if(in_array($new_status, array('closed', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {

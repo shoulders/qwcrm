@@ -1369,4 +1369,4 @@ UPDATE `#__otherincome_statuses` SET `status_key` = 'draft', `display_name` = 'D
 UPDATE `#__voucher_statuses` SET `status_key` = 'draft', `display_name` = 'Draft' WHERE `#__voucher_statuses`.`id` = 1;
 
 -- Tidy up deleted Workorder Records --
-DELETE FROM `#__workorder_records` WHERE `id` = 'deleted';
+DELETE FROM `#__workorder_records` WHERE `status` = 'deleted';

@@ -498,7 +498,6 @@ class Voucher extends Components {
         //$redeemed_on = ($new_status == 'redeemed') ? $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) : null;
 
         // Is the new status a "closed" status
-        // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
         if(in_array($new_status, array('redeemed', 'voided', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
@@ -789,7 +788,7 @@ class Voucher extends Components {
             WHERE voucher_id =". $this->app->db->qStr($voucher_id);
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Change the record status to deleted (not required, might use for future record locking or triggering other functions)
+        // Change the record status to deleted
         $this->updateStatus($voucher_id, 'deleted', true);
 
         // Log activity

@@ -609,7 +609,6 @@ class Creditnote extends Components {
         $employee_id = ($new_status == 'unassigned') ? null : $creditnote_details['employee_id'];
 
         // Is the new status a "closed" status
-        // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
         if(in_array($new_status, array('used', 'voided', 'deleted'))) {
             $closed_on = $this->app->db->qStr($this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp) );
         } else {

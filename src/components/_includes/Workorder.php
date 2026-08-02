@@ -568,7 +568,7 @@ class WorkOrder extends Components {
         $employee_id = ($new_status == 'unassigned') ? null : ($workorder_details['employee_id'] ?: $this->app->user->login_user_id);
 
         // Is the new status a "closed" status
-        // 'deleted' should never be passed here, this is just for reference, TODO: i need to check
+        // 'deleted' should never be passed here because a full delete is used for this record type, so this is just for reference and maybe future use
         if(in_array($new_status, array('closed', 'deleted'))) {
             $closed_by = $this->app->db->qStr($this->app->user->login_user_id);
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
