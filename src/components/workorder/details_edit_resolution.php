@@ -21,27 +21,28 @@ if(!$this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$V
 
     if(isset(\CMSApplication::$VAR['submit'])) {
 
-        // Update Work Resolution Only
-        if(\CMSApplication::$VAR['submit'] == 'submitchangesonly') {
-            $this->app->components->workorder->updateResolution(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Resolution has been updated."));
-            $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
-        }
+        // Submission Action
+        switch (\CMSApplication::$VAR['submit']) {
 
-        // Close without invoice
-        if(\CMSApplication::$VAR['submit'] == 'closewithoutinvoice') {
-            $this->app->components->workorder->closeRecord(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed without an invoice."));
-            $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
-        }
+            // Submit Changes only
+            case 'submitchangesonly':
+                $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Resolution has been updated."));
+                break;
 
-        // Close with invoice
-        if(\CMSApplication::$VAR['submit'] == 'closewithinvoice') {
-            $this->app->components->workorder->closeRecord(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+            // Close without invoice
+            case 'closewithoutinvoice':
+                $this->app->components->workorder->closeRecord(\CMSApplication::$VAR['workorder_id']);
+                $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+                break;
 
-            // Create a new invoice attached to this work order
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed with an invoice."));
-            $this->app->system->page->forcePage('invoice', 'new&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+            // Close with invoice
+            case 'closewithinvoice':
+
+                // Create a new invoice attached to this work order
+                $this->app->system->page->forcePage('invoice', 'new&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+                break;
+
         }
 
     }

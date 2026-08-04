@@ -824,12 +824,12 @@ defined('_QWEXEC') or die;
     #  Check if an invoice can be created         #
     ###############################################
 
-    public function checkRecordCanBeCreated($client_id, $silent = false) {
+    public function checkRecordCanBeCreated($client_id = null, $workorder_id = null, $silent = false) {
 
         $state_flag = true;
 
-        // Is the Client active
-        if(!$this->app->components->client->getRecord($client_id, 'active'))
+        // Is the Client active (pull from workorder if no client_id supplied, i.e. `close wiht invoice`)
+        if(!$this->app->components->client->getRecord($client_id ?? $this->app->components->workorder->getRecord($workorder_id, 'client_id'), 'active'))
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The specified client is not active so you cannot create an invoice against it.", $silent));
             $state_flag = false;

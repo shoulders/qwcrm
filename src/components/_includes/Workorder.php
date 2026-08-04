@@ -729,13 +729,10 @@ class WorkOrder extends Components {
     # Close Workorder                             #
     ###############################################
 
-    public function closeRecord($workorder_id, $resolution) {
-
-        // Update Resolution
-        $this->updateResolution($workorder_id, $resolution);
+    public function closeRecord($workorder_id) {
 
         // Update Work Order Status
-        $this->app->components->workorder->update_workorder_status($workorder_id, 'closed');
+        $this->updateStatus($workorder_id, 'closed', true);
 
         // Get workorder details
         $workorder_details = $this->getRecord($workorder_id);
@@ -743,13 +740,14 @@ class WorkOrder extends Components {
         // If there is no employee assigned, set the current logged in user as the assigned employee
         if(!$workorder_details['employee_id']) {
             $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
+            //$workorder_details['employee_id'] = $this->app->user->login_user_id;
         }
 
         // Messages that depend on closed with or without invoice
-        if(!$workorder_details['invoice_id']) {
+        if(!$workorder_details['invoice_id']) {            
             $historyMessage = _gettext("Closed without invoice by").' '.$this->app->user->login_display_name.'.';
             $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
-        } else {
+        } else {            
             $historyMessage = _gettext("Closed with invoice by").' '.$this->app->user->login_display_name.'.';
             $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
         }
@@ -758,7 +756,7 @@ class WorkOrder extends Components {
         $this->insertHistory($workorder_id, $historyMessage);
 
         // Log activity
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_id, 'invoice_id' => $workorder_details['invoice_id'] ?? null);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);

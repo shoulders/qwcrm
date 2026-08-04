@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Check if the record can be created
-if(!$this->app->components->invoice->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'])) {
+if(!$this->app->components->invoice->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] ?? null, \CMSApplication::$VAR['workorder_id'] ?? null)) {
     $this->app->system->page->forcePage('workorder', 'search');
 } else {
 
@@ -24,6 +24,9 @@ if(!$this->app->components->invoice->checkRecordCanBeCreated(\CMSApplication::$V
 
         // Update the workorder with the new invoice_id
         $this->app->components->workorder->updateInvoiceId(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']);
+
+        // Close Workorder
+        $this->app->components->workorder->closeRecord(\CMSApplication::$VAR['workorder_id']);
 
         // Load the newly created invoice edit page
         $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);
