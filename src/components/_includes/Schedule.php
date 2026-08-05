@@ -328,7 +328,7 @@ class Schedule extends Components {
 
         // Log activity
         $logMessage = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $schedule_details['employee_id'], 'client_id' => $schedule_details['client_id'], 'workorder_id' => $schedule_details['workorder_id'], 'schedule_id' => $schedule_id);
+        $recordIds = $schedule_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);

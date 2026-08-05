@@ -66,7 +66,7 @@ class User extends Components {
         // Log activity
         $user_type = $qform['client_id'] ? _gettext("Client") : _gettext("Employee");
         $logMessage = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
-        $recordIds = array('user_id' => $user_id);
+        $recordIds = array('user_id' => $user_id, 'client_id' => $qform['client_id'] ?: null);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return $user_id;
@@ -367,7 +367,7 @@ class User extends Components {
 
         // Log activity
         $logMessage = _gettext("User Account").' '.$user_details['user_id'].' ('.$user_details['display_name'].') '._gettext("updated.");
-        $recordIds = array('user_id' => $user_details['user_id']);
+        $recordIds = $user_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -411,9 +411,7 @@ class User extends Components {
 
         // Log activity
         $logMessage = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
-        $recordIds = array('user_id' => $user_id);
-        //$recordIds = array('employee_id' => $this->app->user->login_user_id);
-        //$recordIds = array('user_id' => $this->app->user->login_user_id);
+        $recordIds = $user_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -654,7 +652,7 @@ class User extends Components {
 
         // Log activity
         $logMessage = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("password has been reset.");
-        $recordIds = array('user_id' => $user_id);
+        $recordIds = array('user_id' => $user_id, 'client_id' => $this->getRecord($user_id, 'client_id'));
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -662,12 +660,11 @@ class User extends Components {
 
     }
 
-
     /* Login */
 
-    ####################################
+    ###########################################
     #  Login authentication public function   #
-    ####################################
+    ###########################################
 
     public function login($qform, $credentials, $options = array())
     {
@@ -718,7 +715,7 @@ class User extends Components {
 
             // Log activity
             $logMessage = _gettext("Login successful for").' '.$user->login_username.'.';
-            $recordIds = array('user_id' => $user->login_user_id);
+            $recordIds = array('user_id' => $user->login_user_id, 'client_id' => $this->getRecord($user->login_user_id, 'client_id'));
             $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
             $this->app->system->general->updateLastActive($recordIds);
 
@@ -754,7 +751,7 @@ class User extends Components {
         \Factory::getAuth()->logout();
 
         // Log activity
-        $recordIds = array('user_id' => $this->app->user->login_user_id);
+        $recordIds = array('user_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($this->app->user->login_user_id, 'client_id'));
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -925,7 +922,7 @@ class User extends Components {
 
         // Log activity
         $logMessage = _gettext("User Account").' '.$user_id.' ('.$this->getRecord($user_id, 'display_name').') '._gettext("reset email has been sent.");
-        $recordIds = array('user_id' => $user_id);
+        $recordIds = array('user_id' => $user_id, 'client_id' => $this->getRecord($user_id, 'client_id'));
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return;

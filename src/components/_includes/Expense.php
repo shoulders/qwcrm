@@ -478,7 +478,7 @@ class Expense extends Components {
 
         // Log activity
         $logMessage = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id) + $expense_details;
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("Expense status updated."), $silent);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -541,9 +541,6 @@ class Expense extends Components {
             return false;
         }
 
-        // Get expense details
-        $expense_details = $this->getRecord($expense_id);
-
         // Change the expense status to voided
         $this->updateStatus($expense_id, 'voided');
 
@@ -552,7 +549,7 @@ class Expense extends Components {
 
         // Log activity
         $logMessage = _gettext("Expense").' '.$expense_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $recordIds = $this->getRecord($expense_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -603,7 +600,7 @@ class Expense extends Components {
 
         // Log activity
         $logMessage = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $expense_details['supplier_id'], 'expense_id' => $expense_details['expense_id']);
+        $recordIds = $expense_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);

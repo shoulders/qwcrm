@@ -21,7 +21,7 @@ if
 }
 
 // Printing Blank media is set
-if(isset(\CMSApplication::$VAR['blankMedia']) && \CMSApplication::$VAR['blankMedia'] === 'true')
+if(isset(\CMSApplication::$VAR['blankMedia']))
 {
     $workorder_details = array(
                             'workorder_id' => null,
@@ -164,8 +164,8 @@ if(\CMSApplication::$VAR['commContent'] == 'technician_job_sheet')
 }
 
 // Log activity - Not if printing blank pages
-if(isset(\CMSApplication::$VAR['blankMedia']) && !\CMSApplication::$VAR['blankMedia']) {
-    $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_details['workorder_id']);
+if(!isset(\CMSApplication::$VAR['blankMedia'])) {
+    $recordIds = $workorder_details;
     $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 }
 

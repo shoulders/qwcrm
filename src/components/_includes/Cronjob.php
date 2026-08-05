@@ -109,7 +109,7 @@ class Cronjob extends Components {
 
         // Log activity
         $logMessage = _gettext("Cronjob Record").' '.$qform['cronjob_id'].' '._gettext("updated.");
-        $recordIds = array('user_id' => $this->app->user->login_user_id);
+        $recordIds = array();
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return true;

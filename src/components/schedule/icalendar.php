@@ -68,7 +68,7 @@ if(isset(\CMSApplication::$VAR['ics_type']) && \CMSApplication::$VAR['ics_type']
 
     // Log activity
     $logMessage = _gettext("Schedule").' '.\CMSApplication::$VAR['schedule_id'].' '._gettext("has been exported.");
-    $recordIds = array('employee_id' => $schedule_details['employee_id'], 'client_id' => $schedule_details['client_id'], 'workorder_id' => $schedule_details['workorder_id'], 'schedule_id' => $schedule_details['schedule_id']);
+    $recordIds = $schedule_details;
     $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
 }

@@ -581,7 +581,7 @@ defined('_QWEXEC') or die;
 
         // Log activity
         $logMessage = _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $recordIds = $invoice_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -662,14 +662,14 @@ defined('_QWEXEC') or die;
         $this->app->components->voucher->updateInvoiceVouchersStatuses($invoice_id, $new_status);
 
         // For writing message to log file, get invoice status display name
-        $inv_status_diplay_name = _gettext($this->getStatusDisplayName($new_status));
+        $inv_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
         // Create a Workorder History Note
-        $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        $this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $employee_id) + $invoice_details;
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice status updated."), $silent);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -745,7 +745,7 @@ defined('_QWEXEC') or die;
 
         // Log activity
         $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $recordIds = $invoice_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -809,7 +809,7 @@ defined('_QWEXEC') or die;
         $logMessage = _gettext("Invoice").' '.$invoice_details['invoice_id'].' ';
         if($invoice_details['workorder_id']){ $logMessage .= _gettext("for Work Order").' '.$invoice_details['workorder_id'].' ';}
         $logMessage .= _gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $invoice_details['employee_id'], 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $recordIds = $invoice_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -1663,7 +1663,7 @@ defined('_QWEXEC') or die;
 
         // Log activity
         $logMessage = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-        $recordIds = array('employee_id' => $target_employee_id, 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id']);
+        $recordIds = array('employee_id' => $target_employee_id) + $invoice_details;
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 

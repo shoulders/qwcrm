@@ -62,7 +62,6 @@ if(\CMSApplication::$VAR['commContent'] == 'creditnote')
 }
 
 // Log activity
-//$recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
 $recordIds = $cr_owner_details;
 $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 

@@ -48,14 +48,13 @@ class Creditnote extends Components {
 
         // Get creditnote record
         $creditnote_id = $this->app->db->Insert_ID();
-        //$creditnote_details = $this->getRecord($creditnote_id);
 
         // Create a Workorder History Note - this is not a work order
         //$this->app->components->workorder->insertHistory($workorder_id, _gettext("Credit Note").' '.$creditnote_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
         $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $qform['client_id'], 'invoice_id' => $qform['invoice_id'], 'supplier_id' => $qform['supplier_id'], 'expense_id' => $qform['expense_id']);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $qform['client_id'], 'invoice_id' => $qform['invoice_id'], 'supplier_id' => $qform['supplier_id'], 'expense_id' => $qform['expense_id'], 'creditnote_id' => $creditnote_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -548,14 +547,12 @@ class Creditnote extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        $creditnote_details = $this->getRecord($qform['creditnote_id']);
-
         // Create a Workorder History Note
         //$this->app->components->workorder->insertHistory($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_details['invoice_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $logMessage = _gettext("Credit Note").' '.$creditnote_details['creditnote_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+        $logMessage = _gettext("Credit Note").' '.$qform['creditnote_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = $this->getRecord($qform['creditnote_id']);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -632,15 +629,14 @@ class Creditnote extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // For writing message to log file, get creditnote status display name
-        $inv_status_diplay_name = _gettext($this->getStatusDisplayName($new_status));
+        $inv_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
         // Create a Workorder History Note     - not workorder
-        //$this->app->components->workorder->insertHistory($creditnote_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        //$this->app->components->workorder->insertHistory($creditnote_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
-        //$this->app->system->variables->systemMessagesWrite('success', _gettext("Credit Note status updated."), $silent);
+        $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("Status updated to").' '.$inv_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $employee_id) + $creditnote_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -703,9 +699,6 @@ class Creditnote extends Components {
             return false;
         }
 
-        // Get creditnote details
-        $creditnote_details = $this->getRecord($creditnote_id);
-
         // Change the creditnote status to voided
         $this->updateStatus($creditnote_id, 'voided');
 
@@ -717,7 +710,7 @@ class Creditnote extends Components {
 
         // Log activity
         $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+        $recordIds = $this->getRecord($creditnote_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -776,7 +769,7 @@ class Creditnote extends Components {
 
         // Log activity
         $logMessage = _gettext("Credit Note").' '.$creditnote_details['creditnote_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id']);
+        $recordIds = $creditnote_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -2308,7 +2301,7 @@ class Creditnote extends Components {
 
         // Log activity
         $logMessage = _gettext("Credit Note").' '.$creditnote_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-        $recordIds = array('employee_id' => $target_employee_id, 'client' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'creditnote_id' => $creditnote_id);
+        $recordIds = array('employee_id' => $target_employee_id, 'client_id' => $creditnote_details['client_id'], 'invoice_id' => $creditnote_details['invoice_id'], 'supplier_id' => $creditnote_details['supplier_id'], 'expense_id' => $creditnote_details['expense_id'], 'creditnote_id' => $creditnote_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 

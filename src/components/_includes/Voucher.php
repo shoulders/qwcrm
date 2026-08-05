@@ -75,7 +75,13 @@ class Voucher extends Components {
 
         // Log activity
         $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $invoice_details['client_id'], 'workorder_id' => $invoice_details['workorder_id'], 'invoice_id' => $invoice_details['invoice_id'], 'voucher_id' => $voucher_id);
+        $recordIds = array(
+                        'employee_id' => $this->app->user->login_user_id,
+                        'client_id' => $invoice_details['client_id'],
+                        'workorder_id' => $invoice_details['workorder_id'],
+                        'invoice_id' => $invoice_details['invoice_id'],
+                        'voucher_id' => $voucher_id
+                        );
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -480,15 +486,12 @@ class Voucher extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // Refresh voucher details
-        $voucher_details = $this->getRecord($voucher_id);
-
         // Recalculate the invoice totals and update them
         $this->app->components->invoice->recalculateTotals($voucher_details['invoice_id']);
 
         // Log activity
         $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id) + $voucher_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -538,6 +541,7 @@ class Voucher extends Components {
         }
 
         $sql = "UPDATE ".PRFX."voucher_records SET
+                employee_id        =". $this->app->db->qStr( $this->app->user->login_user_id).",
                 status             =". $this->app->db->qStr( $new_status   ).",
                 closed_on          =". $this->app->db->qStr( $closed_on    ).",
                 voided_on          =". $this->app->db->qStr( $voided_on    ).",
@@ -557,7 +561,7 @@ class Voucher extends Components {
 
         // Log activity
         $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id) + $voucher_details;
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -759,7 +763,7 @@ class Voucher extends Components {
 
             // Log activity
             $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
-            $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
+            $recordIds = $voucher_details;
             $this->app->system->variables->systemMessagesWrite('success', $logMessage);
             $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
             $this->app->system->general->updateLastActive($recordIds);
@@ -811,7 +815,7 @@ class Voucher extends Components {
 
         // Log activity
         $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], 'voucher_id' => $voucher_id);
+        $recordIds = $voucher_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);

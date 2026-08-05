@@ -32,7 +32,7 @@ class Client extends Components {
     public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."client_records SET
-                employee_id    =". $this->app->db->qStr( $this->app->user->login_user_id ).",
+                employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id ).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()         ).",
                 company_name    =". $this->app->db->qStr( $qform['company_name']     ).",
                 first_name      =". $this->app->db->qStr( $qform['first_name']       ).",
@@ -59,7 +59,7 @@ class Client extends Components {
 
         // Log activity
         $logMessage = _gettext("New client").', '.$this->getRecord($client_id, 'display_name').', '._gettext("has been created.");
-        $recordIds = array('employee_id' => $this->app->user->login_user_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return $client_id;
@@ -347,7 +347,7 @@ class Client extends Components {
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        // get client_id
+        // Get client_id
         $client_id = $this->getNote($client_note_id, 'client_id');
 
         // Log activity
@@ -398,7 +398,7 @@ class Client extends Components {
 
         // Log activity
         $logMessage = _gettext("The client").' '.$client_details['display_name'].' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
+        $recordIds = $client_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -414,17 +414,16 @@ class Client extends Components {
     public function deleteNote($client_note_id) {
 
         // Get information before deleting the record
-        $client_id = $this->getNote($client_note_id, 'client_id');
+        $client_note_details = $this->getNote($client_note_id);
+        $client_details = $this->getRecord($client_note_details['client_id']);
 
         $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$this->app->db->qStr($client_note_id);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        $client_details = $this->getRecord($client_id);
-
         // Log activity
         $logMessage = _gettext("Client Note").' '.$client_note_id.' '._gettext("for Client").' '.$client_details['display_name'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
+        $recordIds = $client_note_details;
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -436,7 +435,7 @@ class Client extends Components {
     #  Check if the client allows editing                    #  // TODO: I will add more tests when needed
     ##########################################################
 
-     public function checkRecordAllowsEdit($client_id, $silent = false) {
+    public function checkRecordAllowsEdit($client_id, $silent = false) {
 
         $state_flag = true;
 

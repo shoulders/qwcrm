@@ -76,7 +76,17 @@ class Payment extends Components {
 
         // Log activity
         $logMessage = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $qpayment['client_id'], 'invoice_id' => $qpayment['invoice_id'], 'voucher_id' => $qpayment['voucher_id'], 'supplier_id' => $qpayment['supplier_id'], 'expense_id' => $qpayment['expense_id'], 'otherincome_id' => $qpayment['otherincome_id'],  'payment_id' => $payment_id, 'creditnote_id' => $qpayment['creditnote_id']);
+        $recordIds = array(
+                        'employee_id' => $this->app->user->login_user_id,
+                        'client_id' => $qpayment['client_id'],
+                        'invoice_id' => $qpayment['invoice_id'],
+                        'voucher_id' => $qpayment['voucher_id'],
+                        'supplier_id' => $qpayment['supplier_id'],
+                        'expense_id' => $qpayment['expense_id'],
+                        'otherincome_id' => $qpayment['otherincome_id'],
+                        'payment_id' => $payment_id,
+                        'creditnote_id' => $qpayment['creditnote_id']
+                        );
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -493,7 +503,17 @@ class Payment extends Components {
 
         // Log activity
         $logMessage = _gettext("Payment").' '.Payment::$payment_details['payment_id'].' '._gettext("updated.");
-        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => Payment::$payment_details['client_id'], 'invoice_id' => Payment::$payment_details['invoice_id'], 'voucher_id' => Payment::$payment_details['voucher_id'], 'supplier_id' => Payment::$payment_details['supplier_id'], 'expense_id' => Payment::$payment_details['expense_id'], 'otherincome_id' => Payment::$payment_details['otherincome_id'],  'payment_id' => Payment::$payment_details['payment_id'], 'creditnote_id' => Payment::$payment_details['creditnote_id']);
+        $recordIds = array(
+                        'employee_id' => $this->app->user->login_user_id ,
+                        'client_id' => Payment::$payment_details['client_id'],
+                        'invoice_id' => Payment::$payment_details['invoice_id'],
+                        'voucher_id' => Payment::$payment_details['voucher_id'],
+                        'supplier_id' => Payment::$payment_details['supplier_id'],
+                        'expense_id' => Payment::$payment_details['expense_id'],
+                        'otherincome_id' => Payment::$payment_details['otherincome_id'],
+                        'payment_id' => Payment::$payment_details['payment_id'],
+                        'creditnote_id' => Payment::$payment_details['creditnote_id']
+                        );
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -607,7 +627,7 @@ class Payment extends Components {
 
         // Log activity
         $logMessage = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $payment_details['client_id'], 'invoice_id' => $payment_details['invoice_id'], 'voucher_id' => $payment_details['voucher_id'], 'supplier_id' => $payment_details['supplier_id'], 'expense_id' => $payment_details['expense_id'], 'otherincome_id' => $payment_details['otherincome_id'],  'payment_id' => $payment_details['payment_id'], 'creditnote_id' => $payment_details['creditnote_id']);
+        $recordIds = $payment_details;
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("Payment status updated."), $silent);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -665,9 +685,6 @@ class Payment extends Components {
 
     public function voidRecord($payment_id, $reason_for_voiding) {
 
-        // Get payment details
-        $payment_details = $this->getRecord($payment_id);
-
         // Change the payment status to void (I do this here to maintain consistency)
         $this->updateStatus($payment_id, 'voided');
 
@@ -679,7 +696,7 @@ class Payment extends Components {
 
         // Log activity
         $logMessage = _gettext("Expense").' '.$payment_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $payment_details['client_id'], 'invoice_id' => $payment_details['invoice_id'], 'voucher_id' => $payment_details['voucher_id'], 'supplier_id' => $payment_details['supplier_id'], 'expense_id' => $payment_details['expense_id'], 'otherincome_id' => $payment_details['otherincome_id'],  'payment_id' => $payment_details['payment_id'], 'creditnote_id' => $payment_details['creditnote_id']);
+        $recordIds = $this->getRecord($payment_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -730,7 +747,7 @@ class Payment extends Components {
 
         // Log activity
         $logMessage = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
-        $recordIds = array('employee_id' => $this->app->user->login_user_id , 'client_id' => $payment_details['client_id'], 'invoice_id' => $payment_details['invoice_id'], 'voucher_id' => $payment_details['voucher_id'], 'supplier_id' => $payment_details['supplier_id'], 'expense_id' => $payment_details['expense_id'], 'otherincome_id' => $payment_details['otherincome_id'],  'payment_id' => $payment_details['payment_id'], 'creditnote_id' => $payment_details['creditnote_id']);
+        $recordIds = $payment_details;
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 

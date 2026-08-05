@@ -60,7 +60,7 @@ if(\CMSApplication::$VAR['commContent'] == 'voucher')
 }
 
 // Log activity
-$recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $voucher_details['client_id'], 'workorder_id' => $voucher_details['workorder_id'], 'invoice_id' => $voucher_details['invoice_id'], $voucher_details['voucher_id'] => $voucher_id);
+$recordIds = $voucher_details;
 $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
 // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)

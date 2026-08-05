@@ -52,7 +52,7 @@ class Communication extends System {
         // Run Communication Action
         if($this->$action())
         {
-           // Log Activity - onyl trigger if a log message is passes, but currently nothing does pass this
+           // Log Activity - only trigger if a log message is passes, but currently nothing does pass this
             if($this->$logMessage)
             {
                 $recordIds = $recipient_details;

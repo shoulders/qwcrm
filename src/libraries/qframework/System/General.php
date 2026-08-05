@@ -500,11 +500,40 @@ class General extends System {
 
     /* Logging */
 
-    ############################################
-    #  Update last active                      #  // Makes sure all records that are touched have their last_active updated
-    ############################################  // TODO: timestamp in the `function declaration` is not used and can probably be removed and just used `$timestamp = $timestamp ?? \CMSApplication::$VAR;`
+    ############################################ // This neatly extracts record IDs and leaves placeholders for nes that dont exist to prevent errors
+    #  Extract Record IDs from any record      # // `user_id` and `employee_id` are not the same
+    ############################################ // You can supply a full record or a partial array of IDs and this will curate as needed
 
-    function updateLastActive(array $recordIds, int $timestamp = null) {
+    private function extractRecordIds(array $record = array()) {
+
+        $recordIds = array();
+
+        // Prevent errors from missing IDs
+        $recordIds['user_id'] = $record['user_id'] ?? null;
+        $recordIds['employee_id'] = $record['employee_id'] ?? null;
+        $recordIds['client_id'] = $record['client_id'] ?? null;
+        $recordIds['workorder_id'] = $record['workorder_id'] ?? null;
+        $recordIds['schedule_id'] = $record['schedule_id'] ?? null;
+        $recordIds['invoice_id'] = $record['invoice_id'] ?? null;
+        $recordIds['voucher_id'] = $record['voucher_id'] ?? null;
+        $recordIds['supplier_id'] = $record['supplier_id'] ?? null;
+        $recordIds['expense_id'] = $record['expense_id'] ?? null;
+        $recordIds['otherincome_id'] = $record['otherincome_id'] ?? null;
+        $recordIds['payment_id'] = $record['payment_id'] ?? null;
+        $recordIds['creditnote_id'] = $record['creditnote_id'] ?? null;
+
+        return $recordIds;
+
+    }
+
+    ############################################  // When a record database operation has finished, this function will log as active, any associates records IDs within that record
+    #  Update last active                      #  // Makes sure all records that are touched have their last_active updated
+    ############################################  // Logged in user is registered in the index.php, `user_id` here is when a users record is accessed.
+                                                  // Employees currently do not have their own section like clients
+                                                  // a `user_id` can be a client or employee user account
+                                                  // TODO: timestamp in the `function declaration` is not used and can probably be removed and just used `$timestamp = $timestamp ?? \CMSApplication::$VAR;`
+
+    public function updateLastActive(array $recordIds, int $timestamp = null) {
 
         // Unify Dates and Times
         $timestamp = $timestamp ?? \CMSApplication::$timestamp;
@@ -513,12 +542,13 @@ class General extends System {
         $recordIds = $this->extractRecordIds($recordIds);
 
         $this->app->components->user->updateLastActive($recordIds['user_id'], $timestamp);
-        //$this->app->components->user->updateLastActive($recordIds['employee_id'], $timestamp);  // employee_id will be removed
+        $this->app->components->user->updateLastActive($recordIds['employee_id'], $timestamp);
         $this->app->components->client->updateLastActive($recordIds['client_id'], $timestamp);
         $this->app->components->workorder->updateLastActive($recordIds['workorder_id'], $timestamp);
         $this->app->components->schedule->updateLastActive($recordIds['schedule_id'], $timestamp);
         $this->app->components->invoice->updateLastActive($recordIds['invoice_id'], $timestamp);
         $this->app->components->voucher->updateLastActive($recordIds['voucher_id'], $timestamp);
+        $this->app->components->supplier->updateLastActive($recordIds['supplier_id'], $timestamp);
         $this->app->components->expense->updateLastActive($recordIds['expense_id'], $timestamp);
         $this->app->components->otherincome->updateLastActive($recordIds['otherincome_id'], $timestamp);
         $this->app->components->payment->updateLastActive($recordIds['payment_id'], $timestamp);
@@ -528,31 +558,36 @@ class General extends System {
 
     }
 
-
-
-    ############################################
-    #  Extract Record IDs from any record     #  // This neatly extracts record IDs and leaves placeholders for nes that dont exist to prevent errors
+    ############################################ This is in apache log format
+    #  Write a record to the Activity Log      #
     ############################################
 
-    function extractRecordIds(array $record) {
+    public function writeRecordToActivityLog(string $logMessage, array $recordIds = array()) {
 
-        $recordIds = array();
+        // if activity logging not enabled exit
+        if($this->app->config->get('qwcrm_activity_log') != true) { return; }
 
-        // Prevent errors from missing IDs
-        $recordIds['user_id'] = $record['user_id'] ?? $recordIds['employee_id'] ?? $this->app->user->login_user_id ?? null;  // User and Employee are exactly the same. Employee will be removed
-        //$recordIds['employee_id'] = $record['employee_id'] ?? null;
-        $recordIds['client_id'] = $record['client_id'] ?? null;
-        $recordIds['workorder_id'] = $record['workorder_id'] ?? null;
-        $recordIds['schedule_id'] = $record['schedule_id'] ?? null;
-        $recordIds['invoice_id'] = $record['invoice_id'] ?? null;
-        $recordIds['voucher_id'] = $record['voucher_id'] ?? null;
-        $recordIds['supplier_id'] = $record['supplier_id'] ?? null;
-        $recordIds['expense_id'] = $record['expense_id'] ?? null;
-        $recordIds['otherincome_id'] = $record['otherincome_id'] ?? null;
-        $recordIds['payment_id'] = $record['payment'] ?? null;
-        $recordIds['creditnote_id'] = $record['creditnote_id'] ?? null;
+        // Sanitize Record IDs
+        $recordIds = $this->extractRecordIds($recordIds);
 
-        return $recordIds;
+        // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
+        $username = $this->app->user->login_username ?? '-';
+
+        // Build log entry
+        $log_entry  = $_SERVER['REMOTE_ADDR'].",$username,".date("[d/M/Y:H:i:s O]", \CMSApplication::$timestamp);
+        $log_entry .= ",{$recordIds['user_id']},{$recordIds['employee_id']},{$recordIds['client_id']},{$recordIds['workorder_id']},{$recordIds['schedule_id']}";
+        $log_entry .= ",{$recordIds['invoice_id']},{$recordIds['voucher_id']},{$recordIds['supplier_id']},{$recordIds['expense_id']},{$recordIds['otherincome_id']}";
+        $log_entry .= ",{$recordIds['payment_id']},{$recordIds['creditnote_id']},$logMessage\r\n";
+
+        // Write log entry
+        if(!$fp = fopen(ACTIVITY_LOG, 'a')) {
+            $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
+        }
+
+        fwrite($fp, $log_entry);
+        fclose($fp);
+
+        return;
 
     }
 
@@ -607,49 +642,6 @@ class General extends System {
         // Write log entry
         if(!$fp = fopen(ACCESS_LOG, 'a')) {
             $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
-        }
-
-        fwrite($fp, $log_entry);
-        fclose($fp);
-
-        return;
-
-    }
-
-    ############################################ This is in apache log format
-    #  Write a record to the Activity Log      #
-    ############################################
-
-    function writeRecordToActivityLog(string $logMessage, array $recordIds = array()) {
-
-        // if activity logging not enabled exit
-        if($this->app->config->get('qwcrm_activity_log') != true) { return; }
-
-        // Sanitize Record IDs
-        $recordIds = $this->extractRecordIds($recordIds);
-
-        // This allows me to use the "" for building the statement below
-        $user_id = $recordIds['user_id'];
-        $client_id = $recordIds['client_id'];
-        $workorder_id = $recordIds['workorder_id'];
-        $schedule_id = $recordIds['schedule_id'];
-        $invoice_id = $recordIds['invoice_id'];
-        $voucher_id = $recordIds['voucher_id'];
-        $supplier_id = $recordIds['supplier_id'];
-        $expense_id = $recordIds['expense_id'];
-        $otherincome_id = $recordIds['otherincome_id'];
-        $payment_id = $recordIds['payment_id'];
-        $creditnote_id = $recordIds['creditnote_id'];
-
-        // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
-        $username = $this->app->user->login_username ?? '-';
-
-        // Build log entry
-        $log_entry = $_SERVER['REMOTE_ADDR'].",$username,".date("[d/M/Y:H:i:s O]", \CMSApplication::$timestamp).",$user_id,$client_id,$workorder_id,$schedule_id,$invoice_id,$voucher_id,$supplier_id,$expense_id,$otherincome_id,$payment_id,$creditnote_id,$logMessage\r\n";
-
-        // Write log entry
-        if(!$fp = fopen(ACTIVITY_LOG, 'a')) {
-            $this->app->system->page->forceErrorPage('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
         }
 
         fwrite($fp, $log_entry);

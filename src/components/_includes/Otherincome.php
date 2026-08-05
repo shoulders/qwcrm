@@ -457,7 +457,7 @@ class Otherincome extends Components {
 
         // Log activity
         $logMessage = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $otherincome_details['supplier_id'], 'otherincome_id' => $otherincome_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id) + $otherincome_details;
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome status updated."), $silent);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -523,7 +523,7 @@ class Otherincome extends Components {
 
         // Log activity
         $logMessage = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $this->app->components->otherincome->getRecord($otherincome_id, 'supplier_id'), 'otherincome_id' => $otherincome_id);
+        $recordIds = $this->getRecord($otherincome_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -575,7 +575,7 @@ class Otherincome extends Components {
 
         // Log activity
         $logMessage = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("deleted.");
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $otherincome_details['supplier_id'], 'otherincome_id' => $otherincome_id);
+        $recordIds = $otherincome_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);

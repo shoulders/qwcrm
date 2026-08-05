@@ -74,15 +74,12 @@ class WorkOrder extends Components {
         // Get the new Note ID
         $workorder_note_id = $this->app->db->Insert_ID();
 
-        // Get client id
-        $client_id = $this->getRecord($workorder_id, 'client_id');
-
         // Create a Workorder History Note
         $this->insertHistory($workorder_id, _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
         $logMessage = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added to Work Order").' '.$workorder_id.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id, 'workorder_id' => $workorder_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), 'workorder_id' => $workorder_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -450,6 +447,7 @@ class WorkOrder extends Components {
     public function updateScopeDescription($workorder_id, $scope, $description) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET
+                employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 scope               =".$this->app->db->qStr($scope).",
                 description         =".$this->app->db->qStr($description)."
                 WHERE workorder_id  =".$this->app->db->qStr($workorder_id);
@@ -461,7 +459,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), $workorder_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), 'workorder_id' => $workorder_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -477,6 +475,7 @@ class WorkOrder extends Components {
     public function updateComment($workorder_id, $comment) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET
+                employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 comment             =". $this->app->db->qStr($comment)."
                 WHERE workorder_id  =". $this->app->db->qStr($workorder_id);
 
@@ -487,7 +486,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), $workorder_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), 'workorder_id' => $workorder_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -503,6 +502,7 @@ class WorkOrder extends Components {
     public function updateResolution($workorder_id, $resolution) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET
+                employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 resolution          =". $this->app->db->qStr( $resolution      )."
                 WHERE workorder_id  =". $this->app->db->qStr( $workorder_id    );
 
@@ -513,7 +513,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), $workorder_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), 'workorder_id' => $workorder_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -542,7 +542,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], $workorder_details['workorder_id']);
+        $recordIds = $workorder_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -594,7 +594,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], $workorder_id);
+        $recordIds = array('employee_id' => $employee_id ) + $workorder_details;
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("Work order status updated."), $silent);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -647,8 +647,8 @@ class WorkOrder extends Components {
 
     public function deleteRecord($workorder_id) {
 
-        // Get client_id before deleletion
-        $client_id = $this->getRecord($workorder_id, 'client_id');
+        // Get record details for logging before we delete anything
+        $workorder_details = $this->getRecord($workorder_id);
 
         // Delete the workorder history
         $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$this->app->db->qStr($workorder_id);
@@ -688,7 +688,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id, 'workorder_id' => $workorder_id);
+        $recordIds = $workorder_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -715,7 +715,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_details['workorder_id']);
+        $recordIds = $workorder_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -740,14 +740,14 @@ class WorkOrder extends Components {
         // If there is no employee assigned, set the current logged in user as the assigned employee
         if(!$workorder_details['employee_id']) {
             $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
-            //$workorder_details['employee_id'] = $this->app->user->login_user_id;
+            $workorder_details['employee_id'] = $this->app->user->login_user_id;
         }
 
         // Messages that depend on closed with or without invoice
-        if(!$workorder_details['invoice_id']) {            
+        if(!$workorder_details['invoice_id']) {
             $historyMessage = _gettext("Closed without invoice by").' '.$this->app->user->login_display_name.'.';
             $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
-        } else {            
+        } else {
             $historyMessage = _gettext("Closed with invoice by").' '.$this->app->user->login_display_name.'.';
             $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
         }
@@ -756,7 +756,7 @@ class WorkOrder extends Components {
         $this->insertHistory($workorder_id, $historyMessage);
 
         // Log activity
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_id, 'invoice_id' => $workorder_details['invoice_id'] ?? null);
+        $recordIds = $workorder_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -847,7 +847,7 @@ class WorkOrder extends Components {
     #  can the workorder be edited                           #
     ##########################################################
 
-     public function checkRecordAllowsEdit($workorder_id, $silent = false) {
+    public function checkRecordAllowsEdit($workorder_id, $silent = false) {
 
         $state_flag = true;
 
@@ -1119,7 +1119,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-        $recordIds = array('employee_id' => $target_employee_id, 'client_id' => $workorder_details['client_id'], 'workorder_id' => $workorder_id);
+        $recordIds = array('employee_id' => $target_employee_id) + $workorder_details;
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 

@@ -47,7 +47,7 @@ if(\CMSApplication::$VAR['commContent'] == 'envelope')
 }
 
 // Log activity
-$recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+$recordIds = $supplier_details;
 $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
 // Perform Communication Action - This also stops further processing (Logging currently done in this file, not this function which has an option for it)

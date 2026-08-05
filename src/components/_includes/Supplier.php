@@ -60,7 +60,7 @@ class Supplier extends Components {
 
         // Log activity
         $logMessage = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
-        $recordIds = array('employee_id' => $this->app->user->login_user_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return $supplier_id;
@@ -396,7 +396,7 @@ class Supplier extends Components {
 
         // Log activity
         $logMessage = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_id);
         //$this->app->system->variables->systemMessagesWrite('success', _gettext("supplier status updated."), $silent);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -423,7 +423,7 @@ class Supplier extends Components {
 
         // Log activity
         $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was activated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $recordIds = $supplier_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -449,7 +449,7 @@ class Supplier extends Components {
 
         // Log activity
         $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was suspended by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $recordIds = $supplier_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -517,7 +517,7 @@ class Supplier extends Components {
 
         // Log activity
         $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was closed by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $recordIds = $supplier_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -543,7 +543,7 @@ class Supplier extends Components {
 
         // Log activity
         $logMessage = _gettext("The supplier").' ('.$supplier_details['display_name'].') '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_details['supplier_id']);
+        $recordIds = $supplier_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
