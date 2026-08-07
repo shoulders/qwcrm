@@ -63,6 +63,7 @@ _gettext("Draft");
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
+_gettext("Close with Creditnote");
 _gettext("Voided");
 _gettext("Deleted");
 

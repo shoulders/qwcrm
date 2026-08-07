@@ -445,7 +445,7 @@ class Expense extends Components {
         }
 
         // Is the new status a "closed" status
-        if(in_array($new_status, array('paid', 'voided', 'deleted'))) {
+        if(in_array($new_status, array('paid', 'closed_with_creditnote', 'voided', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
             $closed_on = null;
@@ -708,6 +708,10 @@ class Expense extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense is already approved."), $silent);
                 $state_flag = false;
                 break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense is already approved."), $silent);
+                $state_flag = false;
+                break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense is already approved."), $silent);
                 $state_flag = false;
@@ -763,6 +767,10 @@ class Expense extends Components {
                 break;
             case 'paid':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be unapproved because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -842,6 +850,10 @@ class Expense extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been paid."), $silent);
                 $state_flag = false;
                 break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been closed with a credit note."), $silent);
+                $state_flag = false;
+                break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been voided."), $silent);
                 $state_flag = false;
@@ -914,6 +926,10 @@ class Expense extends Components {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been paid."), $silent);
                 $state_flag = false;
                 break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been closed with a credit note."), $silent);
+                $state_flag = false;
+                break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been voided."), $silent);
                 $state_flag = false;
@@ -966,6 +982,10 @@ class Expense extends Components {
                 break;
             case 'paid':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1032,6 +1052,10 @@ class Expense extends Components {
                 break;
             case 'paid':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1127,9 +1151,21 @@ class Expense extends Components {
                 $this->updateStatus($expense_id, 'partially_paid');
                 break;
 
-            // Has expense amount and the payment(s) match the credit note amount, set to paid (if not already)
+            // Has expense amount and the payment(s) match the credit note amount, set to paid/closed_with_creditnote (if not already)
             case $expense_details['unit_gross'] > 0 && $expense_details['unit_gross'] == $payments_subtotal :
-                $this->updateStatus($expense_id, 'paid');
+
+                // Was this expense closed with a creditnote
+                if(
+                    // There is a closing Credit note (i dont think this check is needed)
+                    //$this->app->components->report->creditnoteCount(null, null, null, null, null, null, 'purchase', 'close', null, null, null, null, $expense_id) &&
+
+                    // The closing credit note has been used as a payment against the expense (`credit` = Supplier sending me money, `debit` = used as a payment against a supplier's expense)
+                    $this->app->components->report->paymentCount(null, null, null, null, 'valid', 'expense', 'creditnote', 'debit', null, null, null, null, $expense_id)
+                ) {
+                    $this->updateStatus($expense_id, 'closed_with_creditnote');
+                } else {
+                    $this->updateStatus($expense_id, 'paid');
+                }
                 break;
 
         }

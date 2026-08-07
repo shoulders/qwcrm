@@ -40,8 +40,8 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $record['sales_tax_rate'] = 0.00;
         $record['action_type'] = 'standalone';
 
-        // Build Single Item
-        $standard_item['description'] = _gettext("Item(s)");
+        // Build Standard Item
+        $standard_item['description'] = _gettext("Invoice Item(s)");
         $standard_item['unit_qty'] = '1.00';
         $standard_item['unit_net'] = '0.00';
         $standard_item['unit_discount'] = '0.00';
@@ -77,7 +77,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             $items_subtotals        = $this->app->components->invoice->getItemsSubtotals(\CMSApplication::$VAR['invoice_id'] );
             $voucher_subtotals      = $this->app->components->voucher->getInvoiceVouchersSubtotals(\CMSApplication::$VAR['invoice_id'] );
 
-            // Build Single Item
+            // Build Standard Item
             $standard_item['description'] = _gettext("Invoice Item(s)");
             $standard_item['unit_qty'] = '1.00';
             $standard_item['unit_net'] = $items_subtotals['subtotal_net'];
@@ -121,10 +121,10 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
             // Get all payments against this invoice (real monies via credit notes)
             $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', null, 'debit', null, null, null, \CMSApplication::$VAR['invoice_id']);
 
-            // Is there any real money left that can be refunded (there will be because this was test in creditnote.php)
+            // Is there any real money left that can be refunded (there will be because this was tested in creditnote.php)
             $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
 
-            // Build Single Item
+            // Build Standard Item
             $standard_item['description'] = _gettext("Item(s)");
             $standard_item['unit_qty'] = '1.00';
             $standard_item['unit_net'] = $moniesThatCanBeRefunded;
@@ -157,8 +157,8 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $record['sales_tax_rate'] = 0.00;
         $record['action_type'] = 'standalone';
 
-        // Build Single Item
-        $standard_item['description'] = _gettext("Item(s)");
+        // Build Standard Item
+        $standard_item['description'] = _gettext("Expense Item(s)");
         $standard_item['unit_qty'] = '1.00';
         $standard_item['unit_net'] = '0.00';
         $standard_item['unit_discount'] = '0.00';
@@ -187,23 +187,58 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $record['sales_tax_rate'] = 0.00;
         $record['action_type'] = (float) $expense_details['balance'] ? 'close' : 'refund';
 
-        // Build Single Item
-        $standard_item['description'] = _gettext("Expense Item(s)");
-        $standard_item['unit_qty'] = '1.00';
-        $standard_item['unit_net'] = $expense_details['unit_net'];
-        $standard_item['unit_discount'] = $expense_details['unit_discount'];
-        $standard_item['sales_tax_exempt'] = 0;
-        $standard_item['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']);
-        $standard_item['unit_tax_rate'] = preg_match('/^vat_/', QW_TAX_SYSTEM)
-                                        ? $this->app->components->company->getVatRate($standard_item['vat_tax_code'])
-                                        : (QW_TAX_SYSTEM === 'sales_tax_cash'
-                                            ? $this->app->components->company->getRecord('sales_tax_rate')
-                                            : '0.00');
-        $standard_item['unit_tax'] = $expense_details['unit_tax'];
-        $standard_item['unit_gross'] = $expense_details['unit_gross'];
-        $standard_item['subtotal_net'] = $expense_details['unit_net'];
-        $standard_item['subtotal_tax'] = $expense_details['unit_tax'];
-        $standard_item['subtotal_gross'] = $expense_details['unit_gross'];
+        // Build items for closing an invoice
+        if($record['action_type'] == 'close') {
+
+            // Build Standard Item
+            $standard_item['description'] = _gettext("Expense Item(s)");
+            $standard_item['unit_qty'] = '1.00';
+            $standard_item['unit_net'] = $expense_details['unit_net'];
+            $standard_item['unit_discount'] = 0.00;
+            $standard_item['sales_tax_exempt'] = 0;
+            $standard_item['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']);
+            $standard_item['unit_tax_rate'] = preg_match('/^vat_/', QW_TAX_SYSTEM)
+                                            ? $this->app->components->company->getVatRate($standard_item['vat_tax_code'])
+                                            : (QW_TAX_SYSTEM === 'sales_tax_cash'
+                                                ? $this->app->components->company->getRecord('sales_tax_rate')
+                                                : '0.00');
+            $standard_item['unit_tax'] = $expense_details['unit_tax'];
+            $standard_item['unit_gross'] = $expense_details['unit_gross'];
+            $standard_item['subtotal_net'] = $expense_details['unit_net'];
+            $standard_item['subtotal_tax'] = $expense_details['unit_tax'];
+            $standard_item['subtotal_gross'] = $expense_details['unit_gross'];
+
+        // Build items for refunding real monies on a closed expense (calculations from creditnote.php)
+        // Tax is not accounted for, user will have edit before submission if required
+        } else {
+
+            // Calculate real monies paid on this expense by the us (excludes credit notes and vouchers, this allows you to close an expense with a `Close` CR and not receive any money from the supplier)
+            $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', 'real_monies', 'debit', null, null, null, null, \CMSApplication::$VAR['expense_id']);
+
+            // Get all payments against this expense (real monies via credit notes)
+            $moniesOut = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', null, 'credit', null, null, null, null, \CMSApplication::$VAR['expense_id']);
+
+            // Is there any real money is there left which can then be refunded (there will be because this was tested in creditnote.php)
+            $moniesThatCanBeRefunded = $moniesIn - $moniesOut;
+
+            // Build Standard Item
+            $standard_item['description'] = _gettext("Item(s)");
+            $standard_item['unit_qty'] = '1.00';
+            $standard_item['unit_net'] = $moniesThatCanBeRefunded;
+            $standard_item['unit_discount'] = 0.00;
+            $standard_item['sales_tax_exempt'] = 0;
+            $standard_item['vat_tax_code'] = $this->app->components->company->getDefaultVatTaxCode($expense_details['tax_system']);
+            $standard_item['unit_tax_rate'] = preg_match('/^vat_/', QW_TAX_SYSTEM)
+                                            ? $this->app->components->company->getVatRate($standard_item['vat_tax_code'])
+                                            : (QW_TAX_SYSTEM === 'sales_tax_cash'
+                                                ? $this->app->components->company->getRecord('sales_tax_rate')
+                                                : '0.00');
+            $standard_item['unit_gross'] = $moniesThatCanBeRefunded;
+            $standard_item['subtotal_net'] = $moniesThatCanBeRefunded;
+            $standard_item['subtotal_tax'] = 0.00;
+            $standard_item['subtotal_gross'] = $moniesThatCanBeRefunded;
+
+        }
     }
 
     // Compensate record for multiple entry points

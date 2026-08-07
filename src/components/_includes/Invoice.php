@@ -1467,7 +1467,7 @@ defined('_QWEXEC') or die;
                     //$this->app->components->report->creditnoteCount(null, null, null, null, null, null, 'sales', 'close', null, null, null, $invoice_id) &&
 
                     // The closing credit note has been used as a payment against the invoice (`credit` = closing CR, `debit` = sending payment to client)
-                    $this->app->components->report->paymentCount('date', null, null, null, 'valid', 'invoice', 'creditnote', 'credit', null, null, null, $invoice_id)
+                    $this->app->components->report->paymentCount(null, null, null, null, 'valid', 'invoice', 'creditnote', 'credit', null, null, null, $invoice_id)
                 ) {
                     $this->updateStatus($invoice_id, 'closed_with_creditnote');
                 } else {

@@ -28,7 +28,7 @@ if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status ){
 
 // Unapprove
 if(isset(\CMSApplication::$VAR['unapprove_expense']) && $allowed_to_unapprove){
-    $this->updateStatus(\CMSApplication::$VAR['expense_id'], 'draft');
+    $this->app->components->expense->updateStatus(\CMSApplication::$VAR['expense_id'], 'draft');
     $this->app->system->page->forcePage('expense', 'status&expense_id='.\CMSApplication::$VAR['expense_id']);
 }
 

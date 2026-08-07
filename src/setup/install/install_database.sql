@@ -504,8 +504,9 @@ INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'paid', 'Paid'),
-(5, 'voided', 'Voided');
-(6, 'deleted', 'Deleted');
+(5, 'closed_with_creditnote', 'Closed with Creditnote'),
+(6, 'voided', 'Voided'),
+(7, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 

@@ -43,7 +43,7 @@ class PaymentTypeExpense extends PaymentType
 
         // Load credit note details (if required)
         if(Payment::$method == 'creditnote'){
-            $creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id']);
+            $this->creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id']);
         }
 
         // New
@@ -58,7 +58,7 @@ class PaymentTypeExpense extends PaymentType
 
                 // Type 1 CR Payment - A partially paid expense generated a credit note to close itself using this creditnote payment (expense:details)
                 // There should only ever be one CR created from the expense that is applied to the same expense, resulting in a zero balance (i.e. Type 1 CR)
-                if((float) $this->expense_details['balance'] && $this->VAR['qpayment']['expense_id'] == $creditnote_details['expense_id']){  // The payment record does not exist yet and is why you cannot use it to compare.
+                if((float) $this->expense_details['balance'] && $this->VAR['qpayment']['expense_id'] == $this->creditnote_details['expense_id']){  // The payment record does not exist yet and is why you cannot use it to compare.
 
                     // The Payment must be the exact amount to close the expense
                     // A Type 1 CR payment will always close the expense balance in one payment
@@ -70,7 +70,7 @@ class PaymentTypeExpense extends PaymentType
                 // Type 2 CR Payments - From CR generated from other expenses owned by the supplier (expense:details), supplier Standalone CR method (supplier:details)
                 } else {
                     // expense and credit note need the same supplier
-                    if($this->expense_details['supplier_id'] != $creditnote_details['supplier_id']){
+                    if($this->expense_details['supplier_id'] != $this->creditnote_details['supplier_id']){
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot apply this credit note against this expense because they are not both owned by the same supplier."));
                         Payment::$payment_valid = false;
                     }
@@ -85,9 +85,9 @@ class PaymentTypeExpense extends PaymentType
                     Payment::$payment_valid = false;
                 }
 
-                // // Does this expense have any credit notes generated against it
+                // // Does this expense have any credit notes generated against it (voided and deleted are excluded at source)
                 if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $this->VAR['qpayment']['expense_id'])){
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add a new payment to this expense because it has one or more credit notes generated against it."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add a new payment to this expense because it has one or more valid credit notes generated against it."));
                     Payment::$payment_valid = false;
                 }
             }
@@ -216,7 +216,7 @@ class PaymentTypeExpense extends PaymentType
             // New
             if(Payment::$action === 'new')
             {
-                // Is this is a Type 1 credit note payment (closed a partially open expense), then tag it in the expense record
+                // Is this is a Type 1 credit note payment (closed a partially open expense), then tag it in the expense record  ***creditnote_details[] is empty, $expense_details is fine
                 if(Payment::$method == 'creditnote' && (float) $this->expense_details['balance'] && $this->VAR['qpayment']['creditnote_id'] == $this->creditnote_details['expense_id']){
                     $this->app->components->expense->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => Payment::$payment_details['payment_id']));
                     $this->closedByCreditnotePaymentId = Payment::$payment_details['payment_id'];
