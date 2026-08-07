@@ -25,3 +25,4 @@ $this->app->smarty->assign('payment_methods',          $this->app->components->p
 $this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
 $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
 $this->app->smarty->assign('payment_details',          $payment_details);
+$this->app->smarty->assign('allowed_to_edit',          $this->app->components->payment->checkRecordAllowsEdit(\CMSApplication::$VAR['payment_id'], true)); // More checks are done upon submission because of the different combinations of Types and Methods

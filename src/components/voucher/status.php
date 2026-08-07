@@ -24,7 +24,7 @@ $voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$
 $allowed_to_change_status = $this->app->components->voucher->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['voucher_id']);
 $allowed_to_delete = $this->app->components->voucher->checkRecordAllowsDelete(\CMSApplication::$VAR['voucher_id']);
 
-// Update Voucher Status
+// Change Status (manually)
 if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status){
     $this->app->components->voucher->updateStatus(\CMSApplication::$VAR['voucher_id'], \CMSApplication::$VAR['assign_status']);
     $this->app->system->page->forcePage('voucher', 'status&voucher_id='.\CMSApplication::$VAR['voucher_id']);
@@ -32,14 +32,8 @@ if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status){
 
 // Delete
 if(isset(\CMSApplication::$VAR['delete_voucher']) && $allowed_to_delete){
-
-    // Delete the voucher
     $this->app->components->voucher->deleteRecord(\CMSApplication::$VAR['voucher_id']);
-
-    // Recalculate the invoice totals and update them
     $this->app->components->invoice->recalculateTotals($voucher_details['invoice_id']);
-
-    //$this->app->system->page->forcePage('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
     $this->app->system->page->forcePage('voucher', 'search');
 }
 

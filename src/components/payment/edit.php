@@ -14,23 +14,30 @@ if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['paymen
     $this->app->system->page->forcePage('payment', 'search');
 }
 
-// Build the Payment Environment
-$this->app->components->payment->buildPaymentEnvironment('edit');
+// Check if payment can be edited - More checks are done upon submission because of the different combinations of Types and Methods
+if(!$this->app->components->payment->checkRecordAllowsEdit(\CMSApplication::$VAR['payment_id'])) {
+    $this->app->system->page->forcePage('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
+} else {
 
-// If the form is submitted
-if(isset(\CMSApplication::$VAR['submit']))
-{
-    // Perform payment action
-    $this->app->components->payment->performPaymentAction();
+    // Build the Payment Environment
+    $this->app->components->payment->buildPaymentEnvironment('edit');
+
+    // If the form is submitted
+    if(isset(\CMSApplication::$VAR['submit']))
+    {
+        // Perform payment action
+        $this->app->components->payment->performPaymentAction();
+    }
+
+    // Build the page
+    $this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord(Payment::$payment_details['employee_id'], 'display_name'));
+    $this->app->smarty->assign('client_display_name',      $this->app->components->client->getRecord(Payment::$payment_details['client_id'], 'display_name'));
+    $this->app->smarty->assign('supplier_display_name',    $this->app->components->supplier->getRecord(Payment::$payment_details['supplier_id'], 'display_name'));
+    $this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes());
+    $this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods());
+    $this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
+    $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
+    $this->app->smarty->assign('payment_details',          Payment::$payment_details);
+    $this->app->smarty->assign('parent_record_balance',    Payment::$record_balance + Payment::$payment_details['amount']);
+
 }
-
-// Build the page
-$this->app->smarty->assign('employee_display_name',    $this->app->components->user->getRecord(Payment::$payment_details['employee_id'], 'display_name'));
-$this->app->smarty->assign('client_display_name',      $this->app->components->client->getRecord(Payment::$payment_details['client_id'], 'display_name'));
-$this->app->smarty->assign('supplier_display_name',    $this->app->components->supplier->getRecord(Payment::$payment_details['supplier_id'], 'display_name'));
-$this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes());
-$this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods());
-$this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
-$this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
-$this->app->smarty->assign('payment_details',          Payment::$payment_details);
-$this->app->smarty->assign('parent_record_balance',    Payment::$record_balance + Payment::$payment_details['amount']);

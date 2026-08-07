@@ -412,7 +412,7 @@ class Report extends Components {
         // Historic
         if($record_set == 'historic' || $record_set == 'all') {   //is assigned the best choice. emploee_id was last to mess with record + shoul i allow if empty tyep = any - prob not
 
-            $stats['count_opened'] = $this->workorderCount('opened_on', $start_date, $end_date, 'opened', 'created_by', $employee_id, $client_id);
+            $stats['count_opened'] = $this->workorderCount('opened_on', $start_date, $end_date, 'open', 'created_by', $employee_id, $client_id);
             $stats['count_closed'] = $this->workorderCount('closed_on', $start_date, $end_date, 'closed', 'closed_by', $employee_id, $client_id);
             $stats['count_closed_without_invoice'] = $this->workorderCount('opened_on', $start_date, $end_date, 'closed_without_invoice', 'closed_by', $employee_id, $client_id);
             $stats['count_closed_with_invoice'] = $this->workorderCount('opened_on', $start_date, $end_date, 'closed_with_invoice', 'closed_by', $employee_id, $client_id);
@@ -697,7 +697,7 @@ class Report extends Components {
         if($record_set == 'historic' || $record_set == 'all') {
 
             $stats['count_items'] = $this->invoiceCount('date', $start_date, $end_date, $tax_system, null, $employee_id, $client_id);
-            $stats['count_opened'] = $this->invoiceCount('opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $client_id);
+            $stats['count_opened'] = $this->invoiceCount('opened_on', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id);
             $stats['count_closed'] = $this->invoiceCount('closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $client_id);
             $stats['count_voided'] = $this->invoiceCount('closed_on', $start_date, $end_date, $tax_system, 'voided', $employee_id, $client_id);
             $stats['count_deleted'] = $this->invoiceCount(null, $start_date, $end_date, $tax_system, 'deleted', $employee_id, $client_id);
@@ -727,7 +727,7 @@ class Report extends Components {
 
             $stats['sum_open_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id);
             $stats['sum_discounted_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);  // TODO: Cannot remove voided with discount
-            $stats['sum_opened_unit_gross'] = $this->invoiceSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $client_id);
+            $stats['sum_opened_unit_gross'] = $this->invoiceSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id);
             $stats['sum_closed_discounted_unit_gross'] = $this->invoiceSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);  // TODO: Cannot remove voided with discount
 
         }
@@ -1016,7 +1016,7 @@ class Report extends Components {
         }
 
         // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
-        if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
+        if($status !== 'voided' && $status !== 'open' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."invoice_records.status != 'voided'";
         }
 
@@ -1052,7 +1052,7 @@ class Report extends Components {
         if($record_set == 'historic' || $record_set == 'all') {
 
             $stats['count_items'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, null, null, $employee_id, $client_id);
-            $stats['count_opened'] = $this->voucherCount('opened_on', $start_date, $end_date, $tax_system, null, null, 'opened', null, $employee_id, $client_id);
+            $stats['count_opened'] = $this->voucherCount('opened_on', $start_date, $end_date, $tax_system, null, null, 'open', null, $employee_id, $client_id);
             $stats['count_closed'] = $this->voucherCount('closed_on', $start_date, $end_date, $tax_system, null, null, 'closed', null, $employee_id, $client_id);
             $stats['count_claimed'] = $this->voucherCount('closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', null, $employee_id, $client_id);  // This is where the client has used a Voucher from someone else on their account
             $stats['count_unredeemed'] = $this->voucherCount('date', $start_date, $end_date, $tax_system, null, null, 'unredeemed', false, $employee_id, $client_id);
@@ -1085,7 +1085,7 @@ class Report extends Components {
             $stats['sum_voided_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'voided', null, $employee_id, $client_id);
 
             $stats['sum_open_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'open', null, $employee_id, $client_id);
-            $stats['sum_opened_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'opened', null, $employee_id, $client_id);
+            $stats['sum_opened_unit_gross'] = $this->voucherSum('unit_gross', 'date', $start_date, $end_date, $tax_system, null, null, 'open', null, $employee_id, $client_id);
             $stats['sum_closed_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'closed', null, $employee_id, $client_id);
             $stats['sum_claimed_unit_gross'] = $this->voucherSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, null, null, 'claimed', null, $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
 
@@ -1295,7 +1295,7 @@ class Report extends Components {
         }
 
         // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
-        if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
+        if($status !== 'voided' && $status !== 'open' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.status != 'voided'";
         }
 
@@ -1451,7 +1451,7 @@ class Report extends Components {
             $stats['sum_paid_unit_gross']           = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $supplier_id);
             $stats['sum_voided_unit_gross']      = $this->expenseSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'voided', $employee_id, $supplier_id);
             $stats['sum_open_unit_gross']           = $this->expenseSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $supplier_id);
-            $stats['sum_opened_unit_gross']         = $this->expenseSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $supplier_id);
+            $stats['sum_opened_unit_gross']         = $this->expenseSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'open', $employee_id, $supplier_id);
             $stats['sum_closed_unit_gross']         = $this->expenseSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $supplier_id);
 
         }
@@ -1778,7 +1778,7 @@ class Report extends Components {
         }
 
         // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
-        if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
+        if($status !== 'voided' && $status !== 'open' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."expense_records.status != 'voided'";
         }
 
@@ -1816,7 +1816,7 @@ class Report extends Components {
         if($record_set == 'historic' || $record_set == 'all') {
 
             $stats['count_items'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, null, $employee_id, $supplier_id);
-            $stats['count_opened'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'opened', $employee_id, $supplier_id);
+            $stats['count_opened'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'open', $employee_id, $supplier_id);
             $stats['count_closed'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'closed', $employee_id, $supplier_id);
             $stats['count_paid'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'paid', $employee_id, $supplier_id);
             $stats['count_voided'] = $this->otherincomeCount('date', $start_date, $end_date, $tax_system, null, 'voided', $employee_id, $supplier_id);
@@ -1839,7 +1839,7 @@ class Report extends Components {
             $stats['sum_paid_unit_gross']           = $this->otherincomeSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'paid', $employee_id, $supplier_id);
             $stats['sum_voided_unit_gross']      = $this->otherincomeSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'voided', $employee_id, $supplier_id);
             $stats['sum_open_unit_gross']           = $this->otherincomeSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $supplier_id);
-            $stats['sum_opened_unit_gross']         = $this->otherincomeSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', $employee_id, $supplier_id);
+            $stats['sum_opened_unit_gross']         = $this->otherincomeSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'open', $employee_id, $supplier_id);
             $stats['sum_closed_unit_gross']         = $this->otherincomeSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $supplier_id);
 
         }
@@ -2146,7 +2146,7 @@ class Report extends Components {
         }
 
         // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
-        if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
+        if($status !== 'voided' && $status !== 'open' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.status != 'voided'";
         }
 
@@ -2184,7 +2184,7 @@ class Report extends Components {
         if($record_set == 'historic' || $record_set == 'all') {
 
             $stats['count_items'] = $this->creditnoteCount('date', null, null, $tax_system ,null, null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
-            $stats['count_opened'] = $this->creditnoteCount('opened_on', $start_date, $end_date, $tax_system, 'opened', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
+            $stats['count_opened'] = $this->creditnoteCount('opened_on', $start_date, $end_date, $tax_system, 'open', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['count_closed'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, 'closed', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['count_used'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, 'used', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['count_voided'] = $this->creditnoteCount('closed_on', $start_date, $end_date, $tax_system, 'voided', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
@@ -2211,7 +2211,7 @@ class Report extends Components {
             $stats['sum_voided_unit_gross'] = $this->creditnoteSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'voided', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['sum_open_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             //$stats['sum_discounted_unit_gross'] = $this->creditnoteSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'discounted', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);  // TODO: Cannot remove voided with discount
-            $stats['sum_opened_unit_gross'] = $this->creditnoteSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'opened', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
+            $stats['sum_opened_unit_gross'] = $this->creditnoteSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'open', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             $stats['sum_closed_unit_gross'] = $this->creditnoteSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);
             //$stats['sum_closed_discounted_unit_gross'] = $this->creditnoteSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'discounted', null, null, null, $employee_id, $client_id, $supplier_id, $invoice_id, $expense_id);  // TODO:  Cannot remove voided with discount
 
@@ -2606,7 +2606,7 @@ class Report extends Components {
         }
 
         // Remove `Voided` records from the results, unless you are looking up voided records, except for opened and closed as these are absolutes
-        if($status !== 'voided' && $status !== 'opened' && $status !== 'closed') {
+        if($status !== 'voided' && $status !== 'open' && $status !== 'closed') {
             $whereTheseRecords .= " AND ".PRFX."creditnote_records.status != 'voided'";
         }
 

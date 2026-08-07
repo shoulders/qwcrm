@@ -99,6 +99,7 @@ _gettext("Overdue");
 _gettext("In Dispute");
 _gettext("In Collections");
 _gettext("Paid");
+_gettext("Closed with Creditnote");
 _gettext("Voided");
 _gettext("Deleted");
 
@@ -206,6 +207,7 @@ _gettext("Partially Paid");
 _gettext("Unredeemed");
 _gettext("Partially Redeemed");
 _gettext("Redeemed");
+_gettext("Closed with Creditnote");
 _gettext("Voided");
 _gettext("Suspended");
 _gettext("Deleted");

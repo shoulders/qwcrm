@@ -655,8 +655,9 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (5, 'in_dispute', 'In Dispute'),
 (6, 'in_collections', 'In Collections'),
 (7, 'paid', 'Paid'),
-(8, 'voided', 'Voided');
-(9, 'deleted', 'Deleted');
+(8, 'closed_with_creditnote', 'Closed with Creditnote'),
+(9, 'voided', 'Voided'),
+(10, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -1397,9 +1398,10 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (4, 'unredeemed', 'Unredeemed'),
 (5, 'partially_redeemed', 'Partially Redeemed'),
 (6, 'redeemed', 'Redeemed'),
-(7, 'suspended', 'Suspended'),
-(8, 'voided', 'Voided'),
-(9, 'deleted', 'Deleted');
+(7, 'closed_with_creditnote', 'Closed with Creditnote'),
+(8, 'suspended', 'Suspended'),
+(9, 'voided', 'Voided'),
+(10, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 

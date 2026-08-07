@@ -372,7 +372,7 @@ defined('_QWEXEC') or die;
 
 
     #########################################
-    #   Get All invoice items               # // withVouchers adds the invoice vouchers in as items, useful for credit notes and print/email TPL
+    #   Get All invoice items               # // with Vouchers adds the invoice vouchers in as items, useful for creditnotes and print/email TPL
     #########################################
 
     public function getItems($invoice_id, $withVouchers = false) {
@@ -383,12 +383,9 @@ defined('_QWEXEC') or die;
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
-        if($rs->recordCount())
-        {
+        if($rs->recordCount()) {
             $invoice_items = $rs->GetArray();
-        }
-        else
-        {
+        } else {
             return array();
         }
 
@@ -635,7 +632,7 @@ defined('_QWEXEC') or die;
         $employee_id = ($new_status == 'unassigned') ? null : $invoice_details['employee_id'];
 
         // Is the new status a "closed" status
-        if(in_array($new_status, array('paid', 'voided', 'deleted'))) {
+        if(in_array($new_status, array('paid', 'closed_with_creditnote', 'voided', 'deleted'))) {
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
             $closed_on = null;
@@ -916,6 +913,10 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice is already approved."), $silent);
                 $state_flag = false;
                 break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice is already approved."), $silent);
+                $state_flag = false;
+                break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice is already approved."), $silent);
                 $state_flag = false;
@@ -983,6 +984,10 @@ defined('_QWEXEC') or die;
                 break;
             case 'paid':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be unapproved because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be unapproved because it has been closed with a creditnote."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1063,6 +1068,10 @@ defined('_QWEXEC') or die;
                 break;
             case 'paid':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been closed with a creditnote."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1158,6 +1167,10 @@ defined('_QWEXEC') or die;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because it has been paid."), $silent);
                 $state_flag = false;
                 break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because it has been closed with a creditnote."), $silent);
+                $state_flag = false;
+                break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because it has been voided."), $silent);
                 $state_flag = false;
@@ -1235,6 +1248,10 @@ defined('_QWEXEC') or die;
                 break;
             case 'paid':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it has been closed with a creditnote."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1326,6 +1343,10 @@ defined('_QWEXEC') or die;
                 break;
             case 'paid':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been closed with a creditnote."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1437,9 +1458,21 @@ defined('_QWEXEC') or die;
                 $this->updateStatus($invoice_id, 'partially_paid');
                 break;
 
-            // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
+            // Has invoiceable amount and the payment(s) match the invoiceable amount, set to paid/closed_with_creditnote (if not already)
             case $invoice_details['unit_gross'] > 0 && $invoice_details['unit_gross'] == $payments_subtotal :
-                $this->updateStatus($invoice_id, 'paid');
+
+                // Was this invoice closed with a creditnote
+                if(
+                    // There is a closing Credit note (i dont think this check is needed)
+                    //$this->app->components->report->creditnoteCount(null, null, null, null, null, null, 'sales', 'close', null, null, null, $invoice_id) &&
+
+                    // The closing credit note has been used as a payment against the invoice (`credit` = closing CR, `debit` = sending payment to client)
+                    $this->app->components->report->paymentCount('date', null, null, null, 'valid', 'invoice', 'creditnote', 'credit', null, null, null, $invoice_id)
+                ) {
+                    $this->updateStatus($invoice_id, 'closed_with_creditnote');
+                } else {
+                    $this->updateStatus($invoice_id, 'paid');
+                }
                 break;
 
         }

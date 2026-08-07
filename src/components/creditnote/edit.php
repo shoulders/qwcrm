@@ -79,7 +79,7 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
     // Default Record Items - used to populate creditenote when you press a button
     if($creditnote_details['invoice_id']) {
             // Get invoice items with voucher records merged as standard items
-            $parent_record_items = $this->app->components->invoice->getItems($creditnote_details['invoice_id']);
+            $parent_record_items = $this->app->components->invoice->getItems($creditnote_details['invoice_id'], true);
 
             // Rename 'invoice_item_id' --> 'creditnote_item_id' - chaining these functions fail by removing 'invoice_item_id' not renaming it
             $parent_record_items = json_encode($parent_record_items);

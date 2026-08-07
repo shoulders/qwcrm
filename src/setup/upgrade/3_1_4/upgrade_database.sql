@@ -1348,18 +1348,19 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (5, 'royalties', 'Royalties'),
 (6, 'tips', 'Tips');
 
--- Change Invoice Statuses Order to better fit it's lifecycle --
+-- Change Invoice Statuses Order to better fit it's lifecycle and add closed with creditnote --
 TRUNCATE TABLE `#__invoice_statuses`;
 INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'pending', 'Pending'),
+(1, 'draft', 'Draft'),
 (2, 'unpaid', 'Unpaid'),
 (3, 'partially_paid', 'Partially Paid'),
 (4, 'overdue', 'Overdue'),
 (5, 'in_dispute', 'In Dispute'),
 (6, 'in_collections', 'In Collections'),
 (7, 'paid', 'Paid'),
-(8, 'voided', 'Voided'),
-(9, 'deleted', 'Deleted');
+(8, 'closed_with_creditnote', 'Closed with Creditnote'),
+(9, 'voided', 'Voided'),
+(10, 'deleted', 'Deleted');
 
 -- Convert status - Pending into Draft --
 UPDATE `#__creditnote_statuses` SET `status_key` = 'draft', `display_name` = 'Draft' WHERE `#__creditnote_statuses`.`id` = 1;
@@ -1370,3 +1371,17 @@ UPDATE `#__voucher_statuses` SET `status_key` = 'draft', `display_name` = 'Draft
 
 -- Tidy up deleted Workorder Records --
 DELETE FROM `#__workorder_records` WHERE `status` = 'deleted';
+
+-- Add closed with creditnote --
+TRUNCATE TABLE `#__voucher_statuses`;
+INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'draft', 'Draft'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'unredeemed', 'Unredeemed'),
+(5, 'partially_redeemed', 'Partially Redeemed'),
+(6, 'redeemed', 'Redeemed'),
+(7, 'closed_with_creditnote', 'Closed with Creditnote'),
+(8, 'suspended', 'Suspended'),
+(9, 'voided', 'Voided'),
+(10, 'deleted', 'Deleted');

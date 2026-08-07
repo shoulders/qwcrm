@@ -641,7 +641,6 @@ class Creditnote extends Components {
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
-
         return true;
 
     }
@@ -963,14 +962,12 @@ class Creditnote extends Components {
                         break;
                     case 'unpaid':
                         //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has no payments and should be voided, not closed with a credit note. You should not see this error, report to admins.", $silent));
-                        //$state_flag = false;
-                        break;
                     case 'partially_paid':
 
                         // CR `Close` Action Type (Credit)
 
                         // We are just closing with fake money
-                        // When the CR is created the vouchers will be voided
+                        // When the CR is created the vouchers will be set to `closed_with_creditnote`
 
                         // Do Nothing
 
@@ -980,7 +977,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'in_dispute':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is draft and cannot accept payments. You should not see this error, report to admins.", $silent));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in dispute and cannot accept payments. You should not see this error, report to admins.", $silent));
                         $state_flag = false;
                         break;
                     case 'in_collections':
@@ -988,12 +985,12 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'paid':
-
+                    case 'closed_with_creditnote':
                         // CR `Refund` Action Type (Debit)
 
                         // This refunds monies to Clients or allows them to use the credit on another of their invoices
 
-                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not gove free money to a client)
+                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not give free money to a client)
                         $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'invoice', 'real_monies', 'credit', null, null, null, $invoice_id);
 
                         // Get all payments against this invoice (real monies via credit notes)
@@ -1021,10 +1018,15 @@ class Creditnote extends Components {
                         break;
                 }
 
-                // Check all the parent invoice's vouchers can be voided
-                if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowVoid($invoice_id)){
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has vouchers that cannot be voided, so you cannot issue a credit note against this invoice.", $silent));
-                    $state_flag = false;
+                // Is the invoice open
+                if(!$invoice_details['closed_on']) {
+
+                    // Check all the parent invoice's vouchers can be closed with a creditnote
+                    if(!$this->app->components->voucher->checkAllInvoiceSiblingVouchersAllowClose($invoice_id)){
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has vouchers that cannot be closed with a credit note, so you cannot issue one against this invoice.", $silent));
+                        $state_flag = false;
+                    }
+
                 }
 
             }
@@ -1266,6 +1268,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'paid':
+                    case 'closed_with_creditnote':
                         // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices)
 
                         // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not give free money to a client)
@@ -1385,7 +1388,7 @@ class Creditnote extends Components {
                     case 'paid':
                         // CR `Refund` Action Type (Debit) (Refund monies to Suppliers or allow them to use the CR on another of their expenses)
 
-                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not gove free money to a client)
+                        // Calculate real monies paid on this invoice by the client (excludes credit notes and vouchers, this allows you to close an invoice with a `Close` CR and not give free money to a client)
                         $moniesIn = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'expense', 'real_monies', 'debit', null, null, null, null, $expense_id);
 
                         // Get all payments against this invoice (real monies via credit notes)
@@ -1450,7 +1453,7 @@ class Creditnote extends Components {
         $creditnote_details = $this->app->components->creditnote->getRecord($creditnote_id);
 
         // If there is a client, are they active
-        if($creditnote_details['client_id'] && $this->app->components->client->getRecord($creditnote_details['client_id'], 'active'))
+        if($creditnote_details['client_id'] && !$this->app->components->client->getRecord($creditnote_details['client_id'], 'active'))
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note status cannot be approved because the client it belongs to is not active.", $silent));
             $state_flag = false;
@@ -1521,7 +1524,7 @@ class Creditnote extends Components {
         $creditnote_details = $this->app->components->creditnote->getRecord($creditnote_id);
 
         // If there is a client, are they active
-        if($creditnote_details['client_id'] && $this->app->components->client->getRecord($creditnote_details['client_id'], 'active'))
+        if($creditnote_details['client_id'] && !$this->app->components->client->getRecord($creditnote_details['client_id'], 'active'))
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be unapproved because the client it belongs to is not active.", $silent));
             $state_flag = false;
@@ -1591,6 +1594,7 @@ class Creditnote extends Components {
     ##############################################################  // For (closing invoices and expenses | using store credit given to clients and suppliers)
     #  Check if a CR can be used as a payment Method (credit)    #  // This does not handle balance and submitted payment values on purpose
     ##############################################################  // $creditnote_details = the credit note being used, $qpayment = the payment to be used
+                                                                    // The code here only controls the use of the CR as a payment method
 
     public function checkMethodAllowsSubmit(array $creditnote_details, array $qpayment) {
 
@@ -1683,7 +1687,7 @@ class Creditnote extends Components {
 
             /* Sales Credit Note (Invoice) - (invoice:details) */
 
-            // Used to reduce the amount a client owes on an expense, or close an expense.
+            // Used to reduce the amount a client owes on an invoice, or close an invoice.
             elseif($creditnote_details['invoice_id']) {
 
                 // Invoice on a different tax system
@@ -1727,6 +1731,7 @@ class Creditnote extends Components {
                         $state_flag = false;
                         break;
                     case 'paid':
+                    case 'closed_with_creditnote':
                         // CR `Refund` Action Type (Debit) (Refund monies to Clients or allow them to use the CR on another of their invoices) (The code here only controls the use of the CR as a payment method)
                         // Do Nothing
                         break;
@@ -1949,7 +1954,7 @@ class Creditnote extends Components {
         $creditnote_details = $this->getRecord($creditnote_id);
 
         // If there is a client, are they active
-        if($creditnote_details['client_id'] && $this->app->components->client->getRecord($creditnote_details['client_id'], 'active'))
+        if($creditnote_details['client_id'] && !$this->app->components->client->getRecord($creditnote_details['client_id'], 'active'))
         {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote status cannot be edited because the client it belongs to is not active.", $silent));
             $state_flag = false;

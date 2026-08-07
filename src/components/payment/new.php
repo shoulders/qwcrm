@@ -124,7 +124,7 @@ if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$V
     $this->app->smarty->assign('record_balance',                    Payment::$record_balance);
     $this->app->smarty->assign('buttons',                           Payment::$buttons);
     $this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes() );
-    //$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods());  // This is replaced by `$payment_active_methods` and `Payment::$disabledMethods`
+    //$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods());  // This is replaced by `{$payment_active_methods}` and `Payment::$disabledMethods`
     $this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses());
     $this->app->smarty->assign('payment_directions',                $this->app->components->payment->getDirections());
     $this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes());

@@ -12,7 +12,6 @@
                 <tr>
                     <td class="menuhead2" width="80%">{t}Payment Details{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="index.php?component=payment&page_tpl=edit&payment_id={$payment_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" height="16" border="0">{t}Edit{/t}</a>
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}PAYMENT_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}PAYMENT_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
@@ -119,6 +118,28 @@
                                     </table>
                                 </td>
                             </tr>
+
+                            <!-- Function Buttons -->
+                            <tr>
+                                <td>
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0">
+                                        <tr>
+                                            <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd2">
+
+                                                <!-- Edit Button -->
+                                                {if $allowed_to_edit}
+                                                    <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=edit&payment_id={$payment_id}';">{t}Edit{/t}</button>
+                                                {/if}
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
                         </table>
                     </td>
                 </tr>
