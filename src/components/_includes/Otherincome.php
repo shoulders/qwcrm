@@ -1004,7 +1004,7 @@ class Otherincome extends Components {
     public function recalculateTotals($otherincome_id) {
 
         $items_subtotals        = $this->getItemsSubtotals($otherincome_id);
-        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, null, $otherincome_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, null, $otherincome_id);
 
         $unit_net               = $items_subtotals['subtotal_net'];
         $unit_tax               = $items_subtotals['subtotal_tax'];

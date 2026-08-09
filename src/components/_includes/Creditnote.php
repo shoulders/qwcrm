@@ -2209,13 +2209,13 @@ class Creditnote extends Components {
         $items_subtotals        = $this->getItemsSubtotals($creditnote_id);
 
         // Type - Payments onto the credit note (Real Monies)
-        $payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id);
+        $payments_subtotal      = $this->app->components->report->paymentSum(null, null, null, null, 'valid', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id);
 
         // Method - Using the CR as a payment method (no real monies)
-        $payments_subtotal      += $this->app->components->report->paymentSum('date', null, null, null, 'valid', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id);
+        $payments_subtotal      += $this->app->components->report->paymentSum(null, null, null, null, 'valid', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id);
 
         // Type + Methods - I could use this function which combines both the Type and Method subtotal functions from above, but it is harder to see the logic.
-        //$payments_subtotal      = $this->app->components->report->paymentSum('date', null, null, null, 'valid', null, null, null, null, null, null, null, null, null, $creditnote_id);
+        //$payments_subtotal      = $this->app->components->report->paymentSum(null, null, null, null, 'valid', null, null, null, null, null, null, null, null, null, $creditnote_id);
 
         $unit_discount          = $items_subtotals['subtotal_discount'];
         $unit_net               = $items_subtotals['subtotal_net'];
