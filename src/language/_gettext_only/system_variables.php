@@ -221,5 +221,6 @@ _gettext("Scheduled");
 _gettext("With Client");
 _gettext("On Hold");
 _gettext("With Management");
-_gettext("Closed");
+_gettext("Closed without Invoice");
+_gettext("Closed with Invoice");
 _gettext("Deleted");

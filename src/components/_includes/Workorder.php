@@ -569,7 +569,7 @@ class WorkOrder extends Components {
 
         // Is the new status a "closed" status
         // 'deleted' should never be passed here because a full delete is used for this record type, so this is just for reference and maybe future use
-        if(in_array($new_status, array('closed', 'deleted'))) {
+        if(in_array($new_status, array('closed_without_invoice', 'closed_with_invoice', 'deleted'))) {
             $closed_by = $this->app->db->qStr($this->app->user->login_user_id);
             $closed_on = $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp);
         } else {
@@ -731,17 +731,22 @@ class WorkOrder extends Components {
 
     public function closeRecord($workorder_id) {
 
-        // Update Work Order Status
-        $this->updateStatus($workorder_id, 'closed', true);
-
         // Get workorder details
         $workorder_details = $this->getRecord($workorder_id);
 
+        // Update Work Order Status
+        if(!$workorder_details['invoice_id']{
+            $this->updateStatus($workorder_id, 'closed_without_invoice', true);
+        } else {            
+            $this->updateStatus($workorder_id, 'closed_with_invoice', true);
+        }        
+
+        /* This is done in updatestatus(), remove next version
         // If there is no employee assigned, set the current logged in user as the assigned employee
         if(!$workorder_details['employee_id']) {
             $this->assignToEmployee($workorder_id, $this->app->user->login_user_id);
             $workorder_details['employee_id'] = $this->app->user->login_user_id;
-        }
+        }*/
 
         // Messages that depend on closed with or without invoice
         if(!$workorder_details['invoice_id']) {
@@ -823,8 +828,10 @@ class WorkOrder extends Components {
                 break;
             case 'with_management':
                 break;
-            case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot have it's status changed because it has been closed."), $silent);
+            case 'closed_without_invoice':
+                break;
+            case 'closed_with_invoice':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed with an invoice."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
@@ -877,8 +884,12 @@ class WorkOrder extends Components {
                 break;
             case 'with_management':
                 break;
-            case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because it has been closed."), $silent);
+            case 'closed_without_invoice':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because it has been closed without an invoice."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_invoice':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because it has been closed with an invoice."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
@@ -968,8 +979,12 @@ class WorkOrder extends Components {
                 break;
             case 'with_management':
                 break;
-            case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed."), $silent);
+            case 'closed_without_invoice':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_invoice':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed with an invoice."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
@@ -1039,10 +1054,14 @@ class WorkOrder extends Components {
                 break;
             case 'with_management':
                 break;
-            case 'closed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's assigned employee cannot be changed because it has been closed."), $silent);
+            case 'closed_without_invoice':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's assigned employee cannot be changed because it has been closed without an invoice."), $silent);
                 $state_flag = false;
                 break;
+            case 'closed_with_invoice':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's assigned employee cannot be changed because it has been closed with an invoice."), $silent);
+                $state_flag = false;
+                break;                
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's assigned employee cannot be changed because it has already been deleted."), $silent);
                 $state_flag = false;

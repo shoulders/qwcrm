@@ -39,7 +39,7 @@ if(!$this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$V
             // Close with invoice
             case 'closewithinvoice':
 
-                // Create a new invoice attached to this work order
+                // Create a new invoice attached to this work order (closing this workorder this is handled upstream by the invoice creation process)
                 $this->app->system->page->forcePage('invoice', 'new&workorder_id='.\CMSApplication::$VAR['workorder_id']);
                 break;
 

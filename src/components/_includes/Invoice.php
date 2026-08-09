@@ -515,7 +515,7 @@ defined('_QWEXEC') or die;
 
         $statuses = $rs->GetArray();
 
-        // Remove `unpaid/partially_paid` - because `overdue/in_dispute/in_collections` records can be unpaid or partially paid
+        // Remove `unpaid/partially_paid` (as appropriate) - because `overdue/in_dispute/in_collections` records can be unpaid or partially paid
         if($restricted && $invoice_id) {
 
             $invoice_details = $this->getRecord($invoice_id);
@@ -801,6 +801,12 @@ defined('_QWEXEC') or die;
 
         // Change the record status to deleted
         $this->updateStatus($invoice_id, 'deleted', true);
+
+        // Update workorder status (if required)
+        if($invoice_details['workorder_id'])
+        {
+            $this->app->components->workorder->updateStatus($invoice_details['workorder_id'], 'closed_without_invoice');
+        }
 
         // Log activity
         $logMessage = _gettext("Invoice").' '.$invoice_details['invoice_id'].' ';

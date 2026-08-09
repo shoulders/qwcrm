@@ -521,13 +521,8 @@ class Report extends Components {
             case 'open':
                 $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NULL";
                 break;
-            case 'closed_without_invoice':
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NULL";
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
-                break;
-            case 'closed_with_invoice':
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.invoice_id IS NOT NULL";
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.status = 'closed'";
+            case 'closed':
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on IS NOT NULL";
                 break;
             default:
                 if ($status) {$whereTheseRecords .= " AND ".PRFX."workorder_records.status = ".$this->app->db->qStr($status);}
