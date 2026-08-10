@@ -61,7 +61,7 @@ $this->app->smarty->assign('allowed_to_void',              $allowed_to_void);
 $this->app->smarty->assign('allowed_to_unapprove',         $allowed_to_unapprove);
 $this->app->smarty->assign('allowed_to_delete',            $allowed_to_delete);
 $this->app->smarty->assign('active_employees',             $this->app->components->user->getActiveUsers('employees'));
-$this->app->smarty->assign('invoice_statuses',             $this->app->components->invoice->getStatuses(true, \CMSApplication::$VAR['invoice_id']));
+$this->app->smarty->assign('invoice_selectable_statuses',             $this->app->components->invoice->getStatuses(true, \CMSApplication::$VAR['invoice_id']));
 $this->app->smarty->assign('invoice_status',               $invoice_details['status']);
 $this->app->smarty->assign('invoice_status_display_name',  $this->app->components->invoice->getStatusDisplayName($invoice_details['status']));
 $this->app->smarty->assign('assigned_employee_id',         $invoice_details['employee_id']);

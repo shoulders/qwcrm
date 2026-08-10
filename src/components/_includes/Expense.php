@@ -589,6 +589,7 @@ class Expense extends Components {
                 status              = '',
                 opened_on           = NULL,
                 closed_on           = NULL,
+                voided_on           = NULL,
                 last_active         = NULL,
                 reference           = '',
                 note                = ''

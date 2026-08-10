@@ -25,14 +25,14 @@ class PaymentTypeOtherincome extends PaymentType
         $this->VAR['qpayment']['direction'] = 'credit';
 
         // Additional Record References
-        $this->VAR['qpayment']['supplier_id'] = $this->otherincome_details['supplier_id'];
+        $this->VAR['qpayment']['supplier_id'] = $this->otherincome_details['supplier_id'];        
+
+        // Set intial record balance
+        Payment::$record_balance = (float) $this->otherincome_details['balance'];
 
         // Disable Unwanted Payment Methods
         Payment::$disabledMethods[] = 'creditnote';
         Payment::$disabledMethods[] = 'voucher';
-
-        // Set intial record balance
-        Payment::$record_balance = (float) $this->otherincome_details['balance'];
 
         // Assign Payment Type specific template variables
         $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));

@@ -31,14 +31,13 @@ class PaymentTypeCreditnote extends PaymentType
 
         // Additional Record References (inject into the submission)
         $this->VAR['qpayment']['client_id'] = $this->creditnote_details['client_id'];
-        $this->VAR['qpayment']['supplier_id'] = $this->creditnote_details['supplier_id'];
-
-        // Disable Unwanted Payment Methods
-        Payment::$disabledMethods[] = 'creditnote';
-        Payment::$disabledMethods[] = 'voucher';
+        $this->VAR['qpayment']['supplier_id'] = $this->creditnote_details['supplier_id'];        
 
         // Set initial record balance
         Payment::$record_balance = (float) $this->creditnote_details['balance'];
+
+        // Disable Unwanted Payment Methods        
+        Payment::$disabledMethods = array_merge(Payment::$disabledMethods, ['creditnote', 'voucher']);
 
         // Assign Payment Type specific template variables
         if($this->creditnote_details['type'] == 'sales')
@@ -48,10 +47,9 @@ class PaymentTypeCreditnote extends PaymentType
 
             // Client Details
             $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->creditnote_details['client_id']));
-        }
+        
         // type == purchase
-        else
-        {
+        } else {
             // show payment methods to receive money (credit)
             $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));
 

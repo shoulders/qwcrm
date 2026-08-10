@@ -33,8 +33,8 @@
                                         <form action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}" method="post" name="new_invoice_status" id="new_invoice_status">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
-                                                {section name=s loop=$invoice_statuses}
-                                                    <option value="{$invoice_statuses[s].status_key}"{if $invoice_status == $invoice_statuses[s].status_key} selected{/if}>{t}{$invoice_statuses[s].display_name}{/t}</option>
+                                                {section name=s loop=$invoice_selectable_statuses}
+                                                    <option value="{$invoice_selectable_statuses[s].status_key}"{if $invoice_status == $invoice_selectable_statuses[s].status_key} selected{/if}>{t}{$invoice_selectable_statuses[s].display_name}{/t}</option>
                                                 {/section}
                                             </select>
                                             <p>&nbsp;</p>

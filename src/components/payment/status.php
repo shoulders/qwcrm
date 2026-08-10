@@ -51,6 +51,5 @@ $this->app->smarty->assign('allowed_to_change_status',        $allowed_to_change
 $this->app->smarty->assign('allowed_to_void',                 $allowed_to_void);
 $this->app->smarty->assign('allowed_to_delete',               $allowed_to_delete);
 $this->app->smarty->assign('payment_status',                  $payment_details['status']);
-$this->app->smarty->assign('payment_statuses',                $this->app->components->payment->getStatuses());
 $this->app->smarty->assign('payment_selectable_statuses',     $this->app->components->payment->getStatuses(true));
 $this->app->smarty->assign('payment_status_display_name',     $this->app->components->payment->getStatusDisplayNames()[$payment_details['status']]);

@@ -19,13 +19,15 @@ class PaymentTypeInvoice extends PaymentType
         parent::__construct();
 
         // Get invoice details
-        $this->invoice_details = $this->app->components->invoice->getRecord(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['invoice_id']);
-
-        // Disable Unwanted Payment Methods
-        //Payment::$disabledMethods[] = '';
+        $this->invoice_details = $this->app->components->invoice->getRecord(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['invoice_id']);  
 
         // Set initial record balance
-        Payment::$record_balance = (float) $this->invoice_details['balance'];
+        Payment::$record_balance = (float) $this->invoice_details['balance'];        
+
+        // Disable Unwanted Payment Methods
+        if(Payment::$method == 'creditnote' && Payment::$record_balance > 0) {
+            Payment::$disabledMethods = array_merge(Payment::$disabledMethods, ['bank_transfer', 'card', 'cash', 'cheque', 'direct_debit', 'other', 'paypal', 'voucher']);
+        }
 
         // Assign Payment Type specific template variables
         $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('receive', true, Payment::$disabledMethods));

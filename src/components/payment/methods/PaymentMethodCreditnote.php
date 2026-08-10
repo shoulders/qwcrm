@@ -18,16 +18,13 @@ class PaymentMethodCreditnote extends PaymentMethod
         parent::__construct();
 
         // Does this credit exist
-        if(!$this->creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id']))
-        {
+        if(!$this->creditnote_details = $this->app->components->creditnote->getRecord(Payment::$payment_details['creditnote_id'] ?? $this->VAR['qpayment']['creditnote_id'])) {
             // If there is no credit note with this ID, we cannot proceed
             Payment::$payment_valid = false;
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no Credit Note with that ID."));
             $this->creditnote_exists = false;
             return;
-        }
-        else
-        {
+        } else {
             // Set CR exists flag
             $this->creditnote_exists = true;
 
@@ -36,10 +33,7 @@ class PaymentMethodCreditnote extends PaymentMethod
             {
                 // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
                 $this->VAR['qpayment']['direction'] = 'debit';
-
-            }
-            else
-            {
+            } else {
                 // Override direction set by PaymentType because of the special case of creditnotes (i.e. reverse invoices)
                 $this->VAR['qpayment']['direction'] = 'credit';
             }

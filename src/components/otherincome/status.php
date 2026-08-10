@@ -54,5 +54,4 @@ $this->app->smarty->assign('allowed_to_unapprove',          $allowed_to_unapprov
 $this->app->smarty->assign('allowed_to_delete',             $allowed_to_delete);
 $this->app->smarty->assign('otherincome_status',              $otherincome_details['status'] );
 $this->app->smarty->assign('otherincome_status_display_name',$this->app->components->otherincome->getStatusDisplayName($otherincome_details['status']));
-$this->app->smarty->assign('otherincome_statuses',            $this->app->components->otherincome->getStatuses() );
 $this->app->smarty->assign('otherincome_selectable_statuses',     $this->app->components->otherincome->getStatuses(true));

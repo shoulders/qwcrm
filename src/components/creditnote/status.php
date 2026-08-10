@@ -64,7 +64,6 @@ $this->app->smarty->assign('allowed_to_void',                   $allowed_to_void
 $this->app->smarty->assign('allowed_to_unapprove',              $allowed_to_unapprove);
 $this->app->smarty->assign('allowed_to_delete',                 $allowed_to_delete);
 $this->app->smarty->assign('active_employees',                  $this->app->components->user->getActiveUsers('employees')                           );
-$this->app->smarty->assign('creditnote_statuses',               $this->app->components->creditnote->getStatuses()                                             );
 $this->app->smarty->assign('creditnote_selectable_statuses',     $this->app->components->creditnote->getStatuses(true));
 $this->app->smarty->assign('creditnote_status',                 $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id'], 'status')       );
 $this->app->smarty->assign('creditnote_status_display_name',    $this->app->components->creditnote->getStatusDisplayName($this->app->components->creditnote->getRecord(\CMSApplication::$VAR['creditnote_id'], 'status')));

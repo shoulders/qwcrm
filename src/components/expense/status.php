@@ -54,5 +54,4 @@ $this->app->smarty->assign('allowed_to_unapprove',            $allowed_to_unappr
 $this->app->smarty->assign('allowed_to_delete',               $allowed_to_delete       );
 $this->app->smarty->assign('expense_status',                  $expense_details['status']            );
 $this->app->smarty->assign('expense_status_display_name',     $this->app->components->expense->getStatusDisplayName($expense_details['status']));
-$this->app->smarty->assign('expense_statuses',                $this->app->components->expense->getStatuses() );
 $this->app->smarty->assign('expense_selectable_statuses',     $this->app->components->expense->getStatuses(true) );

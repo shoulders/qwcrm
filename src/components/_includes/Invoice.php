@@ -530,6 +530,8 @@ defined('_QWEXEC') or die;
                 }
             }
 
+            // Rekey to start array from zero
+            $statuses = array_values($statuses);
         }
 
         return $statuses;
@@ -786,6 +788,7 @@ defined('_QWEXEC') or die;
                 status              = '',
                 opened_on           = NULL,
                 closed_on           = NULL,
+                voided_on           = NULL,
                 last_active         = NULL,
                 reference           = '',
                 note                = '',

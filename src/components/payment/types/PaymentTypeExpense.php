@@ -19,13 +19,17 @@ class PaymentTypeExpense extends PaymentType
         parent::__construct();
 
         // Get expense details
-        $this->expense_details = $this->app->components->expense->getRecord(Payment::$payment_details['expense_id'] ?? $this->VAR['qpayment']['expense_id']);
-
-        // Disable Unwanted Payment Methods
-        Payment::$disabledMethods[] = 'voucher';
+        $this->expense_details = $this->app->components->expense->getRecord(Payment::$payment_details['expense_id'] ?? $this->VAR['qpayment']['expense_id']);        
 
         // Set intial record balance
         Payment::$record_balance = (float) $this->expense_details['balance'];
+
+        // Disable Unwanted Payment Methods
+        if(Payment::$method == 'creditnote' && Payment::$record_balance > 0) {
+            Payment::$disabledMethods = array_merge(Payment::$disabledMethods, ['bank_transfer', 'card', 'cash', 'cheque', 'direct_debit', 'other', 'paypal', 'voucher']);
+        } else {
+            Payment::$disabledMethods[] = 'voucher';
+        }
 
         // Assign Payment Type specific template variables
         $this->app->smarty->assign('payment_active_methods', $this->app->components->payment->getMethods('send', true, Payment::$disabledMethods));
