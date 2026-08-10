@@ -10,8 +10,7 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Client Details{/t} {t}for{/t} {$client_details.display_name}</td>
-                    <td class="menuhead2" width="20%" align="right" valign="middle"><a href="index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}" ><img src="{$theme_images_dir}icons/edit.gif"  alt="" height="16" border="0">{t}Edit{/t}</a></td>
+                    <td class="menuhead2" width="80%" colspan="">&nbsp;{t}Client Details{/t} {t}for{/t} {$client_details.display_name}</td>
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="2">
@@ -109,6 +108,7 @@
                 <tr>
                     <td colspan="2">
                         <button type="button" onclick="window.open('index.php?component=client&page_tpl=print&client_id={$client_details.client_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
+                        <button type="button" onclick="window.location.href='index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}';">{t}Edit Client{/t}</button>
                     </td>
                 </tr>
 
