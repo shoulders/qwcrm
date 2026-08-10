@@ -735,11 +735,11 @@ class WorkOrder extends Components {
         $workorder_details = $this->getRecord($workorder_id);
 
         // Update Work Order Status
-        if(!$workorder_details['invoice_id']{
+        if(!$workorder_details['invoice_id']){
             $this->updateStatus($workorder_id, 'closed_without_invoice', true);
-        } else {            
+        } else {
             $this->updateStatus($workorder_id, 'closed_with_invoice', true);
-        }        
+        }
 
         /* This is done in updatestatus(), remove next version
         // If there is no employee assigned, set the current logged in user as the assigned employee
@@ -1061,7 +1061,7 @@ class WorkOrder extends Components {
             case 'closed_with_invoice':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's assigned employee cannot be changed because it has been closed with an invoice."), $silent);
                 $state_flag = false;
-                break;                
+                break;
             case 'deleted':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder's assigned employee cannot be changed because it has already been deleted."), $silent);
                 $state_flag = false;
