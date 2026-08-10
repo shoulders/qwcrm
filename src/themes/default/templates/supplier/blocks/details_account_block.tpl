@@ -268,12 +268,4 @@
         </td>
     </tr>
 
-    {if $allowed_to_create_creditnote}
-        <tr>
-            <td colspan="2">
-                <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this client?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&client_id={$client_details.client_id}'; } ">{t}Create Sales Credit Note (Client){/t}</button>
-            </td>
-        </tr>
-    {/if}
-
 </table>

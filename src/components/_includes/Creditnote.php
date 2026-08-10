@@ -960,9 +960,9 @@ class Creditnote extends Components {
 
                 // CR `Standalone` Action Type (Credit)
 
-                // Dont allow this type of credit note (for now)
+                /* Dont allow this type of credit note (for now)
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is type of credit note for clients is not currently allowed. You should not see this error, report to admins.", $silent));
-                $state_flag = false;
+                $state_flag = false;*/
             }
 
             /* Sales Credit Note (Invoice) - (invoice:details) */
@@ -1091,9 +1091,9 @@ class Creditnote extends Components {
 
                 // CR `Standalone` Action Type (Debit)
 
-                // Dont allow this type of credit note (for now)
+                /* Dont allow this type of credit note (for now)
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is type of credit note for expenses is not currently allowed. You should not see this error, report to admins."), $silent);
-                $state_flag = false;
+                $state_flag = false;*/
 
             }
 

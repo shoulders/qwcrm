@@ -86,7 +86,7 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
             $parent_record_items = str_replace('invoice_item_id', 'creditnote_item_id', $parent_record_items);
             $parent_record_items = json_decode($parent_record_items, true);
 
-    } else if($creditnote_details['expense_id']) {
+    } elseif ($creditnote_details['expense_id']) {
 
             // Get expense items
             $parent_record_items = $this->app->components->expense->getItems($creditnote_details['expense_id']);
@@ -102,9 +102,9 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
             $parent_record_items = str_replace('expense_item_id', 'creditnote_item_id', $parent_record_items);
             $parent_record_items = json_decode($parent_record_items, true);
 
+    // Standalone has no parent items for the populate button
     } else {
-        //fallback
-        $creditnote_items = null;
+        $parent_record_items = null;
     }
 
     // Disable all VAT codes except `T9` for `Standalone` Action Type CR - I could specify only for VAT tax systems, but I have not as it makes no difference

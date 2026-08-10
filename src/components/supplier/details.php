@@ -37,6 +37,13 @@ $this->app->smarty->assign('otherincome_stats',        $this->app->components->r
 $this->app->smarty->assign('payments_credits',         $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, null, null, 'credit', null, null, null, null, \CMSApplication::$VAR['supplier_id']));
 $this->app->smarty->assign('payments_debits',          $this->app->components->payment->getRecords('payment_id', 'DESC', 25, false, \CMSApplication::$VAR['page_no'], null, null, null, null, 'debit', null, null, null, null, \CMSApplication::$VAR['supplier_id']));
 $this->app->smarty->assign('payment_stats',           $this->app->components->report->paymentGetStats('all', null, null, QW_TAX_SYSTEM, null, null, \CMSApplication::$VAR['supplier_id'])   );
+$this->app->smarty->assign('payment_types',            $this->app->components->payment->getTypes());
+$this->app->smarty->assign('payment_methods',          $this->app->components->payment->getMethods());
+$this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
+$this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
+
+
+
 
 $this->app->smarty->assign('allowed_to_create_creditnote', $this->app->components->creditnote->checkRecordCanBeCreated(null, null, \CMSApplication::$VAR['supplier_id'], null, true));
 $this->app->smarty->assign('creditnote_types',            $this->app->components->creditnote->getTypes());
