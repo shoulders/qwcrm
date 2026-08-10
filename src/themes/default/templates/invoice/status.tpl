@@ -107,7 +107,7 @@
                                 <td class="olotd4" align="center" width="33%" height="150">
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}">
-                                            <input name="delete_invoice" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this invoice? All records relating to this invoice will be removed.{/t}');">
+                                            <input name="delete_invoice" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this invoice?{/t}');">
                                         </form>
                                     {else}
                                         {t}This invoice cannot be deleted. You can only delete an invoice if it is open and does not have any payments.{/t}

@@ -49,7 +49,7 @@
                             <tr>
                                 <td align="right"><b>{t}Cronjob{/t} {t}System{/t} {t}Locked{/t}:</b></td>
                                 <td>{if $cronjob_system_details.locked}{t}Yes{/t}{else}{t}No{/t}{/if}</td>
-                                <td>{if $cronjob_system_details.locked}<button type="button" class="olotd4" onclick="if (confirm('{t}Are you Sure you want to unlock the cron system?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=unlock&unlock_type=system';">{t}Unlock{/t}</button>{/if}</td>
+                                <td>{if $cronjob_system_details.locked}<button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to unlock the cron system?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=unlock&unlock_type=system';">{t}Unlock{/t}</button>{/if}</td>
                             </tr>                            
                         </table>
                     </td>

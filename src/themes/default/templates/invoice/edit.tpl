@@ -234,7 +234,7 @@
         // Item Delete button action
         $(".invoice_item_row .confirmDelete").off("click").on("click", function() {
             hideddrivetip();
-            //if(!confirm('Are you Sure you want to delete this item?')) { return; }
+            //if(!confirm('Are you sure you want to delete this item?')) { return; }
             $(this).closest('tr').remove();
             refreshPage();
         });

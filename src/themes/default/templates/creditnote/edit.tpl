@@ -263,7 +263,7 @@
         // Item Delete button action
         $(".creditnote_item_row .confirmDelete").off("click").on("click", function() {
             hideddrivetip();
-            //if(!confirm('Are you Sure you want to delete this item?')) { return; }
+            //if(!confirm('Are you sure you want to delete this item?')) { return; }
             $(this).closest('tr').remove();
             refreshPage();
         });
@@ -588,7 +588,7 @@
 
                                                     <!-- Populate with Parent Items Button -->
                                                     {if $creditnote_details.invoice_id OR $creditnote_details.expense_id}
-                                                        <button type="button" onclick="if(confirm('Are you Sure you want to populate this creditnote with its parents items?')) { populateCreditnoteItemsParentItems(); } ">{t}Populate with Parent Items{/t}</button>
+                                                        <button type="button" onclick="if(confirm('Are you sure you want to populate this creditnote with its parents items?')) { populateCreditnoteItemsParentItems(); } ">{t}Populate with Parent Items{/t}</button>
                                                     {/if}
 
                                                 </td>
