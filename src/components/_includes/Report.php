@@ -723,6 +723,7 @@ class Report extends Components {
             $stats['sum_open_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id);
             $stats['sum_discounted_unit_gross'] = $this->invoiceSum('unit_gross', 'date', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);  // TODO: Cannot remove voided with discount
             $stats['sum_opened_unit_gross'] = $this->invoiceSum('unit_gross', 'opened_on', $start_date, $end_date, $tax_system, 'open', $employee_id, $client_id);
+            $stats['sum_closed_unit_gross']         = $this->invoiceSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'closed', $employee_id, $client_id);
             $stats['sum_closed_discounted_unit_gross'] = $this->invoiceSum('unit_gross', 'closed_on', $start_date, $end_date, $tax_system, 'discounted', $employee_id, $client_id);  // TODO: Cannot remove voided with discount
 
         }
