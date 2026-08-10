@@ -105,7 +105,7 @@
                     {* if $expense_id}
                         <a href="index.php?component=expense&page_tpl=details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                         <a href="index.php?component=expense&page_tpl=edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                        <a href="index.php?component=expense&page_tpl=delete&expense_id={$expense_id}" onclick="return confirm('{t}Are you sure you want to delete this Expense Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
+                        <a href="index.php?component=expense&page_tpl=delete&expense_id={$expense_id}" onclick="return confirm('{t}Are you sure you want to delete this expense?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                     {/if *}
 
                     <!-- Expense Admin -->
@@ -125,7 +125,7 @@
                         <a href="index.php?component=creditnote&page_tpl=status&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
                         {*<a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                         <a href="index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                        <a href="index.php?component=creditnote&page_tpl=delete&creditnote_id={$creditnote_id}" onclick="return confirm('{t}Are you sure you want to delete this creditnote Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>*}
+                        <a href="index.php?component=creditnote&page_tpl=delete&creditnote_id={$creditnote_id}" onclick="return confirm('{t}Are you sure you want to delete this credit note?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>*}
                     {/if}
 
                 </div>
@@ -138,7 +138,7 @@
                     {*if $otherincome_id}
                         <a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$otherincome_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                         <a href="index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                        <a href="index.php?component=otherincome&page_tpl=delete&otherincome_id={$otherincome_id}" onclick="return confirm('{t}Are you sure you want to delete this otherincome Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
+                        <a href="index.php?component=otherincome&page_tpl=delete&otherincome_id={$otherincome_id}" onclick="return confirm('{t}Are you sure you want to delete this other income?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                     {/if*}
 
                     <!-- Otherincome Admin -->
@@ -173,7 +173,7 @@
                     {*if $supplier_id}
                         <a href="index.php?component=supplier&page_tpl=details&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                         <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                        <a href="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}" onclick="return confirm('{t}Are you Sure you want to delete this Supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
+                        <a href="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}" onclick="return confirm('{t}Are you Sure you want to delete this supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                     {/if*}
 
                     <!-- Supplier Admin -->
@@ -195,7 +195,7 @@
                     <a href="index.php?component=user&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New Employee{/t}</a>
                     {if $user_id}
                         <a href="index.php?component=user&page_tpl=edit&user_id={$user_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit User{/t}</a>
-                        <a href="index.php?component=user&page_tpl=delete&user_id={$user_id}" onclick="return confirm('{t}Are you sure you want to delete this user?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete User{/t}</a>
+                        <a href="index.php?component=user&page_tpl=delete&user_id={$user_id}" onclick="return confirm('{t}Are you sure you want to delete this user?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                     {/if}
                     <a href="index.php?component=administrator&page_tpl=acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {t}Permissions{/t}</a>
 

@@ -1437,7 +1437,7 @@ class Creditnote extends Components {
 
         // Add Submission Failed Validation message
         if(!$state_flag){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote submission failed validation and was not committed to the database. Fix and re-submit."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note submission failed validation and was not committed to the database. Fix and re-submit."));
         }
 
         return $state_flag;
@@ -1471,13 +1471,13 @@ class Creditnote extends Components {
         // Check there is a positive unit_gross
         if($creditnote_details['unit_gross'] <= 0)
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be approved because it has a negative or zero gross amount."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be approved because it has a negative or zero gross amount."));
             $state_flag = false;
         }
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be approved because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be approved because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -1486,30 +1486,30 @@ class Creditnote extends Components {
             case 'draft':
                 break;
             case 'unused':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote is already approved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is already approved."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote is already approved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is already approved."), $silent);
                 $state_flag = false;
                 break;
             case 'used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote is already approved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is already approved."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote is already approved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is already approved."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be approved because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be approved because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Add Failed Validation message
         if(!$state_flag){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be approved at this time because it is not allowed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be approved at this time because it is not allowed."), $silent);
         }
 
         return $state_flag;
@@ -1541,51 +1541,51 @@ class Creditnote extends Components {
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be unapproved because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be unapproved because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // Status checks
         switch($creditnote_details['status']) {
             case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote is not approved, so cannot be unapproved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is not approved, so cannot be unapproved."), $silent);
                 $state_flag = false;
                 break;
             case 'unused':
                 break;
             case 'partially_used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be unapproved because it has been partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be unapproved because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be unapproved because it has been used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be unapproved because it has been used."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be unapproved because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be unapproved because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be unapproved because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be unapproved because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be unapproved because it has linked payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be unapproved because it has linked payments."), $silent);
             $state_flag = false;
         }
 
         // Has been used as a payment
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be unapproved because it has been used as a payment."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be unapproved because it has been used as a payment."), $silent);
             $state_flag = false;
         }
 
         // Add Failed Validation message
         if(!$state_flag){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be unapproved at this time because it is not allowed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be unapproved at this time because it is not allowed."), $silent);
         }
 
         return $state_flag;
@@ -1854,14 +1854,14 @@ class Creditnote extends Components {
     public function checkRecordAllowsManualStatusChange($creditnote_id, $silent = false) {
 
         // Disable this feature for now. I may enable or remove in future versions.
-        $this->app->system->variables->systemMessagesWrite('warning', _gettext("This creditnote cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("This credit note cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
         return false;
 
         $state_flag = true;
 
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot have it's status changed because it has expired."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot have it's status changed because it has expired."), $silent);
             $state_flag = false;
         }
 
@@ -1884,34 +1884,34 @@ class Creditnote extends Components {
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote's status cannot be changed because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note's status cannot be changed because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // Status checks
         switch($creditnote_details['status']) {
             case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote's status cannot be changed because it is a draft."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note's status cannot be changed because it is a draft."), $silent);
                 $state_flag = false;
                 break;
             case 'unused':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote's status cannot be changed because it is unused."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note's status cannot be changed because it is unused."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote's status cannot be changed because it is partially used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note's status cannot be changed because it is partially used."), $silent);
                 $state_flag = false;
                 break;
             case 'used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote's status cannot be changed because it is used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note's status cannot be changed because it is used."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote's status cannot be changed because it has has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note's status cannot be changed because it has has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote's status cannot be changed because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note's status cannot be changed because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -1924,13 +1924,13 @@ class Creditnote extends Components {
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote's status cannot be changed because it has linked has payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note's status cannot be changed because it has linked has payments."), $silent);
             $state_flag = false;
         }
 
         // Has been used as a payment
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote's status cannot be changed because it has been used as a payment."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note's status cannot be changed because it has been used as a payment."), $silent);
             $state_flag = false;
         }
 
@@ -1949,7 +1949,7 @@ class Creditnote extends Components {
 
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it has expired."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it has expired."), $silent);
             $state_flag = false;
         }
 
@@ -1972,13 +1972,13 @@ class Creditnote extends Components {
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // If this is a VAT Record, check all of it's items have their VAT code enabled
         if((preg_match('/^vat_/', $creditnote_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
             $state_flag = false;
         }
 
@@ -1987,23 +1987,23 @@ class Creditnote extends Components {
             case 'draft':
                 break;
             case 'unused':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a draft creditnote can be edited."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a draft credit note can be edited."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it has been partially used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it has been partially used."), $silent);
                 $state_flag = false;
                 break;
             case 'used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it has been used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it has been used."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -2011,7 +2011,7 @@ class Creditnote extends Components {
         /* Is the credit note closed (This should not be needed because of expiry and status checks)
         if($creditnote_details['closed_on'])
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be edited because it has been closed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be edited because it has been closed."), $silent);
 
         }*/
 
@@ -2031,7 +2031,7 @@ class Creditnote extends Components {
 
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it has expired."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it has expired."), $silent);
             $state_flag = false;
         }
 
@@ -2054,57 +2054,57 @@ class Creditnote extends Components {
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // No amount
         if(!(float)$creditnote_details['unit_net']) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it does not have an amount, you should delete instead."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it does not have an amount, you should delete instead."), $silent);
             $state_flag = false;
         }
 
         /* Is the credit note closed (This should not be needed because of expiry and status checks)
         if($creditnote_details['closed_on'])
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it has been closed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it has been closed."), $silent);
         }*/
 
         // Status checks
         switch($creditnote_details['status']) {
             case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void a draft creditnote, you can only delete them."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void a draft credit note, you can only delete them."), $silent);
                 $state_flag = false;
                 break;
             case 'unused':
                 break;
             case 'partially_used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it has been partially used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it has been partially used."), $silent);
                 $state_flag = false;
                 break;
             case 'used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it has been used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it has been used."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it has already been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it has already been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'creditnote', null, null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it has linked payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it has linked payments."), $silent);
             $state_flag = false;
         }
 
         // Has been used as a payment
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', null, 'creditnote', null, null, null, null, null, null, null, $creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be voided because it has been used as a payment."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be voided because it has been used as a payment."), $silent);
             $state_flag = false;
         }
 
@@ -2122,7 +2122,7 @@ class Creditnote extends Components {
 
         // Is Expired (Live Check)
         if($this->checkCreditnoteIsExpired($creditnote_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it has expired."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be deleted because it has expired."), $silent);
             $state_flag = false;
         }
 
@@ -2145,7 +2145,7 @@ class Creditnote extends Components {
 
         // Is on a different tax system
         if($creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be deleted because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -2160,23 +2160,23 @@ class Creditnote extends Components {
             case 'draft':
                 break;
             case 'unused':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete an unused creditnote, you can only void them."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete an unused credit note, you can only void them."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it has been partially used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be deleted because it has been partially used."), $silent);
                 $state_flag = false;
                 break;
             case 'used':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it has been used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be deleted because it has been used."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be deleted because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This creditnote cannot be deleted because it has already been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note cannot be deleted because it has already been deleted."), $silent);
                 $state_flag = false;
                 break;
         }

@@ -251,7 +251,7 @@ class PaymentTypeCreditnote extends PaymentType
 
         // Is on a different tax system
         if($this->creditnote_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot receive a payment because it is on a different tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot receive a payment because it is on a different tax system."));
             $state_flag = false;
         }
 

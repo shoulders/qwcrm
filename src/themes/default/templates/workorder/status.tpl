@@ -76,10 +76,10 @@
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}">
-                                            <input name="delete_workorder" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Workorder?{/t}');">
+                                            <input name="delete_workorder" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this work order?{/t}');">
                                         </form>
                                     {else}
-                                        {t}This work order cannot be deleted. You can only delete the work order if it's status is either unassigned or with management, and the workorder has no invoice.{/t}
+                                        {t}This work order cannot be deleted. You can only delete the work order if it's status is either unassigned or with management, and the work order has no invoice.{/t}
                                     {/if}
                                 </td>
 

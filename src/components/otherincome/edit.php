@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No other income ID supplied."));
     $this->app->system->page->forcePage('otherincome', 'search');
 }
 
@@ -49,7 +49,7 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
             $this->app->components->otherincome->updateRecord(\CMSApplication::$VAR['qform']);
             $this->app->components->otherincome->insertItems(\CMSApplication::$VAR['qform']['otherincome_id'], \CMSApplication::$VAR['qform']['otherincome_items']);
             $this->app->components->otherincome->recalculateTotals(\CMSApplication::$VAR['qform']['otherincome_id']);
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome updated successfully."));
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Other income updated successfully."));
 
             // The user also wants to approve the record
             if (\CMSApplication::$VAR['submit'] == 'submitandapprove') {

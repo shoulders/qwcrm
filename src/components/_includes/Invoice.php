@@ -993,7 +993,7 @@ defined('_QWEXEC') or die;
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be unapproved because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be unapproved because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1019,7 +1019,7 @@ defined('_QWEXEC') or die;
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be unapproved because it has linked creditnotes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be unapproved because it has linked credit notes."), $silent);
             $state_flag = false;
         }
 
@@ -1077,7 +1077,7 @@ defined('_QWEXEC') or die;
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1174,7 +1174,7 @@ defined('_QWEXEC') or die;
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be edited because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1257,7 +1257,7 @@ defined('_QWEXEC') or die;
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1352,7 +1352,7 @@ defined('_QWEXEC') or die;
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':

@@ -503,7 +503,7 @@ class Client extends Components {
 
         // Has Credit notes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, $client_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has linked creditnotes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a client who has linked credit notes."), $silent);
             return false;
         }
 

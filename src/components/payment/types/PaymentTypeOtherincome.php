@@ -162,28 +162,28 @@ class PaymentTypeOtherincome extends PaymentType
             // New
             if(Payment::$action === 'new')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment added successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment added successfully and other income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 // No forcepage, this will reload the new payment page
             }
 
             // Edit
             elseif(Payment::$action === 'edit')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment updated successfully and other income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('payment', 'details&payment_id='.Payment::$payment_details['payment_id']);
             }
 
             // Void
             elseif(Payment::$action === 'void')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment voided successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment voided successfully and other income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }
 
             // Delete
             elseif(Payment::$action === 'delete')
             {
-                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and Other Income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+                $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment deleted successfully and other income").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id']);
             }
 
@@ -226,7 +226,7 @@ class PaymentTypeOtherincome extends PaymentType
 
         // Is on a different tax system
         if($this->otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome cannot receive a payment because it is on a different tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The other income cannot receive a payment because it is on a different tax system."));
             $state_flag = false;
         }
 
@@ -264,7 +264,7 @@ class PaymentTypeOtherincome extends PaymentType
           // Add New Record
         Payment::$buttons['addNewRecord']['allowed'] = true;
         Payment::$buttons['addNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new';
-        Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Other Income Record");
+        Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Other Income");
 
     }
 }

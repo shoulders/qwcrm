@@ -53,7 +53,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Workorder ID{/t}</b></td>
+                                            <td><b>{t}Work order ID{/t}</b></td>
                                             <td><a href="index.php?component=workorder&page_tpl=details&workorder_id={$voucher_details.workorder_id}">{$voucher_details.workorder_id}</a></td>
                                         </tr>
                                         <tr>

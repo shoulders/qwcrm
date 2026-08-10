@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Other Income ID supplied."));
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No other income ID supplied."));
     $this->app->system->page->forcePage('otherincome', 'search');
 }
 
@@ -19,7 +19,7 @@ $otherincome_details = $this->app->components->otherincome->getRecord(\CMSApplic
 
 // Check if otherincome is deleted
 if($otherincome_details['status'] === 'deleted') {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot view this otherincome because it has been deleted."));
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot view this other income because it has been deleted."));
     $this->app->system->page->forcePage('otherincome', 'search');
 }
 

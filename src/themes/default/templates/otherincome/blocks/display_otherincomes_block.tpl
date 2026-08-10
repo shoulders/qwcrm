@@ -70,8 +70,8 @@
                 <a href="index.php?component=otherincome&page_tpl=edit&otherincome_id={$display_otherincomes.records[e].otherincome_id}">
                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Otherincome Details{/t}</b>');" onMouseOut="hideddrivetip();">
                 </a>
-                {*<a href="index.php?component=otherincome&page_tpl=delete&otherincome_id={$display_otherincomes.records[e].otherincome_id}" onclick="return confirm('{t}Are you Sure you want to delete this Otherincome Record? This will permanently remove the record from the database.{/t}');">
-                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Otherincome Record{/t}</b>');" onMouseOut="hideddrivetip();">
+                {*<a href="index.php?component=otherincome&page_tpl=delete&otherincome_id={$display_otherincomes.records[e].otherincome_id}" onclick="return confirm('{t}Are you Sure you want to delete this other income? This will permanently remove the record from the database.{/t}');">
+                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete other incomed{/t}</b>');" onMouseOut="hideddrivetip();">
                 </a>*}
             </td>
         </tr>

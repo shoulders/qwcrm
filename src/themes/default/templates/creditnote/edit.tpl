@@ -745,7 +745,7 @@
                                             <tr>
                                                 <td align="left" valign="top" width="100%">
                                                     <button type="submit" name="submit" value="submitchangesonly">{t}Submit Changes Only{/t}</button>
-                                                    <button type="submit" name="submit" value="submitandapprove" onclick="return confirm('{t}Are you sure you want to submit and approve this creditnote?{/t}');">{t}Submit and Approve{/t}</button>
+                                                    <button type="submit" name="submit" value="submitandapprove" onclick="return confirm('{t}Are you sure you want to submit and approve this credit note?{/t}');">{t}Submit and Approve{/t}</button>
                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=creditnote&page_tpl=details&creditnote_id={$creditnote_details.creditnote_id}';">{t}Cancel{/t}</button>
 
                                                     <input type="hidden" name="qform[creditnote_id]" value="{$creditnote_details.creditnote_id}">

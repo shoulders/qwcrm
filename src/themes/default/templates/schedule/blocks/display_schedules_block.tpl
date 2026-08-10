@@ -23,20 +23,20 @@
 
             <!-- Schedule ID -->
             <td class="olotd4"><a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules.records[s].schedule_id}">{$display_schedules.records[s].schedule_id}</a></td>
-            
+
             <!-- WO ID -->
             <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_schedules.records[s].workorder_id}">{$display_schedules.records[s].workorder_id}</a></td>
-            
+
             <!-- Employee -->
-            <td class="olotd4" nowrap>                
+            <td class="olotd4" nowrap>
                 <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_schedules.records[s].employee_id}">{$display_schedules.records[s].employee_display_name}</a>
-            </td> 
-            
+            </td>
+
             <!-- Client -->
-            <td class="olotd4" nowrap>                
+            <td class="olotd4" nowrap>
                 <a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_schedules.records[s].client_id}">{$display_schedules.records[s].client_display_name}</a>
-            </td> 
-            
+            </td>
+
             <!-- Start Time -->
             <td class="olotd4"> {$display_schedules.records[s].start_time|date_format:$date_format}</td>
 
@@ -45,8 +45,8 @@
 
             <!-- End time -->
             <td class="olotd4">{$display_schedules.records[s].end_time|date_format:'H:i'}</td>
-            
-            <!-- Note -->            
+
+            <!-- Note -->
             <td class="olotd4" nowrap>
                 {if $display_schedules.records[s].note}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_schedules.records[s].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
@@ -58,11 +58,11 @@
                 <a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules.records[s].schedule_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
                 <a href="index.php?component=schedule&page_tpl=edit&schedule_id={$display_schedules.records[s].schedule_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                 <a href="index.php?component=schedule&page_tpl=icalendar&schedule_id={$display_schedules.records[s].schedule_id}" target="_blank"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Export{/t}');" onMouseOut="hideddrivetip();"></a>
-                <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$display_schedules.records[s].schedule_id}" onclick="return confirm('{t}Are you Sure you want to delete this Schedule?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete{/t}</b>');" onMouseOut="hideddrivetip();"></a>                 
-            </td>            
+                <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$display_schedules.records[s].schedule_id}" onclick="return confirm('{t}Are you Sure you want to delete this schedule?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete{/t}</b>');" onMouseOut="hideddrivetip();"></a>
+            </td>
 
         </tr>
-    {/section}   
+    {/section}
     {if $display_schedules.restricted_records}
         <tr>
             <td colspan="9">{t}Not all records are shown here.{/t} {t}Click{/t} <a href="index.php?component=schedule&page_tpl=search">{t}here{/t}</a> {t}to see all records.{/t}</td>
@@ -71,6 +71,6 @@
     {if !$display_schedules.records}
         <tr>
             <td colspan="9" class="error">{t}There are no schedules.{/t}</td>
-        </tr>        
-    {/if}  
+        </tr>
+    {/if}
 </table>

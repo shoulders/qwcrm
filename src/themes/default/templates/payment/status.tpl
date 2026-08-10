@@ -63,7 +63,7 @@
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=payment&page_tpl=status&payment_id={$payment_id}">
-                                            <input name="delete_payment" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this Payment?{/t}');">
+                                            <input name="delete_payment" value="{t}Delete{/t}" type="submit" onclick="return confirm('{t}Are you sure you want to delete this payment?{/t}');">
                                         </form>
                                     {else}
                                         {t}This Payment cannot be deleted because it's current state does not allow it.{/t}

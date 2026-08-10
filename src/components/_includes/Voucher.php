@@ -764,7 +764,7 @@ class Voucher extends Components {
         if(!$this->checkRecordAllowsClose($voucher_id)) {
 
             // Fail message
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be closed with a creditnote."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be closed with a credit note."));
 
             return false;
 
@@ -774,7 +774,7 @@ class Voucher extends Components {
             $this->updateStatus($voucher_id, 'closed_with_creditnote', true);
 
             // Log activity
-            $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was closed with a creditnote by").' '.$this->app->user->login_display_name.'.';
+            $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("was closed with a credit note by").' '.$this->app->user->login_display_name.'.';
             $recordIds = $voucher_details;
             $this->app->system->variables->systemMessagesWrite('success', $logMessage);
             $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -1070,7 +1070,7 @@ class Voucher extends Components {
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add vouchers to a invoice closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add vouchers to a invoice closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
@@ -1164,7 +1164,7 @@ class Voucher extends Components {
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher has been closed with a creditnote so cannot be used."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher has been closed with a credit note so cannot be used."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
@@ -1224,7 +1224,7 @@ class Voucher extends Components {
                 case 'paid':
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice has been closed with a creditnote."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because the parent invoice has been closed with a credit note."), $silent);
                     $state_flag = false;
                     break;
                 case 'voided':
@@ -1311,7 +1311,7 @@ class Voucher extends Components {
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot have it's status changed because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot have it's status changed because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
@@ -1371,7 +1371,7 @@ class Voucher extends Components {
                     $state_flag = false;
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot have it's status changed because it's parent invoice has been closed with a creditnote."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot have it's status changed because it's parent invoice has been closed with a credit note."), $silent);
                     $state_flag = false;
                     break;
                 case 'deleted':
@@ -1459,7 +1459,7 @@ class Voucher extends Components {
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
@@ -1519,7 +1519,7 @@ class Voucher extends Components {
                     $state_flag = false;
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because it's parent invoice has been closed with a creditnote."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be edited because it's parent invoice has been closed with a credit note."), $silent);
                     $state_flag = false;
                     break;
                 case 'voided':
@@ -1573,38 +1573,38 @@ class Voucher extends Components {
         switch ($voucher_details['status'])
         {
             case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it is a draft."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it is a draft."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
             case 'partially_paid':
                 break;
             case 'unredeemed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnotebecause it is uredeemed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it is uredeemed."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_redeemed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it has been partially redeemed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it has been partially redeemed."), $silent);
                 $state_flag = false;
                 break;
             case 'redeemed':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it has been redeemed."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it has been redeemed."), $silent);
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it has already been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it has already been closed with a creditnote."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it is suspended."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it is suspended."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -1626,7 +1626,7 @@ class Voucher extends Components {
             switch ($invoice_details['status'])
             {
                 case 'draft':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it's parent invoice is a draft."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it's parent invoice is a draft."), $silent);
                     $state_flag = false;
                     break;
                 case 'unpaid':
@@ -1637,27 +1637,27 @@ class Voucher extends Components {
                 case 'in_collections':
                     // If the invoice has payments don't allow closing
                     if($invoice_details['unit_gross'] != $invoice_details['balance']) {
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because the parent invoice status does not allow it."), $silent);
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because the parent invoice status does not allow it."), $silent);
                         $state_flag = false;
                     }
                     break;
                 case 'paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because the parent invoice has been paid."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because the parent invoice has been paid."), $silent);
                     $state_flag = false;
                     break;
                 case 'closed_with_creditnote':
                     // This allows closing a voucher just after the invoice status has been updated to `closed_with_creditnote` and prevent errors
                     if($voucher_details['status'] == 'closed_with_creditnote') {
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because it has already been closed with a creditnote by the parent invoice."), $silent);
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because it has already been closed with a creditnote by the parent invoice."), $silent);
                         $state_flag = false;
                     }
                     break;
                 case 'voided':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because the parent invoice has been voided."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because the parent invoice has been voided."), $silent);
                     $state_flag = false;
                     break;
                 case 'deleted':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a creditnote because the parent invoice has been deleted."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be closed with a credit note because the parent invoice has been deleted."), $silent);
                     $state_flag = false;
                     break;
             }
@@ -1725,7 +1725,7 @@ class Voucher extends Components {
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
@@ -1782,7 +1782,7 @@ class Voucher extends Components {
                     $state_flag = false;
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice has been closed with a creditnote."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be voided because the parent invoice has been closed with a credit note."), $silent);
                     $state_flag = false;
                     break;
                 case 'voided':
@@ -1858,7 +1858,7 @@ class Voucher extends Components {
                 $state_flag = false;
                 break;
             case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because it has been closed with a creditnote."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'suspended':
@@ -1916,7 +1916,7 @@ class Voucher extends Components {
                     $state_flag = false;
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because it's parent invoice has been closed with a creditnote."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be deleted because it's parent invoice has been closed with a credit note."), $silent);
                     $state_flag = false;
                     break;
                 case 'voided':
@@ -2005,7 +2005,7 @@ class Voucher extends Components {
         }
 
         if(!$state_flag) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be closed with a creditnote because of Voucher(s)").': '.rtrim($blockingVouchers, ',').'.');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be closed with a credit note because of Voucher(s)").': '.rtrim($blockingVouchers, ',').'.');
         }
 
         return $state_flag;

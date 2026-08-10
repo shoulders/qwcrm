@@ -39,7 +39,7 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
 
     // Check we have a valid request
     if(\CMSApplication::$VAR['type'] == 'otherincome' && !(\CMSApplication::$VAR['otherincome_id'] ?? false)) {
-        $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("No other income ID supplied."));
         $this->app->system->page->forcePage('otherincome', 'search');
     }
 

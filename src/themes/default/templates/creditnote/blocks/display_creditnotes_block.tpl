@@ -106,7 +106,7 @@
     {/if}
     {if !$display_creditnotes.records}
         <tr>
-            <td colspan="13" class="error">{t}There are no creditnotes.{/t}</td>
+            <td colspan="13" class="error">{t}There are no credit notes.{/t}</td>
         </tr>
     {/if}
 </table>

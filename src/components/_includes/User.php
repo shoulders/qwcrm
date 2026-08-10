@@ -588,7 +588,7 @@ class User extends Components {
 
         // Creditnotes
         if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, $user_id)){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has linked creditnotes."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete a user who has linked credit notes."), $silent);
             $state_flag = false;
         }
 

@@ -10,7 +10,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{t}Workorder Search{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{t}Work Order Search{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}WORKORDER_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}WORKORDER_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -24,24 +24,24 @@
                                 <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
-                                            
+
                                             <!-- Category Search -->
                                             <td valign="top">
                                                 <form method="post" action="index.php?component=workorder&page_tpl=search" name="workorder_search" id="workorder_search" class="remove-empty-values">
-                                                    <div>                                                        
+                                                    <div>
                                                         <table border="0">
                                                             <tr>
                                                                 <td align="left" valign="top"><b>{t}Search{/t}</b>
                                                                    <br />
-                                                                    <select class="olotd5" id="search_category" name="search_category">                                                                        
+                                                                    <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Client{/t}</option>
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
                                                                         <option value="scope"{if $search_category == 'scope'} selected{/if}>{t}Scope{/t}</option>
                                                                         <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>
-                                                                        <option value="comment"{if $search_category == 'comment'} selected{/if}>{t}Comment{/t}</option> 
-                                                                        <option value="resolution"{if $search_category == 'resolution'} selected{/if}>{t}Resolution{/t}</option>                                                                       
+                                                                        <option value="comment"{if $search_category == 'comment'} selected{/if}>{t}Comment{/t}</option>
+                                                                        <option value="resolution"{if $search_category == 'resolution'} selected{/if}>{t}Resolution{/t}</option>
                                                                     </select>
                                                                    <br />
                                                                    <b>{t}for{/t}</b>
@@ -60,40 +60,40 @@
                                                                     <select class="olotd5" id="filter_status" name="filter_status">
                                                                         <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>
-                                                                        <option value="open"{if $filter_status == 'open'} selected{/if}>{t}Open{/t}</option> 
+                                                                        <option value="open"{if $filter_status == 'open'} selected{/if}>{t}Open{/t}</option>
                                                                         <option value="closed"{if $filter_status == 'closed'} selected{/if}>{t}Closed{/t}</option>
                                                                         <option disabled>----------</option>
-                                                                        {section name=s loop=$workorder_statuses}    
-                                                                            <option value="{$workorder_statuses[s].status_key}"{if $filter_status == $workorder_statuses[s].status_key} selected{/if}>{t}{$workorder_statuses[s].display_name}{/t}</option>        
-                                                                        {/section} 
+                                                                        {section name=s loop=$workorder_statuses}
+                                                                            <option value="{$workorder_statuses[s].status_key}"{if $filter_status == $workorder_statuses[s].status_key} selected{/if}>{t}{$workorder_statuses[s].display_name}{/t}</option>
+                                                                        {/section}
                                                                     </select>
                                                                 </td>
                                                             </tr>
                                                         </table>
                                                     </div>
-                                                </form>                                                
+                                                </form>
                                             </td>
 
                                             <!-- Navigation -->
                                             <td valign="top" nowrap>
-                                                <form id="navigation">                                                    
+                                                <form id="navigation">
                                                     <table>
                                                         <tr>
-                                                            
-                                                            <!-- Left Side Buttons -->                                                            
-                                                            <td>  
-                                                                {if $display_workorders.previous_page_no && $display_workorders.records} 
-                                                                    <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+
+                                                            <!-- Left Side Buttons -->
+                                                            <td>
+                                                                {if $display_workorders.previous_page_no && $display_workorders.records}
+                                                                    <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;
                                                                     <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_workorders.previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>
-                                                    
+
                                                             <!-- Dropdown Menu -->
-                                                            <td>                                                                    
+                                                            <td>
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$display_workorders.total_pages start=1}
                                                                         <option value="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_status}&filter_status={$filter_status}{/if}" {if $display_workorders.page_no == $smarty.section.page.index } Selected {/if}>
-                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_workorders.total_pages} 
+                                                                            {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$display_workorders.total_pages}
                                                                         </option>
                                                                     {/section}
                                                                     <option value="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_workorders.total_pages}{if $filter_status}&filter_status={$filter_status}{/if}" {if $display_workorders.page_no == $display_workorders.total_pages} selected {/if}>
@@ -101,15 +101,15 @@
                                                                     </option>
                                                                 </select>
                                                             </td>
-                                                            
-                                                            <!-- Right Side Buttons --> 
+
+                                                            <!-- Right Side Buttons -->
                                                             <td>
                                                                 {if $display_workorders.next_page_no && $display_workorders.records}
-                                                                    <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_workorders.next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_workorders.next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>
                                                                     <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$display_workorders.total_pages}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
-                                                            </td>                                                                                             
-                                                    
+                                                            </td>
+
                                                         </tr>
                                                         <tr>
 
@@ -118,21 +118,21 @@
                                                             <td>
                                                                 <p style="text-align: center;">{$display_workorders.total_results} {t}records found.{/t}</p>
                                                             </td>
-                                                            
-                                                        </tr>                                                    
-                                                    </table>                                                    
-                                                </form>                                                
+
+                                                        </tr>
+                                                    </table>
+                                                </form>
                                             </td>
-                                            
+
                                         </tr>
-                                        
+
                                         <!-- Results Block -->
                                         <tr>
                                             <td valign="top" colspan="2">
                                                 {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$display_workorders block_title=''}
                                             </td>
                                         </tr>
-                                        
+
                                     </table>
                                 </td>
                             </tr>

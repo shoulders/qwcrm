@@ -19,7 +19,7 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Log activity
-    $logMessage = _gettext("A search of otherincomes has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
+    $logMessage = _gettext("A search of other incomes has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
     $this->app->system->general->writeRecordToActivityLog($logMessage);
 
     // Redirect search so the variables are in the URL

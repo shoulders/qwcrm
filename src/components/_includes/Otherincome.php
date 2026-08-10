@@ -46,7 +46,7 @@ class Otherincome extends Components {
         $otherincome_id = $this->app->db->Insert_ID();
 
         // Log activity
-        $logMessage = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("created.");
+        $logMessage = _gettext("Other income").' '.$otherincome_id.' '._gettext("created.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_id, 'otherincome_id' => $otherincome_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -407,7 +407,7 @@ class Otherincome extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $logMessage = _gettext("Otherincome Record").' '.$qform['otherincome_id'].' '._gettext("updated.");
+        $logMessage = _gettext("Other income").' '.$qform['otherincome_id'].' '._gettext("updated.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $qform['supplier_id'], 'otherincome_id' => $qform['otherincome_id']);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -456,9 +456,9 @@ class Otherincome extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $logMessage = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+        $logMessage = _gettext("Other income").' '.$otherincome_id.' '._gettext("Status updated to").' '._gettext($this->getStatusDisplayName($new_status)).' '._gettext("by").' '.$this->app->user->login_display_name.'.';
         $recordIds = array('employee_id' => $this->app->user->login_user_id) + $otherincome_details;
-        //$this->app->system->variables->systemMessagesWrite('success', _gettext("Otherincome status updated."), $silent);
+        //$this->app->system->variables->systemMessagesWrite('success', _gettext("Other income status updated."), $silent);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage, $silent);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -522,7 +522,7 @@ class Otherincome extends Components {
         $this->updateAdditionalInfo($otherincome_id, array('reason_for_voiding' => $reason_for_voiding));
 
         // Log activity
-        $logMessage = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
+        $logMessage = _gettext("Other income").' '.$otherincome_id.' '._gettext("was voided by").' '.$this->app->user->login_display_name.'.';
         $recordIds = $this->getRecord($otherincome_id);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -574,7 +574,7 @@ class Otherincome extends Components {
         $this->updateStatus($otherincome_id, 'deleted', true);
 
         // Log activity
-        $logMessage = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("deleted.");
+        $logMessage = _gettext("Other income").' '.$otherincome_id.' '._gettext("deleted.");
         $recordIds = $otherincome_details;
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -621,7 +621,7 @@ class Otherincome extends Components {
         // Check there is a positive unit_gross
         if($qform['unit_gross'] <= 0)
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be submitted if it has a negative or zero gross amount."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be submitted if it has a negative or zero gross amount."));
             $state_flag = false;
         }
 
@@ -632,7 +632,7 @@ class Otherincome extends Components {
 
         // Add Submission Failed Validation message
         if(!$state_flag){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome submission failed validation and was not committed to the database. Fix and re-submit."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The other income submission failed validation and was not committed to the database. Fix and re-submit."));
         }
 
         return $state_flag;
@@ -659,13 +659,13 @@ class Otherincome extends Components {
         // Check there is a positive unit_gross
         if($otherincome_details['unit_gross'] <= 0)
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be approved because it has a negative or zero gross amount."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be approved because it has a negative or zero gross amount."));
             $state_flag = false;
         }
 
         // Is on a different tax system
         if($otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be approved because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be approved because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
@@ -674,30 +674,30 @@ class Otherincome extends Components {
             case 'draft':
                 break;
             case 'unpaid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome is already approved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income is already approved."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome is already approved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income is already approved."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome is already approved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income is already approved."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome is already approved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income is already approved."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be approved because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be approved because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Add Failed Validation message
         if(!$state_flag){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be approved at this time because it is not allowed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be approved at this time because it is not allowed."), $silent);
         }
 
         return $state_flag;
@@ -722,45 +722,45 @@ class Otherincome extends Components {
 
         // Is on a different tax system
         if($otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be unapproved because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be unapproved because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // Status checks
         switch($otherincome_details['status']) {
             case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome is not approved, so cannot be unapproved."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income is not approved, so cannot be unapproved."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be unapproved because it has been partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be unapproved because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be unapproved because it has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be unapproved because it has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be unapproved because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be unapproved because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be unapproved because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be unapproved because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be unapproved because it has linked payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be unapproved because it has linked payments."), $silent);
             $state_flag = false;
         }
 
         // Add Failed Validation message
         if(!$state_flag){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be unapproved at this time because it is not allowed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be unapproved at this time because it is not allowed."), $silent);
         }
 
         return $state_flag;
@@ -774,7 +774,7 @@ class Otherincome extends Components {
     public function checkRecordAllowsManualStatusChange($otherincome_id, $silent = false) {
 
         // Disable this feature for now. I may enable or remove in future versions.
-        $this->app->system->variables->systemMessagesWrite('warning', _gettext("The otherincome cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("This other income cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
         return false;
 
         $state_flag = true;
@@ -792,34 +792,34 @@ class Otherincome extends Components {
         // Status checks
         switch($otherincome_details['status']) {
             case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot have it's status changed because it is a draft."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is a draft."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot have it's status changed because it is unpaid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is unpaid."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot have it's status changed because it is partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot have it's status changed because it has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot have it's status changed because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot have it's status changed because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot have it's status changed because it has linked payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has linked payments."), $silent);
             $state_flag = false;
         }
 
@@ -847,13 +847,13 @@ class Otherincome extends Components {
 
         // Is on a different tax system
         if($otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it is on a different Tax system."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be edited because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // If this is a VAT Record, check all of it's items have their VAT code enabled
         if((preg_match('/^vat_/', $otherincome_details['tax_system'])) && !$this->checkRecordItemsVatTaxCodeStatuses($otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be edited because one or more of it's items have a VAT Tax Code that is not enabled."), $silent);
             $state_flag = false;
         }
 
@@ -862,23 +862,23 @@ class Otherincome extends Components {
             case 'draft':
                 break;
             case 'unpaid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a draft otherincome can be edited."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Only a draft other income can be edited."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has been partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be edited because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be edited because it has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be edited because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be edited because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -908,32 +908,32 @@ class Otherincome extends Components {
         // Status checks
         switch($otherincome_details['status']) {
             case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void a draft otherincome, you can only delete them."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot void a draft other income, you can only delete them."), $silent);
                 $state_flag = false;
                 break;
             case 'unpaid':
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be voided because it has has been partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be voided because it has has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be voided because it has has already been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has has already been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be voided because it has has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has Payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be voided because it has linked payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has linked payments."), $silent);
             $state_flag = false;
         }
 
@@ -964,30 +964,30 @@ class Otherincome extends Components {
             case 'draft':
                 break;
             case 'unpaid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete an unpaid otherincome, you can only void them."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot delete an unpaid other income, you can only void them."), $silent);
                 $state_flag = false;
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has been partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be deleted because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincomecannot be deleted because it has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other incomecannot be deleted because it has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be deleted because it has been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it already been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be deleted because it already been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
 
         // Has payments
         if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This otherincome cannot be deleted because it has linked payments."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be deleted because it has linked payments."), $silent);
             $state_flag = false;
         }
 

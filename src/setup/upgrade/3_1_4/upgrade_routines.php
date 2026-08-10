@@ -579,7 +579,7 @@ class Upgrade3_1_4 extends Setup {
                     $local_error_flag = true;
 
                     // Log Message
-                    $record = _gettext("Failed to create item for the otherincome record").' '.$rs->fields['otherincome_id'];
+                    $record = _gettext("Failed to create item for the other income record").' '.$rs->fields['otherincome_id'];
 
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -606,7 +606,7 @@ class Upgrade3_1_4 extends Setup {
         if($local_error_flag)
         {
             // Log Message
-            $record = _gettext("Failed to complete conversion of Otherincome using items.");
+            $record = _gettext("Failed to complete conversion of other income using items.");
 
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -621,7 +621,7 @@ class Upgrade3_1_4 extends Setup {
         else
         {
             // Log Message
-            $record = _gettext("Successfully completed conversion of Otherincome using items.");
+            $record = _gettext("Successfully completed conversion of other income using items.");
 
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';

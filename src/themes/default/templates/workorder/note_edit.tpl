@@ -17,7 +17,7 @@
     <tr>
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
-                <tr>                    
+                <tr>
                     <td class="menuhead2" width="80%">{t}Work Order Edit Note{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
@@ -26,27 +26,27 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">                        
+                    <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
-                                <td width="100%" valign="top">                                    
+                                <td width="100%" valign="top">
                                     <form method="post" action="index.php?component=workorder&page_tpl=note_edit&workorder_note_id={$workorder_note_details.workorder_note_id}">
-                                        <p><b>{t}Edit Workorder Note{/t}</b></p>                                        
+                                        <p><b>{t}Edit Work Order Note{/t}</b></p>
                                         {*<div>
                                             <b>{t}Date{/t}:<b><br>
                                             <input id="date" name="date" class="olotd4" size="10" value="{$workorder_note_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                             <button type="button" id="date_button">+</button>
-                                            <script>                                            
+                                            <script>
                                                 Calendar.setup( {
                                                     trigger     : "date_button",
                                                     inputField  : "date",
-                                                    dateFormat  : "{$date_format}"                                                                                            
-                                                } );                                            
-                                            </script>                                                    
+                                                    dateFormat  : "{$date_format}"
+                                                } );
+                                            </script>
                                         </div>*}
                                         <p><b>{t}Note{/t}:</b></p>
                                         <textarea class="olotd4" rows="15" cols="70" name="note">{$workorder_note_details.description}</textarea>
-                                        <br>                                        
+                                        <br>
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_note_details.workorder_id}';">{t}Cancel{/t}</button>
                                     </form>

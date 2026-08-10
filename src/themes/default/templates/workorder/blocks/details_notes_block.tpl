@@ -13,44 +13,44 @@
                     <td class="menuhead2" width="80%">&nbsp;{t}Notes{/t}</td>
                     <td class="menuhead2" width="20%" align="right">
                         <table cellpadding="2" cellspacing="2" border="0">
-                            <tr> 
-                                <td width="33%" align="right">   
+                            <tr>
+                                <td width="33%" align="right">
                                     <a href="index.php?component=workorder&page_tpl=note_new&workorder_id={$workorder_id}">
                                         <img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('{t}Click to create a new note{/t}');" onMouseOut="hideddrivetip();">
-                                    </a>                    
-                                </td>  
+                                    </a>
+                                </td>
                             </tr>
                         </table>
                         </a>
                     </td>
                 </tr>
-            </table>       
+            </table>
         </td>
-    </tr>   
+    </tr>
     <tr>
         <td class="menutd">
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 {section name=n loop=$workorder_notes}
                     <tr>
                         <td class="menutd">
-                            <table width="100%" cellpadding="4" cellspacing="0" style="border-collapse: collapse;">                
+                            <table width="100%" cellpadding="4" cellspacing="0" style="border-collapse: collapse;">
                                 <tr style="border: 1px black solid; background-color: #ededed;">
-                                    <td><b>{t}Workorder Note ID{/t}: {$workorder_notes[n].workorder_note_id}</b></td>
-                                    <td width="33%" align="right">                                        
+                                    <td><b>{t}Work Order Note ID{/t}: {$workorder_notes[n].workorder_note_id}</b></td>
+                                    <td width="33%" align="right">
                                         <a href="index.php?component=workorder&page_tpl=note_edit&workorder_note_id={$workorder_notes[n].workorder_note_id}">
-                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">
                                         </a>
                                         <a href="index.php?component=workorder&page_tpl=note_delete&workorder_note_id={$workorder_notes[n].workorder_note_id}" onclick="return confirm('{t}Are you sure you want to delete this note?{/t}');">
-                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Delete the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
-                                        </a>                                        
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Delete the Note{/t}');" onMouseOut="hideddrivetip();">
+                                        </a>
                                     </td>
-                                </tr>                                
-                            </table>    
-                        </td>    
-                    </tr> 
-                    <tr>                    
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>
-                            <b>{t}Employee{/t}: </b>{$workorder_notes[n].employee_display_name}<br>                           
+                            <b>{t}Employee{/t}: </b>{$workorder_notes[n].employee_display_name}<br>
                             <b>{t}Date{/t}: </b>{$workorder_notes[n].date|date_format:$date_format}<br>
                             <b>{t}Time{/t}: </b>{$workorder_notes[n].date|date_format:"%H:%M"}<br>
                             <b>{t}Notes{/t}:</b>
@@ -59,10 +59,10 @@
                     </tr>
                 {sectionelse}
                     <tr>
-                        <td colspan="6" class="error">{t}There are no workorder notes.{/t}</td>
-                    </tr>        
+                        <td colspan="6" class="error">{t}There are no work order notes.{/t}</td>
+                    </tr>
                 {/section}
-            </table>                            
-        </td>          
+            </table>
+        </td>
     </tr>
 </table>
