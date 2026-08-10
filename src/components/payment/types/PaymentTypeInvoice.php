@@ -40,8 +40,10 @@ class PaymentTypeInvoice extends PaymentType
     {
         parent::preProcess();
 
-        // If this was a partially paid invoice, and closed by a credit note (Type1), then return the `payment_id`
+        // If this was a partially paid invoice, and closed by a credit note (Type1), then return the `payment_id` of the used credit note
+        // TODO: both lines below work, I have not decided if i need to remove the json version becasue it is used in display modifiers and might still be needed for displaying
         $this->closedByCreditnotePaymentId = json_decode($this->invoice_details['additional_info'], true)['closed_by_creditnote_payment_id'] ?? null;
+        //$this->closedByCreditnotePaymentId = $this->app->components->creditnote->getClosedByCreditnotePaymentId('invoice', $this->invoice_details['invoice_id']);
 
         // Load credit note details (if required)
         if(Payment::$method == 'creditnote'){

@@ -512,7 +512,7 @@ class Creditnote extends Components {
     }
 
     ###########################################
-    #    Get Creditnote Action Types          #
+    #    Get Credit note Action Types         #
     ###########################################
 
     public function getActionTypes() {
@@ -525,6 +525,35 @@ class Creditnote extends Components {
 
     }
 
+    ########################################### // $recordType = invoice/expense
+    #    Get closed By Credit note PaymentId  # // $recordId = $invoice_id/$expense_id
+    ########################################### // Returns the payment_id of the `close` type credit note payment that cleared this record's balance to zero, or null if it wasn't closed this way
+
+    public function getClosedByCreditnotePaymentId($recordType, $recordId) {
+
+        // Only these record types can be closed by a credit note
+        if(!in_array($recordType, array('invoice', 'expense'))) {
+            return null;
+        }
+
+        $column = $recordType.'_id';
+
+        // A record is "closed by a credit note" when it has a valid credit note payment (Type 1) whose credit note
+        // was itself generated against this same record with an action_type of `close`
+        $sql = "SELECT ".PRFX."payment_records.payment_id
+                FROM ".PRFX."payment_records
+                INNER JOIN ".PRFX."creditnote_records ON ".PRFX."creditnote_records.creditnote_id = ".PRFX."payment_records.creditnote_id
+                WHERE ".PRFX."payment_records.method          = ".$this->app->db->qStr('creditnote')."
+                AND ".PRFX."payment_records.status             = ".$this->app->db->qStr('valid')."
+                AND ".PRFX."payment_records.".$column."        = ".$this->app->db->qStr($recordId)."
+                AND ".PRFX."creditnote_records.".$column."     = ".$this->app->db->qStr($recordId)."
+                AND ".PRFX."creditnote_records.action_type     = ".$this->app->db->qStr('close');
+
+        if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
+
+        return $rs->fields['payment_id'] ?? null;
+
+    }
 
     /** Update Functions **/
 

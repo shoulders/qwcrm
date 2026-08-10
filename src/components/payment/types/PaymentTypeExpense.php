@@ -38,8 +38,10 @@ class PaymentTypeExpense extends PaymentType
     {
         parent::preProcess();
 
-        // If this was a partially paid expense, and closed by a credit note (Type1), then return the `payment_id`
+        // If this was a partially paid expense, and closed by a credit note (Type1), then return the `payment_id` of the used credit note
+        // TODO: both lines below work, I have not decided if i need to remove the json version becasue it is used in display modifiers and might still be needed for displaying
         $this->closedByCreditnotePaymentId = json_decode($this->expense_details['additional_info'], true)['closed_by_creditnote_payment_id'] ?? null;
+        //$this->closedByCreditnotePaymentId = $this->app->components->creditnote->getClosedByCreditnotePaymentId('expense', $this->expense_details['expense_id']);
 
         // Load credit note details (if required)
         if(Payment::$method == 'creditnote'){
@@ -216,7 +218,7 @@ class PaymentTypeExpense extends PaymentType
             // New
             if(Payment::$action === 'new')
             {
-                // Is this is a Type 1 credit note payment (closed a partially open expense), then tag it in the expense record  ***creditnote_details[] is empty, $expense_details is fine
+                // Is this is a Type 1 credit note payment (closed a partially open expense), then tag it in the expense record
                 if(Payment::$method == 'creditnote' && (float) $this->expense_details['balance'] && $this->VAR['qpayment']['creditnote_id'] == $this->creditnote_details['expense_id']){
                     $this->app->components->expense->updateAdditionalInfo($this->expense_details['expense_id'], array('closed_by_creditnote_payment_id' => Payment::$payment_details['payment_id']));
                     $this->closedByCreditnotePaymentId = Payment::$payment_details['payment_id'];
