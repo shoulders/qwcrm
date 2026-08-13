@@ -905,8 +905,8 @@ class Creditnote extends Components {
     }
 
     ###############################################
-    #  Check if a credit note can be created      #  // Used to hide create CR buttons + in creditnote:new
-    ###############################################  // only pass the record type you want to issue a CR against, this keeps logic easy to follow
+    #  Check if a credit note can be created      #  // Used to hide create CR buttons + checks in creditnote:new
+    ###############################################  // only pass the record ID for the type you want to issue a CR against, this keeps logic easy to follow
 
     public function checkRecordCanBeCreated($client_id = null, $invoice_id = null, $supplier_id = null, $expense_id = null, $silent = false) {
 
@@ -952,7 +952,7 @@ class Creditnote extends Components {
                 $state_flag = false;
             }
 
-            /* Sales Credit Note (Client) - (client:details) */
+            /* Sales Credit Note - (Client) (Standalone) (client:details) */
 
             // Used to send real money to a client without an invoice, or they can use the credit to purchase other items
 
@@ -960,12 +960,10 @@ class Creditnote extends Components {
 
                 // CR `Standalone` Action Type (Credit)
 
-                /* Dont allow this type of credit note (for now)
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is type of credit note for clients is not currently allowed. You should not see this error, report to admins.", $silent));
-                $state_flag = false;*/
+                // Do nothing
             }
 
-            /* Sales Credit Note (Invoice) - (invoice:details) */
+            /* Sales Credit Note - (Client) (Invoice) (invoice:details) */
 
             // Used to close invoices with outstanding balances, without receiving any real money
             // Refund monies to Clients or allow them to use the credit on another of their invoices
@@ -1000,7 +998,7 @@ class Creditnote extends Components {
                         // We are just closing with fake money
                         // When the CR is created the vouchers will be set to `closed_with_creditnote`
 
-                        // Do Nothing
+                        // Do nothing
 
                         break;
                     case 'overdue':
@@ -1083,7 +1081,7 @@ class Creditnote extends Components {
                 $state_flag = false;
             }
 
-            /* Purchase Credit Note (Supplier) - (supplier:details) */
+            /* Purchase Credit Note - (Supplier) (Standalone) (supplier:details) */
 
             // Used to send real money to a supplier without an an expense, or they can use the credit against an outstanding invoice.
 
@@ -1091,13 +1089,11 @@ class Creditnote extends Components {
 
                 // CR `Standalone` Action Type (Debit)
 
-                /* Dont allow this type of credit note (for now)
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This is type of credit note for expenses is not currently allowed. You should not see this error, report to admins."), $silent);
-                $state_flag = false;*/
+                // Do nothing
 
             }
 
-            /* Purchase Credit Note (Expense) - (expense:details) */
+            /* Purchase Credit Note - (Supplier) (Expense) (expense:details) */
 
             // Used to reduce the amount you owe on an expense, or record a refund received from a supplier against an expense.
             // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
@@ -1133,6 +1129,7 @@ class Creditnote extends Components {
 
                         // Used to clear expense balances without sending monies
                         // We are just closing with fake money
+
                         // Do nothing
 
                         break;
@@ -1189,17 +1186,11 @@ class Creditnote extends Components {
 
     #############################################################
     # Validate submitted information before allowing submission #  // This validates the submission and is creditnote type aware
-    #############################################################
+    #############################################################  // checks submission from creditnote:edit
 
     public function checkRecordSubmissionIsValid($qform)
     {
         $state_flag = true;
-
-        // Allow for CR created from different points - should not be neede
-        /*$client_id = $qform['client_id'] ?? null;
-        $invoice_id = $qform['invoice_id'] ?? null;
-        $supplier_id = $qform['supplier_id'] ?? null;
-        $expense_id = $qform['expense_id'] ?? null;*/
 
         // $qform only sends the editable data, not the rest of the record
         $creditnote_details = $this->getRecord($qform['creditnote_id']);
@@ -1225,78 +1216,53 @@ class Creditnote extends Components {
                 $state_flag = false;
             }
 
-            /* this check should not be needed here as it is done upon creditnote creation
-            // Check there are no draft credit notes attached to the client
-            if($this->app->components->report->creditnoteCount(null, null, null, null, 'draft', null, null, null, null, $client_id))
-            {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a draft credit note."));
-                $state_flag = false;
-            }*/
+            /* Sales Credit Note - (Client) (Standalone) (client:details) */
 
-            /* Sales Credit Note (Client) - (client:details) */
             // Used to give credit to a client without an invoice, this can then be used to purchase other items or send real money to the client
 
             if(!$invoice_id)
             {
-                /* Dont allow this type of credit note (for now)
-                $state_flag = false;*/
+                // Do nothing
             }
 
-            /* Sales Credit Note (Invoice) - (invoice:details) */
+            /* Sales Credit Note - (Client) (Invoice) (invoice:details) */
+
             // Used to close invoices with outstanding balances without accepting or sending real money, or refund monies to a client
 
             elseif($invoice_id)
             {
                 $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
 
-                // Is on a different tax system
-                if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the invoice is on another tax system."));
-                    $state_flag = false;
-                }
-
-                /* this check should not be needed as it is done upon creation, not submission
-                // Check if there are any open credit notes issued against this invoice (Only 1 open credit note is allowed against this invoice at any time)
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, $invoice_id))
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice already has an open credit note assigned to it."));
-                    $state_flag = false;
-                }*/
-
                 // Status Checks (CR Parent Invoice)
                 switch ($invoice_details['status']) {
                     case 'draft':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is a draft and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is a draft and does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'unpaid':
-                        //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice has no payments and should be voided, not closed with a credit note. You should not see this error, report to admins."));
-                        //$state_flag = false;
-                        //break;
                     case 'partially_paid':
                         // CR `Close` Action Type (Credit) (Used to clear invoice balances without receiving monies)
-
                         // We are just closing with fake money
                         // All vouchers on invoices with this state are blocked, have never been used or activated and can be voided.
                         // When the CR is created the vouchers will be voided
+                        // I could check with $creditnote_details['type'] == 'close' but status is easier
 
                         // Make sure the submitted CR total is the same as the parent invoice's remaining balance
                         if($qform['unit_gross'] != $invoice_details['balance']){
                             $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note requires that the amount is equal to the remaining balance on the parent invoice so it can be closed which is ").CURRENCY_SYMBOL.number_format($invoice_details['balance'], 2, '.'));
                             $state_flag = false;
                         }
-
                         break;
                     case 'overdue':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and cannot accept credit note. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is overdue and does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'in_dispute':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is draft and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is dispute and does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'in_collections':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is in collections and does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'paid':
@@ -1326,15 +1292,15 @@ class Creditnote extends Components {
 
                         break;
                     case 'voided':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is voided and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is voided and does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'deleted':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is deleted and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice is deleted and does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     default:
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice status does not allow payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent invoice status does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                 }
@@ -1348,31 +1314,23 @@ class Creditnote extends Components {
             /* Common Tests */
 
             // Is the supplier active
-            if($this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated') {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this supplier because they are not active."));
-                $state_flag = false;
-            }
+        if($this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this supplier because they are not active."));
+            $state_flag = false;
+        }
 
-            /* Purchase Credit Note (Supplier) - (supplier:details) */
+            /* Purchase Credit Note - (Supplier) (Standalone) (supplier:details) */
+
             // Used to reduce the amount you owe your supplier, or record a refund received from a supplier.
             // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
 
             if(!$expense_id)
             {
-                /* this check should not be needed as it is done upon creation, not submission
-                // Check there are no draft credit notes attached to the supplier
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'draft', null, null, null, null, null, $supplier_id))
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier already has a draft credit note assigned to it."));
-                    $state_flag = false;
-                }*/
-
-                /* Dont allow this type of credit note (for now)
-                $state_flag = false;*/
+                // Do nothing
             }
 
+            /* Purchase Credit Note - (Supplier) (Expense) (expense:details) */
 
-            /* Purchase Credit Note (Expense) - (expense:details) */
             // Used to reduce the amount you owe on an expense, or record a refund received from a supplier against an expense.
             // The refund can be in the form of credit with the supplier (via their credit note system) or a real payment such as cash or bank transfer.
 
@@ -1382,24 +1340,10 @@ class Creditnote extends Components {
 
                 $expense_details = $this->app->components->expense->getRecord($expense_id);
 
-                // Is on a different tax system
-                if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be created because the expense is on another tax system."));
-                    $state_flag = false;
-                }
-
-                /* this check should not be needed as it is done upon creation, not submission
-                // Check if there are any open credit notes issued against this expense (Only 1 open credit note is allowed against this exepsne at any time)
-                if($this->app->components->report->creditnoteCount(null, null, null, null, 'open', null, null, null, null, null, null, null, $expense_id))
-                {
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense already has an open credit note assigned to it."));
-                    $state_flag = false;
-                }*/
-
                 // Status Checks (CR Parent Expense)
                 switch($expense_details['status']){
                     case 'draft':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is draft and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is draft and does not allow linked credit notes.. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'unpaid':
@@ -1407,8 +1351,9 @@ class Creditnote extends Components {
                         //$state_flag = false;
                         //break;
                     case 'partially_paid':
-                        // CR `Close` Action Type (Credit) (Used to clear expense balances without sending monies)
+                        // CR `Close` Action Type (Debit) (Used to clear expense balances without receiving monies)
                         // We are just closing with fake money
+                        // I could check with $creditnote_details['type'] == 'close' but status is easier
 
                         // Make sure the submitted CR total is the same as the parent expense's remaining balance
                         if($qform['unit_gross'] != $expense_details['balance']){
@@ -1442,15 +1387,15 @@ class Creditnote extends Components {
 
                         break;
                     case 'voided':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is cancelled and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is voided and does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     case 'deleted':
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is deleted and cannot accept payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense is deleted and does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                     default:
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense status does not allow payments. You should not see this error, report to admins."));
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The parent expense status does not allow linked credit notes. You should not see this error, report to admins."));
                         $state_flag = false;
                         break;
                 }
@@ -1495,7 +1440,7 @@ class Creditnote extends Components {
         // If there is a supplier, are they active
         if($creditnote_details['supplier_id'] && $this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'status') != 'activated')
         {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be approved because the supplier it belongs to is not active.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be approved because the supplier it belongs to is not active.", $silent));
             $state_flag = false;
         }
 

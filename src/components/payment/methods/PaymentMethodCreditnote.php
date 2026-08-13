@@ -263,8 +263,11 @@ class PaymentMethodCreditnote extends PaymentMethod
             // Check Credit Note status
             switch ($this->creditnote_details['status']) {
                 case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is a draft and there is no payment to edit. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'unused':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no payment to edit. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is unused and there is no payment to edit. You should not see this error, report to admins."), $silent);
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_used':
@@ -359,8 +362,11 @@ class PaymentMethodCreditnote extends PaymentMethod
             // Check Credit Note status
             switch ($this->creditnote_details['status']) {
                 case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is a draft and there is no payment to void. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'unused':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no payment to void. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is unused and there is no payment to void. You should not see this error, report to admins."), $silent);
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_used':
@@ -440,8 +446,11 @@ class PaymentMethodCreditnote extends PaymentMethod
             // Check Credit Note status
             switch ($this->creditnote_details['status']) {
                 case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is a draft and there is no payment to delete. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'unused':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no payment to delete. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This credit note is unused and there is no payment to delete. You should not see this error, report to admins."), $silent);
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_used':
@@ -449,7 +458,7 @@ class PaymentMethodCreditnote extends PaymentMethod
                 case 'used':
                     break;
                 case 'voided':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be eleted because the credit note has been voided."));
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the credit note has been voided."));
                     Payment::$payment_valid = false;
                     break;
                 case 'deleted':

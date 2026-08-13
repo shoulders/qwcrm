@@ -126,10 +126,19 @@ class PaymentMethodVoucher extends PaymentMethod
             switch ($this->voucher_details['status'])
             {
                 case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to edit. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'unpaid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to edit. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'partially_paid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to edit. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'unredeemed':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no payment to edit. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to edit. You should not see this error, report to admins."), $silent);
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_redeemed':
@@ -163,12 +172,20 @@ class PaymentMethodVoucher extends PaymentMethod
             switch ($this->voucher_details['status'])
             {
                 case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to void. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'unpaid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to void. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'partially_paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no payment to void. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to void. You should not see this error, report to admins."), $silent);
                     Payment::$payment_valid = false;
                     break;
                 case 'unredeemed':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to void. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
                     break;
                 case 'partially_redeemed':
                     break;
@@ -200,12 +217,20 @@ class PaymentMethodVoucher extends PaymentMethod
             switch ($this->voucher_details['status'])
             {
                 case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to delete. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'unpaid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to delete. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
+                    break;
                 case 'partially_paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("There is no payment to delete. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to delete. You should not see this error, report to admins."), $silent);
                     Payment::$payment_valid = false;
                     break;
                 case 'unredeemed':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to delete. You should not see this error, report to admins."), $silent);
+                    Payment::$payment_valid = false;
                     break;
                 case 'partially_redeemed':
                     break;
