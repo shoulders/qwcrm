@@ -30,7 +30,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
 
     /* Sales Credit Notes */
 
-    // Sales Credit Note (Client) - (client:details)
+    // Sales Credit Note - (Client) (Standalone) (client:details)
     if(\CMSApplication::$VAR['client_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('client', 'details'))
     {
         // Build Creditnote record
@@ -55,7 +55,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $standard_item['subtotal_gross'] = '0.00';
     }
 
-    // Sales Credit Note (Invoice) - (invoice:details)
+    // Sales Credit Note - (Client) (Invoice) (invoice:details)
     elseif(\CMSApplication::$VAR['invoice_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'details'))
     {
         $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
@@ -147,7 +147,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
 
     /* Purchase Credit Notes */
 
-    // Purchase Credit Note (Supplier) - (supplier:details)
+    // Purchase Credit Note - (Supplier) (Standalone) (supplier:details)
     elseif(\CMSApplication::$VAR['supplier_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('supplier', 'details'))
     {
         // Build Creditnote record
@@ -172,7 +172,7 @@ if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::
         $standard_item['subtotal_gross'] = '0.00';
     }
 
-    // Purchase Credit Note (Expense) - (expense:details)
+    // Purchase Credit Note - (Supplier) (Expense) (expense:details)
     elseif(\CMSApplication::$VAR['expense_id'] ?? false && $this->app->system->security->checkPageAccessedViaQwcrm('expense', 'details'))
     {
         $expense_details = $this->app->components->expense->getRecord(\CMSApplication::$VAR['expense_id']);
