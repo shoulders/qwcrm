@@ -1314,10 +1314,10 @@ class Creditnote extends Components {
             /* Common Tests */
 
             // Is the supplier active
-        if($this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this supplier because they are not active."));
-            $state_flag = false;
-        }
+            if($this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated') {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this supplier because they are not active."));
+                $state_flag = false;
+            }
 
             /* Purchase Credit Note - (Supplier) (Standalone) (supplier:details) */
 
@@ -1402,11 +1402,8 @@ class Creditnote extends Components {
 
             }
 
-        }
-
         // Status Fall Back - I don't think this will ever be called, but safety first.
-        else
-        {
+        } else {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The submission is invalid. You should not see this error, report to admins."));
             $state_flag = false;
         }

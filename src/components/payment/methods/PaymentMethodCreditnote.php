@@ -136,6 +136,8 @@ class PaymentMethodCreditnote extends PaymentMethod
 
             /** Sales Credit Notes **/
 
+            // You can only use a CR as a payment method against an invoice that belongs to a client
+
             if($this->creditnote_details['client_id']) {
 
                 /* Common Tests */
@@ -155,27 +157,31 @@ class PaymentMethodCreditnote extends PaymentMethod
 
                 /* Sales Credit Note - (Client) (Standalone) (client:details) */
 
-                // You can only use a CR as a payment method against an invoice or expense, so this is not a valid option.
+                // Used to reduce the amount a client owes on one of their invoices, by using the balance from a standalone sales credit note as a payment method.
 
                 if(!$this->creditnote_details['invoice_id']) {
 
-                    // This is not a valid use
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("When using a credit note as a payment method, it can only be used against an invoice or expense. This sales credit note submission does not reference an invoice. You should not see this error, report to admins."));
-                    Payment::$payment_valid = false;
+                    $target_invoice_details = $this->VAR['qpayment']['invoice_id'];
+
+                    // Is the Target Invoice on a different tax system (the Target Invoice will have been previously checked only if this is a `close` or `refund` CR type as part of checkRecordCanBeCreated() )
+                    if($target_invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this invoice because it is on a different Tax system."));
+                        Payment::$payment_valid = false;
+                    }
+
+                    // Does the Target Invoice belong to the client
+                    if($target_invoice_details['client_id'] != $this->creditnote_details['client_id']) {
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this invoice because it is not owned by the same client."));
+                        Payment::$payment_valid = false;
+                    }
 
                 }
 
                 /* Sales Credit Note - (Client) (Invoice) (invoice:details) */
 
-                // Used to reduce the amount a client owes on an invoice, by using the balance from the sales credit note as a payment method against an invoice.
+                // Used to reduce the amount a client owes on on of their invoices, by using the balance from the sales credit note raised against that invoice as a payment method.
 
                 elseif($this->creditnote_details['invoice_id']) {
-
-                    // Parent Invoice on a different tax system
-                    if($this->app->components->invoice->getRecord($this->VAR['qpayment']['invoice_id'], 'tax_system') != QW_TAX_SYSTEM) {
-                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this invoice because it is on a different Tax system."));
-                        Payment::$payment_valid = false;
-                    }
 
                     // Is the parent credit note a `close` action type (Used to clear invoice balances without receiving monies)
                     if($this->creditnote_details['type'] == 'close') {
@@ -193,6 +199,8 @@ class PaymentMethodCreditnote extends PaymentMethod
                 }
 
             /** Purchase Credit Notes  **/
+
+            // You can only use a CR as a payment method against an expense that belongs to a supplier
 
             } elseif($this->creditnote_details['supplier_id']) {
 
@@ -213,25 +221,29 @@ class PaymentMethodCreditnote extends PaymentMethod
 
                 /* Purchase Credit Note - (Supplier) (Standalone) (supplier:details) */
 
-                // You can only use a CR as a payment method against an invoice or expense, so this is not a valid option.
+                // Used to reduce the amount I owe a supplier on one of their expenses, by using the balance from a standalone purchase credit note as a payment method.
 
                 if(!$this->creditnote_details['expense_id']) {
 
-                    // This is not a valid use
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("When using a credit note as a payment method, it can only be used against an invoice or expense. This purchase credit note submission does not reference an expense. You should not see this error, report to admins."));
-                    Payment::$payment_valid = false;
+                    $target_expense_details = $this->VAR['qpayment']['expense_id'];
 
-                /* Purchase Credit Note - (Supplier) (Expense) (expense:details) */
-
-                // Used to reduce the amount I owe a supplier on an expense, by using the balance from the purchase credit note as a payment method against an expense.
-
-                } elseif($this->creditnote_details['expense_id']) {
-
-                    // Parent Expense on a different tax system
-                    if($this->app->components->expense->getRecord($this->VAR['qpayment']['expense_id'], 'tax_system') != QW_TAX_SYSTEM) {
+                    // Is the Target Expense on a different tax system (the Target Expense will have been previously checked only if this is a `close` or `refund` CR type as part of checkRecordCanBeCreated() )
+                    if($target_expense_details['tax_system'] != QW_TAX_SYSTEM) {
                         $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this expense because it is on a different Tax system."));
                         Payment::$payment_valid = false;
                     }
+
+                    // Does the Target Expense belong to the supplier
+                    if($target_expense_details['supplier_id'] != $this->creditnote_details['supplier_id']) {
+                        $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this expense because it is not owned by the same supplier."));
+                        Payment::$payment_valid = false;
+                    }
+
+                /* Purchase Credit Note - (Supplier) (Expense) (expense:details) */
+
+                // Used to reduce the amount I owe a supplier on one of their expenses, by using the balance from the purchase credit note raised against that expense as a payment method.
+
+                } elseif($this->creditnote_details['expense_id']) {
 
                     // Is the parent credit note a `close` action type (Used to clear expense balances without sending monies)
                     if($this->creditnote_details['type'] == 'close') {
