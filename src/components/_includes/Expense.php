@@ -663,6 +663,82 @@ class Expense extends Components {
 
     }
 
+    ##########################################################
+    #  Check if the expense status is allowed to be changed  #  // not currently used - would be added to expense:status
+    ##########################################################
+
+    public function checkRecordAllowsManualStatusChange($expense_id, $silent = false) {
+
+        // Disable this feature for now. I may enable or remove in future versions. TODO:
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("This expense cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        return false;
+
+        $state_flag = true;
+
+        // Get the expense details
+        $expense_details = $this->getRecord($expense_id);
+
+        // If there is a supplier, are they active
+        if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense's status cannot be changed because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Status checks
+        switch($expense_details['status']) {
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is a draft."), $silent);
+                $state_flag = false;
+                break;
+            case 'unpaid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is unpaid."), $silent);
+                $state_flag = false;
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been closed with a credit note."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been voided."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has linked payments."), $silent);
+            $state_flag = false;
+        }
+
+        // Has Credit notes
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has linked credit notes."), $silent);
+            return false;
+        }
+
+        return $state_flag;
+
+    }
+
     ########################################################## // reads from the database
     # Check if record allows approval                        # // could be used for a button later
     ##########################################################
@@ -806,82 +882,6 @@ class Expense extends Components {
     }
 
     ##########################################################
-    #  Check if the expense status is allowed to be changed  #  // not currently used - would be added to expense:status
-    ##########################################################
-
-    public function checkRecordAllowsManualStatusChange($expense_id, $silent = false) {
-
-        // Disable this feature for now. I may enable or remove in future versions. TODO:
-        $this->app->system->variables->systemMessagesWrite('warning', _gettext("This expense cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
-        return false;
-
-        $state_flag = true;
-
-        // Get the expense details
-        $expense_details = $this->getRecord($expense_id);
-
-        // If there is a supplier, are they active
-        if($expense_details['supplier_id'] && $this->app->components->supplier->getRecord($expense_details['supplier_id'], 'status') != 'activated')
-        {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense's status cannot be changed because the supplier it belongs to is not active.", $silent));
-            $state_flag = false;
-        }
-
-        // Is on a different tax system
-        if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is on a different Tax system."), $silent);
-            $state_flag = false;
-        }
-
-        // Status checks
-        switch($expense_details['status']) {
-            case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is a draft."), $silent);
-                $state_flag = false;
-                break;
-            case 'unpaid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is unpaid."), $silent);
-                $state_flag = false;
-                break;
-            case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it is partially paid."), $silent);
-                $state_flag = false;
-                break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been paid."), $silent);
-                $state_flag = false;
-                break;
-            case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been closed with a credit note."), $silent);
-                $state_flag = false;
-                break;
-            case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been voided."), $silent);
-                $state_flag = false;
-                break;
-            case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has been deleted."), $silent);
-                $state_flag = false;
-                break;
-        }
-
-        // Has payments
-        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'expense', null, null, null, null, null, null, $expense_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has linked payments."), $silent);
-            $state_flag = false;
-        }
-
-        // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, null, $expense_details['expense_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot have it's status changed because it has linked credit notes."), $silent);
-            return false;
-        }
-
-        return $state_flag;
-
-    }
-
-    ##########################################################
     #  Check if the expense status allows editing            #
     ##########################################################
 
@@ -978,23 +978,23 @@ class Expense extends Components {
             case 'unpaid':
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'closed with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been closed with a credit note."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has been closed with a credit note."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has already been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has already been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This expense cannot be voided because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }

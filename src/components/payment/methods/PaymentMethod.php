@@ -39,19 +39,67 @@ class PaymentMethod
         // Edit
         if(Payment::$action === 'edit')
         {
-            // Do nothing
+            // Status Checks
+            switch(Payment::$payment_details['status']){
+                case 'draft':
+                    break;
+                case 'valid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because it has been approved."));
+                    Payment::$payment_valid = false;
+                    break;
+                case 'voided':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because it has been voided."));
+                    Payment::$payment_valid = false;
+                    break;
+                case 'deleted':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because it has been deleted."));
+                    Payment::$payment_valid = false;
+                    break;
+            }
         }
 
         // Void
         if(Payment::$action === 'void')
         {
-            // Do nothing
+            // Status Checks
+            switch(Payment::$payment_details['status']){
+                case 'draft':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it is a draft."));
+                    Payment::$payment_valid = false;
+                    break;
+                case 'valid':
+                    break;
+                case 'voided':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it has already been voided."));
+                    Payment::$payment_valid = false;
+                    break;
+                case 'deleted':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it has been deleted."));
+                    Payment::$payment_valid = false;
+                    break;
+            }
         }
 
         // Delete
         if(Payment::$action === 'delete')
         {
-            // Do nothing
+            // Status Checks
+            switch(Payment::$payment_details['status']){
+                case 'draft':
+                    break;
+                case 'valid':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been approved."));
+                    Payment::$payment_valid = false;
+                    break;
+                case 'voided':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been voided."));
+                    Payment::$payment_valid = false;
+                    break;
+                case 'deleted':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has already been deleted."));
+                    Payment::$payment_valid = false;
+                    break;
+            }
         }
     }
 

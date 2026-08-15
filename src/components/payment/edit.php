@@ -25,6 +25,11 @@ if(!$this->app->components->payment->checkRecordAllowsEdit(\CMSApplication::$VAR
     // If the form is submitted
     if(isset(\CMSApplication::$VAR['submit']))
     {
+        // The user also wants to approve the record
+        if (\CMSApplication::$VAR['submit'] == 'submitandapprove') {
+            Payment::$submitAndApprove = true;
+        }
+
         // Perform payment action
         $this->app->components->payment->performPaymentAction();
     }
@@ -38,6 +43,6 @@ if(!$this->app->components->payment->checkRecordAllowsEdit(\CMSApplication::$VAR
     $this->app->smarty->assign('payment_directions',       $this->app->components->payment->getDirections());
     $this->app->smarty->assign('payment_statuses',         $this->app->components->payment->getStatuses());
     $this->app->smarty->assign('payment_details',          Payment::$payment_details);
-    $this->app->smarty->assign('parent_record_balance',    Payment::$record_balance + Payment::$payment_details['amount']);
+    $this->app->smarty->assign('parent_record_balance',    Payment::$record_balance);
 
 }

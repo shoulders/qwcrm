@@ -19,7 +19,7 @@ if(!$this->app->system->security->checkPageAccessedViaQwcrm('creditnote', 'new')
     die(_gettext("No Direct Access Allowed."));
 }
 
-// Check CR can be created (this check is also do on the buttons but silently)
+// Check CR can be created (this check is also done on the buttons but silently)
 if($this->app->components->creditnote->checkRecordCanBeCreated(\CMSApplication::$VAR['client_id'] ?? null, \CMSApplication::$VAR['invoice_id'] ?? null, \CMSApplication::$VAR['supplier_id'] ?? null, \CMSApplication::$VAR['expense_id'] ?? null))
 {
     // Holding arrays (not really needed)

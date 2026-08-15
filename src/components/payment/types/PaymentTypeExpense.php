@@ -19,7 +19,7 @@ class PaymentTypeExpense extends PaymentType
         parent::__construct();
 
         // Get expense details
-        $this->expense_details = $this->app->components->expense->getRecord(Payment::$payment_details['expense_id'] ?? $this->VAR['qpayment']['expense_id']);        
+        $this->expense_details = $this->app->components->expense->getRecord(Payment::$payment_details['expense_id'] ?? $this->VAR['qpayment']['expense_id']);
 
         // Set intial record balance
         Payment::$record_balance = (float) $this->expense_details['balance'];
@@ -55,6 +55,12 @@ class PaymentTypeExpense extends PaymentType
         // New
         if(Payment::$action === 'new')
         {
+            // New payments not allowed on this record if it has draft payments present
+            if($this->app->components->report->paymentCount(null, null, null, null, 'draft', null, null, null, null, null, null, null, $this->expense_details['expense_id'])) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add new payments to this expense because it has one or more draft payments present."));
+                Payment::$payment_valid = false;
+            }
+
             // Inject missing information into the submission [qpayment]
             $this->VAR['qpayment']['direction'] = 'debit';
             $this->VAR['qpayment']['supplier_id'] = $this->expense_details['supplier_id'];
@@ -394,7 +400,15 @@ class PaymentTypeExpense extends PaymentType
         if((float) $this->expense_details['balance']) {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
-            Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
+            Payment::$buttons['submit']['title'] = _gettext("Submit");
+        }
+
+        // Submit and Approve
+        if((float) $this->expense_details['balance']) {
+            Payment::$buttons['submitAndApprove']['allowed'] = true;
+            Payment::$buttons['submitAndApprove']['url'] = null;
+            Payment::$buttons['submitAndApprove']['title'] = _gettext("Submit and Approve");
+            Payment::$buttons['submitAndApprove']['js'] = "onclick=\"return confirm('"._gettext("Are you sure you want to submit and approve this payment?")."');\"";
         }
 
         // Cancel

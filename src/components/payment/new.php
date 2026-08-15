@@ -61,10 +61,11 @@ if($this->app->system->security->checkPageAccessedViaQwcrm('invoice', 'edit') ||
 // Check if the record can be created (this currently does nothing, but is here to keep uniformity with other components)
 if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$VAR['qpayment'] ?? null)) {
     $this->app->system->page->forcePage('payment', 'search');
+
 } else {
 
     // Build the Payment Environment
-    $this->app->components->payment->buildPaymentEnvironment('new');
+    $this->app->components->payment->buildPaymentEnvironment('new');    //Payment::$payment_successful
 
     // If the form is submitted
     if(isset(\CMSApplication::$VAR['submit']))
@@ -72,59 +73,73 @@ if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$V
         // Wrap the submitted note - note is not wrapped in <p> by tinymce - this is pointless
         //if(\CMSApplication::$VAR['qpayment']['note']) {\CMSApplication::$VAR['qpayment']['note'] = '<p>'.\CMSApplication::$VAR['qpayment']['note'].'</p>';}
 
+        // The user also wants to approve the record
+        if (\CMSApplication::$VAR['submit'] == 'submitandapprove') {
+            Payment::$submitAndApprove = true;
+        }
+
         // Perform payment action
         $this->app->components->payment->performPaymentAction();
+
+
+    // Prefill Fields if freshly loaded page (i.e. no submission)
+    } else {
+
+        // Initial Date
+        \CMSApplication::$VAR['qpayment']['date'] = time();
+
+        // Record Balance
+        \CMSApplication::$VAR['qpayment']['amount'] = Payment::$record_balance;
+
+        // Autofill the name on the card payment if not present - this code should perhaps be moved the the methods?
+        if(!\CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'])
+        {
+            switch(\CMSApplication::$VAR['qpayment']['type']){
+
+                case 'invoice':
+                    $client_id = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id'], 'client_id');
+                    \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->client->getRecord($client_id, 'display_name');
+                    break;
+                case 'expense':
+                    \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->company->getRecord('company_name');
+                    break;
+                case 'otherincome':
+                    \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['qpayment']['otherincome_id'], 'display_name');
+                    break;
+                case 'creditnote':
+                    $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id']);
+
+                    // Debit (When sending money to Client / Against Invoice)
+                    if($creditnote_details['type'] == 'sales'){
+                        \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->company->getRecord('company_name');
+                    }
+
+                    // Credit (When receiving money from a Supplier / Against Expense)
+                    elseif($creditnote_details['type'] == 'purchase'){
+                        \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'display_name');
+                    }
+
+                    break;
+                default:
+                    \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = '';
+                    break;
+            }
+
+        }
     }
 
     // Build the buttons
     $this->app->components->payment->paymentType->buildButtons();
-
-    // Autofill the name on the card payment if not present - this code should perhaps be moved the the methods?
-    if(!\CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'])
-    {
-        switch(\CMSApplication::$VAR['qpayment']['type']){
-
-            case 'invoice':
-                $client_id = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['qpayment']['invoice_id'], 'client_id');
-                \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->client->getRecord($client_id, 'display_name');
-                break;
-            case 'expense':
-                \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->company->getRecord('company_name');
-                break;
-            case 'otherincome':
-                \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->otherincome->getRecord(\CMSApplication::$VAR['qpayment']['otherincome_id'], 'display_name');
-                break;
-            case 'creditnote':
-                $creditnote_details = $this->app->components->creditnote->getRecord(\CMSApplication::$VAR['qpayment']['creditnote_id']);
-
-                // Debit (When sending money to Client / Against Invoice)
-                if($creditnote_details['type'] == 'sales'){
-                    \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->company->getRecord('company_name');
-                }
-
-                // Credit (When receiving money from a Supplier / Against Expense)
-                elseif($creditnote_details['type'] == 'purchase'){
-                    \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = $this->app->components->supplier->getRecord($creditnote_details['supplier_id'], 'display_name');
-                }
-
-                break;
-            default:
-                \CMSApplication::$VAR['qpayment']['additional_info']['name_on_card'] = '';
-                break;
-
-        }
-
-    }
 
     // Build the page
     $this->app->smarty->assign('display_payments',                  $this->app->components->payment->getRecords('payment_id', 'DESC', 0, false, null, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'], \CMSApplication::$VAR['qpayment']['creditnote_id']));
     $this->app->smarty->assign('qpayment',                          \CMSApplication::$VAR['qpayment']);
     $this->app->smarty->assign('payment_type',                      Payment::$type);
     $this->app->smarty->assign('payment_method',                    Payment::$method);
-    $this->app->smarty->assign('record_balance',                    Payment::$record_balance);
     $this->app->smarty->assign('buttons',                           Payment::$buttons);
+    $this->app->smarty->assign('record_balance',                    Payment::$record_balance);
     $this->app->smarty->assign('payment_types',                     $this->app->components->payment->getTypes() );
-    //$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods());  // This is replaced by `{$payment_active_methods}` and `Payment::$disabledMethods`
+    $this->app->smarty->assign('payment_methods',                   $this->app->components->payment->getMethods());
     $this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->getStatuses());
     $this->app->smarty->assign('payment_directions',                $this->app->components->payment->getDirections());
     $this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->getActiveCardTypes());

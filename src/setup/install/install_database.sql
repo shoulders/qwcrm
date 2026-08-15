@@ -929,9 +929,10 @@ CREATE TABLE `#__payment_statuses` (
 --
 
 INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'valid', 'Valid'),
-(2, 'voided', 'Voided'),
-(3, 'deleted', 'Deleted');
+(1, 'draft', 'Draft'),
+(2, 'valid', 'Valid'),
+(3, 'voided', 'Voided'),
+(4, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 

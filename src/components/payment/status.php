@@ -19,6 +19,7 @@ $payment_details = $this->app->components->payment->getRecord(\CMSApplication::$
 
 // Get Permissions
 $allowed_to_change_status = $this->app->components->payment->checkRecordAllowsManualStatusChange(\CMSApplication::$VAR['payment_id']);
+$allowed_to_unapprove = $this->app->components->payment->checkRecordAllowsUnapprove(\CMSApplication::$VAR['payment_id']);
 $allowed_to_void = $this->app->components->payment->checkRecordAllowsVoid(\CMSApplication::$VAR['payment_id']);
 $allowed_to_delete = $this->app->components->payment->checkRecordAllowsDelete(\CMSApplication::$VAR['payment_id']);
 
@@ -28,7 +29,13 @@ if(isset(\CMSApplication::$VAR['change_status']) && $allowed_to_change_status){
     $this->app->system->page->forcePage('payment', 'status&payment_id='.\CMSApplication::$VAR['payment_id']);
 }
 
-// Void Payment
+// Unapprove
+if(isset(\CMSApplication::$VAR['unapprove_payment']) && $allowed_to_unapprove){
+    $this->app->components->payment->updateStatus(\CMSApplication::$VAR['payment_id'], 'draft');
+    $this->app->system->page->forcePage('payment', 'status&payment_id='.\CMSApplication::$VAR['payment_id']);
+}
+
+// Void
 if(isset(\CMSApplication::$VAR['void_payment']) && $allowed_to_void){
     // Build the Payment Environment
     $this->app->components->payment->buildPaymentEnvironment('void');
@@ -48,6 +55,7 @@ if(isset(\CMSApplication::$VAR['delete_payment']) && $allowed_to_delete){
 
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',        $allowed_to_change_status);
+$this->app->smarty->assign('allowed_to_unapprove',            $allowed_to_unapprove);
 $this->app->smarty->assign('allowed_to_void',                 $allowed_to_void);
 $this->app->smarty->assign('allowed_to_delete',               $allowed_to_delete);
 $this->app->smarty->assign('payment_status',                  $payment_details['status']);

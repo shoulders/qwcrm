@@ -149,6 +149,7 @@ _gettext("Voucher");
 _gettext("Credit Note");
 
 /* Payment Statuses */
+_gettext("Draft");
 _gettext("Valid");
 _gettext("Voided");
 _gettext("Deleted");

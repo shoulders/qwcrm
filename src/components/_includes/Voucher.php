@@ -2011,7 +2011,7 @@ class Voucher extends Components {
 
         // Is Unredeemed
         if($voucher_details['status'] == 'unredeemed') {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has has been paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The invoice cannot be edited because this voucher has been paid."));
             $state_flag = false;
         }
 

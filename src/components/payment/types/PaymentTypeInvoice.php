@@ -19,10 +19,10 @@ class PaymentTypeInvoice extends PaymentType
         parent::__construct();
 
         // Get invoice details
-        $this->invoice_details = $this->app->components->invoice->getRecord(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['invoice_id']);  
+        $this->invoice_details = $this->app->components->invoice->getRecord(Payment::$payment_details['invoice_id'] ?? $this->VAR['qpayment']['invoice_id']);
 
         // Set initial record balance
-        Payment::$record_balance = (float) $this->invoice_details['balance'];        
+        Payment::$record_balance = (float) $this->invoice_details['balance'];
 
         // Disable Unwanted Payment Methods
         if(Payment::$method == 'creditnote' && Payment::$record_balance > 0) {
@@ -55,6 +55,12 @@ class PaymentTypeInvoice extends PaymentType
         // New
         if(Payment::$action === 'new')
         {
+            // New payments not allowed on this record if it has draft payments present
+            if($this->app->components->report->paymentCount(null, null, null, null, 'draft', null, null, null, null, null, null, $this->invoice_details['invoice_id'])) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add new payments to this invoice because it has one or more draft payments present."));
+                Payment::$payment_valid = false;
+            }
+
             // Inject missing information into the submission [qpayment]
             $this->VAR['qpayment']['direction'] = 'credit';
             $this->VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];
@@ -397,7 +403,15 @@ class PaymentTypeInvoice extends PaymentType
         if((float) $this->invoice_details['balance'] || !(float) $this->invoice_details['balance'] && \CMSApplication::$VAR['method'] == 'creditnote') {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
-            Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
+            Payment::$buttons['submit']['title'] = _gettext("Submit");
+        }
+
+        // Submit and Approve
+        if((float) $this->invoice_details['balance'] || !(float) $this->invoice_details['balance'] && \CMSApplication::$VAR['method'] == 'creditnote') {
+            Payment::$buttons['submitAndApprove']['allowed'] = true;
+            Payment::$buttons['submitAndApprove']['url'] = null;
+            Payment::$buttons['submitAndApprove']['title'] = _gettext("Submit and Approve");
+            Payment::$buttons['submitAndApprove']['js'] = "onclick=\"return confirm('"._gettext("Are you sure you want to submit and approve this payment?")."');\"";
         }
 
         // Cancel

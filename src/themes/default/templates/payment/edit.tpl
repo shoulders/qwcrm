@@ -92,7 +92,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Parent Record Balance{/t}</b></td>
-                                                        <td>{$currency_symbol}{$parent_record_balance|string_format:"%.2f"} ({t}As if this payment has not been applied{/t})</td>
+                                                        <td>{$currency_symbol}{$parent_record_balance|string_format:"%.2f"}</td>
 
                                                     </tr>
                                                     <tr>
@@ -153,9 +153,12 @@
                                                         <td align="right"><b>{t}Note{/t}</b></td>
                                                         <td><textarea name="qpayment[note]" class="olotd5" cols="50" rows="15">{$payment_details.note}</textarea></td>
                                                     </tr>
+
+                                                    <!-- Buttons and Hidden Section -->
                                                     <tr>
                                                         <td colspan="2">
-                                                            <button type="submit" name="submit" value="submit">{t}Update{/t}</button>
+                                                            <button type="submit" name="submit" value="submitchangesonly">{t}Submit Changes Only{/t}</button>
+                                                            <button type="submit" name="submit" value="submitandapprove" onclick="return confirm('{t}Are you sure you want to submit and approve this payment?{/t}');">{t}Submit and Approve{/t}</button>
                                                             <button type="button" class="olotd4" onclick="window.location.href='index.php?component=payment&page_tpl=details&payment_id={$payment_id}';">{t}Cancel{/t}</button>
                                                         </td>
                                                     </tr>

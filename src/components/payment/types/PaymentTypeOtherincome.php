@@ -25,7 +25,7 @@ class PaymentTypeOtherincome extends PaymentType
         $this->VAR['qpayment']['direction'] = 'credit';
 
         // Additional Record References
-        $this->VAR['qpayment']['supplier_id'] = $this->otherincome_details['supplier_id'];        
+        $this->VAR['qpayment']['supplier_id'] = $this->otherincome_details['supplier_id'];
 
         // Set intial record balance
         Payment::$record_balance = (float) $this->otherincome_details['balance'];
@@ -48,7 +48,11 @@ class PaymentTypeOtherincome extends PaymentType
         // New
         if(Payment::$action === 'new')
         {
-            // Do nothing
+            // New payments not allowed on this record if it has draft payments present
+            if($this->app->components->report->paymentCount(null, null, null, null, 'draft', null, null, null, null, null, null, null, null, $this->otherincome_details['otherincome_id'])) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add new payments to this other income because it has one or more draft payments present."));
+                Payment::$payment_valid = false;
+            }
         }
 
         // Edit
@@ -242,7 +246,15 @@ class PaymentTypeOtherincome extends PaymentType
         if((float) $this->otherincome_details['balance'] > 0) {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
-            Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
+            Payment::$buttons['submit']['title'] = _gettext("Submit");
+        }
+
+        // Submit and Approve
+        if((float) $this->otherincome_details['balance'] > 0) {
+            Payment::$buttons['submitAndApprove']['allowed'] = true;
+            Payment::$buttons['submitAndApprove']['url'] = null;
+            Payment::$buttons['submitAndApprove']['title'] = _gettext("Submit and Approve");
+            Payment::$buttons['submitAndApprove']['js'] = "onclick=\"return confirm('"._gettext("Are you sure you want to submit and approve this payment?")."');\"";
         }
 
         // Cancel
@@ -261,7 +273,7 @@ class PaymentTypeOtherincome extends PaymentType
             Payment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
 
-          // Add New Record
+        // Add New Record
         Payment::$buttons['addNewRecord']['allowed'] = true;
         Payment::$buttons['addNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new';
         Payment::$buttons['addNewRecord']['title'] = _gettext("Add New Other Income");

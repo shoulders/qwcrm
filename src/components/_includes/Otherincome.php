@@ -640,6 +640,66 @@ class Otherincome extends Components {
 
     }
 
+    ##############################################################
+    #  Check if the otherincome status is allowed to be changed  #
+    ##############################################################
+
+    public function checkRecordAllowsManualStatusChange($otherincome_id, $silent = false) {
+
+        // Disable this feature for now. I may enable or remove in future versions.
+        $this->app->system->variables->systemMessagesWrite('warning', _gettext("This other income cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
+        return false;
+
+        $state_flag = true;
+
+        // Get the otherincome details
+        $otherincome_details = $this->getRecord($otherincome_id);
+
+        // Is there a supplier and are they active
+        if($otherincome_details['supplier_id'] && $this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Status checks
+        switch($otherincome_details['status']) {
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is a draft."), $silent);
+                $state_flag = false;
+                break;
+            case 'unpaid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is unpaid."), $silent);
+                $state_flag = false;
+                break;
+            case 'partially_paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is partially paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been voided."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        // Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has linked payments."), $silent);
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
     ########################################################## // reads from the database
     # Check if record allows approval                        # // could be used for a button later
     ##########################################################
@@ -768,66 +828,6 @@ class Otherincome extends Components {
 
     }
 
-    ##############################################################
-    #  Check if the otherincome status is allowed to be changed  #
-    ##############################################################
-
-    public function checkRecordAllowsManualStatusChange($otherincome_id, $silent = false) {
-
-        // Disable this feature for now. I may enable or remove in future versions.
-        $this->app->system->variables->systemMessagesWrite('warning', _gettext("This other income cannot have it's status manually changed at this time because the feature is not available in this version of QWcrm."), $silent);
-        return false;
-
-        $state_flag = true;
-
-        // Get the otherincome details
-        $otherincome_details = $this->getRecord($otherincome_id);
-
-        // Is there a supplier and are they active
-        if($otherincome_details['supplier_id'] && $this->app->components->supplier->getRecord($supplier_id, 'status') != 'activated')
-        {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The otherincome status cannot be changed because the supplier it belongs to is not active.", $silent));
-            $state_flag = false;
-        }
-
-        // Status checks
-        switch($otherincome_details['status']) {
-            case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is a draft."), $silent);
-                $state_flag = false;
-                break;
-            case 'unpaid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is unpaid."), $silent);
-                $state_flag = false;
-                break;
-            case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it is partially paid."), $silent);
-                $state_flag = false;
-                break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been paid."), $silent);
-                $state_flag = false;
-                break;
-            case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been voided."), $silent);
-                $state_flag = false;
-                break;
-            case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has been deleted."), $silent);
-                $state_flag = false;
-                break;
-        }
-
-        // Has payments
-        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'otherincome', null, null, null, null, null, null, null, $otherincome_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot have it's status changed because it has linked payments."), $silent);
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
     ##########################################################
     #  Check if the otherincome status allows editing        #
     ##########################################################
@@ -915,19 +915,19 @@ class Otherincome extends Components {
             case 'unpaid':
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has has been partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has has been paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has been paid."), $silent);
                 $state_flag = false;
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has has already been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has already been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This other income cannot be voided because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }

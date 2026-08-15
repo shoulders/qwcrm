@@ -75,8 +75,8 @@
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View the payment.{/t}');" onMouseOut="hideddrivetip();">
                 </a>
                 {*<a href="index.php?component=payment&page_tpl=delete&payment_id={$display_payments.records[p].payment_id}" onclick="return confirm('{t}Are you sure you want to delete this Payment? This will permanently remove the record from the database.{/t}');">
-                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Payment{/t}</b>');" onMouseOut="hideddrivetip();">
-                 </a>*}
+                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Payment{/t}</b>');" onMouseOut="hideddrivetip();">
+                </a>*}
             </td>
 
         </tr>

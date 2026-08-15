@@ -23,9 +23,6 @@ class PaymentMethodVoucher extends PaymentMethod
     {
         parent::preProcess();
 
-        // Allow system messages
-        $silent = false;
-
         // Get `voucher_id` - Compensates if a voucher code is supplied instead
         if(!isset($this->VAR['qpayment']['voucher_id']) &&!$this->VAR['qpayment']['voucher_id'] = $this->app->components->voucher->getIdByVoucherCode($this->VAR['qpayment']['voucher_code'])) {
             // If there is no voucher_id, we cannot proceed
@@ -36,7 +33,7 @@ class PaymentMethodVoucher extends PaymentMethod
 
         // Is Expired (Live Check)
         if($this->app->components->voucher->checkVoucherIsExpired($this->VAR['qpayment']['voucher_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot perform payment actions with an expired voucher.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot perform payment actions with an expired voucher."));
             Payment::$payment_valid = false;
         }
 
@@ -49,7 +46,7 @@ class PaymentMethodVoucher extends PaymentMethod
 
         // Is on a different tax system
         if($this->voucher_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot perform payment actions with a voucher on a different Tax system.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot perform payment actions with a voucher on a different Tax system."));
             Payment::$payment_valid = false;
         }
 
@@ -65,7 +62,7 @@ class PaymentMethodVoucher extends PaymentMethod
 
             // Voucher cannot be used to pay for itself
             if($this->voucher_details['invoice_id'] == $this->VAR['qpayment']['invoice_id']) {
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be used to pay for itself.", $silent));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be used to pay for itself."));
                 Payment::$payment_valid = false;
             }
 
@@ -73,15 +70,15 @@ class PaymentMethodVoucher extends PaymentMethod
             switch ($this->voucher_details['status'])
             {
                 case 'draft':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it is a draft."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it is a draft."));
                     Payment::$payment_valid = false;
                     break;
                 case 'unpaid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has not been paid."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has not been paid."));
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been partially paid."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been partially paid."));
                     Payment::$payment_valid = false;
                     break;
                 case 'unredeemed':
@@ -89,23 +86,23 @@ class PaymentMethodVoucher extends PaymentMethod
                 case 'partially_redeemed':
                     break;
                 case 'redeemed':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher has been redeemed so cannot be used anymore."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher has been redeemed so cannot be used anymore."));
                     Payment::$payment_valid = false;
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been closed with a credit note."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been closed with a credit note."));
                     Payment::$payment_valid = false;
                     break;
                 case 'suspended':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been suspended."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been suspended."));
                     Payment::$payment_valid = false;
                     break;
                 case 'voided':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been voided."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been voided."));
                     Payment::$payment_valid = false;
                     break;
                 case 'deleted':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been deleted."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be redeemed because it has been deleted."));
                     Payment::$payment_valid = false;
                     break;
             }
@@ -126,19 +123,19 @@ class PaymentMethodVoucher extends PaymentMethod
             switch ($this->voucher_details['status'])
             {
                 case 'draft':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to edit. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to edit. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'unpaid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to edit. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to edit. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to edit. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to edit. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'unredeemed':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to edit. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to edit. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_redeemed':
@@ -146,19 +143,19 @@ class PaymentMethodVoucher extends PaymentMethod
                 case 'redeemed':
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because the voucehr has been closed wih a credit note."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because the voucehr has been closed wih a credit note."));
                     Payment::$payment_valid = false;
                     break;
                 case 'suspended':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because the voucher has been suspended."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because the voucher has been suspended."));
                     Payment::$payment_valid = false;
                     break;
                 case 'voided':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because the voucher has been voided."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because the voucher has been voided."));
                     Payment::$payment_valid = false;
                     break;
                 case 'deleted':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because the voucher has been deleted."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because the voucher has been deleted."));
                     Payment::$payment_valid = false;
                     break;
             }
@@ -172,19 +169,19 @@ class PaymentMethodVoucher extends PaymentMethod
             switch ($this->voucher_details['status'])
             {
                 case 'draft':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to void. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to void. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'unpaid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to void. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to void. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to void. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to void. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'unredeemed':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to void. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to void. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_redeemed':
@@ -192,19 +189,19 @@ class PaymentMethodVoucher extends PaymentMethod
                 case 'redeemed':
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because the voucher has been closed wih a credit note."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because the voucher has been closed wih a credit note."));
                     Payment::$payment_valid = false;
                     break;
                 case 'suspended':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because the voucher has been suspended."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because the voucher has been suspended."));
                     Payment::$payment_valid = false;
                     break;
                 case 'voided':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because the voucher has been voided."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because the voucher has been voided."));
                     Payment::$payment_valid = false;
                     break;
                 case 'deleted':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because the voucher has been deleted."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because the voucher has been deleted."));
                     Payment::$payment_valid = false;
                     break;
             }
@@ -217,19 +214,19 @@ class PaymentMethodVoucher extends PaymentMethod
             switch ($this->voucher_details['status'])
             {
                 case 'draft':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to delete. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is a draft and there is no payment to delete. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'unpaid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to delete. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unpaid and there is no payment to delete. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_paid':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to delete. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is partially paid and there is no payment to delete. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'unredeemed':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to delete. You should not see this error, report to admins."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher is unredeemed and there is no payment to delete. You should not see this error, report to admins."));
                     Payment::$payment_valid = false;
                     break;
                 case 'partially_redeemed':
@@ -237,19 +234,19 @@ class PaymentMethodVoucher extends PaymentMethod
                 case 'redeemed':
                     break;
                 case 'closed_with_creditnote':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the voucher has been closed wih a credit note."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the voucher has been closed wih a credit note."));
                     Payment::$payment_valid = false;
                     break;
                 case 'suspended':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the voucher has been suspended."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the voucher has been suspended."));
                     Payment::$payment_valid = false;
                     break;
                 case 'voided':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the voucher has been voided."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the voucher has been voided."));
                     Payment::$payment_valid = false;
                     break;
                 case 'deleted':
-                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the voucher has been deleted."), $silent);
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because the voucher has been deleted."));
                     Payment::$payment_valid = false;
                     break;
             }

@@ -1388,3 +1388,12 @@ INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
 (5, 'closed_with_creditnote', 'Closed with Creditnote'),
 (6, 'voided', 'Voided'),
 (7, 'deleted', 'Deleted');
+
+-- add draft status to payments --
+
+TRUNCATE TABLE `#__payment_statuses`;
+INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'draft', 'Draft'),
+(2, 'valid', 'Valid'),
+(3, 'voided', 'Voided'),
+(4, 'deleted', 'Deleted');

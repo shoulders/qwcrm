@@ -48,8 +48,8 @@ class PaymentType
                 Payment::$payment_valid = false;
             }
 
-            // Is the new amount the same as the last, if so do nothing
-            if($this->VAR['qpayment']['amount'] == Payment::$payment_details['amount'])
+            // Is the new amount the same as the last, if so do nothing (ignore if approving the payment)
+            if(!Payment::$submitAndApprove && $this->VAR['qpayment']['amount'] == Payment::$payment_details['amount'])
             {
                 Payment::$payment_valid = false;
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The amount is unchanged, no edit has occured."));
@@ -91,13 +91,19 @@ class PaymentType
         // New
         if(Payment::$action === 'new')
         {
-            // Do nothing
+            // The user also wants to approve the record
+            if (Payment::$submitAndApprove  && $this->app->components->payment->checkRecordAllowsApprove(Payment::$payment_details['payment_id'])) {
+                $this->app->components->payment->updateStatus(Payment::$payment_details['payment_id'], 'valid', true);
+            }
         }
 
         // Edit
         if(Payment::$action === 'edit')
         {
-            // Do nothing
+            // The user also wants to approve the record
+            if (Payment::$submitAndApprove  && $this->app->components->payment->checkRecordAllowsApprove(Payment::$payment_details['payment_id'])) {
+                $this->app->components->payment->updateStatus(Payment::$payment_details['payment_id'], 'valid', true);
+            }
         }
 
         // Void

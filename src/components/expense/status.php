@@ -49,8 +49,8 @@ $expense_details = $this->app->components->expense->getRecord(\CMSApplication::$
 
 // Build the page with the current status from the database
 $this->app->smarty->assign('allowed_to_change_status',        $allowed_to_change_status      );
-$this->app->smarty->assign('allowed_to_void',                 $allowed_to_void);
 $this->app->smarty->assign('allowed_to_unapprove',            $allowed_to_unapprove);
+$this->app->smarty->assign('allowed_to_void',                 $allowed_to_void);
 $this->app->smarty->assign('allowed_to_delete',               $allowed_to_delete       );
 $this->app->smarty->assign('expense_status',                  $expense_details['status']            );
 $this->app->smarty->assign('expense_status_display_name',     $this->app->components->expense->getStatusDisplayName($expense_details['status']));

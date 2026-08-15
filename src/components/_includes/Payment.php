@@ -26,6 +26,7 @@ class Payment extends Components {
     public static $type = '';
     public static $method = '';
     public static $action = '';
+    public static $submitAndApprove = false;
     public static $buttons = array();
     public static $payment_details = array();
     public static $payment_valid = true;
@@ -61,7 +62,7 @@ class Payment extends Components {
                 type            = ".$this->app->db->qStr( $qpayment['type']        ).",
                 method          = ".$this->app->db->qStr( $qpayment['method']      ).",
                 direction       = ".$this->app->db->qStr( $qpayment['direction']      ).",
-                status          = ".$this->app->db->qStr( 'valid'                   ).",
+                status          = ".$this->app->db->qStr( 'draft'                   ).",
                 amount          = ".$this->app->db->qStr( $qpayment['amount']                      ).",
                 additional_info = ".$this->app->db->qStr( json_encode($qpayment['additional_info'], JSON_FORCE_OBJECT) ).",
                 note            = ".$this->app->db->qStr( $qpayment['note']                        );
@@ -861,6 +862,10 @@ class Payment extends Components {
 
         // Status checks
         switch ($payment_details['status']) {
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot have it's status changed because it is a draft."), $silent);
+                $state_flag = false;
+                break;
             case 'valid':
                 break;
             case 'voided':
@@ -875,6 +880,155 @@ class Payment extends Components {
 
         // Disable the ability to manually change status for now
         $state_flag = true;
+
+        return $state_flag;
+
+    }
+
+    ########################################################## // reads from the database
+    # Check if record allows approval                        # // could be used for a button later
+    ##########################################################
+
+    public function checkRecordAllowsApprove($payment_id, $silent = false)
+    {
+        $state_flag = true;
+
+        $payment_details = $this->app->components->creditnote->getRecord($payment_id);
+
+        // If there is a client, are they active
+        if($payment_details['client_id'] && !$this->app->components->client->getRecord($payment_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be approved because the client it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // If there is a supplier, are they active
+        if($payment_details['supplier_id'] && $this->app->components->supplier->getRecord($payment_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be approved because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be approved because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Status checks
+        switch($payment_details['status']) {
+            case 'draft':
+                break;
+            case 'valid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment is already approved."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment is already approved."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be approved because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        // Add Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be approved at this time because it is not allowed."), $silent);
+        }
+
+        return $state_flag;
+    }
+
+    ##########################################################  // reads from the database
+    # Check if record allows unapproving                     #
+    ##########################################################
+
+    public function checkRecordAllowsUnapprove($payment_id, $silent = false)
+    {
+        $state_flag = true;
+
+        /* Payment Record */
+
+        $payment_details = $this->app->components->payment->getRecord($payment_id);
+
+        // If there is a client, are they active
+        if($payment_details['client_id'] && !$this->app->components->client->getRecord($payment_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be unapproved because the client it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // If there is a supplier, are they active
+        if($payment_details['supplier_id'] && $this->app->components->supplier->getRecord($payment_details['supplier_id'], 'status') != 'activated')
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The creditnote cannot be unapproved because the supplier it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be unapproved because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Status checks
+        switch($payment_details['status']) {
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment is not approved, so cannot be unapproved."), $silent);
+                $state_flag = false;
+                break;
+            case 'valid':
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be unapproved because it has been voided."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be unapproved because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        /* Check Parent Record Statuses */
+
+        // Invoice
+        if($payment_details['invoice_id'] && in_array($this->app->components->invoice->getRecord($payment_details['invoice_id'], 'status'), ['voided', 'deleted'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be unapproved because the linked invoice has been voided or deleted."), $silent);
+            $state_flag = false;
+        }
+
+        // Voucher
+        if($payment_details['voucher_id'] && in_array($this->app->components->voucher->getRecord($payment_details['voucher_id'], 'status'), ['voided', 'deleted'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be unapproved because the linked voucher has been voided or deleted."), $silent);
+            $state_flag = false;
+        }
+
+        // Expense
+        if($payment_details['expense_id'] && in_array($this->app->components->expense->getRecord($payment_details['expense_id'], 'status'), ['voided', 'deleted'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be unapproved because the linked expense has been voided or deleted."), $silent);
+            $state_flag = false;
+        }
+
+        // Other Income
+        if($payment_details['otherincome_id'] && in_array($this->app->components->otherincome->getRecord($payment_details['otherincome_id'], 'status'), ['voided', 'deleted'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be unapproved because the linked other income has been voided or deleted."), $silent);
+            $state_flag = false;
+        }
+
+        // Credit Note
+        if($payment_details['creditnote_id'] && in_array($this->app->components->creditnote->getRecord($payment_details['creditnote_id'], 'status'), ['voided', 'deleted'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be unapproved because the linked credit note has been voided or deleted."), $silent);
+            $state_flag = false;
+        }
+
+        /* Final Mesage */
+
+        // Add Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be unapproved at this time because it is not allowed."), $silent);
+        }
 
         return $state_flag;
 
@@ -899,7 +1053,11 @@ class Payment extends Components {
 
         // Status checks
         switch ($payment_details['status']) {
+            case 'draft':
+                break;
             case 'valid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because it has been approved."), $silent);
+                $state_flag = false;
                 break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be edited because it has been voided."), $silent);
@@ -919,7 +1077,7 @@ class Payment extends Components {
     #   Does payment record allows voiding                        #  This is applied to all payment records
     ###############################################################  More checks are done upon submission because of the different combinations of Types and Methods
 
-    public function checkRecordAllowsVoid($payment_id) {
+    public function checkRecordAllowsVoid($payment_id, $silent = false) {
 
         $state_flag = true;
 
@@ -928,20 +1086,24 @@ class Payment extends Components {
 
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it is on a different Tax system."), $silent);
             $state_flag = false;
         }
 
         // Status checks
         switch ($payment_details['status']) {
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it is a draft."), $silent);
+                $state_flag = false;
+                break;
             case 'valid':
                 break;
             case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it has has already been voided."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it has already been voided."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it has has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be voided because it has been deleted."), $silent);
                 $state_flag = false;
                 break;
         }
@@ -954,7 +1116,7 @@ class Payment extends Components {
     #   Does payment status record allow deletion                 #  // Other specific Method and Type tests are done elsewhere
     ###############################################################  // This is uses as a button boolean.
 
-    public function checkRecordAllowsDelete($payment_id) {
+    public function checkRecordAllowsDelete($payment_id, $silent = false) {
 
         $state_flag = true;
 
@@ -969,7 +1131,11 @@ class Payment extends Components {
 
         // Status checks
         switch ($payment_details['status']) {
+            case 'draft':
+                break;
             case 'valid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been approved."), $silent);
+                $state_flag = false;
                 break;
             case 'voided':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been voided."), $silent);
@@ -1030,15 +1196,15 @@ class Payment extends Components {
 
             // Build empty button array - to prevent undefined variable errors
             Payment::$buttons = array(
-                'submit'         => array('allowed' => false, 'url' => null, 'title' => null),
-                'cancel'         => array('allowed' => false, 'url' => null, 'title' => null),
-                'returnToRecord' => array('allowed' => false, 'url' => null, 'title' => null),
-                'addNewRecord'   => array('allowed' => false, 'url' => null, 'title' => null)
+                'submit'            => array('allowed' => false, 'url' => null, 'title' => null),
+                'submitAndApprove'  => array('allowed' => false, 'url' => null, 'title' => null),
+                'cancel'            => array('allowed' => false, 'url' => null, 'title' => null),
+                'returnToRecord'    => array('allowed' => false, 'url' => null, 'title' => null),
+                'addNewRecord'      => array('allowed' => false, 'url' => null, 'title' => null)
             );
-        }
 
-        else{
-            // Load Payment Details into [qpayment] and Payment::$details
+        // Load Payment Details into [qpayment] and Payment::$details
+        } else {
             Payment::$payment_details = $this->app->components->payment->getRecord(\CMSApplication::$VAR['payment_id']);
         }
 
@@ -1066,7 +1232,7 @@ class Payment extends Components {
 
         // Prep/Validate the data
         $this->paymentType->preProcess();      // Need to validate payment against Type first
-        $this->paymentMethod->preProcess();    // now need to check if the payment method is valid
+        $this->paymentMethod->preProcess();    // Now need to check if the payment method is valid
 
         // Process the payment
         if(Payment::$payment_valid)

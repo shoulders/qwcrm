@@ -95,7 +95,7 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="bank_transfer_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="bank_transfer_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="bank_transfer_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -106,7 +106,7 @@
                                                 </script>
                                             </td>
                                             <td><input name="qpayment['additional_info'][bank_transfer_reference]" class="paymentInput olotd5" value="{$qpayment.additional_info.bank_transfer_reference}" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -135,7 +135,7 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="cash_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="cash_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="cash_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -145,7 +145,7 @@
                                                     } );
                                                 </script>
                                             </td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -175,7 +175,7 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="cheque_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="cheque_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="cheque_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -186,7 +186,7 @@
                                                 </script>
                                             </td>
                                             <td><input name="qpayment['additional_info'][cheque_number]" class="paymentInput olotd5" type="text" maxlength="15" value="{$qpayment.additional_info.cheque_number}" required onkeydown="return onlyNumber(event);"></td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -217,7 +217,7 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="card_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="card_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="card_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -236,7 +236,7 @@
                                                 </select>
                                             </td>
                                             <td><input name="qpayment['additional_info'][name_on_card]" class="paymentInput olotd5" value="{$qpayment.additional_info.name_on_card}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);" disabled></td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -266,7 +266,7 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="direct_debit_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="direct_debit_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="direct_debit_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -277,7 +277,7 @@
                                                 </script>
                                             </td>
                                             <td><input name="qpayment['additional_info'][direct_debit_reference]" class="paymentInput olotd5" type="text" maxlength="35" value="{$qpayment.additional_info.direct_debit_reference}" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -307,7 +307,7 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="voucher_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="voucher_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="voucher_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -318,7 +318,7 @@
                                                 </script>
                                             </td>
                                             <td><input name="qpayment['voucher_code]" class="paymentInput olotd5" size="32" value="{$qpayment.voucher_code}" type="text" maxlength="16" required onkeydown="return onlyVoucherCode(event);" disabled></td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -348,7 +348,7 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="other_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="other_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="other_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -358,7 +358,7 @@
                                                     } );
                                                 </script>
                                             </td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -388,7 +388,7 @@
                                         <tr class="olotd4">
                                             <td></td>
                                             <td>
-                                                <input id="paypal_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="paypal_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="paypal_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -399,7 +399,7 @@
                                                 </script>
                                             </td>
                                             <td><input name="qpayment['additional_info'][paypal_transaction_id]" class="paymentInput olotd5" type="text" maxlength="20" value="{$qpayment.additional_info.paypal_transaction_id}" required onkeydown="return onlyAlphaNumeric(event);" disabled></td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -428,7 +428,7 @@
                                         <tr class="olotd4">
 
                                             <td>
-                                                <input id="creditnote_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
+                                                <input id="creditnote_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$qpayment.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);" disabled>
                                                 <button type="button" id="creditnote_date_button">+</button>
                                                 <script>
                                                     Calendar.setup( {
@@ -439,7 +439,7 @@
                                                 </script>
                                             </td>
                                                 <td><input name="qpayment[creditnote_id]" class="paymentInput olotd5" size="32" value="{$creditnote_id}" type="text" maxlength="16" required onkeydown="return onlyNumber(event);" disabled{if $creditNoteInputReadonly} readonly{/if}></td>
-                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled{if $creditNoteInputReadonly} readonly{/if}></td>
+                                            <td>{$currency_symbol}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$qpayment.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled{if $creditNoteInputReadonly} readonly{/if}></td>
                                         </tr>
                                         <tr>
                                             <td valign="top"><b>{t}Note{/t}</b></td>
@@ -459,6 +459,7 @@
         <tr>
             <td>
                 {if $buttons.submit.allowed}<button type="submit" name="submit" value="submit">{$buttons.submit.title}</button>{/if}
+                {if $buttons.submitAndApprove.allowed}<button type="submit" name="submit" value="submitandapprove" {$buttons.submitAndApprove.js}>{$buttons.submitAndApprove.title}</button>{/if}
                 {if $buttons.cancel.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.cancel.url}';">{$buttons.cancel.title}</button>{/if}
                 {if $buttons.returnToRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.returnToRecord.url}';">{$buttons.returnToRecord.title}</button>{/if}
                 {if $buttons.addNewRecord.allowed}<button type="button" class="olotd4" style="float: right;" onclick="window.location.href='{$buttons.addNewRecord.url}';">{$buttons.addNewRecord.title}</button>{/if}

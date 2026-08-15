@@ -870,6 +870,88 @@ defined('_QWEXEC') or die;
 
     }
 
+    ###################################################################
+    #  Check if the invoice status is allowed to be manually changed  #
+    ###################################################################
+
+    public function checkRecordAllowsManualStatusChange($invoice_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Get the invoice details
+        $invoice_details = $this->getRecord($invoice_id);
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($invoice_details['client_id'], 'active'))
+        {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoices's status cannot be changed because the client it belongs to is not active.", $silent));
+            $state_flag = false;
+        }
+
+        // Is on a different tax system
+        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoices cannot have it's status changed because it is on a different Tax system."), $silent);
+            $state_flag = false;
+        }
+
+        // Status checks
+        switch($invoice_details['status']) {
+            case 'draft':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it is a draft."), $silent);
+                $state_flag = false;
+                break;
+            case 'unpaid':
+                break;
+            case 'partially_paid':
+                break;
+            case 'overdue':
+                break;
+            case 'in_dispute':
+                break;
+            case 'in_collections':
+                break;
+            case 'paid':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been paid."), $silent);
+                $state_flag = false;
+                break;
+            case 'closed_with_creditnote':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been closed with a credit note."), $silent);
+                $state_flag = false;
+                break;
+            case 'voided':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been voided."), $silent);
+                $state_flag = false;
+                break;
+            case 'deleted':
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been deleted."), $silent);
+                $state_flag = false;
+                break;
+        }
+
+        /* Does the invoice have any Vouchers preventing changing the invoice status
+         * - When you change the invoice status, the vouchers status are now mirrored using updateInvoiceVouchersStatuses()
+         * - Once the invoice is paid, it's status cannot be manually changed
+        if($this->app->components->report->voucherCount(null, null, null, null, null, null, null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has Vouchers."), $silent);
+        }
+        */
+
+        /* Has payments
+        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has linked payments."), $silent);
+            $state_flag = false;
+        }*/
+
+        // Has Credit notes
+        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has linked credit notes."), $silent);
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
     ########################################################## // reads from the database
     # Check if record allows approval                        # // could be used for a button later
     ##########################################################
@@ -1035,89 +1117,6 @@ defined('_QWEXEC') or die;
 
     }
 
-    ###################################################################
-    #  Check if the invoice status is allowed to be manually changed  #
-    ###################################################################
-
-    public function checkRecordAllowsManualStatusChange($invoice_id, $silent = false) {
-
-        $state_flag = true;
-
-        // Get the invoice details
-        $invoice_details = $this->getRecord($invoice_id);
-
-        // Is the Client active
-        if(!$this->app->components->client->getRecord($invoice_details['client_id'], 'active'))
-        {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoices's status cannot be changed because the client it belongs to is not active.", $silent));
-            $state_flag = false;
-        }
-
-        // Is on a different tax system
-        if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoices cannot have it's status changed because it is on a different Tax system."), $silent);
-            $state_flag = false;
-        }
-
-        // Status checks
-        switch($invoice_details['status']) {
-            case 'draft':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it is a draft."), $silent);
-                $state_flag = false;
-                break;
-            case 'unpaid':
-                break;
-            case 'partially_paid':
-                break;
-            case 'overdue':
-                break;
-            case 'in_dispute':
-                break;
-            case 'in_collections':
-                break;
-            case 'paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been paid."), $silent);
-                $state_flag = false;
-                break;
-            case 'closed_with_creditnote':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been closed with a credit note."), $silent);
-                $state_flag = false;
-                break;
-            case 'voided':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been voided."), $silent);
-                $state_flag = false;
-                break;
-            case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has been deleted."), $silent);
-                $state_flag = false;
-                break;
-        }
-
-        /* Does the invoice have any Vouchers preventing changing the invoice status
-         * - When you change the invoice status, the vouchers status are now mirrored using updateInvoiceVouchersStatuses()
-         * - Once the invoice is paid, it's status cannot be manually changed
-        if($this->app->components->report->voucherCount(null, null, null, null, null, null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has Vouchers."), $silent);
-        }
-        */
-
-        /* Has payments
-        if($this->app->components->report->paymentCount(null, null, null, null, 'all', 'invoice', null, null, null, null, null, $invoice_id)) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has linked payments."), $silent);
-            $state_flag = false;
-        }*/
-
-        // Has Credit notes
-        if($this->app->components->report->creditnoteCount(null, null, null, null, null, null, null, null, null, null, null, $invoice_details['invoice_id'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot have it's status changed because it has linked credit notes."), $silent);
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-
-
     ##########################################################
     #  Check if the invoice status is allowed to be Edited   #
     ##########################################################
@@ -1240,7 +1239,7 @@ defined('_QWEXEC') or die;
             case 'unpaid':
                 break;
             case 'partially_paid':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it has has been partially paid."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This invoice cannot be voided because it has been partially paid."), $silent);
                 $state_flag = false;
                 break;
             case 'overdue':

@@ -31,12 +31,12 @@ class PaymentTypeCreditnote extends PaymentType
 
         // Additional Record References (inject into the submission)
         $this->VAR['qpayment']['client_id'] = $this->creditnote_details['client_id'];
-        $this->VAR['qpayment']['supplier_id'] = $this->creditnote_details['supplier_id'];        
+        $this->VAR['qpayment']['supplier_id'] = $this->creditnote_details['supplier_id'];
 
         // Set initial record balance
         Payment::$record_balance = (float) $this->creditnote_details['balance'];
 
-        // Disable Unwanted Payment Methods        
+        // Disable Unwanted Payment Methods
         Payment::$disabledMethods = array_merge(Payment::$disabledMethods, ['creditnote', 'voucher']);
 
         // Assign Payment Type specific template variables
@@ -47,7 +47,7 @@ class PaymentTypeCreditnote extends PaymentType
 
             // Client Details
             $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->creditnote_details['client_id']));
-        
+
         // type == purchase
         } else {
             // show payment methods to receive money (credit)
@@ -68,8 +68,11 @@ class PaymentTypeCreditnote extends PaymentType
         // New
         if(Payment::$action === 'new')
         {
-            // Do nothing
-        }
+            // New payments not allowed on this record if it has draft payments present
+            if($this->app->components->report->paymentCount(null, null, null, null, 'draft', null, null, null, null, null, null, null, null, null, $this->creditnote_details['creditnote_id'])) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot add new payments to this credit note because it has one or more draft payments present."));
+                Payment::$payment_valid = false;
+            }
 
         // Edit
         elseif(Payment::$action === 'edit')
@@ -90,6 +93,7 @@ class PaymentTypeCreditnote extends PaymentType
         }
 
         return;
+        }
     }
 
     // Processing - Process the payment
@@ -265,7 +269,15 @@ class PaymentTypeCreditnote extends PaymentType
         if((float) $this->creditnote_details['balance']) {
             Payment::$buttons['submit']['allowed'] = true;
             Payment::$buttons['submit']['url'] = null;
-            Payment::$buttons['submit']['title'] = _gettext("Submit Payment");
+            Payment::$buttons['submit']['title'] = _gettext("Submit");
+        }
+
+        // Submit and Approve
+        if((float) $this->creditnote_details['balance']) {
+            Payment::$buttons['submitAndApprove']['allowed'] = true;
+            Payment::$buttons['submitAndApprove']['url'] = null;
+            Payment::$buttons['submitAndApprove']['title'] = _gettext("Submit and Approve");
+            Payment::$buttons['submitAndApprove']['js'] = "onclick=\"return confirm('"._gettext("Are you sure you want to submit and approve this payment?")."');\"";
         }
 
         // Cancel
