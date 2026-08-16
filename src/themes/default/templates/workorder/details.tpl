@@ -42,7 +42,7 @@
                                         <!-- The Actual Tabs -->
                                         <ul class="tabs">
                                             <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Work Order{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/clients.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Client{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/users.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Client{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Schedule{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Notes{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}History{/t}</a></li>
@@ -166,9 +166,10 @@
                                     <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&commContent=technician_workorder_slip&commType=htmlBrowser';">{t}Technician Work Order Slip{/t}</button>
                                     <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&commContent=technician_job_sheet&commType=htmlBrowser';">{t}Technician Work Order Job Sheet{/t}</button>
                                     <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&commContent=client_workorder_slip&commType=htmlBrowser';">{t}Client Work Order Slip{/t}</button>
-                                    {*<br>
                                     <br>
-                                    <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=edit&workorder_id={$workorder_id}';">{t}Edit Word Order{/t}</button>*}
+                                    <br>
+                                    {*<button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=edit&workorder_id={$workorder_id}';">{t}Edit{/t}</button>*}
+                                    <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}';">{t}Status{/t}</button>
                                 </td>
                             </tr>
                         </table>

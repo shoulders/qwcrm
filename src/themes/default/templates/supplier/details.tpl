@@ -93,7 +93,8 @@
                                     <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Other Income{/t}</button>
                                     <br>
                                     <br>
-                                    <button type="button" onclick="window.location.href='index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_details.supplier_id}';">{t}Edit Supplier{/t}</button>
+                                    <button type="button" onclick="window.location.href='index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_details.supplier_id}';">{t}Edit{/t}</button>
+                                    <button type="button" onclick="window.location.href='index.php?component=supplier&page_tpl=status&supplier_id={$supplier_details.supplier_id}';">{t}Status{/t}</button>
                                 </td>
                             </tr>
                         </table>

@@ -168,8 +168,11 @@
 
                                                 <!-- Edit Button -->
                                                 {if $allowed_to_edit}
-                                                    <button type="button" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_details.invoice_id}';">{t}Edit Invoice{/t}</button>
+                                                    <button type="button" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_details.invoice_id}';">{t}Edit{/t}</button>
                                                 {/if}
+
+                                                <!-- Status Button -->
+                                                <button type="button" onclick="window.location.href='index.php?component=invoice&page_tpl=status&invoice_id={$invoice_details.invoice_id}';">{t}Status{/t}</button>
 
                                                 <!-- Record Payment Button -->
                                                 {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}

@@ -22,7 +22,7 @@
                                 <td>
                                     <div id="tabs_container">
                                         <ul class="tabs">
-                                            <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/clients.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Client Details{/t}</a></li>
+                                            <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/users.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Client Details{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Works Orders{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab">{t}Schedules{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
@@ -101,10 +101,10 @@
                         <!-- Function Buttons -->
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
                             <tr>
-                                <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
+                                <td class="menuhead2" colspan="2">&nbsp;{t}Function Buttons{/t}</td>
                             </tr>
                             <tr>
-                                <td class="menutd2">
+                                <td>
                                     {if $allowed_to_create_creditnote}
                                         <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this client?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&client_id={$client_details.client_id}'; } ">{t}Create Sales Credit Note (Client){/t}</button>
                                     {/if}
@@ -118,7 +118,10 @@
                                     <button type="button" onclick="if(confirm('{t}Are you sure you want to create a new client login for this client?{/t}')) { window.location.href='index.php?component=user&page_tpl=new&client_id={$client_details.client_id}'; } ">{t}New Client Login{/t}</button>
                                     <br>
                                     <br>
-                                    <button type="button" onclick="window.location.href='index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}';">{t}Edit Client{/t}</button>
+                                    <button type="button" onclick="window.location.href='index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}';">{t}Edit{/t}</button>
+                                </td>
+                                <td>
+                                    <button type="button" href="index.php?component=client&page_tpl=delete&client_id={$client_details.client_id}" onclick="return confirm('{t}Are you sure you want to delete this client?{/t}');">{t}Delete{/t}</button>
                                 </td>
                             </tr>
                         </table>

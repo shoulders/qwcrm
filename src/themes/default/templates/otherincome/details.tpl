@@ -118,6 +118,9 @@
                                                         <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_details.otherincome_id}';">{t}Edit{/t}</button>
                                                     {/if}
 
+                                                    <!-- Status Button -->
+                                                    <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=status&otherincome_id={$otherincome_details.otherincome_id}';">{t}Status{/t}</button>
+
                                                     <!-- Record Payment Button -->
                                                     {if $otherincome_details.status == 'unpaid' || $otherincome_details.status == 'partially_paid'}
                                                         <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=otherincome&otherincome_id={$otherincome_details.otherincome_id}';">{t}Record Payment{/t}</button>

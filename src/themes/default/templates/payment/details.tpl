@@ -134,6 +134,9 @@
                                                     <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=edit&payment_id={$payment_id}';">{t}Edit{/t}</button>
                                                 {/if}
 
+                                                <!-- Status Button -->
+                                                <button type="button" onclick="window.location.href='index.php?component=payment&page_tpl=status&payment_id={$payment_id}';">{t}Status{/t}</button>
+
                                             </td>
                                         </tr>
                                     </table>

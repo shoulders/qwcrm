@@ -182,22 +182,23 @@
                                                     {if $creditnote_details.client_id}
                                                         <button type="button" onclick="confirm('Are you sure you want to email this credit note to the client?') && $.ajax( { url:'index.php?component=creditnote&page_tpl=email&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
                                                         <button type="button" onclick="window.open('index.php?component=client&page_tpl=print&client_id={$creditnote_details.client_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
-                                                        <br>
-                                                        <br>
                                                     {elseif $creditnote_details.supplier_id}
                                                         <button type="button" onclick="confirm('Are you sure you want to email this credit note to the supplier?') && $.ajax( { url:'index.php?component=creditnote&page_tpl=email&creditnote_id={$creditnote_details.creditnote_id}&commContent=creditnote&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
                                                         <button type="button" onclick="window.open('index.php?component=supplier&page_tpl=print&supplier_id={$creditnote_details.supplier_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Supplier Envelope{/t}</button>
-                                                        <br>
-                                                        <br>
                                                     {/if}
+                                                    <br>
+                                                    <br>
                                                 {/if}
 
                                                 <!-- Edit Button -->
                                                 {if $allowed_to_edit}
-                                                    <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_details.creditnote_id}';">{t}Edit Credit Note{/t}</button>
-                                                    <br>
-                                                    <br>
+                                                    <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_details.creditnote_id}';">{t}Edit{/t}</button>
                                                 {/if}
+
+                                                <!-- Status Button -->
+                                                <button type="button" onclick="window.location.href='index.php?component=creditnote&page_tpl=status&creditnote_id={$creditnote_details.creditnote_id}';">{t}Status{/t}</button>
+                                                <br>
+                                                <br>
 
                                                 <!-- Apply CR to Invoice or Expense (credit) -->
 
