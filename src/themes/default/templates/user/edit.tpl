@@ -14,7 +14,7 @@
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Edit User{/t}</td>
-                    <td class="menuhead2" width="20%" align="right" valign="middle">                        
+                    <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}USER_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}USER_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
@@ -22,22 +22,22 @@
                     <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
-                                <td width="100%" valign="top">                                    
-                                    <form action="index.php?component=user&page_tpl=edit&user_id={$user_details.user_id}" method="post" name="edit_user" id="edit_user" onsubmit="return confirmPasswordsMatch();"> 
+                                <td width="100%" valign="top">
+                                    <form action="index.php?component=user&page_tpl=edit&user_id={$user_details.user_id}" method="post" name="edit_user" id="edit_user" onsubmit="return confirmPasswordsMatch();">
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0" class="menutd2">
                                                         <tr>
-                                                            <td>                                                                
+                                                            <td>
                                                                 <table class="olotable" width="100%" cellpadding="5" cellspacing="0" border="0">
-                                                                    
+
                                                                     <!-- Common -->
-                                                                    
+
                                                                     <tr class="row2">
                                                                         <td class="menuhead" colspan="3" width="100%">&nbsp;{t}Common{/t}</td>
                                                                     </tr>
-                                                                    
+
                                                                     <tr>
                                                                         <td align="left">
                                                                             <table>
@@ -51,47 +51,47 @@
                                                                                         <td><input name="qform[last_name]" class="olotd5" value="{$user_details.last_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td align="right"><strong>{t}User Type{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
+                                                                                        <td align="right"><strong>{t}User Type{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td>
-                                                                                            {if $is_employee}
+                                                                                            {if $user_details.is_employee}
                                                                                                 <span style="color: red; font-weight: 900;">{t}Employee{/t}</span>
                                                                                             {else}
-                                                                                                <span style="color: red; font-weight: 900;">{t}Client{/t}</span>                                                                                                 
+                                                                                                <span style="color: red; font-weight: 900;">{t}Client{/t}</span>
                                                                                             {/if}
                                                                                             &nbsp;-&nbsp;{t}The user type cannot be changed.{/t}
-                                                                                        </td>                                                                                        
+                                                                                        </td>
                                                                                     </tr>
-                                                                                    {if $is_employee}
+                                                                                    {if $user_details.is_employee}
                                                                                         <tr>
                                                                                             <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                             <td>
                                                                                                 <select name="qform[based]" class="olotd5">
-                                                                                                    {section name=l loop=$user_locations}    
+                                                                                                    {section name=l loop=$user_locations}
                                                                                                         <option value="{$user_locations[l].location_key}"{if $user_details.based == $user_locations[l].location_key} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
-                                                                                                    {/section} 
+                                                                                                    {/section}
                                                                                                 </select>
                                                                                             </td>
                                                                                         </tr>
                                                                                     {else}
                                                                                         <tr>
-                                                                                            <td align="right"><strong>{t}Client{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
+                                                                                            <td align="right"><strong>{t}Client{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                             <td>
-                                                                                                <a href="index.php?component=client&page_tpl=details&client_id={$user_details.client_id}">{$client_display_name}</a>                                                                                               
-                                                                                                <input type="hidden" name="qform[based]" value="onsite">                                                                                                
-                                                                                            </td>                                                                                        
+                                                                                                <a href="index.php?component=client&page_tpl=details&client_id={$user_details.client_id}">{$client_display_name}</a>
+                                                                                                <input type="hidden" name="qform[based]" value="onsite">
+                                                                                            </td>
                                                                                         </tr>
-                                                                                    {/if}                                                                                    
+                                                                                    {/if}
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
                                                                     </tr>
-                                                                    
+
                                                                     <!-- Account -->
-                                                                    
+
                                                                     <tr class="row2">
                                                                         <td class="menuhead" colspan="3" width="100%">&nbsp;{t}Account{/t}</td>
                                                                     </tr>
-                                                                    
+
                                                                     <tr>
                                                                         <td align="left">
                                                                             <table>
@@ -114,15 +114,15 @@
                                                                                             <input id="confirmPassword" name="qform[confirmPassword]" class="olotd5" type="password" minlength="8" maxlength="20" oninput="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="return onlyPassword(event);">
                                                                                             <div id="passwordMessage" style="min-height: 5px;"></div>
                                                                                         </td>
-                                                                                    </tr>                                                                                    
+                                                                                    </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Usergroup{/t}</strong></td>
-                                                                                        <td>                                                                                                
+                                                                                        <td>
                                                                                             <select name="qform[usergroup]" class="olotd5">
                                                                                                 {section name=b loop=$usergroups}
                                                                                                     <option value="{$usergroups[b].usergroup_id}" {if $user_details.usergroup == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].display_name}</option>
                                                                                                 {/section}
-                                                                                            </select>                                                                                            
+                                                                                            </select>
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>
@@ -142,20 +142,20 @@
                                                                                                 <option value="1" {if $user_details.require_reset == '1'} selected {/if}>{t}Yes{/t}</option>
                                                                                             </select>
                                                                                         </td>
-                                                                                    </tr>                                                                                    
-                                                                                    
+                                                                                    </tr>
+
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
                                                                     </tr>
-                                                                    
+
                                                                     <!-- Work -->
-                                                                    
-                                                                    <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
+
+                                                                    <tr class="row2"{if !$user_details.is_employee} style="display: none;"{/if}>
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Work{/t}</td>
                                                                     </tr>
-                                                                    
-                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
+
+                                                                    <tr{if !$user_details.is_employee} style="display: none;"{/if}>
                                                                         <td colspan="2" align="left">
                                                                             <table>
                                                                                 <tr>
@@ -169,18 +169,18 @@
                                                                                 <tr>
                                                                                     <td align="right"><strong>{t}Work Fax{/t}</strong></td>
                                                                                     <td><input name="qform[work_fax]" class="olotd5" value="{$user_details.work_fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
-                                                                                </tr>                                                                                
+                                                                                </tr>
                                                                             </table>
                                                                         </td>
                                                                     </tr>
-                                                                    
+
                                                                     <!-- Home -->
-                                                                    
-                                                                    <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
+
+                                                                    <tr class="row2"{if !$user_details.is_employee} style="display: none;"{/if}>
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Home{/t}</td>
                                                                     </tr>
-                                                                    
-                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
+
+                                                                    <tr{if !$user_details.is_employee} style="display: none;"{/if}>
                                                                         <td colspan="2" align="left">
                                                                             <table>
                                                                                 <tr>
@@ -195,7 +195,7 @@
                                                                                     <td align="right"><strong>{t}Home Email{/t}</strong></td>
                                                                                     <td><input name="qform[home_email]" class="olotd5" size="50" value="{$user_details.home_email}" type="email" maxlength="50" onkeydown="return onlyEmail(event);"></td>
                                                                                 </tr>
-                                                                                                                                                           
+
                                                                                 <tr>
                                                                                     <td align="right"><strong>{t}Address{/t}</strong></td>
                                                                                     <td><textarea name="qform[home_address]" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$user_details.home_address}</textarea></td>
@@ -219,41 +219,41 @@
                                                                             </table>
                                                                         </td>
                                                                     </tr>
-                                                                    
+
                                                                     <!-- Note -->
-                                                                    
+
                                                                     <tr class="row2">
                                                                         <td class="menuhead" colspan="2">{t}Note{/t}</td>
                                                                     </tr>
-                                                                    
+
                                                                     <tr>
                                                                         <td colspan="2">
                                                                             <table>
                                                                                 <tr>
                                                                                     <td align="left"><strong>{t}Note{/t}</strong></td>
-                                                                                    <td><textarea name="qform[note]" class="olotd5" cols="50" rows="2">{$user_details.note}</textarea></td> 
-                                                                                </tr>                                                                                
+                                                                                    <td><textarea name="qform[note]" class="olotd5" cols="50" rows="2">{$user_details.note}</textarea></td>
+                                                                                </tr>
                                                                             </table>
                                                                         </td>
-                                                                    </tr>                                                                     
-                                                                    
+                                                                    </tr>
+
                                                                     <!-- Submit Button -->
-                                                                    
+
                                                                     <tr>
                                                                         <td colspan="2">
-                                                                            <input type="hidden" name="qform[user_id]" value="{$user_details.user_id}"> 
+                                                                            <input type="hidden" name="qform[user_id]" value="{$user_details.user_id}">
                                                                             <button id="submit_button" type="submit" name="submit" style="margin-left: 40px;" value="submit">{t}Submit{/t}</button>
                                                                             <button type="button" class="olotd4" onclick="window.location.href='index.php?component=user&page_tpl=details&user_id={$user_id}';">{t}Cancel{/t}</button>
                                                                         </td>
                                                                     </tr>
-                                                                    
-                                                                </table>                                                                
+
+                                                                </table>
                                                             </td>
                                                     </table>
                                                 </td>
                                             </tr>
                                         </table>
-                                    </form>                                                                        
+                                    </form>
                                 </td>
                             </tr>
                         </table>

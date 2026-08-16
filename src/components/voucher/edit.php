@@ -52,7 +52,7 @@ if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR
 
     }
 
-    // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+    // If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
     if($submitFailedValidation ?? null) {
         $voucher_details = array_merge($this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']), \CMSApplication::$VAR['qform']);
     } else {

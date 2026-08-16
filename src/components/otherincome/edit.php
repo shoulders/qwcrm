@@ -70,7 +70,7 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
         }
     }
 
-    // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+    // If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
     if($submitFailedValidation ?? null) {
         $otherincome_details = array_merge($this->app->components->otherincome->getRecord(\CMSApplication::$VAR['otherincome_id']), \CMSApplication::$VAR['qform']);
         $otherincome_items = \CMSApplication::$VAR['qform']['otherincome_items'] ;

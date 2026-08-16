@@ -30,33 +30,33 @@ class User extends Components {
     #    Insert new user                #
     #####################################
 
-    public function insertRecord($qform) {
+    public function insertRecord($client_id = null) {
+
+        // Generate a unique temporary random username and email address to allow record creation
+        $attempts = 0;
+        do {
+            // Safety net - prevents an infinite loop if a unique username cannot be found
+            if(++$attempts > 10) {
+                //$this->app->system->page->forceErrorPage('system', __FILE__, __FUNCTION__, null, null, _gettext("Could not generate a unique username and email address for the new user account."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("Could not generate a unique username and email address for the new user account."));
+                $this->app->system->page->forcePage('user', 'search');
+            }
+            $username = strtolower(\Joomla\CMS\User\UserHelper::genRandomPassword(16));
+            $email    = $username.'@example.com';
+        } while($this->checkUsernameExists($username, null, true) || $this->checkEmailExists($email, null, true));
+
+        // Generate a temporary random password
+        $password = \Joomla\CMS\User\UserHelper::hashPassword(\Joomla\CMS\User\UserHelper::genRandomPassword(16));
 
         $sql = "INSERT INTO ".PRFX."user_records SET
-                client_id           =". $this->app->db->qStr( $qform['client_id'] ?: null                    ).",
-                username            =". $this->app->db->qStr( $qform['username']                             ).",
-                password            =". $this->app->db->qStr( \Joomla\CMS\User\UserHelper::hashPassword($qform['password'])  ).",
-                email               =". $this->app->db->qStr( $qform['email']                                ).",
-                usergroup           =". $this->app->db->qStr( $qform['usergroup']                            ).",
-                active              =". $this->app->db->qStr( $qform['active']                               ).",
+                client_id           =". $this->app->db->qStr( $client_id ?: null                             ).",
+                username            =". $this->app->db->qStr( $username                                      ).",
+                password            =". $this->app->db->qStr( $password                                      ).",
+                email               =". $this->app->db->qStr( $email                                         ).",
+                usergroup           =". $this->app->db->qStr( $client_id ? 7 : 4                             ).",
+                active              =". $this->app->db->qStr( 0                                              ).",
                 register_date       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()   ).",
-                require_reset       =". $this->app->db->qStr( $qform['require_reset']                        ).",
-                is_employee         =". $this->app->db->qStr( $qform['is_employee']                          ).",
-                first_name          =". $this->app->db->qStr( $qform['first_name']                           ).",
-                last_name           =". $this->app->db->qStr( $qform['last_name']                            ).",
-                work_primary_phone  =". $this->app->db->qStr( $qform['work_primary_phone']                   ).",
-                work_mobile_phone   =". $this->app->db->qStr( $qform['work_mobile_phone']                    ).",
-                work_fax            =". $this->app->db->qStr( $qform['work_fax']                             ).",
-                home_primary_phone  =". $this->app->db->qStr( $qform['home_primary_phone']                   ).",
-                home_mobile_phone   =". $this->app->db->qStr( $qform['home_mobile_phone']                    ).",
-                home_email          =". $this->app->db->qStr( $qform['home_email']                           ).",
-                home_address        =". $this->app->db->qStr( $qform['home_address']                         ).",
-                home_city           =". $this->app->db->qStr( $qform['home_city']                            ).",
-                home_state          =". $this->app->db->qStr( $qform['home_state']                           ).",
-                home_zip            =". $this->app->db->qStr( $qform['home_zip']                             ).",
-                home_country        =". $this->app->db->qStr( $qform['home_country']                         ).",
-                based               =". $this->app->db->qStr( $qform['based']                                ).",
-                note                =". $this->app->db->qStr( $qform['note']                                 );
+                is_employee         =". $this->app->db->qStr( $client_id ? 0 : 1                             );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -64,9 +64,9 @@ class User extends Components {
         $user_id = $this->app->db->Insert_ID();
 
         // Log activity
-        $user_type = $qform['client_id'] ? _gettext("Client") : _gettext("Employee");
+        $user_type = $client_id ? _gettext("Client") : _gettext("Employee");
         $logMessage = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
-        $recordIds = array('user_id' => $user_id, 'client_id' => $qform['client_id'] ?: null);
+        $recordIds = array('user_id' => $user_id, 'client_id' => $client_id ?: null);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
         return $user_id;
@@ -422,16 +422,76 @@ class User extends Components {
 
     /** Check Functions **/
 
+    ###############################################
+    #  Check if user can be created               #
+    ###############################################
+
+    public function checkRecordCanBeCreated($client_id = null, $silent = false) {
+
+        $state_flag = true;
+
+        // Is there a client
+        if($client_id){
+
+            // Is the client active
+            if($client_id && !$this->app->components->client->getRecord($client_id, 'active')){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The specified client is not active so you cannot create a user for it.", $silent));
+                $state_flag = false;
+            }
+
+            // Is there already a user for this client (we are restricting to one user per client here)
+            if($this->app->components->user->checkClientLoginExists($client_id)) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This client already has a user and you cannot create another.", $silent));
+                $state_flag = false;
+            }
+
+        }
+
+        return $state_flag;
+    }
+
+    #############################################################
+    # Validate submitted information before allowing submission #
+    #############################################################
+
+    public function checkRecordSubmissionIsValid($qform)
+    {
+        $state_flag = true;
+
+        $user_details = $this->app->components->user->getRecord($qform['user_id']);
+
+        // Does the Username already exist
+        if($this->checkUsernameExists($qform['username'], $user_details['username'])) {
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted username is already in use, pick another.", $silent));
+            $state_flag = false;
+        }
+
+        // Is the email address aready used
+        if($this->checkEmailExists($qform['email'], $user_details['email'])) {
+            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted email address is already in use, pick another.", $silent));
+            $state_flag = false;
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The other income submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
+        return $state_flag;
+
+    }
+
+
     #################################################
     #    Check if username already exists           #
     #################################################
 
-    public function checkUsernameExists($username, $current_username = null) {
+    public function checkUsernameExists($new_username, $current_username = null, $silent = false) {
 
         // This prevents self-checking of the current username of the record being edited
-        if ($current_username != null && $username === $current_username) {return false;}
+        if ($current_username != null && $new_username === $current_username) {return false;}
 
-        $sql = "SELECT username FROM ".PRFX."user_records WHERE username =". $this->app->db->qStr($username);
+        $sql = "SELECT username FROM ".PRFX."user_records WHERE username =". $this->app->db->qStr($new_username);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -439,8 +499,7 @@ class User extends Components {
 
         if($result_count >= 1) {
 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
-
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The Username")." '".$new_username."' "._gettext("already exists! Please use a different one."), $silent);
             return true;
 
         } else {
@@ -455,12 +514,12 @@ class User extends Components {
     #  Check if an email address has already been used   #
     ######################################################
 
-    public function checkEmailExists($email, $current_email = null) {
+    public function checkEmailExists($new_email, $current_email = null, $silent = false) {
 
         // This prevents self-checking of the current username of the record being edited
-        if ($current_email != null && $email === $current_email) {return false;}
+        if ($current_email != null && $new_email === $current_email) {return false;}
 
-        $sql = "SELECT email FROM ".PRFX."user_records WHERE email =". $this->app->db->qStr($email);
+        $sql = "SELECT email FROM ".PRFX."user_records WHERE email =". $this->app->db->qStr($new_email);
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -468,8 +527,7 @@ class User extends Components {
 
         if($result_count >= 1) {
 
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The email address has already been used. Please use a different one."));
-
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The email address has already been used. Please use a different one."), $silent);
             return true;
 
         } else {

@@ -33,7 +33,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
 }
 
-// If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+// If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
 if($submitFailedValidation ?? null) {
     $company_details = array_merge($this->app->components->company->getRecord(), \CMSApplication::$VAR['qform']);
 

@@ -9,14 +9,14 @@
 defined('_QWEXEC') or die;
 
 // Check if the record can be created
-if(!$this->app->components->expense->checkRecordCanBeCreated(\CMSApplication::$VAR['supplier_id'] ?? null)) {
+if(!$this->app->components->otherincome->checkRecordCanBeCreated(\CMSApplication::$VAR['supplier_id'] ?? null)) {
     $this->app->system->page->forcePage('otherincome', 'search');
 } else {
 
     // Create the otherincome record and return the new otherincome_id
     \CMSApplication::$VAR['otherincome_id'] = $this->app->components->otherincome->insertRecord(\CMSApplication::$VAR['supplier_id'] ?? null);
 
-    // Load the newly created invoice edit page
+    // Load the newly created otherincome edit page
     $this->app->system->page->forcePage('otherincome', 'edit&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
 
 }

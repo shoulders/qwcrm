@@ -70,7 +70,7 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
 
     }
 
-    // If a submission happend and failed validation, load page with the failed submitted values, else load values from database as normal
+    // If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
     if($submitFailedValidation ?? null) {
         $invoice_details = array_merge($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']), \CMSApplication::$VAR['qform']);
         $invoice_items = \CMSApplication::$VAR['qform']['invoice_items'] ;
