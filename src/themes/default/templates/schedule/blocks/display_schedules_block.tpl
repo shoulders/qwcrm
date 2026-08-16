@@ -16,7 +16,6 @@
         <td class="olohead"><b>{t}Start Time{/t}</b></td>
         <td class="olohead"><b>{t}End Time{/t}</b></td>
         <td class="olohead"><b>{t}Note{/t}</b></td>
-        <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=s loop=$display_schedules.records}
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules.records[s].schedule_id}';">
@@ -51,14 +50,6 @@
                 {if $display_schedules.records[s].note}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_schedules.records[s].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
-             </td>
-
-            <!-- Action -->
-            <td class="olotd4" align="center" nowrap>
-                <a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules.records[s].schedule_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
-                <a href="index.php?component=schedule&page_tpl=edit&schedule_id={$display_schedules.records[s].schedule_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                <a href="index.php?component=schedule&page_tpl=icalendar&schedule_id={$display_schedules.records[s].schedule_id}" target="_blank"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Export{/t}');" onMouseOut="hideddrivetip();"></a>
-                <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$display_schedules.records[s].schedule_id}" onclick="return confirm('{t}Are you sure you want to delete this schedule?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete{/t}</b>');" onMouseOut="hideddrivetip();"></a>
             </td>
 
         </tr>

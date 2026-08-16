@@ -140,30 +140,6 @@
                     </td>
                 </tr>
 
-                <!-- Function Buttons -->
-                <tr>
-                    <td>
-                        <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
-                            <tr>
-                                <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
-                            </tr>
-                            <tr>
-                                <td class="menutd2">
-                                    <button type="button" onclick="window.location.href='index.php?component=expense&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Expense{/t}</button>
-                                    <button type="button" onclick="window.location.href='index.php?component=otherincome&page_tpl=new&supplier_id={$supplier_details.supplier_id}';">{t}Add Supplier Other Income{/t}</button>
-                                    {if $allowed_to_create_creditnote}
-                                        <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note agains this supplier?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&supplier_id={$supplier_details.supplier_id}'; } ">{t}Create Purchase Credit Note (Supplier){/t}</button>
-                                    {/if}
-                                    <br>
-                                    <br>
-                                    <button type="button" onclick="window.open('index.php?component=supplier&page_tpl=print&supplier_id={$supplier_details.supplier_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Supplier Envelope{/t}</button>
-                                    <button type="button" onclick="window.location.href='index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_details.supplier_id}';">{t}Edit Supplier{/t}</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-
             </table>
         </td>
     </tr>

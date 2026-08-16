@@ -455,7 +455,7 @@
             </tr>
         {/if}
 
-        <!-- Buttons -->
+        <!-- Function Buttons -->
         <tr>
             <td>
                 {if $buttons.submit.allowed}<button type="submit" name="submit" value="submit">{$buttons.submit.title}</button>{/if}

@@ -16,7 +16,6 @@
         <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Description{/t}</td>
         <td class="olohead">{t}Additional Info{/t}</td>
-        <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=s loop=$display_suppliers.records}
         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
@@ -30,9 +29,9 @@
             </td>
             <td class="olotd4" nowrap>{$display_suppliers.records[s].zip}</td>
             <td class="olotd4" nowrap>
-               {section name=r loop=$supplier_statuses}
-                   {if $display_suppliers.records[s].status == $supplier_statuses[r].status_key}{t}{$supplier_statuses[r].display_name}{/t}{/if}
-               {/section}
+                {section name=r loop=$supplier_statuses}
+                    {if $display_suppliers.records[s].status == $supplier_statuses[r].status_key}{t}{$supplier_statuses[r].display_name}{/t}{/if}
+                {/section}
             </td>
             <td class="olotd4" nowrap>{if $display_suppliers.records[s].note}
                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_suppliers.records[s].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}
@@ -42,17 +41,6 @@
                 {if $display_suppliers.records[s].additional_info|supplier_addinfo_display}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_suppliers.records[s].additional_info|supplier_addinfo_display|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
-            </td>
-            <td class="olotd4" nowrap>
-                <a href="index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers.records[s].supplier_id}">
-                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Supplier Details{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>
-                <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$display_suppliers.records[s].supplier_id}">
-                    <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Supplier Details{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>
-                {*<a href="index.php?component=supplier&page_tpl=delete&supplier_id={$display_suppliers.records[s].supplier_id}" onclick="return confirm('{t}Are you sure you want to delete this Ssupplier? This will permanently remove the record from the database.{/t}');">
-                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Supplier{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>*}
             </td>
         </tr>
     {/section}

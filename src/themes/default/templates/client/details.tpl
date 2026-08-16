@@ -13,7 +13,6 @@
                     <td class="menuhead2" width="80%">&nbsp;{t}Client Details for{/t} {$client_details.display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=js}CLIENT_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=js}CLIENT_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
-                        <a href="index.php?component=client&page_tpl=edit&client_id={$client_id}"><img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit client details{/t}');" onMouseOut="hideddrivetip();"></a>
                     </td>
                 </tr>
                 <tr>
@@ -98,6 +97,32 @@
                                 </td>
                             </tr>
                         </table>
+
+                        <!-- Function Buttons -->
+                        <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
+                            <tr>
+                                <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
+                            </tr>
+                            <tr>
+                                <td class="menutd2">
+                                    {if $allowed_to_create_creditnote}
+                                        <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this client?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&client_id={$client_details.client_id}'; } ">{t}Create Sales Credit Note (Client){/t}</button>
+                                    {/if}
+                                    <br>
+                                    <br>
+                                    <button type="button" onclick="window.open('index.php?component=client&page_tpl=print&client_id={$client_details.client_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
+                                    <br>
+                                    <br>
+                                    <button type="button" onclick="if(confirm('{t}Are you sure you want to create a new work order for this client?{/t}')) { window.location.href='index.php?component=workorder&page_tpl=new&client_id={$client_details.client_id}'; } ">{t}New Work Order{/t}</button>
+                                    <button type="button" onclick="if(confirm('{t}Are you sure you want to create a new invoice without a work order for this client?{/t}')) { window.location.href='index.php?component=invoice&page_tpl=new&client_id={$client_details.client_id}&invoice_type=invoice-only'; } ">{t}New Invoice Only{/t}</button>
+                                    <button type="button" onclick="if(confirm('{t}Are you sure you want to create a new client login for this client?{/t}')) { window.location.href='index.php?component=user&page_tpl=new&client_id={$client_details.client_id}'; } ">{t}New Client Login{/t}</button>
+                                    <br>
+                                    <br>
+                                    <button type="button" onclick="window.location.href='index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}';">{t}Edit Client{/t}</button>
+                                </td>
+                            </tr>
+                        </table>
+
                     </td>
                 </tr>
             </table>

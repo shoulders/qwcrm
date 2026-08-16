@@ -23,7 +23,6 @@
         <td class="olohead">{t}Items{/t}</td>
         <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Additional Info{/t}</td>
-        <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=e loop=$display_expenses.records}
         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
@@ -62,17 +61,6 @@
                 {if $display_expenses.records[e].additional_info|expense_addinfo_display}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_expenses.records[e].additional_info|expense_addinfo_display|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
-            </td>
-            <td class="olotd4" nowrap>
-                <a href="index.php?component=expense&page_tpl=details&expense_id={$display_expenses.records[e].expense_id}">
-                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>
-                <a href="index.php?component=expense&page_tpl=edit&expense_id={$display_expenses.records[e].expense_id}">
-                    <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>
-                {*<a href="index.php?component=expense&page_tpl=delete&expense_id={$display_expenses.records[e].expense_id}" onclick="return confirm('{t}Are you sure you want to delete this expense? This will permanently remove the record from the database.{/t}');">
-                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Expense{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>*}
             </td>
         </tr>
     {/section}

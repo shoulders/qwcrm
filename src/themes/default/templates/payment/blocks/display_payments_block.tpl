@@ -25,7 +25,6 @@
         <td class="olohead"><b>{t}Amount{/t}</b></td>
         <td class="olohead"><b>{t}Additional Info{/t}</b></td>
         <td class="olohead"><b>{t}Note{/t}</b></td>
-        <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=p loop=$display_payments.records}
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_payments.records[p].status != 'deleted'} onDblClick="window.location='index.php?component=payment&page_tpl=details&payment_id={$display_payments.records[p].payment_id}';"{/if}>
@@ -70,15 +69,6 @@
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_payments.records[p].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
-            <td class="olotd4" align="center" nowrap>
-                <a href="index.php?component=payment&page_tpl=details&payment_id={$display_payments.records[p].payment_id}">
-                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View the payment.{/t}');" onMouseOut="hideddrivetip();">
-                </a>
-                {*<a href="index.php?component=payment&page_tpl=delete&payment_id={$display_payments.records[p].payment_id}" onclick="return confirm('{t}Are you sure you want to delete this Payment? This will permanently remove the record from the database.{/t}');">
-                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Payment{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>*}
-            </td>
-
         </tr>
         {/section}
         {if $display_payments.restricted_records}

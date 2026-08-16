@@ -27,7 +27,6 @@
         <td class="olohead">{t}Balance{/t}</td>
         <td class="olohead">{t}Redemptions{/t}</td>
         <td class="olohead">{t}Note{/t}</td>
-        <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=g loop=$display_vouchers.records}
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';" {if $display_vouchers.records[g].status != 'deleted'}onDblClick="window.location='index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers.records[g].voucher_id}';"{/if}>
@@ -64,15 +63,7 @@
                 {if $display_vouchers.records[g].note}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_vouchers.records[g].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
-            </td>
-            <td class="olotd4">
-                {if $display_vouchers.records[g].status != 'deleted'}
-                    <a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers.records[g].voucher_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                    <a href="index.php?component=voucher&page_tpl=edit&voucher_id={$display_vouchers.records[g].voucher_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                    <a href="index.php?component=voucher&page_tpl=print&voucher_id={$display_vouchers.records[g].voucher_id}&commContent=voucher&commType=htmlBrowser" target="_blank"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Voucher{/t}');" onMouseOut="hideddrivetip();"></a>
-                    <a><img src="{$theme_images_dir}icons/16x16/email.jpg" border="0" onMouseOver="ddrivetip('{t}Email the Voucher to the client{/t}');" onMouseOut="hideddrivetip();" onclick="return confirm('Are you sure you want to email this voucher to the client?') && $.ajax( { url:'index.php?component=voucher&page_tpl=email&voucher_id={$display_vouchers.records[g].voucher_id}&commContent=voucher&commType=pdfEmail', success: function(data) { $('body').append(data); } } );"></a>
-                {/if}
-            </td>
+            </td>            
         </tr>
     {/section}
     {if $display_vouchers.restricted_records}

@@ -152,8 +152,30 @@
                         </table>
                     </td>
                 </tr>
-            </table>
 
+                <!-- Function Buttons -->
+                <tr>
+                    <td class="menutd2" colspan="2">
+
+                        <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
+                            <tr>
+                                <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
+                            </tr>
+                            <tr>
+                                <td class="menutd2">
+                                    <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&commContent=technician_workorder_slip&commType=htmlBrowser';">{t}Technician Work Order Slip{/t}</button>
+                                    <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&commContent=technician_job_sheet&commType=htmlBrowser';">{t}Technician Work Order Job Sheet{/t}</button>
+                                    <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&commContent=client_workorder_slip&commType=htmlBrowser';">{t}Client Work Order Slip{/t}</button>
+                                    {*<br>
+                                    <br>
+                                    <button type="button" onclick="window.location.href='index.php?component=workorder&page_tpl=edit&workorder_id={$workorder_id}';">{t}Edit Word Order{/t}</button>*}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+            </table>
         </td>
     </tr>
 </table>

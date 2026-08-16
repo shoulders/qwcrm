@@ -105,18 +105,6 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td colspan="2">
-                        {if $allowed_to_create_creditnote}
-                            <button type="button" onclick="if(confirm('{t}Are you sure you want to create a credit note against this client?{/t}')) { window.location.href='index.php?component=creditnote&page_tpl=new&client_id={$client_details.client_id}'; } ">{t}Create Sales Credit Note (Client){/t}</button>
-                        {/if}
-                        <br>
-                        <br>
-                        <button type="button" onclick="window.open('index.php?component=client&page_tpl=print&client_id={$client_details.client_id}&commContent=envelope&commType=htmlBrowser');">{t}Print Client Envelope{/t}</button>
-                        <button type="button" onclick="window.location.href='index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}';">{t}Edit Client{/t}</button>
-                    </td>
-                </tr>
-
             </table>
         </td>
     </tr>

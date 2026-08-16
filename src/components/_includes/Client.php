@@ -202,32 +202,28 @@ class Client extends Components {
 
         if(!$rs = $this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
+        $results = $rs->GetRowAssoc();
+
+        // Add these dynamically created fields
+        $results['display_name'] = $results['company_name'] ?: $results['first_name'].' '.$results['last_name'];
+        $results['full_name'] = $results['first_name'].' '.$results['last_name'];
+
+        // Return full record
         if(!$item) {
-
-            $results = $rs->GetRowAssoc();
-
-            // Add these dynamically created fields
-            $results['display_name'] = $results['company_name'] ?: $results['first_name'].' '.$results['last_name'];
-            $results['full_name'] = $results['first_name'].' '.$results['last_name'];
 
             return $results;
 
+        // Return single item
         } else {
 
-            // Return the dynamically created 'display_name'
-            if($item == 'display_name') {
-                $results = $rs->GetRowAssoc();
-                return $results['company_name'] ?: $results['first_name'].' '.$results['last_name'];
+            switch ($item) {
+                case 'display_name' :
+                    return $results['display_name'];
+                case 'full_name':
+                    return $results['full_name'];
+                default:
+                    return $results[$item];
             }
-
-            // Return the dynamically created 'full_name'
-            if($item == 'full_name') {
-                $results = $rs->GetRowAssoc();
-                return $results['first_name'].' '.$results['last_name'];
-            }
-
-            // Return static item
-            return $rs->fields[$item];
 
         }
 

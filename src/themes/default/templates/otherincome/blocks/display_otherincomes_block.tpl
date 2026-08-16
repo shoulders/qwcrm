@@ -23,7 +23,6 @@
         <td class="olohead">{t}Items{/t}</td>
         <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Additional Info{/t}</td>
-        <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=e loop=$display_otherincomes.records}
         <!-- This allows double clicking on a row and opens the corresponding otherincome view details -->
@@ -62,17 +61,6 @@
                 {if $display_otherincomes.records[e].additional_info|otherincome_addinfo_display}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_otherincomes.records[e].additional_info|otherincome_addinfo_display|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
-            </td>
-            <td class="olotd4" nowrap>
-                <a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_otherincomes.records[e].otherincome_id}">
-                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Otherincome Details{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>
-                <a href="index.php?component=otherincome&page_tpl=edit&otherincome_id={$display_otherincomes.records[e].otherincome_id}">
-                    <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Otherincome Details{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>
-                {*<a href="index.php?component=otherincome&page_tpl=delete&otherincome_id={$display_otherincomes.records[e].otherincome_id}" onclick="return confirm('{t}Are you sure you want to delete this other income? This will permanently remove the record from the database.{/t}');">
-                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete other incomed{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>*}
             </td>
         </tr>
     {/section}
