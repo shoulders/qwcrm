@@ -36,7 +36,6 @@ if(!$this->app->components->user->checkRecordAllowsEdit(\CMSApplication::$VAR['u
             $this->app->system->variables->systemMessagesWrite('success', _gettext("User details updated."));
             $this->app->system->page->forcePage('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
 
-
         } else {
             $submitFailedValidation = true;
         }
