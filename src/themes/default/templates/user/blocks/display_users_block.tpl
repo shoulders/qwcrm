@@ -17,7 +17,6 @@
         <td class="olohead">{t}Based{/t}</td>
         <td class="olohead">{t}Email{/t}</td>
         <td class="olohead">{t}Notes{/t}</td>
-        <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=u loop=$display_users.records}
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=user&page_tpl=details&user_id={$display_users.records[u].user_id}';">
@@ -45,12 +44,8 @@
             <td class="olotd4"><a href="mailto: {$display_users.records[u].email}"><font class="blueLink">{$display_users.records[u].email}</font></a></td>
             <td class="olotd4" nowrap>
                 {if $display_users.records[u].note}
-                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_users.records[u].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
-                 {/if}
-            </td>
-            <td class="olotd4">
-                <a href="index.php?component=user&page_tpl=details&user_id={$display_users.records[u].user_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Users Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                <a href="index.php?component=user&page_tpl=edit&user_id={$display_users.records[u].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_users.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_users.records[u].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {/if}
             </td>
         </tr>
     {/section}
