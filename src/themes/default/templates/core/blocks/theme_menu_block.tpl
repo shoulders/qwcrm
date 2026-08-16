@@ -10,10 +10,11 @@
         <td>
             <div style="float: left" id="main_menu" class="sdmenu">
 
-                <!-- Main -->
+                <!-- Main menu -->
                 <div class="menugroup">
-                    <span>{t}Main Menu{/t}</span>
+                    <span>{t}Main menu{/t}</span>
                     <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {t}Home{/t}</a>
+                    <a href="index.php?component=user&page_tpl=details&user_id={$login_user_id}"><img src="{$theme_images_dir}icons/users.gif" alt="" border="0" height="14" width="14" /> {t}Profile{/t}</a>
                     <a href="index.php?component=user&page_tpl=login&action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {t}Logout{/t}</a>
                 </div>
 
@@ -23,7 +24,7 @@
                     <a href="index.php?component=client&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
                     <a href="index.php?component=client&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
                     {if $client_id}
-                        <a href="index.php?component=client&page_tpl=edit&client_id={$client_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
+                        <a href="index.php?component=client&page_tpl=edit&client_id={$client_id}"><img src="{$theme_images_dir}icons/edit_users.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                         <a href="index.php?component=client&page_tpl=delete&client_id={$client_id}" onclick="return confirm('{t}Are you sure you want to delete this client?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                         <a href="index.php?component=user&page_tpl=new&client_id={$client_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}Create Login{/t}</a>
                     {/if}
@@ -95,6 +96,24 @@
                     {/if}
                 </div>
 
+                <!-- Supplier -->
+                <div class="menugroup collapsed">
+                    <span>{t}Suppliers{/t}</span>
+                    <a href="index.php?component=supplier&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
+                    <a href="index.php?component=supplier&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
+                    {*if $supplier_id}
+                        <a href="index.php?component=supplier&page_tpl=details&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                        <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
+                        <a href="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}" onclick="return confirm('{t}Are you sure you want to delete this supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
+                    {/if*}
+
+                    <!-- Supplier Admin -->
+                    {if $supplier_id}
+                        <a href="index.php?component=supplier&page_tpl=status&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if}
+
+                </div>
+
                 <!-- Expenses -->
                 <div class="menugroup collapsed">
                     <span>{t}Expenses{/t}</span>
@@ -111,21 +130,6 @@
                     <!-- Expense Admin -->
                     {if $expense_id}
                         <a href="index.php?component=expense&page_tpl=status&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
-                    {/if}
-
-                </div>
-
-                <!-- Credit Notes -->
-                <div class="menugroup collapsed">
-                    <span>{t}Credit Notes{/t}</span>
-                    <a href="index.php?component=creditnote&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
-
-                    <!-- Credit Note Admin -->
-                    {if $creditnote_id}
-                        <a href="index.php?component=creditnote&page_tpl=status&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
-                        {*<a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
-                        <a href="index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                        <a href="index.php?component=creditnote&page_tpl=delete&creditnote_id={$creditnote_id}" onclick="return confirm('{t}Are you sure you want to delete this credit note?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>*}
                     {/if}
 
                 </div>
@@ -158,29 +162,26 @@
                     {/if}
                 </div>
 
+                <!-- Credit Notes -->
+                <div class="menugroup collapsed">
+                    <span>{t}Credit Notes{/t}</span>
+                    <a href="index.php?component=creditnote&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
+
+                    <!-- Credit Note Admin -->
+                    {if $creditnote_id}
+                        <a href="index.php?component=creditnote&page_tpl=status&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                        {*<a href="index.php?component=creditnote&page_tpl=details&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                        <a href="index.php?component=creditnote&page_tpl=edit&creditnote_id={$creditnote_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
+                        <a href="index.php?component=creditnote&page_tpl=delete&creditnote_id={$creditnote_id}" onclick="return confirm('{t}Are you sure you want to delete this credit note?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>*}
+                    {/if}
+
+                </div>
+
                 <!-- Reports -->
                 <div class="menugroup collapsed">
                     <span>{t}Reports{/t}</span>
                     <a href="index.php?component=report&page_tpl=basic_stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Basic Stats{/t}</a>
                     <a href="index.php?component=report&page_tpl=financial"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Financial{/t}</a>
-                </div>
-
-                <!-- Supplier -->
-                <div class="menugroup collapsed">
-                    <span>{t}Suppliers{/t}</span>
-                    <a href="index.php?component=supplier&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
-                    <a href="index.php?component=supplier&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
-                    {*if $supplier_id}
-                        <a href="index.php?component=supplier&page_tpl=details&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
-                        <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                        <a href="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}" onclick="return confirm('{t}Are you sure you want to delete this supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                    {/if*}
-
-                    <!-- Supplier Admin -->
-                    {if $supplier_id}
-                        <a href="index.php?component=supplier&page_tpl=status&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
-                    {/if}
-
                 </div>
 
                 <!-- Administration -->
@@ -193,18 +194,14 @@
                     <!-- Users -->
                     <a href="index.php?component=user&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search Users{/t}</a>
                     <a href="index.php?component=user&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New Employee{/t}</a>
-                    {if $user_id}
-                        <a href="index.php?component=user&page_tpl=edit&user_id={$user_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit User{/t}</a>
-                        <a href="index.php?component=user&page_tpl=delete&user_id={$user_id}" onclick="return confirm('{t}Are you sure you want to delete this user?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                    {/if}
+
+                    <!-- Permissions -->
                     <a href="index.php?component=administrator&page_tpl=acl"><img src="{$theme_images_dir}icons/encrypted.png" alt="" border="0" height="14" width="14" /> {t}Permissions{/t}</a>
 
                     <!-- Cronjob -->
                     <a href="index.php?component=cronjob&page_tpl=overview"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Cronjobs{/t}</a>
-                    {if $cronjob_id}
-                        <a href="index.php?component=cronjob&page_tpl=edit&cronjob_id={$cronjob_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t} {t}Cron{/t}</a>
-                    {/if}
-                    <!-- Administrator -->
+
+                    <!-- System -->
                     <a href="index.php?component=administrator&page_tpl=phpinfo"><img src="{$theme_images_dir}icons/php.png" alt="" border="0" height="14" width="14" /> {t}PHP Info{/t}</a>
                     <a href="index.php?component=administrator&page_tpl=update"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Update{/t}</a>
                     <a href="index.php?component=administrator&page_tpl=config"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Config{/t}</a>

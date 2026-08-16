@@ -11,7 +11,7 @@
         <td class="olohead">{t}ID{/t}</td>
         <td class="olohead">{t}Name{/t}</td>
         <td class="olohead">{t}Type{/t}</td>
-        <td class="olohead">{t}Username{/t}</td>        
+        <td class="olohead">{t}Username{/t}</td>
         <td class="olohead">{t}Usergroup{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Based{/t}</td>
@@ -25,23 +25,23 @@
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_users.records[u].user_id}">{$display_users.records[u].display_name}</a></td>
             <td class="olotd4">
                 {if $display_users.records[u].is_employee == '0'}{t}Client{/t}{/if}
-                {if $display_users.records[u].is_employee == '1'}{t}Employee{/t}{/if}                                                            
+                {if $display_users.records[u].is_employee == '1'}{t}Employee{/t}{/if}
             </td>
-            <td class="olotd4">{$display_users.records[u].username}</td>            
+            <td class="olotd4">{$display_users.records[u].username}</td>
             <td class="olotd4">
                 {section name=g loop=$usergroups}
                     {if $display_users.records[u].usergroup == $usergroups[g].usergroup_id}{$usergroups[g].display_name}{/if}
-                {/section}   
+                {/section}
             </td>
             <td class="olotd4">
                 {if $display_users.records[u].active == '0'}{t}Blocked{/t}{/if}
-                {if $display_users.records[u].active == '1'}{t}Active{/t}{/if}                                                            
+                {if $display_users.records[u].active == '1'}{t}Active{/t}{/if}
             </td>
-            <td class="olotd4">           
-                {section name=l loop=$user_locations}    
+            <td class="olotd4">
+                {section name=l loop=$user_locations}
                     {if $display_users.records[u].based == $user_locations[l].location_key}{t}{$user_locations[l].display_name}{/t}{/if}
                 {/section}
-            </td> 
+            </td>
             <td class="olotd4"><a href="mailto: {$display_users.records[u].email}"><font class="blueLink">{$display_users.records[u].email}</font></a></td>
             <td class="olotd4" nowrap>
                 {if $display_users.records[u].note}
@@ -50,8 +50,8 @@
             </td>
             <td class="olotd4">
                 <a href="index.php?component=user&page_tpl=details&user_id={$display_users.records[u].user_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Users Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                <a href="index.php?component=user&page_tpl=edit&user_id={$display_users.records[u].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>
-            </td>                                                        
+                <a href="index.php?component=user&page_tpl=edit&user_id={$display_users.records[u].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_users.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>
+            </td>
         </tr>
     {/section}
     {if $display_users.restricted_records}
@@ -62,6 +62,6 @@
     {if !$display_users.records}
         <tr>
             <td colspan="10" class="error">{t}There are no users.{/t}</td>
-        </tr>        
-    {/if}  
+        </tr>
+    {/if}
 </table>
