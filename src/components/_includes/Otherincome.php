@@ -46,7 +46,7 @@ class Otherincome extends Components {
         $otherincome_id = $this->app->db->Insert_ID();
 
         // Log activity
-        $logMessage = _gettext("Other income").' '.$otherincome_id.' '._gettext("created.");
+        $logMessage = _gettext("A new other income with the ID").' '.$otherincome_id.' '._gettext("has been created.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_id, 'otherincome_id' => $otherincome_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);

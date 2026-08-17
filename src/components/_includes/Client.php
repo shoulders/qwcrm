@@ -29,36 +29,19 @@ class Client extends Components {
     #    Insert new client              #
     #####################################
 
-    public function insertRecord($qform) {
+    public function insertRecord() {
 
         $sql = "INSERT INTO ".PRFX."client_records SET
                 employee_id     =". $this->app->db->qStr( $this->app->user->login_user_id ).",
-                opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()         ).",
-                company_name    =". $this->app->db->qStr( $qform['company_name']     ).",
-                first_name      =". $this->app->db->qStr( $qform['first_name']       ).",
-                last_name       =". $this->app->db->qStr( $qform['last_name']        ).",
-                website         =". $this->app->db->qStr( $this->app->system->general->processInputtedUrl($qform['website'])).",
-                email           =". $this->app->db->qStr( $qform['email']            ).",
-                credit_terms    =". $this->app->db->qStr( $qform['credit_terms']     ).",
-                discount_rate   =". $this->app->db->qStr( $qform['discount_rate']    ).",
-                type            =". $this->app->db->qStr( $qform['type']             ).",
-                active          =". $this->app->db->qStr( $qform['active']           ).",
-                primary_phone   =". $this->app->db->qStr( $qform['primary_phone']    ).",
-                mobile_phone    =". $this->app->db->qStr( $qform['mobile_phone']     ).",
-                fax             =". $this->app->db->qStr( $qform['fax']              ).",
-                address         =". $this->app->db->qStr( $qform['address']          ).",
-                city            =". $this->app->db->qStr( $qform['city']             ).",
-                state           =". $this->app->db->qStr( $qform['state']            ).",
-                zip             =". $this->app->db->qStr( $qform['zip']              ).",
-                country         =". $this->app->db->qStr( $qform['country']          ).",
-                note            =". $this->app->db->qStr( $qform['note']             );
+                opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()).",
+                active          =". $this->app->db->qStr( 0 );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         $client_id = $this->app->db->Insert_ID();
 
         // Log activity
-        $logMessage = _gettext("New client").', '.$this->getRecord($client_id, 'display_name').', '._gettext("has been created.");
+        $logMessage = _gettext("A new client with the ID").' '.$client_id.' '._gettext("has been created.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
@@ -75,7 +58,7 @@ class Client extends Components {
         $sql = "INSERT INTO ".PRFX."client_notes SET
                 employee_id =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 client_id   =". $this->app->db->qStr( $client_id                           ).",
-                date        =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()                     ).",
+                date        =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()).",
                 note        =". $this->app->db->qStr( $note                                );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
@@ -427,6 +410,41 @@ class Client extends Components {
 
     /** Check Functions **/
 
+    ###############################################
+    #  Check if a payment can be created          # // does nothing for now
+    ###############################################
+
+    public function checkRecordCanBeCreated($silent = false) {
+
+        $state_flag = true;
+
+        return $state_flag;
+
+    }
+
+    #############################################################
+    # Validate submitted information before allowing submission #
+    #############################################################
+
+    public function checkRecordSubmissionIsValid($qform, $silent = false)
+    {
+        $state_flag = true;
+
+        // Discount must not be 100% or greater (this should already be blocked by input validation in the browser)
+        if($qform['discount_rate'] >= 100) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client's discount rate cannot be 100% or greater.", $silent));
+            $state_flag = false;
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
+        return $state_flag;
+
+    }
+
     ##########################################################
     #  Check if the client allows editing                    #  // TODO: I will add more tests when needed
     ##########################################################
@@ -441,7 +459,6 @@ class Client extends Components {
         return $state_flag;
 
     }
-
 
     ###############################################################
     #   Check to see if the client can be deleted                 #

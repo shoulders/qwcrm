@@ -65,7 +65,7 @@ class User extends Components {
 
         // Log activity
         $user_type = $client_id ? _gettext("Client") : _gettext("Employee");
-        $logMessage = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->getRecord($user_id, 'display_name').' '._gettext("created").'.';
+        $logMessage = _gettext("A new user account with the ID").' '.$user_id.' ('.$user_type.') '._gettext("has been created.");
         $recordIds = array('user_id' => $user_id, 'client_id' => $client_id ?: null);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
@@ -454,7 +454,7 @@ class User extends Components {
     # Validate submitted information before allowing submission #
     #############################################################
 
-    public function checkRecordSubmissionIsValid($qform)
+    public function checkRecordSubmissionIsValid($qform, $silent = false)
     {
         $state_flag = true;
 
@@ -462,13 +462,13 @@ class User extends Components {
 
         // Does the Username already exist
         if($this->checkUsernameExists($qform['username'], $user_details['username'])) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted username is already in use, pick another.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted username is already in use, pick another.", $silent));
             $state_flag = false;
         }
 
         // Is the email address aready used
         if($this->checkEmailExists($qform['email'], $user_details['email'])) {
-            //$this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted email address is already in use, pick another.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted email address is already in use, pick another.", $silent));
             $state_flag = false;
         }
 

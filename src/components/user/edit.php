@@ -32,7 +32,7 @@ if(!$this->app->components->user->checkRecordAllowsEdit(\CMSApplication::$VAR['u
             // Update the record
             $this->app->components->user->updateRecord(\CMSApplication::$VAR['qform']);
 
-            // Redirect to the new users's details page
+            // Redirect to the users's details page
             $this->app->system->variables->systemMessagesWrite('success', _gettext("User details updated."));
             $this->app->system->page->forcePage('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
 
