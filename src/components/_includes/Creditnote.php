@@ -1210,7 +1210,7 @@ class Creditnote extends Components {
 
             /* Common Tests */
 
-            // Is the client active
+            // Is the Client active
             if(!$this->app->components->client->getRecord($client_id, 'active')) {
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("The credit note cannot be used against this client because they are not active."));
                 $state_flag = false;

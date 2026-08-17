@@ -49,6 +49,8 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
             $this->app->components->otherincome->updateRecord(\CMSApplication::$VAR['qform']);
             $this->app->components->otherincome->insertItems(\CMSApplication::$VAR['qform']['otherincome_id'], \CMSApplication::$VAR['qform']['otherincome_items']);
             $this->app->components->otherincome->recalculateTotals(\CMSApplication::$VAR['qform']['otherincome_id']);
+
+            // Success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Other income updated successfully."));
 
             // The user also wants to approve the record
@@ -64,7 +66,7 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
             $submitFailedValidation = true;
         }
 
-        // Load the details page is submission was successful
+        // If submission was successful, load the details page
         if(!$submitFailedValidation) {
             $this->app->system->page->forcePage('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id']);
         }

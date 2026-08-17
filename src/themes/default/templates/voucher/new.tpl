@@ -38,7 +38,7 @@
                                                 <td><b>{t}Invoice{/t}</b></td>
                                                 <td>
                                                     <a href="index.php?component=invoice&page_tpl=details&invoice_id={$invoice_id}">{$invoice_id}</a>
-                                                    <input name="qform[invoice_id]" value="{$invoice_id}" type="hidden" />
+                                                    <input name="qform[invoice_id]" value="{$qform.invoice_id}" type="hidden" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -47,13 +47,13 @@
                                                     {section name=s loop=$voucher_types}
                                                         {if $voucher_types[s].type_key == 'mpv'}{t} {$voucher_types[s].display_name}{/t}{/if}
                                                     {/section}
-                                                    <input name="qform[type]" value="mpv" type="hidden" />
+                                                    <input name="qform[type]" value="{$qform.type}" type="hidden" />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
-                                                    <input id="expiry_date" name="qform[expiry_date]" class="olotd4" size="10" value="{$voucher_expiry_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                    <input id="expiry_date" name="qform[expiry_date]" class="olotd4" size="10" value="{$qform.expiry_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                     <button type="button" id="expiry_date_button">+</button>
                                                     <script>
                                                         Calendar.setup( {
@@ -66,17 +66,16 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{if $voucher_tax_system != 'no_tax'}{t}Net{/t}{else}{t}Gross{/t}{/if}</b></td>
-                                                <td>{$currency_symbol}<input name="qform[unit_net]" class="olotd5" size="10" value="" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                <td>{$currency_symbol}<input name="qform[unit_net]" class="olotd5" size="10" value="{$qform.unit_net|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><b>{t}Note{/t}:</b></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="qform[note]"></textarea></td>
+                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="qform[note]">{$qform.note}</textarea></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
-                                                    <input type="hidden" name="qform[invoice_id]" value="{$invoice_id}">
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>
                                                 </td>

@@ -32,15 +32,14 @@ if(!$this->app->components->client->checkRecordAllowsEdit(\CMSApplication::$VAR[
             // Update the record
             $this->app->components->client->updateRecord(\CMSApplication::$VAR['qform']);
 
-            // Redirect to the client's details page
+            // Success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Client details updated."));
-            $this->app->system->page->forcePage('client', 'details&client_id='.\CMSApplication::$VAR['qform']['client_id']);
 
         } else {
             $submitFailedValidation = true;
         }
 
-        // Load the details page is submission was successful
+        // If submission was successful, load the details page
         if(!$submitFailedValidation) {
             $this->app->system->page->forcePage('client', 'details&client_id='.\CMSApplication::$VAR['qform']['client_id']);
         }
@@ -52,10 +51,10 @@ if(!$this->app->components->client->checkRecordAllowsEdit(\CMSApplication::$VAR[
         $client_details = array_merge($this->app->components->client->getRecord(\CMSApplication::$VAR['qform']['client_id']), \CMSApplication::$VAR['qform']);
     } else {
         $client_details = $this->app->components->client->getRecord(\CMSApplication::$VAR['client_id']);
-    }    
+    }
 
     // Build the page
     $this->app->smarty->assign('client_details', $client_details);
     $this->app->smarty->assign('client_types', $this->app->components->client->getTypes());
-        
+
 }

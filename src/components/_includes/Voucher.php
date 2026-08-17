@@ -29,15 +29,15 @@ class Voucher extends Components {
     #   Insert Voucher              #
     #################################
 
-    public function insertRecord($invoice_id, $type, $expiry_date, $unit_net, $note) {
+    public function insertRecord($qform) {
 
-        $invoice_details = $this->app->components->invoice->getRecord($invoice_id);
+        $invoice_details = $this->app->components->invoice->getRecord($qform['invoice_id']);
 
         // Add in missing sales tax exempt option - This prevents undefined variable errors (ALL 'sales_tax_cash' vouchers and coupons should be exempt)
         $sales_tax_exempt = ($invoice_details['tax_system'] == 'sales_tax_cash') ? 1 : 0;
 
         // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
-        $vat_tax_code = $this->getVatTaxCode($type, $invoice_details['tax_system']);
+        $vat_tax_code = $this->getVatTaxCode($qform['type'], $invoice_details['tax_system']);
 
         // Calculate the correct tax rate based on tax system (and exemption status) -- KEEP this for reference
         if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
@@ -51,20 +51,20 @@ class Voucher extends Components {
                 client_id           =". $this->app->db->qStr( $invoice_details['client_id']                ).",
                 workorder_id        =". $this->app->db->qStr( $invoice_details['workorder_id']             ).",
                 invoice_id          =". $this->app->db->qStr( $invoice_details['invoice_id']               ).",
-                expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($expiry_date) ).",
+                expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['expiry_date']) ).",
                 status              =". $this->app->db->qStr( 'draft'                                     ).",
                 opened_on           =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)                             ).",
                 blocked             =". $this->app->db->qStr( 1                                          ).",
                 tax_system          =". $this->app->db->qStr( $invoice_details['tax_system']               ).",
-                type                =". $this->app->db->qStr( $type                                        ).",
-                unit_net            =". $unit_net                                               .",
+                type                =". $this->app->db->qStr( $qform['type']                                        ).",
+                unit_net            =". $qform['unit_net']                                               .",
                 sales_tax_exempt    =". $sales_tax_exempt                                       .",
                 vat_tax_code        =". $this->app->db->qStr( $vat_tax_code                                ).",
                 unit_tax_rate       =". $unit_tax_rate                                          .",
-                unit_tax            =". $unit_net * ($unit_tax_rate/100)                        .",
-                unit_gross          =". $unit_net + ($unit_net * ($unit_tax_rate/100))          .",
-                balance             =". $unit_net                                               .",
-                note                =". $this->app->db->qStr( $note                                        );
+                unit_tax            =". $qform['unit_net'] * ($unit_tax_rate/100)                        .",
+                unit_gross          =". $qform['unit_net'] + ($qform['unit_net'] * ($unit_tax_rate/100))          .",
+                balance             =". $qform['unit_net']                                               .",
+                note                =". $this->app->db->qStr( $qform['note']                                        );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -1094,6 +1094,12 @@ class Voucher extends Components {
     public function checkRecordSubmissionIsValid($qform){
 
         $state_flag = true;
+
+        // Check there is a positive unit_net amount
+        if($qform['unit_net'] <= 0) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This voucher cannot be submitted if it has a negative or zero amount."));
+            $state_flag = false;
+        }
 
         // Check the expiry date (messages handled in the function)
         if(!$this->checkExpiryDateIsValid($qform['expiry_date'])){

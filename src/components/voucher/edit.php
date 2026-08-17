@@ -25,29 +25,29 @@ if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR
     $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 } else {
 
-    /* Get voucher details from whichever source, and fill in the blanks
-    $voucher_details = $this->app->components->voucher->getRecord(\CMSApplication::$VAR['voucher_id']);
-    \CMSApplication::$VAR['qform'] = \CMSApplication::$VAR['qform'] ?? array();
-    $voucher_details = array_merge($voucher_details, \CMSApplication::$VAR['qform']);*/
-
-    // if information submitted
+    // If voucher data has been submitted, Update the record
     if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Holding variable for validation tests
         $submitFailedValidation = false;
 
-        // Check the submission is valid, if not, reload the page with an error message
-        if($this->app->components->voucher->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
-        {
-            // Update Voucher
-            $this->app->components->voucher->updateRecord(\CMSApplication::$VAR['qform']['voucher_id'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['note']);
+        // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
+        if($this->app->components->voucher->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'])) {
 
-            // Load the new Voucher's Details page
-            $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['qform']['voucher_id']);
+            // Update the record
+            $this->app->components->voucher->updateRecord(\CMSApplication::$VAR['qform']);
+
+            // Success message
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher updated successfully."));
 
         // Submission has failed validation,
         } else {
             $submitFailedValidation = true;
+        }
+
+        // If submission was successful, load the details page
+        if(!$submitFailedValidation) {
+            $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['qform']['voucher_id']);
         }
 
     }

@@ -31,38 +31,57 @@ if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$V
     $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 } else {
 
-    // if information submitted
+    // If voucher data has been submitted, Insert the record
     if(isset(\CMSApplication::$VAR['submit'])) {
 
-        // Check the submission is valid, if not, load the page with an error message
-        if($this->app->components->voucher->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
-        {
-            // Create a new Voucher
-            $voucher_id = $this->app->components->voucher->insertRecord(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['type'], \CMSApplication::$VAR['qform']['expiry_date'], \CMSApplication::$VAR['qform']['unit_net'], \CMSApplication::$VAR['qform']['note']);
+        // Holding variable for validation tests
+        $submitFailedValidation = false;
 
-            // Load the attached invoice Details page
-            $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
-            $this->app->system->page->forcePage('invoice', 'edit&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
+        // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
+        if($this->app->components->voucher->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'])) {
+
+            // Create the voucher record and return the voucher_id
+            \CMSApplication::$VAR['voucher_id'] = $this->app->components->voucher->insertRecord(\CMSApplication::$VAR['qform']);
+
+            // Success message
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Voucher with ID").': '.\CMSApplication::$VAR['voucher_id'].' '._gettext("has been added to this invoice."));
 
         } else {
-
-            // the reloaded page should have the submitted expiry date
-            $voucher_expiry_date = \CMSApplication::$VAR['qform']['expiry_date'];
+            $submitFailedValidation = true;
         }
 
+        // If submission was successful, load the details page
+        if(!$submitFailedValidation) {
+            $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
+        }
+
+    }
+
+    // Get invoice details
+    $invoice_details = $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id']);
+
+    // If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
+    if($submitFailedValidation ?? null) {
+        $qform = \CMSApplication::$VAR['qform'];
     } else {
 
         // Generate the Voucher expiry date
         $dateObject = new DateTime();
         $dateObject->modify('+'.$this->app->components->company->getRecord('voucher_expiry_offset').' days');
-        $voucher_expiry_date = $dateObject->format('Y-m-d');
 
-        // Build the page
-        $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'client_id')));
-        $this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
-        $this->app->smarty->assign('voucher_tax_system', $this->app->components->invoice->getRecord(\CMSApplication::$VAR['invoice_id'], 'tax_system'));
-        $this->app->smarty->assign('voucher_expiry_date', $voucher_expiry_date);
+        // Build QForm
+        $qform['invoice_id'] = $invoice_details['invoice_id'];
+        $qform['type'] = 'mpv';
+        $qform['expiry_date'] = $dateObject->format('Y-m-d');
+        $qform['unit_net'] = 0.00;
+        $qform['note'] = '';
 
     }
+
+    // Build the page
+    $this->app->smarty->assign('qform', $qform);
+    $this->app->smarty->assign('client_details', $this->app->components->client->getRecord($invoice_details['client_id']));
+    $this->app->smarty->assign('voucher_types', $this->app->components->voucher->getTypes());
+    $this->app->smarty->assign('voucher_tax_system', $invoice_details['tax_system']);
 
 }

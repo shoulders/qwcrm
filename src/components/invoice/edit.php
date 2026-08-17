@@ -48,6 +48,8 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
             $this->app->components->invoice->updateRecord(\CMSApplication::$VAR['qform']);
             $this->app->components->invoice->insertItems(\CMSApplication::$VAR['qform']['invoice_id'], \CMSApplication::$VAR['qform']['invoice_items']);
             $this->app->components->invoice->recalculateTotals(\CMSApplication::$VAR['qform']['invoice_id']);
+
+            // Success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Invoice updated successfully."));
 
             // The user also wants to approve the record
@@ -63,7 +65,7 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
             $submitFailedValidation = true;
         }
 
-        // Load the details page is submission was successful
+        // If submission was successful, load the details page
         if(!$submitFailedValidation) {
             $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['qform']['invoice_id']);
         }

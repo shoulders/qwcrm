@@ -41,9 +41,12 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
         // Check the submission is valid, if not, reload the page with an error message
         if($this->app->components->creditnote->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform']))
         {
+            // Update the record
             $this->app->components->creditnote->updateRecord(\CMSApplication::$VAR['qform']);
             $this->app->components->creditnote->insertItems(\CMSApplication::$VAR['qform']['creditnote_id'], \CMSApplication::$VAR['qform']['creditnote_items']);
             $this->app->components->creditnote->recalculateTotals(\CMSApplication::$VAR['qform']['creditnote_id']);
+
+            // Success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Credit note updated successfully."));
 
             // The user also wants to approve the record
@@ -59,7 +62,7 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
             $submitFailedValidation = true;
         }
 
-        // Load the details page is submission was successful
+        // If submission was successful, load the details page
         if(!$submitFailedValidation) {
             $this->app->system->page->forcePage('creditnote', 'details&creditnote_id='.\CMSApplication::$VAR['qform']['creditnote_id']);
         }

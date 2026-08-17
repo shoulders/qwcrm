@@ -49,6 +49,8 @@ if(!$this->app->components->expense->checkRecordAllowsEdit(\CMSApplication::$VAR
             $this->app->components->expense->updateRecord(\CMSApplication::$VAR['qform']);
             $this->app->components->expense->insertItems(\CMSApplication::$VAR['qform']['expense_id'], \CMSApplication::$VAR['qform']['expense_items']);
             $this->app->components->expense->recalculateTotals(\CMSApplication::$VAR['qform']['expense_id']);
+
+            // Success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Expense updated successfully."));
 
             // The user also wants to approve the record
@@ -64,7 +66,7 @@ if(!$this->app->components->expense->checkRecordAllowsEdit(\CMSApplication::$VAR
             $submitFailedValidation = true;
         }
 
-        // Load the details page is submission was successful
+        // If submission was successful, load the details page
         if(!$submitFailedValidation) {
             $this->app->system->page->forcePage('expense', 'details&expense_id='.\CMSApplication::$VAR['qform']['expense_id']);
         }

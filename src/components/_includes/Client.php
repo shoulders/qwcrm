@@ -426,13 +426,13 @@ class Client extends Components {
     # Validate submitted information before allowing submission #
     #############################################################
 
-    public function checkRecordSubmissionIsValid($qform, $silent = false)
+    public function checkRecordSubmissionIsValid($qform)
     {
         $state_flag = true;
 
         // Discount must not be 100% or greater (this should already be blocked by input validation in the browser)
         if($qform['discount_rate'] >= 100) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client's discount rate cannot be 100% or greater.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client's discount rate cannot be 100% or greater."));
             $state_flag = false;
         }
 

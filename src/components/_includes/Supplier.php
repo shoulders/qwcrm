@@ -553,7 +553,7 @@ class Supplier extends Components {
     # Validate submitted information before allowing submission # // does nothing for now
     #############################################################
 
-    public function checkRecordSubmissionIsValid($qform, $silent = false)
+    public function checkRecordSubmissionIsValid($qform)
     {
         $state_flag = true;
 

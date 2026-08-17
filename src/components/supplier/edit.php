@@ -31,15 +31,15 @@ if(!$this->app->components->supplier->checkRecordAllowsEdit(\CMSApplication::$VA
             // Update the record
             $this->app->components->supplier->updateRecord(\CMSApplication::$VAR['qform']);
 
-            // Redirect to the supplier's details page
+            // Success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier details updated."));
-            $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['qform']['supplier_id']);
+
 
         } else {
             $submitFailedValidation = true;
         }
 
-        // Load the details page is submission was successful
+        // If submission was successful, load the details page
         if(!$submitFailedValidation) {
             $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['qform']['supplier_id']);
         }

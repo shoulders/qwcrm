@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
-    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No other income ID supplied."));
     $this->app->system->page->forcePage('otherincome', 'search');
 }
 

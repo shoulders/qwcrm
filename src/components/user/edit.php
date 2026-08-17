@@ -32,15 +32,14 @@ if(!$this->app->components->user->checkRecordAllowsEdit(\CMSApplication::$VAR['u
             // Update the record
             $this->app->components->user->updateRecord(\CMSApplication::$VAR['qform']);
 
-            // Redirect to the users's details page
+            // Success message
             $this->app->system->variables->systemMessagesWrite('success', _gettext("User details updated."));
-            $this->app->system->page->forcePage('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
 
         } else {
             $submitFailedValidation = true;
         }
 
-        // Load the details page is submission was successful
+        // If submission was successful, load the details page
         if(!$submitFailedValidation) {
             $this->app->system->page->forcePage('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
         }

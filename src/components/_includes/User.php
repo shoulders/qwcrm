@@ -454,7 +454,7 @@ class User extends Components {
     # Validate submitted information before allowing submission #
     #############################################################
 
-    public function checkRecordSubmissionIsValid($qform, $silent = false)
+    public function checkRecordSubmissionIsValid($qform)
     {
         $state_flag = true;
 
@@ -462,13 +462,13 @@ class User extends Components {
 
         // Does the Username already exist
         if($this->checkUsernameExists($qform['username'], $user_details['username'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted username is already in use, pick another.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted username is already in use, pick another."));
             $state_flag = false;
         }
 
         // Is the email address aready used
         if($this->checkEmailExists($qform['email'], $user_details['email'])) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted email address is already in use, pick another.", $silent));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The submitted email address is already in use, pick another."));
             $state_flag = false;
         }
 
@@ -480,7 +480,6 @@ class User extends Components {
         return $state_flag;
 
     }
-
 
     #################################################
     #    Check if username already exists           #
