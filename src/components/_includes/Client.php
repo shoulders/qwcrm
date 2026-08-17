@@ -304,7 +304,7 @@ class Client extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $logMessage = _gettext("The client").' '.$this->getRecord($qform['client_id'], 'display_name').' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+        $logMessage = _gettext("Client record").' '.$qform['client_id'].' ('.$qform['company_name'] ? $qform['company_name'] : $qform['first_name'] .' '. $qform['last_name'].') '._gettext("updated.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $qform['client_id']);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);

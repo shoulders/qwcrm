@@ -18,21 +18,44 @@ if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['suppl
 if(!$this->app->components->supplier->checkRecordAllowsEdit(\CMSApplication::$VAR['supplier_id'])) {
     $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);
 } else {
-    // If details submitted run update values, if not set load edit.tpl and populate values
+
+    // If supplier data has been submitted, Update the record
     if(isset(\CMSApplication::$VAR['submit'])) {
 
-        // update the supplier record
-        $this->app->components->supplier->updateRecord(\CMSApplication::$VAR['qform']);
+        // Holding variable for validation tests
+        $submitFailedValidation = false;
 
-        // load the supplier details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier updated successfully."));
-        $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);
+        // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
+        if($this->app->components->supplier->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'])) {
 
-    } else {
-        // Build the page
-        $this->app->smarty->assign('supplier_statuses',   $this->app->components->supplier->getStatuses()   );
-        $this->app->smarty->assign('supplier_types', $this->app->components->supplier->getTypes());
-        $this->app->smarty->assign('supplier_details', $this->app->components->supplier->getRecord(\CMSApplication::$VAR['supplier_id']));
+            // Update the record
+            $this->app->components->supplier->updateRecord(\CMSApplication::$VAR['qform']);
+
+            // Redirect to the supplier's details page
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier details updated."));
+            $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['qform']['supplier_id']);
+
+        } else {
+            $submitFailedValidation = true;
+        }
+
+        // Load the details page is submission was successful
+        if(!$submitFailedValidation) {
+            $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['qform']['supplier_id']);
+        }
 
     }
+
+    // If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
+    if($submitFailedValidation ?? null) {
+        $supplier_details = array_merge($this->app->components->supplier->getRecord(\CMSApplication::$VAR['qform']['supplier_id']), \CMSApplication::$VAR['qform']);
+    } else {
+        $supplier_details = $this->app->components->supplier->getRecord(\CMSApplication::$VAR['supplier_id']);
+    }
+
+    // Build the page
+    $this->app->smarty->assign('supplier_details', $supplier_details);
+    $this->app->smarty->assign('supplier_statuses', $this->app->components->supplier->getStatuses());
+    $this->app->smarty->assign('supplier_types', $this->app->components->supplier->getTypes());
+
 }

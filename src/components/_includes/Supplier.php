@@ -28,38 +28,19 @@ class Supplier extends Components {
     #      Insert New Record                 #
     ##########################################
 
-    public function insertRecord($qform) {
+    public function insertRecord() {
 
         $sql = "INSERT INTO ".PRFX."supplier_records SET
                 employee_id    =". $this->app->db->qStr( $this->app->user->login_user_id ).",
-                company_name   =". $this->app->db->qStr( $qform['company_name']  ).",
-                first_name     =". $this->app->db->qStr( $qform['first_name']    ).",
-                last_name      =". $this->app->db->qStr( $qform['last_name']     ).",
-                company_number =". $this->app->db->qStr( $qform['company_number']).",
-                vat_number     =". $this->app->db->qStr( $qform['vat_number']    ).",
-                website        =". $this->app->db->qStr( $this->app->system->general->processInputtedUrl($qform['website'])).",
-                email          =". $this->app->db->qStr( $qform['email']         ).",
-                type           =". $this->app->db->qStr( $qform['type']          ).",
-                primary_phone  =". $this->app->db->qStr( $qform['primary_phone'] ).",
-                mobile_phone   =". $this->app->db->qStr( $qform['mobile_phone']  ).",
-                fax            =". $this->app->db->qStr( $qform['fax']           ).",
-                address        =". $this->app->db->qStr( $qform['address']       ).",
-                city           =". $this->app->db->qStr( $qform['city']          ).",
-                state          =". $this->app->db->qStr( $qform['state']         ).",
-                zip            =". $this->app->db->qStr( $qform['zip']           ).",
-                country        =". $this->app->db->qStr( $qform['country']       ).",
-                status         =". $this->app->db->qStr( 'activated'             ).",
-                opened_on      =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime()).",
-                description    =". $this->app->db->qStr( $qform['description']   ).",
-                note           =". $this->app->db->qStr( $qform['note']          ).",
-                additional_info =". $this->app->db->qStr( '{}'                   );
+                status         =". $this->app->db->qStr( 'suspended' ).",
+                opened_on      =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime());
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         $supplier_id = $this->app->db->Insert_ID();
 
         // Log activity
-        $logMessage = _gettext("Supplier Record").' '.$this->app->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
+        $logMessage = _gettext("A new supplier with the ID").' '.$supplier_id.' '._gettext("has been created.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $supplier_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
 
@@ -349,7 +330,7 @@ class Supplier extends Components {
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Log activity
-        $logMessage = _gettext("Supplier Record").' '.$qform['supplier_id'].' ('.$qform['company_name'].') '._gettext("updated.");
+        $logMessage = _gettext("Supplier Record").' '.$qform['supplier_id'].' ('.$qform['company_name'] ? $qform['company_name'] : $qform['first_name'] .' '. $qform['last_name'].') '._gettext("updated.");
         $recordIds = array('employee_id' => $this->app->user->login_user_id, 'supplier_id' => $qform['supplier_id']);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
@@ -554,6 +535,37 @@ class Supplier extends Components {
 
     /** Check Functions **/
 
+
+
+    ###############################################
+    #  Check if a payment can be created          # // does nothing for now
+    ###############################################
+
+    public function checkRecordCanBeCreated($silent = false) {
+
+        $state_flag = true;
+
+        return $state_flag;
+
+    }
+
+    #############################################################
+    # Validate submitted information before allowing submission # // does nothing for now
+    #############################################################
+
+    public function checkRecordSubmissionIsValid($qform, $silent = false)
+    {
+        $state_flag = true;
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
+        return $state_flag;
+
+    }
+
     ###########################################################
     #  Check if the supplier status is allowed to be changed  #  // not currently used
     ###########################################################
@@ -605,8 +617,8 @@ class Supplier extends Components {
             case 'activated':
                 break;
             case 'suspended':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be edited because it is suspended."), $silent);
-                $state_flag = false;
+                //$this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be edited because it is suspended."), $silent);
+                //$state_flag = false;
                 break;
             case 'closed':
                 $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be edited because it has been closed."), $silent);

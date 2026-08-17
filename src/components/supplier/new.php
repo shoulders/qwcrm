@@ -8,27 +8,18 @@
 
 defined('_QWEXEC') or die;
 
-// If details submitted insert record, if non submitted load new.tpl and populate values
-if(isset(\CMSApplication::$VAR['submit']) || isset(\CMSApplication::$VAR['submitandnew'])) {
-        
-    // insert the supplier record and get the supplier_id
-    \CMSApplication::$VAR['supplier_id'] = $this->app->components->supplier->insertRecord(\CMSApplication::$VAR['qform']);
-            
-    if (isset(\CMSApplication::$VAR['submitandnew'])) {
+// Check if the record can be created
+if(!$this->app->components->client->checkRecordCanBeCreated()) {
+    $this->app->system->page->forcePage('supplier', 'search');
+} else {
 
-        // load the new supplier page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']);
-        $this->app->system->page->forcePage('supplier', 'new'); 
+    // Create the user record and return the supplier_id
+    \CMSApplication::$VAR['supplier_id'] = $this->app->components->supplier->insertRecord();
 
-    } else {
+    // Advise on what to do next
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("A new supplier has been created, you now need to fill in the missing details before it can be activated and used."));
 
-        // load the supplier details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']);
-        $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']); 
-
-    }
+    // Edit the newly created record
+    $this->app->system->page->forcePage('supplier', 'edit&supplier_id='.\CMSApplication::$VAR['supplier_id']);
 
 }
-
-// Build the page
-$this->app->smarty->assign('supplier_types', $this->app->components->supplier->getTypes());
