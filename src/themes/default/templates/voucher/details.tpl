@@ -53,10 +53,6 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Work order ID{/t}</b></td>
-                                            <td><a href="index.php?component=workorder&page_tpl=details&workorder_id={$voucher_details.workorder_id}">{$voucher_details.workorder_id}</a></td>
-                                        </tr>
-                                        <tr>
                                             <td><b>{t}Invoice ID{/t}</b></td>
                                             <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$voucher_details.invoice_id}">{$voucher_details.invoice_id}</a></td>
                                         </tr>

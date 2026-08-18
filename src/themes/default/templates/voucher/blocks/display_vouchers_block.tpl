@@ -6,11 +6,10 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
 <b>{$block_title}</b>
-<table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
+<table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Voucher display">
     <tr>
         <td class="olohead">{t}ID{/t}</td>
         <td class="olohead">{t}Employee{/t}</td>
-        <td class="olohead">{t}WO ID{/t}</td>
         <td class="olohead">{t}Inv ID{/t}</td>
         <td class="olohead">{t}Code{/t}</td>
         <td class="olohead">{t}Client{/t}</td>
@@ -32,7 +31,6 @@
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';" {if $display_vouchers.records[g].status != 'deleted'}onDblClick="window.location='index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers.records[g].voucher_id}';"{/if}>
             <td class="olotd4">{if $display_vouchers.records[g].status != 'deleted'}<a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers.records[g].voucher_id}">{$display_vouchers.records[g].voucher_id}</a>{else}{$display_vouchers.records[g].voucher_id}{/if}</td>
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_vouchers.records[g].employee_id}">{$display_vouchers.records[g].employee_display_name}</a></td>
-            <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_vouchers.records[g].workorder_id}">{$display_vouchers.records[g].workorder_id}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_vouchers.records[g].invoice_id}">{$display_vouchers.records[g].invoice_id}</a></td>
             <td class="olotd4">{$display_vouchers.records[g].voucher_code}</td>
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_vouchers.records[g].client_id}">{$display_vouchers.records[g].client_display_name}</a></td>
@@ -63,7 +61,7 @@
                 {if $display_vouchers.records[g].note}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_vouchers.records[g].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
-            </td>            
+            </td>
         </tr>
     {/section}
     {if $display_vouchers.restricted_records}

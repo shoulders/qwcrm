@@ -51,7 +51,7 @@ $this->app->smarty->assign('invoice_details',                  $invoice_details 
 
 // Invoice Items
 $this->app->smarty->assign('invoice_items',                     $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'], true)               );
-$this->app->smarty->assign('display_vouchers',                 $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
+$this->app->smarty->assign('display_vouchers',                 $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
 
 // Payment Details
 $this->app->smarty->assign('payment_options',                  $this->app->components->payment->getOptions()                                      );

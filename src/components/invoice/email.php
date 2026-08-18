@@ -54,7 +54,7 @@ $this->app->smarty->assign('vat_tax_codes',                    $this->app->compo
 
 // Invoice Items
 $this->app->smarty->assign('invoice_items',                     $this->app->components->invoice->getItems(\CMSApplication::$VAR['invoice_id'])               );
-$this->app->smarty->assign('display_vouchers',                 $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
+$this->app->smarty->assign('display_vouchers',                 $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
 
 // Sub Totals
 $this->app->smarty->assign('invoice_items_subtotals',          $this->app->components->invoice->getItemsSubtotals(\CMSApplication::$VAR['invoice_id'])                                                          );

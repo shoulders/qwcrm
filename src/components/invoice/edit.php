@@ -93,7 +93,7 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
 
     // Invoice Items
     $this->app->smarty->assign('invoice_items_json',       json_encode($invoice_items));
-    $this->app->smarty->assign('display_vouchers',         $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']));
+    $this->app->smarty->assign('display_vouchers',         $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']));
 
     // Sub Totals - // TODO: these are not handled by javascript so will not match on failed submit validation refresh
                     // javascript need to update totals using voucher + update item sub-totals

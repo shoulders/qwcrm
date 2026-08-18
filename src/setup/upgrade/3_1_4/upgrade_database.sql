@@ -1397,3 +1397,6 @@ INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
 (2, 'valid', 'Valid'),
 (3, 'voided', 'Voided'),
 (4, 'deleted', 'Deleted');
+
+-- remove workorder_id from vouchers --
+ALTER TABLE `#__voucher_records` DROP `workorder_id`;

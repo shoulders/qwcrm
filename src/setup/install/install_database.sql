@@ -1356,7 +1356,6 @@ CREATE TABLE `#__voucher_records` (
   `voucher_code` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `employee_id` int(10) UNSIGNED DEFAULT NULL,
   `client_id` int(10) UNSIGNED DEFAULT NULL,
-  `workorder_id` int(10) UNSIGNED DEFAULT NULL,
   `invoice_id` int(10) UNSIGNED DEFAULT NULL,
   `expiry_date` date DEFAULT NULL,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,

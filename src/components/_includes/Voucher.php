@@ -49,7 +49,6 @@ class Voucher extends Components {
                 voucher_code        =". $this->app->db->qStr( $this->generateVoucherCode()                      ).",
                 employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id           ).",
                 client_id           =". $this->app->db->qStr( $invoice_details['client_id']                ).",
-                workorder_id        =". $this->app->db->qStr( $invoice_details['workorder_id']             ).",
                 invoice_id          =". $this->app->db->qStr( $invoice_details['invoice_id']               ).",
                 expiry_date         =". $this->app->db->qStr( $this->app->system->general->dateToMysqlDate($qform['expiry_date']) ).",
                 status              =". $this->app->db->qStr( 'draft'                                     ).",
@@ -78,7 +77,6 @@ class Voucher extends Components {
         $recordIds = array(
                         'employee_id' => $this->app->user->login_user_id,
                         'client_id' => $invoice_details['client_id'],
-                        'workorder_id' => $invoice_details['workorder_id'],
                         'invoice_id' => $invoice_details['invoice_id'],
                         'voucher_id' => $voucher_id
                         );
@@ -95,7 +93,7 @@ class Voucher extends Components {
     #     Display Vouchers                  #
     #########################################
 
-    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'voucher_id', $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null, $redeemed_client_id = null, $redeemed_invoice_id = null) {
+    public function getRecords($order_by, $direction, $records_per_page = 0, $use_pages = false, $page_no = null, $search_category = 'voucher_id', $search_term = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $redeemed_client_id = null, $redeemed_invoice_id = null) {
 
         // This is needed because of how page numbering works
         $page_no = $page_no ?: 1;
@@ -143,9 +141,6 @@ class Voucher extends Components {
 
         // Restrict by Client
         if($client_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$this->app->db->qStr($client_id);}
-
-        // Restrict by Workorder
-        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.workorder_id=".$this->app->db->qStr($workorder_id);}
 
         // Restrict by Invoice
         if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$this->app->db->qStr($invoice_id);}
@@ -557,7 +552,7 @@ class Voucher extends Components {
         $voucher_status_display_name = _gettext($this->getStatusDisplayName($new_status));
 
         // Create a Workorder History Note
-        $this->app->components->workorder->insertHistory($voucher_details['workorder_id'], _gettext("Voucher Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
+        //$this->app->components->workorder->insertHistory($voucher_details['workorder_id'], _gettext("Voucher Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
         $logMessage = _gettext("Voucher").' '.$voucher_id.' '._gettext("Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
@@ -833,7 +828,6 @@ class Voucher extends Components {
         $sql = "UPDATE ".PRFX."voucher_records SET
             employee_id         =   NULL,
             client_id           =   NULL,
-            workorder_id        =   NULL,
             invoice_id          =   NULL,
             expiry_date         =   NULL,
             status              =   '',

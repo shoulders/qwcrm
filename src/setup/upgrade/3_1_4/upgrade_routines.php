@@ -322,7 +322,7 @@ class Upgrade3_1_4 extends Setup {
         // Converts invoice voucher records into items and merges them into the invoice items - This is a bit of a workaround, this
         if($withVouchers)
         {
-            $voucher_records = $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, null, $invoice_id);
+            $voucher_records = $this->app->components->voucher->getRecords('voucher_id', 'DESC', 25, false, null, null, null, null, null, null, $invoice_id);
 
             $voucher_items = array();
 
