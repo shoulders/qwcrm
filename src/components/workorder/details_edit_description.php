@@ -18,19 +18,43 @@ if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['work
 if(!$this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$VAR['workorder_id'])) {
     $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 } else {
-    // If updated scope and description are submitted
+
+    // If data has been submitted, validate and then update the record
     if(isset(\CMSApplication::$VAR['submit'])) {
 
-        // update the scope and description in the database
-        $this->app->components->workorder->updateScopeDescription(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['scope'], \CMSApplication::$VAR['description']);
+        // Holding variable for validation tests
+        $submitFailedValidation = false;
 
-        // load the workorder details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("Description has been updated."));
-        $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+        // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
+        if($this->app->components->workorder->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'], 'description')) {
+
+            // Update the record
+            $this->app->components->workorder->updateScopeDescription(\CMSApplication::$VAR['qform']);
+
+            // Success message
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Scope and Description have been updated."));
+
+        // Submission has failed validation,
+        } else {
+            $submitFailedValidation = true;
+        }
+
+        // If submission was successful, load the details page
+        if(!$submitFailedValidation) {
+            $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+        }
 
     }
 
+    // If a submission happened and failed validation, load page with the failed submitted values, else load values from database as normal
+    if($submitFailedValidation ?? null) {
+        $workorder_details = array_merge($this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id']), \CMSApplication::$VAR['qform']);
+    } else {
+        $workorder_details = $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id']);
+    }
+
     // Build the page
-    $this->app->smarty->assign('scope',          $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'scope')        );
-    $this->app->smarty->assign('description',    $this->app->components->workorder->getRecord(\CMSApplication::$VAR['workorder_id'], 'description')  );
+    $this->app->smarty->assign('scope',          $workorder_details['scope']);
+    $this->app->smarty->assign('description',    $workorder_details['description']);
+
 }

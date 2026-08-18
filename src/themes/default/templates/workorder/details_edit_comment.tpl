@@ -12,7 +12,7 @@
     <tr>
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
-                <tr>                    
+                <tr>
                     <td class="menuhead2" width="80%">{t}Edit Work Order Comment{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
@@ -21,16 +21,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">                        
+                    <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
-                                <td width="100%" valign="top">                                    
+                                <td width="100%" valign="top">
                                     <form action="index.php?component=workorder&page_tpl=details_edit_comment&workorder_id={$workorder_id}" method="post">
                                         <b>{t}Comment{/t}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" name="comment">{$comment}</textarea>
+                                        <textarea class="olotd4" rows="15" cols="70" name="qform[comment]">{$comment}</textarea>
                                         <br>
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';">{t}Cancel{/t}</button>
+                                        <input type="hidden" name="qform[workorder_id]" value="{$workorder_id}">
                                     </form>
                                     <br>
                                 </td>

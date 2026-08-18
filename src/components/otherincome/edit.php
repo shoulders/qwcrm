@@ -32,11 +32,7 @@ if(!$this->app->components->otherincome->checkRecordAllowsEdit(\CMSApplication::
     // Prevent undefined variable errors
     \CMSApplication::$VAR['qform']['otherincome_items'] = \CMSApplication::$VAR['qform']['otherincome_items'] ?? null;
 
-    ##################################
-    #      Update otherincome        #
-    ##################################
-
-    // Update otherincome (if submited)
+    // If data has been submitted, validate and then update the record
     if(isset(\CMSApplication::$VAR['submit']))
     {
         // Holding variable for validation tests

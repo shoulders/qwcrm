@@ -32,11 +32,7 @@ if(!$this->app->components->expense->checkRecordAllowsEdit(\CMSApplication::$VAR
     // Prevent undefined variable errors
     \CMSApplication::$VAR['qform']['expense_items'] = \CMSApplication::$VAR['qform']['expense_items'] ?? null;
 
-    ##################################
-    #      Update Expense            #
-    ##################################
-
-    // Update expense (if submited)
+    // If data has been submitted, validate and then update the record
     if(isset(\CMSApplication::$VAR['submit']))
     {
         // Holding variable for validation tests

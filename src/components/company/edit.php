@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 // Prevent undefined variable errors
 \CMSApplication::$VAR['qform']['delete_logo'] = \CMSApplication::$VAR['qform']['delete_logo'] ?? null;
 
-// Update Company details
+// If data has been submitted, validate and then update the record
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Holding variable for validation tests
@@ -33,6 +33,7 @@ if(isset(\CMSApplication::$VAR['submit'])) {
 
     // If submission was successful, load the details page
     if(!$submitFailedValidation) {
+        // The company only has edit page, but this reload allows the success message to be shown
         $this->app->system->page->forcePage('company', 'edit');
     }
 

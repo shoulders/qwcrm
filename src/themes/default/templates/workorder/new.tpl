@@ -29,7 +29,7 @@
                                     <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                                         <tr>
                                             <td valign="top">
-                                                <form method="post" action="index.php?component=workorder&page_tpl=new" name="new_workorder" id="new_workorder">
+                                                <form method="post" action="index.php?component=workorder&page_tpl=new&client_id={$client_id}" name="new_workorder" id="new_workorder">
 
                                                     <!-- Header -->
                                                     <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
@@ -43,7 +43,7 @@
                                                             <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
                                                             <td class="olotd4">{$client_display_name}</td>
                                                             <td class="olotd4">
-                                                                <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="debounceWorkorderAutosuggestScopeLookup(this.value);" onblur="workorderAutosuggestScopeClose();">
+                                                                <input id="scope" name="qform[scope]" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="debounceWorkorderAutosuggestScopeLookup(this.value);" onblur="workorderAutosuggestScopeClose();">
                                                                 <div class="suggestionsBoxWrapper">
                                                                     <div id="workorderAutosuggestScope" class="suggestionsBox">
                                                                         <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
@@ -63,7 +63,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd">
-                                                                <textarea class="olotd4 mceCheckForContent" rows="15" cols="70" name="description"></textarea>
+                                                                <textarea class="olotd4 mceCheckForContent" rows="15" cols="70" name="qform[description]"></textarea>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -75,7 +75,7 @@
                                                             <td class="olohead">&nbsp;{t}Comment{/t}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="comment"></textarea></td>
+                                                            <td class="olotd"><textarea class="olotd4" rows="15" cols="70" name="qform[comment]"></textarea></td>
                                                         </tr>
                                                     </table>
                                                     <br>
@@ -89,7 +89,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <input name="client_id" value="{$client_id}" type="hidden">
+                                                                <input name="qform[client_id]" value="{$client_id}" type="hidden">
                                                                 <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=search';">{t}Cancel{/t}</button>
                                                             </td>

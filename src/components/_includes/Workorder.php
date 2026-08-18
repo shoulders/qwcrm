@@ -28,16 +28,16 @@ class WorkOrder extends Components {
     # Insert New Work Order #
     #########################
 
-    public function insertRecord($client_id, $scope, $description, $comment) {
+    public function insertRecord($qform) {
 
         $sql = "INSERT INTO ".PRFX."workorder_records SET
-                client_id       =". $this->app->db->qStr( $client_id                           ).",
+                client_id       =". $this->app->db->qStr( $qform['client_id']                           ).",
                 created_by      =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
                 status          =". $this->app->db->qStr( 'unassigned'                         ).",
                 opened_on       =". $this->app->db->qStr( $this->app->system->general->mysqlDatetime(\CMSApplication::$timestamp)                     ).",
-                scope           =". $this->app->db->qStr( $scope                               ).",
-                description     =". $this->app->db->qStr( $description                         ).",
-                comment         =". $this->app->db->qStr( $comment                             );
+                scope           =". $this->app->db->qStr( $qform['scope']                               ).",
+                description     =". $this->app->db->qStr( $qform['description']                         ).",
+                comment         =". $this->app->db->qStr( $qform['comment']                             );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
@@ -49,7 +49,7 @@ class WorkOrder extends Components {
 
         // Log activity
         $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Created by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $client_id, 'workorder_id' => $workorder_id);
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $qform['client_id'], 'workorder_id' => $workorder_id);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
 
@@ -444,22 +444,22 @@ class WorkOrder extends Components {
     # Update Work Order Scope and Description #
     ###########################################
 
-    public function updateScopeDescription($workorder_id, $scope, $description) {
+    public function updateScopeDescription($qform) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET
                 employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
-                scope               =".$this->app->db->qStr($scope).",
-                description         =".$this->app->db->qStr($description)."
-                WHERE workorder_id  =".$this->app->db->qStr($workorder_id);
+                scope               =".$this->app->db->qStr($qform['scope']).",
+                description         =".$this->app->db->qStr($qform['description'])."
+                WHERE workorder_id  =".$this->app->db->qStr($qform['workorder_id']);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Creates a History record
-        $this->insertHistory($workorder_id, _gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.');
+        $this->insertHistory($qform['workorder_id'], _gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), 'workorder_id' => $workorder_id);
+        $logMessage = _gettext("Work Order").' '.$qform['workorder_id'].' '._gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($qform['workorder_id'], 'client_id'), 'workorder_id' => $qform['workorder_id']);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -472,21 +472,21 @@ class WorkOrder extends Components {
     #   Update Workorder Comment     #
     ##################################
 
-    public function updateComment($workorder_id, $comment) {
+    public function updateComment($qform) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET
                 employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
-                comment             =". $this->app->db->qStr($comment)."
-                WHERE workorder_id  =". $this->app->db->qStr($workorder_id);
+                comment             =". $this->app->db->qStr($qform['comment'])."
+                WHERE workorder_id  =". $this->app->db->qStr($qform['workorder_id']);
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Create a Workorder History Note
-        $this->insertHistory($workorder_id, _gettext("Comment updated by").' '.$this->app->user->login_display_name);
+        $this->insertHistory($qform['workorder_id'], _gettext("Comment updated by").' '.$this->app->user->login_display_name);
 
         // Log activity
-        $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), 'workorder_id' => $workorder_id);
+        $logMessage = _gettext("Work Order").' '.$qform['workorder_id'].' '._gettext("Comment updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($qform['workorder_id'], 'client_id'), 'workorder_id' => $qform['workorder_id']);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -499,21 +499,21 @@ class WorkOrder extends Components {
     # Update Work Order Resolution #
     ################################
 
-    public function updateResolution($workorder_id, $resolution) {
+    public function updateResolution($qform) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET
                 employee_id         =". $this->app->db->qStr( $this->app->user->login_user_id   ).",
-                resolution          =". $this->app->db->qStr( $resolution      )."
-                WHERE workorder_id  =". $this->app->db->qStr( $workorder_id    );
+                resolution          =". $this->app->db->qStr( $qform['resolution']      )."
+                WHERE workorder_id  =". $this->app->db->qStr( $qform['workorder_id']    );
 
         if(!$this->app->db->execute($sql)) {$this->app->system->page->forceErrorPage('database', __FILE__, __FUNCTION__, $this->app->db->ErrorMsg(), $sql);}
 
         // Create a Workorder History Note
-        $this->insertHistory($workorder_id, _gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.');
+        $this->insertHistory($qform['workorder_id'], _gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity
-        $logMessage = _gettext("Work Order").' '.$workorder_id.' '._gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.';
-        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($workorder_id, 'client_id'), 'workorder_id' => $workorder_id);
+        $logMessage = _gettext("Work Order").' '.$qform['workorder_id'].' '._gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.';
+        $recordIds = array('employee_id' => $this->app->user->login_user_id, 'client_id' => $this->getRecord($qform['workorder_id'], 'client_id'), 'workorder_id' => $qform['workorder_id']);
         $this->app->system->variables->systemMessagesWrite('success', $logMessage);
         $this->app->system->general->writeRecordToActivityLog($logMessage, $recordIds);
         $this->app->system->general->updateLastActive($recordIds);
@@ -794,11 +794,68 @@ class WorkOrder extends Components {
         return $state_flag;
     }
 
+    #############################################################
+    # Validate submitted information before allowing submission #
+    #############################################################
+
+    public function checkRecordSubmissionIsValid($qform, $type = 'all')
+    {
+        $state_flag = true;
+
+        // Merge submission and DB record
+        // This allows check to run without error and is needed because checks are spread against 3 pages but one record
+        $workorder_details = array_merge($this->getRecord($qform['workorder_id']), $qform);
+
+        // Description and Scope validation
+        if(in_array($type, ['all', 'description'])) {
+
+            // Check Scope has content
+            if(!$workorder_details['scope']) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This work order does not have a scope."));
+                $state_flag = false;
+            }
+
+            // Check Description has content - in_array() might not be required on newer versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
+            if(in_array($workorder_details['description'], ['', '<p></p>', '<p>&nbsp;</p>', '<div></div>', '<div>&nbsp;</div>'])) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This work order does not have a description."));
+                $state_flag = false;
+            }
+        }
+
+        // Comments validation
+        if(in_array($type, ['all', 'comment'])) {
+
+            // Do nothing
+
+        }
+
+        // Resolution validation
+        if(in_array($type, ['all', 'resolution'])) {
+
+            // Check Resolution has content - in_array() might not be required on newer versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
+            if(in_array($workorder_details['resolution'], ['', '<p></p>', '<p>&nbsp;</p>', '<div></div>', '<div>&nbsp;</div>'])) {
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This work order does not have a resolution."));
+                $state_flag = false;
+            }
+
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag && $type == 'all'){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The resolution has been updated, but the work order could not be closed because it failed validation. Fix and re-submit."));
+        } elseif (!$state_flag) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The work order submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
+        return $state_flag;
+
+    }
+
     ############################################################
     #  Check if the workorder status is allowed to be changed  #
     ############################################################
 
-   public function checkRecordAllowsManualStatusChange($workorder_id, $silent = false) {
+    public function checkRecordAllowsManualStatusChange($workorder_id, $silent = false) {
 
         $state_flag = true;
 
@@ -996,36 +1053,6 @@ class WorkOrder extends Components {
         return $state_flag;
 
     }
-
-    /*
-    ############################################################  // TODO: should these tests be in allowed to submit for workorder
-    #  Check if the workorder status is allowed to be changed  #  // These forms do a simple check before submission
-    ############################################################  // not used - was used for defining restricted statuses
-
-    private function checkRecordAllowsClosedStatus($workorder_id) {
-
-        $state_flag = true;
-
-        // Get the workorder details
-        $workorder_details = $this->getRecord($workorder_id);
-
-        // Check Description has content - in_array() might not be required on newer versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
-        if(!$workorder_details['description'] || in_array($workorder_details['description'], array('<p></p>', '<p>&nbsp;</p>', '<div></div>', '<div>&nbsp;</div>'))) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder does not have a description, so it cannot be closed."));
-            $state_flag = false;
-        }
-
-        // Check Resolution has content
-        if(!$workorder_details['resolution'] || in_array($workorder_details['resolution'], array('<p></p>', '<p>&nbsp;</p>', '<div></div>', '<div>&nbsp;</div>'))) {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder does not have a resolution, so it cannot be closed."));
-            $state_flag = false;
-        }
-
-        return $state_flag;
-
-    }
-    */
-
 
     ##############################################################
     #  Check if the workorder employee is allowed to be changed  #

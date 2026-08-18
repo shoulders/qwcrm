@@ -617,8 +617,6 @@ class Otherincome extends Components {
     {
         $state_flag = true;
 
-        //$otherincome_details = $this->app->components->otherincome->getRecord($qform['otherincome_id']);
-
         // Check there is a positive unit_gross
         if($qform['unit_gross'] <= 0)
         {

@@ -21,18 +21,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="menutd2" colspan="2">                        
+                    <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
-                                <td width="100%" valign="top">                                    
+                                <td width="100%" valign="top">
                                     <form action="index.php?component=workorder&page_tpl=details_edit_resolution&workorder_id={$workorder_id}" method="post" name="close_workorder" id="close_workorder">
                                         <b>{t}Edit Work Order Resolution{/t}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" name="resolution">{$resolution}</textarea>
-                                        <br>                                        
+                                        <textarea class="olotd4 mceCheckForContent" rows="15" cols="70" name="qform[resolution]">{$resolution}</textarea>
+                                        <br>
                                         <button name="submit" value="submitchangesonly" type="submit">{t}Submit Changes Only{/t}</button>
-                                        <button name="submit" value="closewithoutinvoice" type="submit">{t}Close Without Invoice{/t}</button>
-                                        <button name="submit" value="closewithinvoice" type="submit">{t}Close With Invoice{/t}</button>
+                                        <button name="submit" value="closewithoutinvoice" type="submit">{t}Close without Invoice{/t}</button>
+                                        <button name="submit" value="closewithinvoice" type="submit">{t}Close with Invoice{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';">{t}Cancel{/t}</button>
+                                        <input type="hidden" name="qform[workorder_id]" value="{$workorder_id}">
                                     </form>
                                     <br>
                                 </td>

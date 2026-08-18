@@ -25,7 +25,7 @@ if(!$this->app->components->voucher->checkRecordAllowsEdit(\CMSApplication::$VAR
     $this->app->system->page->forcePage('voucher', 'details&voucher_id='.\CMSApplication::$VAR['voucher_id']);
 } else {
 
-    // If voucher data has been submitted, Update the record
+    // If data has been submitted, validate and then update the record
     if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Holding variable for validation tests

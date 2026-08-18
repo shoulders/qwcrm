@@ -19,7 +19,7 @@ if(!$this->app->components->supplier->checkRecordAllowsEdit(\CMSApplication::$VA
     $this->app->system->page->forcePage('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id']);
 } else {
 
-    // If supplier data has been submitted, Update the record
+    // If data has been submitted, validate and then update the record
     if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Holding variable for validation tests

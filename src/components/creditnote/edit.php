@@ -32,7 +32,7 @@ if(!$this->app->components->creditnote->checkRecordAllowsEdit(\CMSApplication::$
     // Prevent undefined variable errors
     \CMSApplication::$VAR['qform']['creditnote_items'] = \CMSApplication::$VAR['qform']['creditnote_items'] ?? null;
 
-    // Update credit note (if submited)
+    // If data has been submitted, validate and then update the record
     if(isset(\CMSApplication::$VAR['submit']))
     {
         // Holding variable for validation tests

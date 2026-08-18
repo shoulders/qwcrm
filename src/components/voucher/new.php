@@ -31,7 +31,7 @@ if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$V
     $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 } else {
 
-    // If voucher data has been submitted, Insert the record
+    // If data has been submitted, validate and then update the record (in this case create voucher)
     if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Holding variable for validation tests

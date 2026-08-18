@@ -28,7 +28,7 @@
                                 <td width="100%" valign="top">
                                     <form method="post" action="index.php?component=workorder&page_tpl=details_edit_description&workorder_id={$workorder_id}">
                                         <b>{t}Scope{/t}</b></br>
-                                        <input id="scope" name="scope" value="{$scope}" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="debounceWorkorderAutosuggestScopeLookup(this.value);" onblur="workorderAutosuggestScopeClose();">
+                                        <input id="scope" name="qform[scope]" value="{$scope}" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="debounceWorkorderAutosuggestScopeLookup(this.value);" onblur="workorderAutosuggestScopeClose();">
                                         <div class="suggestionsBoxWrapper">
                                             <div id="workorderAutosuggestScope" class="suggestionsBox">
                                                 <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
@@ -39,10 +39,11 @@
                                         <br>
                                         <br>
                                         <b>{t}Description{/t}</b><br>
-                                        <textarea name="description" class="olotd4 mceCheckForContent" rows="15" cols="70">{$description}</textarea>
+                                        <textarea name="qform[description]" class="olotd4 mceCheckForContent" rows="15" cols="70">{$description}</textarea>
                                         <br>
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';">{t}Cancel{/t}</button>
+                                        <input type="hidden" name="qform[workorder_id]" value="{$workorder_id}">
                                     </form>
                                     <br>
                                 </td>

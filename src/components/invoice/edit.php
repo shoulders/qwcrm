@@ -32,10 +32,7 @@ if(!$this->app->components->invoice->checkRecordAllowsEdit(\CMSApplication::$VAR
     // Prevent undefined variable errors
     \CMSApplication::$VAR['qform']['invoice_items'] = \CMSApplication::$VAR['qform']['invoice_items'] ?? null;
 
-    ##################################
-    #      Update Invoice            #
-    ##################################
-
+    // If data has been submitted, validate and then update the record
     if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Holding variable for validation tests

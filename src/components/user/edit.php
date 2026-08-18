@@ -20,7 +20,7 @@ if(!$this->app->components->user->checkRecordAllowsEdit(\CMSApplication::$VAR['u
 
 } else {
 
-    // If user data has been submitted, Update the record
+    // If data has been submitted, validate and then update the record
     if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Holding variable for validation tests

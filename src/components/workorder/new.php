@@ -25,16 +25,18 @@ if(!$this->app->components->workorder->checkRecordCanBeCreated(\CMSApplication::
     // If a workorder is submitted
     if(isset(\CMSApplication::$VAR['submit'])){
 
-        // insert the submitted workorder and return it's id
-        \CMSApplication::$VAR['workorder_id'] = $this->app->components->workorder->insertRecord(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['scope'], \CMSApplication::$VAR['description'], \CMSApplication::$VAR['comment']);
+        // Create the workorder and return the new workorder_id
+        \CMSApplication::$VAR['workorder_id'] = $this->app->components->workorder->insertRecord(\CMSApplication::$VAR['qform']);
 
-        // If workorder is to be assigned to an employee
+        // Success message
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("New Work Order created."));
+
+        // Is the workorder to be assigned to the current employee
         if(\CMSApplication::$VAR['assign_to_employee'] === '1') {
             $this->app->components->workorder->assignToEmployee(\CMSApplication::$VAR['workorder_id'], $this->app->user->login_user_id);
         }
 
-        // load the workorder details page
-        $this->app->system->variables->systemMessagesWrite('success', _gettext("New Work Order created."));
+        // Load the details page of the newly created record
         $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 
     }
