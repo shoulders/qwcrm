@@ -911,17 +911,16 @@ class WorkOrder extends Components {
     #  can the workorder be edited                           #
     ##########################################################
 
-    public function checkRecordAllowsEdit($workorder_id, $silent = false) {
+    public function checkRecordAllowsEdit($workorder_id, $type = 'all', $silent = false) {
 
         $state_flag = true;
 
         // Get the workorder details
         $workorder_details = $this->getRecord($workorder_id);
 
-        // Is the Client active
-        if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active'))
-        {
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because the client it belongs to is not active.", $silent));
+         // Is the Client active
+        if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active')){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This work order cannot be edited because the client it belongs to is not active.", $silent));
             $state_flag = false;
         }
 
@@ -942,15 +941,15 @@ class WorkOrder extends Components {
             case 'with_management':
                 break;
             case 'closed_without_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because it has been closed without an invoice."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This work order cannot be edited because it has been closed without an invoice."), $silent);
                 $state_flag = false;
                 break;
             case 'closed_with_invoice':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because it has been closed with an invoice."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This work order cannot be edited because it has been closed with an invoice."), $silent);
                 $state_flag = false;
                 break;
             case 'deleted':
-                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be edited because it has been deleted."), $silent);
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("This work order cannot be edited because it has been deleted."), $silent);
                 $state_flag = false;
         }
 
@@ -958,7 +957,28 @@ class WorkOrder extends Components {
         if($workorder_details['closed_on']) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("The workorder cannot be edited because it is closed."), $silent);
             $state_flag = false;
-        }*/
+        }*/        
+
+        // Description and Scope validation
+        if(in_array($type, ['all', 'description'])) {
+
+            // Do nothing
+
+        }
+
+        // Comments validation
+        if(in_array($type, ['all', 'comment'])) {
+
+            // Do nothing
+
+        }
+
+        // Resolution validation
+        if(in_array($type, ['all', 'resolution'])) {
+
+            // Do nothing
+
+        }
 
         return $state_flag;
 

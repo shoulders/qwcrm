@@ -18,7 +18,8 @@ if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']
 }
 
 // Build the page
-
+$this->app->smarty->assign('allowed_to_edit',          $this->app->components->user->checkRecordAllowsEdit(\CMSApplication::$VAR['user_id'], true));
+$this->app->smarty->assign('allowed_to_delete',        $this->app->components->user->checkRecordAllowsDelete(\CMSApplication::$VAR['user_id'], true));
 $this->app->smarty->assign('user_details',             $this->app->components->user->getRecord(\CMSApplication::$VAR['user_id'])                                                                            );
 $this->app->smarty->assign('client_display_name',      $this->app->components->client->getRecord($this->app->components->user->getRecord(\CMSApplication::$VAR['user_id'], 'client_id'), 'client_display_name')                    );
 $this->app->smarty->assign('usergroups',               $this->app->components->user->getUsergroups()                                                                                             );

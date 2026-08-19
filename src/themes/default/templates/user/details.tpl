@@ -58,10 +58,14 @@
                                     </tr>
                                     <tr>
                                         <td class="menutd2">
-                                            <button type="button" onclick="if(confirm('{t}Are you sure you want to delete this user?{/t}')) { window.location.href='index.php?component=user&page_tpl=delete&user_id={$user_details.user_id}'; } ">{t}Delete{/t}</button>
-                                            <br>
-                                            <br>
-                                            <button type="button" onclick="window.location.href='index.php?component=user&page_tpl=edit&user_id={$user_details.user_id}';">{t}Edit{/t}</button>
+                                            {if $allowed_to_edit}
+                                                <button type="button" onclick="window.location.href='index.php?component=user&page_tpl=edit&user_id={$user_details.user_id}';">{t}Edit{/t}</button>
+                                                <br>
+                                                <br>
+                                            {/if}
+                                            {if $allowed_to_delete}
+                                                <button type="button" onclick="if(confirm('{t}Are you sure you want to delete this user?{/t}')) { window.location.href='index.php?component=user&page_tpl=delete&user_id={$user_details.user_id}'; } ">{t}Delete{/t}</button>
+                                            {/if}
                                         </td>
                                     </tr>
                                 </table>

@@ -51,3 +51,5 @@ $this->app->smarty->assign('creditnote_action_types', $this->app->components->cr
 $this->app->smarty->assign('creditnote_statuses',         $this->app->components->creditnote->getStatuses());
 $this->app->smarty->assign('display_creditnotes',        $this->app->components->creditnote->getRecords('creditnote_id', 'DESC', 25, false, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['supplier_id']));
 $this->app->smarty->assign('creditnote_stats',        $this->app->components->report->creditnoteGetStats('all', null, null, QW_TAX_SYSTEM, null, null, \CMSApplication::$VAR['supplier_id']));
+
+$this->app->smarty->assign('allowed_to_edit',          $this->app->components->supplier->checkRecordAllowsEdit(\CMSApplication::$VAR['supplier_id'], true));

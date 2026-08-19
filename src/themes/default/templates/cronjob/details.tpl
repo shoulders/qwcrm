@@ -98,13 +98,19 @@
                                         <!-- Function Buttons -->
                                         <tr>
                                             <td colspan="2">
-                                                <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to run this cronjob now?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=run&cronjob_id={$cronjob_id}';">{t}Run Now{/t}</button>
+                                                {if $allowed_to_run_now}
+                                                    <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to run this cronjob now?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=run&cronjob_id={$cronjob_id}';">{t}Run Now{/t}</button>
+                                                    <br>
+                                                    <br>
+                                                {/if}
                                                 {if $cronjob_details.locked}
                                                     <button type="button" class="olotd4" onclick="if (confirm('{t}Are you sure you want to unlock this cronjob?{/t}')) window.location.href='index.php?component=cronjob&page_tpl=unlock&unlock_type=cronjob&cronjob_id={$cronjob_id}';">{t}Unlock{/t}</button>
+                                                    <br>
+                                                    <br>
                                                 {/if}
-                                                <br>
-                                                <br>
-                                                <button type="button" class="olotd4" onclick="window.location.href='index.php?component=cronjob&page_tpl=edit&cronjob_id={$cronjob_id}';">{t}Edit{/t}</button>
+                                                {if $allowed_to_edit}
+                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=cronjob&page_tpl=edit&cronjob_id={$cronjob_id}';">{t}Edit{/t}</button>
+                                                {/if}
                                             </td>
                                         </tr>
                                     </table>

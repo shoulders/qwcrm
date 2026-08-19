@@ -550,7 +550,7 @@ class Administrator extends Components {
                 ('client:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
                 ('client:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('client:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
+                ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('company:edit', 1, 1, 0, 0, 0, 0, 0, 0, 0),
                 ('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 ('core:404', 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -656,3 +656,4 @@ class Administrator extends Components {
     }
 
 }
+

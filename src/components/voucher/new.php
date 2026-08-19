@@ -31,7 +31,7 @@ if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$V
     $this->app->system->page->forcePage('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
 } else {
 
-    // If data has been submitted, validate and then update the record (in this case create voucher)
+    // If data has been submitted, validate and then update the record (in this case create record)
     if(isset(\CMSApplication::$VAR['submit'])) {
 
         // Holding variable for validation tests
@@ -40,7 +40,7 @@ if(!$this->app->components->payment->checkRecordCanBeCreated(\CMSApplication::$V
         // Check the submission is valid, if not, carry on loading the page loading the page but with an error message
         if($this->app->components->voucher->checkRecordSubmissionIsValid(\CMSApplication::$VAR['qform'])) {
 
-            // Create the voucher record and return the voucher_id
+            // Create the record
             \CMSApplication::$VAR['voucher_id'] = $this->app->components->voucher->insertRecord(\CMSApplication::$VAR['qform']);
 
             // Success message

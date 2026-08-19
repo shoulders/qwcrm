@@ -196,6 +196,84 @@ class Cronjob extends Components {
 
     }
 
+    /** Check Functions **/
+
+    #############################################################
+    # Validate submitted information before allowing submission # // does nothing for now
+    #############################################################
+
+    public function checkRecordSubmissionIsValid($qform)
+    {
+        $state_flag = true;
+
+        // Check Minute
+        if(!$this->validateOnlyCronjobMinHourDay($qform['minute'])) {
+            $state_flag = false;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The cronjob minute submission is invalid."));
+        }
+
+        // Check Hour
+        if(!$this->validateOnlyCronjobMinHourDay($qform['hour'])) {
+            $state_flag = false;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The cronjob hour submission is invalid."));
+        }
+
+        // Check Day
+        if(!$this->validateOnlyCronjobMinHourDay($qform['day'])) {
+            $state_flag = false;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The cronjob day submission is invalid."));
+        }
+
+        // Check Month
+        if(!$this->validateOnlyCronjobMonthWeekday($qform['month'])) {
+            $state_flag = false;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The cronjob month submission is invalid."));
+        }
+
+        // Check Weekday
+        if(!$this->validateOnlyCronjobMonthWeekday($qform['weekday'])) {
+            $state_flag = false;
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The cronjob weekday submission is invalid."));
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The cronjob submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
+        return $state_flag;
+
+    }
+
+    ##########################################################
+    #  Check if the cronjob status allows editing            #
+    ##########################################################
+
+    public function checkRecordAllowsEdit($cronjob_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Do nothing
+
+        return $state_flag;
+
+    }
+
+
+    ##########################################################
+    #  Check if the cronjob can be run manually              #
+    ##########################################################
+
+    public function checkRecordAllowsManualRun($cronjob_id, $silent = false) {
+
+        $state_flag = true;
+
+        // Do nothing
+
+        return $state_flag;
+
+    }
+
     /** Other Functions **/
 
     ###############################
@@ -423,7 +501,7 @@ class Cronjob extends Components {
     }
 
     ############################################
-    #     Check all Credit Notes for expiry        #
+    #     Check all Credit Notes for expiry    #
     ############################################
 
     public function cronjobCheckAllCreditnotesForExpiry() {
@@ -432,6 +510,25 @@ class Cronjob extends Components {
 
         return true;
 
+    }
+
+    /* Validation */
+
+    ##############################################
+    #  Validate Cronjob String(Minute/Hour/Day)  #
+    ##############################################
+
+        //
+    private function validateOnlyCronjobMinHourDay($inputString) {
+        return $this->app->system->general->charRestriction($inputString, "0123456789-*?/,", false);
+    }
+
+    #############################################
+    #  Validate Cronjob String (Month/Weekday)  #
+    #############################################
+
+    private function validateOnlyCronjobMonthWeekday($inputString) {
+        return $this->app->system->general->charRestriction($inputString, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-*?/,", false);
     }
 
 }

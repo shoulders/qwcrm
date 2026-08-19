@@ -16,7 +16,7 @@ if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['work
 }
 
 // Load the edit page if allowed
-if(!$this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$VAR['workorder_id'])) {
+if(!$this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$VAR['workorder_id'], 'resolution')) {
     $this->app->system->page->forcePage('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 } else {
 
@@ -58,7 +58,7 @@ if(!$this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$V
         }
 
         // If submission was successful, load the details page
-        if(!$submitFailedValidation) {            
+        if(!$submitFailedValidation) {
 
             switch (\CMSApplication::$VAR['submit']) {
 

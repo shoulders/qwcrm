@@ -29,7 +29,7 @@
                         </table>
                     </td>
                 </tr>
-            </table>    
+            </table>
         </td>
     </tr><tr>
         <td class="menutd">
@@ -44,39 +44,43 @@
                                         <span class="error_font">{t}No schedule has been set. Click the day on the calendar you wish to set the schedule.{/t}</span>
                                     </td>
                                 </tr>
-                            </table>    
+                            </table>
                         {/section}
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td><b>{t}Create a new Schedule{/t}</b></td>
-                            </tr>
-                            <tr>
-                                <td height="81" align="center">
-                                    <div id="calendar-container"></div>                                    
-                                    <script>                                        
-                                        Calendar.setup( {
-                                            cont: 'calendar-container',
-                                            selection     : {$selected_date},
-                                            onSelect : function(calendar) {                                                                        
-                                                            var selectedDate = calendar.selection.get();            // get the selected date
-                                                            var dateForLink = Calendar.intToDate(selectedDate);     // converts into a JavaScript date object
-                                                            var y = dateForLink.getFullYear();
-                                                            var M = dateForLink.getMonth();                         // integer, 0..11
-                                                            var m = M + 1;                                          // Correction for assignment issue above
-                                                            var d = dateForLink.getDate();                          // integer, 1..31
-                                                            // redirect...
-                                                            window.location = "index.php?component=schedule&page_tpl=day&start_year="+y+"&start_month="+m+"&start_day="+d+"&client_id={$workorder_details.client_id}&employee_id={$login_user_id}&workorder_id={$workorder_id}";
-                                                        }
-                                        } );                                    
-                                    </script>
-                                </td>
-                            </tr>
-                        </table>
+                        {if $allowed_to_create_schedule}
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td><b>{t}Create a new Schedule{/t}</b></td>
+                                </tr>
+                                <tr>
+                                    <td height="81" align="center">
+                                        <div id="calendar-container"></div>
+                                        <script>
+                                            Calendar.setup( {
+                                                cont: 'calendar-container',
+                                                selection     : {$selected_date},
+                                                onSelect : function(calendar) {
+                                                    var selectedDate = calendar.selection.get();            // get the selected date
+                                                    var dateForLink = Calendar.intToDate(selectedDate);     // converts into a JavaScript date object
+                                                    var y = dateForLink.getFullYear();
+                                                    var M = dateForLink.getMonth();                         // integer, 0..11
+                                                    var m = M + 1;                                          // Correction for assignment issue above
+                                                    var d = dateForLink.getDate();                          // integer, 1..31
+                                                    // redirect...
+                                                    window.location = "index.php?component=schedule&page_tpl=day&start_year="+y+"&start_month="+m+"&start_day="+d+"&client_id={$workorder_details.client_id}&employee_id={$login_user_id}&workorder_id={$workorder_id}";
+                                                }
+                                            } );
+                                        </script>
+                                    </td>
+                                </tr>
+                            </table>
+                        {else}
+                            {t}You cannot currently create schedules for this work order.{/t}
+                        {/if}
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        {include file='schedule/blocks/display_schedules_block.tpl' display_schedules=$workorder_schedules block_title=_gettext("Current Work Order Schedules")}                                             
+                        {include file='schedule/blocks/display_schedules_block.tpl' display_schedules=$workorder_schedules block_title=_gettext("Current Work Order Schedules")}
                     </td>
                 </tr>
             </table>

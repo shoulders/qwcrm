@@ -535,8 +535,6 @@ class Supplier extends Components {
 
     /** Check Functions **/
 
-
-
     ###############################################
     #  Check if a payment can be created          # // does nothing for now
     ###############################################

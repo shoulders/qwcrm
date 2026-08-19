@@ -387,6 +387,20 @@ class Company extends Components {
     /** Check Functions **/
 
 
+    ##########################################################
+    #  Check if the company allows editing                   # // placeholder
+    ##########################################################
+
+    public function checkRecordAllowsEdit($silent = false) {
+
+        $state_flag = true;
+
+        // Do nothing
+
+        return $state_flag;
+
+    }
+
     #############################################################
     # Validate submitted information before allowing submission #
     #############################################################

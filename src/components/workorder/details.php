@@ -28,3 +28,7 @@ $this->app->smarty->assign('workorder_notes',      $this->app->components->worko
 $this->app->smarty->assign('workorder_history',    $this->app->components->workorder->getHistory(\CMSApplication::$VAR['workorder_id'])                                          );
 $this->app->smarty->assign('selected_date',        $this->app->system->general->timestampToCalendarFormat( time() )                                                   );
 $this->app->smarty->assign('GoogleMapString',      $this->app->components->client->buildGooglemapDirectionsURL($workorder_details['client_id'], $this->app->user->login_user_id) );
+$this->app->smarty->assign('allowed_to_edit_description',   $this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$VAR['workorder_id'], 'description', true));
+$this->app->smarty->assign('allowed_to_edit_comment',       $this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$VAR['workorder_id'], 'comment', true));
+$this->app->smarty->assign('allowed_to_edit_resolution',    $this->app->components->workorder->checkRecordAllowsEdit(\CMSApplication::$VAR['workorder_id'], 'resolution', true));
+$this->app->smarty->assign('allowed_to_create_schedule',    $this->app->components->schedule->checkRecordCanBeCreated($workorder_details['employee_id'], \CMSApplication::$VAR['workorder_id'], true));

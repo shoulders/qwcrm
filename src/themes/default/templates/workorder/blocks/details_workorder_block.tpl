@@ -66,7 +66,7 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
-                                    {if $workorder_details.status != 6}
+                                    {if $allowed_to_edit_description}
                                         <a href="index.php?component=workorder&page_tpl=details_edit_description&workorder_id={$workorder_details.workorder_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Click to edit description{/t}');" onMouseOut="hideddrivetip();">
                                         </a>
@@ -91,7 +91,7 @@
 </table>
 <br>
 
-<!-- Workorder comment -->
+<!-- Workorder Comment -->
 
 <table class="olotable" width="100%" border="0"  cellpadding="0" cellspacing="0" summary="Work order display">
     <tr>
@@ -103,7 +103,7 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
-                                    {if $workorder_details.status != 6}
+                                    {if $allowed_to_edit_comment}
                                         <a href="index.php?component=workorder&page_tpl=details_edit_comment&workorder_id={$workorder_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Click to edit comment{/t}');" onMouseOut="hideddrivetip();">
                                         </a>
@@ -140,7 +140,7 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr>
                                 <td width="33%" align="right">
-                                    {if $workorder_details.status != 6}
+                                    {if $allowed_to_edit_resolution}
                                         <a href="index.php?component=workorder&page_tpl=details_edit_resolution&workorder_id={$workorder_details.workorder_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit resolution{/t}');" onMouseOut="hideddrivetip();">
                                         </a>

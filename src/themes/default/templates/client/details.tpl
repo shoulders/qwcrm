@@ -118,10 +118,14 @@
                                     <button type="button" onclick="if(confirm('{t}Are you sure you want to create a new client login for this client?{/t}')) { window.location.href='index.php?component=user&page_tpl=new&client_id={$client_details.client_id}'; } ">{t}New Client Login{/t}</button>
                                     <br>
                                     <br>
-                                    <button type="button" onclick="window.location.href='index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}';">{t}Edit{/t}</button>
+                                    {if $allowed_to_edit}
+                                        <button type="button" onclick="window.location.href='index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}';">{t}Edit{/t}</button>
+                                    {/if}
                                 </td>
                                 <td>
-                                    <button type="button" href="index.php?component=client&page_tpl=delete&client_id={$client_details.client_id}" onclick="return confirm('{t}Are you sure you want to delete this client?{/t}');">{t}Delete{/t}</button>
+                                    {if $allowed_to_delete}
+                                        <button type="button" href="index.php?component=client&page_tpl=delete&client_id={$client_details.client_id}" onclick="return confirm('{t}Are you sure you want to delete this client?{/t}');">{t}Delete{/t}</button>
+                                    {if}
                                 </td>
                             </tr>
                         </table>

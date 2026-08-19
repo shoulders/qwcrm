@@ -252,9 +252,6 @@ class Schedule extends Components {
 
     public function updateRecord($qform) {
 
-        // Validate the submitted dates
-        if(!$this->checkRecordTimesValid($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }
-
         $sql = "UPDATE ".PRFX."schedule_records SET
             schedule_id         =". $this->app->db->qStr( $qform['schedule_id']      ).",
             employee_id         =". $this->app->db->qStr( $qform['employee_id']      ).",
@@ -339,8 +336,67 @@ class Schedule extends Components {
 
     /** Check Functions **/
 
+    ###############################################
+    #  Check if a schedule can be created         #
+    ###############################################
+
+    public function checkRecordCanBeCreated($employee_id, $workorder_id, $silent = false) {
+
+        $state_flag = true;
+
+        $workorder_details = $this->app->components->workorder->getRecord($workorder_id);
+
+        // Is the Employee active
+        if(!$this->app->components->user->getRecord($employee_id, 'active')) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The employee is not active so you cannot create a schedule against it.", $silent));
+            $state_flag = false;
+        }
+
+        // Is the Client active
+        if(!$this->app->components->client->getRecord($workorder_details['client_id'], 'active')) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client is not active so you cannot create a schedule against it.", $silent));
+            $state_flag = false;
+        }
+
+        // Is the Workorder active
+        if($workorder_details['closed_on']) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The work order is not active so you cannot create a schedule against it.", $silent));
+            $state_flag = false;
+        }
+
+        /* Is there already a schedule for this work order
+        if($this->app->components->report->scheduleCount(null, null, null, null, null, $workorder_id)) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The work order already has a schedule and so you cannot another against it.", $silent));
+            $state_flag = false;
+        }*/
+
+        return $state_flag;
+    }
+
+    ############################################################# done
+    # Validate submitted information before allowing submission #
+    #############################################################
+
+    public function checkRecordSubmissionIsValid($qform)
+    {
+        $state_flag = true;
+
+        // Validate the Start and End times (messages handled in function)
+        if(!$this->checkRecordTimesValid($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'] ?? null)) {
+            $state_flag = false;
+        }
+
+        // Add Submission Failed Validation message
+        if(!$state_flag){
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This schedule submission failed validation and was not committed to the database. Fix and re-submit."));
+        }
+
+        return $state_flag;
+
+    }
+
     ##########################################################
-    #  Check if the schedule can be deleted                  #
+    #  Check if the schedule can be editec                   #
     ##########################################################
 
     public function checkRecordAllowsEdit($schedule_id, $silent = false) {
@@ -352,7 +408,7 @@ class Schedule extends Components {
 
         // Is the parent workorder closed
         if($this->app->components->workorder->getRecord($schedule_details['workorder_id'], 'closed_on')){
-            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a schedule whoes parent workrder has been closed."), $silent);
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit a schedule whoes parent work order has been closed."), $silent);
             $state_flag = false;
         }
 
@@ -385,7 +441,9 @@ class Schedule extends Components {
     #   Validate schedule start and end time   #  // supply times in DATETIME
     ############################################
 
-    public function checkRecordTimesValid($start_time, $end_time, $employee_id, $schedule_id = null) {
+    private function checkRecordTimesValid($start_time, $end_time, $employee_id, $schedule_id = null) {
+
+        $state_flag = true;
 
         // convert the submitted $start_date to the correct format
         //$start_date = $this->app->system->general->date_to_timestamp($start_date);
@@ -401,19 +459,19 @@ class Schedule extends Components {
         // If start time is after end time show message and stop further processing
         if($start_time > $end_time) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule ends before it starts."));
-            return false;
+            $state_flag = false;
         }
 
         // If the start time is the same as the end time show message and stop further processing
         if($start_time == $end_time) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("Start Time and End Time are the Same."));
-            return false;
+            $state_flag = false;
         }
 
         // Check the schedule is within Company Hours
         if($start_time < $company_day_start || $end_time > $company_day_end) {
             $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot book work outside of company hours"));
-            return false;
+            $state_flag = false;
         }
 
         // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
@@ -440,13 +498,13 @@ class Schedule extends Components {
                 // Check if this schedule item ends after another item has started
                 if($start_time <= $rs->fields['start_time'] && $end_time >= $rs->fields['start_time']) {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));
-                    return false;
+                    $state_flag = false;
                 }
 
                 // Check if this schedule item starts before another item has finished
                 if($start_time >= $rs->fields['start_time'] && $start_time <= $rs->fields['end_time']) {
                     $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));
-                    return false;
+                    $state_flag = false;
                 }
 
             }
@@ -455,7 +513,7 @@ class Schedule extends Components {
 
         }
 
-        return true;
+        return $state_flag;
 
     }
 
@@ -899,9 +957,15 @@ class Schedule extends Components {
                     $calendar_matrix .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
                     $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
                     if(!$this->app->components->workorder->getRecord($scheduleObject[$i]['workorder_id'], 'closed_on')) {
-                        $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ";
-                        $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&themeVar=print\">"._gettext("Export")."</a></b> - ";
-                        $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirm('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";
+                        if($this->app->components->schedule->checkRecordAllowsEdit($scheduleObject[$i]['schedule_id'], true)){
+                            $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ";
+                        } else {
+                            $calendar_matrix .= " - ";
+                        }
+                        $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&themeVar=print\">"._gettext("Export")."</a></b>";
+                        if($this->app->components->schedule->checkRecordAllowsDelete($scheduleObject[$i]['schedule_id'], true)){
+                            $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirm('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";
+                        }
                     }
 
                     // Close CELL

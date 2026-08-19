@@ -774,7 +774,7 @@ class General extends System {
     ##########################################
 
     function dateToTimestamp($date_to_convert, $date_format = null) {
-        return convertDate($date_to_convert, 'timestamp', $date_format);
+        return $this->convertDate($date_to_convert, 'timestamp', $date_format);
     }
 
     ############################################
@@ -1029,6 +1029,41 @@ class General extends System {
         return is_null($timestamp) ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s', $timestamp);
 
     }
+
+    /*##############################################
+    #  Validate Start and End DateTime           #
+    ##############################################
+
+    public function compareDateTimeStartEnd(string $type, string $start, string $end) {
+
+        $state_flag = true;
+
+        // Convert dates into objects (i could use timestamps)
+        $start = $this->dateToDateTimeObject($start);
+        $end = $this->dateToDateTimeObject($end);
+
+        // If date is after due date
+        if($start > $end) {
+
+            // Error message based on type
+            switch($type) {
+                case 'due_date':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Date is after Due Date."));
+                    break;
+                case 'expiry_date':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Date is after Expiry Date."));
+                    break;
+                case 'schedule':
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Date is after Expiry Date."));
+
+            }
+
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }*/
 
     ##############################################
     #  Validate Date and Due Date                #
@@ -1352,6 +1387,28 @@ class General extends System {
 
 
         }
+
+    }
+
+    ###############################################  // Server side mirror of keyRestriction
+    #  Common Function for Character Restriction  #  // Test string and only allow supplied characters
+    ###############################################
+
+    public function charRestriction($inputString, $allowedCharacters, $spacesAllowed = false) {
+
+        if($spacesAllowed) { $allowedCharacters .= ' '; }
+
+        $length = strlen($inputString);
+
+        for($i = 0; $i < $length; $i++) {
+
+            if(strpos($allowedCharacters, $inputString[$i]) === false) {
+                return false;
+            }
+
+        }
+
+        return true;
 
     }
 
